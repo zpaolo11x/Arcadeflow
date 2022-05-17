@@ -171,15 +171,15 @@ try {TLNG = loadlanguage ()} catch (err){}
 
 // font definition
 local uifonts = {
-	gui = "fonts/font_Roboto-Allcaps-EXT3X.ttf" 
-	general = "fonts/font_Roboto-Bold.ttf"
-	condensed = "fonts/font_Roboto-Condensed-Bold.ttf"
-	lite = "fonts/font_Roboto-Regular.ttf"
-	arcade = "fonts/font_CPMono_Black.otf"
-	arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
-	glyphs = "fonts/font_glyphs.ttf"
-	mono = "fonts/font_RobotoMono-VariableFont_wght.ttf"
-	monodata = "fonts/font_CQMono.otf"
+	gui = "font_Roboto-Allcaps-EXT3X.ttf" 
+	general = "font_Roboto-Bold.ttf"
+	condensed = "font_Roboto-Condensed-Bold.ttf"
+	lite = "font_Roboto-Regular.ttf"
+	arcade = "font_CPMono_Black.otf"
+	arcadeborder = "font_CPMono_BlackBorder2.otf"
+	glyphs = "font_glyphs.ttf"
+	mono = "font_RobotoMono-VariableFont_wght.ttf"
+	monodata = "font_CQMono.otf"
 	pixel = 0.711
 }
 
