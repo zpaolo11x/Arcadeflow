@@ -8,16 +8,13 @@ function printline(linein){
 	print (linein + " : "+ fe.layout.time +"\n")
 }
 
-
 // Load file nut
 fe.do_nut("nut_file.nut")
 
 function z_write_line(file, line){
 	local b = blob( line.len() )
-
 	foreach (id, item in line)
 		b.writen( item, 'b' )
-
 	file.writeblob( b )
 }
 
@@ -77,7 +74,6 @@ function returngly(){
 	local uniglyph = [" ","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
 	return (uniglyph)
 }
-
 
 // General AF data table
 local AF = {
@@ -168,31 +164,32 @@ for (local i = 0 ; i < AF.scrape.columns;i++){
 local zmenu = null
 
 // Load language file
+// Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too. 
 fe.do_nut("nut_language.nut")
 local TLNG = "EN"
 try {TLNG = loadlanguage ()} catch (err){}
-// Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too. 
-
 
 // font definition
 local uifonts = {
-	gui = "font_Roboto-Allcaps-EXT3X.ttf" 
-	general = "font_Roboto-Bold.ttf"
-	condensed = "font_Roboto-Condensed-Bold.ttf"
-	lite = "font_Roboto-Regular.ttf"
-	arcade = "font_CPMono_Black.otf"
-	arcadeborder = "font_CPMono_BlackBorder2.otf"
-	glyphs = "font_glyphs.ttf"
-	mono = "font_RobotoMono-VariableFont_wght.ttf"
-	monodata = "font_CQMono.otf"
+	gui = "fonts/font_Roboto-Allcaps-EXT3X.ttf" 
+	general = "fonts/font_Roboto-Bold.ttf"
+	condensed = "fonts/font_Roboto-Condensed-Bold.ttf"
+	lite = "fonts/font_Roboto-Regular.ttf"
+	arcade = "fonts/font_CPMono_Black.otf"
+	arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
+	glyphs = "fonts/font_glyphs.ttf"
+	mono = "fonts/font_RobotoMono-VariableFont_wght.ttf"
+	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 }
 
+// Custom splash message wrappers with AF custom fonts
 function z_splash_message(text){
 	fe.layout.font = uifonts.monodata
 	fe.overlay.splash_message(text)
 	fe.layout.font = uifonts.general
 }
+
 function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.condensed
 	fe.overlay.edit_dialog(text1,text2)
@@ -608,7 +605,7 @@ crr.tttt1 = fe.layout.time
 print(crr.tttt1-crr.tttt0+"msec\n")
 */
 
-/// Preferences functions and table  
+/// Preferences functions and table ///
 function letterdrives(){
 	local letters = "CDEFGHIJKLMNOPQRSTUVWXYZ"
 	local drives = []
@@ -946,7 +943,6 @@ AF.prefs.l1.push([
 ])
 
 function reset_layout() {
-	
 	try { remove (AF.folder + "pref_savedlanguage.txt") } catch (err) {}
 	try { remove (AF.folder + "pref_sortorder.txt") } catch (err) {}
 	try { remove (AF.folder + "pref_thumbtype.txt") } catch (err) {}
@@ -954,7 +950,6 @@ function reset_layout() {
 	try { remove (AF.folder + "pref_update.txt") } catch (err) {}
 	try { remove (AF.folder + "pref_checkdate.txt") } catch (err) {}
 	try { remove (AF.folder + "scrapelog.txt") } catch (err) {}
-
 	try { remove (AF.folder + "latest_version.txt") } catch (err) {}
 
 	local dir = DirectoryListing( AF.folder )
@@ -963,11 +958,9 @@ function reset_layout() {
 	}
 
 	fe.signal("exit_to_desktop")
-
 }
 
 // Translate preference data structure
-
 for (local i = 0 ; i < AF.prefs.l1.len() ; i ++) {
 	local isnewparent = false
 	for (local j = 0 ; j < AF.prefs.l1[i].len() ; j ++) {
@@ -984,10 +977,8 @@ for (local i = 0 ; i < AF.prefs.l1.len() ; i ++) {
 }
 
 // GENERATE ABOUT FILE
-
 function abouttext(){
 	local about = []
-
 	for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
 		about.push (AF.prefs.l0[i].label+"\n")
 		about.push (AF.prefs.l0[i].description+"\n")
@@ -1005,8 +996,8 @@ function historytext(){
 	local verfile = null
 	local history = []
 	while (scanver > 10) {
-		if (file_exist(AF.folder+scanver+".txt")) {
-			verfile = ReadTextFile (AF.folder+scanver+".txt")
+		if (file_exist(AF.folder+"history/"+scanver+".txt")) {
+			verfile = ReadTextFile (AF.folder+"history/"+scanver+".txt")
 			history.push ("*v"+verfile.read_line()+"*"+"\n\n")
 			while (!verfile.eos()){
 				history.push ("- "+verfile.read_line()+"\n")
@@ -1029,25 +1020,24 @@ function buildreadme(){
 	readme.push ("# Arcadeflow - Attract Mode theme by zpaolo11x - v "+AF.version+" #\n")
 	readme.push ("\n")
 	
-	infile = ReadTextFile (AF.folder+"00_intro.txt")
+	infile = ReadTextFile (AF.folder+"history/00_intro.txt")
 	while (!infile.eos()) readme.push (infile.read_line()+"\n")
 	readme.push ("\n")
 	readme.push ("## What's new in v "+AF.version+" #"+"\n")
 	readme.push ("\n")
 
-	infile = ReadTextFile (AF.folder+AF.vernum+".txt")
+	infile = ReadTextFile (AF.folder+"history/"+AF.vernum+".txt")
 	infile.read_line()
 	while (!infile.eos()) readme.push ("- "+infile.read_line()+"\n")
 	readme.push ("\n")
 
-	infile = ReadTextFile (AF.folder+"00_presentation.txt")
+	infile = ReadTextFile (AF.folder+"history/00_presentation.txt")
 	while (!infile.eos()) readme.push (infile.read_line()+"\n")
 	readme.push ("\n")	
 
 	readme.extend(abouttext())
 
 	readme.push("## Previous versions history #\n\n")
-
 	readme.extend(historytext())
 
 	return readme
@@ -1084,8 +1074,6 @@ function printabout(){
 		print(about[i]+"\n")
 	}
 }
-//saveabout()
-//historytext()
 
 // Reads data from the preferences structures and builds the preferences variable table
 // This is the table with the values used in the layout like prf.BOXARTMODE = true etc
@@ -1098,8 +1086,7 @@ function generateprefstable(){
 				if (tempdat.selection >=0) tempdat.initvar(((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection]),prf)
    	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)){//-2 is the function execution
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
-					tempdat.initvar(tempdat.values,prf) 
-					
+					tempdat.initvar(tempdat.values,prf)				
 				}
 			}
 		}
@@ -1118,11 +1105,8 @@ function generateselectiontable(){
          if (tempdat.selection != -100){
 	         if (tempdat.selection >=0) tempdat.initvar(tempdat.selection,prf)
    	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)) {
-				
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					tempdat.initvar(tempdat.values,prf) 
-					
-				
 				}
 			}
 		}
@@ -1145,7 +1129,6 @@ function saveprefdata(prf,target){
 
 // readprefdata() reads values of a selection and puts them in the preferences structure. 
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
-
 function readprefdata(target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
    if (target != null) prfpath = target
@@ -1157,40 +1140,33 @@ function readprefdata(target){
 		return false
 	}
 
-	// if (version != AF.version) {
-	//		fe.overlay.splash_message ("Preference version different from AF version, resetting to default")
-	//		return false
-	//	}
-	// else {
-		local warnmessage = ""
-		while (!prffile.eos()){
-			local templine = prffile.read_line()
-			local z = split (templine,"|")
+	local warnmessage = ""
+	while (!prffile.eos()){
+		local templine = prffile.read_line()
+		local z = split (templine,"|")
 
-			for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
-				for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-					local tempdat = AF.prefs.l1[i][j] //Instancing!
+		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
+			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
+				local tempdat = AF.prefs.l1[i][j] //Instancing!
 
-					if (tempdat.varname.toupper() == z[0]) {
-
-						if (tempdat.v.tofloat() <= version.tofloat() ) {
-							if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
-							else if (z.len() == 1) tempdat.values = ""
-							else tempdat.values = z[1]               
-						}
-						else {
-							warnmessage = warnmessage + ("- "+ tempdat.title + "\n")
-						}
+				if (tempdat.varname.toupper() == z[0]) {
+					if (tempdat.v.tofloat() <= version.tofloat() ) {
+						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
+						else if (z.len() == 1) tempdat.values = ""
+						else tempdat.values = z[1]               
+					}
+					else {
+						warnmessage = warnmessage + ("- "+ tempdat.title + "\n")
 					}
 				}
-			}		
-		}
-		if (warnmessage != "") {
-			z_splash_message ("Reset prefs:\n\n" + warnmessage)
-			return false
-		}
+			}
+		}		
+	}
+	if (warnmessage != "") {
+		z_splash_message ("Reset prefs:\n\n" + warnmessage)
+		return false
+	}
 	return true
-	// }
 }
 
 /// Current date management ///
@@ -1284,7 +1260,7 @@ prf.JUMPLEVEL <- 0 //Level 0 for parent list, level 1 for sub-lists, exit arcade
 
 prf.OLDOPTIONSPAGE <- false
 
-prf.SPLASHLOGOFILE = ( prf.SPLASHLOGOFILE == "" ? "aflogox.png" : prf.SPLASHLOGOFILE),
+prf.SPLASHLOGOFILE = ( prf.SPLASHLOGOFILE == "" ? "pics/logo/aflogox.png" : prf.SPLASHLOGOFILE),
 
 prf.AMSTART <- (prf.AMENABLE == "From start")
 prf.AMENABLE = (prf.AMENABLE != "Disabled")
@@ -1311,9 +1287,7 @@ savelanguage(TLNG)
 // Check conflicts in custom buttons
 function check_buttons(){
 	local buttonarray = [prf.SWITCHMODEBUTTON , prf.UTILITYMENUBUTTON, prf.OVERMENUBUTTON, prf.HISTORYBUTTON, prf.SEARCHBUTTON,prf.CATEGORYBUTTON,prf.MULTIFILTERBUTTON,prf.DELETEBUTTON,prf.VOLUMEBUTTON]
-
 	local conflict = false
-
 	for (local i = 0 ; i < buttonarray.len() ; i++){
 		if (buttonarray[i] != "none") {
 			for (local j = 0 ; j < buttonarray.len() ; j++){
@@ -1365,7 +1339,6 @@ if (prf.LOWSPECMODE){
 	prf.SNAPGLOW = false
 }
 
-
 /// HUECYCLE ///
 local huecycle = {
 	hue = 0
@@ -1377,12 +1350,15 @@ local huecycle = {
 	maxhue = 359 			//Hue cycle stop rom 0 to 359
 	pingpong = prf.HCPINGPONG		//Jump back and forth between min and max
 }
+
 huecycle.hue = huecycle.minhue
+
 try {
 	huecycle.minhue = prf.HCHUESTART.tointeger()
 	if (huecycle.minhue < 0) huecycle.minhue = 0
 	if (huecycle.minhue > 358) huecycle.minhue = 358
 }catch(err){}
+
 try {
 	huecycle.maxhue = prf.HCHUESTOP.tointeger()
 	if (huecycle.maxhue < 1) huecycle.maxhue = 1
@@ -1748,21 +1724,7 @@ function hsl2rgb (H,S,L){
 	return (OUT)
 }
 
-if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
-	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
-	local songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
-	for (local i = 0; i < songdirarray.len()-1; i++){
-		songdir += songdirarray[i]+"/"
-	}
-	local filelist = DirectoryListing (songdir).results
-	foreach (i,item in filelist){
-		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
-	}
-}
-
-
 function applycustomcolor(){
-
 	local colorarray = split(prf.CUSTOMCOLOR," ")
 	if (colorarray.len() != 3) return
 
@@ -1784,13 +1746,26 @@ function applycustomcolor(){
 
 if (prf.CUSTOMCOLOR != "") applycustomcolor()
 
+// Music
+if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
+	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
+	local songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
+	for (local i = 0; i < songdirarray.len()-1; i++){
+		songdir += songdirarray[i]+"/"
+	}
+	local filelist = DirectoryListing (songdir).results
+	foreach (i,item in filelist){
+		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
+	}
+}
+
 // UI sounds
 local snd = {
-	clicksound = fe.add_sound("mouse3.mp3")
-	plingsound = fe.add_sound("pling1.wav")
-	mplinsound = fe.add_sound("pling2.wav")
-	wooshsound = fe.add_sound("woosh4.mp3")
-	mbacksound = fe.add_sound("woosh5.mp3")
+	clicksound = fe.add_sound("sounds/mouse3.mp3")
+	plingsound = fe.add_sound("sounds/pling1.wav")
+	mplinsound = fe.add_sound("sounds/pling2.wav")
+	wooshsound = fe.add_sound("sounds/woosh4.mp3")
+	mbacksound = fe.add_sound("sounds/woosh5.mp3")
 	attracttune = fe.add_sound(prf.AMTUNE)
 	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
 	attracttuneplay = false
@@ -2004,7 +1979,7 @@ if (prf.CUSTOMSIZE != ""){
 	catch ( err ) { z_splash_message("Wrong syntax in screen resolution");prf.CUSTOMSIZE = "";scr.w = ScreenWidth; scr.h = ScreenHeight }
 }
 
-
+// Screen size and overscan management
 local fl = {
 	w_os = scr.w
 	h_os = scr.h
@@ -2021,41 +1996,33 @@ local fl = {
 	y = 0
 }
 
-//if (prf.OVERSCANW != "") {
-	try {
-		fl.overscan_w = prf.OVERSCANW.tointeger()
-		if ((fl.overscan_w > 0) && (fl.overscan_w <= 100)){
-			fl.overscan_w = fl.overscan_w / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_w = prf.OVERSCANW.tointeger()
+	if ((fl.overscan_w > 0) && (fl.overscan_w <= 100)){
+		fl.overscan_w = fl.overscan_w / 100.0
+	}
+}catch(err){}
 
-//if (prf.OVERSCANH != "") {
-	try {
-		fl.overscan_h = prf.OVERSCANH.tointeger()
-		if ((fl.overscan_h > 0) && (fl.overscan_h <= 100)){
-			fl.overscan_h = fl.overscan_h / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_h = prf.OVERSCANH.tointeger()
+	if ((fl.overscan_h > 0) && (fl.overscan_h <= 100)){
+		fl.overscan_h = fl.overscan_h / 100.0
+	}
+}catch(err){}
 
-//if (prf.OVERSCANX != "") {
-	try {
-		fl.overscan_x = prf.OVERSCANX.tointeger()
-		if ((fl.overscan_x >= -100) && (fl.overscan_x <= 100)){
-			fl.overscan_x = fl.overscan_x / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_x = prf.OVERSCANX.tointeger()
+	if ((fl.overscan_x >= -100) && (fl.overscan_x <= 100)){
+		fl.overscan_x = fl.overscan_x / 100.0
+	}
+}catch(err){}
 
-//if (prf.OVERSCANY != "") {
-	try {
-		fl.overscan_y = prf.OVERSCANY.tointeger()
-		if ((fl.overscan_y >= -100) && (fl.overscan_y <= 100)){
-			fl.overscan_y = fl.overscan_y / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_y = prf.OVERSCANY.tointeger()
+	if ((fl.overscan_y >= -100) && (fl.overscan_y <= 100)){
+		fl.overscan_y = fl.overscan_y / 100.0
+	}
+}catch(err){}
 
 local rotation = {
 	real = null
@@ -2135,7 +2102,6 @@ Nominal (for calculation purposes) sizes:
 	Vertical shift: 16
 */
 
-
 //calculate number of columns
 local cols = (1 + 2*(floor (( fl.w/2 + widthmix/2 - padding) / (widthmix + padding))))
 // add safeguard tiles
@@ -2153,11 +2119,8 @@ local carrierT = {
 
 // Changed selectorscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
-//TEST106 Changed reduced zoom from 1.1 to 1.15 (still no overlap of tiles)
 local selectorscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (rows == 1 ? (vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
-
 local whitemargin = 0.15
-
 local selectorwidth = selectorscale * widthpadded
 
 // correction data for non-centered first tiles
@@ -2322,7 +2285,6 @@ function powerman(action){
 	}
 }
 
-
 function extradatatable(inputfile){
 	local filepath = fe.path_expand(inputfile)
 
@@ -2367,7 +2329,6 @@ ratetonumber["60 to 70 (Passable)"] <- "7.0"
 ratetonumber["70 to 80 (Good)"] <- "8.0"
 ratetonumber["80 to 90 (Very Good)"] <- "9.0"
 ratetonumber["90 to 100 (Best Games)"] <- "10.0"
-
 
 function afsort(arr_in, arr_mixval){
 
@@ -8482,10 +8443,10 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelsize-2,overlay.w,2)
 
-overlay.shad.push (fe.add_image(AF.folder+"wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50*scalerate)))
-overlay.shad.push (fe.add_image(AF.folder+"wgradientTb.png", overlay.x, overlay.y-floor(50*scalerate), overlay.w, floor(50*scalerate)))
-overlay.shad.push (fe.add_image(AF.folder+"wgradientLb.png", overlay.x-floor(50*scalerate), overlay.y,floor(50*scalerate), overlay.h))
-overlay.shad.push (fe.add_image(AF.folder+"wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50*scalerate), overlay.h))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50*scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50*scalerate), overlay.w, floor(50*scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50*scalerate), overlay.y,floor(50*scalerate), overlay.h))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50*scalerate), overlay.h))
 
 foreach (item in overlay.shad){
 	item.alpha = 0
@@ -10162,13 +10123,13 @@ local histgr = {
 
 if (!vertical){
 	histgr.black = history_surface.add_image(AF.folder+"pics/black.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os)
-	histgr.g1 = history_surface.add_image(AF.folder+"wgradientT.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5) 
-	histgr.g2 = history_surface.add_image(AF.folder+"wgradientB.png",0,fl.h_os*0.5,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5)
+	histgr.g1 = history_surface.add_image(AF.folder+"pics/grads/wgradientT.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5) 
+	histgr.g2 = history_surface.add_image(AF.folder+"pics/grads/wgradientB.png",0,fl.h_os*0.5,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5)
 }
 else{
 	histgr.black = history_surface.add_image(AF.folder+"pics/black.png",0,0,fl.w_os,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
-	histgr.g1 = history_surface.add_image(AF.folder+"wgradientL.png",0,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
-	histgr.g2 = history_surface.add_image(AF.folder+"wgradientR.png",fl.w_os*0.5,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
+	histgr.g1 = history_surface.add_image(AF.folder+"pics/grads/wgradientL.png",0,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
+	histgr.g2 = history_surface.add_image(AF.folder+"pics/grads/wgradientR.png",fl.w_os*0.5,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
 }
 
 histgr.black.set_rgb (0,0,0)
@@ -11438,7 +11399,7 @@ zmenu_sh.surf_rt.zorder = 9
 zmenu_sh.surf_rt.set_pos(zmenu_surface_container.x + 4*scalerate,zmenu_surface_container.y + 8*scalerate,zmenu_surface_container.width,zmenu_surface_container.height)
 
 
-zmenu.simbg = zmenu_surface_container.add_image(AF.folder+"wgradientRa.png",
+zmenu.simbg = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientRa.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,//zmenu.y + zmenu.height*0.5 - 0.5*(zmenu.height-2.0*zmenu.pad),
 										disp.width*0.25,
@@ -11449,12 +11410,12 @@ if (prf.DMPIMAGES == "WALLS") zmenu.simbg.zorder = 1000
 
 // NICE: top 2.0 a150, bot 2.0 a150
 // SHAD: top 0.25 a100, bot 0.5 a150
-disp.bgshadowt = zmenu_surface_container.add_image(AF.folder+"wgradientTc.png",
+disp.bgshadowt = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientTc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
 										disp.bgtileh)//0.25
-disp.bgshadowb = zmenu_surface_container.add_image(AF.folder+"wgradientBc.png",
+disp.bgshadowb = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientBc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
@@ -12957,16 +12918,16 @@ zmenu.simpicbg.set_bg_rgb(200,0,0)
 zmenu.simpicbg.bg_alpha = 0
 zmenu.simpicbg.zorder = 10000
 
-zmenu.simpicshB = zmenu_surface_container.add_image(AF.folder+"wgradientBb.png",0,0,0,0)
+zmenu.simpicshB = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientBb.png",0,0,0,0)
 zmenu.simpicshB.set_rgb(0,0,0)
 zmenu.simpicshB.alpha = 90
-zmenu.simpicshT = zmenu_surface_container.add_image(AF.folder+"wgradientTb.png",0,0,0,0)
+zmenu.simpicshT = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientTb.png",0,0,0,0)
 zmenu.simpicshT.set_rgb(0,0,0)
 zmenu.simpicshT.alpha = 80
-zmenu.simpicshL = zmenu_surface_container.add_image(AF.folder+"wgradientLb.png",0,0,0,0)
+zmenu.simpicshL = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientLb.png",0,0,0,0)
 zmenu.simpicshL.set_rgb(0,0,0)
 zmenu.simpicshL.alpha = 80
-zmenu.simpicshR = zmenu_surface_container.add_image(AF.folder+"wgradientRb.png",0,0,0,0)
+zmenu.simpicshR = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientRb.png",0,0,0,0)
 zmenu.simpicshR.set_rgb(0,0,0)
 zmenu.simpicshR.alpha = 80
 
@@ -13283,7 +13244,7 @@ function updatebgsnap (index){
 	}
 	else { // We are not in boxart mode, OR the layersnap is enabled
 
-		if (bgs.bgpic_array[bgs.stacksize-1].texture_width == 0 ) bgs.bgpic_array[bgs.stacksize-1].file_name = "snapx"+( (fe.game_info(Info.Title,tilez[index].offset).len() % 7))+".png"
+		if (bgs.bgpic_array[bgs.stacksize-1].texture_width == 0 ) bgs.bgpic_array[bgs.stacksize-1].file_name = "pics/snaps/snapx"+( (fe.game_info(Info.Title,tilez[index].offset).len() % 7))+".png"
 
 		bgs.bgpic_array[bgs.stacksize-1].shader = colormapper["NONE"].shad
 		bgs.bg_box[bgs.stacksize-1] = [false,[255,255,255],[255,255,255]]		
@@ -13430,7 +13391,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 			tilez[i].txbox.visible = false
 		}
 		else {
-			if (tilez[i].gr_snapz.texture_width == 0 ) tilez[i].gr_snapz.file_name = "snapx"+( (fe.game_info(Info.Title,indexoffsetvar).len() % 7))+".png"
+			if (tilez[i].gr_snapz.texture_width == 0 ) tilez[i].gr_snapz.file_name = "pics/snaps/snapx"+( (fe.game_info(Info.Title,indexoffsetvar).len() % 7))+".png"
 			tilez[i].snapz.set_rgb (255,255,255)
 			tilez[i].gr_snapz.set_rgb (255,255,255)
 			tilez[i].txbox.visible = false
@@ -14030,7 +13991,7 @@ function buildutilitymenu(){
 			return "☰"
 		}
 		command = function(){
-			local aboutpath = fe.path_expand( AF.folder + (AF.version.tofloat()*10).tostring() + ".txt")
+			local aboutpath = fe.path_expand( AF.folder + "history/"+(AF.version.tofloat()*10).tostring() + ".txt")
 			local aboutfile = ReadTextFile (aboutpath)
 
 			local textarray = []
