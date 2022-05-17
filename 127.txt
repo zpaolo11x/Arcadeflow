@@ -1,0 +1,7 @@
+12.7
+Added new Naomi related systems and arcade systems
+Added key repeat in keyboard
+Added workdir support in scraper
+Volume control responds to left/right keys
+Centered game title in "clean" layout
+Fixed issue with "clean" layout mode

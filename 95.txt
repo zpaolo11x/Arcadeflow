@@ -1,0 +1,9 @@
+9.5
+In options menu you can use left and right to change options
+Fixed "Exit from Arcadeflow" menu not centered
+Fixed bug with text size in vertical mode
+Fixed bugs in displays menu sorting and grouping
+Improved text wrap in menu items with long strings
+Default displays sorting by brand/name
+Revamped the displays management backedn
+Displays categories can be user defined

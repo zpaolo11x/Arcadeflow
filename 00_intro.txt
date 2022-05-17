@@ -1,0 +1,9 @@
+Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page. 
+
+Arcadeflow has some advanced features: you can sort game lists within Arcadeflow user interface, you can create filters on the fly, you can import history.dat and command.dat for richer info page, you can import RetroPie XML lists into AM romlists. It also features its own ScreenScraper backed scraping engine, metadata editor, and all games data are stored outside of the romlist so they are shared with all collection romlists.
+
+The layout adapts to any different aspect ratios (5:4, 4:3, 16:9, 16:10 etc) automatically and reasonably well (external snaps get partially cut but not completely obscured) and a different layout is enabled for vertical aspect ratio.
+
+For best results with thumbnails aspect ratio and cropping, Arcadeflow matches your emulator "System Identifier" to detect if the game has an LCD screen. For example if your System Identifier is "Game Boy" (or gameboy etc) it will be treated as LCD.
+
+Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.

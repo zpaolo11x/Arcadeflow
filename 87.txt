@@ -1,0 +1,7 @@
+8.7
+Introduced free aspect ratio for game snaps and box art
+Added an option to morph box art into game video
+Cleaned up code to make it more streamlined
+Fixed a bug that kept updating decorations when not necessary
+Added mipmap to glow effect to simplify shaders
+Added an option to disable displays menu page completely

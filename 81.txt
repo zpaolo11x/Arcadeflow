@@ -1,0 +1,7 @@
+8.1
+Added new manufacturers logos
+Added system logos for Cave and general board manufacturers like Sega, Taito, Capcom
+When entering Displays submenu the current display is preselected
+Give feedback to the user when no update is available after check for updates
+Fixed bug in multifilter glyph display routine
+Tweaked check for updates to avoid shell popup in Windows

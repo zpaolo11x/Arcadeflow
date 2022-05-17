@@ -1,0 +1,9 @@
+12.5
+Changed the layout boot logo
+Added option and hotkey for volume control
+Added Jaguar CD, C16 and PET systems
+Added an option to customise the UI color
+Added options to shift the area on overscan screen
+Added progress bar when opening layout
+Fixed bugs with overscan centering
+Fixed font rendering for letter boxes

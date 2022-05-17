@@ -1,0 +1,8 @@
+8.0
+Changed the QWERTY keyboard layout for better jump between key rows
+Added AZERTY keyboard layout in options
+Games can be sorted by last played date
+Games can be sorted by latest added favourite
+New "Check for updates" system to be notified when a new version is available
+It is now possible to download and install new versions automatically
+Added "About Arcadeflow" with the latest news

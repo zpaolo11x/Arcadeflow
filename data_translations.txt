@@ -1,0 +1,2885 @@
+EN | English
+IT | Italiano
+ES | Español
+BR | Português (BR)
+FR | Français
+DE | Deutsch
+
+# This file contains the translation for Arcadeflow text. Keep the structure as follows:
+# - at the beginning of the file set your language "token" and language description separated by vertical line
+# - for each line in "EN" add your translation with your language token. If there's no translation "EN" will be used
+# - keep one or more spaces between each translation block
+# - if there's a special character in the original string (like "_" etc) use the same charactar in the translation
+
+# Thanks to Jate from Attract Mode forum for the translation in Spanish!
+# Thanks to ReBirFh from Attract Mode forum for the translation in Português (BR)!
+# Thanks to katarak from Attract Mode forum for the translation in French!
+
+# LAYOUT OPTIONS PANEL
+
+EN | Language
+IT | Lingua
+ES | Idioma
+BR | Idioma
+FR | Langue
+DE | Sprache
+
+EN | Layout language
+IT | Lingua del layout
+ES | Idioma del layout
+BR | Idioma do layout
+FR | Langue de layout
+DE | Layout Sprache
+
+EN | Chose the language of the layout
+IT | Seleziona la lingua usata nel layout
+ES | Selecciona el idioma del layout
+BR | Define o idioma do layout
+FR | Choisissez la langue du layout
+DE | Sprache des Layouts auswählen
+
+EN | Power menu
+IT | Menu arresto
+
+EN | Enable or disable power options in exit menu
+IT | Abilita un menu per spegnere o riavviare la macchina uscendo da Arcadeflow
+
+EN | GENERAL
+IT | GENERALE
+ES | GENERAL
+BR | GERAL
+FR | GENERAL
+DE | ALLGEMEIN
+
+EN | Layout
+IT | Layout
+ES | Layout
+DE | Layout
+
+EN | Game Data
+IT | Dati del gioco
+ES | Datos del juego
+DE | Spieldaten
+
+EN | Scroll & Sort
+IT | Organizzazione
+ES | Organización
+DE | Scrollen & Sortierung
+
+EN | Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
+IT | Definisci le optioni principali per Arcadeflow: il numero di righe di miniature, i pulsanti, la lingua e altro
+ES | Define las opciones principales de Arcadeflow: número de filas, controles, lenguaje, fuente de las imagenes, etc.
+FR | Definissez les options principales d'ArcadeFlow: nombres de lignes, agencement général, controles, langue, captures miniatures, etc.
+DE | Definiere die Hauptoptionen von ArcadeFlow, wie Anzahl der Zeilen, allgemeines Layout, Schaltflächen, Sprache, Thumbnail-Quelle etc.
+
+EN | Box Art mode
+IT | Modalità Box Art
+ES | Modo Box Art
+BR | Modo Arte da Caixa
+FR | Mode Image de Boite
+DE | Box-Art Modus
+
+EN | Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)
+IT | Mostra la box art o i flyer al posto delle schermate del gioco (può essere configurato via menu o tasti rapidi)
+ES | Por defecto, muestra un Box Art o Flyer en lugar de la captura de pantalla (se puede configurar desde el menú o asignar una tecla rápida)
+BR | Mostra a arte da caixa ou flyer, ao invés de uma captura da tela (pode ser configurado pelo menu ou por um atalho)
+FR | Montre l'image de la boite ou foliole au lieu des captures d'écrans par default (peut etre configuré dans le menu ou raccourci clavier)
+DE | Standardmäßig Box-Art oder Flyer anstelle von Bildschirmfotos anzeigen (kann über Menü oder Hotkey konfiguriert werden)
+
+EN | Game title over box art
+IT | Titolo sopra la box art
+ES | Mostrar el título del juego sobre el Box Art
+BR | Exibir o título do jogo sobreposto à arte da caixa
+FR | Montre le titre du jeu par dessus l'image de la boite
+DE | Spiel-Titel über Box-Art
+
+EN | Shows the game title artwork overlayed on the box art graphics
+IT | Mostra la grafica del titolo del gioco sovraimposta sulla grafica della scatola
+ES | Muestra la imagen del título del juego superpuesto al Box Art
+BR | Exibe a arte do título do jogo sobreposta à arte da caixa
+FR | Montre le titre du jeu, en logo, par dessus l'image de la boite
+DE | Zeigt die Titelgrafik des Spiels über der Box-Art
+
+EN | Box Art artwork source
+IT | Sorgente della Box Art
+ES | Fuente del Box Art
+BR | Local da Arte da Caixa
+FR | Source pour images de boite
+DE | Box-Art Quelle
+
+EN | Chose the artwork source for box art graphics
+IT | Seleziona da quale sorgente prendere la grafica per la Box Art
+ES | Elige una fuente para las imagenes del Box Art
+BR | Define o local de onde os gráficos da Arte da Caixa serão obtidos
+FR | Précisez le dossier où ce trouve les images de boites
+DE | Wähle die Quelle für die Box-Art
+
+EN | Rows in horizontal
+IT | Righe in orizzontale
+ES | Filas en horizontal
+BR | Linhas na horizontal
+FR | Lignes en mode horizontales
+DE | Zeilen horizontal
+
+EN | Number of rows to use in 'horizontal' mode
+IT | Numero di righe di miniature da mostrare in modalità orizzontale
+ES | Número de filas para el modo horizontal
+BR | Define a quantidade de linhas de miniaturas mostradas no modo horizontal
+FR | Précisez la quantité de lignes de captures miniatures a montré en mode horizonal
+DE | Anzahl Zeilen im horizontalen Modus
+
+EN | Rows in vertical
+IT | Righe in verticale
+ES | Filas en vertical
+BR | Linhas na vertical
+FR | Linges en mode vertical
+DE | Zeilen vertikal
+
+EN | Number of rows to use in 'vertical' mode
+IT | Numero di righe di miniature da mostrare in modalità verticale
+ES | Número de filas para el modo vertical
+BR | Define a quantidade de linhas de miniaturas mostradas no modo vertical
+FR | Précisez la quantité de lignes de captures miniatures a montré en mode vertical
+DE | Anzahl Zeilen im vertikalen Modus
+
+EN | Clean layout
+IT | Layout pulito
+ES | Limpiar layout
+BR | Layout simplificado
+FR | Agencement simplifié
+DE | Sauberes Layout
+
+EN | Reduce game data shown on screen
+IT | Riduce la quantità di dati mostrati su schermo
+ES | Reduce la cantidad de datos del juego que se muestran en pantalla
+BR | Reduz a quantidade de informações mostradas
+FR | Reduisez la quantité d'information montrée a l'écran
+DE | Reduziere angezeigte Spiel-Daten
+
+EN | Display Game Long Name
+IT | Nome esteso del gioco
+ES | Mostrar el nombre completo del juego
+BR | Exibir o nome extenso do jogo
+FR | Montrez le titre complet du jeu
+DE | Zeige den Langnamen des Spiels
+
+EN | Shows the part of the rom name with version and region data
+IT | Mostra la parte del nome del gioco che contine iformazioni come la versione e la regione
+ES | Muestra la parte del nombre que indica la versión y la región 
+BR | Exibe a parte do nome do jogo que contém as informações sobre a versão e região
+FR | Montre la partie du nom du rom avec la version et l'information sur la région
+DE | Zeigt den Rom Namen mit Version und Region Informationen
+
+EN | Display System Name
+IT | Mostra il nome del sistema
+ES | Mostrar el nombre del sistema
+BR | Exibir o nome do sistema
+FR | Montrez le nom du système
+DE | Zeige Systemname
+
+EN | Shows the System name under the game title
+IT | Mostra il nome del sistema sotto il titolo del gioco
+ES | Muestra el nombre del sistema bajo el título del juego
+BR | Exibe o nome do sistema abaixo do título do jogo
+FR | Montre le nom du système dessous le titre du jeu
+DE | Zeigt den Systemnamen unter dem Spiel-Titel
+
+EN | Display Arcade System Name
+IT | Mostra nome del sistema Arcade
+
+EN | Shows the name of the Arcade system if available
+IT | Se disponibile, mostra il nome del sistema Arcade su cui gira il gioco
+
+EN | System Name as artwork
+IT | Nome del sistema come grafica
+ES | Mostrar logo como nombre del sistema
+BR | Exibir o nome do sistema em forma de arte gráfica
+FR | Montrez le nom de système en logo
+DE | Systemname als Artwork
+
+EN | If enabled, the system name under the game title is rendered as a logo instead of plain text
+IT | Se abilitato, il nome del sistema sotto il titol odel gioco è sostituito da un logo grafico
+ES | Si está activado, el nombre del sistema bajo el título del juego se cambia por un logo
+BR | Se ativado, o nome do sistema abaixo do título do jogo será substituído pelo logotipo ao invês de um texto simples
+FR | Si activé, le nom du système sous le titre du jeu est rendu en logo au lieu de texte simple.
+DE | Wenn aktiviert, wird der Systemname unter dem Spiel-Titel als Logo statt als Text dargestellt
+
+EN | Page jump size
+IT | Dimensione salto pagina
+
+EN | Page jumps are one screen by default, you can increase it if you want to jump faster
+IT | Il salto pagina di default è uno schermo alla volta, si può aumentare con l'opzione
+
+EN | Scrollbar style
+IT | Barra di scorrimento
+ES | Tipo de barra de desplazamiento
+BR | Estilo da barra de rolagem
+FR | Style de la barre de défilement
+DE | Stil der Bildlaufleiste
+
+EN | Select how the scrollbar should look
+IT | Seleziona l'aspetto della barra di scorrimento
+ES | Selecciona el tipo de barra de desplazamiento
+BR | Define a aparência da barra de rolagem
+FR | Précisez l'apparence de la barre de défilement
+DE | Wähle wie die Bildlaufleiste aussehen soll
+
+EN | Strip article from sort
+IT | Ordina ignorando gli articoli
+ES | Ignorar el artículo del título
+BR | Remover artigos ao organizar por títulos
+FR | Ignorez les articles durant le triage
+DE | Artikel bei Sortierung ignorieren
+
+EN | When sorting by Title ignore articles
+IT | Ignora gli articoli quando la lista è ordinata per titolo
+ES | Cuando organiza por título se ignora el artículo 
+BR | Ao organizar pelo título, ignora os artigos nos nomes dos jogos 
+FR | Ignorez les articles quand vous trier des titres
+DE | Bei Sortierung nach Titel, werden Artikel ignoriert
+
+EN | Enable sorting
+IT | Abilita ordinamento
+
+EN | Enable custom realtime sorting, diable to keep romlist sort order
+IT | Abilita l'ordinamento personalizzato, disabilitare per mantenere l'ordinamento della romlist
+
+EN | Save sort order
+IT | Salva l'ordinamento
+ES | Guardar orden de clasificación
+BR | Salvar a ordem de organização
+FR | Sauvegardez l'odre de triage
+DE | Sortierungsreihenfolge speichern
+
+EN | Custom sort order is saved through Arcadeflow sessions
+IT | L'ordinamento delle liste è salvato tra una sesione e l'altra
+ES | Guarda el orden seleccionado para la próxima sesión 
+BR | A organização personalizada da lista é mantida entre as sessões do Arcadeflow
+FR | L'ordre de triage personnalisé est sauvegardé entre les sessions d'Arcadeflow
+DE | Benutzerdefinierte Sortierreihenfolge wird in Arcadeflow-Sitzungen gespeichert
+
+EN | Screen rotation
+IT | Rotazione dello schermo
+ES | Rotación de pantalla
+BR | Rotação de tela
+FR | Rotation de l'écran
+DE | Bildschirmdrehung
+
+EN | Rotate screen
+IT | Ruota lo schermo
+ES | Gira la pantalla
+BR | Rotaciona a tela
+FR | Tournez l'écran
+DE | Drehe Bildschirm
+
+EN | Low resolution
+IT | Bassa risoluzione
+ES | Baja resolución 
+BR | Baixa resolução
+FR | résolution basse
+DE | Geringe Auflösung
+
+EN | Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout
+IT | Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout 
+ES | Optimiza el tema para pantallas con baja resolución: sólo muestra una fila, agranda la fuente y limpia el layout
+BR | Otimiza o tema para telas de baixa resolução, forçando o layout de uma linha, fonte ampliada e layout simplificado
+FR | Optimize ce theme pour résolutions basses. Agencement à une ligne forcé, police plus grande et agencement plus simple.
+DE | Optimierung des Theme für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout
+
+EN | BUTTONS
+IT | PULSANTI
+ES | BOTONES
+DE | TASTEN
+
+EN | Define custom control buttons for different features of Arcadeflow
+IT | Definisci i pulsanti da usare per diverse funzioni di Arcadeflow
+ES | Define el botón que se usará para diversas funciones de Arcadeflow
+DE | Definiere benutzerdefinierte Tasten für verschiedene Funktionen von Arcadeflow
+
+EN | Context menu button
+IT | Tasto del menu contestuale
+ES | Tecla del menú contextual
+BR | Botão do menu de contexto
+FR | Bouton pour menu contextuel
+DE | Kontextmenü-Taste
+
+EN | Chose the button to open the game context menu
+IT | Seleziona il tasto da usare per richiamare il menu contestuale
+ES | Elige una tecla para abrir el menú contextual
+BR | Define o botão utilizado para abrir o menu de contexto do jogo
+FR | Précisez le bouton pour ouvrir le menu contetuel du jeu
+DE | Taste zum Öffnen des Kontextmenüs des Spiels auswählen
+
+EN | Utility menu button
+IT | Tasto del menu principale
+ES | Tecla del menú principal
+BR | Botão do menu principal
+FR | Bouton pour menu principal
+DE | Taste Menü Dienstprogramme
+
+EN | Chose the button to open the utility menu
+IT | Seleziona il tasto da usare per richiamare il menu principale (utility menu)
+ES | Elige una tecla para abrir el menú principal (Utility Menu)
+BR | Define o botão utilizado para abrir o menu principal (utility menu)
+FR | Précisez le bouton pour ouvrir le menu utilitaire
+DE | Taste zum Öffnen des Dienstprogramme-Menü auswählen
+
+EN | History page button
+IT | Tasto della pagina history
+ES | Tecla para acceder a la pagina del Historial
+DE | Taste Historie
+
+EN | Chose the button to open the history or overview page
+IT | Seleziona il tasto da usare per aprire la pagina della history (overview)
+ES | Selecciona la tecla para acceder a la página del Historial
+DE | Taste zum Öffnen der Historie oder Überblickseite auswählen
+
+EN | Thumbnail mode button
+IT | Tasto modalità miniatura
+ES | Tecla para modo miniatura
+BR | Botão para alternar entre os modos miniatura
+FR | Bouton pour changé au mode captures miniatures
+DE | Taste Miniaturbild-Modus
+
+EN | Chose the button to use to switch from snapshot mode to box art mode
+IT | Seleziona il tasto da usare per cambiare le miniature da modalità schermata a modalità box art
+ES | Elige una tecla para cambiar entre el modo miniatura y el modo Box Art
+BR | Define o botão utilizado para alternar entre o modo de Captura da tela (snapshot) para o modo Arte da Caixa
+FR | Précisez le bouton pour changé du mode capture miniatures au mode image de boite
+DE | Taste zum Wechsel zwischen Schnappschuss und Box-Art Modus auswählen
+
+EN | Search menu button
+IT | Tasto menu ricerca
+ES | Tecla para el menú de busqueda
+DE | Taste Suche
+
+EN | Chose the button to use to directly open the search menu instead of using the utility menu
+IT | Seleziona il tasto da usare per richiamare direttamente il menu ricerca
+ES | Selecciona la tecla para acceder directamente al menú de busqueda
+DE | Taste zum direkten öffnen des Suchmenü, statt über das Dienstprogramme-Menü
+
+EN | Category menu button
+IT | Tasto per menu categorie
+ES | Tecla para el menú categorías
+DE | Taste Kategorien-Menü
+
+EN | Chose the button to use to open the list of game categories
+IT | Seleziona il tasto da usare per richiamare il menu delle categorie
+ES | Selecciona la tecla para mostrar el listado de categorías de juegos
+DE | Taste zum Öffnen der Liste der Spielkategorien auswählen
+
+EN | Multifilter menu button
+IT | Tasto del menu multifiltro
+ES | Tecla para el menú multifiltro
+DE | Taste Multifilter Menü
+
+EN | Chose the button to use to open the menu for dynamic filtering of romlist
+IT | Seleziona il tasto da usare per richiamare il menu multifiltro, per filtrare dinamicamente la lista dei giochi
+ES | Selecciona la tecla para abrir el menú multifiltro, para filtrar dinámicamente la lista de juegos
+DE | Taste zum Öffnen des Menü für dynamisches Filtern der Romliste auswählen
+
+EN | Delete ROM button
+IT | Tasto elimina ROM
+ES | Eliminar una ROM
+DE | Taste ROM löschen
+
+EN | Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
+IT | Scegli il tasto da usare per cancellare una rom dal disco. Le rom cancellate vengono spostate nella cartella -deleted-
+ES | Elige el botón para eliminar una rom del disco. La rom eliminada se moverá a la carpeta -eliminado-
+DE | Taste um das aktuelle ROM von der HDD zu löschen auswählen. Gelöschte ROMs werden in einen -gelöscht- Ordner verschoben
+
+EN | UTILITY MENU
+IT | UTILITY MENU
+ES | MENÚ DE UTILIDADES
+BR | UTILITY MENU
+FR | MENU UTILITAIRE
+DE | UTILITY MENÜ
+
+EN | Customize the utility menu entries that you want to see in the menu
+IT | Personalizza il menu utility scegliendo le voci e l'ordine
+ES | Personalizar las categorias que quieres ver del menú de utilidades
+DE | Einträge des Utility Menü anpassen
+
+EN | Customize Utility Menu
+IT | Personalizza il menu utility
+ES | Personaliza el menú de utilidades
+DE | Utility Menü anpassen
+
+EN | Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
+IT | Riordina e personalizza il menu Utility: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare 
+ES | Ordena y selecciona la categorias del menú de utilidades: Derecha/Izquierda para mover los items arriba o abajo, Select para activas/desactivar el item 
+DE | Sortieren und Auswählen von Utility Menü Einträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren
+
+EN | Reset Utility Menu
+IT | Ripristina il menu Utility
+ES | Resetear el menú de utilidades
+DE | Utility Menü zurücksetzen
+
+EN | Reset sorting and selection of Utility Menu entries
+IT | Ripristina l'ordine e le selezioni del menu Utility
+ES | Resetea el orden y las opciones del menú de utilidades
+DE | Sortierung und Auswahl von Einträgen des Utility Menü zurücksetzen
+
+EN | SCRAPE AND METADATA
+IT | SCRAPE E METADATI
+
+EN | You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
+IT | Puoi usare Arcadeflow per fare lo scraping dei metadati e dei media dei giochi, o importare una lista XML nel formato EmulationStation
+ES | Puedes usar Arcadeflow para hacer Scrape y obtener los metadatos y la media de tus juegos, o importar una lista en formato XML de EmulationStation
+DE | Der interne Arcadeflow Scraper kann verwendet werden um Metadaten und Medien für Spiele zu holen, oder XML Daten im EmulationStation Format importieren
+
+EN | SCRAPING
+IT | SCRAPING
+ES | SCRAPING
+DE | SCRAPING
+
+EN | Scrape current romlist
+IT | Scrape dell'attuale romlist
+ES | Scrape el actual romlist
+DE | Scrape aktuelle Romliste
+
+EN | Arcadeflow will scrape your current romlist metadata and media, based on your options
+IT | Arcadeflow effettuerà lo scraping per l'attuale romlist basandosi sulle preferenze
+ES | Arcadeflow hará scrape de la actual romlist basándose en tus preferencias
+DE | Arcadeflow scraped die Metadaten und Medien der aktuellen Romliste, basierend auf den gewählten Optionen
+
+EN | Scrape selected game
+IT | Scrape del gioco attuale
+
+EN | Arcadeflow will scrape only metadata and media for current game
+IT | Arcadeflow farà lo scraping dei media e metadati del solo gioco attuale
+
+EN | Enable CRC check
+IT | Abilita controllo CRC
+
+EN | You can enable rom CRC matching (slower) or just name matching (faster)
+IT | Abilita il calcolo del CRC per trovare le rom (più lento del semplice controllo nomi)
+
+EN | Rom Scrape Options
+IT | Opzioni scrape rom
+ES | Configura scrape roms
+DE | ROM Scrape Einstellungen
+
+EN | You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match
+IT | Puoi scegliere se vuoi fare lo scrape di tutte le rom, solo quelle che non hanno dati o che hanno un match non perfetto
+ES | Puedes decidir si quieres hacer scrape a todas tus roms, solo las roms sin datos o las que no ha encontrado correctamente
+DE | Auswählen ob alle ROMs, nur ROMs ohne Scrapedaten oder ROMs mit Daten die nicht perfekt übereinstimmen gescraped werden sollen
+
+EN | All roms
+IT | Tutte le rom
+ES | Todas las roms
+DE | Alle ROMs
+
+EN | Skip CRC matched
+IT | Salta rom con CRC
+ES | Ignorar roms con CRC
+DE | Überspringe ROMs mit CRC
+
+EN | Skip name matched
+IT | Salta rom con nome
+ES | Ignorar roms con nombre
+DE | Überspringe ROMs mit Namen
+
+EN | Error only
+IT | Solo rom errate
+ES | Solamente roms erroneas
+DE | Nur ROMs mit Fehler
+
+EN | Media Scrape Options
+IT | Opzioni scrape dei media
+ES | Configura Scrape Media
+DE | Einstellungen Media Scrape
+
+EN | You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
+IT | Puoi fare lo scrape di tutti i media, sovrascrivendo quelli esistenti, o dei media mancanti. Puoi anche disabilitare lo scraping dei media
+ES | Puedes decidir si quieres hacer scrape de toda la media, sobreescribiendo la existente, o solo la media que falta. Tambien puedes desactiva el scrape de media
+DE | Auwählen ob alle existierenden Medien überschrieben werden sollen oder nur fehlende Medien gescraped werden sollen. Medien scrapen kann auch deaktiviert werden
+
+EN | Overwrite media
+IT | Sovrascrivi media
+ES | Sobreescribir media
+DE | Überschreibe Medien
+
+EN | Only missing
+IT | Solo mancanti
+ES | Solo lo que falta
+DE | Nur fehlende
+
+EN | No media scrape
+IT | Non fare scrape dei media
+ES | No scrape media
+DE | Keine Medien scrapen
+
+EN | Region Priority
+IT | Priorità regioni
+ES | Región prioritaria
+DE | Regionen Priorität
+
+EN | Sort the regions used to scrape multi-region media and metadata in order of preference
+IT | Ordina e filtra la lista delle regioni per ottenere dati regionali in ordine di preferenza
+ES | Ordena y filtra la lista por región para obtener los datos de la región preferrida
+DE | Sortiere die Regionen für die Multi-Region Medien und Metadaten in der Reihenfolge der Präferenz
+
+EN | Reset Region Table
+IT | Ripristina lista regioni
+ES | Restablecer lista de región
+DE | Regionsliste zurücksetzen
+
+EN | Reset sorting and selection of Region entries
+IT | Riporta la lista delle regioni alle condizioni iniziali
+ES | Restablece la lista de región a la opción inicial
+DE | Sortierung und Auswahl der Region-Einträge zurücksetzen
+
+EN | SCREENSCRAPER
+IT | SCREENSCRAPER
+ES | SCREENSCRAPER
+DE | SCREENSCRAPER
+
+EN | SS Username
+IT | Username SS
+ES | Usuario SS
+DE | SS Username
+
+EN | Enter your screenscraper.fr username
+IT | Immetti il tuo username screenscraper.fr
+ES | Indica tu nombre de usuario en screenscraper.fr
+DE | Screenscraper.fr Usernamen angeben
+
+EN | SS Password
+IT | Password SS
+ES | Password SS
+DE | SS Passwort
+
+EN | Enter your screenscraper.fr password
+IT | Immetti la tua password screenscraper.fr
+ES | Indica tu contraseña en screenscraper.fr
+DE | Screenscraper.fr Passwort angeben
+
+EN | ES XML IMPORT
+IT | IMPORTA XML DA ES
+ES | IMPORTAR XML DE ES
+DE | ES XML IMPORT
+
+EN | Import XML data for all romlists
+IT | Importa i dati XML per tutte le romlist
+ES | Importa los datos XML para todas las romlist
+DE | Importiere XML Daten für alle Romlisten
+
+EN | If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
+IT | Specifica il path dell'xml nel campo import_extras della configurazione dell'emulatore per generare la romlist
+ES | Indica la dirección del archivo XML en el apartado "import_extras" de la configuración del emulador para generar la romlist
+DE | Wenn ein RetroPie XML Pfad im Emulatorfeld "import_extras" angegeben ist, wird die Romliste anhand dieser Daten erstellt
+
+EN | Import XML data for current romlists
+IT | Importa i dati XML per la romlist corrente
+ES | Importa los datos XML para la romlist actual
+DE | Importiere XML Daten für aktuelle Romlistgen
+
+EN | If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
+IT | Specifica il path dell'xml nel campo import_extras della configurazione dell'emulatore per generare la romlist
+ES | Indica la dirección del archivo XML en el apartado "import_extras" de la configuración del emulador para generar la romlist
+DE | Wenn ein RetroPie XML Pfad im Emulatorfeld "import_extras" angegeben ist, wird die Romliste anhand dieser Daten erstellt
+
+EN | Prefer genreid categories
+IT | Preferisci le categorie genreid
+ES | Preferencia del tipo de genreID 
+DE | Genreid Kategorien bevorzugen
+
+EN | If GenreID is specified in your games list, use that instead of usual categories
+IT | Se GenreID è specificato nella lista, verrà usato al posto delle categorie
+ES | Si GenreID está indicado en tu lista, usará esa en lugar de las categorias habituales
+DE | Wenn eine GenreID in der Spieleliste angegeben ist, wird diese statt der üblichen Kategorien verwendet
+
+EN | Import only available roms
+IT | Importa solo rom disponibili
+ES | Importar solo las roms disponibles
+DE | Importiere nur verfügbare ROMs
+
+EN | Import entrief from the games list only if the rom file is actually available
+IT | Importa i dati dalla lista xml solo se la rom è effettivamente disponibile
+ES | Importa los datos de la lista xml solo si la rom está realmente disponible
+DE | Importiere Daten aus der XML Liste nur wenn das ROM tatsächlich vorhanden ist
+
+EN | DISPLAYS MENU MODE
+IT | Modalità Displays Menu
+ES | Modo Display Menú
+BR | APARÊNCIA DO MENU DISPLAYS
+FR | MODE DISPLAYS MENU
+DE | Display Menü Mpdus
+
+EN | Configure how Arcadeflow will look when used as Displays Menu layout
+IT | Configura l'aspetto di Arcadeflow quando è usato come layout per Displays Menu
+ES | Configura el aspecto de Arcadeflow cuando se utiliza como Display Menú
+FR | Configurez le look d'Arcadeflow quand il est utilisé comme layout pour les Displays Menu
+DE | Konfiguriere wie Arcadeflow aussehen soll, wenn es als Display-Menü-Layout verwendet wird
+
+EN | Displays Rows in horizontal
+IT | Righe di Display in orizzontale
+ES | Filas del Display en horizontal
+BR | Linhas horizontais no Display
+FR | Lignes horizontales en Displays
+DE | Horizontale Anzeigezeilen
+
+EN | Number of rows to use in 'horizontal' Displays Menu mode
+IT | Numero di righe di miniature da mostrare in Displays Menu in modalità orizzontale
+ES | Número de filas de miniaturas que se mostrarán en el modo horizontal del Display Menu
+BR | Número de linhas de miniaturas exibidas no Menu Display na modalidade horizontal
+FR | Nombles de lignes de captures miniatures montree en mode horizontales dans le Displays Menu
+DE | Anzahl der zu verwendenden Zeilen im 'horizontalen' Display-Menü Modus
+
+EN | Displays Rows in vertical
+IT | Righe di Display in verticale
+ES | Filas del Display en vertical
+BR | Linhas verticais no Display
+FR | Lignes verticales en Displays
+DE | Vertikale Anzeigezeilen
+
+EN | Number of rows to use in 'vertical' Displays Menu mode
+IT | Numero di righe di miniature da mostrare in Displays Menu in modalità verticale
+ES | Número de filas de miniaturas que se mostrarán en el modo vertical del Display Menu
+BR | Número de linhas de miniaturas exibidas no Menu Display na modalidade vertical
+FR | Nombles de lignes de captures miniatures montree en mode verticales dans le Displays Menu
+DE | Anzahl der zu verwendenden Zeilen im 'vertikalen' Display-Menü Modus
+
+EN | Generate missing name art
+IT | Genera la grafica per i nomi
+ES | Generar imagen para el nombre del Display
+BR | Gerar arte para os nomes do Display
+FR | Generez un graphique pour les noms manquants des Displays
+DE | Generiere Bild für Displayname 
+
+EN | If no display title is present, the layout can generate it
+IT | Se non c'è la grafica per i nomi dei Display, il layout può crearla automaticamente
+ES | Si no hay imagen para el nombre del Display, el layout puede generarla automáticamente
+BR | Se arte para o nome do Display não estiver disponível, o layout pode gerar uma automaticamente
+FR | S'il n'y a pas de titre pour le Display, il vas etre generé.
+DE | Wenn keine Grafik für die Display-Namen vorhanden ist, kann das Layout diese automatisch erstellen.
+
+EN | Enable video thumbnails
+IT | Abilita miniature video
+ES | Activar video en miniatura
+DE | Aktiviere Video-Miniaturen
+
+EN | Enable video thumbnails for Displays Menu mode if it's enabled in normal layout pages
+IT | Abilita i video nelle miniature anche nella modalità Displays Menu se attivate nella modalità normale
+ES | Activa el video en miniatura para el Menu Display si ya está activado en las paginas del layout
+DE | Aktiviere Video Miniaturen für den Display-Menü Modus, wenn dies im normalen Modus aktiviert ist
+
+EN | DISPLAYS MENU PAGE
+IT | PAGINA DISPLAYS MENU
+ES | PÁGINA DISPLAYS MENÚ
+BR | TELA DO MENU DISPLAYS
+FR | PAGE DISPLAYS MENU
+DE | DISPLAY-MENÜ SEITE
+
+EN | Arcadeflow has its own Displays Menu page that can be configured here
+IT | Arcadeflow ha la sua pagina per la lista dei Display, qui le opzioni
+ES | Arcadeflow tiene su propio menú Display y puedes configurarlo aquí
+FR | Arcadeflow a sa propre page Display Menu qui peut être configuré ici.
+DE | Arcadeflow hat seine eigene Displays Menü Seite, die hier konfiguriert werden kann
+
+EN | Enable Arcadeflow Displays Menu page
+IT | Abilita la pagina per la lista display
+ES | Habilitar la página del display menú
+DE | Aktiviere Arcadeflow Displays Menü Seite
+
+EN | If you disable Arcadeflow menu page you can use other layouts as displays menu
+IT | Disabilita la pagina display di Arcadeflow per usare un altro layout come menu display
+ES | Deshabilita la pagina del display menú de Arcadeflow para usar otro layout como display menú
+DE | Wenn die Arcadeflow Menü Seite deaktiviert wird, kann ein anderes Layout als Display-Menü verwendet werden
+
+EN | Enable Fast Displays Change
+IT | Abilità cambio rapido dei display
+ES | Habilita el cambio rápido de display
+DE | Aktiviere schnellen Wechsel des Displays
+
+EN | Disable fast display change if you want to use other layouts for different displays
+IT | Disabilita il cambio rapido se non usi Arcadeflow per tutti i display
+ES | Desabilita el cambio rápido si no usas Arcadeflow para todos los display
+DE | Deaktiviere schnellen Display Wechsel wenn ein anderes Layout für andere Displays verwendet werden soll
+
+EN | Look and Feel
+IT | Aspetto
+ES | Aspecto
+DE | Look and Feel
+
+EN | Generate display logo
+IT | Genera i loghi per i Display
+ES | Generar imagen y logotipo para el nombre del Display
+BR | Gerar a arte para o nome e logotipo dos Displays
+FR | Generez des graphiques pour les noms et les logos des Displays
+DE | Generiere Display Logo
+
+EN | Generate displays name related artwork for displays list
+IT | Genera automaticamente la grafica relativa al nome del Display
+ES | Genera automáticamente la imagen asociado al nombre del Display
+BR | Gera automaticamente a a arte relacionada ao nome do Display
+FR | Generez automatiquement les graphiques du nom du Display
+DE | Generiere Grafiken die mit dem Namen des Displays verbunden sind
+
+EN | Sort displays menu
+IT | Ordina il menu displays
+ES | Ordenar el menu Display
+DE | Sortiere Displays Menü
+
+EN | Show displays in the menu in your favourite order
+IT | Mostra i display in un ordine a tua scelta
+ES | Muestra el display en el orden que le indiques
+DE | Zeige Displays im Menü in der gewählten Reihenfolge
+
+EN | No sort
+IT | Nessun ordinamento
+ES | Sin ordenar
+DE | Keine Sortierung
+
+EN | By display name
+IT | Per nome del display
+ES | Por nombre del display
+DE | Nach Display Name
+
+EN | By system year
+IT | Per anno del sistema
+ES | Por año del sistema
+DE | Nach Systemjahr
+
+EN | By system brand then name
+IT | Per marca e nome del sistema
+ES | Por marca y nombre del sistema
+DE | Nach Systemmarke, dann Name
+
+EN | By system brand then year
+IT | Per marca e anno del sistema
+ES | Por marca y año del sistema
+DE | Nach Systemmarke, dann Jahr
+
+EN | Show group separators
+IT | Mostra i separatori
+ES | Mostrar separados por grupo
+DE | Zeige Gruppen Trennzeichen
+
+EN | When sorting by brand show separators in the menu for each brand
+IT | Quando è ordinato per marca, mostra i separatori per ogni marca
+ES | Cuando ordenas por marca, muestra una separación entre marca
+DE | Zeigt bei Sortierung nach Marke die Trennzeichen für jede Marke an
+
+EN | Displays menu layout
+IT | Layout del menu Displays
+ES | Diseño del menú Displays
+BR | Layout do menu Displays
+FR | Agencement du Displays Menu
+DE | Displays Menü Layout
+
+EN | Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder
+IT | Seleziona lo stile da usare quando si attiva il menu Displays: una semplice lista o una lista con grafica dalla cartella menu-art
+ES | Elige el diseño del menú Display: lista o lista con imagen
+BR | Define o estilo utilizado quando se ativa o menu Displays, uma lista simples ou uma lista + arte
+FR | Précisez le style à utilisé dans le Displays Menu: Une liste simple, ou une liste avec le graphique système
+DE | Style für das Display Menu auswählen, einfache Liste oder Liste plus System Artwork aus dem menu-artwork Ordner
+
+EN | Artwork Source
+IT | Fonte delle immagini
+ES | Origen del artwork
+DE | Artwork Quelle
+
+EN | Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder
+IT | Scegli la fonte delle immagini dei sistemi: la libreria di Arcadeflow o quelle nella cartella menu-art
+ES | Elige si los artworks del display menu vienen de: la libreria de Arcadeflow o el directorio "menu-art" de Attract Mode
+DE | Auwählen welche Quelle für Menü Artwork genutzt werden soll: Arcadeflows eigene Bibliothek oder Attract Mode menu-art Ordner
+
+EN | Arcadeflow only
+IT | Solo Arcadeflow
+ES | Solo de Arcadeflow
+DE | Nur Arcadeflow
+
+EN | menu-art only
+IT | Solo menu-art
+ES | Solo del "menu-art"
+DE | Nur menu-art
+
+EN | Arcadeflow first
+IT | Priorità ad Arcadeflow
+ES | Prioridad para Arcadeflow
+DE | Arcadeflow zuerst
+
+EN | menu-art first
+IT | Priorità a menu-art
+ES | Prioridad para "menu-art"
+DE | menu-art zuerst
+
+EN | Enable category artwork
+IT | Attiva immagini categoria
+ES | Activar categoria del artwork
+DE | Aktiviere Kategorien Artwork
+
+EN | You can separately enable/disable artwork for categories like console, computer, pinball etc.
+IT | Puoi attivare o disattivare le immagini per le categorie quali console, computer, pinball ecc.
+ES | Puedes activar/desactivar el artwork por la categoria: consola, ordenador, pinball, etc.
+DE | Artwork für Kategorie wie Konsole, Computer, Pinball kann separat aktiviert/deaktiviert werden
+
+EN | Categorized Displays Menu
+IT | Menu Display per categorie
+ES | Menú Display por categorias
+DE | Kategorisiertes Displays Menü
+
+EN | Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections
+IT | Raggruppa i Display nel menu per categoria: Arcade, Computer, Handheld, Console, Pinball e Altro.
+ES | Agrupa el menú Display por categorías: Arcade, Ordenadores, Portatiles, Consolas y otras más.
+DE | Displays Menü wird nach System Kategorien gruppiert: Arcade, Computer, Handheld, Konsolen, Pinballs und Anderen für Kollektionen
+
+EN | Add Exit Arcadeflow to menu
+IT | Aggiunge Chiudi Arcadeflow al menu
+ES | Añadir al menú la opcion de salir de Arcadeflow
+DE | Füge 'Arcade verlassen' zum Menü hinzu
+
+EN | Add an entry to exit Arcadeflow from the displays menu page
+IT | Aggiunge una voce al menu per chiudere Arcadeflow
+ES | Añade al menú Display una opción para salir de Arcadeflow
+DE | Füge einen Menüpunkt zum Verlassen von Arcadeflow zum Displays Menü hinzu
+
+EN | Behavior
+IT | Comportamento
+ES | Comportamiento
+DE | Verhalten
+
+EN | Open the Displays Menu at startup
+IT | Apri il Menu Display all'avvio
+ES | Abrir el menú Display al iniciar
+DE | Öffne das Displays Menü beim Start
+
+EN | Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode
+IT | Mostra la pagina del Menu Display all'apertura di Arcadeflow, anzichè utilizzare l'opzione di Attract Mode
+ES | Muestra el menú Display al iniciar Arcadeflow, esta opción funciona mejor que la misma opción del menú General de Attract Mode
+DE | Zeige Display Menü direkt nach dem Start von Arcadeflow, dies funktioniert besser als in den Allgemeinen Opotionen von Attract Mode
+
+EN | Exit AF when leaving Menu
+IT | Chiudi AF all'uscita dal Menu
+ES | Salir de ArcadeFlow al cerrar el menú
+DE | Verlasse AF beim verlassen des Menüs
+
+EN | The esc button from Displays Menu triggers the exit from Arcadeflow
+IT | Abbandonare il menu Display chiude Arcadeflow
+ES | Pulsando ESC desde el menú Display, sales de Arcadeflow
+DE | Die ESC Taste im Display Menü triggert das verlassen von Arcadeflow
+
+EN | Enter Menu when leaving display
+IT | Aprire il menu uscendo dal display
+ES | Entras al menú cuando sales de la pantalla
+DE | Öffne Menü wenn Display verlassen wird
+
+EN | The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
+IT | Premendo il tasto ESC da Arcadeflow si attiva il menu Display invece di uscire da Arcadeflow
+ES | Pulsando ESC desde Arcadeflow se activa el menú Display en lugar de salir de Arcadeflow
+DE | Die ESC Taste in Arcadeflow öffnet das Display Menü statt Arcadeflow zu verlassen
+
+EN | PERFORMANCE & FX
+IT | PERFORMANCE ED EFFETTI
+ES | RENDIMIENTO Y EFECTOS VISUALES
+BR | PERFORMANCE E EFEITOS
+FR | PERFORMANCE ET EFFETS
+DE | LEISTUNG & EFFEKTE
+
+EN | Effects
+IT | Effetti
+ES | Efectos
+DE | Effekte
+
+EN | Turn on or off special effects that might impact on Arcadeflow performance
+IT | Attiva o disattiva effetti speciali che possono influire sulle prestazioni di Arcadeflow
+ES | Activa o desactiva los efectos especiales que pueden afectar al rendimiento de Arcadeflow
+FR | Active ou désactive les effets speciaux qui pourrais impacté la performance de Arcadeflow
+DE | An- und Ausschalten von Spezialeffekten die die Leistung von Arcadeflow beeinflussen können
+
+EN | Adjust performance
+IT | Adatta prestazioni
+ES | Ajustar el rendimiento
+DE | Leistung anspassen
+
+EN | Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
+IT | Adatta la velocità degli effetti alle performance del sistema. Disabilitarlo per maggiore fluidità
+ES | Permite adaptar la velocidad según el rendimiento del sistema. Está activo para un scroll rápido, desactivalo para un scroll suave pero más lento
+DE | Versucht sich an die Systemperformance anzupassen. Aktivieren für schnelleres scrollen, deaktivieren für weicheres aber langsameres scrollen
+
+EN | Low Spec mode
+IT | Modalità a basse prestazioni
+ES | Modo Bajo Rendimiento
+BR | Modo de baixa capacidade
+FR | Mode pour basse specifications
+DE | Modus für schwächere Systeme
+
+EN | Reduce most visual effects to boost speed on lower spec systems
+IT | Riduce la maggior parte degli effetti per migliorare le prestazioni su sitemi poco potenti
+ES | Reduce la mayoría de efectos visuales para mejorar el rendimiento en sistemas poco potentes
+BR | Reduz a maior parte dos efeitos visuais para aumentar a velocidade em sistemas de baixa capacidade
+FR | Reduis la majorité des effets visuels pour augmenté la vitesse sur les système à basse specifications
+DE | Reduziert die meisten visuellen Effekte für höhere Geschwindigkeit auf schwachen Systemen
+
+EN | Resolution W x H
+IT | Risoluzione W x H
+ES | Resolución Ancho x Alto
+BR | Resolução L x A
+FR | Resolution L x H
+DE | Auflösung B x H
+
+EN | Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution
+IT | Definisce una risoluzione personalizzata per il layout indipendente dalla risoluzione dello schermo. Il formato è LARGHEZZAxALTEZZA, lasciare vuoto per la risoluzione standard
+ES | Define una resolución personalizada para el layout distinta a la resolución de pantalla. El formato es Ancho x Alto, si está vacío usa la resolución por defecto.
+BR | Define uma resolução personalizada para seu layout, independente da resolução da tela. O formato é LARGURAxALTURA, deixe em branco para manter a resolução padrão
+FR | Precisez une résolution personnalizé pour votre agencement, indépendante de la résolution de votre écran. Le Formal est LONGEURxHAUTER. Laissez vide pour la résolution par défaut
+DE | Festlegen einer eigenen Auflösung für das Layout, unabhängig von der Bildschirmauflösung. Format Breite X Höhe, leer lassen für Standardauflösung
+
+EN | Raspberry Pi fix
+IT | Fix per Raspberry Pi
+ES | Fix para Raspberry Pi
+DE | Raspberry Pi Fix
+
+EN | This applies to systems that gives weird results when getting back from a game, reloading the layout as needed
+IT | Fix per sistemi che non funzionano bene quando si torna al layout da un gioco, ricarica il layout se necessario
+ES | Fix para el sistema cuando un juego no funciona bien, recarga el layout si es necesario
+DE | Fix für Systeme mit Problemen nach Rückkehr aus einem Spiel, neuladen des Layouts wenn notwendig
+
+EN | Smooth shadow
+IT | Ombre morbide
+ES | Sombra suave
+BR | Sombreamento suaves
+FR | Ombres dousses
+DE | Weiche Schatten
+
+EN | Enable smooth shadow under game title and data in the GUI
+IT | Abilita le ombre morbide sotto il titolo del gioco e i dati dell'interfaccia
+ES | Activa una sombra suave bajo el título del juego y los datos en la interfaz
+BR | Ativa um sombreamento suave abaixo do título do jogo e dos dados da interface
+FR | Active des ombres dousses dessous le titre du jeu et autre informations dans l'interface.
+DE | Aktiviere weiche Schatten unter Spiel Titel und Daten im GUI
+
+EN | Frosted glass
+IT | Vetro opaco
+ES | Cristal mate
+BR | Vidro fosco
+FR | Vitre givrée
+DE | Mattiertes Glass
+
+EN | Enable a frosted glass effect for overlay menus
+IT | Abilita l'effetto vetro opaco per i menu
+ES | Activa un efecto cristal mate para el menú 
+BR | Ativa um efeito de vidro fosco no menu
+FR | Active un effet de vitre givrée sur le menu
+DE | Aktiviere einen mattiertes Glas Effekt für Overlay Menüs
+
+EN | Glow effect
+IT | Effetto alone
+ES | Efecto brillo
+BR | Efeito de brilho
+FR | Effet de lueur
+DE | Gloweffekt
+
+EN | Add a glowing halo around the selected game thumbnail
+IT | Aggiugne un alone luminoso intorno alla miniatura del gioco selezionato
+ES | Añade un resplandor alrededor de la miniatura del juego seleccionado
+BR | Adiciona um brilho luminoso em torno da miniatura do jogo selecionado
+FR | Ajoute un effet de lueur autour de la capture miniature du jeu sélectioné.
+DE | Fügt einen leuchtenden Schein um das ausgewählte Vorschaubild hinzu
+
+EN | Logo smooth shadow
+IT | Ombre morbide nel logo
+ES | Logo con sombra suave
+BR | Sombreamento suave do logotipo
+FR | Ombre dousse sur logo
+DE | Weicher Schatten Logo
+
+EN | Enable smooth shadows under game logo
+IT | Abilita le ombre morbide sotto il logo del gioco
+ES | Activa una sombra suave bajo el logo del juego
+BR | Ativa um sombreamento suave abaixo do logotipo do jogo
+FR | Active une ombre dousse sous le logo du jeu
+DE | Aktiviert weiche Schatten unter dem Spiellogo
+
+EN | Thumb gradient
+IT | Sfumatura delle miniature
+ES | Difuminado de la miniatura
+BR | Focalização de miniatura
+FR | Estompage de la capture miniature
+DE | Schattierung von Vorschaubildern
+
+EN | Blurs the artwork behind the game logo so it's more readable
+IT | Sfoca la parte superiore della grafica sotto il logo per renderlo più leggibile
+ES | Difumina la imagen detrás del logo del juego para hacerlo más visible
+BR | Embaça a arte localizada por trás do logotipo do jogo para torná-lo mais legível
+FR | Estompe l'image derriere le logo du jeu pour qu'il soit plus facilement lisible
+DE | Den oberen Teil der Grafik unterhalb des Logos unscharf machen, um sie besser lesbar zu machen
+
+EN | THUMBNAILS
+IT | MINIATURE
+ES | MINIATURA
+BR | MINIATURAS
+FR | CAPTURES MINIATURES
+DE | VORSCHAUBILDER
+
+EN | Snapshot Options
+IT | Opzioni schermata
+ES | Opciones Snapshot
+DE | Snapshot Optionen
+
+EN | Box Art Options
+IT | Opzioni box art
+ES | Opciones Box Art
+DE | Box Art Optionen
+
+EN | Video Snaps
+IT | Snap video
+ES | Video Snaps
+DE | Video Snaps
+
+EN | Decorations
+IT | Decorazioni
+ES | Decoración
+DE | Dekorationen
+
+EN | Chose the aspect ratio of thumbnails, video thumbnails and decorations
+IT | Personalizza l'aspetto delle miniature, rapporto di forma, miniature video, decorazioni ecc
+ES | Personaliza la miniatura: relación de aspecto, miniatura modo video y decoración
+FR | Choisissez l'aspect ratio des captures miniatures, video miniatures, et décorations
+DE | Auswählen des Seitenverhältnisses von Vorschaubildern, Video-Vorschauen und Dekorationen
+
+EN | Game not available indicator
+IT | Indicatore di rom non disponibile
+ES | Indicador para juego no disponible
+DE | Indikator für Spiel nicht verfügbar
+
+EN | Games that are not available will be marked with a red cross overlay
+IT | I giochi senza rom disponibile verranno mostrati con una croce rossa
+ES | Los juegos no disponibles serán marcados con una cruz roja
+DE | Spiele die nicht verfügbar sind werden mit einem roten Kreuz Overlay markiert
+
+EN | Aspect ratio
+IT | Rapporto di forma
+ES | Relación de aspecto
+BR | Proporção da imagem
+FR | Aspect ratio
+DE | Seitenverhältnis
+
+EN | Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation
+IT | Seleziona se le miniature devono essere quadrate o adattarsi automaticamente all'orientamento del gioco
+ES | Selecciona si las miniaturas deben ser cuadradas o adaptarse automáticamente a la orientación del juego
+BR | Defina se as miniaturas deverão ser quadradas ou se adaptar automaticamente de acordo com a orientação do jogo
+FR | Choisissez si les captures miniatures devrais etre coupées, carrées, ou adaptives, tout dépendemment de l'orientation du jeu
+DE | Auswählen ob Snaps quadratisch, beschnitten oder an die Ausrichtung des Spiel angepasst werden sollen
+
+EN | Morph snap ratio
+IT | Trasforma le miniature
+ES | Transformacion de la miniatura
+DE | Vorschaubilder transformieren
+
+EN | Chose if you want the box to morph into the actual game video or if it must be cropped
+IT | Scegli se vuoi che la box art venga trasformata nel video, o che il video venga tagliato
+DE | Auswählen ob das Box Art in das Video eingefügt oder ausgeschnitten werden soll
+
+EN | Zoom thumbnails
+IT | Zoom miniature
+
+EN | Chose if you want the selected thumbnail to zoom to a larger size
+IT | Personalizza lo zoom delle miniature a una dimensione maggiore
+
+EN | Standard
+IT | Standard
+
+EN | Reduced
+IT | Ridotto
+
+EN | None
+IT | Nessuno
+
+EN | Morph video
+IT | Trasforma il video
+ES | Transformación del video
+DE | Video transformieren
+
+EN | Crop video
+IT | Taglia il video
+ES | Encajar video
+DE | Video beschneiden
+
+EN | Snapshot artwork source
+IT | Sorgente delle miniature
+ES | Origen de la miniatura
+DE | Quelle Snapshot Artwork
+
+EN | Chose if you want the snapshot artwork from gameplay or title screen
+IT | Scegli se le miniature devono essere schermate del gioco o i titoli
+ES | Elige si quieres una captura del juego o la pantalla de título
+DE | Auswählen ob das Vorschaubild vom Spiel Screenshot oder Titelbildschirm sein soll 
+
+EN | Gameplay
+IT | Schermata del gioco
+ES | Gameplay
+DE | Gameplay
+
+EN | Title screen
+IT | Titolo del gioco
+ES | Título del juego
+DE | Titelbildschirm
+
+EN | Show game title
+IT | Mostra il titolo
+ES | Mostrar el título del juego
+DE | Zeige Spiel Titel
+
+EN | Show the title of the game over the thumbnail
+IT | Mostra il titolo del gioco sulla miniatura
+ES | Mostrar el título del juego sobre la miniatura
+DE | Zeige den Spieltitel über dem Vorschaubild
+
+EN | Video thumbs
+IT | Video miniature
+ES | Video miniatura
+BR | Miniaturas de vídeo
+FR | Vidéos miniatures
+DE | Video Vorschau
+
+EN | Enable video overlay on snapshot thumbnails
+IT | Abilita la sovrapposizione dei video alle miniature statiche
+ES | Activa el video en lugar de la miniatura estática 
+BR | Ativa a sobreposição de vídeo sobre as miniaturas estáticas
+FR | Activez les videos miniatures dessus les captures miniatures.
+DE | Aktiviere Video Overlay auf snaphot Vorschaubild
+
+EN | Fade title on video
+IT | Nascondi il titolo sui video
+ES | Ocultar el título en el video
+DE | Titel bei Video ausblenden
+
+EN | Fades game title and decoration when the video is playing
+IT | Durante la riproduzione dei video nascondi il titolo del gioco
+ES | Durante la reproducción del video esconde el título del juego
+DE | Während der Videowiedergabe den Spieltitel ausblenden
+
+EN | Video delay multiplier
+IT | Moltiplicatore ritardo video
+ES | Multiplicador para el retraso del video
+BR | Multiplicador do retardo do vídeo
+FR | Délais multiplicateur du video
+DE | Multiplikator Videoverzögerung
+
+EN | Increase video load delay
+IT | Aumenta il ritardo del caricamento dei video
+ES | Aumenta el retraso al cargar el video
+BR | Aumenta o retardo no carregamento do vídeo
+FR | Augmente le délais de chargement des vidéos
+DE | Erhöhe Video-Ladeverzögerung 
+
+EN | Generate missing title art
+IT | Grafica per titoli mancanti
+ES | Generar imagen para el título 
+BR | Gerar arte do título ausente
+FR | Générez les graphiques manquant pour les titres
+DE | Erstelle Grafiken für fehlende Titel
+
+EN | If no game title is present, the layout can generate it
+IT | Se non c'è la grafica per i titoli dei giochi, il layout può generarla automaticamente
+ES | Si no hay imagen para el título del juego, el layout puede generarla automáticamente
+BR | Se não existir nenhuma arte de título para o jogo, o layout gera uma automaticamente
+FR | S'il ny a pas de logo pour le jeu, un peu être générer automatiquement
+DE | Wenn keine Grafik für den Spieltitel vorhanden ist, kann dieser vom layout generiert werden
+
+EN | New game indicator
+IT | Indicatore di gioco nuovo
+ES | Indicador de Juego Nuevo
+BR | Indicador de novo jogo
+FR | Indicateur de nouveau jeu
+DE | Indikator für neue Spiele
+
+EN | Games not played are marked with a glyph
+IT | I giochi che non sono mai stati lanciati sono machiati con un angolino bianco
+ES | Los juegos que no se han jugado son marcados con una esquina blanca
+BR | Jogos que nunca foram iniciados recebem uma marca branca
+FR | Les jeux injoué sont marqué avec un symbol
+DE | Spiele die noch nicht gestartet wurden werden mit einer weißen Ecke markiert
+
+EN | Show tag indicator
+IT | Mostra indicatore dei tag
+ES | Mostrar etiqueta identificativa
+BR | Mostrar indicador de rótulo
+FR | Montrez les tags
+DE | Indikator Tag-Anzeige
+
+EN | Shows a tag attached to thumbnails that contains any tag
+IT | Mostra un'icona a forma di tag sulle miniature dei giochi che contengono tag
+ES | Muestra una etiqueta en la miniatura del juego para indicar que tiene una etiqueta
+BR | Exibe um ícone de rótulo nas miniaturas de jogos que foram rotulados
+FR | Montrez les tags sur les captures miniatures si elles en contiennent
+DE | Zeigt einen Tag am Vorschaubild das alle Tags beinhaltet
+
+EN | Custom tag name
+IT | Nome del tag personalizzato
+ES | Personalizar nombre de la etiqueta
+BR | Nome de rótulo personalizado
+FR | Nom de tags personnalisé
+DE | Eigener Tag Name
+
+EN | You can see a tag glyph overlayed to the thumbs, chose the tag name to use
+IT | Puoi scegliere di applicare la grafica del tag solo ai giochi che contengono un tag ben preciso
+ES | Puedes ver la etiqueta sobre la imagen, elige el nombre de la etiqueta que quieras
+FR | Vous pouvez voir le symbole du tag superposée sur la capture miniature. Choisissez le tag à utilisé.
+DE | Tag-Grafiken nur bei Spielen mit einem bestimmten Tag anzeigen
+
+EN | Game Boy color correction
+IT | Correzione colori Game Boy
+ES | Corrección de color en Game Boy
+BR | Ajuste de cor para o Game Boy
+FR | Correction de couleur pour le Game Boy
+DE | GameBoy Farbkorrektur
+
+EN | Apply a colorized palette to Game Boy games based on the system name or forced to your preference
+IT | Applica un effetto di colorizzazione alle miniature del Game Boy in bianco e nero
+ES | Aplica una paleta de color a las miniaturas de los juegos de Game Boy
+FR | Appliquez une palette coloriée pour les jeux Game Boy
+DE | Anwenden eines Färbeeffekts auf schwarz/weiße GameBoy Vorschaubilder
+
+EN | MSX crt color correction
+IT | Correzione colore MSX
+
+EN | Apply a palette correction to MSX media that was captured with MSX2 palette
+IT | Applica una correzione colore alle immagini MSX che usano la palette MSX2
+
+EN | BACKGROUND
+IT | SFONDO
+ES | FONDO DE PANTALLA
+BR | PLANO DE FUNDO
+FR | FOND D'ÉCRAN
+DE | HINTERGRUND
+
+EN | History BG
+IT | Sfondo History
+ES | Fondo de la pantalla de Historia
+DE | History Hintergrund
+
+EN | BG Snaps
+IT | Sfondo schermate
+ES | Fondo de la captura de pantalla
+DE | Hintergrund Snaps
+
+EN | Per Display
+IT | Per Display
+ES | Por display
+DE | Pro Display
+
+EN | Chose the layout background theme in main page and in History page, or select custom backgrounds
+IT | Scegli il tema del layout per il colore di sfondo, o personalizza lo sfondo sia per la pagina principale che per la History
+ES | Elige un tema para el fondo del layout, o personaliza el fondo tanto en la página principal como en la del Historial
+FR | Choisissez le fond d'écran pour la page principale et la page d'histoire, ou selectionnez un fond d'écran personsalisé
+DE | Auswählen des Layout Hintergrunds der Hauptseite und der History, oder benutzerdefinierte Hintergründe
+
+EN | Overlay color
+IT | Effetto in sovrapposizione
+ES | Color superpuesto
+BR | Efeito de sobreposição de camada
+FR | Couleur superposée
+DE | Overlay Farbe
+
+EN | Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered
+IT | Seleziona la luminosità del layout: Basic è leggermente ridotta, Dark ha un effetto più scuro, Light usa un fondo chiaro con testo scuro, Pop mantiene inalterati i colori dello sfondo
+ES | Selecciona la iluminación del layout: Simple es ligeramente opaco, Oscuro para oscurecer, Claro para aumentar la iluminación del fondo y resaltar el texto oscuro, Intenso para dejar la iluminación original
+BR | Define o brilho do layout: Basic é ligeiramente opaco, Dark tem um efeito mais escurecido, Light usa um fundo claro com texto escuro, Pop mantém as cores de fundo inalteradas
+FR | Choisissez la luminosité du theme. Basic est semi sombre, Dark est Sombre, Light est du text foncée sur fond blanc, Pop laisse les couleurs intouchées
+DE | Auswählen der Overlay Helligkeit, Basic ist leicht gedämpft, Dark ist dunkler, Light hat ein weißes Overlay und dunklen Text, Pop behält die Farben unverändert bei
+
+EN | Custom main BG image
+IT | Sfondo principale personalizzato
+ES | Personalizar la imagen de fondo de pantalla
+BR | Plano de fundo personalizado
+FR | Fond d'écran personallisé principal.
+DE | Benutzerdefiniertes Haupt-Hintergrundbild
+
+EN | Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)
+IT | Inserisce un'immagine personalizzata come sfondo (usa grey.png per uno sfondo grigio, vignette.png per un effetto vignettatura)
+ES | Inserta una imagen personalizada como fondo de pantalla (usa grey.png para un fondo gris y vignette.png para un efecto viñeta)
+BR | Inserir uma imagem personalizada como plano de fundo (use grey.png para um plano de fundo cinza, vinheta.png para obter um efeito de vinheta)
+FR | Insérez une image personnalisé comme fond d'écran (utilisez grey.png pour un fond vide, vignette.png pour une vignette superposée)
+DE | Einfügen eines benutzerdefinierten Bildes als Hintergrund (grey.png für einen grauen Hintergrund, vignette.png für einen Vignetteneffekt)
+
+EN | Custom overlay
+IT | Sovraimpressione
+ES | Imagen superpuesta
+DE | Benutzerdefiniertes Overlay
+
+EN | Insert custom PNG to be overlayed over everything
+IT | Inserisce una PNG come overlay sul tema
+ES | Inserta un PNG sobre el Tema
+DE | Einfügen eines PNGs als Overlay auf dem Thema
+
+EN | Format of main BG image
+IT | Formato dello sfondo principale
+ES | Formato del fondo de pantalla principal
+DE | Format Haupt-Hintergrundbild
+
+EN | Format of history BG image
+IT | Formato dello sfondo della history
+ES | Formato del fondo de pantalla de Histopria
+DE | Format des History Hintergrundbilds
+
+EN | Select if the custom background must be cropped to fill the screen or stretched
+IT | Seleziona se il background deve essere tagliato per riempire lo schermo o esteso
+ES | Selecciona si el fondo de pantalla debe recortarse o estirarse para llenar la pantalla
+DE | Auswählen ob der Hintergrund abgeschnitten, der Bildschirm ausgefüllt oder ob er erweitert werden soll
+
+EN | Crop
+IT | Tagliato
+ES | Cortar
+DE | Zuschneiden
+
+EN | Stretch
+IT | Esteso
+ES | Estirar
+DE | Strecken
+
+EN | Custom history BG image
+IT | Sfondo della History personalizzato
+ES | Personalizar imagen de fondo del Historial
+BR | Plano de fundo do History personalizado
+FR | Fond d'écran personallisé pour page d'histoire.
+DE | Benutzerdefiniertes History Hintergrundbild
+
+EN | Insert custom background art path for history page (leave blank if the same as main background)
+IT | Inserisce un'immagine personalizzata come sfondo per la pagina History (lasciare vuoto per usare lo stesso sfondo del principale)
+ES | Inserta una imagen personalizada como fondo para la pantalla del Historial (si está en blanco usa el fondo principal)
+BR | Insira uma imagem personalizada como plano de fundo na página History (deixe em branco para usar o mesmo plano de fundo que o principal)
+FR | Insérez une image personnalisé comme fond d'écran (laissez vide pour utiliser le principal)
+DE | Benutzerdefiniertes Bild als Hintergrund für die Historyseite einfügen (leer lassen, um den selben Hintergrund wie den Haupthintergrund zu verwenden)
+
+EN | Per Display background
+IT | Sfondo per ogni display
+ES | Fondo de pantalla por sistema
+DE | Hintergrund pro Display
+
+EN | You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display
+IT | Puoi definire un background diverso per ogni display, metti gli sfondi nelle cartelle menu-art/bgmain e menu-art/bghistory
+ES | Puedes tener distinto fondo de pantalla para cada sistema, debes poner tus imagenes en las carpetas menu-art/bgmain y menu-art/bghistory con el nombre del sistema
+DE | Für jedes Display kann ein anderer Hintergrund definiert werden, Hintergründe in den Ordnern menu-art/bgmain und menu-art/bgistory ablegen
+
+EN | Background snap
+IT | Schermata sullo sfondo
+ES | Captura como fondo
+BR | Miniatura no plano de fundo
+FR | Fond de capture miniature
+DE | Hintergrund Snaps
+
+EN | Add a faded game snapshot to the background
+IT | Aggiunge una schermata del gioco come sfondo dello schermo
+ES | Añade una imagen del juego como fondo de pantalla
+BR | Adiciona uma captura de tela embaçada como plano de fundo
+FR | Ajoute une capture miniature qui s'estompe dans le fond d'écran
+DE | Fügt einen Screenshot des Spiels als Bildschirmhintergrund hinzu
+
+EN | Animate BG snap
+IT | Anima la miniatura sullo sfondo
+ES | Animar la imagen del fondo
+BR | Plano de fundo animado
+FR | Animez le fond d'écran
+DE | Snap Hintergrund animieren
+
+EN | Animate video on background
+IT | Inserisce un video animato come sfondo
+ES | Añade un video como fondo de pantalla
+BR | Insere um animação de vídeo como plano de fundo
+FR | Insérez un video comme fond d'écran
+DE | Animiere Video auf Hintergrund
+
+EN | Delay BG animation
+IT | Ritarda l'animazione di sfondo
+ES | Retrasar la animación de fondo
+BR | Retarda a animação do plano de função
+FR | Délais d'animation pour fond d'écran
+DE | Hintergrundanimation verzögern
+
+EN | Don't load immediately the background video animation
+IT | Non caricare immediatamente l'animazione dello sfondo
+ES | No carga inmediatamente el video del fondo de pantalla
+BR | Não carrega imediatamente as animações do plano de fundo
+FR | Délais de chargement pour les vidéos de fond d'écran
+DE | Hintergrundvideoanimation nicht sofort laden
+
+EN | LOGO
+IT | LOGO
+ES | LOGO
+BR | LOGOTIPO
+FR | LOGO
+DE | LOGO
+
+EN | Customize the splash logo at the start of Arcadeflow
+IT | Personalizza il logo che viene mostrato all'avvio di Arcadeflow
+ES | Personaliza el logo que aparece al inicio de Arcadeflow
+FR | Personnalizé le logo montré au chargement d'Arcadeflow
+DE | Splash Logo beim Start von Arcadeflow anpassen
+
+EN | Enable splash logo
+IT | Abilita il logo iniziale
+ES | Activar el logo inicial
+BR | Ativa o logotipo ao iniciar 
+FR | Activez le logo de chargement
+DE | Aktiviere Splash Logo
+
+EN | Enable or disable the AF start logo
+IT | Abilita o disabilita il logo AF al lancio del layout
+ES | Activa o desactiva el logo AF al iniciar el layout
+BR | Ativa ou desativa o logotipo AF ao iniciar
+FR | Activez ou désactivez le logo au chargement de ArcadeFlow
+DE | Aktiviere/Deaktiviere das AF logo beim Start
+
+EN | Custom splash logo
+IT | Logo personalizzato
+ES | Logo personalizado
+BR | Logotipo personalizado
+FR | Logo personnalisé
+DE | Benutzerdefiniertes Splash Logo
+
+EN | Insert the path to a custom AF splash logo (or keep blank for default logo)
+IT | Inserire il percorso di un'immagine per inserire un logo personalizzato (lasciare vuoto per il logo standard)
+ES | Indica la dirección de la imagen para el un logo personalizado (dejar en blanco para el logo por defecto)
+BR | Defina o local onde está salvo o logotipo de inicialização personalizado (ou deixe em branco para usar o logo padrão)
+FR | Definissez le chemin vers un logo personnalisé (ou laissez vide pour le défaut)
+DE | Pfad zu benutzerdefiniertem AF Splash Logo angeben (oder leer für Standard Logo)
+
+EN | ATTRACT MODE
+IT | ATTRACT MODE
+ES | MODO ATTRACT
+BR | MODO VINHETA
+FR | MODE SEDUCTION
+DE | ATTRACT MODE
+
+EN | Look & Feel
+IT | Aspetto
+ES | Aspecto
+DE | Erscheinungsbild
+
+EN | Sound
+IT | Suono
+ES | Sonido
+DE | Sound
+
+EN | Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here
+IT | Arcadeflow dispone di un proprio salvaschermo attract mode, qui puoi configurare tutte le opzioni
+ES | Arcadeflow dispone de su propio salvapantallas que se inicia cuando no hay actividad. Configura las opciones aquí
+FR | Arcadeflow est muni de son prope mode séduction qui s'active après un moment d'inactivité. Configurez le ici.
+DE | Arcadeflow hat seinen eigenen Attract Mode Bildschirmschoner der nach Inaktivität startet. Hier können alle Optionen konfiguriert werden
+
+EN | Enable attract mode
+IT | Abilita la modalità ATTRACT
+ES | Activar el modo ATTRACT
+BR | Ativa o modo VINHETA
+FR | Activez le mode SEDUCTION
+DE | Aktiviere Attract Mode
+
+EN | Enable or disable attract mode at layout startup
+IT | Abilita o disabilita la modalità ATTRACT al lancio del layout
+ES | Activa o desactiva el modo ATTRACT al inicio del layout
+BR | Ativa ou desativa o modo VINHETA ao iniciar o layout
+FR | Activez ou désactivez le mode SEDUCTION au déclanchement 
+DE | Aktiviere/Deaktiviere Attract Mode beim Layout Start
+
+EN | Background music
+IT | Musica di fondo
+ES | Música de fondo
+BR | Música de fundo
+FR | Musique de fond
+DE | Hintergrund Musik
+
+EN | Path to a music file to play in background
+IT | Percorso per un file musicale da riprodurre durante la modalità ATTRACT
+ES | Indica la dirección del archivo de audio que debe sonar en el modo ATTRACT
+BR | Local do aquivo da música de fundo que será tocado durante o modo vinheta (ATTRACT)
+FR | Chemin vers un fichier de musique de fond durant le mode SEDUCTION
+DE | Pfad zu Musikdatei für Hintergrundmusik
+
+EN | Enable game sound
+IT | Abilita i suoni del gioco
+ES | Activar sonido del juego
+BR | Ativar som dos jogos
+FR | Activez le som des jeux
+DE | Aktiviere Spielsound
+
+EN | Enable game sounds during attract mode
+IT | Abilita i suoni del gioco durante la modalità ATTRACT
+ES | Activa el sonido del juego durante el modo ATTRACT
+BR | Habilita os sons dos jogos durante o modo vinheta (ATTRACT)
+FR | Activez le som des jeux durant le mode SEDUCTION
+DE | Aktiviere Spielsound während Attract Mode
+
+EN | Attract mode timer (s)
+IT | Timer per la modalità ATTRACT (sec)
+ES | Tiempo para el modo ATTRACT (en segundos)
+BE | Tempo para o modo vinheta (seg)
+FR | Temps pour mode SEDUCTION (sec)
+DE | Attract Mode Timer (s)
+
+EN | Inactivity timer before attract mode is enabled
+IT | Definisce quanto tempo deve passare prima che la modalità ATTRACT venga attivata
+ES | Tiempo de inactividad para activar el modo ATTRACT
+BR | Define o intervalo de tempo que de passar antes que o modo vinheta (ATTRACT) seja ativado
+FR | Définie le temps d'inactivité nécessaire avant que le mode SEDUCTION ne se déclanche
+DE | Inaktivitäts Timer bis Attract Mode aktiviert wird
+
+EN | Game change time (s)
+IT | Intervallo di cambio del gioco (sec)
+ES | Intervalo entre juegos (en segundos)
+BR | Tempo para trocar de jogo (seg)
+FR | Intervalle entre les jeux (sec)
+DE | Zeit bis Spielwechsel (s)
+
+EN | Time interval between each game change
+IT | Tempo da attendere prima di cambiare gioco
+ES | Intervalo de tiempo entre juego y juego
+BR | Intervalo de tempo entre a troca de jogos
+FR | Intervale de temps entre chaque jeu
+DE | Zeitintervall zwischen jedem Spiel
+
+EN | Attract logo
+IT | Logo attract
+ES | Logo Attract
+DE | Attract Logo
+
+EN | Show Arcadeflow logo during attract mode
+IT | Mostra il logo di Arcadeflow durante l'attract mode
+ES | Muestra el logo de Arcadeflow durante el Attract Mode
+DE | Zeige ArcadeFlow Logo während Attract Mode
+
+EN | Attract message
+IT | Messaggio
+ES | Mensaje
+BR | Mensagem
+FR | Message de SEDUCTION
+DE | Attract Nachricht
+
+EN | Text to show during attract mode
+IT | Il testo da mostrare durante la modalità ATTRACT
+ES | Texto que se muestra durante el modo ATTRACT
+BR | Texto a ser exibido durante o modo vinhenta (ATTRACT)
+FR | Texte qui apparait durant le mode SEDUCTION
+DE | Text der während des Attract Mode angezeigt werden soll
+
+EN | SEARCH & FILTERS
+IT | RICERCA E FILTRI
+ES | BUSCAR
+BR | PESQUISAR
+FR | RECHERCHE
+DE | SUCHE & FILTER
+
+EN | Configure the search page and multifilter options
+IT | Configura la pagina di ricerca e il multifiltro
+ES | Configura la página de búsqueda
+FR | Configurez la page de recherche
+DE | Konfigurieren der Suchseite und Multifilter Optionen
+
+EN | Immediate search
+IT | Ricerca immediata
+ES | Búsqueda inmediata
+BR | Pesquisa imediata
+FR | Recherche instantanée
+DE | Sofortsuche
+
+EN | Live update results while searching
+IT | Aggiorna in tempo reale i risultati della ricerca
+ES | Actualiza los resultados de la búsqueda en tiempo real
+BR | Resultados em tempo real durante a pesquisa
+FR | Resultats instantanée pendant la recherche
+DE | Sofortergebnisse während der Suche
+
+EN | Keyboard layout
+IT | Layout tastiera
+ES | Tipo de teclado
+DE | Tastaturlayout
+
+EN | Select the keyboard layout for on-screen keyboard
+IT | Seleziona il layout di tastiera da utilizzare
+ES | Selecciona el tipo de teclado que quieres ver en pantalla
+DE | Auswählen des Tastaturlayouts der On-Screen Tastatur
+
+EN | Save Multifilter sessions
+IT | Salva le sessioni del Multifiltro
+ES | Salvar la sesión del Multifiltro
+DE | Speichere Multifilter Sitzungen
+
+EN | Save the Multifilter of each display when exiting Arcadeflow or changing list
+IT | Salva i dati del Multifiltro per ogni display quando esci da Arcadeflow o cambi lista
+ES | Salva los datos del Multifiltro por sistema cuando sales de Arcadeflow o cambias de lista
+DE | Speichere den Multifilter jedes Displays beim verlassen von ArcadeFlow oder Listenwechsel
+
+EN | Customize Multifilter Menu
+IT | Personalizza il menu Multifiltro
+ES | Personalizar el menú Multifiltro
+DE | Multifilter Menu anpassen
+
+EN | Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item
+IT | Riordina e personalizza il menu Multifiltro: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare 
+ES | Selecciona y ordena el menú Multifiltro: Derecha/Izquierda  para mover el elemento del menú, Select para activarlo/desactivarlo 
+DE | Sortieren und auswählen von Multifilter Menüeinträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren
+
+EN | Reset Multifilter Menu
+IT | Ripristina il Menu multifiltro
+ES | Reseterar el menu Multifiltro 
+DE | Multifilter Menü zurücksetzen
+
+EN | Reset sorting and selection of Multifilter Menu entries
+IT | Ripristina l'ordine e le selezioni del menu Multifiltro
+ES | Resetea el órden y las opciones seleccionadas del menú multifiltro
+DE | Sortierung und Auswahl von Multifilter Menüeinträgen zurücksetzen
+
+EN | HISTORY PAGE
+IT | PAGINA HISTORY
+ES | HISTORIAL
+BR | HISTORY
+FR | HISTOIRE
+DE | HISTORY SEITE
+
+EN | Video Effects
+IT | Effetti video
+ES | Efectos de video
+DE | Video Effekte
+
+EN | Import MAME Files
+IT | Importa file MAME
+ES | Importar archivo MAME
+DE | Importiere MAME Dateien
+
+EN | Configure the History page where larger thumbnail and game history data are shown
+IT | Configura la pagina della History dove vengon mostrati schermate più grandi e i dati della storia del gioco
+ES | Configura la página del Historial, donde se muestra una imagen más grande y los datos del juego
+FR | Configurez la page d'histoire òu un capture miniature plus grande ainsi que l'histoire du jeu sont montrée.
+DE | Konfigurieren der Historyseite bei der größere Miniaturen und Spieldaten angezeigt werden
+
+EN | CRT deformation
+IT | Deformazione CRT
+ES | Deformación CRT
+DE | CRT Deformation
+
+EN | Enable CRT deformation for CRT snaps
+IT | Abilita la deformazione per i giochi CRT
+ES | Activa la deformación tipo CRT en imagen del juego
+DE | Aktiviere CRT Deformation für CRT Snaps
+
+EN | Scanline effect
+IT | Effetto scanline
+ES | Efecto Scanline
+BR | Efeito scanline
+FR | Effet Scanline
+DE | Scanline Effekt
+
+EN | Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline
+IT | Seleziona l'effetto scanline: Scanline = scanline standard, Apertura = aperture mask, Risoluzione dimezzata = dimezza la risoluzione delle scanline per evitare effetti moiree, Nessuno = nessuna scanline
+ES | Selecciona el efecto Scanline: Scanlines = scanlines por defecto, Apertura = Máscara de apertura, Resolución a la mitad = reduce la resolución del scanline para evitar el efecto moire, Nada = sin scanlines
+BR | Define o efeito das Scanlines: Scanlines = linha de varredura (scanline) padrão, Aperture = máscara de abertura, Half Resolution = reduzir pela metade a resolução da linha de varredura para evitar efeitos ondulados, None = nenhuma linha de varredura
+FR | Définissez l'effet scanline: Scanlines = scanlines pas défaut, Aperture = masque d'ouverture, Demi Résolution = réduis la résolution des scanlines pour éviter l'éffet moiré, Aucun = aucun scanline.
+DE | Scanline Effekt auswählen: Scanlines = Standard, Blende = Blendenmaske, Halbe Auflösung = reduzierte Scanline Auflösung um Moiree zu vermeiden, Keinen = keine Scanlines
+
+EN | LCD effect
+IT | Effetto LCD
+ES | Efecto LCD
+BR | Efeito LCD
+FR | Effet LCD
+DE | LCD Effekt
+
+EN | Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect
+IT | Seleziona l'effetto LCD per i giochi portatili: Matrix = mostra i pixel del display, Half Resolution = mostra i pixel a metà risoluzione, None = nessun effetto
+ES | Selecciona el efecto LCD para juegos portátiles: Matriz de puntos = muestra los píxeles en pantalla, Resolución a la mitad = muestra los píxeles a media resolución, Nada = sin efecto
+BR | Define o efeito do LCD para jogos portáteis: Matrix = mostra os pixels da tela, Half Resolution = mostra os pixels com meia resolução, None = nenhum efeito
+FR | Définissez l'éffet LCD pour jeux de poches: Matrice = matrice à point, Demi Résolution = matrice à point à demi résolution, Aucun = aucun effet
+DE | LCD Effekt für Handheld Spiele auswählen: Matrix = Dot Matrix anzeigen, Halbe Auflösung = Matrix in halber Auflösung anzeigen, Kein = Kein Effekt
+
+EN | Text panel size
+IT | Dimensione pannello testo
+ES | Tamaño del texto del panel
+DE | Größe des Textfeldes
+
+EN | Select the size of the history panel at the expense of snapshot area
+IT | Seleziona la dimensione del pannello di testo a spese dall'area del video
+ES | Selecciona el tamaño del texto del Historial a expensas del modificar el área del video 
+DE | Größe des Historyfeld auswählen, auf Kosten des Snapshotbereichs
+
+EN | Small
+IT | Piccolo
+ES | Pequeño
+DE | Klein
+
+EN | Default
+IT | Standard
+ES | Por defecto
+DE | Standard
+
+EN | Large
+IT | Grande
+ES | Grande
+DE | Groß
+
+EN | Max snap
+IT | Massimo snapshot
+ES | Imagen máxima
+DE | Maximaler Snap
+
+EN | Text panel style
+IT | Stile pannello testo
+ES | Estilo del panel de texto
+BR | Estilo do painel de texto
+FR | Style pour le panneau de texte
+DE | Textfeld Stil
+
+EN | Select the look of the history text panel
+IT | Seleziona l'aspetto del pannello di testo nella pagina History
+ES | Selecciona el aspecto del panel de texto de la pantalla del Historial
+BR | Define a aparência do painel de texto na tela do History
+FR | Choisissez le look du panneu de texte dans l'écran d'histoire
+DE | Aussehen des History Textfelds auswählen
+
+EN | Game panel style
+IT | Stile pannello gioco
+ES | Estilo del panel de juego
+BR | Estilo do painel do jogo
+FR | Style du panneau de jeu
+DE | Game Panel Stil
+
+EN | Select the look of the history game panel
+IT | Seleziona l'aspetto del pannello del gioco nella pagina History
+ES | Selecciona el aspecto del panel de juego de la pantalla del Historial
+BR | Define aa parência do painel do jogo na tela do History
+FR | Choisissez le look du panneau de jeu dans l'écran d'histoire
+DE | Aussehen des History Game Panels auswählen
+
+EN | Detailed game data
+IT | Dettagli del gioco
+ES | Detalles del juego
+DE | Detailierte Spieldaten
+
+EN | Show extra data after the game name before the history text
+IT | Mostra dettagli extra dopo il titolo del gioco, prima della history
+ES | Muestra detalles extra detrás del título del juego, antes de ver el Historial
+DE | Zeige zusätzliche Daten nach dem Spielnamen aber vor dem History Text
+
+EN | Control panel overlay
+IT | Controlli in sovrimpressione
+ES | Panel de control superpuesto
+DE | Bedienpanel Overlay
+
+EN | Show controller and buttons overlay on history page
+IT | Mostra pulsanti e controller del gioco in sovrimpressione
+ES | Muestra los controles y botones superpuestos en la pagina del Historial
+DE | Zeige Controller und Buttons Overlay auf der History Seite
+
+EN | History.dat
+IT | History.dat
+ES | History.dat
+BR | History.dat
+FR | History.dat
+DE | History.dat
+
+EN | History.dat location.
+IT | Percorso completo per il file history.dat
+ES | Localización del archivo History.dat
+BR | Local do arquivo history.dat
+FR | Chemin vers History.dat
+DE | Pfad zur History.dat
+
+EN | Index clones
+IT | Indicizza i cloni
+ES | Indexar clones
+BR | Índice de clones
+FR | Index des clones
+DE | Index Klone
+
+EN | Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger
+IT | Imposta se i cloni debbano essere indicizzati. Se abilitato renderà molto più grande il file indice
+ES | Indica si los clones deben incluires en el índice. Si está activo el índice será bastante más grande
+BR | Define se os clones devem ser incluídos no índice. Ativando isto pode aumentar significamente o tamanho do índice
+FR | Indiquez si les clones devraient êtres inclus dans l'index. Ceci rend l'index très grand.
+DE | Einstellen ob Einträge für Klone im Index mit aufgenommen werden sollen. Wenn dies aktiviert ist, wird der Index deutlich größer
+
+EN | Generate History index
+IT | Genera l'indice History
+ES | Generar índice 
+BR | Gerar índice
+FR | Générez l'indice
+DE | History Index erstellen
+
+EN | Generate the history.dat index now (this can take some time)
+IT | Genera ora il file indice di history.dat (può impiegare un po' di tempo)
+ES | Genera el índice del History.dat (puede tardar un poco)
+BR | Gera o índice do history.dat (pode levar alguns minutos)
+FR | Générez l'index de history.dot maintenant (ceci peut prendre du temps)
+DE | History.dat Index jetzt erstellen 
+
+EN | Command.dat
+IT | Command.dat
+ES | Command.dat
+BR | Command.dat
+FR | Command.dat
+DE | Command.dat
+
+EN | Command.dat location.
+IT | Percorso completo per il file command.dat
+ES | Localización del archivo command.dat
+BR | Local do arquivo command.dat
+FR | Chemin vers command.dat
+DE | Pfad zur Command.dat
+
+EN | Generate Command index
+IT | Genera l'indice Command
+ES | Generar índice 
+BR | Gerar índice
+FR | Générez l'indice
+DE | Erstelle Command Index
+
+EN | Generate the command.dat index now (this can take some time)
+IT | Genera ora il file indice di command.dat (può impiegare un po' di tempo)
+ES | Genera el índice del command.dat (puede tardar un poco)
+BR | Gera o índice do command.dat (pode levar alguns minutos)
+FR | Générez l'index de command.dat maintenant (ceci peut prendre du temps)
+DE | Index der command.dat jetzt erstellen (kann einige Zeit dauern)
+
+EN | AUDIO
+IT | AUDIO
+ES | AUDIO
+BR | ÁUDIO
+FR | ÁUDIO
+DE | AUDIO
+
+EN | Configure layout sounds and audio options for videos
+IT | Configura i suoni del layout e le opzioni per l'audio dei video
+ES | Configura el sonido del layout y las opciones de audio para los videos
+FR | Configurez les sons et les options audio pour les vidéos
+DE | Konfigurieren von Layout Sounds und Audio Optionen für Videos
+
+EN | Enable theme sounds
+IT | Suoni del tema
+ES | Sonido del tema
+BR | Som do tema
+FR | son pour theme
+DE | Aktiviere Theme Sounds
+
+EN | Enable audio sounds when browsing and moving around the theme
+IT | Abilita i suoni del tema quando si naviga
+ES | Activa el sonido del tema mientras navegas
+BR | Ativa sons enquanto navega pelo tema
+FR | Active les sons durant la navigation.
+DE | Aktiviere Audio Sounds beim durchblättern der Themes
+
+EN | Audio in videos (thumbs)
+IT | Audio nei video (miniature)
+ES | Audio en los vídeos (miniaturas)
+BR | Aúdio nos vídeos (miniaturas)
+FR | Audio des vidéos (miniatures)
+DE | Audio bei Videos (Vorschau)
+
+EN | Select wether you want to play audio in videos on thumbs
+IT | Abilita la riproduzione dell'audio nelle miniature video
+ES | Activa la reproducción de audio en los vídeos en miniatura
+BR | Ativa a reprodução de áudio nos vídeos das miniaturas de vídeo
+FR | Selectionnez si vouz voulez joué le son des vidéos miniatures
+DE | Auswählen ob Video-Miniaturen mit Ton abgespielt werden sollen
+
+EN | Audio in videos (history)
+IT | Audio nei video (history)
+ES | Audio en los vídeos (Historial)
+BR | Áudio nos vídeos (history)
+FR | Audio des vidéos (histoire)
+DE | Audio in Videos (History)
+
+EN | Select wether you want to play audio in videos on history detail page
+IT | Abilita la riproduzione dell'audio nella pagina history
+ES | Activa la reproducción de audio en la pantalla del Historial
+BR | Ativa a reprodução de áudio dos vídeos na tela do history
+FR | Selectionnez si vouz voulez joué le son des vidéos dans la page histoire
+DE | Auswählen ob Audio von Videos auf der History Detailseite ausgegeben werden soll
+
+EN | Layout background music
+IT | Musica di fondo del layout
+ES | Música de fondo del layout
+DE | Layout Hintergrundmusik
+
+EN | Chose a background music file to play while using Arcadeflow
+IT | Seleziona un file audio da riprodurre mentre si usa Arcadeflow
+ES | Selecciona un archivo de audio para reproducir mientras usas Arcadeflow
+DE | Datei für Hintergrundmusik auswählen, die während Arcadeflow gespielt werden soll
+
+EN | Stop bg music in attract mode
+IT | Ferma la musica di fondo in attract mode
+ES | Parar la música de fondo en el modo ATTRACT
+DE | Stoppe Hintergrundmusik während Attract Mode
+
+EN | Stops playing the layout background music during attract mode
+IT | Blocca la riproduzione della musica di fondo di Arcadeflow quando si abilita la modalità attract
+ES | Para la reproducción de la música de fondo cuando Arcadeflow entra en el modo ATTRACT
+DE | Stoppt die Hintergrundmusik des Layouts während Attract Mode
+
+EN | UPDATES
+IT | AGGIORNAMENTI
+ES | ACTUALIZACIONES
+DE | UPDATES
+
+EN | Configure update notifications
+IT | Configura le notifiche degli aggiornamenti
+ES | Configura las notificaciones de las actualizaciones
+DE | Update Benachrichtigungen konfigurieren
+
+EN | Automatically check for updates
+IT | Verifica automatica degli aggiornamenti
+ES | Comprueba automáticamente si hay actualizaciones
+DE | Automatisch auf Updates prüfen
+
+EN | Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one
+IT | Effettua la verifica degli aggiornamenti a ogni avvio di AF, a meno che un aggiornamento non venga rifiutato
+ES | Comprueba si hay actualizaciones cuando inicias AF, si omites una actualización no te notificará hasta la proxima actualización
+DE | Prüft bei jedem AF Start auf Updates, wird ein Update ignoriert erfolgt eine erneute Benachrichtigung erst beim nächsten Update
+
+EN | Install update after download
+IT | Installa l'aggiornamento
+ES | Instalar la actualización despues de la descarga
+DE | Installiere Update nach Download
+
+EN | Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly
+IT | Arcadeflow ti permette di scegliere se vuoi solo scaricare l'aggiornamento o anche installarlo direttamente
+ES | Arcadeflow te permite sólo descargar la actualización, o tambien instalarla directamente
+DE | Arcadeflow kann Updates nur herunterladen oder sie auch direkt installieren
+
+EN | Install after download
+IT | Installa dopo il download
+ES | Instalar despues de la descarga
+DE | Installieren nach Download
+
+EN | Download only
+IT | Solo download
+ES | Descargar solo
+DE | Nur Download
+
+EN | SAVE & LOAD
+IT | SALVA E CARICA
+ES | SALVAR Y CARGAR
+DE | SPEICHERN & LADEN
+
+EN | Save or reload options configurations
+IT | Salva o carica set di opzioni
+ES | Salva o carga las opciones configuradas
+DE | Speichern oder neuladen der Optionen Konfiguration
+
+EN | Save current options
+IT | Salva opzioni correnti
+ES | Salvar las opciones actuales
+DE | Speichere aktelle Optionen
+
+EN | Save the current options configuration in a custom named file
+IT | Salva l'attuale configurazione in un file a scelta
+ES | Salva la configuración actual en un archivo personalizado
+DE | Speichere aktuelle Optionen Konfiguration in einer benutzerdefinierten Datei
+
+EN | Load options from external file
+IT | Carica opzioni da un file esterno
+ES | Cargar opciones de un archivo externo
+DE | Optionen aus externer Datei laden
+
+EN | Restore AF options from a previously saved file
+IT | Ripristina le opzioni di AF da un file salvato
+ES | Restaura las opciones de AF de un archivo guardado
+DE | Zuvor gespeicherte AF Einstellungen wiederherstellen
+
+EN | DEBUG
+IT | DEBUG
+ES | DEPURACIÓN
+BR | DEBUG
+FR | DEBUG
+DE | DEBUG
+
+EN | This section is for debug purposes only
+IT | Questa sezione è solo per funzionalità di debug
+ES | Esta sección es sólo para la función de depuración
+FR | Cette section est pour fin de déboguage seulement
+DE | Dieser Abschnitt ist nur für DEBUG-Zwecke
+
+EN | FPS counter
+IT | Contatore FPS
+ES | Contador FPS
+BR | Contador de FPS
+FR | Conteur FPS
+DE | FPS ZÄHLER
+
+EN | DEBUG FPS COUNTER
+IT | CONTATORE FPS DEBUG
+ES | DEPURACIÓN CONTADOR FPS
+BR | CONTADOR DE FPS DO DEBUG
+FR | DEBUG CONTEUR FPS
+DE | DEBUG FPS ZÄHLER
+
+EN | DEBUG mode
+IT | Modalità DEBUG
+ES | Modo DEBUG
+FR | mode DEBUG
+DE | DEBUG Modus
+
+EN | Enter DEBUG mode, increased output logging
+IT | Entra in modalità DEBUG, mostra più informazioni nel log
+ES | Entra en modo DEBUG, crea un registro con la información
+FR | Entrez dans le mode DEBUG, ceci augmente l'écriture au fichiers log
+DE | Wechselt in den DEBUG-Modus, zeigt weitere Informationen im Log an
+
+EN | AM options page
+IT | Pagina opzioni AM
+ES | Página de opciones de AM
+DE | AM Optionen Seite
+
+EN | Shows the default Attract-Mode options page
+IT | Mostra la pagina standard delle opzioni di Attract-Mode
+ES | Muestra la pantalla de opciones por defecto de Attract-Mode
+DE | Anzeige der Standard Attract-Mode Optionen Seite
+
+EN | Reset all options
+IT | Ripristina opzioni
+ES | Resetear todas las opciones
+DE | Alle Optionen zurücksetzen
+
+EN | Restore default settings for all layout options, erase sorting options, language options and thumbnail options
+IT | Riporta tutte le opzioni del layout ai valori predefiniti, cancella le opzioni di ordinamento, di lingua e di miniature
+ES | Restaura las opciones por defecto: borra las opciones de organización, de lenguaje y de miniaturas
+DE | Standard Einstellungen für alle Layout Optionen wiederherstellen, löschen der Sortier-, Sprach- und Vorschaubildoptionen
+
+# VARIOUS ERROR MESSAGES
+
+EN | Arcadeflow requires at least Attract Mode v2.5.0
+IT | Arcadeflow richiede almeno Attract Mode v2.5.0
+ES | Arcadeflow necesita al menos la versión 2.5.0 de Attract Mode
+BR | Arcadeflow requer pelo menos o Attract Mode v2.5.0
+FR | Arcadeflow nécessite au moins Attract Mode v2.5.0
+DE | Arcadeflow benötigt mindestens Attract Mode v2.5.0
+
+EN | Wrong syntax in screen resolution
+IT | Sintassi errata nella risoluzione dello schermo
+ES | Valor incorrecto en la resolución de pantalla
+BR | Dados inválidos para a resolução da tela
+FR | Mauvais syntax pour résolution d'écran
+DE | Falscher Syntax bei Bildschirmauflösung
+
+
+# MENU HEADINGS
+
+EN | DISPLAYS
+IT | DISPLAY
+ES | DISPLAY
+BR | DISPLAY
+FR | DISPLAY
+DE | DISPLAYS
+
+EN | FILTERS
+IT | FILTRI
+ES | FILTRO
+BR | FILTROS
+FR | FILTERS
+DE | FILTER
+
+EN | TAGS
+IT | TAG
+ES | ETIQUETA
+BR | RÓTULOS
+FR | TAGS
+DE | TAGS
+
+EN | FAVOURITES
+IT | PREFERITI
+ES | FAVORITOS
+BR | FAVORITOS
+FR | FAVORIS
+DE | FAVORITEN
+
+EN | EXIT ATTRACT MODE?
+IT | CHIUDI ATTRACT MODE?
+ES | ¿SALIR DE ATTRACT MODE?
+BR | SAIR DO ATTRACT MODE?
+FR | QUITTER ATTRACT MODE?
+DE | ATTRACT MODE VERLASSEN?
+
+EN | EXIT ARCADEFLOW?
+IT | CHIUDI ARCADEFLOW?
+ES | ¿SALIR DE ARCADEFLOW?
+BR | SAIR DO ARCADEFLOW?
+FR | QUITTER ARCADEFLOW?
+DE | ARCADEFLOW VERLASSEN?
+
+EN | EXIT ARCADEFLOW
+IT | CHIUDI ARCADEFLOW
+ES | SALIR DE ARCADEFLOW
+BR | SAIR DO ARCADEFLOW
+FR | QUITTEZ ARCADEFLOW
+DE | ARCADEFLOR VERLASSEN
+
+# TAGS MENU
+
+EN | Hide Hidden
+IT | Nascondi nascosti
+ES | Ocultar
+DE | Versteckte ausblenden
+
+EN | Show Hidden
+IT | Mostra nascosti
+ES | Mostrar oculto
+DE | Versteckte einblenden
+
+EN | New Tag
+IT | Nuovo Tag
+ES | Nueva Etiqueta
+DE | Neuer Tag
+
+EN | Create New Tag
+IT | Crea un nuovo tag
+ES | Crea una nueva etiqueta
+DE | Neuen Tag erstellen
+
+EN | Back
+IT | Indietro
+ES | Volver
+DE | Zurück
+
+# FAVOURITES MENU
+
+EN | Add Favourite
+IT | Aggiungi ai preferiti
+ES | Añadir a Favoritos
+DE | Favorit hinzufügen
+
+EN | Remove Favourite
+IT | Rimuovi dai preferiti
+ES | Borrar de Favoritos
+DE | Favorit entfernen
+
+EN | Cancel
+IT | Annulla
+ES | Cancelar
+DE | Abbrechen
+
+# UTILITY MENU
+
+EN | Sort and Filter
+IT | Ordina e filtra
+ES | Ordenar y filtrar
+DE | Sortieren und filtern
+
+EN | Screensaver
+IT | Salva schermo
+ES | Salvapantallas
+DE | Bildschirmschoner
+
+EN | Visuals
+IT | Aspetto
+ES | Aspecto
+DE | Erscheinungsbild
+
+EN | Jump to
+IT | Salta a
+ES | Salta a
+DE | Springe zu
+
+EN | Favourites Filter
+IT | Filtro preferiti
+
+EN | FAVOURITES
+IT | PREFERITI
+
+EN | ALL GAMES
+IT | TUTTI I GIOCHI
+
+EN | Utility Menu
+IT | Utility Menu
+ES | Menú de utilidades
+BR | Utility Menu
+FR | Menu Utilitaire
+
+EN | Sort by
+IT | Ordina per
+ES | Ordenar por
+BR | Ordenar por
+FR | Trier par
+DE | Sortiere nach
+
+EN | Filters
+IT | Filtri
+ES | Filtro
+BR | Filtros
+FR | Filtres
+DE | Filter
+
+EN | Displays
+IT | Display
+ES | Display
+BR | Display
+FR | Displays
+DE | Displays
+
+EN | Search for
+IT | Cerca per
+ES | Buscar por
+BR | Pesquisar por
+FR | Chercher pour
+DE | Suche nach
+
+EN | Search
+IT | Cerca
+ES | Buscar
+BR | Pesquisar
+FR | Chercher
+DE | Suche
+
+EN | Layout options
+IT | Opzioni layout
+ES | Opciones del layout
+BR | Opções do layout
+FR | Options du layout
+DE | Layout Optionen
+
+EN | Attract mode
+IT | Attract mode
+ES | Modo ATTRACT
+BR | Modo vinheta
+FR | mode séduction
+DE | Attract Mode
+
+EN | Snaps tiles
+IT | Mostra Snap 
+ES | Mostrar Snap
+BR | Mostrar Capturas
+FR | Montrez Captures Miniatures
+DE | Snap Kacheln
+
+EN | Box-Art tiles
+IT | Mostra Box-Art
+ES | Mostrar Box-Art
+BR | Exibir Arte da Caixa
+FR | Montrez les Images de Boites
+DE | Box-Art Kacheln
+
+EN | Snaps or Box-Art
+IT | Snap o Box-Art
+ES | Snap o Box-Art
+DE | Snaps oder Box-Art
+
+EN | Reset Box Art
+IT | Reset Box Art
+ES | Reiniciar Box Art
+BR | Resetar Arte da Caixa
+FR | Reinitialisez les Images de Boites
+DE | Box-Art zurücksetzen
+
+EN | Check for updates
+IT | Verifica aggiornamenti
+ES | Comprobar actualizaciones
+DE | Auf Updates prüfen
+
+EN | No update available
+IT | Nessun aggiornamento
+ES | No hay actualizaciones
+DE | Kein Update vorhanden
+
+EN | Download new version
+IT | Scarica nuova versione
+ES | Descargar nueva versión
+DE | Neue Version herunterladen
+
+EN | Download and install new version
+IT | Scarica e installa nuova versione
+ES | Descargar e instalar nueva versión
+DE | Neue Version herunterladen und installieren
+
+EN | Dismiss this update
+IT | Ignora aggiornamento
+ES | Ignorar actualización
+DE | Update ignorieren
+
+EN | New version: 
+IT | Nuova versione:
+ES | Nueva versión:
+DE | Neue Version:
+
+EN | Arcadeflow updated to
+IT | Arcadeflow aggiornato a
+ES | Arcadeflow actualizado a
+DE | Arcade aktualisiert auf
+
+EN | Quit
+IT | Esci
+ES | Salir
+DE | Verlassen
+
+EN | Language
+IT | Lingua
+ES | Lenguaje
+BR | Idioma
+FR | Langue
+DE | Sprache
+
+EN | Categories
+IT | Categorie
+ES | Categorias
+DE | Kategorien
+
+# SORT, SEARCH AND MULTIFILTER MENU
+
+EN | Search 
+IT | Cerca 
+ES | Buscar
+BR | Pesquisar
+FR | Recherche
+DE | Suche
+
+EN | CLEAR
+IT | AZZERA
+ES | BORRAR
+DE | LÖSCHEN
+
+EN | ALL
+IT | TUTTO
+ES | TODO
+DE | ALLE
+
+EN | Multifilter
+IT | Multifiltro
+ES | Multifiltro
+DE | Multifilter
+
+EN | Players
+IT | Giocatori
+ES | Jugadores
+DE | Spieler
+
+EN | Favourite
+IT | Preferito
+ES | Favorito
+DE | Favoriten
+
+EN | Not Favourite
+IT | Non preferito
+ES | No Favorito
+DE | Kein Favorit
+
+EN | Buttons
+IT | Pulsanti
+ES | Botones
+DE | Buttons
+
+EN | Controls
+IT | Controlli
+ES | Controles
+DE | Steuerung
+
+EN | Played
+IT | Giocato
+ES | Jugado
+DE | Gespielt
+
+EN | Not Played
+IT | Non giocato
+ES | No jugado
+DE | Nicht gespielt
+
+EN | Horizontal
+IT | Orizzontale
+ES | Horizontal
+DE | Horizontal
+
+EN | Vertical
+IT | Verticale
+ES | Vertical
+DE | Vertikal
+
+EN | Title
+IT | Titolo
+ES | Título 
+BR | Título
+FR | Titre
+DE | Titel
+
+EN | Manufacturer
+IT | Sviluppatore
+ES | Fabricante
+BR | Fabricante
+FR | Fabriquant
+DE | Hersteller
+
+EN | Year
+IT | Anno
+ES | Año
+BR | Ano
+FR | Année
+DE | Jahr
+
+EN | Category
+IT | Categoria
+ES | Categoría 
+BR | Categoria
+FR | Catégorie
+DE | Kategorie
+
+EN | System
+IT | Sistema
+ES | Sistema
+BR | Sistema
+FR | Système
+DE | System
+
+EN | Tags
+IT | Tag
+ES | Etiqueta
+BR | Rótulos
+FR | Tags
+DE | Tags
+
+EN | Last Played
+IT | Ultimi giocati
+ES | Último jugado
+DE | Zuletzt gespielt
+
+EN | Last Favourite
+IT | Ultimi preferiti
+ES | Último Favorito
+DE | Letzer Favorit
+
+EN | RESET (KEEP FOCUS)
+IT | AZZERA (MANTIENI SELEZIONE)
+ES | REINICIAR (MANTENER SELECCIÓN)
+BR | LIMPAR (MANTÉM SELEÇÃO)
+FR | REINITIALISÉ (GARDEZ LE FOCUS)
+DE | ZURÜCKSETZEN (AUSWAHL BEIBEHALTEN)
+
+EN | RESET
+IT | AZZERA
+ES | REINICIAR
+BR | LIMPAR
+FR | REINITIALISÉ
+DE | Zurücksetzen
+
+
+# SHORT SORT TABLE
+
+EN | _System
+IT | _Sistema
+ES | _Sistema
+BR | _Sistema
+FR | _Système
+DE | _System
+
+EN | _Name
+IT | _Nome
+ES | _Nombre
+BR | _Nome
+FR | _Nom
+DE | _Name
+
+EN | _Title
+IT | _Titolo
+ES | _Título
+BR | _Título
+FR | _Titre
+DE | _Titel
+
+EN | _Emul
+IT | _Emul
+ES | _Emul
+BR | _Emul
+FR | _Emul
+DE | _Emul
+
+EN | _Clone
+IT | _Clone
+ES | _Clon
+BR | _Clone
+FR | _Clone
+DE | _Klon
+
+EN | _Year
+IT | _Anno
+ES | _Año
+BR | _Ano
+FR | _Année
+DE | _Jahr
+
+EN | _Manuf
+IT | _Svilup
+ES | _Fabric
+BR | _Fabric
+FR | _Fabric
+DE | _Hersteller
+
+EN | _Categ
+IT | _Categ
+ES | _Categ
+BR | _Categ
+FR | _Categ
+DE | _Kateg
+
+EN | _Players
+IT | _Giocat
+ES | _Jugad
+BR | _Jogad
+FR | _Joueurs
+DE | _Spieler
+
+EN | _Rot
+IT | _Rot
+ES | _Rot
+IT | _Ori
+FR | _Ori
+DE | _Ori
+
+EN | _Cntrl
+IT | _Cntrl
+ES | _Cntrl
+BR | _Cntrl
+FR | _Cntrl
+DE | _Cntrl
+
+EN | _Status
+IT | _Stato
+ES | _Estado
+BR | _Status
+FR | _Status
+DE | _Status
+
+EN | _DispCt
+IT | _DispNum
+ES | _DispNum
+BR | _NumDisp
+FR | _NumEcr
+DE | _DispZahl
+
+EN | _DispTp
+IT | _DispTp
+ES | _DispTp
+BR | _DispTp
+FR | _DispTp
+DE | _DispTp
+
+EN | _AltRomn
+IT | _RomnAlt
+ES | _RomnAlt
+BR | _NomRomAlt
+FR | _NomRomalt
+DE | _RomNAlt
+
+EN | _AltTitle
+IT | _TitoloAlt
+ES | _TituloAlt
+BR | _TítuloAlt
+FR | _TitreAlt
+DE | _TitelAlt
+
+EN | _Extra
+IT | _Extra
+ES | _Extra
+BR | _Extra
+FR | _Extra
+DE | _Extra
+
+EN | _Fav
+IT | _Pref
+ES | _Fav
+BR | _Fav
+FR | _Fav
+DE | _Fav
+
+EN | _Tags
+IT | _Tag
+ES | _Etiq
+BR | _Rót
+FR | _Tags
+DE | _Tags
+
+EN | _PlCount
+IT | _NumGioc
+ES | _NumJug
+BR | _NúmJog
+FR | _NumJoueurs
+DE | _AnzSpieler
+
+EN | _PlTime
+IT | _TempGioc
+ES | _Tiempojug
+BR | _TempdeJog
+FR | _TempsJeu
+DE | _AnzGespielt
+
+EN | _Avail
+IT | _Dispon
+ES | _Dispon
+BR | _Dispon
+FR | _Dispo
+DE | _Vorhanden
+
+# MORE OF THE SAME SUBMENU
+
+EN | More of the same
+IT | Altri dello stesso
+ES | Más de lo mismo
+BR | Outros como este
+FR | Encore et encore
+DE | Mehr vom gleichen
+
+EN | Decade
+IT | Decennio
+ES | Década 
+BR | Década
+FR | Décénnie
+DE | Jahrzehnt
+
+EN | Main Category
+IT | Categoria principale
+ES | Categoría Principal
+BR | Categoria principal 
+FR | Catégorie principale
+DE | Hauptkategorie
+
+EN | Sub Category
+IT | Categoria secondaria
+ES | Categoría Secundaria
+BR | Categoria secundária
+FR | Sous catégorie
+DE | Unterkategorie
+
+EN | Orientation
+IT | Orientamento
+ES | Orientación 
+BR | Orientação
+FR | Orientation
+DE | Orientierung
+
+EN | Favourite state
+IT | Stato preferiti
+ES | Estado preferido
+BR | Status favorito
+FR | Status de favoris
+DE | Bevorzugter Zustand
+
+# OPTIONS RESPONSES
+
+EN | Yes
+IT | Si
+ES | Si
+FR | Oui
+DE | Ja
+
+EN | No
+IT | No
+ES | No
+FR | Non
+DE | Nein
+
+EN | Disabled
+IT | Disabilitato
+ES | Desactivado
+FR | Désactiqué
+DE | Deaktiviert
+
+EN | 1-Small
+IT | 1-Piccola
+ES | 1-Pequeña
+FR | 1-Petit
+DE | 1-Klein
+
+EN | Up
+IT | Alto
+ES | Arriba
+FR | Haut
+DE | Hoch
+
+EN | None
+IT | Nessuno
+ES | Nada
+FR | Rien
+DE | Keine
+
+EN | Timeline
+IT | Linea temporale
+ES | Línea temporal
+FR | Chronologie
+DE | Zeitleiste
+
+EN | Scrollbar
+IT | Barra di scorrimento
+ES | Barra de desplazamiento
+FR | Barre de défilement
+DE | Bildlaufleiste
+
+EN | Label List
+IT | Lista etichette
+ES | Listar por letra
+FR | Liste d'étiquette
+DE | Labelliste
+
+EN | Left
+IT | Sinistra
+ES | Izquierda
+FR | Gauche
+DE | Links
+
+EN | Right
+IT | Destra
+ES | Derecha
+FR | Droite
+DE | Rechts
+
+EN | Flip
+IT | Ribalta
+ES | Invertir
+FR | Retourner
+DE | Umdrehen
+
+EN | List
+IT | Lista
+ES | Lista
+FR | Liste
+DE | Liste
+
+EN | List with artwork
+IT | Lista con immagini
+ES | Lista con imagen
+FR | Liste avec images
+DE | Liste mit Artwork
+
+EN | Adaptive
+IT | Adattato
+ES | Adaptado
+FR | Adaptif
+DE | Adaptiv
+
+EN | Square
+IT | Quadrato
+ES | Cuadrado
+FR | Carré
+DE | Quadratisch
+
+EN | Basic
+IT | Semplice
+ES | Simple
+FR | Simple
+DE | Einfach
+
+EN | Dark
+IT | Scuro
+ES | Oscuro
+FR | Foncé
+DE | Dunkel
+
+EN | Light
+IT | Chiaro
+ES | Claro
+FR | Clair
+DE | Klar
+
+EN | Pop
+IT | Intenso
+ES | Intenso
+FR | Intense
+DE | Knallig
+
+EN | From start
+IT | All'avvio
+ES | Al iniciar
+FR | Du début
+DE | Beim Start
+
+EN | Inactivity only
+IT | Quando inattivo
+ES | Cuando está inactivo
+FR | Inactivité seulement
+DE | Nur bei Inaktivität
+
+EN | Disabled
+IT | Disabilitato
+ES | Desactivado
+FR | Désactivé
+DE | Deaktiviert
+
+EN | Scanlines
+IT | Scanline
+ES | Scanlines
+FR | Scanlines
+DE | Scanlines
+
+EN | Half Resolution
+IT | Risoluzione dimezzata
+ES | Resolución a la mitad
+FR | Demi Resolution
+DE | Halbe Auflösung
+
+EN | Aperture
+IT | Apertura
+ES | Apertura
+FR | Aperture
+DE | Blende
+
+EN | matrix
+IT | Matrice di punti
+ES | Matriz de puntos
+FR | Matrice
+DE | Matrix
+
+EN | White panel
+IT | Pannello chiaro
+ES | Panel claro
+FR | Panneau blanc
+DE | Weißes Panel
+
+EN | Background
+IT | Sfondo
+ES | Fondo
+FR | Fond
+DE | Hintergrund
+
+EN | Standard
+IT | Standard
+ES | Estándar
+FR | Standard
+DE | Standard
+
+EN | Keyboard
+IT | Tastiera
+ES | Teclado
+FR | Clavier
+DE | Tastatur
+
+EN | Screen keys
+IT | Tasti su schermo
+ES | Teclas en pantalla
+DE | Bildschirmtasten
+
+EN | Attract Folder
+IT | Cartella Attract
+ES | Directorio de Attract
+DE | Attract Ordner
+
+EN | Arcadeflow Folder
+IT | Cartella Arcadeflow
+ES | Directorio de Arcadeflow 
+DE | Arcadflow Ordner
+
+EN | DEFAULT
+IT | PREDEFINITO
+ES | PREDEFINIDO
+DE | STANDARD
+
+EN | BY BRAND
+IT | PER MARCA
+ES | POR MARCA
+DE | NACH MARKE
+
+EN | BY BRAND, YEAR
+IT | PER MARCA, ANNO
+ES | POR MARCA, AÑO
+DE | NACH MARKE, JAHR
+
+EN | BY YEAR
+IT | PER ANNO
+ES | POR AÑO
+DE | NACH JAHR
+
+# POWER MENU
+
+EN | Power
+IT | Arresto
+
+EN | Shutdown
+IT | Spegni
+
+EN | Restart
+IT | Riavvia
+
+EN | Sleep
+IT | Sospendi

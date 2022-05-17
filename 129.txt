@@ -1,0 +1,5 @@
+12.9
+Fixed bug in scraped media folders
+Fixed slow display changing with collections
+Fixed bugs in Region multifilter
+Made multifilter routines more robust

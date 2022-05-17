@@ -1,0 +1,9 @@
+10.2
+Changed CRC algorithm to improve speed
+Parallel metadata scraping to improve speed
+Parallel download of scraped media
+Improved parse speed of scrape cache
+Added German language translation thanks to ScherzKeks
+Added option to play random music from folder
+Fixed bug that crashed AM with background music
+Cleaner font for options description

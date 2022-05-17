@@ -1,0 +1,5 @@
+9.1
+Added an option to hide logo during screensaver
+Fixed auto-update installation routine
+Fixed bugs with system AR
+Added visual cue for non avilable games

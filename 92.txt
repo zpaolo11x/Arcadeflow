@@ -1,0 +1,9 @@
+9.2
+Added options to import series.ini and bestgames.ini for MAME games
+Added series and rating data in history page
+You can now sort by rating or by series
+Multifilter can now filter ratings and series
+Added series and rating to "More of the same..." menu
+Improved "More of the same..." stability
+Fixed bug in controls multifilter entry
+Improved filtering speed with large romlists

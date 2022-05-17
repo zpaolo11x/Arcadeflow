@@ -1,0 +1,6 @@
+11.0
+Added multiple selection menus for editing metadata
+Metadata edits are tranferred to "collection" romlists
+Improved keyboard design and layout
+Fixed bug that saved metadata only on the boot display
+Fixed "Delete Rom File" menu that now actually works

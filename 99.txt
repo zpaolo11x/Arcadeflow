@@ -1,0 +1,9 @@
+9.9
+Improved shaders and layering to reduce load time
+Added new system logos and images (IBM PC, Coleco Adam, Sega SC-3000, Philips Videopac, SAM coupe etc)
+Added 8 new manufacturer logos
+You can now save a set of preferences and recall it
+Fixed bug with lcd coloring in history page
+Fixed some sound playing even if disabled
+Fixed performance issue with off-screen fonts
+Fixed XML import for game names with "."

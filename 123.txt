@@ -1,0 +1,8 @@
+12.3
+Added a new context menu to find similar games
+Added an option to reset "last played" data from romlist
+Added new artwork for systems in the displays menu
+Changed the look of the displays menu with artwork
+Fixed issue when refreshing romlists under Linux
+Fixed month numbers starting from "0" instead of "1"
+Fixed AF not deleting roms in Windows 10

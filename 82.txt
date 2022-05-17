@@ -1,0 +1,11 @@
+8.2
+Added an option to enable/disable adaptive performance
+Added new display category: Pinball
+Added new system logos (Sega CD, Nintendo 3DS, Pinball FX3, Future Pinball)
+Added an option to enable/disable display name sorting
+New option to reduce the game data in history page
+Attract mode videos are scaled to native game resolution
+Attract mode games shown only from "filtered" list
+Improved routine to update attract.cfg
+Thumb video stops playing when entering history page
+New "Utility Menu" options to enable/disable menu entries

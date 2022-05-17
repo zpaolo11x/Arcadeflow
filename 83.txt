@@ -1,0 +1,11 @@
+8.3
+Added an option to chose the size of the text panel in history
+Changed the way the history panel size is calculated
+Fixed a bug in utility menu options page
+Added options to sort utility menu entries
+Added options to customize the multifilter menu
+Fixed history.dat parsing for new dat files
+Added option to read command.dat for MAME
+Added option to show overlay commands in history page
+Revised translations and completed spanish translation by Jate
+Better rendition of Atari 2600 in attract mode

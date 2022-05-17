@@ -1,0 +1,7 @@
+8.5
+Added system logos for Atomiswave, Sega Model 2 and 3
+Added an option to fade out game decoration when video is played
+Fixed a bug that showed black box on some videos
+Fixed a bug that prevented videos from starting at launch time
+If no video is present, the thumbnail gradient is not faded out
+Reorganized some code to improve stability

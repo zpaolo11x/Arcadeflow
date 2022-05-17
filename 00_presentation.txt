@@ -1,0 +1,83 @@
+## Emulator system identifier #
+
+Arcadeflow is not only for arcades, it will work for console and computer games as well as handheld. To better suit each emulator you can add a System Identifier with the name of your console ("Game Boy", "Arcade", "Sega Genesis" etc) so some aspects of the GUI will adapt accordingly.
+
+## Romlist management #
+
+From version 12.0 Arcadeflow has a custom "database" where game data is stored. Game data can be derived by xml lists or AM scraper or AF scraper, if you regenerate the romlist from AF options menu all the data will be transferred to this database and will be shared with every collection romlist.
+Arcadeflow can also "automatic" collection for all games, all computer games, all console games etc, this is an experimental feature that is off by default, but you can enable it in the options menu.
+
+## Metadata and media scraping #
+
+Arcadeflow can scrape metadata and/or media files from screenscraper.fr and from adb.arcadeitalia.net, you can scrape each romlist individualy and set different options. Be sure to enter your screenscraper.fr username and password so you can scrape more data.
+Scraping match is crc based or filename based, you'll have "name" matches when the file name is identical, or "guess" matches when screenscraper finds a game but the rom name is not exactly the same.
+You can stop the scraping process and restart later with only non scraped roms. In this case you can chose what kind of roms to scrape: missing or even non exact matches.
+Scraping will overwrite your current romlist, while XML import will overwrite scraped data, but a scraper "cache" will be kept so you can re-scrape using "only missing" and rebuild your romlist from scraped data.
+
+## RetroPie XML games list import #
+
+Arcadeflow can be used to import XML lists generated in RetroPie format into Attract Mode romlists. Normally only Hyperlist based lists can be imported in Attract Mode specifying the path in the import_extras field in emulator configuration. If you specify a RetroPie romlist in that field, you can then build the Attract Mode romlist from Arcadeflow options menu.
+
+## Custom controls #
+
+When you hit the "select" or a "custom" control button (see layout options) an overlay context menu appears, here you can do different things to activate the following functions:
+
+- "SELECT" launches the current game
+- "UP" enters an "extension" game menu where you have different options:
+  - "More of the same..." search function, filtering games with the same year, manufacturer, main category or sub-category of the current game
+  - "Scrape selected game" is the same as the one in the options menu, but easier to use
+  - "Edit metadata" this is a metadata editor that you can use to fix metadata issues
+- "DOWN" enters the "History" page where you can see and scroll the game history and see a larger game preview
+- "LEFT" to enter the Tags menu
+- "RIGHT" to add/remove favorites
+- "ESC" goes back to the thumbnail list
+
+## Metadata editor #
+
+You can use Arcadeflow to edit metadat for games, this will not overwrite your current rom or scraped data, you can always fall back to the original data by entering an empty string for the metadata you changed. Metadata editor only alters metadata in Arcadeflow, it will not alter the romlist so you won't see those metadata in other layouts.
+
+## General layout menu #
+
+You can access a general menu by going "UP" from the first row of thumbnails. In the options you can disable this menu altogether or tie it to a "custom" button. This menu features:
+
+- "Sort by..." to dynamically sort your game list
+- "Multifilter" is a dynamic filtering system for your games
+- "Filters" standard AM filters menu
+- "Displays" menu enriched by Arcadeflow categorization, system logos etc.
+- "Categories" will show you a simple menu of your categories
+- "Search" function (see options)
+- "Layout options" will allow you to edit Arcadeflow options
+- "Attract Mode" to engage an attract mode without waiting the timeout
+- "Snaps or Box-Art" to quickly change from screenshot view to box art view, this is persistent after AM relaunch
+- "Reset Box Art" clears all preferences set with the above menu and reload the layout
+- "Check for updates" can tell you if there's a new version, and even install it
+- "About arcadeflow" some infos and news reagarding latest release
+
+You can sort the menu entries and even disable them if you don't need them, for a cleaner look.
+
+## Languages #
+
+Arcadeflow is multi-language, and you can set the language in the options menu.
+
+## Tags #
+
+Arcadeflow has its own tags interface so you can generate new tags using the on-screen keyboard, but there's always a  "COMPLETED" tag available, if you add this to games you will see a "100%" stamp on the thumbnails
+You can also show a tag icon on the games if a tag is present, and you can chose in the options to show the icon only for a specific tag.
+
+## Sorting and scrolling #
+
+When your list is sorted by name a large preview letter will appear while scrolling through the list. 
+If your list is sorted by year, manufacturer, system etc the year, manufacturer,system etc will appear instead of the letter.
+You can go "DOWN" from the lower row to enter a "large jumps" scrolling mode which depends on the scrollbar preferences: it can do "page jumps" (one screen at a time) or "label jump" based on your list sort order, or both if you have "timeline" scrollbar activated.
+Unique to Arcadeflow, you can also sort your games by last played or last added favourite.
+
+## Displays Menu #
+
+Arcadeflow sports a customizable Displays Menu. You can have it as a single list with just text, or you can let Arcadeflow add a system logo based on the Display name. Arcadeflow can categorize displays in groups automatically (Arcade, Console, Computer, Handheld, Pinball, Other), but if you want to force one display in a category, just add "#arcade", "#console" etc to the Display name. You can also enable artwork from the menu-art folder. You can also force positioning a layout at the top putting "!" at the beginning of the name.
+
+## Search and Multifilter
+
+Arcadeflow supports on-screen keyboard and "real" keyboard based search, search is applied on multiple fields and results can be updated while you type.
+Multifilter is a powerful feature that allows you to create custom filters on the fly, filtering by name, brand, year etc, mixing multiple search fields. Multifilter menu voices can be sorted at will or disabled in the options.
+
+## Layout options #

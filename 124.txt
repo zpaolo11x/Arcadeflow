@@ -1,0 +1,4 @@
+12.4
+Redesigned some system walls
+Added new systems with logos and images
+Fixed bugs in the database generation

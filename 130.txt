@@ -1,0 +1,5 @@
+13.0
+Added 11 new systems images and logos
+Fixed bugs in display change routine
+Fixed naming of XBox backgrounds
+Fixed bug with non categorised display menu

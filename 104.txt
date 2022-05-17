@@ -1,0 +1,8 @@
+10.4
+Introduced smoother tile scrolling with ease in
+Added ADB scraping for arcade games
+Added option to reduce or disable tile zoom
+Fixed sort order bug
+Fixed urlencode bug in scraper
+Commands data can be obtained by scraped data
+Changed frost transparency in multifilter menu

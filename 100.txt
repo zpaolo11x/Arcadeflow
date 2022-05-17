@@ -1,0 +1,6 @@
+10.0
+DON'T AUTO-INSTALL!
+Changed archive format to zip, use manual installation
+Added screenscraper.fr support for scraping media and metadata
+Added options to use images for Displays Menu categories
+Fixed description bug in options menu

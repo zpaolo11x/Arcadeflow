@@ -1,0 +1,7 @@
+9.0
+Fixed bug in the background crop routine
+Added an option to disable Arcadeflow "fast" display switching
+Fixed display switching when one display is not using Arcadeflow as layout
+Changed the way frosted glass effect is generated
+Changed positioning of tiles to get better balance and avoid overlap with title
+Fixed overlapping labels in timeline scroll bar

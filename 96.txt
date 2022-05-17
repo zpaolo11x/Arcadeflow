@@ -1,0 +1,9 @@
+9.6
+Fixed bugs in displays menu
+Fixed window popping up during check for updates
+Improved fade in and fade out transitions
+Fixed issue with some system names
+Fixed size of non-available games red cross
+Added an option to enable/disable missing games highlight
+Added Famicom Disk System and Daphne logos
+Auto update will only check once a day
