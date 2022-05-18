@@ -4,10 +4,6 @@
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
-function printline(linein){
-	print (linein + " : "+ fe.layout.time +"\n")
-}
-
 // Load file nut
 fe.do_nut("nut_file.nut")
 
@@ -24,7 +20,7 @@ function split_complete(str_in, separator){
 	while (str_in.find (separator) != null){
 		index = str_in.find (separator)
 		outarray.push (str_in.slice(0,index))
-		str_in = str_in.slice(index+1)
+		str_in = str_in.slice(index+separator.len())
 	}
 	outarray.push(str_in)
 	return outarray
@@ -148,6 +144,14 @@ local AF = {
 	}
 
 	emulatordata = {}
+
+	LNG = ""
+}
+
+// GitHub versioning data table
+local gh = {
+	latest_version = 0
+	release_notes = 0
 }
 
 function gly(index){
@@ -166,8 +170,8 @@ local zmenu = null
 // Load language file
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too. 
 fe.do_nut("nut_language.nut")
-local TLNG = "EN"
-try {TLNG = loadlanguage ()} catch (err){}
+AF.LNG = "EN"
+try {AF.LNG = loadlanguage ()} catch (err){}
 
 // font definition
 local uifonts = {
@@ -196,7 +200,7 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.general
 }
 
-if (FeVersionNum < 250) z_splash_message (ltxt("Arcadeflow requires at least Attract Mode v2.5.0",TLNG))
+if (FeVersionNum < 250) z_splash_message (ltxt("Arcadeflow requires at least Attract Mode v2.5.0",AF.LNG))
 
 /// Config management ///
 
@@ -643,9 +647,9 @@ function mfztablenames(tablein){
 	foreach (item, val in tablein){
 		outnames.push (item)
 	}
-	outnames.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
+	outnames.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
 	foreach (i, item in outnames){
-		outnames[i] = ltxt(item,TLNG) 
+		outnames[i] = ltxt(item,AF.LNG) 
 	}
 	return (outnames)
 }
@@ -965,13 +969,13 @@ for (local i = 0 ; i < AF.prefs.l1.len() ; i ++) {
 	local isnewparent = false
 	for (local j = 0 ; j < AF.prefs.l1[i].len() ; j ++) {
 		local isnew =  (AF.prefs.l1[i][j].v.tofloat() == AF.version.tofloat())
-		AF.prefs.l1[i][j].title = (isnew ? "❗ " : "") + ltxt(AF.prefs.l1[i][j].title,TLNG) + (isnew ? " ❗" : "")
-		if ((AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].help = ltxt(AF.prefs.l1[i][j].help,TLNG)
-		if ((AF.prefs.l1[i][j].selection != -4) && (AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].options = ltxtarray(AF.prefs.l1[i][j].options,TLNG)
+		AF.prefs.l1[i][j].title = (isnew ? "❗ " : "") + ltxt(AF.prefs.l1[i][j].title,AF.LNG) + (isnew ? " ❗" : "")
+		if ((AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].help = ltxt(AF.prefs.l1[i][j].help,AF.LNG)
+		if ((AF.prefs.l1[i][j].selection != -4) && (AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].options = ltxtarray(AF.prefs.l1[i][j].options,AF.LNG)
 		if (isnew) isnewparent = true
 	}
-	AF.prefs.l0[i].label = (isnewparent ? "❗ " : "") + ltxt(AF.prefs.l0[i].label,TLNG) + (isnewparent ? " ❗" : "")
-	AF.prefs.l0[i].description = ltxt(AF.prefs.l0[i].description,TLNG)
+	AF.prefs.l0[i].label = (isnewparent ? "❗ " : "") + ltxt(AF.prefs.l0[i].label,AF.LNG) + (isnewparent ? " ❗" : "")
+	AF.prefs.l0[i].description = ltxt(AF.prefs.l0[i].description,AF.LNG)
 	AF.prefs.a0.push (AF.prefs.l0[i].label)
 	AF.prefs.gl0.push (AF.prefs.l0[i].glyph)	
 }
@@ -1281,8 +1285,8 @@ DBGON = prf.DEBUGMODE
 savedebug(DBGON ? "true" : "false")
 
 // Set and save layout language
-TLNG = prf.LAYOUTLANGUAGE
-savelanguage(TLNG)
+AF.LNG = prf.LAYOUTLANGUAGE
+savelanguage(AF.LNG)
 
 // Check conflicts in custom buttons
 function check_buttons(){
@@ -1379,33 +1383,33 @@ if (prf.LOGOSONLY) {
 
 
 local orderdatalabel = {}
-orderdatalabel [Info.System] <- split(ltxt("_System",TLNG),"_")[0]
-orderdatalabel [Info.Name] <- split(ltxt("_Name",TLNG),"_")[0]
-orderdatalabel [Info.Title] <- split(ltxt("_Title",TLNG),"_")[0]
-orderdatalabel [Info.Emulator] <- split(ltxt("_Emul",TLNG),"_")[0]
-orderdatalabel [Info.CloneOf] <- split(ltxt("_Clone",TLNG),"_")[0]
-orderdatalabel [Info.Year] <- split(ltxt("_Year",TLNG),"_")[0]
-orderdatalabel [Info.Manufacturer] <- split(ltxt("_Manuf",TLNG),"_")[0]
-orderdatalabel [Info.Category] <- split(ltxt("_Categ",TLNG),"_")[0]
-orderdatalabel [Info.Players] <- split(ltxt("_Players",TLNG),"_")[0]
-orderdatalabel [Info.Rotation] <- split(ltxt("_Rot",TLNG),"_")[0]
-orderdatalabel [Info.Control] <- split(ltxt("_Cntrl",TLNG),"_")[0]
-orderdatalabel [Info.Status] <- split(ltxt("_Status",TLNG),"_")[0]
-orderdatalabel [Info.DisplayCount] <- split(ltxt("_DispCt",TLNG),"_")[0]
-orderdatalabel [Info.DisplayType] <- split(ltxt("_DispTp",TLNG),"_")[0]
-orderdatalabel [Info.AltRomname] <- split(ltxt("_AltRomn",TLNG),"_")[0]
-orderdatalabel [Info.AltTitle] <- split(ltxt("_AltTitle",TLNG),"_")[0]
-orderdatalabel [Info.Extra] <- split(ltxt("_Extra",TLNG),"_")[0]
-orderdatalabel [Info.Favourite] <- split(ltxt("_Fav",TLNG),"_")[0]
-orderdatalabel [Info.Tags] <- split(ltxt("_Tags",TLNG),"_")[0]
-orderdatalabel [Info.PlayedCount] <- split(ltxt("_PlCount",TLNG),"_")[0]
-orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",TLNG),"_")[0]
-orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",TLNG),"_")[0]
+orderdatalabel [Info.System] <- split(ltxt("_System",AF.LNG),"_")[0]
+orderdatalabel [Info.Name] <- split(ltxt("_Name",AF.LNG),"_")[0]
+orderdatalabel [Info.Title] <- split(ltxt("_Title",AF.LNG),"_")[0]
+orderdatalabel [Info.Emulator] <- split(ltxt("_Emul",AF.LNG),"_")[0]
+orderdatalabel [Info.CloneOf] <- split(ltxt("_Clone",AF.LNG),"_")[0]
+orderdatalabel [Info.Year] <- split(ltxt("_Year",AF.LNG),"_")[0]
+orderdatalabel [Info.Manufacturer] <- split(ltxt("_Manuf",AF.LNG),"_")[0]
+orderdatalabel [Info.Category] <- split(ltxt("_Categ",AF.LNG),"_")[0]
+orderdatalabel [Info.Players] <- split(ltxt("_Players",AF.LNG),"_")[0]
+orderdatalabel [Info.Rotation] <- split(ltxt("_Rot",AF.LNG),"_")[0]
+orderdatalabel [Info.Control] <- split(ltxt("_Cntrl",AF.LNG),"_")[0]
+orderdatalabel [Info.Status] <- split(ltxt("_Status",AF.LNG),"_")[0]
+orderdatalabel [Info.DisplayCount] <- split(ltxt("_DispCt",AF.LNG),"_")[0]
+orderdatalabel [Info.DisplayType] <- split(ltxt("_DispTp",AF.LNG),"_")[0]
+orderdatalabel [Info.AltRomname] <- split(ltxt("_AltRomn",AF.LNG),"_")[0]
+orderdatalabel [Info.AltTitle] <- split(ltxt("_AltTitle",AF.LNG),"_")[0]
+orderdatalabel [Info.Extra] <- split(ltxt("_Extra",AF.LNG),"_")[0]
+orderdatalabel [Info.Favourite] <- split(ltxt("_Fav",AF.LNG),"_")[0]
+orderdatalabel [Info.Tags] <- split(ltxt("_Tags",AF.LNG),"_")[0]
+orderdatalabel [Info.PlayedCount] <- split(ltxt("_PlCount",AF.LNG),"_")[0]
+orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",AF.LNG),"_")[0]
+orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",AF.LNG),"_")[0]
 
-orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",TLNG),"_")[0]
-orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavD.",TLNG),"_")[0]
-orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",TLNG),"_")[0]
-orderdatalabel [z_info.z_series] <- split(ltxt("_Series",TLNG),"_")[0]
+orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavD.",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_series] <- split(ltxt("_Series",AF.LNG),"_")[0]
 
 function readsystemdata(){
 	local sysdata = {}
@@ -4282,7 +4286,7 @@ function metamenu(starter){
 		}catch(err){}
 		metanotes.push (metavals[id])
 	}
-	zmenudraw (metadata.names,metaglyphs,metanotes, ltxt("Game Metadata",TLNG),0xe906,starter,false,false,false,false,false,
+	zmenudraw (metadata.names,metaglyphs,metanotes, ltxt("Game Metadata",AF.LNG),0xe906,starter,false,false,false,false,false,
 	function (result){
 		
 
@@ -5314,7 +5318,7 @@ function mfz_build (reset){
 			else multifilterz.filter.rawset(item,[])
 		}
 		try {table.menu.clear()}catch(err){print("\nERROR!\n")}
-		multifilterz.l0[item].label = ltxt(item,TLNG)
+		multifilterz.l0[item].label = ltxt(item,AF.LNG)
 	}
 
 	// Scan the whole romlist
@@ -5538,10 +5542,10 @@ function mfz_menudata(inputtable, level, translate, sort){
 	if (sort){
 		if (translate) {
 			// tutti vengono ordinati in base ad outnames tradotto
-			outindex.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
-			outnames.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
-			outglyph.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
-			outnumbr.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
+			outindex.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
+			outnames.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
+			outglyph.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
+			outnumbr.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
 		}
 		else {
 			// tutti vengono ordinati in base ad outnames NON tradotto
@@ -5562,7 +5566,7 @@ function mfz_menudata(inputtable, level, translate, sort){
 	// poi outnames viene effettivamente tradotto e aggiunto il dato esterno
 	for (local i=0;i<outindex.len();i++){
 		if (translate)
-			outnames[i] = ltxt(outnames[i],TLNG) 
+			outnames[i] = ltxt(outnames[i],AF.LNG) 
 		else
 			outnames[i] = outnames[i] 
 	}
@@ -5723,8 +5727,8 @@ function mfz_menu2(presel){
 	local filterarray = mfzdat.glyph
 	local numberarray = mfzdat.numbr
 
-	namearray.insert(0,ltxt("ALL",TLNG))
-	namearray.insert(0,ltxt("CLEAR",TLNG))	
+	namearray.insert(0,ltxt("ALL",AF.LNG))
+	namearray.insert(0,ltxt("CLEAR",AF.LNG))	
 
 	indexarray.insert(0,0)
 	indexarray.insert(0,0)
@@ -5780,7 +5784,7 @@ function mfz_menu1(presel){
 	local filterarray = mfzdat.glyph
 	local numberarray = mfzdat.numbr
 
-	namearray.insert(0,ltxt("CLEAR",TLNG))	
+	namearray.insert(0,ltxt("CLEAR",AF.LNG))	
 	indexarray.insert(0,0)
 	filterarray.insert(0,0xea0f)
 	numberarray.insert (0,"")
@@ -5846,11 +5850,11 @@ function mfz_menu0(presel){
 	local indexarray = mfzdat.index
 	local filterarray = mfzdat.glyph
 
-	namearray.insert(0,ltxt("CLEAR",TLNG))	
+	namearray.insert(0,ltxt("CLEAR",AF.LNG))	
 	indexarray.insert(0,0)
 	filterarray.insert(0,0xea0f)
 
-	zmenudraw (namearray,filterarray,null,ltxt("Multifilter",TLNG),0xeaed,presel,false,false,false,false,false,
+	zmenudraw (namearray,filterarray,null,ltxt("Multifilter",AF.LNG),0xeaed,presel,false,false,false,false,false,
 	function(out){
 		if (out == -1){ // Exit from multifilter menu
 			if (!umvisible){
@@ -8877,7 +8881,7 @@ function optionsmenu0(){
 	updatemenu(prfmenu.level,prfmenu.outres0)
 
 	// First level menu
-	zmenudraw (AF.prefs.a0, AF.prefs.gl0,null,ltxt("Layout options",TLNG), 0xe991, prfmenu.outres0,false,false,false,false,false,
+	zmenudraw (AF.prefs.a0, AF.prefs.gl0,null,ltxt("Layout options",AF.LNG), 0xe991, prfmenu.outres0,false,false,false,false,false,
 	function(prfmenures0){
 		// EXIT FROM OPTIONSMENU
 		prfmenu.res0 = prfmenures0
@@ -8901,8 +8905,8 @@ function optionsmenu0(){
 				saveprefdata(selection_post,null)
 				prf = generateprefstable()
 				
-				TLNG = prf.LAYOUTLANGUAGE
-				savelanguage(TLNG)
+				AF.LNG = prf.LAYOUTLANGUAGE
+				savelanguage(AF.LNG)
 								
 				DBGON = prf.DEBUGMODE
 				savedebug(DBGON ? "true" : "false")
@@ -9258,9 +9262,9 @@ function filebrowser1(file0){
 	local lastname = []
 	local folderappend = []
 
-	lastname.push( ltxt ("DEFAULT", TLNG) )
-	lastname.push( ltxt ("Attract Folder", TLNG) )
-	lastname.push( ltxt ("Arcadeflow Folder", TLNG) )
+	lastname.push( ltxt ("DEFAULT", AF.LNG) )
+	lastname.push( ltxt ("Attract Folder", AF.LNG) )
+	lastname.push( ltxt ("Arcadeflow Folder", AF.LNG) )
 	lastname.push("..")
 	
 	folderappend.push(0)
@@ -9701,12 +9705,12 @@ function tags_menu(){
 		tagstatus[i] = (z_list.gametable2[z_list.index].z_tags.find(tagsarray[i]) == null) ? 0xea0a : 0xea0b
 	}
 
-	tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",TLNG) : ltxt("Show Hidden",TLNG))
+	tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",AF.LNG) : ltxt("Show Hidden",AF.LNG))
 	tagstatus.push (0)
-	tagsarray.push (ltxt("New Tag",TLNG))
+	tagsarray.push (ltxt("New Tag",AF.LNG))
 	tagstatus.push (0xeaee)
 
-	zmenudraw (tagsarray,tagstatus,null,ltxt("TAGS",TLNG),0xeaef,0,false,false,true,false,false,
+	zmenudraw (tagsarray,tagstatus,null,ltxt("TAGS",AF.LNG),0xeaef,0,false,false,true,false,false,
 	function(out){
 		if (out == -1) { //BACK
 			frosthide()
@@ -11596,7 +11600,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		}
 		zmenu.items[i].set_pos(shrink ? 0 : zmenu.glyphw , zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.glyphw) + (shrink ?  -1.0* disp.width : 0), zmenu.tileh)
 		zmenu.items[i].msg = menuarray[i]
-		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW",TLNG)
+		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW",AF.LNG)
 		zmenu.items[i].font = uifonts.gui
 		zmenu.items[i].char_size = overlay.charsize
 		zmenu.items[i].word_wrap = true
@@ -11865,9 +11869,9 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	if ( (zmenu.dmp)){
 			
 		if ((prf.DMPSORT == "display") && prf.DMPENABLED) overlay.sidelabel.msg = ""
-		if ((prf.DMPSORT == "brandname") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND",TLNG)
-		if ((prf.DMPSORT == "brandyear") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND, YEAR",TLNG)
-		if ((prf.DMPSORT == "year") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY YEAR",TLNG)
+		if ((prf.DMPSORT == "brandname") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND",AF.LNG)
+		if ((prf.DMPSORT == "brandyear") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND, YEAR",AF.LNG)
+		if ((prf.DMPSORT == "year") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY YEAR",AF.LNG)
 
 		if (prf.DMPGENERATELOGO) {
 			for (local i=0 ; i < ((prf.DMPEXITAF && (prf.JUMPLEVEL==0)) ? zmenu.shown -1 : zmenu.shown); i++){
@@ -11999,6 +12003,20 @@ zmenu.xstop = 0
 
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
+function gh_latestdata(op){
+
+	if (op.find(ap+"tag_name"+ap) != null) {
+		gh.latest_version = split(op,ap)[3]
+	}
+	else if (op.find(ap+"body"+ap) != null) {
+		gh.release_notes = split(op,ap)[3]
+		gh.release_notes = split_complete (gh.release_notes,"\\r\\n")
+		foreach (i, item in gh.release_notes){
+			print (i+" "+item+"\n")
+		}
+	}
+}
+
 function checkforupdates(force){
 
 	if (!force && (currentdate().tointeger() <= loaddate().tointeger())) return
@@ -12009,20 +12027,17 @@ function checkforupdates(force){
 	z_splash_message( "Checking for updates...")
 	AF.updatechecking = true
 
-	local updpath = fe.path_expand( AF.folder + "latest_version.txt")
-	system("curl -s http://www.mixandmatch.it/AF/latest_version.txt -o " + ap + updpath + ap)
-	
-	local filein = ReadTextFile (updpath)
 	local ver_in = ""
-	ver_in = filein.read_line()
-	
-	AF.updatechecking = false
+	fe.plugin_command("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/releases/latest","gh_latestdata")
+	ver_in = gh.latest_version
 
+	AF.updatechecking = false
+/* RESTORE!!!!
 	if (ver_in == "") return
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
 	if (ver_in.tofloat() <= AF.version.tofloat()) {
 		if (force){
-			zmenudraw (["Ok"],null, null,ltxt("No update available",TLNG),0xe91c,0,false,false,true,false,false,
+			zmenudraw (["Ok"],null, null,ltxt("No update available",AF.LNG),0xe91c,0,false,false,true,false,false,
 			function(out){
 				zmenuhide()
 				frosthide()
@@ -12030,25 +12045,25 @@ function checkforupdates(force){
 		}
 		return
 	}
-
+*/
 	frostshow()
 	// Get the latest updates
 
 	local textarray = []
 	local glypharray = []
 
-	while (!filein.eos()){
-		textarray.push(filein.read_line())
+	foreach (i, item in gh.release_notes){
+		textarray.push(item)
 		glypharray.push (0xea08)
 	}
 
-	textarray.push (ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version",TLNG))
+	textarray.push (ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version",AF.LNG))
 	glypharray.push (0xea36)
 
-	textarray.push (ltxt("Dismiss this update",TLNG))
+	textarray.push (ltxt("Dismiss this update",AF.LNG))
 	glypharray.push (0xea0f)
 
-	zmenudraw (textarray,glypharray, null,ltxt("New version:",TLNG)+" Arcadeflow "+ver_in,0xe91c,0,false,false,false,false,false,
+	zmenudraw (textarray,glypharray, null,ltxt("New version:",AF.LNG)+" Arcadeflow "+ver_in,0xe91c,0,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			zmenuhide()
@@ -12060,12 +12075,14 @@ function checkforupdates(force){
 			// Download latest layout
 			local newafname = "Arcadeflow_"+(ver_in.tofloat()*10).tointeger()
 			local newaffolder = fe.path_expand( FeConfigDirectory) + "layouts/"+ newafname + "/"
+			local newaffolder_noslash = fe.path_expand( FeConfigDirectory) + "layouts/"+ newafname
+			local newaffolderTEMP = fe.path_expand( FeConfigDirectory) + "layouts/"+ newafname + "TEMP/"
 
 			if (!prf.AUTOINSTALL){
 				// Simply download in your home folder
 				AF.updatechecking = true
-				z_splash_message( "Downloading...")
-				system("curl -s http://www.mixandmatch.it/AF/layouts/"+newafname+".zip -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
+				z_splash_message( "Downloading...")	
+				system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw (["Ok"],null, null,newafname+".zip downloaded",0xe91c,0,false,false,true,false,false,
@@ -12078,13 +12095,22 @@ function checkforupdates(force){
 				// Download zip of new layout version
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")
-				system("curl -s http://www.mixandmatch.it/AF/layouts/" + newafname + ".zip -o " + ap + fe.path_expand(AF.folder) + newafname + ".zip" + ap)
+				// RESTORE system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				// Create target directory
 				z_splash_message( "Installing...")
+				system("mkdir "+ ap + newaffolderTEMP + ap)
 				system("mkdir "+ ap + newaffolder + ap)
 				// Unpack layout
-				//system("tar -xf " + ap + AF.folder + newafname +".tar.gz" + ap + " --directory " + ap + newaffolder + ap)
-				unzipfile (AF.folder + newafname +".zip", newaffolder)
+				unzipfile (AF.folder + newafname +".zip", newaffolderTEMP)
+				local ghfolder = DirectoryListing(newaffolderTEMP)
+				foreach (item in ghfolder.results){
+					local ghfolder2 = DirectoryListing(item)
+					foreach (item2 in ghfolder2.results){
+						system ("mv " + ap + item2 + ap + " " + ap + newaffolder + ap)
+					}
+				}
+				system ("rm -R " + newaffolderTEMP)
+				
 				// Transfer preferences
 				local dir = DirectoryListing( AF.folder )
 				foreach (item in dir.results){
@@ -12126,14 +12152,12 @@ function checkforupdates(force){
 				}
 				outfile.close_file()
 				AF.updatechecking = false
-				zmenudraw ([ltxt("Quit",TLNG)],null,null, ltxt("Arcadeflow updated to",TLNG)+" "+ ver_in ,0xe91c,0,false,false,true,false,false,
+				zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ ver_in ,0xe91c,0,false,false,true,false,false,
 				function(out){
 					zmenuhide()
 					frosthide()
 					fe.signal("exit_to_desktop")
 				})
-
-
 			}
 		}
 
@@ -12271,13 +12295,13 @@ function displayungrouped (){
 
 	if (prf.DMPEXITAF && prf.DMPENABLED) {
 		showarray.push("SYSTEM") //Will be translated by zmenu drawing
-		dispnotes.push(ltxt("",TLNG))
+		dispnotes.push(ltxt("",AF.LNG))
 		groupnotes.push("")
 		dispglyphs.push(-1)
 		menuarray.push (null)
 
 		showarray.push("EXIT ARCADEFLOW") //Will be translated by zmenu drawing
-		dispnotes.push(ltxt("",TLNG))
+		dispnotes.push(ltxt("",AF.LNG))
 		groupnotes.push("")
 		dispglyphs.push(0)
 		menuarray.push (null)
@@ -12288,13 +12312,13 @@ function displayungrouped (){
 		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
 	}
 
-	zmenudraw (showarray,dispglyphs,dispnotes,ltxt("DISPLAYS",TLNG),0xe912,currentdisplay,(prf.DMPIMAGES != null),true,true,(prf.DMPIMAGES != null),false,
+	zmenudraw (showarray,dispglyphs,dispnotes,ltxt("DISPLAYS",AF.LNG),0xe912,currentdisplay,(prf.DMPIMAGES != null),true,true,(prf.DMPIMAGES != null),false,
 	function(displayout){
 
 		if (((displayout == -1) && (prf.DMPOUTEXITAF) ) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1)) ) {
 
 			zmenu.dmp = false
-			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],TLNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",TLNG),0xe9b6,1,false,false,true,false,false,
+			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],AF.LNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",AF.LNG),0xe9b6,1,false,false,true,false,false,
 			function(result){
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -12359,7 +12383,7 @@ function displaygrouped1(){
 	prf.JUMPLEVEL = 0
 
 	// Displays the group menu
-	zmenudraw (disp.groupname,null,null,ltxt("DISPLAYS",TLNG),0xe912,disp.gmenu0out,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,true,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,false,
+	zmenudraw (disp.groupname,null,null,ltxt("DISPLAYS",AF.LNG),0xe912,disp.gmenu0out,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,true,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,false,
 	function(gmenu0){
 		disp.gmenu0 = gmenu0
 
@@ -12384,7 +12408,7 @@ function displaygrouped1(){
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF) ) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1)) ) {
 
 			zmenu.dmp = false
-			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],TLNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",TLNG),0xe9b6,1,false,false,true,false,false,
+			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],AF.LNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",AF.LNG),0xe9b6,1,false,false,true,false,false,
 			function(result){
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -13584,22 +13608,22 @@ umtable = []
 function sortarrays(){
 	local out = {
 		switcharray_sort = [
-			""+ ltxt("Title",TLNG) + " ▲",
-			""+ ltxt("Title",TLNG) + " ▼",
-			""+ ltxt("Manufacturer",TLNG) + " ▲",
-			""+ ltxt("Manufacturer",TLNG) + " ▼",
-			""+ ltxt("Year",TLNG) + " ▲",
-			""+ ltxt("Year",TLNG) + " ▼",
-			""+ ltxt("Category",TLNG) + " ▲",
-			""+ ltxt("Category",TLNG) + " ▼",
-			""+ ltxt("System",TLNG) + " ▲",
-			""+ ltxt("System",TLNG) + " ▼",
+			""+ ltxt("Title",AF.LNG) + " ▲",
+			""+ ltxt("Title",AF.LNG) + " ▼",
+			""+ ltxt("Manufacturer",AF.LNG) + " ▲",
+			""+ ltxt("Manufacturer",AF.LNG) + " ▼",
+			""+ ltxt("Year",AF.LNG) + " ▲",
+			""+ ltxt("Year",AF.LNG) + " ▼",
+			""+ ltxt("Category",AF.LNG) + " ▲",
+			""+ ltxt("Category",AF.LNG) + " ▼",
+			""+ ltxt("System",AF.LNG) + " ▲",
+			""+ ltxt("System",AF.LNG) + " ▼",
 
-			""+ ltxt("Rating",TLNG),
-			""+ ltxt("Series",TLNG),				
+			""+ ltxt("Rating",AF.LNG),
+			""+ ltxt("Series",AF.LNG),				
 
-			""+ ltxt("Last Played",TLNG),
-			""+ ltxt("Last Favourite",TLNG),
+			""+ ltxt("Last Played",AF.LNG),
+			""+ ltxt("Last Favourite",AF.LNG),
 		]
 
 		glypharray_sort = []
@@ -13635,7 +13659,7 @@ function sortarrays(){
 function buildutilitymenu(){
 
 	umtable.push ({
-		label = ltxt("Sort and Filter",TLNG)
+		label = ltxt("Sort and Filter",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13645,7 +13669,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Sort by",TLNG)
+		label = ltxt("Sort by",AF.LNG)
 		glyph = 0xea4c
 		visible = true
 		order = 0
@@ -13660,7 +13684,7 @@ function buildutilitymenu(){
 			// switcharray, glypharray and nowsort moved out of this function so it's available to sidenote
 			local dat = sortarrays()
 
-			zmenudraw (dat.switcharray_sort,dat.glypharray_sort,null,"  " + ltxt("Sort by",TLNG)+"...",0xea4c,dat.nowsort,false,false,false,false,false,
+			zmenudraw (dat.switcharray_sort,dat.glypharray_sort,null,"  " + ltxt("Sort by",AF.LNG)+"...",0xea4c,dat.nowsort,false,false,false,false,false,
 			function(result2){
 				local result_sort = []
 				if 	  (result2 == 0) result_sort = [Info.Title,false]
@@ -13706,7 +13730,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Jump to",TLNG)
+		label = ltxt ("Jump to",AF.LNG)
 		glyph = 0xea22
 		visible = true
 		order = 0
@@ -13752,7 +13776,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Favourites Filter",TLNG)
+		label = ltxt("Favourites Filter",AF.LNG)
 		glyph = 0xe9d9
 		visible = true
 		order = 0
@@ -13760,7 +13784,7 @@ function buildutilitymenu(){
 		sidenote = function(){
 			local out = ""
 			try {out = multifilterz.l0["Favourite"].menu["Favourite"].filtered ? "FAVOURITES" : "ALL GAMES"} catch(err){}
-			return (ltxt(out,TLNG))
+			return (ltxt(out,AF.LNG))
 		}
 		command = function(){
 			try {
@@ -13779,7 +13803,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Multifilter",TLNG)
+		label = ltxt("Multifilter",AF.LNG)
 		glyph = 0xeaed
 		visible = true
 		order = 0
@@ -13796,7 +13820,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Filters",TLNG)
+		label = ltxt("Filters",AF.LNG)
 		glyph = 0xea5b
 		visible = true
 		order = 0
@@ -13810,7 +13834,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Displays",TLNG)
+		label = ltxt("Displays",AF.LNG)
 		glyph = 0xe912
 		visible = true
 		order = 0
@@ -13840,13 +13864,13 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Categories",TLNG)
+		label = ltxt("Categories",AF.LNG)
 		glyph = 0xe916
 		visible = true
 		order = 0
 		id = 0
 		sidenote = function(){
-		return ((search.catg[0] != "") ? search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) : ltxt("ALL",TLNG)) 
+		return ((search.catg[0] != "") ? search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) : ltxt("ALL",AF.LNG)) 
 		}
 		command = function(){
 			categorymenu()
@@ -13854,7 +13878,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Search",TLNG)
+		label = ltxt("Search",AF.LNG)
 		glyph = 0xe986
 		visible = true
 		id = 0
@@ -13868,7 +13892,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Screensaver",TLNG)
+		label = ltxt("Screensaver",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13878,7 +13902,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Attract mode",TLNG)
+		label = ltxt("Attract mode",AF.LNG)
 		glyph = 0xe9a5
 		visible = true
 		id = 0
@@ -13893,7 +13917,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Visuals",TLNG)
+		label = ltxt("Visuals",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13903,7 +13927,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Snaps or Box-Art",TLNG)
+		label = ltxt("Snaps or Box-Art",AF.LNG)
 		glyph = 0xeaf3
 		visible = true
 		id = 0
@@ -13924,7 +13948,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Reset Box Art",TLNG)
+		label = ltxt("Reset Box Art",AF.LNG)
 		glyph = 0xe965
 		visible = true
 		id = 0
@@ -13942,7 +13966,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("System",TLNG)
+		label = ltxt("System",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13952,7 +13976,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Layout options",TLNG)
+		label = ltxt("Layout options",AF.LNG)
 		glyph = 0xe991
 		visible = true
 		id = 0
@@ -13967,7 +13991,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Check for updates",TLNG)
+		label = ltxt ("Check for updates",AF.LNG)
 		glyph = 0xe91c
 		visible = true
 		id = 0
@@ -13982,7 +14006,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("About Arcadeflow",TLNG)
+		label = ltxt ("About Arcadeflow",AF.LNG)
 		glyph = 0xea09
 		visible = true
 		id = 0
@@ -14061,7 +14085,7 @@ function utilitymenu(presel){
 	*/
 
 	frostshow()
-	zmenudraw (switcharray1, glypharray1, sidearray1, (ltxt("Utility Menu",TLNG) ),0xe9bd,presel,false,false,false,false,false,
+	zmenudraw (switcharray1, glypharray1, sidearray1, (ltxt("Utility Menu",AF.LNG) ),0xe9bd,presel,false,false,false,false,false,
 	function(result1){
 		if (result1 == -1){
 			umvisible = false
@@ -15920,8 +15944,8 @@ function subcategorymenu(maincategory,subcategory){
 	}
 
 
-	ctgarray.insert(0,ltxt("ALL",TLNG))
-	ctgarray2.insert(0,ltxt("ALL",TLNG))
+	ctgarray.insert(0,ltxt("ALL",AF.LNG))
+	ctgarray2.insert(0,ltxt("ALL",AF.LNG))
 	ctgarraynum.insert(0,"")
 
 	local currentcat = (search.catg[1] == "*") ? 0 : ctgarray.find( search.catg[1] )
@@ -15983,7 +16007,7 @@ function maincategorymenu(maincategory,subcategory){
 		ctgarraynum.push (cat[ctgarray[i]].num)
 	}
 
-	ctgarray.insert (0,ltxt("ALL",TLNG))
+	ctgarray.insert (0,ltxt("ALL",AF.LNG))
 	ctgarraynum.insert (0,"")
 	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find( search.catg[0] )
 
@@ -15991,7 +16015,7 @@ function maincategorymenu(maincategory,subcategory){
 
 	frostshow()
 
-	zmenudraw (ctgarray, ctgarrayglyph,ctgarraynum, ltxt("Categories",TLNG), 0xe916, ctgarray.find(maincategory), false,false, false,false,false,
+	zmenudraw (ctgarray, ctgarrayglyph,ctgarraynum, ltxt("Categories",AF.LNG), 0xe916, ctgarray.find(maincategory), false,false, false,false,false,
 	function(result){
 		if (result == -1) {
 			if (umvisible){
@@ -16465,7 +16489,7 @@ function on_signal( sig ){
 		}
 
 		frostshow()
-		zmenudraw (filterarray,filterglyphs,filternotes,ltxt("FILTERS",TLNG),0xea5b,(fe.filters.len() != 0 ? fe.list.filter_index : 0 ),false,false,false,false,false,
+		zmenudraw (filterarray,filterglyphs,filternotes,ltxt("FILTERS",AF.LNG),0xea5b,(fe.filters.len() != 0 ? fe.list.filter_index : 0 ),false,false,false,false,false,
 		function(result){
 			if (result != -1) {
 				fe.list.filter_index = result	
@@ -16607,7 +16631,7 @@ function on_signal( sig ){
 	if (sig == "exit"){
 		if (!prf.DMPIFEXITAF){
 			frostshow()
-			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],TLNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",TLNG),0xe9b6,1,false,false,true,false,false,
+			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],AF.LNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",AF.LNG),0xe9b6,1,false,false,true,false,false,
 			function(result){
 				if (result == 0) 	fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -16745,22 +16769,22 @@ function on_signal( sig ){
 			frostshow()
 			overmenu_hide(false)
 
-			zmenudraw (["More of the same...","Similar games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":"Disabled"], ltxt("Game Menu",TLNG),0xe916,0,false,false,false,false,false,
+			zmenudraw (["More of the same...","Similar games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":"Disabled"], ltxt("Game Menu",AF.LNG),0xe916,0,false,false,false,false,false,
 			function (result){
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
 					local switcharray = []
 					local switchnotes = []
-					switcharray.push(ltxt("Year",TLNG))
-					switcharray.push(ltxt("Decade",TLNG))
-					switcharray.push(ltxt("Manufacturer",TLNG))
-					switcharray.push(ltxt("Main Category",TLNG))
-					switcharray.push(ltxt("Sub Category",TLNG))
-					switcharray.push(ltxt("Orientation",TLNG))
-					switcharray.push(ltxt("Favourite state",TLNG))
-					switcharray.push(ltxt("Series",TLNG))
-					switcharray.push(ltxt("Rating",TLNG))
-					switcharray.push(ltxt("Arcade system",TLNG))
+					switcharray.push(ltxt("Year",AF.LNG))
+					switcharray.push(ltxt("Decade",AF.LNG))
+					switcharray.push(ltxt("Manufacturer",AF.LNG))
+					switcharray.push(ltxt("Main Category",AF.LNG))
+					switcharray.push(ltxt("Sub Category",AF.LNG))
+					switcharray.push(ltxt("Orientation",AF.LNG))
+					switcharray.push(ltxt("Favourite state",AF.LNG))
+					switcharray.push(ltxt("Series",AF.LNG))
+					switcharray.push(ltxt("Rating",AF.LNG))
+					switcharray.push(ltxt("Arcade system",AF.LNG))
 
 					switchnotes.push( z_list.gametable[z_list.index].z_year)
 					switchnotes.push( (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0,3) : "")+"x")
@@ -16773,7 +16797,7 @@ function on_signal( sig ){
 					}
 					switchnotes.push( z_list.gametable[z_list.index].z_category )
 					switchnotes.push( z_list.gametable[z_list.index].z_rotation )
-					switchnotes.push( (z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes",TLNG) : ltxt("No",TLNG) ))
+					switchnotes.push( (z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes",AF.LNG) : ltxt("No",AF.LNG) ))
 					switchnotes.push( z_list.gametable[z_list.index].z_series )
 					switchnotes.push( z_list.gametable[z_list.index].z_rating )
 					switchnotes.push( z_list.gametable[z_list.index].z_arcadesystem )
@@ -16784,11 +16808,11 @@ function on_signal( sig ){
 					foreach(i, item in switcharray) switchnotes.push ("")
 
 					local numtag = switcharray.len()
-					//switcharray.push (ltxt("RESET (KEEP FOCUS)",TLNG))
-					switcharray.push (ltxt("RESET",TLNG))
+					//switcharray.push (ltxt("RESET (KEEP FOCUS)",AF.LNG))
+					switcharray.push (ltxt("RESET",AF.LNG))
 
 					frostshow()
-					zmenudraw (switcharray,null,switchnotes, "  " + ltxt("More of the same",TLNG)+"...",0xe987,0,false,false,false,false,false,
+					zmenudraw (switcharray,null,switchnotes, "  " + ltxt("More of the same",AF.LNG)+"...",0xe987,0,false,false,false,false,false,
 					function(result){
 						if(result==numtag){
 							search.mots2string = ""
@@ -16804,18 +16828,18 @@ function on_signal( sig ){
 
 						if (result == 0) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year]
-							search.mots2string = ltxt("Year",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Year",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 1) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year.slice(0,3)]
-							search.mots2string = ltxt("Year",TLNG)+":"+search.mots[1]+"x"
+							search.mots2string = ltxt("Year",AF.LNG)+":"+search.mots[1]+"x"
 
 						}
 
 						if (result == 2) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
-							search.mots2string = ltxt("Manufacturer",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Manufacturer",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 3) {
@@ -16823,45 +16847,45 @@ function on_signal( sig ){
 								local s = z_list.gametable[z_list.index].z_category
 								local s2 = split( s, "/" )
 								search.mots = ["z_category", cleancat(s2[0])]
-								search.mots2string = ltxt("Category",TLNG)+":"+s2[0]
+								search.mots2string = ltxt("Category",AF.LNG)+":"+s2[0]
 							}
 							catch(err){}
 						}
 
 						if (result == 4) {
 							search.mots = ["z_category", z_list.gametable[z_list.index].z_category]
-							search.mots2string = ltxt("Category",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Category",AF.LNG)+":"+search.mots[1]
 
 						}
 						
 						if (result == 5) {
 							search.mots = ["z_rotation", z_list.gametable[z_list.index].z_rotation]
-							search.mots2string = ltxt("Rotation",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Rotation",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 6) {
 							search.mots = ["z_favourite", z_list.gametable2[z_list.index].z_favourite.tostring()]
-							search.mots2string = ltxt("Favourite",TLNG)+":"+(search.mots[1])
+							search.mots2string = ltxt("Favourite",AF.LNG)+":"+(search.mots[1])
 						}
 
 						if (result == 7) {
 							search.mots = ["z_series", z_list.gametable[z_list.index].z_series]
-							search.mots2string = ltxt("Series",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Series",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 8) {
 							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
-							search.mots2string = ltxt("Rating",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Rating",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 9) {
 							search.mots = ["z_arcadesystem", z_list.gametable[z_list.index].z_arcadesystem]
-							search.mots2string = ltxt("Arcade Sys",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Arcade Sys",AF.LNG)+":"+search.mots[1]
 						}
 
 						if ((result >= numset) && (result < numtag)) {
 							search.mots = ["z_tags", taglist[result - numset]]
-							search.mots2string = ltxt("Tags",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Tags",AF.LNG)+":"+search.mots[1]
 						}
 
 						// GOOD
