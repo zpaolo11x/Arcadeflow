@@ -12032,7 +12032,7 @@ function checkforupdates(force){
 	ver_in = gh.latest_version
 
 	AF.updatechecking = false
-/* RESTORE!!!!
+
 	if (ver_in == "") return
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
 	if (ver_in.tofloat() <= AF.version.tofloat()) {
@@ -12045,7 +12045,7 @@ function checkforupdates(force){
 		}
 		return
 	}
-*/
+
 	frostshow()
 	// Get the latest updates
 
@@ -12095,7 +12095,7 @@ function checkforupdates(force){
 				// Download zip of new layout version
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")
-				// RESTORE system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
+				system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				// Create target directory
 				z_splash_message( "Installing...")
 				system("mkdir "+ ap + newaffolderTEMP + ap)
