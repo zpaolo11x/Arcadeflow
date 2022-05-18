@@ -7440,7 +7440,7 @@ if (prf.LAYERSNAP){
 
 	bgvidsurf.set_pos(bgT.x,bgT.y,bgT.w,bgT.w)
 
-	bglay.pixelgrid = fl.surf.add_image("grid128x.png",bgT.x,bgT.y,bgT.w,bgT.w*128.0/bglay.bgvidsize)
+	bglay.pixelgrid = fl.surf.add_image("pics/grid128x.png",bgT.x,bgT.y,bgT.w,bgT.w*128.0/bglay.bgvidsize)
 	bglay.pixelgrid.alpha = 50
 
 	bgvidsurf.zorder = bglay.pixelgrid.zorder = -2
@@ -7727,10 +7727,10 @@ for (local i = 0; i < tiles.total; i++ ) {
 		if (!prf.AUDIOVIDSNAPS) gr_vidsz.video_flags = Vid.NoAudio
 	}
 
-	local sh_mx = obj.add_image("sh_1_1_64.png",0,0,widthpadded*selectorscale,heightpadded*selectorscale)
+	local sh_mx = obj.add_image("pics/decor/tile_shadow.png",0,0,widthpadded*selectorscale,heightpadded*selectorscale)
 	sh_mx.alpha = prf.LOGOSONLY ? 0 : 230
 	
-	local glomx = obj.add_image("gl_1_1_64.png",0,-selectorscale*verticalshift,widthpadded*selectorscale,selectorscale*heightpadded)
+	local glomx = obj.add_image("pics/decor/tile_glow.png",0,-selectorscale*verticalshift,widthpadded*selectorscale,selectorscale*heightpadded)
 	glomx.alpha = 0
 
 	local bd_mx = obj.add_rectangle(selectorscale*padding*(1.0-whitemargin),selectorscale*(-verticalshift + height/8.0 + padding*(1.0 - whitemargin)),selectorscale*(width + padding*2.0*whitemargin),selectorscale*(height*(3/4.0)+padding*2.0*whitemargin))
@@ -7800,16 +7800,16 @@ for (local i = 0; i < tiles.total; i++ ) {
 	// if (!prf.AUDIOVIDSNAPS) vidsz.video_flags = Vid.NoAudio
 
 
-	local nw_mx = obj.add_image("nw_1.png",selectorscale*padding,selectorscale*(padding-verticalshift+height*6.0/8.0),width*selectorscale/8.0,height*selectorscale/8.0)
+	local nw_mx = obj.add_image("pics/decor/new.png",selectorscale*padding,selectorscale*(padding-verticalshift+height*6.0/8.0),width*selectorscale/8.0,height*selectorscale/8.0)
 	nw_mx.visible = false
 	nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 
-	local tg_mx = obj.add_image("tagww.png",0,0,width*selectorscale/6.0,height*selectorscale/6.0)
+	local tg_mx = obj.add_image("pics/decor/tag.png",0,0,width*selectorscale/6.0,height*selectorscale/6.0)
 	tg_mx.visible = false
 	tg_mx.mipmap = true
 	tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 
-	local donez = obj.add_image("completed.png",selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
+	local donez = obj.add_image("pics/decor/completed.png",selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
 	donez.visible = false
 	donez.preserve_aspect_ratio = false
 	donez.mipmap = true
@@ -7822,7 +7822,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 	availz.set_rgb(200,50,0)
 	availz.alpha = 150
 	
-	local favez = obj.add_image("starred.png",selectorscale*(padding+width/2),selectorscale*(padding+height/2-verticalshift),selectorscale*width/2,selectorscale*height/2)
+	local favez = obj.add_image("pics/decor/starred.png",selectorscale*(padding+width/2),selectorscale*(padding+height/2-verticalshift),selectorscale*width/2,selectorscale*height/2)
 	favez.visible = false
 	favez.preserve_aspect_ratio = false
 
@@ -8048,22 +8048,22 @@ local scrolline = data_surface.add_rectangle(fl.x+footermargin,fl.y+fl.h - foote
 //scrolline.alpha = 255
 scrolline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scrollineglow = data_surface.add_image("whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10*scalerate -1 ,fl.w-2*footermargin, 20*scalerate + 1)
+local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10*scalerate -1 ,fl.w-2*footermargin, 20*scalerate + 1)
 scrollineglow.visible = false
 scrollineglow.alpha = 200
 scrollineglow.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scroller = data_surface.add_image("whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
+local scroller = data_surface.add_image("pics/ui/whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
 scroller.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scroller2 = data_surface.add_image("whitedisc2.png",scroller.x - scrollersize*0.5, scroller.y-scrollersize*0.5,scrollersize*2,scrollersize*2)
+local scroller2 = data_surface.add_image("pics/ui/whitedisc2.png",scroller.x - scrollersize*0.5, scroller.y-scrollersize*0.5,scrollersize*2,scrollersize*2)
 scroller2.visible = false
 scroller2.alpha = 200
 scroller2.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 if (prf.SCROLLERTYPE == "labellist") scroller2.alpha = scrollineglow.alpha = scroller.alpha = scrolline.alpha = 0
 
-local labelstrip = data_surface.add_image("wbox2.png")
+local labelstrip = data_surface.add_image("pics/ui/wbox2.png")
 labelstrip.visible = false
 
 local labelsurf = data_surface.add_surface (fl.w,fl.h)
@@ -8359,7 +8359,7 @@ fl.surf3.set_pos(0,0,fl.w_os*0.2,fl.h_os*0.2)
 //local overmenuwidth = (vertical ? fl.w_os * 0.7 : fl.h_os * 0.7)
 local overmenuwidth = selectorwidth * 0.9
 if (((rows == 1) && vertical ) || (!vertical && (rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2) )) overmenuwidth = selectorwidth * 0.6
-local overmenu = fl.surf.add_image("overmenu4.png",fl.x + fl.w*0.5-overmenuwidth*0.5,fl.y + fl.h*0.5-overmenuwidth*0.5,overmenuwidth,overmenuwidth)
+local overmenu = fl.surf.add_image("pics/ui/overmenu4.png",fl.x + fl.w*0.5-overmenuwidth*0.5,fl.y + fl.h*0.5-overmenuwidth*0.5,overmenuwidth,overmenuwidth)
 overmenu.visible = false
 overmenu.alpha = 0
 
@@ -9561,7 +9561,7 @@ function keyboard_type(c){
 function keyboard_draw() {
 	
 	//draw the search surface bg
-	local bg = keyboard_surface.add_image("kbg2.png", 0, 0, keyboard_surface.width, keyboard_surface.height)
+	local bg = keyboard_surface.add_image("pics/ui/kbg2.png", 0, 0, keyboard_surface.width, keyboard_surface.height)
 	bg.alpha = 230
 	
 	//draw the search text object
@@ -10318,7 +10318,7 @@ shader_lottes.set_param ("vignettebase", 0.3,1.0,2.0);			// base lightness for v
 
 shader_lottes.set_texture_param("texture")
 
-local pixelpic = fe.add_image("pixel8.png",0,0)
+local pixelpic = fe.add_image("pics/pixel8.png",0,0)
 pixelpic.visible = false
 local shader_lcd = null
 shader_lcd = fe.add_shader (Shader.Fragment,"glsl/lcd.glsl")
