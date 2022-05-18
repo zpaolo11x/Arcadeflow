@@ -12109,8 +12109,9 @@ function checkforupdates(force){
 						system ("mv " + ap + item2 + ap + " " + ap + newaffolder + ap)
 					}
 				}
-				system ("rm -R " + newaffolderTEMP)
 				
+				system (OS == "Windows" ? "rmdir /q /s " + newaffolderTEMP  : "rm -R " + newaffolderTEMP)
+
 				// Transfer preferences
 				local dir = DirectoryListing( AF.folder )
 				foreach (item in dir.results){
