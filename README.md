@@ -10,11 +10,9 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 13.3 #
+## What's new in v 13.4 #
 
-- Added new GitHub based update routine
-- Reorganised code and folder structure
-- Code cleanup
+- Fixed issues with scraper
 
 ## Emulator system identifier #
 
@@ -323,6 +321,12 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v13.3*
+
+- Added new GitHub based update routine
+- Reorganised code and folder structure
+- Code cleanup
 
 *v13.2*
 

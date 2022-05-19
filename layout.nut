@@ -1,4 +1,4 @@
-// Arcadeflow - v 13.3
+// Arcadeflow - v 13.4
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -74,7 +74,7 @@ function returngly(){
 // General AF data table
 local AF = {
 	uniglyphs = returngly()
-	version = "13.3"
+	version = "13.4"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
