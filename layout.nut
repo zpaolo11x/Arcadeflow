@@ -1,23 +1,16 @@
-// Arcadeflow - v 13.2
+// Arcadeflow - v 13.3
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
-
-function printline(linein){
-	print (linein + " : "+ fe.layout.time +"\n")
-}
-
 
 // Load file nut
 fe.do_nut("nut_file.nut")
 
 function z_write_line(file, line){
 	local b = blob( line.len() )
-
 	foreach (id, item in line)
 		b.writen( item, 'b' )
-
 	file.writeblob( b )
 }
 
@@ -27,7 +20,7 @@ function split_complete(str_in, separator){
 	while (str_in.find (separator) != null){
 		index = str_in.find (separator)
 		outarray.push (str_in.slice(0,index))
-		str_in = str_in.slice(index+1)
+		str_in = str_in.slice(index+separator.len())
 	}
 	outarray.push(str_in)
 	return outarray
@@ -78,12 +71,11 @@ function returngly(){
 	return (uniglyph)
 }
 
-
 // General AF data table
 local AF = {
 	uniglyphs = returngly()
-	version = "13.2"
-	vernum = 132
+	version = "13.3"
+	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
@@ -152,6 +144,16 @@ local AF = {
 	}
 
 	emulatordata = {}
+
+	LNG = ""
+}
+
+AF.vernum = AF.version.tofloat()*10
+
+// GitHub versioning data table
+local gh = {
+	latest_version = 0
+	release_notes = 0
 }
 
 function gly(index){
@@ -168,11 +170,10 @@ for (local i = 0 ; i < AF.scrape.columns;i++){
 local zmenu = null
 
 // Load language file
-fe.do_nut("nut_language.nut")
-local TLNG = "EN"
-try {TLNG = loadlanguage ()} catch (err){}
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too. 
-
+fe.do_nut("nut_language.nut")
+AF.LNG = "EN"
+try {AF.LNG = loadlanguage ()} catch (err){}
 
 // font definition
 local uifonts = {
@@ -188,18 +189,20 @@ local uifonts = {
 	pixel = 0.711
 }
 
+// Custom splash message wrappers with AF custom fonts
 function z_splash_message(text){
 	fe.layout.font = uifonts.monodata
 	fe.overlay.splash_message(text)
 	fe.layout.font = uifonts.general
 }
+
 function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.condensed
 	fe.overlay.edit_dialog(text1,text2)
 	fe.layout.font = uifonts.general
 }
 
-if (FeVersionNum < 250) z_splash_message (ltxt("Arcadeflow requires at least Attract Mode v2.5.0",TLNG))
+if (FeVersionNum < 250) z_splash_message (ltxt("Arcadeflow requires at least Attract Mode v2.5.0",AF.LNG))
 
 /// Config management ///
 
@@ -608,7 +611,7 @@ crr.tttt1 = fe.layout.time
 print(crr.tttt1-crr.tttt0+"msec\n")
 */
 
-/// Preferences functions and table  
+/// Preferences functions and table ///
 function letterdrives(){
 	local letters = "CDEFGHIJKLMNOPQRSTUVWXYZ"
 	local drives = []
@@ -646,9 +649,9 @@ function mfztablenames(tablein){
 	foreach (item, val in tablein){
 		outnames.push (item)
 	}
-	outnames.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
+	outnames.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
 	foreach (i, item in outnames){
-		outnames[i] = ltxt(item,TLNG) 
+		outnames[i] = ltxt(item,AF.LNG) 
 	}
 	return (outnames)
 }
@@ -946,7 +949,6 @@ AF.prefs.l1.push([
 ])
 
 function reset_layout() {
-	
 	try { remove (AF.folder + "pref_savedlanguage.txt") } catch (err) {}
 	try { remove (AF.folder + "pref_sortorder.txt") } catch (err) {}
 	try { remove (AF.folder + "pref_thumbtype.txt") } catch (err) {}
@@ -954,7 +956,6 @@ function reset_layout() {
 	try { remove (AF.folder + "pref_update.txt") } catch (err) {}
 	try { remove (AF.folder + "pref_checkdate.txt") } catch (err) {}
 	try { remove (AF.folder + "scrapelog.txt") } catch (err) {}
-
 	try { remove (AF.folder + "latest_version.txt") } catch (err) {}
 
 	local dir = DirectoryListing( AF.folder )
@@ -963,31 +964,27 @@ function reset_layout() {
 	}
 
 	fe.signal("exit_to_desktop")
-
 }
 
 // Translate preference data structure
-
 for (local i = 0 ; i < AF.prefs.l1.len() ; i ++) {
 	local isnewparent = false
 	for (local j = 0 ; j < AF.prefs.l1[i].len() ; j ++) {
 		local isnew =  (AF.prefs.l1[i][j].v.tofloat() == AF.version.tofloat())
-		AF.prefs.l1[i][j].title = (isnew ? "❗ " : "") + ltxt(AF.prefs.l1[i][j].title,TLNG) + (isnew ? " ❗" : "")
-		if ((AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].help = ltxt(AF.prefs.l1[i][j].help,TLNG)
-		if ((AF.prefs.l1[i][j].selection != -4) && (AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].options = ltxtarray(AF.prefs.l1[i][j].options,TLNG)
+		AF.prefs.l1[i][j].title = (isnew ? "❗ " : "") + ltxt(AF.prefs.l1[i][j].title,AF.LNG) + (isnew ? " ❗" : "")
+		if ((AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].help = ltxt(AF.prefs.l1[i][j].help,AF.LNG)
+		if ((AF.prefs.l1[i][j].selection != -4) && (AF.prefs.l1[i][j].selection != -100)) AF.prefs.l1[i][j].options = ltxtarray(AF.prefs.l1[i][j].options,AF.LNG)
 		if (isnew) isnewparent = true
 	}
-	AF.prefs.l0[i].label = (isnewparent ? "❗ " : "") + ltxt(AF.prefs.l0[i].label,TLNG) + (isnewparent ? " ❗" : "")
-	AF.prefs.l0[i].description = ltxt(AF.prefs.l0[i].description,TLNG)
+	AF.prefs.l0[i].label = (isnewparent ? "❗ " : "") + ltxt(AF.prefs.l0[i].label,AF.LNG) + (isnewparent ? " ❗" : "")
+	AF.prefs.l0[i].description = ltxt(AF.prefs.l0[i].description,AF.LNG)
 	AF.prefs.a0.push (AF.prefs.l0[i].label)
 	AF.prefs.gl0.push (AF.prefs.l0[i].glyph)	
 }
 
 // GENERATE ABOUT FILE
-
 function abouttext(){
 	local about = []
-
 	for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
 		about.push (AF.prefs.l0[i].label+"\n")
 		about.push (AF.prefs.l0[i].description+"\n")
@@ -1005,8 +1002,8 @@ function historytext(){
 	local verfile = null
 	local history = []
 	while (scanver > 10) {
-		if (file_exist(AF.folder+scanver+".txt")) {
-			verfile = ReadTextFile (AF.folder+scanver+".txt")
+		if (file_exist(AF.folder+"history/"+scanver+".txt")) {
+			verfile = ReadTextFile (AF.folder+"history/"+scanver+".txt")
 			history.push ("*v"+verfile.read_line()+"*"+"\n\n")
 			while (!verfile.eos()){
 				history.push ("- "+verfile.read_line()+"\n")
@@ -1029,25 +1026,24 @@ function buildreadme(){
 	readme.push ("# Arcadeflow - Attract Mode theme by zpaolo11x - v "+AF.version+" #\n")
 	readme.push ("\n")
 	
-	infile = ReadTextFile (AF.folder+"00_intro.txt")
+	infile = ReadTextFile (AF.folder+"history/00_intro.txt")
 	while (!infile.eos()) readme.push (infile.read_line()+"\n")
 	readme.push ("\n")
 	readme.push ("## What's new in v "+AF.version+" #"+"\n")
 	readme.push ("\n")
 
-	infile = ReadTextFile (AF.folder+AF.vernum+".txt")
+	infile = ReadTextFile (AF.folder+"history/"+AF.vernum+".txt")
 	infile.read_line()
 	while (!infile.eos()) readme.push ("- "+infile.read_line()+"\n")
 	readme.push ("\n")
 
-	infile = ReadTextFile (AF.folder+"00_presentation.txt")
+	infile = ReadTextFile (AF.folder+"history/00_presentation.txt")
 	while (!infile.eos()) readme.push (infile.read_line()+"\n")
 	readme.push ("\n")	
 
 	readme.extend(abouttext())
 
 	readme.push("## Previous versions history #\n\n")
-
 	readme.extend(historytext())
 
 	return readme
@@ -1084,8 +1080,6 @@ function printabout(){
 		print(about[i]+"\n")
 	}
 }
-//saveabout()
-//historytext()
 
 // Reads data from the preferences structures and builds the preferences variable table
 // This is the table with the values used in the layout like prf.BOXARTMODE = true etc
@@ -1098,8 +1092,7 @@ function generateprefstable(){
 				if (tempdat.selection >=0) tempdat.initvar(((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection]),prf)
    	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)){//-2 is the function execution
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
-					tempdat.initvar(tempdat.values,prf) 
-					
+					tempdat.initvar(tempdat.values,prf)				
 				}
 			}
 		}
@@ -1118,11 +1111,8 @@ function generateselectiontable(){
          if (tempdat.selection != -100){
 	         if (tempdat.selection >=0) tempdat.initvar(tempdat.selection,prf)
    	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)) {
-				
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					tempdat.initvar(tempdat.values,prf) 
-					
-				
 				}
 			}
 		}
@@ -1145,7 +1135,6 @@ function saveprefdata(prf,target){
 
 // readprefdata() reads values of a selection and puts them in the preferences structure. 
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
-
 function readprefdata(target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
    if (target != null) prfpath = target
@@ -1157,40 +1146,33 @@ function readprefdata(target){
 		return false
 	}
 
-	// if (version != AF.version) {
-	//		fe.overlay.splash_message ("Preference version different from AF version, resetting to default")
-	//		return false
-	//	}
-	// else {
-		local warnmessage = ""
-		while (!prffile.eos()){
-			local templine = prffile.read_line()
-			local z = split (templine,"|")
+	local warnmessage = ""
+	while (!prffile.eos()){
+		local templine = prffile.read_line()
+		local z = split (templine,"|")
 
-			for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
-				for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-					local tempdat = AF.prefs.l1[i][j] //Instancing!
+		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
+			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
+				local tempdat = AF.prefs.l1[i][j] //Instancing!
 
-					if (tempdat.varname.toupper() == z[0]) {
-
-						if (tempdat.v.tofloat() <= version.tofloat() ) {
-							if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
-							else if (z.len() == 1) tempdat.values = ""
-							else tempdat.values = z[1]               
-						}
-						else {
-							warnmessage = warnmessage + ("- "+ tempdat.title + "\n")
-						}
+				if (tempdat.varname.toupper() == z[0]) {
+					if (tempdat.v.tofloat() <= version.tofloat() ) {
+						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
+						else if (z.len() == 1) tempdat.values = ""
+						else tempdat.values = z[1]               
+					}
+					else {
+						warnmessage = warnmessage + ("- "+ tempdat.title + "\n")
 					}
 				}
-			}		
-		}
-		if (warnmessage != "") {
-			z_splash_message ("Reset prefs:\n\n" + warnmessage)
-			return false
-		}
+			}
+		}		
+	}
+	if (warnmessage != "") {
+		z_splash_message ("Reset prefs:\n\n" + warnmessage)
+		return false
+	}
 	return true
-	// }
 }
 
 /// Current date management ///
@@ -1284,7 +1266,7 @@ prf.JUMPLEVEL <- 0 //Level 0 for parent list, level 1 for sub-lists, exit arcade
 
 prf.OLDOPTIONSPAGE <- false
 
-prf.SPLASHLOGOFILE = ( prf.SPLASHLOGOFILE == "" ? "aflogox.png" : prf.SPLASHLOGOFILE),
+prf.SPLASHLOGOFILE = ( prf.SPLASHLOGOFILE == "" ? "pics/logo/aflogox.png" : prf.SPLASHLOGOFILE),
 
 prf.AMSTART <- (prf.AMENABLE == "From start")
 prf.AMENABLE = (prf.AMENABLE != "Disabled")
@@ -1305,15 +1287,13 @@ DBGON = prf.DEBUGMODE
 savedebug(DBGON ? "true" : "false")
 
 // Set and save layout language
-TLNG = prf.LAYOUTLANGUAGE
-savelanguage(TLNG)
+AF.LNG = prf.LAYOUTLANGUAGE
+savelanguage(AF.LNG)
 
 // Check conflicts in custom buttons
 function check_buttons(){
 	local buttonarray = [prf.SWITCHMODEBUTTON , prf.UTILITYMENUBUTTON, prf.OVERMENUBUTTON, prf.HISTORYBUTTON, prf.SEARCHBUTTON,prf.CATEGORYBUTTON,prf.MULTIFILTERBUTTON,prf.DELETEBUTTON,prf.VOLUMEBUTTON]
-
 	local conflict = false
-
 	for (local i = 0 ; i < buttonarray.len() ; i++){
 		if (buttonarray[i] != "none") {
 			for (local j = 0 ; j < buttonarray.len() ; j++){
@@ -1365,7 +1345,6 @@ if (prf.LOWSPECMODE){
 	prf.SNAPGLOW = false
 }
 
-
 /// HUECYCLE ///
 local huecycle = {
 	hue = 0
@@ -1377,12 +1356,15 @@ local huecycle = {
 	maxhue = 359 			//Hue cycle stop rom 0 to 359
 	pingpong = prf.HCPINGPONG		//Jump back and forth between min and max
 }
+
 huecycle.hue = huecycle.minhue
+
 try {
 	huecycle.minhue = prf.HCHUESTART.tointeger()
 	if (huecycle.minhue < 0) huecycle.minhue = 0
 	if (huecycle.minhue > 358) huecycle.minhue = 358
 }catch(err){}
+
 try {
 	huecycle.maxhue = prf.HCHUESTOP.tointeger()
 	if (huecycle.maxhue < 1) huecycle.maxhue = 1
@@ -1403,33 +1385,33 @@ if (prf.LOGOSONLY) {
 
 
 local orderdatalabel = {}
-orderdatalabel [Info.System] <- split(ltxt("_System",TLNG),"_")[0]
-orderdatalabel [Info.Name] <- split(ltxt("_Name",TLNG),"_")[0]
-orderdatalabel [Info.Title] <- split(ltxt("_Title",TLNG),"_")[0]
-orderdatalabel [Info.Emulator] <- split(ltxt("_Emul",TLNG),"_")[0]
-orderdatalabel [Info.CloneOf] <- split(ltxt("_Clone",TLNG),"_")[0]
-orderdatalabel [Info.Year] <- split(ltxt("_Year",TLNG),"_")[0]
-orderdatalabel [Info.Manufacturer] <- split(ltxt("_Manuf",TLNG),"_")[0]
-orderdatalabel [Info.Category] <- split(ltxt("_Categ",TLNG),"_")[0]
-orderdatalabel [Info.Players] <- split(ltxt("_Players",TLNG),"_")[0]
-orderdatalabel [Info.Rotation] <- split(ltxt("_Rot",TLNG),"_")[0]
-orderdatalabel [Info.Control] <- split(ltxt("_Cntrl",TLNG),"_")[0]
-orderdatalabel [Info.Status] <- split(ltxt("_Status",TLNG),"_")[0]
-orderdatalabel [Info.DisplayCount] <- split(ltxt("_DispCt",TLNG),"_")[0]
-orderdatalabel [Info.DisplayType] <- split(ltxt("_DispTp",TLNG),"_")[0]
-orderdatalabel [Info.AltRomname] <- split(ltxt("_AltRomn",TLNG),"_")[0]
-orderdatalabel [Info.AltTitle] <- split(ltxt("_AltTitle",TLNG),"_")[0]
-orderdatalabel [Info.Extra] <- split(ltxt("_Extra",TLNG),"_")[0]
-orderdatalabel [Info.Favourite] <- split(ltxt("_Fav",TLNG),"_")[0]
-orderdatalabel [Info.Tags] <- split(ltxt("_Tags",TLNG),"_")[0]
-orderdatalabel [Info.PlayedCount] <- split(ltxt("_PlCount",TLNG),"_")[0]
-orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",TLNG),"_")[0]
-orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",TLNG),"_")[0]
+orderdatalabel [Info.System] <- split(ltxt("_System",AF.LNG),"_")[0]
+orderdatalabel [Info.Name] <- split(ltxt("_Name",AF.LNG),"_")[0]
+orderdatalabel [Info.Title] <- split(ltxt("_Title",AF.LNG),"_")[0]
+orderdatalabel [Info.Emulator] <- split(ltxt("_Emul",AF.LNG),"_")[0]
+orderdatalabel [Info.CloneOf] <- split(ltxt("_Clone",AF.LNG),"_")[0]
+orderdatalabel [Info.Year] <- split(ltxt("_Year",AF.LNG),"_")[0]
+orderdatalabel [Info.Manufacturer] <- split(ltxt("_Manuf",AF.LNG),"_")[0]
+orderdatalabel [Info.Category] <- split(ltxt("_Categ",AF.LNG),"_")[0]
+orderdatalabel [Info.Players] <- split(ltxt("_Players",AF.LNG),"_")[0]
+orderdatalabel [Info.Rotation] <- split(ltxt("_Rot",AF.LNG),"_")[0]
+orderdatalabel [Info.Control] <- split(ltxt("_Cntrl",AF.LNG),"_")[0]
+orderdatalabel [Info.Status] <- split(ltxt("_Status",AF.LNG),"_")[0]
+orderdatalabel [Info.DisplayCount] <- split(ltxt("_DispCt",AF.LNG),"_")[0]
+orderdatalabel [Info.DisplayType] <- split(ltxt("_DispTp",AF.LNG),"_")[0]
+orderdatalabel [Info.AltRomname] <- split(ltxt("_AltRomn",AF.LNG),"_")[0]
+orderdatalabel [Info.AltTitle] <- split(ltxt("_AltTitle",AF.LNG),"_")[0]
+orderdatalabel [Info.Extra] <- split(ltxt("_Extra",AF.LNG),"_")[0]
+orderdatalabel [Info.Favourite] <- split(ltxt("_Fav",AF.LNG),"_")[0]
+orderdatalabel [Info.Tags] <- split(ltxt("_Tags",AF.LNG),"_")[0]
+orderdatalabel [Info.PlayedCount] <- split(ltxt("_PlCount",AF.LNG),"_")[0]
+orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",AF.LNG),"_")[0]
+orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",AF.LNG),"_")[0]
 
-orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",TLNG),"_")[0]
-orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavD.",TLNG),"_")[0]
-orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",TLNG),"_")[0]
-orderdatalabel [z_info.z_series] <- split(ltxt("_Series",TLNG),"_")[0]
+orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavD.",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_series] <- split(ltxt("_Series",AF.LNG),"_")[0]
 
 function readsystemdata(){
 	local sysdata = {}
@@ -1748,21 +1730,7 @@ function hsl2rgb (H,S,L){
 	return (OUT)
 }
 
-if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
-	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
-	local songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
-	for (local i = 0; i < songdirarray.len()-1; i++){
-		songdir += songdirarray[i]+"/"
-	}
-	local filelist = DirectoryListing (songdir).results
-	foreach (i,item in filelist){
-		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
-	}
-}
-
-
 function applycustomcolor(){
-
 	local colorarray = split(prf.CUSTOMCOLOR," ")
 	if (colorarray.len() != 3) return
 
@@ -1784,13 +1752,26 @@ function applycustomcolor(){
 
 if (prf.CUSTOMCOLOR != "") applycustomcolor()
 
+// Music
+if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
+	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
+	local songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
+	for (local i = 0; i < songdirarray.len()-1; i++){
+		songdir += songdirarray[i]+"/"
+	}
+	local filelist = DirectoryListing (songdir).results
+	foreach (i,item in filelist){
+		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
+	}
+}
+
 // UI sounds
 local snd = {
-	clicksound = fe.add_sound("mouse3.mp3")
-	plingsound = fe.add_sound("pling1.wav")
-	mplinsound = fe.add_sound("pling2.wav")
-	wooshsound = fe.add_sound("woosh4.mp3")
-	mbacksound = fe.add_sound("woosh5.mp3")
+	clicksound = fe.add_sound("sounds/mouse3.mp3")
+	plingsound = fe.add_sound("sounds/pling1.wav")
+	mplinsound = fe.add_sound("sounds/pling2.wav")
+	wooshsound = fe.add_sound("sounds/woosh4.mp3")
+	mbacksound = fe.add_sound("sounds/woosh5.mp3")
 	attracttune = fe.add_sound(prf.AMTUNE)
 	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
 	attracttuneplay = false
@@ -2004,7 +1985,7 @@ if (prf.CUSTOMSIZE != ""){
 	catch ( err ) { z_splash_message("Wrong syntax in screen resolution");prf.CUSTOMSIZE = "";scr.w = ScreenWidth; scr.h = ScreenHeight }
 }
 
-
+// Screen size and overscan management
 local fl = {
 	w_os = scr.w
 	h_os = scr.h
@@ -2021,41 +2002,33 @@ local fl = {
 	y = 0
 }
 
-//if (prf.OVERSCANW != "") {
-	try {
-		fl.overscan_w = prf.OVERSCANW.tointeger()
-		if ((fl.overscan_w > 0) && (fl.overscan_w <= 100)){
-			fl.overscan_w = fl.overscan_w / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_w = prf.OVERSCANW.tointeger()
+	if ((fl.overscan_w > 0) && (fl.overscan_w <= 100)){
+		fl.overscan_w = fl.overscan_w / 100.0
+	}
+}catch(err){}
 
-//if (prf.OVERSCANH != "") {
-	try {
-		fl.overscan_h = prf.OVERSCANH.tointeger()
-		if ((fl.overscan_h > 0) && (fl.overscan_h <= 100)){
-			fl.overscan_h = fl.overscan_h / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_h = prf.OVERSCANH.tointeger()
+	if ((fl.overscan_h > 0) && (fl.overscan_h <= 100)){
+		fl.overscan_h = fl.overscan_h / 100.0
+	}
+}catch(err){}
 
-//if (prf.OVERSCANX != "") {
-	try {
-		fl.overscan_x = prf.OVERSCANX.tointeger()
-		if ((fl.overscan_x >= -100) && (fl.overscan_x <= 100)){
-			fl.overscan_x = fl.overscan_x / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_x = prf.OVERSCANX.tointeger()
+	if ((fl.overscan_x >= -100) && (fl.overscan_x <= 100)){
+		fl.overscan_x = fl.overscan_x / 100.0
+	}
+}catch(err){}
 
-//if (prf.OVERSCANY != "") {
-	try {
-		fl.overscan_y = prf.OVERSCANY.tointeger()
-		if ((fl.overscan_y >= -100) && (fl.overscan_y <= 100)){
-			fl.overscan_y = fl.overscan_y / 100.0
-		}
-	}catch(err){}
-//}
+try {
+	fl.overscan_y = prf.OVERSCANY.tointeger()
+	if ((fl.overscan_y >= -100) && (fl.overscan_y <= 100)){
+		fl.overscan_y = fl.overscan_y / 100.0
+	}
+}catch(err){}
 
 local rotation = {
 	real = null
@@ -2135,7 +2108,6 @@ Nominal (for calculation purposes) sizes:
 	Vertical shift: 16
 */
 
-
 //calculate number of columns
 local cols = (1 + 2*(floor (( fl.w/2 + widthmix/2 - padding) / (widthmix + padding))))
 // add safeguard tiles
@@ -2153,11 +2125,8 @@ local carrierT = {
 
 // Changed selectorscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
-//TEST106 Changed reduced zoom from 1.1 to 1.15 (still no overlap of tiles)
 local selectorscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (rows == 1 ? (vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
-
 local whitemargin = 0.15
-
 local selectorwidth = selectorscale * widthpadded
 
 // correction data for non-centered first tiles
@@ -2322,7 +2291,6 @@ function powerman(action){
 	}
 }
 
-
 function extradatatable(inputfile){
 	local filepath = fe.path_expand(inputfile)
 
@@ -2367,7 +2335,6 @@ ratetonumber["60 to 70 (Passable)"] <- "7.0"
 ratetonumber["70 to 80 (Good)"] <- "8.0"
 ratetonumber["80 to 90 (Very Good)"] <- "9.0"
 ratetonumber["90 to 100 (Best Games)"] <- "10.0"
-
 
 function afsort(arr_in, arr_mixval){
 
@@ -4321,7 +4288,7 @@ function metamenu(starter){
 		}catch(err){}
 		metanotes.push (metavals[id])
 	}
-	zmenudraw (metadata.names,metaglyphs,metanotes, ltxt("Game Metadata",TLNG),0xe906,starter,false,false,false,false,false,
+	zmenudraw (metadata.names,metaglyphs,metanotes, ltxt("Game Metadata",AF.LNG),0xe906,starter,false,false,false,false,false,
 	function (result){
 		
 
@@ -5353,7 +5320,7 @@ function mfz_build (reset){
 			else multifilterz.filter.rawset(item,[])
 		}
 		try {table.menu.clear()}catch(err){print("\nERROR!\n")}
-		multifilterz.l0[item].label = ltxt(item,TLNG)
+		multifilterz.l0[item].label = ltxt(item,AF.LNG)
 	}
 
 	// Scan the whole romlist
@@ -5577,10 +5544,10 @@ function mfz_menudata(inputtable, level, translate, sort){
 	if (sort){
 		if (translate) {
 			// tutti vengono ordinati in base ad outnames tradotto
-			outindex.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
-			outnames.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
-			outglyph.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
-			outnumbr.sort(@(a,b) ltxt(a,TLNG).tolower() <=> ltxt(b,TLNG).tolower())
+			outindex.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
+			outnames.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
+			outglyph.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
+			outnumbr.sort(@(a,b) ltxt(a,AF.LNG).tolower() <=> ltxt(b,AF.LNG).tolower())
 		}
 		else {
 			// tutti vengono ordinati in base ad outnames NON tradotto
@@ -5601,7 +5568,7 @@ function mfz_menudata(inputtable, level, translate, sort){
 	// poi outnames viene effettivamente tradotto e aggiunto il dato esterno
 	for (local i=0;i<outindex.len();i++){
 		if (translate)
-			outnames[i] = ltxt(outnames[i],TLNG) 
+			outnames[i] = ltxt(outnames[i],AF.LNG) 
 		else
 			outnames[i] = outnames[i] 
 	}
@@ -5762,8 +5729,8 @@ function mfz_menu2(presel){
 	local filterarray = mfzdat.glyph
 	local numberarray = mfzdat.numbr
 
-	namearray.insert(0,ltxt("ALL",TLNG))
-	namearray.insert(0,ltxt("CLEAR",TLNG))	
+	namearray.insert(0,ltxt("ALL",AF.LNG))
+	namearray.insert(0,ltxt("CLEAR",AF.LNG))	
 
 	indexarray.insert(0,0)
 	indexarray.insert(0,0)
@@ -5819,7 +5786,7 @@ function mfz_menu1(presel){
 	local filterarray = mfzdat.glyph
 	local numberarray = mfzdat.numbr
 
-	namearray.insert(0,ltxt("CLEAR",TLNG))	
+	namearray.insert(0,ltxt("CLEAR",AF.LNG))	
 	indexarray.insert(0,0)
 	filterarray.insert(0,0xea0f)
 	numberarray.insert (0,"")
@@ -5885,11 +5852,11 @@ function mfz_menu0(presel){
 	local indexarray = mfzdat.index
 	local filterarray = mfzdat.glyph
 
-	namearray.insert(0,ltxt("CLEAR",TLNG))	
+	namearray.insert(0,ltxt("CLEAR",AF.LNG))	
 	indexarray.insert(0,0)
 	filterarray.insert(0,0xea0f)
 
-	zmenudraw (namearray,filterarray,null,ltxt("Multifilter",TLNG),0xeaed,presel,false,false,false,false,false,
+	zmenudraw (namearray,filterarray,null,ltxt("Multifilter",AF.LNG),0xeaed,presel,false,false,false,false,false,
 	function(out){
 		if (out == -1){ // Exit from multifilter menu
 			if (!umvisible){
@@ -7479,7 +7446,7 @@ if (prf.LAYERSNAP){
 
 	bgvidsurf.set_pos(bgT.x,bgT.y,bgT.w,bgT.w)
 
-	bglay.pixelgrid = fl.surf.add_image("grid128x.png",bgT.x,bgT.y,bgT.w,bgT.w*128.0/bglay.bgvidsize)
+	bglay.pixelgrid = fl.surf.add_image("pics/grid128x.png",bgT.x,bgT.y,bgT.w,bgT.w*128.0/bglay.bgvidsize)
 	bglay.pixelgrid.alpha = 50
 
 	bgvidsurf.zorder = bglay.pixelgrid.zorder = -2
@@ -7766,10 +7733,10 @@ for (local i = 0; i < tiles.total; i++ ) {
 		if (!prf.AUDIOVIDSNAPS) gr_vidsz.video_flags = Vid.NoAudio
 	}
 
-	local sh_mx = obj.add_image("sh_1_1_64.png",0,0,widthpadded*selectorscale,heightpadded*selectorscale)
+	local sh_mx = obj.add_image("pics/decor/tile_shadow.png",0,0,widthpadded*selectorscale,heightpadded*selectorscale)
 	sh_mx.alpha = prf.LOGOSONLY ? 0 : 230
 	
-	local glomx = obj.add_image("gl_1_1_64.png",0,-selectorscale*verticalshift,widthpadded*selectorscale,selectorscale*heightpadded)
+	local glomx = obj.add_image("pics/decor/tile_glow.png",0,-selectorscale*verticalshift,widthpadded*selectorscale,selectorscale*heightpadded)
 	glomx.alpha = 0
 
 	local bd_mx = obj.add_rectangle(selectorscale*padding*(1.0-whitemargin),selectorscale*(-verticalshift + height/8.0 + padding*(1.0 - whitemargin)),selectorscale*(width + padding*2.0*whitemargin),selectorscale*(height*(3/4.0)+padding*2.0*whitemargin))
@@ -7839,16 +7806,16 @@ for (local i = 0; i < tiles.total; i++ ) {
 	// if (!prf.AUDIOVIDSNAPS) vidsz.video_flags = Vid.NoAudio
 
 
-	local nw_mx = obj.add_image("nw_1.png",selectorscale*padding,selectorscale*(padding-verticalshift+height*6.0/8.0),width*selectorscale/8.0,height*selectorscale/8.0)
+	local nw_mx = obj.add_image("pics/decor/new.png",selectorscale*padding,selectorscale*(padding-verticalshift+height*6.0/8.0),width*selectorscale/8.0,height*selectorscale/8.0)
 	nw_mx.visible = false
 	nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 
-	local tg_mx = obj.add_image("tagww.png",0,0,width*selectorscale/6.0,height*selectorscale/6.0)
+	local tg_mx = obj.add_image("pics/decor/tag.png",0,0,width*selectorscale/6.0,height*selectorscale/6.0)
 	tg_mx.visible = false
 	tg_mx.mipmap = true
 	tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 
-	local donez = obj.add_image("completed.png",selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
+	local donez = obj.add_image("pics/decor/completed.png",selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
 	donez.visible = false
 	donez.preserve_aspect_ratio = false
 	donez.mipmap = true
@@ -7861,7 +7828,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 	availz.set_rgb(200,50,0)
 	availz.alpha = 150
 	
-	local favez = obj.add_image("starred.png",selectorscale*(padding+width/2),selectorscale*(padding+height/2-verticalshift),selectorscale*width/2,selectorscale*height/2)
+	local favez = obj.add_image("pics/decor/starred.png",selectorscale*(padding+width/2),selectorscale*(padding+height/2-verticalshift),selectorscale*width/2,selectorscale*height/2)
 	favez.visible = false
 	favez.preserve_aspect_ratio = false
 
@@ -8087,22 +8054,22 @@ local scrolline = data_surface.add_rectangle(fl.x+footermargin,fl.y+fl.h - foote
 //scrolline.alpha = 255
 scrolline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scrollineglow = data_surface.add_image("whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10*scalerate -1 ,fl.w-2*footermargin, 20*scalerate + 1)
+local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10*scalerate -1 ,fl.w-2*footermargin, 20*scalerate + 1)
 scrollineglow.visible = false
 scrollineglow.alpha = 200
 scrollineglow.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scroller = data_surface.add_image("whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
+local scroller = data_surface.add_image("pics/ui/whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
 scroller.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scroller2 = data_surface.add_image("whitedisc2.png",scroller.x - scrollersize*0.5, scroller.y-scrollersize*0.5,scrollersize*2,scrollersize*2)
+local scroller2 = data_surface.add_image("pics/ui/whitedisc2.png",scroller.x - scrollersize*0.5, scroller.y-scrollersize*0.5,scrollersize*2,scrollersize*2)
 scroller2.visible = false
 scroller2.alpha = 200
 scroller2.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 if (prf.SCROLLERTYPE == "labellist") scroller2.alpha = scrollineglow.alpha = scroller.alpha = scrolline.alpha = 0
 
-local labelstrip = data_surface.add_image("wbox2.png")
+local labelstrip = data_surface.add_image("pics/ui/wbox2.png")
 labelstrip.visible = false
 
 local labelsurf = data_surface.add_surface (fl.w,fl.h)
@@ -8398,7 +8365,7 @@ fl.surf3.set_pos(0,0,fl.w_os*0.2,fl.h_os*0.2)
 //local overmenuwidth = (vertical ? fl.w_os * 0.7 : fl.h_os * 0.7)
 local overmenuwidth = selectorwidth * 0.9
 if (((rows == 1) && vertical ) || (!vertical && (rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2) )) overmenuwidth = selectorwidth * 0.6
-local overmenu = fl.surf.add_image("overmenu4.png",fl.x + fl.w*0.5-overmenuwidth*0.5,fl.y + fl.h*0.5-overmenuwidth*0.5,overmenuwidth,overmenuwidth)
+local overmenu = fl.surf.add_image("pics/ui/overmenu4.png",fl.x + fl.w*0.5-overmenuwidth*0.5,fl.y + fl.h*0.5-overmenuwidth*0.5,overmenuwidth,overmenuwidth)
 overmenu.visible = false
 overmenu.alpha = 0
 
@@ -8482,10 +8449,10 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelsize-2,overlay.w,2)
 
-overlay.shad.push (fe.add_image(AF.folder+"wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50*scalerate)))
-overlay.shad.push (fe.add_image(AF.folder+"wgradientTb.png", overlay.x, overlay.y-floor(50*scalerate), overlay.w, floor(50*scalerate)))
-overlay.shad.push (fe.add_image(AF.folder+"wgradientLb.png", overlay.x-floor(50*scalerate), overlay.y,floor(50*scalerate), overlay.h))
-overlay.shad.push (fe.add_image(AF.folder+"wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50*scalerate), overlay.h))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50*scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50*scalerate), overlay.w, floor(50*scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50*scalerate), overlay.y,floor(50*scalerate), overlay.h))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50*scalerate), overlay.h))
 
 foreach (item in overlay.shad){
 	item.alpha = 0
@@ -8916,7 +8883,7 @@ function optionsmenu0(){
 	updatemenu(prfmenu.level,prfmenu.outres0)
 
 	// First level menu
-	zmenudraw (AF.prefs.a0, AF.prefs.gl0,null,ltxt("Layout options",TLNG), 0xe991, prfmenu.outres0,false,false,false,false,false,
+	zmenudraw (AF.prefs.a0, AF.prefs.gl0,null,ltxt("Layout options",AF.LNG), 0xe991, prfmenu.outres0,false,false,false,false,false,
 	function(prfmenures0){
 		// EXIT FROM OPTIONSMENU
 		prfmenu.res0 = prfmenures0
@@ -8940,8 +8907,8 @@ function optionsmenu0(){
 				saveprefdata(selection_post,null)
 				prf = generateprefstable()
 				
-				TLNG = prf.LAYOUTLANGUAGE
-				savelanguage(TLNG)
+				AF.LNG = prf.LAYOUTLANGUAGE
+				savelanguage(AF.LNG)
 								
 				DBGON = prf.DEBUGMODE
 				savedebug(DBGON ? "true" : "false")
@@ -9297,9 +9264,9 @@ function filebrowser1(file0){
 	local lastname = []
 	local folderappend = []
 
-	lastname.push( ltxt ("DEFAULT", TLNG) )
-	lastname.push( ltxt ("Attract Folder", TLNG) )
-	lastname.push( ltxt ("Arcadeflow Folder", TLNG) )
+	lastname.push( ltxt ("DEFAULT", AF.LNG) )
+	lastname.push( ltxt ("Attract Folder", AF.LNG) )
+	lastname.push( ltxt ("Arcadeflow Folder", AF.LNG) )
 	lastname.push("..")
 	
 	folderappend.push(0)
@@ -9600,7 +9567,7 @@ function keyboard_type(c){
 function keyboard_draw() {
 	
 	//draw the search surface bg
-	local bg = keyboard_surface.add_image("kbg2.png", 0, 0, keyboard_surface.width, keyboard_surface.height)
+	local bg = keyboard_surface.add_image("pics/ui/kbg2.png", 0, 0, keyboard_surface.width, keyboard_surface.height)
 	bg.alpha = 230
 	
 	//draw the search text object
@@ -9740,12 +9707,12 @@ function tags_menu(){
 		tagstatus[i] = (z_list.gametable2[z_list.index].z_tags.find(tagsarray[i]) == null) ? 0xea0a : 0xea0b
 	}
 
-	tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",TLNG) : ltxt("Show Hidden",TLNG))
+	tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",AF.LNG) : ltxt("Show Hidden",AF.LNG))
 	tagstatus.push (0)
-	tagsarray.push (ltxt("New Tag",TLNG))
+	tagsarray.push (ltxt("New Tag",AF.LNG))
 	tagstatus.push (0xeaee)
 
-	zmenudraw (tagsarray,tagstatus,null,ltxt("TAGS",TLNG),0xeaef,0,false,false,true,false,false,
+	zmenudraw (tagsarray,tagstatus,null,ltxt("TAGS",AF.LNG),0xeaef,0,false,false,true,false,false,
 	function(out){
 		if (out == -1) { //BACK
 			frosthide()
@@ -10162,13 +10129,13 @@ local histgr = {
 
 if (!vertical){
 	histgr.black = history_surface.add_image(AF.folder+"pics/black.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os)
-	histgr.g1 = history_surface.add_image(AF.folder+"wgradientT.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5) 
-	histgr.g2 = history_surface.add_image(AF.folder+"wgradientB.png",0,fl.h_os*0.5,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5)
+	histgr.g1 = history_surface.add_image(AF.folder+"pics/grads/wgradientT.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5) 
+	histgr.g2 = history_surface.add_image(AF.folder+"pics/grads/wgradientB.png",0,fl.h_os*0.5,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5)
 }
 else{
 	histgr.black = history_surface.add_image(AF.folder+"pics/black.png",0,0,fl.w_os,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
-	histgr.g1 = history_surface.add_image(AF.folder+"wgradientL.png",0,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
-	histgr.g2 = history_surface.add_image(AF.folder+"wgradientR.png",fl.w_os*0.5,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
+	histgr.g1 = history_surface.add_image(AF.folder+"pics/grads/wgradientL.png",0,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
+	histgr.g2 = history_surface.add_image(AF.folder+"pics/grads/wgradientR.png",fl.w_os*0.5,0,fl.w_os*0.5,fl.h*hist.split_h+0.5*(fl.h_os-fl.h) + fl.h_os*fl.overscan_y)
 }
 
 histgr.black.set_rgb (0,0,0)
@@ -10357,7 +10324,7 @@ shader_lottes.set_param ("vignettebase", 0.3,1.0,2.0);			// base lightness for v
 
 shader_lottes.set_texture_param("texture")
 
-local pixelpic = fe.add_image("pixel8.png",0,0)
+local pixelpic = fe.add_image("pics/pixel8.png",0,0)
 pixelpic.visible = false
 local shader_lcd = null
 shader_lcd = fe.add_shader (Shader.Fragment,"glsl/lcd.glsl")
@@ -11438,7 +11405,7 @@ zmenu_sh.surf_rt.zorder = 9
 zmenu_sh.surf_rt.set_pos(zmenu_surface_container.x + 4*scalerate,zmenu_surface_container.y + 8*scalerate,zmenu_surface_container.width,zmenu_surface_container.height)
 
 
-zmenu.simbg = zmenu_surface_container.add_image(AF.folder+"wgradientRa.png",
+zmenu.simbg = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientRa.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,//zmenu.y + zmenu.height*0.5 - 0.5*(zmenu.height-2.0*zmenu.pad),
 										disp.width*0.25,
@@ -11449,12 +11416,12 @@ if (prf.DMPIMAGES == "WALLS") zmenu.simbg.zorder = 1000
 
 // NICE: top 2.0 a150, bot 2.0 a150
 // SHAD: top 0.25 a100, bot 0.5 a150
-disp.bgshadowt = zmenu_surface_container.add_image(AF.folder+"wgradientTc.png",
+disp.bgshadowt = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientTc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
 										disp.bgtileh)//0.25
-disp.bgshadowb = zmenu_surface_container.add_image(AF.folder+"wgradientBc.png",
+disp.bgshadowb = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientBc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
@@ -11635,7 +11602,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		}
 		zmenu.items[i].set_pos(shrink ? 0 : zmenu.glyphw , zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.glyphw) + (shrink ?  -1.0* disp.width : 0), zmenu.tileh)
 		zmenu.items[i].msg = menuarray[i]
-		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW",TLNG)
+		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW",AF.LNG)
 		zmenu.items[i].font = uifonts.gui
 		zmenu.items[i].char_size = overlay.charsize
 		zmenu.items[i].word_wrap = true
@@ -11904,9 +11871,9 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	if ( (zmenu.dmp)){
 			
 		if ((prf.DMPSORT == "display") && prf.DMPENABLED) overlay.sidelabel.msg = ""
-		if ((prf.DMPSORT == "brandname") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND",TLNG)
-		if ((prf.DMPSORT == "brandyear") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND, YEAR",TLNG)
-		if ((prf.DMPSORT == "year") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY YEAR",TLNG)
+		if ((prf.DMPSORT == "brandname") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND",AF.LNG)
+		if ((prf.DMPSORT == "brandyear") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY BRAND, YEAR",AF.LNG)
+		if ((prf.DMPSORT == "year") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY YEAR",AF.LNG)
 
 		if (prf.DMPGENERATELOGO) {
 			for (local i=0 ; i < ((prf.DMPEXITAF && (prf.JUMPLEVEL==0)) ? zmenu.shown -1 : zmenu.shown); i++){
@@ -12038,6 +12005,20 @@ zmenu.xstop = 0
 
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
+function gh_latestdata(op){
+
+	if (op.find(ap+"tag_name"+ap) != null) {
+		gh.latest_version = split(op,ap)[3]
+	}
+	else if (op.find(ap+"body"+ap) != null) {
+		gh.release_notes = split(op,ap)[3]
+		gh.release_notes = split_complete (gh.release_notes,"\\r\\n")
+		foreach (i, item in gh.release_notes){
+			print (i+" "+item+"\n")
+		}
+	}
+}
+
 function checkforupdates(force){
 
 	if (!force && (currentdate().tointeger() <= loaddate().tointeger())) return
@@ -12048,20 +12029,17 @@ function checkforupdates(force){
 	z_splash_message( "Checking for updates...")
 	AF.updatechecking = true
 
-	local updpath = fe.path_expand( AF.folder + "latest_version.txt")
-	system("curl -s http://www.mixandmatch.it/AF/latest_version.txt -o " + ap + updpath + ap)
-	
-	local filein = ReadTextFile (updpath)
 	local ver_in = ""
-	ver_in = filein.read_line()
-	
+	fe.plugin_command("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/releases/latest","gh_latestdata")
+	ver_in = gh.latest_version
+
 	AF.updatechecking = false
 
 	if (ver_in == "") return
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
 	if (ver_in.tofloat() <= AF.version.tofloat()) {
 		if (force){
-			zmenudraw (["Ok"],null, null,ltxt("No update available",TLNG),0xe91c,0,false,false,true,false,false,
+			zmenudraw (["Ok"],null, null,ltxt("No update available",AF.LNG),0xe91c,0,false,false,true,false,false,
 			function(out){
 				zmenuhide()
 				frosthide()
@@ -12076,18 +12054,18 @@ function checkforupdates(force){
 	local textarray = []
 	local glypharray = []
 
-	while (!filein.eos()){
-		textarray.push(filein.read_line())
+	foreach (i, item in gh.release_notes){
+		textarray.push(item)
 		glypharray.push (0xea08)
 	}
 
-	textarray.push (ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version",TLNG))
+	textarray.push (ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version",AF.LNG))
 	glypharray.push (0xea36)
 
-	textarray.push (ltxt("Dismiss this update",TLNG))
+	textarray.push (ltxt("Dismiss this update",AF.LNG))
 	glypharray.push (0xea0f)
 
-	zmenudraw (textarray,glypharray, null,ltxt("New version:",TLNG)+" Arcadeflow "+ver_in,0xe91c,0,false,false,false,false,false,
+	zmenudraw (textarray,glypharray, null,ltxt("New version:",AF.LNG)+" Arcadeflow "+ver_in,0xe91c,0,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			zmenuhide()
@@ -12099,12 +12077,14 @@ function checkforupdates(force){
 			// Download latest layout
 			local newafname = "Arcadeflow_"+(ver_in.tofloat()*10).tointeger()
 			local newaffolder = fe.path_expand( FeConfigDirectory) + "layouts/"+ newafname + "/"
+			local newaffolder_noslash = fe.path_expand( FeConfigDirectory) + "layouts/"+ newafname
+			local newaffolderTEMP = fe.path_expand( FeConfigDirectory) + "layouts/"+ newafname + "TEMP/"
 
 			if (!prf.AUTOINSTALL){
 				// Simply download in your home folder
 				AF.updatechecking = true
-				z_splash_message( "Downloading...")
-				system("curl -s http://www.mixandmatch.it/AF/layouts/"+newafname+".zip -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
+				z_splash_message( "Downloading...")	
+				system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw (["Ok"],null, null,newafname+".zip downloaded",0xe91c,0,false,false,true,false,false,
@@ -12117,13 +12097,23 @@ function checkforupdates(force){
 				// Download zip of new layout version
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")
-				system("curl -s http://www.mixandmatch.it/AF/layouts/" + newafname + ".zip -o " + ap + fe.path_expand(AF.folder) + newafname + ".zip" + ap)
+				system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				// Create target directory
 				z_splash_message( "Installing...")
+				system("mkdir "+ ap + newaffolderTEMP + ap)
 				system("mkdir "+ ap + newaffolder + ap)
 				// Unpack layout
-				//system("tar -xf " + ap + AF.folder + newafname +".tar.gz" + ap + " --directory " + ap + newaffolder + ap)
-				unzipfile (AF.folder + newafname +".zip", newaffolder)
+				unzipfile (AF.folder + newafname +".zip", newaffolderTEMP)
+				local ghfolder = DirectoryListing(newaffolderTEMP)
+				foreach (item in ghfolder.results){
+					local ghfolder2 = DirectoryListing(item)
+					foreach (item2 in ghfolder2.results){
+						system ("mv " + ap + item2 + ap + " " + ap + newaffolder + ap)
+					}
+				}
+				
+				system (OS == "Windows" ? "rmdir /q /s " + newaffolderTEMP  : "rm -R " + newaffolderTEMP)
+
 				// Transfer preferences
 				local dir = DirectoryListing( AF.folder )
 				foreach (item in dir.results){
@@ -12165,14 +12155,12 @@ function checkforupdates(force){
 				}
 				outfile.close_file()
 				AF.updatechecking = false
-				zmenudraw ([ltxt("Quit",TLNG)],null,null, ltxt("Arcadeflow updated to",TLNG)+" "+ ver_in ,0xe91c,0,false,false,true,false,false,
+				zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ ver_in ,0xe91c,0,false,false,true,false,false,
 				function(out){
 					zmenuhide()
 					frosthide()
 					fe.signal("exit_to_desktop")
 				})
-
-
 			}
 		}
 
@@ -12310,13 +12298,13 @@ function displayungrouped (){
 
 	if (prf.DMPEXITAF && prf.DMPENABLED) {
 		showarray.push("SYSTEM") //Will be translated by zmenu drawing
-		dispnotes.push(ltxt("",TLNG))
+		dispnotes.push(ltxt("",AF.LNG))
 		groupnotes.push("")
 		dispglyphs.push(-1)
 		menuarray.push (null)
 
 		showarray.push("EXIT ARCADEFLOW") //Will be translated by zmenu drawing
-		dispnotes.push(ltxt("",TLNG))
+		dispnotes.push(ltxt("",AF.LNG))
 		groupnotes.push("")
 		dispglyphs.push(0)
 		menuarray.push (null)
@@ -12327,13 +12315,13 @@ function displayungrouped (){
 		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
 	}
 
-	zmenudraw (showarray,dispglyphs,dispnotes,ltxt("DISPLAYS",TLNG),0xe912,currentdisplay,(prf.DMPIMAGES != null),true,true,(prf.DMPIMAGES != null),false,
+	zmenudraw (showarray,dispglyphs,dispnotes,ltxt("DISPLAYS",AF.LNG),0xe912,currentdisplay,(prf.DMPIMAGES != null),true,true,(prf.DMPIMAGES != null),false,
 	function(displayout){
 
 		if (((displayout == -1) && (prf.DMPOUTEXITAF) ) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1)) ) {
 
 			zmenu.dmp = false
-			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],TLNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",TLNG),0xe9b6,1,false,false,true,false,false,
+			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],AF.LNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",AF.LNG),0xe9b6,1,false,false,true,false,false,
 			function(result){
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -12398,7 +12386,7 @@ function displaygrouped1(){
 	prf.JUMPLEVEL = 0
 
 	// Displays the group menu
-	zmenudraw (disp.groupname,null,null,ltxt("DISPLAYS",TLNG),0xe912,disp.gmenu0out,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,true,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,false,
+	zmenudraw (disp.groupname,null,null,ltxt("DISPLAYS",AF.LNG),0xe912,disp.gmenu0out,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,true,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,false,
 	function(gmenu0){
 		disp.gmenu0 = gmenu0
 
@@ -12423,7 +12411,7 @@ function displaygrouped1(){
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF) ) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1)) ) {
 
 			zmenu.dmp = false
-			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],TLNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",TLNG),0xe9b6,1,false,false,true,false,false,
+			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],AF.LNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",AF.LNG),0xe9b6,1,false,false,true,false,false,
 			function(result){
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -12957,16 +12945,16 @@ zmenu.simpicbg.set_bg_rgb(200,0,0)
 zmenu.simpicbg.bg_alpha = 0
 zmenu.simpicbg.zorder = 10000
 
-zmenu.simpicshB = zmenu_surface_container.add_image(AF.folder+"wgradientBb.png",0,0,0,0)
+zmenu.simpicshB = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientBb.png",0,0,0,0)
 zmenu.simpicshB.set_rgb(0,0,0)
 zmenu.simpicshB.alpha = 90
-zmenu.simpicshT = zmenu_surface_container.add_image(AF.folder+"wgradientTb.png",0,0,0,0)
+zmenu.simpicshT = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientTb.png",0,0,0,0)
 zmenu.simpicshT.set_rgb(0,0,0)
 zmenu.simpicshT.alpha = 80
-zmenu.simpicshL = zmenu_surface_container.add_image(AF.folder+"wgradientLb.png",0,0,0,0)
+zmenu.simpicshL = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientLb.png",0,0,0,0)
 zmenu.simpicshL.set_rgb(0,0,0)
 zmenu.simpicshL.alpha = 80
-zmenu.simpicshR = zmenu_surface_container.add_image(AF.folder+"wgradientRb.png",0,0,0,0)
+zmenu.simpicshR = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientRb.png",0,0,0,0)
 zmenu.simpicshR.set_rgb(0,0,0)
 zmenu.simpicshR.alpha = 80
 
@@ -13283,7 +13271,7 @@ function updatebgsnap (index){
 	}
 	else { // We are not in boxart mode, OR the layersnap is enabled
 
-		if (bgs.bgpic_array[bgs.stacksize-1].texture_width == 0 ) bgs.bgpic_array[bgs.stacksize-1].file_name = "snapx"+( (fe.game_info(Info.Title,tilez[index].offset).len() % 7))+".png"
+		if (bgs.bgpic_array[bgs.stacksize-1].texture_width == 0 ) bgs.bgpic_array[bgs.stacksize-1].file_name = "pics/snaps/snapx"+( (fe.game_info(Info.Title,tilez[index].offset).len() % 7))+".png"
 
 		bgs.bgpic_array[bgs.stacksize-1].shader = colormapper["NONE"].shad
 		bgs.bg_box[bgs.stacksize-1] = [false,[255,255,255],[255,255,255]]		
@@ -13430,7 +13418,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 			tilez[i].txbox.visible = false
 		}
 		else {
-			if (tilez[i].gr_snapz.texture_width == 0 ) tilez[i].gr_snapz.file_name = "snapx"+( (fe.game_info(Info.Title,indexoffsetvar).len() % 7))+".png"
+			if (tilez[i].gr_snapz.texture_width == 0 ) tilez[i].gr_snapz.file_name = "pics/snaps/snapx"+( (fe.game_info(Info.Title,indexoffsetvar).len() % 7))+".png"
 			tilez[i].snapz.set_rgb (255,255,255)
 			tilez[i].gr_snapz.set_rgb (255,255,255)
 			tilez[i].txbox.visible = false
@@ -13623,22 +13611,22 @@ umtable = []
 function sortarrays(){
 	local out = {
 		switcharray_sort = [
-			""+ ltxt("Title",TLNG) + " ▲",
-			""+ ltxt("Title",TLNG) + " ▼",
-			""+ ltxt("Manufacturer",TLNG) + " ▲",
-			""+ ltxt("Manufacturer",TLNG) + " ▼",
-			""+ ltxt("Year",TLNG) + " ▲",
-			""+ ltxt("Year",TLNG) + " ▼",
-			""+ ltxt("Category",TLNG) + " ▲",
-			""+ ltxt("Category",TLNG) + " ▼",
-			""+ ltxt("System",TLNG) + " ▲",
-			""+ ltxt("System",TLNG) + " ▼",
+			""+ ltxt("Title",AF.LNG) + " ▲",
+			""+ ltxt("Title",AF.LNG) + " ▼",
+			""+ ltxt("Manufacturer",AF.LNG) + " ▲",
+			""+ ltxt("Manufacturer",AF.LNG) + " ▼",
+			""+ ltxt("Year",AF.LNG) + " ▲",
+			""+ ltxt("Year",AF.LNG) + " ▼",
+			""+ ltxt("Category",AF.LNG) + " ▲",
+			""+ ltxt("Category",AF.LNG) + " ▼",
+			""+ ltxt("System",AF.LNG) + " ▲",
+			""+ ltxt("System",AF.LNG) + " ▼",
 
-			""+ ltxt("Rating",TLNG),
-			""+ ltxt("Series",TLNG),				
+			""+ ltxt("Rating",AF.LNG),
+			""+ ltxt("Series",AF.LNG),				
 
-			""+ ltxt("Last Played",TLNG),
-			""+ ltxt("Last Favourite",TLNG),
+			""+ ltxt("Last Played",AF.LNG),
+			""+ ltxt("Last Favourite",AF.LNG),
 		]
 
 		glypharray_sort = []
@@ -13674,7 +13662,7 @@ function sortarrays(){
 function buildutilitymenu(){
 
 	umtable.push ({
-		label = ltxt("Sort and Filter",TLNG)
+		label = ltxt("Sort and Filter",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13684,7 +13672,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Sort by",TLNG)
+		label = ltxt("Sort by",AF.LNG)
 		glyph = 0xea4c
 		visible = true
 		order = 0
@@ -13699,7 +13687,7 @@ function buildutilitymenu(){
 			// switcharray, glypharray and nowsort moved out of this function so it's available to sidenote
 			local dat = sortarrays()
 
-			zmenudraw (dat.switcharray_sort,dat.glypharray_sort,null,"  " + ltxt("Sort by",TLNG)+"...",0xea4c,dat.nowsort,false,false,false,false,false,
+			zmenudraw (dat.switcharray_sort,dat.glypharray_sort,null,"  " + ltxt("Sort by",AF.LNG)+"...",0xea4c,dat.nowsort,false,false,false,false,false,
 			function(result2){
 				local result_sort = []
 				if 	  (result2 == 0) result_sort = [Info.Title,false]
@@ -13745,7 +13733,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Jump to",TLNG)
+		label = ltxt ("Jump to",AF.LNG)
 		glyph = 0xea22
 		visible = true
 		order = 0
@@ -13791,7 +13779,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Favourites Filter",TLNG)
+		label = ltxt("Favourites Filter",AF.LNG)
 		glyph = 0xe9d9
 		visible = true
 		order = 0
@@ -13799,7 +13787,7 @@ function buildutilitymenu(){
 		sidenote = function(){
 			local out = ""
 			try {out = multifilterz.l0["Favourite"].menu["Favourite"].filtered ? "FAVOURITES" : "ALL GAMES"} catch(err){}
-			return (ltxt(out,TLNG))
+			return (ltxt(out,AF.LNG))
 		}
 		command = function(){
 			try {
@@ -13818,7 +13806,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Multifilter",TLNG)
+		label = ltxt("Multifilter",AF.LNG)
 		glyph = 0xeaed
 		visible = true
 		order = 0
@@ -13835,7 +13823,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Filters",TLNG)
+		label = ltxt("Filters",AF.LNG)
 		glyph = 0xea5b
 		visible = true
 		order = 0
@@ -13849,7 +13837,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Displays",TLNG)
+		label = ltxt("Displays",AF.LNG)
 		glyph = 0xe912
 		visible = true
 		order = 0
@@ -13879,13 +13867,13 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Categories",TLNG)
+		label = ltxt("Categories",AF.LNG)
 		glyph = 0xe916
 		visible = true
 		order = 0
 		id = 0
 		sidenote = function(){
-		return ((search.catg[0] != "") ? search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) : ltxt("ALL",TLNG)) 
+		return ((search.catg[0] != "") ? search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) : ltxt("ALL",AF.LNG)) 
 		}
 		command = function(){
 			categorymenu()
@@ -13893,7 +13881,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Search",TLNG)
+		label = ltxt("Search",AF.LNG)
 		glyph = 0xe986
 		visible = true
 		id = 0
@@ -13907,7 +13895,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Screensaver",TLNG)
+		label = ltxt("Screensaver",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13917,7 +13905,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Attract mode",TLNG)
+		label = ltxt("Attract mode",AF.LNG)
 		glyph = 0xe9a5
 		visible = true
 		id = 0
@@ -13932,7 +13920,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Visuals",TLNG)
+		label = ltxt("Visuals",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13942,7 +13930,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Snaps or Box-Art",TLNG)
+		label = ltxt("Snaps or Box-Art",AF.LNG)
 		glyph = 0xeaf3
 		visible = true
 		id = 0
@@ -13963,7 +13951,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Reset Box Art",TLNG)
+		label = ltxt("Reset Box Art",AF.LNG)
 		glyph = 0xe965
 		visible = true
 		id = 0
@@ -13981,7 +13969,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("System",TLNG)
+		label = ltxt("System",AF.LNG)
 		glyph = -1
 		visible = true
 		order = 0
@@ -13991,7 +13979,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt("Layout options",TLNG)
+		label = ltxt("Layout options",AF.LNG)
 		glyph = 0xe991
 		visible = true
 		id = 0
@@ -14006,7 +13994,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Check for updates",TLNG)
+		label = ltxt ("Check for updates",AF.LNG)
 		glyph = 0xe91c
 		visible = true
 		id = 0
@@ -14021,7 +14009,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("About Arcadeflow",TLNG)
+		label = ltxt ("About Arcadeflow",AF.LNG)
 		glyph = 0xea09
 		visible = true
 		id = 0
@@ -14030,7 +14018,7 @@ function buildutilitymenu(){
 			return "☰"
 		}
 		command = function(){
-			local aboutpath = fe.path_expand( AF.folder + (AF.version.tofloat()*10).tostring() + ".txt")
+			local aboutpath = fe.path_expand( AF.folder + "history/"+(AF.version.tofloat()*10).tostring() + ".txt")
 			local aboutfile = ReadTextFile (aboutpath)
 
 			local textarray = []
@@ -14100,7 +14088,7 @@ function utilitymenu(presel){
 	*/
 
 	frostshow()
-	zmenudraw (switcharray1, glypharray1, sidearray1, (ltxt("Utility Menu",TLNG) ),0xe9bd,presel,false,false,false,false,false,
+	zmenudraw (switcharray1, glypharray1, sidearray1, (ltxt("Utility Menu",AF.LNG) ),0xe9bd,presel,false,false,false,false,false,
 	function(result1){
 		if (result1 == -1){
 			umvisible = false
@@ -15959,8 +15947,8 @@ function subcategorymenu(maincategory,subcategory){
 	}
 
 
-	ctgarray.insert(0,ltxt("ALL",TLNG))
-	ctgarray2.insert(0,ltxt("ALL",TLNG))
+	ctgarray.insert(0,ltxt("ALL",AF.LNG))
+	ctgarray2.insert(0,ltxt("ALL",AF.LNG))
 	ctgarraynum.insert(0,"")
 
 	local currentcat = (search.catg[1] == "*") ? 0 : ctgarray.find( search.catg[1] )
@@ -16022,7 +16010,7 @@ function maincategorymenu(maincategory,subcategory){
 		ctgarraynum.push (cat[ctgarray[i]].num)
 	}
 
-	ctgarray.insert (0,ltxt("ALL",TLNG))
+	ctgarray.insert (0,ltxt("ALL",AF.LNG))
 	ctgarraynum.insert (0,"")
 	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find( search.catg[0] )
 
@@ -16030,7 +16018,7 @@ function maincategorymenu(maincategory,subcategory){
 
 	frostshow()
 
-	zmenudraw (ctgarray, ctgarrayglyph,ctgarraynum, ltxt("Categories",TLNG), 0xe916, ctgarray.find(maincategory), false,false, false,false,false,
+	zmenudraw (ctgarray, ctgarrayglyph,ctgarraynum, ltxt("Categories",AF.LNG), 0xe916, ctgarray.find(maincategory), false,false, false,false,false,
 	function(result){
 		if (result == -1) {
 			if (umvisible){
@@ -16504,7 +16492,7 @@ function on_signal( sig ){
 		}
 
 		frostshow()
-		zmenudraw (filterarray,filterglyphs,filternotes,ltxt("FILTERS",TLNG),0xea5b,(fe.filters.len() != 0 ? fe.list.filter_index : 0 ),false,false,false,false,false,
+		zmenudraw (filterarray,filterglyphs,filternotes,ltxt("FILTERS",AF.LNG),0xea5b,(fe.filters.len() != 0 ? fe.list.filter_index : 0 ),false,false,false,false,false,
 		function(result){
 			if (result != -1) {
 				fe.list.filter_index = result	
@@ -16646,7 +16634,7 @@ function on_signal( sig ){
 	if (sig == "exit"){
 		if (!prf.DMPIFEXITAF){
 			frostshow()
-			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],TLNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",TLNG),0xe9b6,1,false,false,true,false,false,
+			zmenudraw (ltxtarray(prf.POWERMENU ? ["Yes","No","Power","Shutdown","Restart","Sleep"]:["Yes","No"],AF.LNG),prf.POWERMENU ? [0xea10,0xea0f,-1,0xe9b6,0xe984,0xeaf6]:[0xea10,0xea0f],null,ltxt("EXIT ARCADEFLOW?",AF.LNG),0xe9b6,1,false,false,true,false,false,
 			function(result){
 				if (result == 0) 	fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -16784,22 +16772,22 @@ function on_signal( sig ){
 			frostshow()
 			overmenu_hide(false)
 
-			zmenudraw (["More of the same...","Similar games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":"Disabled"], ltxt("Game Menu",TLNG),0xe916,0,false,false,false,false,false,
+			zmenudraw (["More of the same...","Similar games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":"Disabled"], ltxt("Game Menu",AF.LNG),0xe916,0,false,false,false,false,false,
 			function (result){
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
 					local switcharray = []
 					local switchnotes = []
-					switcharray.push(ltxt("Year",TLNG))
-					switcharray.push(ltxt("Decade",TLNG))
-					switcharray.push(ltxt("Manufacturer",TLNG))
-					switcharray.push(ltxt("Main Category",TLNG))
-					switcharray.push(ltxt("Sub Category",TLNG))
-					switcharray.push(ltxt("Orientation",TLNG))
-					switcharray.push(ltxt("Favourite state",TLNG))
-					switcharray.push(ltxt("Series",TLNG))
-					switcharray.push(ltxt("Rating",TLNG))
-					switcharray.push(ltxt("Arcade system",TLNG))
+					switcharray.push(ltxt("Year",AF.LNG))
+					switcharray.push(ltxt("Decade",AF.LNG))
+					switcharray.push(ltxt("Manufacturer",AF.LNG))
+					switcharray.push(ltxt("Main Category",AF.LNG))
+					switcharray.push(ltxt("Sub Category",AF.LNG))
+					switcharray.push(ltxt("Orientation",AF.LNG))
+					switcharray.push(ltxt("Favourite state",AF.LNG))
+					switcharray.push(ltxt("Series",AF.LNG))
+					switcharray.push(ltxt("Rating",AF.LNG))
+					switcharray.push(ltxt("Arcade system",AF.LNG))
 
 					switchnotes.push( z_list.gametable[z_list.index].z_year)
 					switchnotes.push( (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0,3) : "")+"x")
@@ -16812,7 +16800,7 @@ function on_signal( sig ){
 					}
 					switchnotes.push( z_list.gametable[z_list.index].z_category )
 					switchnotes.push( z_list.gametable[z_list.index].z_rotation )
-					switchnotes.push( (z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes",TLNG) : ltxt("No",TLNG) ))
+					switchnotes.push( (z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes",AF.LNG) : ltxt("No",AF.LNG) ))
 					switchnotes.push( z_list.gametable[z_list.index].z_series )
 					switchnotes.push( z_list.gametable[z_list.index].z_rating )
 					switchnotes.push( z_list.gametable[z_list.index].z_arcadesystem )
@@ -16823,11 +16811,11 @@ function on_signal( sig ){
 					foreach(i, item in switcharray) switchnotes.push ("")
 
 					local numtag = switcharray.len()
-					//switcharray.push (ltxt("RESET (KEEP FOCUS)",TLNG))
-					switcharray.push (ltxt("RESET",TLNG))
+					//switcharray.push (ltxt("RESET (KEEP FOCUS)",AF.LNG))
+					switcharray.push (ltxt("RESET",AF.LNG))
 
 					frostshow()
-					zmenudraw (switcharray,null,switchnotes, "  " + ltxt("More of the same",TLNG)+"...",0xe987,0,false,false,false,false,false,
+					zmenudraw (switcharray,null,switchnotes, "  " + ltxt("More of the same",AF.LNG)+"...",0xe987,0,false,false,false,false,false,
 					function(result){
 						if(result==numtag){
 							search.mots2string = ""
@@ -16843,18 +16831,18 @@ function on_signal( sig ){
 
 						if (result == 0) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year]
-							search.mots2string = ltxt("Year",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Year",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 1) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year.slice(0,3)]
-							search.mots2string = ltxt("Year",TLNG)+":"+search.mots[1]+"x"
+							search.mots2string = ltxt("Year",AF.LNG)+":"+search.mots[1]+"x"
 
 						}
 
 						if (result == 2) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
-							search.mots2string = ltxt("Manufacturer",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Manufacturer",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 3) {
@@ -16862,45 +16850,45 @@ function on_signal( sig ){
 								local s = z_list.gametable[z_list.index].z_category
 								local s2 = split( s, "/" )
 								search.mots = ["z_category", cleancat(s2[0])]
-								search.mots2string = ltxt("Category",TLNG)+":"+s2[0]
+								search.mots2string = ltxt("Category",AF.LNG)+":"+s2[0]
 							}
 							catch(err){}
 						}
 
 						if (result == 4) {
 							search.mots = ["z_category", z_list.gametable[z_list.index].z_category]
-							search.mots2string = ltxt("Category",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Category",AF.LNG)+":"+search.mots[1]
 
 						}
 						
 						if (result == 5) {
 							search.mots = ["z_rotation", z_list.gametable[z_list.index].z_rotation]
-							search.mots2string = ltxt("Rotation",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Rotation",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 6) {
 							search.mots = ["z_favourite", z_list.gametable2[z_list.index].z_favourite.tostring()]
-							search.mots2string = ltxt("Favourite",TLNG)+":"+(search.mots[1])
+							search.mots2string = ltxt("Favourite",AF.LNG)+":"+(search.mots[1])
 						}
 
 						if (result == 7) {
 							search.mots = ["z_series", z_list.gametable[z_list.index].z_series]
-							search.mots2string = ltxt("Series",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Series",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 8) {
 							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
-							search.mots2string = ltxt("Rating",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Rating",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 9) {
 							search.mots = ["z_arcadesystem", z_list.gametable[z_list.index].z_arcadesystem]
-							search.mots2string = ltxt("Arcade Sys",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Arcade Sys",AF.LNG)+":"+search.mots[1]
 						}
 
 						if ((result >= numset) && (result < numtag)) {
 							search.mots = ["z_tags", taglist[result - numset]]
-							search.mots2string = ltxt("Tags",TLNG)+":"+search.mots[1]
+							search.mots2string = ltxt("Tags",AF.LNG)+":"+search.mots[1]
 						}
 
 						// GOOD
