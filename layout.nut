@@ -12030,7 +12030,7 @@ function checkforupdates(force){
 	AF.updatechecking = true
 
 	local ver_in = ""
-	fe.plugin_command("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/releases/latest","gh_latestdata")
+	fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases/latest","gh_latestdata")
 	ver_in = gh.latest_version
 
 	AF.updatechecking = false
@@ -12084,7 +12084,7 @@ function checkforupdates(force){
 				// Simply download in your home folder
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")	
-				system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
+				system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw (["Ok"],null, null,newafname+".zip downloaded",0xe91c,0,false,false,true,false,false,
@@ -12097,7 +12097,7 @@ function checkforupdates(force){
 				// Download zip of new layout version
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")
-				system ("curl -L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
+				system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				// Create target directory
 				z_splash_message( "Installing...")
 				system("mkdir "+ ap + newaffolderTEMP + ap)
