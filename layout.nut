@@ -12013,9 +12013,6 @@ function gh_latestdata(op){
 	else if (op.find(ap+"body"+ap) != null) {
 		gh.release_notes = split(op,ap)[3]
 		gh.release_notes = split_complete (gh.release_notes,"\\r\\n")
-		foreach (i, item in gh.release_notes){
-			print (i+" "+item+"\n")
-		}
 	}
 }
 
