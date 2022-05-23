@@ -12108,7 +12108,9 @@ function checkforupdates(force){
 				foreach (item in ghfolder.results){
 					local ghfolder2 = DirectoryListing(item)
 					foreach (item2 in ghfolder2.results){
-						system ("mv " + ap + item2 + ap + " " + ap + newaffolder + ap)
+						system(OS == "Windows" ? 
+							"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") : 
+							"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
 					}
 				}
 				
