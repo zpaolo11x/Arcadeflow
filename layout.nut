@@ -12114,7 +12114,7 @@ function checkforupdates(force){
 					}
 				}
 				
-				system (OS == "Windows" ? "rmdir /q /s " + newaffolderTEMP  : "rm -R " + newaffolderTEMP)
+				system (OS == "Windows" ? "rmdir /q /s " + char_replace(ap + newaffolderTEMP + ap,"/","\\")  : "rm -R " + ap + newaffolderTEMP + ap)
 
 				// Transfer preferences
 				local dir = DirectoryListing( AF.folder )
