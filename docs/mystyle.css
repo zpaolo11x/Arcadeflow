@@ -136,7 +136,6 @@ body.m_about a.m_about,
 body.m_history a.m_history,
 body.m_features a.m_features,
 body.m_links a.m_links {
-
 	background-color: #FFFFFF;
 	color: #505050;
 	box-shadow: 0px 2px 20px #00000070;
@@ -235,8 +234,6 @@ img.afico {
 	box-shadow: none;
 }
 
-
-
 div.data {
 /*	background-color: lavender;*/
 	width:100%;
@@ -252,13 +249,8 @@ div.data {
 }
 	
 @media screen and (max-width: 950px) {
-	div.blockleft, div.blockright{
-		grid-template:auto / auto;
-		
-	}
-	
-	div.blockgrid{
-	   grid-template:auto / auto;
+	div.blockleft, div.blockright, div.blockgrid{
+		grid-template:auto / auto;	
 	}
 	
 	div.picgallery{
