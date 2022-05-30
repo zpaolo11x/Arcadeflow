@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1,user-scalable=no" />
+		
+		<title>Arcadeflow</title>
+		<link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+		
+		<link href="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/css/lightgallery.css" rel="stylesheet">
+		<link rel="stylesheet" href="mystyle.css">
+		
+	</head>
+	
+	<body>
+	   <script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/js/lightgallery.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lg-pager.js/master/dist/lg-pager.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lg-autoplay.js/master/dist/lg-autoplay.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lg-fullscreen.js/master/dist/lg-fullscreen.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lg-zoom.js/master/dist/lg-zoom.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lg-hash.js/master/dist/lg-hash.js"></script>
+      <script src="https://cdn.rawgit.com/sachinchoolur/lg-share.js/master/dist/lg-share.js"></script>
+
+      <div class="container">
+
+         <div class="header">
+            <div class="logo"><img class="logopic" src="aflogox.png"></div>
+            <div class="menu">
+       		   <div class="menuitem"><a class="menuitem" href="index.html">ABOUT</a></div>
+       		   <div class="menuitem"><a class="menusel" href="features.html">FEATURES</a></div>
+       		   <div class="menuitem"><a class="menuitem" href="history.html">HISTORY</a></div>
+       		   <div class="menuitem"><a class="menuitem" href="links.html">LINKS</a></div>
+            </div>
+         </div>
+    
+         <div class="blockleft">
+            <div id="lightgallery_sysid" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/screen_system.jpg"><a href=""><img class="histpic" src="screensjpg/screen_system.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_sysid'));
+            </script>
+
+   			<div class="data">
+   				<H1>Emulator system identifier</H1>
+               <div class="text">
+                  Arcadeflow is not only for arcades, it will work for console and computer games as well as handheld. To better suit each emulator you can add a System Identifier with the name of your console ("Game Boy", "Arcade", "Sega Genesis" etc) so some aspects of the GUI will adapt accordingly.
+               </div>
+            </div>
+         </div>
+         
+         <div class="blockright">
+            <div class="data">
+               <h1>Romlist management</h1>
+               <div class="text">
+                  From version 12.0 Arcadeflow has a custom "database" where game data is stored. Game data can be derived by xml lists or AM scraper or AF scraper, if you regenerate the romlist from AF options menu all the data will be transferred to this database and will be shared with every collection romlist.
+               </div>
+               <div class="text">
+                  Arcadeflow can also "automatic" collection for all games, all computer games, all console games etc, this is an experimental feature that is off by default, but you can enable it in the options menu.
+               </div>
+            </div>
+            
+            <div id="lightgallery_romlist" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF120.jpg"><a href=""><img class="histpic" src="screensjpg/AF120.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_romlist'));
+            </script>
+            
+         </div>
+         
+         <div class="blockright">
+            <div class="data">
+               <h1>Metadata and media scraping</h1>
+               <div class="text">
+                  Arcadeflow can scrape metadata and/or media files from screenscraper.fr and from adb.arcadeitalia.net, you can scrape each romlist individualy and set different options. Be sure to enter your screenscraper.fr username and password so you can scrape more data.
+               </div>
+               <div class="text">
+                  Scraping match is crc based or filename based, you'll have "name" matches when the file name is identical, or "guess" matches when screenscraper finds a game but the rom name is not exactly the same.
+               </div>
+               <div class="text">
+                  You can stop the scraping process and restart later with only non scraped roms. In this case you can chose what kind of roms to scrape: missing or even non exact matches.
+               </div>
+               <div class="text">
+                  Scraping will overwrite your current romlist, while XML import will overwrite scraped data, but a scraper "cache" will be kept so you can re-scrape using "only missing" and rebuild your romlist from scraped data.
+               </div>
+            </div>
+            
+             <div id="lightgallery_scrape" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF101c.jpg"><a href=""><img class="histpic" src="screensjpg/AF101c.jpg"></a></div>
+				   <div class="imgdiv" data-src="screensjpg/AF102b.jpg"><a href=""><img class="histpic" src="screensjpg/AF102b.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_scrape'));
+            </script>
+         </div>
+         
+         
+         <div class="blockfull">
+            <div class="data">
+               <h1>RetroPie XML games list import</h1>
+               <div class="text">
+                  Arcadeflow can be used to import XML lists generated in RetroPie format into Attract Mode romlists. Normally only Hyperlist based lists can be imported in Attract Mode specifying the path in the import_extras field in emulator configuration. If you specify a RetroPie romlist in that field, you can then build the Attract Mode romlist from Arcadeflow options menu.
+               </div>
+            </div>
+         </div>
+         
+         
+         <div class="blockleft">
+            <div id="lightgallery_controls" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF34b.jpg"><a href=""><img class="histpic" src="screensjpg/AF34b.jpg"></a></div>
+				   <div class="imgdiv" data-src="screensjpg/AF109.jpg"><a href=""><img class="histpic" src="screensjpg/AF109.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_controls'));
+            </script>
+            <div class="data">
+               <h1>Custom controls</h1>
+               <div class="text">
+                  When you hit the "select" or a "custom" control button (see layout options) an overlay context menu appears, here you can do different things to activate the following functions:
+               </div>
+               <ul>
+                  <li>"SELECT" launches the current game
+                  <li>"UP" enters an "extension" game menu where you have different options:</li>
+                     <ul>
+                        <li>"More of the same..." search function, filtering games with the same year, manufacturer, main category or sub-category of the current game</li>
+                        <li>"Scrape selected game" is the same as the one in the options menu, but easier to use</li>
+                        <li>"Edit metadata" this is a metadata editor that you can use to fix metadata issues</li>
+                     </ul>
+                  <li>"DOWN" enters the "History" page where you can see and scroll the game history and see a larger game preview</li>
+                  <li>"LEFT" to enter the Tags menu</li>
+                  <li>"RIGHT" to add/remove favorites</li>
+                  <li>"ESC" goes back to the thumbnail list</li>
+               </ul>
+            </div>
+         </div>
+         
+         
+         <div class="blockright">
+            <div class="data">
+               <h1>Metadata editor</h1>
+               <div class="text">
+                  You can use Arcadeflow to edit metadat for games, this will not overwrite your current rom or scraped data, you can always fall back to the original data by entering an empty string for the metadata you changed. Metadata editor only alters metadata in Arcadeflow, it will not alter the romlist so you won't see those metadata in other layouts.
+               </div>
+            </div>
+            <div id="lightgallery_metaedit" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF109b.jpg"><a href=""><img class="histpic" src="screensjpg/AF109b.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_metaedit'));
+            </script>
+         </div>
+         
+         
+         <div class="blockleft">
+            <div id="lightgallery_menu" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF105.jpg"><a href=""><img class="histpic" src="screensjpg/AF105.jpg"></a></div>
+				   <div class="imgdiv" data-src="screensjpg/AF110.jpg"><a href=""><img class="histpic" src="screensjpg/AF110.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_menu'));
+            </script>            
+            <div class="data">
+               <h1>General layout menu</h1>
+               <div class="text">
+                  You can access a general menu by going "UP" from the first row of thumbnails. In the options you can disable this menu altogether or tie it to a "custom" button. This menu features:
+               </div>
+               <ul>
+                  <li>"Sort by..." to dynamically sort your game list</li>
+                  <li>"Multifilter" is a dynamic filtering system for your games</li>
+                  <li>"Filters" standard AM filters menu</li>
+                  <li>"Displays" menu enriched by Arcadeflow categorization, system logos etc.</li>
+                  <li>"Categories" will show you a simple menu of your categories</li>
+                  <li>"Search" function (see options)</li>
+                  <li>"Layout options" will allow you to edit Arcadeflow options</li>
+                  <li>"Attract Mode" to engage an attract mode without waiting the timeout</li>
+                  <li>"Snaps or Box-Art" to quickly change from screenshot view to box art view, this is persistent after AM relaunch</li>
+                  <li>"Reset Box Art" clears all preferences set with the above menu and reload the layout</li>
+                  <li>"Check for updates" can tell you if there's a new version, and even install it</li>
+                  <li>"About arcadeflow" some infos and news reagarding latest release</li>
+               </ul>
+               <div class="text">
+                  You can sort the menu entries and even disable them if you don't need them, for a cleaner look.
+               </div>
+            </div>
+         </div>
+         
+         
+         <div class="blockright">
+            <div class="data">
+               <h1>Languages</h1>
+               <div class="text">
+                  Arcadeflow is multi-language, and you can set the language in the options menu.
+               </div>
+            </div>
+            <div id="lightgallery_lang" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF102c.jpg"><a href=""><img class="histpic" src="screensjpg/AF102c.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_lang'));
+            </script>
+         </div>
+         
+         
+         <div class="blockleft">
+            <div id="lightgallery_tags" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/screen_tags.jpg"><a href=""><img class="histpic" src="screensjpg/screen_tags.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_tags'));
+            </script>
+            <div class="data">
+               <h1>Tags</h1>
+               <div class="text">
+                  Arcadeflow has its own tags interface so you can generate new tags using the on-screen keyboard, but there's always a  "COMPLETED" tag available, if you add this to games you will see a "100%" stamp on the thumbnails
+               </div>
+               <div class="text">
+                  You can also show a tag icon on the games if a tag is present, and you can chose in the options to show the icon only for a specific tag.
+               </div>
+            </div>
+         </div>
+         
+         
+         <div class="blockright">
+            <div class="data">
+               <h1>Sorting and scrolling</h1>
+               <div class="text">
+                  When your list is sorted by name a large preview letter will appear while scrolling through the list.
+               </div>
+               <div class="text">
+               If your list is sorted by year, manufacturer, system etc the year, manufacturer,system etc will appear instead of the letter.
+               </div>
+               <div class="text">
+               You can go "DOWN" from the lower row to enter a "large jumps" scrolling mode which depends on the scrollbar preferences: it can do "page jumps" (one screen at a time) or "label jump" based on your list sort order, or both if you have "timeline" scrollbar activated.
+               </div>
+               <div class="text">
+               Unique to Arcadeflow, you can also sort your games by last played or last added favourite.
+               </div>
+            </div>
+            <div id="lightgallery_sort" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/screen_sort.jpg"><a href=""><img class="histpic" src="screensjpg/screen_sort.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_sort'));
+            </script>
+            
+         </div>
+         
+         
+         <div class="blockleft">
+            <div id="lightgallery_dmp" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF123.jpg"><a href=""><img class="histpic" src="screensjpg/AF123.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_dmp'));
+            </script>
+            <div class="data">
+               <h1>Displays Menu</h1>
+               <div class="text">
+               Arcadeflow sports a customizable Displays Menu. 
+               </div>
+               <div class="text">
+               You can have it as a single list with just text, or you can let Arcadeflow add a system logo based on the Display name. Arcadeflow can categorize displays in groups automatically (Arcade, Console, Computer, Handheld, Pinball, Other), but if you want to force one display in a category, just add "#arcade", "#console" etc to the Display name. You can also enable artwork from the menu-art folder. You can also force positioning a layout at the top putting "!" at the beginning of the name.
+               </div>
+            </div>
+
+         </div>
+         
+         
+         <div class="blockright">
+            <div class="data">
+               <h1>Search and Multifilter</h1>
+               <div class="text">
+               Arcadeflow supports on-screen keyboard and "real" keyboard based search, search is applied on multiple fields and results can be updated while you type.
+               </div>
+               <div class="text">
+               Multifilter is a powerful feature that allows you to create custom filters on the fly, filtering by name, brand, year etc, mixing multiple search fields. Multifilter menu voices can be sorted at will or disabled in the options.
+               </div>
+    			</div>
+    			<div id="lightgallery_filter" class="pic">
+				   <div class="imgdiv" data-src="screensjpg/AF104.jpg"><a href=""><img class="histpic" src="screensjpg/AF104.jpg"></a></div>
+				</div>
+	   		<script> 
+		  		   lightGallery(document.getElementById('lightgallery_filter'));
+            </script>
+         </div>
+		</div>
+	</body>
+</html>
