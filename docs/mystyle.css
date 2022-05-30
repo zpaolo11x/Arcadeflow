@@ -276,10 +276,9 @@ div.menuitemsel {
 	align-content: center;
 	justify-content: center;
 	background-color:#ffffff;
-
 }
 
-a.menuitem {
+div.menuitem a {
 	line-height:30px;
 	width:100%;
 	height:100%;
@@ -291,13 +290,16 @@ a.menuitem {
 	margin-right:5px;
 }
 
-a.menuitem:hover {
+div.menuitem a:hover {
 	background-color: #FFFFFF;
 	color: #505050;
 	/*box-shadow: 0px 2px 20px #00000070;*/
 }
 
-a.menusel {
+body.m_about a.m_about, 
+body.m_history a.m_history,
+body.m_features a.m_features,
+body.m_links a.m_links {
 	line-height:30px;
 	width:100%;
 	height:100%;
@@ -310,6 +312,7 @@ a.menusel {
 	margin-left:5px;
 	margin-right:5px;
 }
+
 
 @media screen and (max-width: 1050px) {
 	div.picv{
