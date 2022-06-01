@@ -2919,7 +2919,7 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 
 	local execss = ""
 	if (OS == "Windows"){
-		execss =  char_replace(AF.subfolder,"/","\\") + "\\curlscrape2.vbs"+" "+ap+"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss =  char_replace(AF.subfolder,"/","\\") + "\\curlscrape.vbs"+" "+ap+"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
 		execss += "&use_parent=1"+ap + " " + ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "jsonA.nut" + ap + " "+ ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "jsonA.txt" + ap
 	}
@@ -2993,7 +2993,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 
 	local execss = ""
 	if (OS == "Windows"){
-		execss =  char_replace(AF.subfolder,"/","\\") + "\\curlscrape2.vbs"+" "+ap+"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss =  char_replace(AF.subfolder,"/","\\") + "\\curlscrape.vbs"+" "+ap+"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid="+ssuser
 		if (sspass != null) execss += "&sspassword="+sspass
 		if (romcrc != null) execss += "&crc="+romcrc
@@ -3345,7 +3345,7 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			if (tempdataA != null) {
 				if ( !(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext)))) {
 					if (OS == "Windows"){
-						system(char_replace(AF.subfolder,"/","\\") + "\\curlrunner.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
+						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
 					}
 					else {
 						system("curl -f --create-dirs -s " + ap + tempdataA.url + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap+ (emuartcat == "wheel" ? "": " &"))
@@ -3355,7 +3355,7 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 				if ((tempdata.len()>0) && (emuartcat == "wheel") && (  !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext))) ){
 
 					if (OS == "Windows"){
-						system(char_replace(AF.subfolder,"/","\\") + "\\curlrunner.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
 					else {
 						system("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
@@ -3366,7 +3366,7 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			else if(tempdata.len()>0){
 				if ( !(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension)))) {
 					if (OS == "Windows"){
-						system(char_replace(AF.subfolder,"/","\\") + "\\curlrunner.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
 					else {
 						system("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
