@@ -89,98 +89,98 @@ function manufacturer_vec_name(name){
 }
 
 local controllertable = {
-   "joystick (8-way)" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),joystick (8-way)" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),joystick (8-way),joystick (8-way)" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),joystick (8-way),joystick (8-way),joystick (8-way)" : "controller_images/control_joystick_8way.png",
-   "8-way Joystick" : "controller_images/control_joystick_8way.png",
-   "Joystick 8 ways" : "controller_images/control_joystick_8way.png",
-   "8-way Top-Fire Joystick" : "controller_images/control_joystick_8way.png",
-   "8-way Triggerstick" : "controller_images/control_joystick_8way.png",
+   "joystick (8-way)" : "control_joystick_8way.png",
+   "joystick (8-way),joystick (8-way)" : "control_joystick_8way.png",
+   "joystick (8-way),joystick (8-way),joystick (8-way)" : "control_joystick_8way.png",
+   "joystick (8-way),joystick (8-way),joystick (8-way),joystick (8-way)" : "control_joystick_8way.png",
+   "8-way Joystick" : "control_joystick_8way.png",
+   "Joystick 8 ways" : "control_joystick_8way.png",
+   "8-way Top-Fire Joystick" : "control_joystick_8way.png",
+   "8-way Triggerstick" : "control_joystick_8way.png",
 
-   "joystick (8-way),dial" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),dial,joystick (8-way),dial" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),dial" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),joystick (8-way)" : "controller_images/control_joystick_8way.png",
-   "Joystick 8 ways, Dial" : "controller_images/control_joystick_8way.png",
+   "joystick (8-way),dial" : "control_joystick_8way.png",
+   "joystick (8-way),dial,joystick (8-way),dial" : "control_joystick_8way.png",
+   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),dial" : "control_joystick_8way.png",
+   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),joystick (8-way)" : "control_joystick_8way.png",
+   "Joystick 8 ways, Dial" : "control_joystick_8way.png",
 
-   "joystick (8-way),paddle,joystick (8-way)" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),paddle" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),paddle,joystick (8-way),paddle" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),paddle,joystick (8-way),paddle,joystick (8-way),paddle" : "controller_images/control_joystick_8way.png",
+   "joystick (8-way),paddle,joystick (8-way)" : "control_joystick_8way.png",
+   "joystick (8-way),paddle" : "control_joystick_8way.png",
+   "joystick (8-way),paddle,joystick (8-way),paddle" : "control_joystick_8way.png",
+   "joystick (8-way),paddle,joystick (8-way),paddle,joystick (8-way),paddle" : "control_joystick_8way.png",
 
-   "joystick (8-way),joystick (analog)" : "controller_images/control_joystick_8analog.png",
-   "joystick (8-way),joystick (analog),joystick (8-way),joystick (analog)" : "controller_images/control_joystick_8analog.png",
-   "joystick (2-way),joystick (analog)" : "controller_images/control_joystick_2analog.png",
+   "joystick (8-way),joystick (analog)" : "control_joystick_8analog.png",
+   "joystick (8-way),joystick (analog),joystick (8-way),joystick (analog)" : "control_joystick_8analog.png",
+   "joystick (2-way),joystick (analog)" : "control_joystick_2analog.png",
 
-   "joystick (8-way),trackball" : "controller_images/control_joystick_8trackball.png",
-   "joystick (8-way),trackball,joystick (8-way),trackball" : "controller_images/control_joystick_8trackball.png",
+   "joystick (8-way),trackball" : "control_joystick_8trackball.png",
+   "joystick (8-way),trackball,joystick (8-way),trackball" : "control_joystick_8trackball.png",
 
-   "joystick (8-way),positional" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),positional,joystick (8-way),positional" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way),positional" : "controller_images/control_joystick_8way.png",
-   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way)positional,joystick (8-way)positional" : "controller_images/control_joystick_8way.png",
-   "joystick (5 (half8)-way),joystick (5 (half8)-way)" : "controller_images/control_joystick_8way.png",
-   "joystick (5 (half8)-way)" : "controller_images/control_joystick_8way.png",
-   "Joystick 8 ways, Positional" : "controller_images/control_joystick_8way.png",
+   "joystick (8-way),positional" : "control_joystick_8way.png",
+   "joystick (8-way),positional,joystick (8-way),positional" : "control_joystick_8way.png",
+   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way),positional" : "control_joystick_8way.png",
+   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way)positional,joystick (8-way)positional" : "control_joystick_8way.png",
+   "joystick (5 (half8)-way),joystick (5 (half8)-way)" : "control_joystick_8way.png",
+   "joystick (5 (half8)-way)" : "control_joystick_8way.png",
+   "Joystick 8 ways, Positional" : "control_joystick_8way.png",
 
-   "joystick (4-way)" : "controller_images/control_joystick_4way.png",
-   "joystick (4-way),joystick (4-way)" : "controller_images/control_joystick_4way.png",
-   "joystick (4-way),joystick (4-way),joystick (4-way),joystick (4-way)" : "controller_images/control_joystick_4way.png",
-   "joystick (3 (half4)-way),joystick (3 (half4)-way)" : "controller_images/control_joystick_4way.png",
-   "joystick (3 (half4)-way)" : "controller_images/control_joystick_4way.png",
-   "4-way Joystick" : "controller_images/control_joystick_4way.png",
-   "Joystick 4 ways" : "controller_images/control_joystick_4way.png",
+   "joystick (4-way)" : "control_joystick_4way.png",
+   "joystick (4-way),joystick (4-way)" : "control_joystick_4way.png",
+   "joystick (4-way),joystick (4-way),joystick (4-way),joystick (4-way)" : "control_joystick_4way.png",
+   "joystick (3 (half4)-way),joystick (3 (half4)-way)" : "control_joystick_4way.png",
+   "joystick (3 (half4)-way)" : "control_joystick_4way.png",
+   "4-way Joystick" : "control_joystick_4way.png",
+   "Joystick 4 ways" : "control_joystick_4way.png",
 
-   "joystick (2-way)" : "controller_images/control_joystick_2way.png",
-   "joystick (vertical2-way)" : "controller_images/control_joystick_2way.png",
-   "joystick (2-way),joystick (2-way)" : "controller_images/control_joystick_2way.png",
-   "joystick (2-way),joystick (2-way),joystick (2-way),joystick (2-way)" : "controller_images/control_joystick_2way.png",
-   "2-way Joystick (Horizontal)" : "controller_images/control_joystick_2way.png",
-   "2-way Joystick (Vertical)" : "controller_images/control_joystick_2way.png",
-   "Joystick 2 ways (horizontal)" : "controller_images/control_joystick_2way.png",
-   "Joystick 2 ways (vertical)" : "controller_images/control_joystick_2way.png",
+   "joystick (2-way)" : "control_joystick_2way.png",
+   "joystick (vertical2-way)" : "control_joystick_2way.png",
+   "joystick (2-way),joystick (2-way)" : "control_joystick_2way.png",
+   "joystick (2-way),joystick (2-way),joystick (2-way),joystick (2-way)" : "control_joystick_2way.png",
+   "2-way Joystick (Horizontal)" : "control_joystick_2way.png",
+   "2-way Joystick (Vertical)" : "control_joystick_2way.png",
+   "Joystick 2 ways (horizontal)" : "control_joystick_2way.png",
+   "Joystick 2 ways (vertical)" : "control_joystick_2way.png",
 
-   "paddle,pedal" : "controller_images/control_paddle_pedal.png",
-   "paddle,pedal,paddle,pedal" : "controller_images/control_paddle_pedal.png",
-   "Paddle, Pedal" : "controller_images/control_paddle_pedal.png",
+   "paddle,pedal" : "control_paddle_pedal.png",
+   "paddle,pedal,paddle,pedal" : "control_paddle_pedal.png",
+   "Paddle, Pedal" : "control_paddle_pedal.png",
 
-   "dial,pedal" : "controller_images/control_paddle_pedal.png",
-   "dial,pedal,dial,pedal" : "controller_images/control_paddle_pedal.png",
-   "dial,pedal,dial,pedal,dial,pedal" : "controller_images/control_paddle_pedal.png",
-   "dial,pedal,dial,pedal,dial,pedal,dial,pedal" : "controller_images/control_paddle_pedal.png",
+   "dial,pedal" : "control_paddle_pedal.png",
+   "dial,pedal,dial,pedal" : "control_paddle_pedal.png",
+   "dial,pedal,dial,pedal,dial,pedal" : "control_paddle_pedal.png",
+   "dial,pedal,dial,pedal,dial,pedal,dial,pedal" : "control_paddle_pedal.png",
 
-   "dial,paddle,pedal" : "controller_images/control_paddle_pedal.png",
+   "dial,paddle,pedal" : "control_paddle_pedal.png",
 
-   "joystick (analog)" : "controller_images/control_joystick_analog.png",
-   "joystick (analog),joystick (analog)" : "controller_images/control_joystick_analog.png",
-   "Analog Stick" : "controller_images/control_joystick_analog.png",
+   "joystick (analog)" : "control_joystick_analog.png",
+   "joystick (analog),joystick (analog)" : "control_joystick_analog.png",
+   "Analog Stick" : "control_joystick_analog.png",
 
-   "trackball" : "controller_images/control_trackball.png",
-   "trackball,trackball" : "controller_images/control_trackball.png",
-   "trackball,trackball,trackball" : "controller_images/control_trackball.png",
-   "Trackball" : "controller_images/control_trackball.png",
+   "trackball" : "control_trackball.png",
+   "trackball,trackball" : "control_trackball.png",
+   "trackball,trackball,trackball" : "control_trackball.png",
+   "Trackball" : "control_trackball.png",
 
-   "paddle" : "controller_images/control_paddle.png",
-   "paddle,paddle" : "controller_images/control_paddle.png",
+   "paddle" : "control_paddle.png",
+   "paddle,paddle" : "control_paddle.png",
 
-   "dial" : "controller_images/control_paddle.png",
-   "dial,dial" : "controller_images/control_paddle.png",
+   "dial" : "control_paddle.png",
+   "dial,dial" : "control_paddle.png",
 
-   "only_buttons" : "controller_images/control_buttons.png",
-   "only_buttons,only_buttons" : "controller_images/control_buttons.png",
-   "only_buttons,only_buttons,only_buttons,only_buttons" : "controller_images/control_buttons.png",
-   "Buttons only" : "controller_images/control_buttons.png",
-   "Just Buttons" : "controller_images/control_buttons.png",
+   "only_buttons" : "control_buttons.png",
+   "only_buttons,only_buttons" : "control_buttons.png",
+   "only_buttons,only_buttons,only_buttons,only_buttons" : "control_buttons.png",
+   "Buttons only" : "control_buttons.png",
+   "Just Buttons" : "control_buttons.png",
 
-   "double joystick" : "controller_images/control_double_joystick.png",
-   "double joystick,double joystick" : "controller_images/control_double_joystick.png",
-   "Dual 8-way Joysticks" : "controller_images/control_double_joystick.png",
+   "double joystick" : "control_double_joystick.png",
+   "double joystick,double joystick" : "control_double_joystick.png",
+   "Dual 8-way Joysticks" : "control_double_joystick.png",
 
-   "lightgun" : "controller_images/control_lightgun.png",
-   "lightgun,lightgun" : "controller_images/control_lightgun.png",
-   "Analog Gun" : "controller_images/control_lightgun.png",
-   "Lightgun" : "controller_images/control_lightgun.png",
+   "lightgun" : "control_lightgun.png",
+   "lightgun,lightgun" : "control_lightgun.png",
+   "Analog Gun" : "control_lightgun.png",
+   "Lightgun" : "control_lightgun.png",
 }
 
 function controller_pic(s){
@@ -190,7 +190,7 @@ function controller_pic(s){
       return (controllertable[s])
    }
    catch ( err ) {
-      return ("controller_images/control_.png")
+      return ("control_.png")
    }  
 }
 
@@ -758,25 +758,25 @@ function category_pic_name(name){
    local s = name
    local sout = categorynamepurge(s)
 
-	return "category_images/"+sout+".png"
+	return "images/category/"+sout+".png"
 }
 
 function category_pic(offset){
    local s = fe.game_info( Info.Category, offset )
    local sout = categorynamepurge(s)
 
-	return "category_images/"+sout+".png"
+	return "images/category/"+sout+".png"
 }
 
 function category_pic_10_name(s){
    local sout = categorynamepurge(s)
-	return "category_images_10/"+sout+".png"
+	return "images/category10/"+sout+".png"
 }
 
 function category_pic_10(offset){
    local s = fe.game_info( Info.Category, offset )
    local sout = categorynamepurge(s)
-	return "category_images_10/"+sout+".png"
+	return "images/category10/"+sout+".png"
 }
 
 function manufacturer_list(){
