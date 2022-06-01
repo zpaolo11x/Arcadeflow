@@ -5925,9 +5925,9 @@ function z_list_updategamedata(index){
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer) 
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (z_list.boot[index].z_category)
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
-	dat.but_array[dat.stacksize - 1].file_name = (AF.folder+"images/buttons/" + z_list.boot[index].z_buttons+"button.png")
-	dat.ply_array[dat.stacksize - 1].file_name = (AF.folder+"images/players/players_" + z_list.boot[index].z_players+".png")
-	dat.ctl_array[dat.stacksize - 1].file_name = (AF.folder+"images/controller/"+controller_pic (z_list.boot[index].z_control))
+	dat.but_array[dat.stacksize - 1].file_name = (AF.folder+"metapics/buttons/" + z_list.boot[index].z_buttons+"button.png")
+	dat.ply_array[dat.stacksize - 1].file_name = (AF.folder+"metapics/players/players_" + z_list.boot[index].z_players+".png")
+	dat.ctl_array[dat.stacksize - 1].file_name = (AF.folder+"metapics/controller/"+controller_pic (z_list.boot[index].z_control))
 
 	dat.mainctg_array[dat.stacksize - 1].msg = maincategorydispl(index)
 	dat.gamename_array[dat.stacksize - 1].msg = gamename2(index)
@@ -10734,7 +10734,7 @@ history_surface.set_pos(0,0)
 
 function history_updateoverlay(){
 	
-	try {hist_over.overcontrol.file_name = "images/overlaycontroller/"+controller_pic (z_list.gametable[z_list.index].z_control)}catch(err){}
+	try {hist_over.overcontrol.file_name = "metapics/overlaycontroller/"+controller_pic (z_list.gametable[z_list.index].z_control)}catch(err){}
 
 	local commands = []
 
@@ -10764,7 +10764,7 @@ function history_updateoverlay(){
 
 	if ((commands.len() > 0) && !commandnull){
 		if (numbuttons == "") numbuttons = "0"
-		try {hist_over.overbuttons2.file_name = "images/overlaybuttons/"+numbuttons+"over.png"}catch(err){}
+		try {hist_over.overbuttons2.file_name = "metapics/overlaybuttons/"+numbuttons+"over.png"}catch(err){}
 		for (local i = 0 ; i < min(commands.len(),min(6,numbuttons.tointeger())) ; i++){
 			hist_over.btsh[i].msg = hist_over.bt[i].msg = commands[i].toupper()
 		}
@@ -10772,7 +10772,7 @@ function history_updateoverlay(){
 	else {
 		hist_over.overbuttons2.file_name = AF.folder+"pics/transparent.png"
 	}
-		try {hist_over.overbuttons.file_name = "images/overlaybuttons/"+numbuttons+".png"}catch(err){}
+		try {hist_over.overbuttons.file_name = "metapics/overlaybuttons/"+numbuttons+".png"}catch(err){}
 }
 
 
@@ -13396,7 +13396,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 		noboxart = true
 		tilez[i].gr_snapz.file_name = category_pic_10_name (z_list.gametable[indexvar].z_category)
 		
-		if (tilez[i].gr_snapz.texture_width == 0 ) tilez[i].gr_snapz.file_name = "images/category10/grey.png"
+		if (tilez[i].gr_snapz.texture_width == 0 ) tilez[i].gr_snapz.file_name = "metapics/category10/grey.png"
 		
 		tilez[i].snapz.shader = tilez[i].gr_snapz.shader = colormapper["BOXART"].shad
 
@@ -13408,7 +13408,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 		tilez[i].txbox.visible = false
 		if (!prf.TITLEONBOX) tilez[i].txbox.visible = true
 	}
-	else if (tilez[i].gr_snapz.file_name.find("images/category10") == null) {
+	else if (tilez[i].gr_snapz.file_name.find("metapics/category10") == null) {
 		if (prf.BOXARTMODE) {
 			noboxart = false
 			tilez[i].snapz.shader = tilez[i].gr_snapz.shader = colormapper["NONE"].shad

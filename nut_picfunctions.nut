@@ -758,25 +758,25 @@ function category_pic_name(name){
    local s = name
    local sout = categorynamepurge(s)
 
-	return "images/category/"+sout+".png"
+	return "metapics/category/"+sout+".png"
 }
 
 function category_pic(offset){
    local s = fe.game_info( Info.Category, offset )
    local sout = categorynamepurge(s)
 
-	return "images/category/"+sout+".png"
+	return "metapics/category/"+sout+".png"
 }
 
 function category_pic_10_name(s){
    local sout = categorynamepurge(s)
-	return "images/category10/"+sout+".png"
+	return "metapics/category10/"+sout+".png"
 }
 
 function category_pic_10(offset){
    local s = fe.game_info( Info.Category, offset )
    local sout = categorynamepurge(s)
-	return "images/category10/"+sout+".png"
+	return "metapics/category10/"+sout+".png"
 }
 
 function manufacturer_list(){
