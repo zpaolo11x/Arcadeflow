@@ -2,3 +2,9 @@ pref_checkdate.txt
 pref_mf_0.txt
 pref_savedlanguage.txt
 pref_sortorder.txt
+scrapelog.txt
+pref_thumbtype.txt
+pref_layoutoptions.txt
+latest_version.txt
+.DS_Store
+.gitignore
