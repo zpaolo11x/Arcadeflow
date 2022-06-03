@@ -267,6 +267,10 @@ fujitsu fm7
 future pinball,0,0,FPIN,CRT,NONE,4,3,PINBALL,Various,null,Future Pinball,199,fichier,null,null
 futurepinball
 
+game park gp32,0,0,GP32,LCD,NONE,0,0,HANDHELD,Game Park,2001,GP32,101,rom,joystick (8-way),2
+gamepark gp32
+gp32
+
 hbmame,0,0,HBMM,CRT,NONE,-4,3,ARCADE,Various,null,HBMAME,75,rom,null,null
 hbmame arcade
 arcade hbmame
