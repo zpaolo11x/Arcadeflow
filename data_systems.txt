@@ -267,6 +267,11 @@ fujitsu fm7
 future pinball,0,0,FPIN,CRT,NONE,4,3,PINBALL,Various,null,Future Pinball,199,fichier,null,null
 futurepinball
 
+game master,0,0,GMAS,LCD,NONE,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
+systema 2000
+super game
+game tronic
+
 game park gp32,0,0,GP32,LCD,NONE,0,0,HANDHELD,Game Park,2001,GP32,101,rom,joystick (8-way),2
 gamepark gp32
 gp32
