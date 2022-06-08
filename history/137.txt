@@ -1,0 +1,2 @@
+13.7
+Added support for multi-monitor setups
