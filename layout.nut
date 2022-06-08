@@ -915,14 +915,14 @@ AF.prefs.l1.push([
 
 
 menucounter ++
-AF.prefs.l0.push({ label = "MULTIPLE MONITOR", glyph = 0xe923, description = "Configure the appearence of a second monitor"})
+AF.prefs.l0.push({ label = "MULTIPLE MONITOR", glyph = 0xeaf8, description = "Configure the appearence of a second monitor"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = -100},
-{v = 13.7, varname = "multimon", glyph = 0xe95b, initvar = function(val,prf){prf.MULTIMON <- val}, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
-{v = 13.7, varname = "monitornumber", glyph = 0xe95b, initvar = function(val,prf){prf.MONITORNUMBER <- val}, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = "", values ="1", selection = AF.req.keyboard}
-{v = 13.7, varname = "monitoraspect", glyph = 0xe95b, initvar = function(val,prf){prf.MONITORASPECT <- val}, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
-{v = 13.7, varname = "monitormedia1", glyph = 0xe95b, initvar = function(val,prf){prf.MONITORMEDIA1 <- val}, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
-{v = 13.7, varname = "monitormedia2", glyph = 0xe95b, initvar = function(val,prf){prf.MONITORMEDIA2 <- val}, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
+{v = 13.7, varname = "multimon", glyph = 0xeaf8, initvar = function(val,prf){prf.MULTIMON <- val}, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
+{v = 13.7, varname = "monitornumber", glyph = 0xeaf9, initvar = function(val,prf){prf.MONITORNUMBER <- val}, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = "", values ="1", selection = AF.req.keyboard}
+{v = 13.7, varname = "monitoraspect", glyph = 0xea57, initvar = function(val,prf){prf.MONITORASPECT <- val}, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
+{v = 13.7, varname = "monitormedia1", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA1 <- val}, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
+{v = 13.7, varname = "monitormedia2", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA2 <- val}, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
 ])
 
 menucounter ++
