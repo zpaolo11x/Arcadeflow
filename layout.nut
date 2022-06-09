@@ -3117,7 +3117,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
     scraprt("ID"+scrapeid+"-getromdata call createjson 1\n")
 	 //TEST132 changed splitting to take only part before "_"
-   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),(AF.scrape.inprf.NOCRC || filemissing)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
 	 scraprt("ID"+scrapeid+"-getromdata suspend 1\n")
 	suspend() // Wait for the json to be read

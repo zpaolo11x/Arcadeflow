@@ -698,10 +698,24 @@ function getromcrc_lookup4(filepath){
       local zipcontent = zip_get_dir(filepath)
       //NOTE: If the zip has more than one file, check the crc of the zip itselfs
       if (zipcontent.len() == 1) blb = zip_extract_file(filepath, zipcontent[0] )
-      else blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
+      else {
+         try{
+            blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
+         }
+         catch(err){
+            print ("*****CRC ERROR****\n")
+            return ([null,null])
+         }
+      }
    }
    else {
-      blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
+      try{
+         blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
+      }
+      catch(err){
+         print ("*****CRC ERROR****\n")
+         return ([null,null])
+      }
    }
    local i = 0
    local crc = 0xFFFFFFFF
