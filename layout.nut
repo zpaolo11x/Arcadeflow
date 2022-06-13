@@ -1,4 +1,4 @@
-// Arcadeflow - v 13.6
+// Arcadeflow - v 13.7
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -74,7 +74,7 @@ function returngly(){
 // General AF data table
 local AF = {
 	uniglyphs = returngly()
-	version = "13.6"
+	version = "13.7"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -913,6 +913,18 @@ AF.prefs.l1.push([
 {v = 8.3, varname = "controloverlay", glyph = 0xe923, initvar = function(val,prf){prf.CONTROLOVERLAY <- val}, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Yes", "No"], values = [true,false], selection = 0},
 ])
 
+
+menucounter ++
+AF.prefs.l0.push({ label = "MULTIPLE MONITOR", glyph = 0xeaf8, description = "Configure the appearence of a second monitor"})
+AF.prefs.l1.push([
+{v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = -100},
+{v = 13.7, varname = "multimon", glyph = 0xeaf8, initvar = function(val,prf){prf.MULTIMON <- val}, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
+{v = 13.7, varname = "monitornumber", glyph = 0xeaf9, initvar = function(val,prf){prf.MONITORNUMBER <- val}, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = "", values ="1", selection = AF.req.keyboard}
+{v = 13.7, varname = "monitoraspect", glyph = 0xea57, initvar = function(val,prf){prf.MONITORASPECT <- val}, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
+{v = 13.7, varname = "monitormedia1", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA1 <- val}, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
+{v = 13.7, varname = "monitormedia2", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA2 <- val}, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
+])
+
 menucounter ++
 AF.prefs.l0.push({ label = "AUDIO", glyph = 0xea27, description = "Configure layout sounds and audio options for videos"})
 AF.prefs.l1.push([
@@ -1381,6 +1393,12 @@ if (prf.LOGOSONLY) {
 	prf.CROPSNAPS = false
 	prf.BOXARTMODE = false
 }
+
+try{prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err){
+	print ("Error on monitor number\n")
+	prf.MONITORNUMBER = 0
+}
+
 // End prf setup
 
 
@@ -3099,7 +3117,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
     scraprt("ID"+scrapeid+"-getromdata call createjson 1\n")
 	 //TEST132 changed splitting to take only part before "_"
-   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),(AF.scrape.inprf.NOCRC || filemissing)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
 	 scraprt("ID"+scrapeid+"-getromdata suspend 1\n")
 	suspend() // Wait for the json to be read
@@ -7209,12 +7227,6 @@ else {
 	frostpic.h = frostpic.size
 }
 
-local frost_picT = {
-	x = 0,
-	y = 0,
-	w = frostpic.w,
-	h = frostpic.h
-}
 
 local frost = {
 	surf_1 = null
@@ -7225,6 +7237,14 @@ local frost = {
 	scaler = null
 	picnofrost = null
 	mfm = null
+	picT = null
+}
+
+frost.picT = {
+	x = 0,
+	y = 0,
+	w = frostpic.w,
+	h = frostpic.h
 }
 
 local flipshader = null
@@ -7239,7 +7259,7 @@ frost.surf_1 = frost.surf_2.add_surface(frostpic.w,frostpic.h)
 frost.surf_1.mipmap = 1
 frost.pic = frost.surf_1.add_clone(fl.surf)
 frost.pic.mipmap = 1
-frost.pic.set_pos (frost_picT.x,frost_picT.y,frost_picT.w,frost_picT.h)
+frost.pic.set_pos (frost.picT.x,frost.picT.y,frost.picT.w,frost.picT.h)
 
 
 shader_fr = {
@@ -7268,6 +7288,13 @@ shader_fr.alpha.set_param ( "alpha",0.0 )
 
 frost.surf_rt.shader = shader_fr.alpha
 frost.surf_rt.shader = noshader
+
+/// Second Monitor graphics creation ///
+
+local mon2 = {
+	pic_array = []
+	pic = null
+}
 
 /// Background image creation ///
 
@@ -7327,6 +7354,20 @@ for (local i = 0; i < bgs.stacksize; i++){
 	bgs.bg_index.push (z_list.index)
 }
 
+prf.MULTIMON <- false
+
+if (fe.monitors.len() > 1) prf.MULTIMON = true
+
+if(prf.MULTIMON){
+	for (local i=0; i<bgs.stacksize;i++){
+		mon2.pic = fe.monitors[prf.MONITORNUMBER].add_image(AF.folder+"pics/transparent.png",0,0,fe.monitors[prf.MONITORNUMBER].width,fe.monitors[prf.MONITORNUMBER].height)
+		mon2.pic.preserve_aspect_ratio = prf.MONITORASPECT
+		mon2.pic.alpha = 255
+		mon2.pic.smooth = true
+
+		mon2.pic_array.push(mon2.pic)
+	}
+}
 
 local shader_bg = {
 	h = fe.add_shader (Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl") 
@@ -13246,6 +13287,12 @@ function updatebgsnap (index){
 	// proprietà .offset e .index della tabella tilez
 	bgs.bgpic_array[bgs.stacksize-1].file_name  = fe.get_art((prf.BOXARTMODE ? (prf.LAYERSNAP ? "snap" : prf.BOXARTSOURCE) : (prf.TITLEART ? (prf.LAYERSNAP ? "snap" : "title") : "snap")) , tilez[index].offset,0,Art.ImagesOnly)
 
+	if (prf.MULTIMON) {
+		mon2.pic_array[bgs.stacksize-1].file_name  = fe.get_art(prf.MONITORMEDIA1, tilez[index].offset,0,Art.ImagesOnly)
+		if (mon2.pic_array[bgs.stacksize-1].texture_width == 0)
+			mon2.pic_array[bgs.stacksize-1].file_name  = fe.get_art(prf.MONITORMEDIA2, tilez[index].offset,0,Art.ImagesOnly)
+	}
+
 	// Case 1: pure box art mode
 	if ((prf.BOXARTMODE) && (!prf.LAYERSNAP)) {
 		// Check if boxart file is present otherwise load category pic and set proper coloring
@@ -14878,8 +14925,9 @@ function on_transition( ttype, var0, ttime ) {
 			bgs.bg_aspect[i] = bgs.bg_aspect[i+1]
 			bgs.bg_box[i] = bgs.bg_box[i+1]
 			bgs.bg_index[i] = bgs.bg_index[i+1]
-		}
 
+			if (prf.MULTIMON) mon2.pic_array[i].swap(mon2.pic_array[i+1])
+		}
 
 		for (local i = 0; i < dat.stacksize - 2;i++){
 			dat.var_array[i] = dat.var_array[i+1]
@@ -15438,10 +15486,12 @@ function tick( tick_time ) {
 			if (i != dat.stacksize -1){
 				dat.alphapos[i] = dat.alphapos[i] * spdT.dataspeedout
 				dat.ply_array[i].alpha = dat.ctl_array[i].alpha = dat.but_array[i].alpha = dat.cat_array[i].alpha = dat.mainctg_array[i].alpha = dat.manufacturer_array[i].alpha = dat.gamename_array[i].alpha = dat.gamesubname_array[i].alpha = dat.manufacturername_array[i].alpha = dat.gameyear_array[i].alpha = 255 * (dat.alphapos[i])*1.0
+				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.ply_array[i].alpha
 			}
 			else {
 				dat.alphapos[dat.stacksize -1] = dat.alphapos[dat.stacksize - 1] * spdT.dataspeedin
 				dat.ply_array[i].alpha = dat.ctl_array[i].alpha = dat.but_array[dat.stacksize - 1].alpha = dat.cat_array[dat.stacksize - 1].alpha = dat.mainctg_array[dat.stacksize - 1].alpha = dat.manufacturer_array[dat.stacksize - 1].alpha = dat.gamename_array[dat.stacksize - 1].alpha = dat.gamesubname_array[dat.stacksize - 1].alpha = dat.manufacturername_array[dat.stacksize - 1].alpha =dat.gameyear_array[dat.stacksize - 1].alpha = 255 * (1.0 - dat.alphapos[dat.stacksize - 1])*1.0
+				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.ply_array[i].alpha
 			}
 		}
 	}
