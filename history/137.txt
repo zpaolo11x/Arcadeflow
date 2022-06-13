@@ -1,2 +1,3 @@
 13.7
 Added support for multi-monitor setups
+Fixed issue with CRC check of large files on Windows
