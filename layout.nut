@@ -2016,6 +2016,16 @@ local UI = {
 	selectorscale = 0
 	whitemargin = 0
 	selectorwidth = 0
+
+	header = {
+		h = 0 //content size
+		h2 = 0 //spacer size
+	}
+
+	footer = {
+		h = 0 //content size
+		h2 = 0 //spacer size
+	}
 }
 
 
@@ -2128,20 +2138,17 @@ fe.layout.font = uifonts.general
 UI.scalerate = (UI.vertical ? fl.w : fl.h)/1200.0
 
 // Changed header spacer from 200 to 220 better centering
-local header = {
-	h = floor (prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate ) // content
-	h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : 220 * UI.scalerate)) //spacer
-}
-// Changed header spacer from 100 to 90 better centering
-local footer = {
-	h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
-	h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : 90 * UI.scalerate)) //spacer
-}
+UI.header.h = floor (prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate ) // content
+UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : 220 * UI.scalerate)) //spacer
 
-UI.tileheight = (fl.h - header.h2 - footer.h2)/(UI.rows + UI.rows*UI.padding_scaler + UI.padding_scaler)
+// Changed header spacer from 100 to 90 better centering
+UI.footer.h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
+UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : 90 * UI.scalerate)) //spacer
+
+UI.tileheight = (fl.h - UI.header.h2 - UI.footer.h2)/(UI.rows + UI.rows*UI.padding_scaler + UI.padding_scaler)
 if ((prf.SLIMLINE) ){
-	UI.tileheight = (fl.h - header.h2 - footer.h2)/(2.0 + 2.0*UI.padding_scaler + UI.padding_scaler)
-	footer.h = 1.4*footer.h
+	UI.tileheight = (fl.h - UI.header.h2 - UI.footer.h2)/(2.0 + 2.0*UI.padding_scaler + UI.padding_scaler)
+	UI.footer.h = 1.4*UI.footer.h
 }
 
 UI.tilewidth = UI.tileheight
@@ -2174,7 +2181,7 @@ local pagejump = prf.SCROLLAMOUNT * UI.rows*(UI.cols-2)
 // carrier sizing in general layout
 local carrierT = {
 	x = fl.x -(UI.cols * (UI.widthmix + UI.padding) + UI.padding - fl.w) * 0.5,
-	y = fl.y + header.h2 + (prf.SLIMLINE ? UI.tileheight * 0.5 : 0 ),
+	y = fl.y + UI.header.h2 + (prf.SLIMLINE ? UI.tileheight * 0.5 : 0 ),
 	w = UI.cols * (UI.widthmix + UI.padding) + UI.padding,
 	h = UI.rows * UI.tileheight + UI.rows * UI.padding + UI.padding
 }
@@ -7212,9 +7219,9 @@ local overlay = {
 	shad = []
 	wline = null
 	filterbg = null
-	ex_top = floor(header.h * 0.6)
-	ex_bottom = floor(footer.h * 0.5)
-	in_side = UI.vertical ? floor(footer.h * 0.5) : floor(footer.h * 0.65)
+	ex_top = floor(UI.header.h * 0.6)
+	ex_bottom = floor(UI.footer.h * 0.5)
+	in_side = UI.vertical ? floor(UI.footer.h * 0.5) : floor(UI.footer.h * 0.65)
 	x = 0
 	y = 0
 	w = 0
@@ -7226,7 +7233,7 @@ overlay.rowsize = (prf.LOWRES ? (overlay.charsize*2.5) : (overlay.charsize*3.0))
 overlay.labelsize = (overlay.rowsize * 1)
 overlay.labelcharsize = overlay.charsize * 1
 
-overlay.fullheight = fl.h - header.h - footer.h - overlay.labelsize + overlay.ex_top + overlay.ex_bottom
+overlay.fullheight = fl.h - UI.header.h - UI.footer.h - overlay.labelsize + overlay.ex_top + overlay.ex_bottom
 overlay.fullwidth = ((overlay.fullheight + overlay.labelsize)*3.0/2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.fullheight + overlay.labelsize)*3.0/2.0 : (fl.w - 2 * overlay.in_side))
 
 overlay.fullheight = floor(overlay.fullheight)
@@ -7237,7 +7244,7 @@ if (floor(overlay.rows / 2.0)*2.0 == overlay.rows ) overlay.rows ++
 
 
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth) 
-overlay.y = fl.y + header.h - overlay.ex_top
+overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.fullheight + overlay.labelsize
 
@@ -7721,14 +7728,10 @@ local gradscaler = 1
 local shaders = {
 	// Define blur shader for the tile image
 	gr = {
-		//h = fe.add_shader( Shader.Fragment, "glsl/gauss_kernsigma_o.glsl" )
-		//v = fe.add_shader( Shader.Fragment, "glsl/gauss_kernsigma_o.glsl" )
 		hv = fe.add_shader( Shader.VertexAndFragment, "glsl/quadrablur_v.glsl", "glsl/quadrablur_f.glsl" )
 	}
 	// Define blur shader for the logo shadow	
 	lg = {
-		//v = fe.add_shader( Shader.Fragment, "glsl/gauss_kernsigma_o.glsl" )
-		//h = fe.add_shader( Shader.Fragment, "glsl/gauss_kernsigma_o.glsl" )
 		hv = fe.add_shader( Shader.VertexAndFragment, "glsl/octablur_v.glsl", "glsl/octablur_f.glsl" )
 	}
 
@@ -7736,24 +7739,7 @@ local shaders = {
 
 shaders.gr.hv.set_texture_param( "texture")
 shaders.gr.hv.set_param ("size", gradsizer, gradsizer)
-/*
-shaders.gr.h.set_texture_param( "texture")
-shaders.gr.h.set_param ("kernelData", 5.0, 2.0)
-shaders.gr.h.set_param ("offsetFactor", 1.0/gradsizer, 0.0)
 
-shaders.gr.v.set_texture_param( "texture")
-shaders.gr.v.set_param ("kernelData", 5.0, 2.0)
-shaders.gr.v.set_param ("offsetFactor", 0.0, 1.0/gradsizer)
-
-
-shaders.lg.v.set_texture_param( "texture")
-shaders.lg.v.set_param ("kernelData", 5.0 , 1.75)
-shaders.lg.v.set_param ("offsetFactor", 0.0000, 1.0/(logo.shh*logo.shscale))
-
-shaders.lg.h.set_texture_param( "texture")
-shaders.lg.h.set_param ("kernelData", 5.0 , 1.75)
-shaders.lg.h.set_param ("offsetFactor", 1.0/(logo.shw*logo.shscale), 0.0)
-*/
 shaders.lg.hv.set_texture_param( "texture")
 shaders.lg.hv.set_param ("size", logo.shw*logo.shscale, logo.shh*logo.shscale)
 
@@ -7799,15 +7785,6 @@ for (local i = 0; i < tiles.total; i++ ) {
 		gr_vidsz.preserve_aspect_ratio = false
 		gr_vidsz.mipmap = 1
 
-		/*
-		greenshader.vid = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-		greenshader.vid.set_texture_param("texture")
-		greenshader.vid.set_param ("remap",0.0)
-		greenshader.vid.set_param ("lcdcolor",0.0)
-
-		gr_vidsz.shader = greenshader.vid
-		*/
-		
 		if (!prf.AUDIOVIDSNAPS) gr_vidsz.video_flags = Vid.NoAudio
 	}
 
@@ -8091,7 +8068,7 @@ data_surface_sh_rt.zorder = -1
 data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
 
-local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-footer.h,footermargin,footer.h)
+local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,footermargin,UI.footer.h)
 filterdata.align = Align.Centre
 filterdata.set_rgb( 255, 255, 255)
 filterdata.word_wrap = true
@@ -8101,7 +8078,7 @@ filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
 
-local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-footermargin,fl.y+fl.h-footer.h,footermargin,footer.h)
+local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-footermargin,fl.y+fl.h-UI.footer.h,footermargin,UI.footer.h)
 filternumbers.align = Align.Centre
 filternumbers.set_rgb( 255, 255, 255)
 filternumbers.word_wrap = true
@@ -8110,11 +8087,11 @@ filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local separatorline = data_surface.add_rectangle(fl.x+fl.w-footermargin+footermargin*0.3, fl.y+fl.h-footer.h + footer.h*0.5,footermargin*0.4,1)
+local separatorline = data_surface.add_rectangle(fl.x+fl.w-footermargin+footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 separatorline.visible = !((prf.CLEANLAYOUT))
 
-multifilterglyph = data_surface.add_text("X",fl.x+fl.w-footermargin,fl.y+fl.h-footer.h,footermargin*0.3,footer.h)
+multifilterglyph = data_surface.add_text("X",fl.x+fl.w-footermargin,fl.y+fl.h-UI.footer.h,footermargin*0.3,UI.footer.h)
 multifilterglyph.margin = 0
 multifilterglyph.char_size = UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
@@ -8128,16 +8105,16 @@ multifilterglyph.visible = false
 
 
 // scroller definition
-local scrolline = data_surface.add_rectangle(fl.x+footermargin,fl.y+fl.h - footer.h*0.5 - 1, fl.w-2*footermargin, 1 )
+local scrolline = data_surface.add_rectangle(fl.x+footermargin,fl.y+fl.h - UI.footer.h*0.5 - 1, fl.w-2*footermargin, 1 )
 //scrolline.alpha = 255
 scrolline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10 * UI.scalerate -1 ,fl.w-2*footermargin, 20 * UI.scalerate + 1)
+local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - UI.footer.h*0.5 - 10 * UI.scalerate -1 ,fl.w-2*footermargin, 20 * UI.scalerate + 1)
 scrollineglow.visible = false
 scrollineglow.alpha = 200
 scrollineglow.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scroller = data_surface.add_image("pics/ui/whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
+local scroller = data_surface.add_image("pics/ui/whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-UI.footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
 scroller.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 local scroller2 = data_surface.add_image("pics/ui/whitedisc2.png",scroller.x - scrollersize*0.5, scroller.y-scrollersize*0.5,scrollersize*2,scrollersize*2)
@@ -8153,7 +8130,7 @@ labelstrip.visible = false
 local labelsurf = data_surface.add_surface (fl.w,fl.h)
 labelsurf.set_pos (fl.x,fl.y)
 
-searchdata = data_surface.add_text(fe.list.search_rule,fl.x,fl.y+fl.h-footer.h*0.5,fl.w,footer.h*0.5)
+searchdata = data_surface.add_text(fe.list.search_rule,fl.x,fl.y+fl.h-UI.footer.h*0.5,fl.w,UI.footer.h*0.5)
 searchdata.align = Align.Centre
 searchdata.set_rgb( 255, 255, 255)
 searchdata.word_wrap = true
@@ -8163,11 +8140,6 @@ searchdata.font = uifonts.gui
 searchdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 function displaynamelogo (offset){
-	/*
-	local dispname = ( fe.displays[fe.list.display_index].name)
-	local dispname2 = split (dispname,"#")
-	if (dispname2.len() > 1) dispname = dispname2[0]
-	*/
 	return systemfont (z_disp[fe.list.display_index].cleanname,false)
 }
 
@@ -8187,8 +8159,8 @@ displayname.word_wrap = true
 displayname.alpha = 0
 displayname.font = uifonts.gui
 displayname.align = Align.MiddleCentre
-//displayname.set_bg_rgb(200,0,0)
-//displayname.bg_alpha = 128
+
+
 // fading letter
 local letterobjsurf = {
 	surf = null
@@ -8200,13 +8172,10 @@ local letterobjsurf = {
 letterobjsurf.surf = data_surface.add_surface(letterobjsurf.w,letterobjsurf.h)
 letterobjsurf.surf.set_pos (fl.x+0.5*(fl.w - letterobjsurf.w),letterobjsurf.y0)
 local letterobj = letterobjsurf.surf.add_text("...",0.5*(letterobjsurf.w - letterobjsurf.w3),0,letterobjsurf.w3,letterobjsurf.h)
-//letterobj.set_bg_rgb(200,0,0)
-//letterobj.bg_alpha = 128
 letterobj.alpha = 0
 letterobj.char_size = lettersize.name * 2.0
 letterobj.font = uifonts.gui
 letterobj.set_rgb(themeT.themelettercolor,themeT.themelettercolor,themeT.themelettercolor)
-//letterobj.set_bg_rgb(200,0,0)
 letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
 
@@ -8217,7 +8186,6 @@ local blsize = {
 	posy = 137 * UI.scalerate,
 	manu = 145 * UI.scalerate,
 	dath = 25 * UI.scalerate
-
 }
 
 if (prf.LOWRES) {
@@ -8264,7 +8232,7 @@ local game_butpicT = {
 // main game category
 local game_maincatT = {
 	x = 20 * UI.scalerate,
-	y = header.h - 20 * UI.scalerate - blsize.subt,
+	y = UI.header.h - 20 * UI.scalerate - blsize.subt,
 	w = game_plypicT.x - 2 * 20 * UI.scalerate,
 	h = blsize.subt
 }
@@ -8278,7 +8246,7 @@ local game_manufacturerpicT = {
 }
 local game_yearT = {
 	x = game_manufacturerpicT.x,
-	y = header.h - 20 * UI.scalerate - blsize.dath,
+	y = UI.header.h - 20 * UI.scalerate - blsize.dath,
 	w = game_manufacturerpicT.w,
 	h = blsize.dath
 }
@@ -8452,9 +8420,9 @@ function overmenu_visible(){
 }
 
 function overmenu_show(){
-	overmenu.y = fl.y + fl.h*0.5*0 + header.h2 + UI.heightpadded*0.5 -overmenuwidth*0.5 - corrector * (UI.heightpadded - UI.padding)
-	if (UI.rows == 1 ) overmenu.y = fl.y + fl.h*0.5*0 + header.h2 + UI.heightpadded*0.5 - overmenuwidth*0.5
-	if (prf.SLIMLINE == true) overmenu.y = fl.y + header.h + (fl.h-header.h-footer.h)*0.5 - overmenuwidth*0.5
+	overmenu.y = fl.y + fl.h*0.5*0 + UI.header.h2 + UI.heightpadded*0.5 -overmenuwidth*0.5 - corrector * (UI.heightpadded - UI.padding)
+	if (UI.rows == 1 ) overmenu.y = fl.y + fl.h*0.5*0 + UI.header.h2 + UI.heightpadded*0.5 - overmenuwidth*0.5
+	if (prf.SLIMLINE == true) overmenu.y = fl.y + UI.header.h + (fl.h-UI.header.h-UI.footer.h)*0.5 - overmenuwidth*0.5
 	overmenu.x = fl.x + fl.w*0.5 - overmenuwidth*0.5 + centercorr.val
 	if(prf.THEMEAUDIO) snd.wooshsound.playing = true
 
@@ -8527,7 +8495,7 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelsize-2,overlay.w,2)
 
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-UI.footer.h+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50 * UI.scalerate), overlay.y,floor(50 * UI.scalerate), overlay.h))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
@@ -9837,111 +9805,6 @@ function tags_menu(){
 	})
 }
 
-// add_fav, add_tag, remove_fav and remove_tag work directly on the tag file on disk
-// after the file has been edited, the initfromfile function is called to update the
-// table in memory, then this data is used in the z_listcreate function
-/*
-function add_tag (tagname){
-	local romdir = (FeConfigDirectory+"romlists/"+fe.displays[fe.list.display_index].romlist)
-	// Check if romdir exists
-	local romdirpresent = (fe.path_test( romdir, PathTest.IsDirectory ))
-	
-	local tagfile = romdir+"/"+tagname.toupper()+".tag"
-	local tagfilepresent = (fe.path_test( tagfile, PathTest.IsFile ))
-
-	if (!romdirpresent) { // no tags directory for this romlist, it must be created
-		system("mkdir "+ap+romdir+ap)
-	}
-
-	// If no romdir then create it and create a new tag file for that
-	if (!tagfilepresent){
-		local file = WriteTextFile(tagfile)
-		file.write_line(fe.game_info(Info.Name))
-		file.close_file()
-	}
-	else {
-		local outtxt = []
-		local filein = ReadTextFile(tagfile)
-		while (!filein.eos()){
-			local gamein = filein.read_line()
-			if (gamein != fe.game_info(Info.Name)) outtxt.push (gamein)
-		}
-		outtxt.push (fe.game_info(Info.Name))
-		local fileout = WriteTextFile(tagfile)
-		for (local i = 0 ; i < outtxt.len()-1;i++){
-			fileout.write_line(outtxt[i]+"\n")
-		}
-		if (outtxt.len() >=1 ) fileout.write_line(outtxt[outtxt.len()-1])
-		fileout.close_file()
-	}
-
-	z_list.boot2[fe.list.index].z_tags.push (tagname)
-
-	z_updatetagstable()
-
-	mfz_build(true)
-	try {
-		mfz_load()
-		mfz_populatereverse()
-	} catch(err){}
-	mfz_apply(false)
-}
-*/
-/*
-function remove_tag (tagname){
-	local romdir = (FeConfigDirectory+"romlists/"+fe.displays[fe.list.display_index].romlist)
-	local tagfile = romdir+"/"+tagname+".tag"
-	
-	local outtxt = []
-	local filein = ReadTextFile(tagfile)
-
-	while (!filein.eos()){
-		local gamein = filein.read_line()
-		if (gamein != fe.game_info(Info.Name)) outtxt.push (gamein)
-	}
-
-	//if (outtxt.len() == 0) remove (tagfile)
-	//else {
-	if (outtxt.len() != -1){
-		local fileout = WriteTextFile(tagfile)
-		for (local i = 0 ; i < outtxt.len()-1;i++){
-			fileout.write_line(outtxt[i]+"\n")
-		}
-		if (outtxt.len() >=1 ) fileout.write_line(outtxt[outtxt.len()-1])
-		fileout.close_file()
-	}
-	//}
-
-	//OLD
-	local arraystring = ""
-	local temparray = split (z_list.boot[fe.list.index].z_tags, ";")
-	foreach (i,item in temparray){
-		if (item == tagname) temparray.remove(i)
-	}
-	if (temparray.len() > 0) {
-		arraystring = ";"
-		foreach(i, item in temparray){
-			arraystring = arraystring + item + ";"
-		}
-	}
-
-	z_list.boot[fe.list.index].z_tags = arraystring
-	//FINEOLD
-
-	foreach (i,item in z_list.boot2[fe.list.index].z_tags) {
-		if (item == tagname) z_list.boot2[fe.list.index].z_tags.remove(i)
-	}
-
-	z_updatetagstable()
-	mfz_build(true)
-	try {
-		mfz_load()
-		mfz_populatereverse()
-	} catch(err){}	
-	mfz_apply(false)
-}
-*/
-
 function add_new_tag(){
 	frostshow()
 	keyboard_show("🏷 ","",
@@ -9969,7 +9832,6 @@ function add_new_tag(){
 		return 
 	}
 	)		
-
 }
 
 
@@ -14480,7 +14342,7 @@ function z_listrefreshlabels(){
 			}
 		}
 
-		labelstrip.set_pos (fl.x+x0,fl.h-footer.h*0.5-label.h*0.5+fl.y,w0,label.h)
+		labelstrip.set_pos (fl.x+x0,fl.h-UI.footer.h*0.5-label.h*0.5+fl.y,w0,label.h)
 		labelstrip.set_rgb (themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 		labelstrip.alpha = 100
 		//labelstrip.visible = false
@@ -14517,12 +14379,12 @@ function z_listrefreshlabels(){
 		labelsurf.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 		labelsurf.shader = txtoalpha
 
-		labelsurf.set_pos(fl.x+x0,fl.y+fl.h-footer.h*0.5-label.h*0.5)
+		labelsurf.set_pos(fl.x+x0,fl.y+fl.h-UI.footer.h*0.5-label.h*0.5)
 		if ((prf.SCROLLERTYPE == "labellist") && (z_list.size !=0 ) ) upkey (z_list.jumptable[z_list.index].key)
 	}
 
 	if (prf.SCROLLERTYPE == "timeline"){
-		labelstrip.set_pos(fl.x+x0,fl.y+fl.h - footer.h * 0.5,w0,label.h)
+		labelstrip.set_pos(fl.x+x0,fl.y+fl.h - UI.footer.h * 0.5,w0,label.h)
 		labelstrip.set_rgb (themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 		labelstrip.alpha = 100
 		//labelstrip.visible = false
@@ -14532,13 +14394,13 @@ function z_listrefreshlabels(){
 			local labelspacer = labelcounter[key] * w0 / z_list.size
 			try {
 				sortlabelsarray[labelarrayindex].x = round(fl.x + x0 + labelspacer*0.5 - label.w*0.5,1)
-				sortlabelsarray[labelarrayindex].y = round(fl.y + fl.h - footer.h * 0.5,1)
+				sortlabelsarray[labelarrayindex].y = round(fl.y + fl.h - UI.footer.h * 0.5,1)
 				sortlabelsarray[labelarrayindex].width = label.w
 				sortlabelsarray[labelarrayindex].height = label.h
 			}
 			catch(err){
 				sortlabelsarray.push(null)
-				sortlabelsarray[labelarrayindex] = data_surface.add_text("",round(fl.x + x0 + labelspacer*0.5 - label.w*0.5,1), round(fl.y + fl.h - footer.h * 0.5,1) , label.w,label.h)
+				sortlabelsarray[labelarrayindex] = data_surface.add_text("",round(fl.x + x0 + labelspacer*0.5 - label.w*0.5,1), round(fl.y + fl.h - UI.footer.h * 0.5,1) , label.w,label.h)
 				sortlabelsarray[labelarrayindex].char_size = label.font
 				sortlabelsarray[labelarrayindex].font = uifonts.lite
 				sortlabelsarray[labelarrayindex].margin = 0
@@ -14554,11 +14416,11 @@ function z_listrefreshlabels(){
 			if (labelspacer < sortlabelsarray[labelarrayindex].msg_width * 0.85) sortlabelsarray[labelarrayindex].visible = false
 
 			try {
-				sortticksarray[labelarrayindex].set_pos (fl.x+x0,fl.y+fl.h - footer.h * 0.5 - 0.5*label.h*0.5,1,0.5*label.h+1) 
+				sortticksarray[labelarrayindex].set_pos (fl.x+x0,fl.y+fl.h - UI.footer.h * 0.5 - 0.5*label.h*0.5,1,0.5*label.h+1) 
 			}
 			catch (err){
 				sortticksarray.push(null)
-				sortticksarray[labelarrayindex] = data_surface.add_image(AF.folder+"pics/white.png",fl.x+x0,fl.y+fl.h - footer.h * 0.5 - 0.5*label.h*0.5,1,0.5*label.h+1)
+				sortticksarray[labelarrayindex] = data_surface.add_image(AF.folder+"pics/white.png",fl.x+x0,fl.y+fl.h - UI.footer.h * 0.5 - 0.5*label.h*0.5,1,0.5*label.h+1)
 			}
 			sortticksarray[labelarrayindex].set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 			sortticksarray[labelarrayindex].visible = true
