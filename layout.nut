@@ -8199,8 +8199,20 @@ if (prf.LOWRES) {
 	}
 }
 
+local gamed = {
+	catpicT = {}
+	plypicT = {}
+	ctlpicT = {}
+	butpicT = {}
+	maincatT = {}
+	manufacturerpicT = {}
+	yearT = {}
+	mainnameT = {}
+	subnameT = {}
+}
+
 // category image
-local game_catpicT = {
+gamed.catpicT = {
 	x = 30 * UI.scalerate,
 	y = 20 * UI.scalerate,
 	w = blsize.catp,
@@ -8208,69 +8220,69 @@ local game_catpicT = {
 }
 
 // players image, controller image, button image
-local game_plypicT = {
-	x = blsize.catp + 2.0 * game_catpicT.x,
+gamed.plypicT = {
+	x = blsize.catp + 2.0 * gamed.catpicT.x,
 	y = blsize.posy,
 	w = blsize.mini,
 	h = blsize.mini
 }
 
-local game_ctlpicT = {
-	x = game_plypicT.x + (blsize.mini + 10 * UI.scalerate),
-	y = game_plypicT.y,
+gamed.ctlpicT = {
+	x = gamed.plypicT.x + (blsize.mini + 10 * UI.scalerate),
+	y = gamed.plypicT.y,
 	w = blsize.mini,
 	h = blsize.mini
 }
 
-local game_butpicT = {
-	x = game_plypicT.x + 2 * (blsize.mini + 10 * UI.scalerate),
-	y = game_plypicT.y,
+gamed.butpicT = {
+	x = gamed.plypicT.x + 2 * (blsize.mini + 10 * UI.scalerate),
+	y = gamed.plypicT.y,
 	w = blsize.mini * 1.25,
 	h = blsize.mini
 }
 
 // main game category
-local game_maincatT = {
+gamed.maincatT = {
 	x = 20 * UI.scalerate,
 	y = UI.header.h - 20 * UI.scalerate - blsize.subt,
-	w = game_plypicT.x - 2 * 20 * UI.scalerate,
+	w = gamed.plypicT.x - 2 * 20 * UI.scalerate,
 	h = blsize.subt
 }
 
 // right side: manufacturer and year
-local game_manufacturerpicT = {
+gamed.manufacturerpicT = {
 	x = fl.w - 2 * blsize.manu - 30 * UI.scalerate,
 	y = (prf.LOWRES ? 20 * UI.scalerate : 10 * UI.scalerate),
 	w = 2 * blsize.manu,
 	h = blsize.manu
 }
-local game_yearT = {
-	x = game_manufacturerpicT.x,
+gamed.yearT = {
+	x = gamed.manufacturerpicT.x,
 	y = UI.header.h - 20 * UI.scalerate - blsize.dath,
-	w = game_manufacturerpicT.w,
+	w = gamed.manufacturerpicT.w,
 	h = blsize.dath
 }
 
 // game main name and subname
-local game_mainnameT = {
-	x = game_plypicT.x,
-	y = game_catpicT.y,
-	w = fl.w - game_plypicT.x - game_manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
-	h = game_catpicT.h
+gamed.mainnameT = {
+	x = gamed.plypicT.x,
+	y = gamed.catpicT.y,
+	w = fl.w - gamed.plypicT.x - gamed.manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
+	h = gamed.catpicT.h
 }
 
-local game_subnameT = {
-	x = game_butpicT.x + game_butpicT.w + 15 * UI.scalerate,
-	y = game_maincatT.y,
-	w = fl.w - game_butpicT.x - game_butpicT.w - 15  * UI.scalerate - game_manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
+gamed.subnameT = {
+	x = gamed.butpicT.x + gamed.butpicT.w + 15 * UI.scalerate,
+	y = gamed.maincatT.y,
+	w = fl.w - gamed.butpicT.x - gamed.butpicT.w - 15  * UI.scalerate - gamed.manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
 	h = blsize.subt
 }
 
 if (prf.CLEANLAYOUT) {
-	game_mainnameT.x = filterdata.x + filterdata.width
-	game_mainnameT.w = filternumbers.x - filterdata.x - filterdata.width
-	game_subnameT.x = game_mainnameT.x
-	game_subnameT.w = game_mainnameT.w
+	gamed.mainnameT.x = filterdata.x + filterdata.width
+	gamed.mainnameT.w = filternumbers.x - filterdata.x - filterdata.width
+	gamed.subnameT.x = gamed.mainnameT.x
+	gamed.subnameT.w = gamed.mainnameT.w
 }
 
 local bwtoalpha = fe.add_shader( Shader.Fragment, "glsl/bwtoalpha.glsl" )
@@ -8281,7 +8293,7 @@ txtoalpha.set_texture_param( "texture")
 
 for (local i = 0; i < dat.stacksize; i++){
 
-	local game_catpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+game_catpicT.x, fl.y+game_catpicT.y, game_catpicT.w, game_catpicT.h)
+	local game_catpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.catpicT.x, fl.y+gamed.catpicT.y, gamed.catpicT.w, gamed.catpicT.h)
 	game_catpic.smooth = false
 	game_catpic.preserve_aspect_ratio = true
 	game_catpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8289,43 +8301,43 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_catpic.mipmap = 1
 	//game_catpic.fix_masked_image()
 
-	local game_butpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+game_butpicT.x, fl.y+game_butpicT.y, game_butpicT.w, game_butpicT.h)
+	local game_butpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.butpicT.x, fl.y+gamed.butpicT.y, gamed.butpicT.w, gamed.butpicT.h)
 	game_butpic.smooth = true
 	game_butpic.preserve_aspect_ratio = true
 	game_butpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	game_butpic.shader = bwtoalpha
 	game_butpic.mipmap = 1
 	
-	local game_plypic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+game_plypicT.x, fl.y+game_plypicT.y, game_plypicT.w, game_plypicT.h)
+	local game_plypic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.plypicT.x, fl.y+gamed.plypicT.y, gamed.plypicT.w, gamed.plypicT.h)
 	game_plypic.smooth = true
 	game_plypic.preserve_aspect_ratio = true
 	game_plypic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	game_plypic.shader = bwtoalpha
 	game_plypic.mipmap = 1
 
-	local game_ctlpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+game_ctlpicT.x, fl.y+game_ctlpicT.y, game_ctlpicT.w, game_ctlpicT.h)
+	local game_ctlpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.ctlpicT.x, fl.y+gamed.ctlpicT.y, gamed.ctlpicT.w, gamed.ctlpicT.h)
 	game_ctlpic.smooth = true
 	game_ctlpic.preserve_aspect_ratio = true
 	game_ctlpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	game_ctlpic.shader = bwtoalpha
 	game_ctlpic.mipmap = 1
 
-	local game_maincat = data_surface.add_text("",fl.x+game_maincatT.x,fl.y+game_maincatT.y,game_maincatT.w,game_maincatT.h)
+	local game_maincat = data_surface.add_text("",fl.x+gamed.maincatT.x,fl.y+gamed.maincatT.y,gamed.maincatT.w,gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
 	game_maincat.word_wrap = true
 	game_maincat.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
-	game_maincat.char_size = (game_maincatT.h - 10 * UI.scalerate)/uifonts.pixel
+	game_maincat.char_size = (gamed.maincatT.h - 10 * UI.scalerate)/uifonts.pixel
 	game_maincat.font = uifonts.condensed
 	game_maincat.alpha = 255
 	game_maincat.margin = 0
 	game_maincat.line_spacing = 0.8
 	//	game_maincat.set_bg_rgb (255,0,0)
 
-	local game_mainname = data_surface.add_text("", fl.x + game_mainnameT.x, fl.y + game_mainnameT.y , game_mainnameT.w, game_mainnameT.h )
+	local game_mainname = data_surface.add_text("", fl.x + gamed.mainnameT.x, fl.y + gamed.mainnameT.y , gamed.mainnameT.w, gamed.mainnameT.h )
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
 	game_mainname.word_wrap = true
 	game_mainname.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
-	game_mainname.char_size = (game_mainnameT.h - 10 * UI.scalerate)*0.5/uifonts.pixel
+	game_mainname.char_size = (gamed.mainnameT.h - 10 * UI.scalerate)*0.5/uifonts.pixel
 	game_mainname.line_spacing = 0.670000068
 	game_mainname.margin = 0
 	game_mainname.font = uifonts.gui
@@ -8333,47 +8345,47 @@ for (local i = 0; i < dat.stacksize; i++){
 	// game_mainname.set_bg_rgb(200,0,0)
 	game_mainname.visible = true
 
-	local game_subname = data_surface.add_text("", fl.x+(prf.CLEANLAYOUT ? game_mainnameT.x : game_subnameT.x), fl.y+game_subnameT.y, game_subnameT.w, game_subnameT.h )
+	local game_subname = data_surface.add_text("", fl.x+(prf.CLEANLAYOUT ? gamed.mainnameT.x : gamed.subnameT.x), fl.y+gamed.subnameT.y, gamed.subnameT.w, gamed.subnameT.h )
 	game_subname.align = prf.CLEANLAYOUT ? Align.TopCentre : Align.TopLeft
 	game_subname.word_wrap = false
 	game_subname.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
-	game_subname.char_size = game_subnameT.h/uifonts.pixel
+	game_subname.char_size = gamed.subnameT.h/uifonts.pixel
 	game_subname.font = uifonts.gui
 	game_subname.alpha = 255
 	game_subname.margin = 0
 	//	game_subname.set_bg_rgb(200,100,0)
 
-	local game_manufacturerpic = data_surface.add_text("",fl.x+game_manufacturerpicT.x , fl.y+game_manufacturerpicT.y , game_manufacturerpicT.w, game_manufacturerpicT.h)
+	local game_manufacturerpic = data_surface.add_text("",fl.x+gamed.manufacturerpicT.x , fl.y+gamed.manufacturerpicT.y , gamed.manufacturerpicT.w, gamed.manufacturerpicT.h)
 
 	// game_manufacturerpic.mipmap = 1
 	//	game_manufacturerpic.smooth = true
 	//	game_manufacturerpic.preserve_aspect_ratio = false
 	game_manufacturerpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	//	game_manufacturerpic.shader = bwtoalpha
-	game_manufacturerpic.char_size = game_manufacturerpicT.h-5 * UI.scalerate
+	game_manufacturerpic.char_size = gamed.manufacturerpicT.h-5 * UI.scalerate
 	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "font_manufacturers.ttf"
 	//game_manufacturerpic.set_bg_rgb(255,0,0)
 
 
-	local game_manufacturername = data_surface.add_text("",fl.x+game_manufacturerpicT.x , fl.y+game_manufacturerpicT.y, game_manufacturerpicT.w, game_manufacturerpicT.h)
+	local game_manufacturername = data_surface.add_text("",fl.x+gamed.manufacturerpicT.x , fl.y+gamed.manufacturerpicT.y, gamed.manufacturerpicT.w, gamed.manufacturerpicT.h)
 	// game_manufacturerpic.mipmap = 1
 	game_manufacturername.align = Align.MiddleCentre
 	game_manufacturername.set_rgb( 255, 255, 255)
 	game_manufacturername.word_wrap = true
-	game_manufacturername.char_size = 0.2*game_manufacturerpicT.h/uifonts.pixel
+	game_manufacturername.char_size = 0.2*gamed.manufacturerpicT.h/uifonts.pixel
 	game_manufacturername.visible = false
 	game_manufacturername.font = uifonts.gui
 	game_manufacturername.margin = 0
 	game_manufacturername.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 
-	local game_year = data_surface.add_text("", fl.x+game_yearT.x, fl.y+game_yearT.y, game_yearT.w, game_yearT.h)
+	local game_year = data_surface.add_text("", fl.x+gamed.yearT.x, fl.y+gamed.yearT.y, gamed.yearT.w, gamed.yearT.h)
 	game_year.align = Align.TopCentre
 	game_year.set_rgb( 255, 255, 255)
 	game_year.word_wrap = false
-	game_year.char_size = game_yearT.h/uifonts.pixel
+	game_year.char_size = gamed.yearT.h/uifonts.pixel
 	game_year.visible = true
 	game_year.font = uifonts.gui
 	game_year.margin = 0
