@@ -1993,8 +1993,29 @@ else {
 // layout preferences
 
 local UI = {
-	rows = prf.HORIZONTALROWS
 	vertical = false
+	rows = prf.HORIZONTALROWS
+	cols = 0
+	
+	scalerate = 0
+
+	tilewidth = 0
+	tileheight = 0
+	padding_scaler = 1.0/6.0 //multiplier of padding space (normally 1/6 of thumb area)
+
+	padding = 0
+	widthpadded = 0
+	heightpadded = 0
+	width169 = 0
+	width169padded = 0
+	widthmix = 0
+	widthpaddedmix = 0
+
+	verticalshift = 0
+
+	selectorscale = 0
+	whitemargin = 0
+	selectorwidth = 0
 }
 
 
@@ -2093,51 +2114,48 @@ fl.surf2.zorder = 100000
 */
 if (fl.h_os > fl.w_os) UI.vertical = true
 if (UI.vertical) prf.SLIMLINE = false
-if (UI.vertical) rows = prf.VERTICALROWS
+if (UI.vertical) UI.rows = prf.VERTICALROWS
 
-rows = (prf.LOWRES ? 1 : rows)
+UI.rows = (prf.LOWRES ? 1 : UI.rows)
 
 fe.layout.width = fl.w_os
 fe.layout.height = fl.h_os
 fe.layout.preserve_aspect_ratio = true
-fe.layout.page_size = rows
+fe.layout.page_size = UI.rows
 fe.layout.font = uifonts.general
 
 
-local scalerate = (UI.vertical ? fl.w : fl.h)/1200.0
+UI.scalerate = (UI.vertical ? fl.w : fl.h)/1200.0
 
 // Changed header spacer from 200 to 220 better centering
 local header = {
-	h = floor (prf.LOWRES ? 260*scalerate : 200*scalerate ) // content
-	h2 = floor (prf.LOWRES ? 330*scalerate : (((rows == 1) && (!prf.SLIMLINE))? 250*scalerate : 220*scalerate)) //spacer
+	h = floor (prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate ) // content
+	h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : 220 * UI.scalerate)) //spacer
 }
 // Changed header spacer from 100 to 90 better centering
 local footer = {
-	h = floor (prf.LOWRES ? 150*scalerate : 100*scalerate ) // content
-	h2 = floor (prf.LOWRES ? 150*scalerate : (((rows == 1) && (!prf.SLIMLINE)) ? 150*scalerate : 90*scalerate)) //spacer
+	h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
+	h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : 90 * UI.scalerate)) //spacer
 }
 
-// multiplier of padding space (normally 1/6 of thumb area)
-local padding_scaler = 1.0/6.0
-
-local height = (fl.h - header.h2 - footer.h2)/(rows + rows*padding_scaler + padding_scaler)
+UI.tileheight = (fl.h - header.h2 - footer.h2)/(UI.rows + UI.rows*UI.padding_scaler + UI.padding_scaler)
 if ((prf.SLIMLINE) ){
-	height = (fl.h - header.h2 - footer.h2)/(2.0 + 2.0*padding_scaler + padding_scaler)
+	UI.tileheight = (fl.h - header.h2 - footer.h2)/(2.0 + 2.0*UI.padding_scaler + UI.padding_scaler)
 	footer.h = 1.4*footer.h
 }
 
-local width = height
+UI.tilewidth = UI.tileheight
 
-local padding = height * padding_scaler
-local widthpadded = width + 2 * padding
-local heightpadded = height + 2 * padding
+UI.padding = UI.tileheight * UI.padding_scaler
+UI.widthpadded = UI.tilewidth + 2 * UI.padding
+UI.heightpadded = UI.tileheight + 2 * UI.padding
 
-local width169 = height*10/16
-local width169padded = width169 + 2 * padding
-local widthmix = (prf.FIX169 ? width169 : width)
-local widthpaddedmix = (prf.FIX169 ? width169padded : widthpadded)
+UI.width169 = UI.tileheight*10/16
+UI.width169padded = UI.width169 + 2 * UI.padding
+UI.widthmix = (prf.FIX169 ? UI.width169 : UI.tilewidth)
+UI.widthpaddedmix = (prf.FIX169 ? UI.width169padded : UI.widthpadded)
 
-local verticalshift = height*16.0/480.0
+UI.verticalshift = UI.tileheight*16.0/480.0
 
 /* 
 Nominal (for calculation purposes) sizes:
@@ -2147,29 +2165,29 @@ Nominal (for calculation purposes) sizes:
 */
 
 //calculate number of columns
-local cols = (1 + 2*(floor (( fl.w/2 + widthmix/2 - padding) / (widthmix + padding))))
+UI.cols = (1 + 2*(floor (( fl.w/2 + UI.widthmix/2 - UI.padding) / (UI.widthmix + UI.padding))))
 // add safeguard tiles
-cols += 2
+UI.cols += 2
 
-local pagejump = prf.SCROLLAMOUNT*rows*(cols-2)
+local pagejump = prf.SCROLLAMOUNT * UI.rows*(UI.cols-2)
 
 // carrier sizing in general layout
 local carrierT = {
-	x = fl.x -(cols * (widthmix + padding) + padding - fl.w) * 0.5,
-	y = fl.y + header.h2 + (prf.SLIMLINE ? height * 0.5 : 0 ),
-	w = cols * (widthmix + padding) + padding,
-	h = rows * height + rows * padding + padding
+	x = fl.x -(UI.cols * (UI.widthmix + UI.padding) + UI.padding - fl.w) * 0.5,
+	y = fl.y + header.h2 + (prf.SLIMLINE ? UI.tileheight * 0.5 : 0 ),
+	w = UI.cols * (UI.widthmix + UI.padding) + UI.padding,
+	h = UI.rows * UI.tileheight + UI.rows * UI.padding + UI.padding
 }
 
 // Changed selectorscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
-local selectorscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
-local whitemargin = 0.15
-local selectorwidth = selectorscale * widthpadded
+UI.selectorscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
+UI.whitemargin = 0.15
+UI.selectorwidth = UI.selectorscale * UI.widthpadded
 
 // correction data for non-centered first tiles
 // deltacol are the marginal columns with respect to center one
-local deltacol = (cols - 3)/2 //TEST103 controllare se questo "-3" va sempre bene o in alcuni casi fa saltare
+local deltacol = (UI.cols - 3)/2 //TEST103 controllare se questo "-3" va sempre bene o in alcuni casi fa saltare
 
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
@@ -2177,7 +2195,7 @@ local centercorr = {
 	shift = null // Is the shift factor added to the usual tile jump
 }
 
-centercorr.zero = - deltacol*(widthmix + padding) - (fl.w - (carrierT.w - 2*(widthmix + padding))) / 2 - padding*(1 + selectorscale*0.5) - widthmix/2 + selectorwidth/2
+centercorr.zero = - deltacol*(UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding))) / 2 - UI.padding*(1 + UI.selectorscale*0.5) - UI.widthmix/2 + UI.selectorwidth/2
 centercorr.val = 0
 centercorr.shift = centercorr.zero
 
@@ -2195,12 +2213,12 @@ local fadevid = delayvid - 35
 
 // Fading letter and scroller sizes
 local lettersize = {
-	name = 250 * scalerate
+	name = 250 * UI.scalerate
 	//display = (fl.w_os * 30.0/200.0) / uifonts.pixel
 }
 
-local footermargin = 250 * scalerate
-local scrollersize = 2 * floor (20 * scalerate * 0.5) + 1
+local footermargin = 250 * UI.scalerate
+local scrollersize = 2 * floor (20 * UI.scalerate * 0.5) + 1
 
 // Blurred backdrop definition
 local bgT = {
@@ -2227,7 +2245,7 @@ if (UI.vertical){
 // parameters for changing scroll jump spacing
 local scroll = {
 	jump = false
-	step = rows
+	step = UI.rows
 	sortjump = false
 }
 
@@ -7203,7 +7221,7 @@ local overlay = {
 	h = 0
 }
 
-overlay.charsize = (prf.LOWRES ? floor( 65*scalerate ) : floor( 50*scalerate ))
+overlay.charsize = (prf.LOWRES ? floor( 65 * UI.scalerate ) : floor( 50 * UI.scalerate ))
 overlay.rowsize = (prf.LOWRES ? (overlay.charsize*2.5) : (overlay.charsize*3.0))
 overlay.labelsize = (overlay.rowsize * 1)
 overlay.labelcharsize = overlay.charsize * 1
@@ -7631,15 +7649,15 @@ local vidbgfade=[0.0,0.0,0.0,0.0,0.0]
 /// Carrier - constructor ///
 
 local tiles = {
-	count = cols*rows
-	offscreen = (UI.vertical ? 3 * rows : 4 * rows)
+	count = UI.cols * UI.rows
+	offscreen = (UI.vertical ? 3 * UI.rows : 4 * UI.rows)
 	total = null
 }
 tiles.total = tiles.count + 2 * tiles.offscreen
 
-local surfacePosOffset = (tiles.offscreen/rows) * (widthmix + padding)
+local surfacePosOffset = (tiles.offscreen/UI.rows) * (UI.widthmix + UI.padding)
 
-impulse2.maxoffset = (tiles.offscreen/rows + 1.0) * (widthmix + padding)
+impulse2.maxoffset = (tiles.offscreen/UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
 local snap_glow = []
 local snap_grad = []
@@ -7744,7 +7762,7 @@ shaders.lg.hv.set_param ("size", logo.shw*logo.shscale, logo.shh*logo.shscale)
 for (local i = 0; i < tiles.total; i++ ) {
 	
 	// main tile object
-	local obj = fl.surf.add_surface(widthpadded*selectorscale,heightpadded*selectorscale)
+	local obj = fl.surf.add_surface(UI.widthpadded*UI.selectorscale,UI.heightpadded*UI.selectorscale)
 	obj.origin_x = obj.width * 0.5
 	obj.origin_y = obj.height * 0.5
 
@@ -7793,20 +7811,20 @@ for (local i = 0; i < tiles.total; i++ ) {
 		if (!prf.AUDIOVIDSNAPS) gr_vidsz.video_flags = Vid.NoAudio
 	}
 
-	local sh_mx = obj.add_image("pics/decor/tile_shadow.png",0,0,widthpadded*selectorscale,heightpadded*selectorscale)
+	local sh_mx = obj.add_image("pics/decor/tile_shadow.png",0,0,UI.widthpadded*UI.selectorscale,UI.heightpadded*UI.selectorscale)
 	sh_mx.alpha = prf.LOGOSONLY ? 0 : 230
 	
-	local glomx = obj.add_image("pics/decor/tile_glow.png",0,-selectorscale*verticalshift,widthpadded*selectorscale,selectorscale*heightpadded)
+	local glomx = obj.add_image("pics/decor/tile_glow.png",0,-UI.selectorscale*UI.verticalshift,UI.widthpadded*UI.selectorscale,UI.selectorscale*UI.heightpadded)
 	glomx.alpha = 0
 
-	local bd_mx = obj.add_rectangle(selectorscale*padding*(1.0-whitemargin),selectorscale*(-verticalshift + height/8.0 + padding*(1.0 - whitemargin)),selectorscale*(width + padding*2.0*whitemargin),selectorscale*(height*(3/4.0)+padding*2.0*whitemargin))
+	local bd_mx = obj.add_rectangle(UI.selectorscale*UI.padding*(1.0-UI.whitemargin),UI.selectorscale*(-UI.verticalshift + UI.tileheight/8.0 + UI.padding*(1.0 - UI.whitemargin)),UI.selectorscale*(UI.tilewidth + UI.padding*2.0*UI.whitemargin),UI.selectorscale*(UI.tileheight*(3/4.0)+UI.padding*2.0*UI.whitemargin))
 	bd_mx.set_rgb(255,255,255)
 	bd_mx.alpha = 0
 	
 	local snapz = obj.add_clone(gr_snapz)
 	if(!prf.SNAPGRADIENT) gr_snapz.visible = false
 	snapz.preserve_aspect_ratio = false
-	snapz.set_pos (selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
+	snapz.set_pos (UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding-UI.verticalshift),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tileheight)
 	snapz.alpha = prf.LOGOSONLY ? 0 : 255
 
 	local gr_overlay = null
@@ -7817,7 +7835,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 		gradsurf_rt.visible = false
 		gr_overlay.preserve_aspect_ratio = false
 		// snapz.video_flags = Vid.ImagesOnly
-		gr_overlay.set_pos (selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
+		gr_overlay.set_pos (UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding-UI.verticalshift),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tileheight)
 		snap_grad[i] = fe.add_shader( Shader.Fragment, "glsl/gradalpha_109.glsl" )
 		snap_grad[i].set_texture_param("texturecolor",gradsurf_rt)
 		if (prf.LOGOSONLY)
@@ -7828,7 +7846,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 		gr_overlay.alpha = prf.LOGOSONLY ? 0 : 255
 	}
 
-	txbox = obj.add_text("XXXXXXXXXXXXXXXXXXXXXXXX",selectorscale*padding*10.0/8.0,selectorscale*(padding*0.3 + padding*10.0/8.0-verticalshift),selectorscale*width*44.0/48.0,selectorscale*height*44.0/48.0)
+	txbox = obj.add_text("XXXXXXXXXXXXXXXXXXXXXXXX",UI.selectorscale*UI.padding*10.0/8.0,UI.selectorscale*(UI.padding*0.3 + UI.padding*10.0/8.0-UI.verticalshift),UI.selectorscale*UI.tilewidth*44.0/48.0,UI.selectorscale*UI.tileheight*44.0/48.0)
 	txbox.char_size = txbox.height/4.0
 	txbox.word_wrap = true
 	txbox.align = Align.TopCentre
@@ -7859,36 +7877,36 @@ for (local i = 0; i < tiles.total; i++ ) {
 	sh_mx.shader = snap_shadow_shape
 	
 	local vidsz = obj.add_clone(gr_vidsz)
-	vidsz.set_pos (selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
+	vidsz.set_pos (UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding-UI.verticalshift),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tileheight)
 	vidsz.preserve_aspect_ratio = false 
 	//gr_vidsz.visible = false
 	if (!prf.SNAPGRADIENT) gr_vidsz.visible = false
 	// if (!prf.AUDIOVIDSNAPS) vidsz.video_flags = Vid.NoAudio
 
 
-	local nw_mx = obj.add_image("pics/decor/new.png",selectorscale*padding,selectorscale*(padding-verticalshift+height*6.0/8.0),width*selectorscale/8.0,height*selectorscale/8.0)
+	local nw_mx = obj.add_image("pics/decor/new.png",UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding-UI.verticalshift+UI.tileheight*6.0/8.0),UI.tilewidth*UI.selectorscale/8.0,UI.tileheight*UI.selectorscale/8.0)
 	nw_mx.visible = false
 	nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 
-	local tg_mx = obj.add_image("pics/decor/tag.png",0,0,width*selectorscale/6.0,height*selectorscale/6.0)
+	local tg_mx = obj.add_image("pics/decor/tag.png",0,0,UI.tilewidth*UI.selectorscale/6.0,UI.tileheight*UI.selectorscale/6.0)
 	tg_mx.visible = false
 	tg_mx.mipmap = true
 	tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 
-	local donez = obj.add_image("pics/decor/completed.png",selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*height)
+	local donez = obj.add_image("pics/decor/completed.png",UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding-UI.verticalshift),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tileheight)
 	donez.visible = false
 	donez.preserve_aspect_ratio = false
 	donez.mipmap = true
 
-	local availz = obj.add_text("✘",0,0,widthpadded*selectorscale,heightpadded*selectorscale)
+	local availz = obj.add_text("✘",0,0,UI.widthpadded*UI.selectorscale,UI.heightpadded*UI.selectorscale)
 	availz.visible = false
 	availz.font = uifonts.gui
-	availz.char_size = width * 0.7 
+	availz.char_size = UI.tilewidth * 0.7 
 	availz.align = Align.MiddleCentre
 	availz.set_rgb(200,50,0)
 	availz.alpha = 150
 	
-	local favez = obj.add_image("pics/decor/starred.png",selectorscale*(padding+width/2),selectorscale*(padding+height/2-verticalshift),selectorscale*width/2,selectorscale*height/2)
+	local favez = obj.add_image("pics/decor/starred.png",UI.selectorscale*(UI.padding+UI.tilewidth/2),UI.selectorscale*(UI.padding+UI.tileheight/2-UI.verticalshift),UI.selectorscale*UI.tilewidth/2,UI.selectorscale*UI.tileheight/2)
 	favez.visible = false
 	favez.preserve_aspect_ratio = false
 
@@ -7915,13 +7933,13 @@ for (local i = 0; i < tiles.total; i++ ) {
 	logosurf_rt.visible = true
 
 	if (prf.LOGOSONLY){
-		logosurf_rt.set_pos (selectorscale*padding*0.5,selectorscale*(padding*0.6-verticalshift+height*0.25),selectorscale*(width+padding),selectorscale*(height*0.5+padding))
+		logosurf_rt.set_pos (UI.selectorscale*UI.padding*0.5,UI.selectorscale*(UI.padding*0.6-UI.verticalshift+UI.tileheight*0.25),UI.selectorscale*(UI.tilewidth+UI.padding),UI.selectorscale*(UI.tileheight*0.5+UI.padding))
 	}
 	else {
 		if (!prf.CROPSNAPS)
-			logosurf_rt.set_pos (selectorscale*padding*0.5,selectorscale*(padding*0.4*0.5-verticalshift),selectorscale*(width+padding),selectorscale*(height*0.5+padding))
+			logosurf_rt.set_pos (UI.selectorscale*UI.padding*0.5,UI.selectorscale*(UI.padding*0.4*0.5-UI.verticalshift),UI.selectorscale*(UI.tilewidth+UI.padding),UI.selectorscale*(UI.tileheight*0.5+UI.padding))
 		else
-			logosurf_rt.set_pos (selectorscale*padding,selectorscale*(padding-verticalshift),selectorscale*width,selectorscale*width*logo.shh/logo.shw)
+			logosurf_rt.set_pos (UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding-UI.verticalshift),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tilewidth*logo.shh/logo.shw)
 	}
 
 	local logoz = obj.add_clone (loshz)
@@ -7929,17 +7947,17 @@ for (local i = 0; i < tiles.total; i++ ) {
 	logoz.preserve_aspect_ratio = true
 
 	if (prf.LOGOSONLY){
-		logoz.set_pos (selectorscale*padding,selectorscale*(padding +height*0.25 - verticalshift ),selectorscale*width,selectorscale*height*0.5)
+		logoz.set_pos (UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding +UI.tileheight*0.25 - UI.verticalshift ),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tileheight*0.5)
 	}
 	else {
 		if (!prf.CROPSNAPS)
-			logoz.set_pos (selectorscale*padding,selectorscale*(padding*0.6-verticalshift),selectorscale*width,selectorscale*height*0.5)
+			logoz.set_pos (UI.selectorscale*UI.padding,UI.selectorscale*(UI.padding*0.6-UI.verticalshift),UI.selectorscale*UI.tilewidth,UI.selectorscale*UI.tileheight*0.5)
 		else
-			logoz.set_pos (selectorscale*(padding+width*logo.margin/logo.shw),selectorscale*(padding-verticalshift+width*(15/20.0)*logo.margin/logo.shw),selectorscale*width*logo.w/logo.shw,selectorscale*height*logo.h/logo.shw)
+			logoz.set_pos (UI.selectorscale*(UI.padding+UI.tilewidth*logo.margin/logo.shw),UI.selectorscale*(UI.padding-UI.verticalshift+UI.tilewidth*(15/20.0)*logo.margin/logo.shw),UI.selectorscale*UI.tilewidth*logo.w/logo.shw,UI.selectorscale*UI.tileheight*logo.h/logo.shw)
 	}
 
 	txt2z = obj.add_text("...",logoz.x,logoz.y,logoz.width,logoz.height)
-	txt2z.char_size = logo.shcharsize*(88.0/40.0)*scalerate
+	txt2z.char_size = logo.shcharsize*(88.0/40.0) * UI.scalerate
 	txt2z.word_wrap = true
 	txt2z.align = logo.txtalign
 	txt2z.font = uifonts.arcadeborder
@@ -7955,9 +7973,9 @@ for (local i = 0; i < tiles.total; i++ ) {
 	txt2z.set_rgb (135,135,135)
 	txt2z.alpha = 255
 
-	//txshz = obj.add_text("[Title]",selectorscale*(padding +height*(1.0/8.0)),selectorscale*(padding+height*(1.0/8.0)),selectorscale*width*3.0/4.0,selectorscale*height*3.0/4.0)
+	//txshz = obj.add_text("[Title]",UI.selectorscale*(UI.padding +height*(1.0/8.0)),UI.selectorscale*(UI.padding+height*(1.0/8.0)),UI.selectorscale*width*3.0/4.0,UI.selectorscale*height*3.0/4.0)
 	txt1z = obj.add_text("...",logoz.x,logoz.y,logoz.width,logoz.height)
-	txt1z.char_size = logo.shcharsize*(88.0/40.0)*scalerate
+	txt1z.char_size = logo.shcharsize*(88.0/40.0) * UI.scalerate
 	txt1z.word_wrap = true
 	txt1z.align = logo.txtalign
 	txt1z.font = logo.txtfont
@@ -7971,8 +7989,8 @@ for (local i = 0; i < tiles.total; i++ ) {
 	loshz.preserve_aspect_ratio = true
 	loshz.set_rgb(0,0,0)
 
-	tilesTablePos.X.push((width+padding) * (i/rows) + padding + obj.width*0.5)
-	tilesTablePos.Y.push((width+padding) * (i%rows) + padding + carrierT.y + obj.height*0.5)
+	tilesTablePos.X.push((UI.tilewidth+UI.padding) * (i/UI.rows) + UI.padding + obj.width*0.5)
+	tilesTablePos.Y.push((UI.tilewidth+UI.padding) * (i%UI.rows) + UI.padding + carrierT.y + obj.height*0.5)
 	tilesTableZoom.push ([0.0,0.0,0.0,0.0,0.0])
 	tilesTableUpdate.push ([0.0,0.0,0.0,0.0,0.0])
 	gr_vidszTableFade.push ([0.0,0.0,0.0,0.0,0.0])
@@ -8070,14 +8088,14 @@ data_surface_sh_rt.alpha = themeT.themeshadow
 
 data_surface_sh_rt.zorder = -1
 
-data_surface_sh_rt.set_pos( 4*scalerate,7*scalerate,data_surface.width,data_surface.height)
+data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-footer.h,footermargin,footer.h)
 filterdata.align = Align.Centre
 filterdata.set_rgb( 255, 255, 255)
 filterdata.word_wrap = true
-filterdata.char_size = (prf.LOWRES ? 35*scalerate/uifonts.pixel : 25*scalerate/uifonts.pixel)
+filterdata.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel)
 filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8087,7 +8105,7 @@ local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentr
 filternumbers.align = Align.Centre
 filternumbers.set_rgb( 255, 255, 255)
 filternumbers.word_wrap = true
-filternumbers.char_size = (prf.LOWRES ? 35*scalerate/uifonts.pixel : 25*scalerate/uifonts.pixel)
+filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel)
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8098,7 +8116,7 @@ separatorline.visible = !((prf.CLEANLAYOUT))
 
 multifilterglyph = data_surface.add_text("X",fl.x+fl.w-footermargin,fl.y+fl.h-footer.h,footermargin*0.3,footer.h)
 multifilterglyph.margin = 0
-multifilterglyph.char_size = scalerate * 45
+multifilterglyph.char_size = UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
 // multifilterglyph.set_bg_rgb (100,0,0)
 multifilterglyph.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8114,7 +8132,7 @@ local scrolline = data_surface.add_rectangle(fl.x+footermargin,fl.y+fl.h - foote
 //scrolline.alpha = 255
 scrolline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10*scalerate -1 ,fl.w-2*footermargin, 20*scalerate + 1)
+local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - footer.h*0.5 - 10 * UI.scalerate -1 ,fl.w-2*footermargin, 20 * UI.scalerate + 1)
 scrollineglow.visible = false
 scrollineglow.alpha = 200
 scrollineglow.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8139,7 +8157,7 @@ searchdata = data_surface.add_text(fe.list.search_rule,fl.x,fl.y+fl.h-footer.h*0
 searchdata.align = Align.Centre
 searchdata.set_rgb( 255, 255, 255)
 searchdata.word_wrap = true
-searchdata.char_size = 25*scalerate
+searchdata.char_size = 25 * UI.scalerate
 searchdata.visible = true
 searchdata.font = uifonts.gui
 searchdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8193,30 +8211,30 @@ letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
 
 local blsize = {
-	mini = 45 * scalerate,
-	catp = 110 * scalerate,
-	subt = 35 * scalerate,
-	posy = 137 * scalerate,
-	manu = 145 * scalerate,
-	dath = 25 * scalerate
+	mini = 45 * UI.scalerate,
+	catp = 110 * UI.scalerate,
+	subt = 35 * UI.scalerate,
+	posy = 137 * UI.scalerate,
+	manu = 145 * UI.scalerate,
+	dath = 25 * UI.scalerate
 
 }
 
 if (prf.LOWRES) {
 	blsize = {
-		mini = 60 * scalerate,
-		catp = 150 * scalerate,
-		subt = 45 * scalerate,
-		posy = 180 * scalerate,
-		manu = 150 * scalerate,
-		dath = 40 * scalerate
+		mini = 60 * UI.scalerate,
+		catp = 150 * UI.scalerate,
+		subt = 45 * UI.scalerate,
+		posy = 180 * UI.scalerate,
+		manu = 150 * UI.scalerate,
+		dath = 40 * UI.scalerate
 	}
 }
 
 // category image
 local game_catpicT = {
-	x = 30 * scalerate,
-	y = 20 * scalerate,
+	x = 30 * UI.scalerate,
+	y = 20 * UI.scalerate,
 	w = blsize.catp,
 	h = blsize.catp
 }
@@ -8230,14 +8248,14 @@ local game_plypicT = {
 }
 
 local game_ctlpicT = {
-	x = game_plypicT.x + (blsize.mini + 10 * scalerate),
+	x = game_plypicT.x + (blsize.mini + 10 * UI.scalerate),
 	y = game_plypicT.y,
 	w = blsize.mini,
 	h = blsize.mini
 }
 
 local game_butpicT = {
-	x = game_plypicT.x + 2 * (blsize.mini + 10 * scalerate),
+	x = game_plypicT.x + 2 * (blsize.mini + 10 * UI.scalerate),
 	y = game_plypicT.y,
 	w = blsize.mini * 1.25,
 	h = blsize.mini
@@ -8245,22 +8263,22 @@ local game_butpicT = {
 
 // main game category
 local game_maincatT = {
-	x = 20 * scalerate,
-	y = header.h - 20 * scalerate - blsize.subt,
-	w = game_plypicT.x - 2 * 20 * scalerate,
+	x = 20 * UI.scalerate,
+	y = header.h - 20 * UI.scalerate - blsize.subt,
+	w = game_plypicT.x - 2 * 20 * UI.scalerate,
 	h = blsize.subt
 }
 
 // right side: manufacturer and year
 local game_manufacturerpicT = {
-	x = fl.w - 2 * blsize.manu - 30 * scalerate,
-	y = (prf.LOWRES ? 20*scalerate : 10 * scalerate),
+	x = fl.w - 2 * blsize.manu - 30 * UI.scalerate,
+	y = (prf.LOWRES ? 20 * UI.scalerate : 10 * UI.scalerate),
 	w = 2 * blsize.manu,
 	h = blsize.manu
 }
 local game_yearT = {
 	x = game_manufacturerpicT.x,
-	y = header.h - 20 * scalerate - blsize.dath,
+	y = header.h - 20 * UI.scalerate - blsize.dath,
 	w = game_manufacturerpicT.w,
 	h = blsize.dath
 }
@@ -8269,14 +8287,14 @@ local game_yearT = {
 local game_mainnameT = {
 	x = game_plypicT.x,
 	y = game_catpicT.y,
-	w = fl.w - game_plypicT.x - game_manufacturerpicT.w - 30*scalerate - 5 * scalerate,
+	w = fl.w - game_plypicT.x - game_manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
 	h = game_catpicT.h
 }
 
 local game_subnameT = {
-	x = game_butpicT.x + game_butpicT.w + 15 * scalerate,
+	x = game_butpicT.x + game_butpicT.w + 15 * UI.scalerate,
 	y = game_maincatT.y,
-	w = fl.w - game_butpicT.x - game_butpicT.w - 15 *scalerate - game_manufacturerpicT.w - 30*scalerate - 5 * scalerate,
+	w = fl.w - game_butpicT.x - game_butpicT.w - 15  * UI.scalerate - game_manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
 	h = blsize.subt
 }
 
@@ -8328,7 +8346,7 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_maincat.align = Align.MiddleCentre
 	game_maincat.word_wrap = true
 	game_maincat.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
-	game_maincat.char_size = (game_maincatT.h - 10*scalerate)/uifonts.pixel
+	game_maincat.char_size = (game_maincatT.h - 10 * UI.scalerate)/uifonts.pixel
 	game_maincat.font = uifonts.condensed
 	game_maincat.alpha = 255
 	game_maincat.margin = 0
@@ -8339,7 +8357,7 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
 	game_mainname.word_wrap = true
 	game_mainname.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
-	game_mainname.char_size = (game_mainnameT.h - 10*scalerate)*0.5/uifonts.pixel
+	game_mainname.char_size = (game_mainnameT.h - 10 * UI.scalerate)*0.5/uifonts.pixel
 	game_mainname.line_spacing = 0.670000068
 	game_mainname.margin = 0
 	game_mainname.font = uifonts.gui
@@ -8364,8 +8382,8 @@ for (local i = 0; i < dat.stacksize; i++){
 	//	game_manufacturerpic.preserve_aspect_ratio = false
 	game_manufacturerpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	//	game_manufacturerpic.shader = bwtoalpha
-	game_manufacturerpic.char_size = game_manufacturerpicT.h-5*scalerate
-	game_manufacturerpic.margin = 5*scalerate
+	game_manufacturerpic.char_size = game_manufacturerpicT.h-5 * UI.scalerate
+	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "font_manufacturers.ttf"
 	//game_manufacturerpic.set_bg_rgb(255,0,0)
@@ -8423,8 +8441,8 @@ fl.surf3.set_pos(0,0,fl.w_os*0.2,fl.h_os*0.2)
 /// Context Menu ///
 
 //local overmenuwidth = (vertical ? fl.w_os * 0.7 : fl.h_os * 0.7)
-local overmenuwidth = selectorwidth * 0.9
-if (((rows == 1) && UI.vertical ) || (!UI.vertical && (rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2) )) overmenuwidth = selectorwidth * 0.6
+local overmenuwidth = UI.selectorwidth * 0.9
+if (((UI.rows == 1) && UI.vertical ) || (!UI.vertical && (UI.rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2) )) overmenuwidth = UI.selectorwidth * 0.6
 local overmenu = fl.surf.add_image("pics/ui/overmenu4.png",fl.x + fl.w*0.5-overmenuwidth*0.5,fl.y + fl.h*0.5-overmenuwidth*0.5,overmenuwidth,overmenuwidth)
 overmenu.visible = false
 overmenu.alpha = 0
@@ -8434,8 +8452,8 @@ function overmenu_visible(){
 }
 
 function overmenu_show(){
-	overmenu.y = fl.y + fl.h*0.5*0 + header.h2 + heightpadded*0.5 -overmenuwidth*0.5 - corrector * (heightpadded - padding)
-	if (rows == 1 ) overmenu.y = fl.y + fl.h*0.5*0 + header.h2 + heightpadded*0.5 - overmenuwidth*0.5
+	overmenu.y = fl.y + fl.h*0.5*0 + header.h2 + UI.heightpadded*0.5 -overmenuwidth*0.5 - corrector * (UI.heightpadded - UI.padding)
+	if (UI.rows == 1 ) overmenu.y = fl.y + fl.h*0.5*0 + header.h2 + UI.heightpadded*0.5 - overmenuwidth*0.5
 	if (prf.SLIMLINE == true) overmenu.y = fl.y + header.h + (fl.h-header.h-footer.h)*0.5 - overmenuwidth*0.5
 	overmenu.x = fl.x + fl.w*0.5 - overmenuwidth*0.5 + centercorr.val
 	if(prf.THEMEAUDIO) snd.wooshsound.playing = true
@@ -8497,7 +8515,7 @@ overlay.sidelabel.set_bg_rgb(0,200,0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 
-overlay.glyph = fe.add_text("", overlay.x + padding, overlay.y, overlay.labelsize*0.98, overlay.labelsize*0.98 )
+overlay.glyph = fe.add_text("", overlay.x + UI.padding, overlay.y, overlay.labelsize*0.98, overlay.labelsize*0.98 )
 overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize*1.25
@@ -8509,10 +8527,10 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelsize-2,overlay.w,2)
 
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50*scalerate)))
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50*scalerate), overlay.w, floor(50*scalerate)))
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50*scalerate), overlay.y,floor(50*scalerate), overlay.h))
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50*scalerate), overlay.h))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-footer.h+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50 * UI.scalerate), overlay.y,floor(50 * UI.scalerate), overlay.h))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
 
 foreach (item in overlay.shad){
 	item.alpha = 0
@@ -8681,10 +8699,10 @@ local prfmenu = {
 
 }
 
-prfmenu.picratew = prfmenu.picrateh = (overlay.fullheight * 1.0 / overlay.rows) * 2.0 - padding * 0.5
+prfmenu.picratew = prfmenu.picrateh = (overlay.fullheight * 1.0 / overlay.rows) * 2.0 - UI.padding * 0.5
 
 //prfmenu.description.set_bg_rgb(100,0,0)
-prfmenu.description.char_size = 48*scalerate
+prfmenu.description.char_size = 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
 prfmenu.description.word_wrap = true
 prfmenu.description.margin = 0
@@ -8699,7 +8717,7 @@ prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x,overlay.y + overlay.labelsize + overlay.fullheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew , prfmenu.picrateh)
-prfmenu.description.set_pos (prfmenu.bg.x + padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*padding , prfmenu.picrateh)
+prfmenu.description.set_pos (prfmenu.bg.x + UI.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*UI.padding , prfmenu.picrateh)
 
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
@@ -9643,7 +9661,7 @@ function keyboard_draw() {
 	keyboard_text.font = uifonts.gui
 	keyboard_text.set_rgb( 255, 255, 255 )
 	keyboard_text.alpha = 255
-	keyboard_text.char_size = 80*scalerate
+	keyboard_text.char_size = 80 * UI.scalerate
 	
 	
 	//draw the search key objects
@@ -9654,7 +9672,7 @@ function keyboard_draw() {
 		local textkey = keyboard_surface.add_text( key_name, -1, -1, 1, 1 )
 
 		textkey.font = uifonts.gui
-		textkey.char_size = (80*0+75)*scalerate
+		textkey.char_size = (80*0+75) * UI.scalerate
 		
 		textkey.set_rgb( kb.keylow,kb.keylow,kb.keylow)
 		textkey.alpha = 255
@@ -9970,10 +9988,10 @@ if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.w - fl.h)*1.0/fl.h
 hist.split_h = (fl.w - (fl.h * hist.panel_ar)) * 1.0/fl.w
 
 local hist_titleT = {
-	x = fl.x + fl.w * hist.split_h + 15*scalerate,
-	y = fl.y + 15 * scalerate,
-	w = fl.w * (1.0 - hist.split_h) - 30 * scalerate,
-	h = fl.h * 0.25 - 30 * scalerate
+	x = fl.x + fl.w * hist.split_h + 15 * UI.scalerate,
+	y = fl.y + 15 * UI.scalerate,
+	w = fl.w * (1.0 - hist.split_h) - 30 * UI.scalerate,
+	h = fl.h * 0.25 - 30 * UI.scalerate
 	transparency = 50
 }
 
@@ -10239,7 +10257,7 @@ if (prf.HISTORYPANEL){
 
 	hist_titletxt_bot = history_surface.add_text("...",hist_title.x, hist_title.y, hist_title.width,hist_title.height)
 
-	hist_titletxt_bot.char_size = 150*scalerate
+	hist_titletxt_bot.char_size = 150 * UI.scalerate
 	hist_titletxt_bot.word_wrap = true
 	hist_titletxt_bot.margin = 0
 	hist_titletxt_bot.align = Align.MiddleCentre
@@ -10255,7 +10273,7 @@ if (prf.HISTORYPANEL){
 local hist_titletxt_bd = history_surface.add_text("...",hist_titleT.x,hist_titleT.y,hist_titleT.w,hist_titleT.h)
 local hist_titletxt = history_surface.add_text("...",hist_titleT.x,hist_titleT.y,hist_titleT.w,hist_titleT.h)
 
-hist_titletxt_bd.char_size = hist_titletxt.char_size = 150*scalerate
+hist_titletxt_bd.char_size = hist_titletxt.char_size = 150 * UI.scalerate
 hist_titletxt_bd.word_wrap = hist_titletxt.word_wrap = true
 hist_titletxt_bd.margin = hist_titletxt.margin = 0
 hist_titletxt_bd.align = hist_titletxt.align = Align.MiddleCentre
@@ -10402,7 +10420,7 @@ shader_lcd.set_param ("lcdcolor", 0.0)
 local hist_text_surf = history_surface.add_surface( hist_textT.w, hist_textT.h )
 hist_text_surf.set_pos (hist_textT.x, hist_textT.y )
 
-hist_textT.charsize = (prf.LOWRES ? 55*scalerate : (40 * scalerate > 8 ? 40*scalerate : 8))
+hist_textT.charsize = (prf.LOWRES ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
 hist_textT.linesize = hist_textT.charsize * 1.5
 hist_textT.col2 = hist_textT.charsize * 5 * 0.88
 
@@ -10551,7 +10569,7 @@ else { //LOW RES MODE
 local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad3.glsl")
 gradshader.set_texture_param( "texture")
 //gradshader.set_param ("limits", 0.2 , 0.05, 0.5)
-//gradshader.set_param ("limits", (40 * scalerate * 1.7) / hist_textT.h , 40 * scalerate * 5.0 / hist_textT.h)
+//gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h , 40 * UI.scalerate * 5.0 / hist_textT.h)
 
 
 function descrshader(enable){
@@ -10600,24 +10618,24 @@ function hist_text_alpha(a){
 if (!prf.LOWRES){
 
 	if (!UI.vertical){
-		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.title.y + hist_text.title.height,hist_text.title.width - 40*scalerate,1)
-		hist_text["line_tags_top"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.tags.y, hist_text.title.width - 40*scalerate,1)
-		hist_text["line_tags_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.tags.y + hist_text.tags.height,hist_text.title.width - 40*scalerate,1)
+		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.title.y + hist_text.title.height,hist_text.title.width - 40 * UI.scalerate,1)
+		hist_text["line_tags_top"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.tags.y, hist_text.title.width - 40 * UI.scalerate,1)
+		hist_text["line_tags_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.tags.y + hist_text.tags.height,hist_text.title.width - 40 * UI.scalerate,1)
 
 		if (hist.panel_ar <= 0.6) { //SMALL PANEL
-			hist_text["line_series_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.serie.y+hist_text.serie.height, hist_text.serie.width - 40*scalerate,1)
+			hist_text["line_series_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.serie.y+hist_text.serie.height, hist_text.serie.width - 40 * UI.scalerate,1)
 			hist_text.title.line_spacing = 0.8
 			hist_text.title.margin = 0
 		}
 		else if (hist.panel_ar <= 1.0) { // DEFAULT PANEL STRUCTURE, UP TO AR = 1.0
-			hist_text["line_vertical"] <- hist_text_surf.add_rectangle(hist_textT.w - hist_textT.col2, 20*scalerate + 2 * hist_textT.linesize,1,4*hist_textT.linesize - 40*scalerate)
+			hist_text["line_vertical"] <- hist_text_surf.add_rectangle(hist_textT.w - hist_textT.col2, 20 * UI.scalerate + 2 * hist_textT.linesize,1,4*hist_textT.linesize - 40 * UI.scalerate)
 		}
 	}
 	else {
-		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.title.y + hist_text.title.height,hist_text.title.width - 40*scalerate,1)
-		hist_text["line_series_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.serie.y+hist_text.serie.height, hist_text.serie.width - 40*scalerate,1)
-		hist_text["line_tags_top"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.tags.y, hist_text.tags.width - 40*scalerate,1)
-		hist_text["line_tags_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.tags.y + hist_text.tags.height,hist_text.tags.width - 40*scalerate,1)
+		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.title.y + hist_text.title.height,hist_text.title.width - 40 * UI.scalerate,1)
+		hist_text["line_series_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.serie.y+hist_text.serie.height, hist_text.serie.width - 40 * UI.scalerate,1)
+		hist_text["line_tags_top"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.tags.y, hist_text.tags.width - 40 * UI.scalerate,1)
+		hist_text["line_tags_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate,hist_text.tags.y + hist_text.tags.height,hist_text.tags.width - 40 * UI.scalerate,1)
 
 		if (hist.panel_ar <= 0.6) { //SMALL PANEL
 			hist_text.title.line_spacing = 0.8
@@ -10627,12 +10645,12 @@ if (!prf.LOWRES){
 }
 
 /*
-hist_text.char_size = (prf.LOWRES ? 55*scalerate : (40 * scalerate > 8 ? 40*scalerate : 8))
+hist_text.char_size = (prf.LOWRES ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
 hist_text.align = Align.TopCentre
 hist_text.first_line_hint = 1
 */
 //TEST126
-//hist_text.char_size = 42*scalerate
+//hist_text.char_size = 42 * UI.scalerate
 //hist_text.font = uifonts.monodata
 
 if (prf.HISTORYPANEL) {
@@ -10803,7 +10821,7 @@ function history_updateoverlay(){
 	try {labeldata = hist_over.overlaybuttonsdata[numbuttons]}catch(err){}
 	for (local i = 0 ; i < 6 ; i++){
 		hist_over.bt[i].set_pos (hist_over.picscale*labeldata.btxy[i][0],hist_over.picscale*labeldata.btxy[i][1])
-		hist_over.btsh[i].set_pos (hist_over.picscale*labeldata.btxy[i][0] + 3*scalerate,hist_over.picscale*labeldata.btxy[i][1]+5*scalerate)
+		hist_over.btsh[i].set_pos (hist_over.picscale*labeldata.btxy[i][0] + 3 * UI.scalerate,hist_over.picscale*labeldata.btxy[i][1]+5 * UI.scalerate)
 		hist_over.btsh[i].align = hist_over.bt[i].align = labeldata.btalign[i]
 		hist_over.btsh[i].msg = hist_over.bt[i].msg =""
 	}
@@ -11287,7 +11305,7 @@ local disp = {
 	xstop = 0
 	   bgtileh = 0
 	speed = null
-	pad = padding
+	pad = UI.padding
 	width = null
 	height = overlay.fullheight
 	spacing = null
@@ -11364,7 +11382,7 @@ zmenu = {
 	xstart = 0
 	xstop = 0
 	speed = null
-	pad = floor(padding * 0.5)
+	pad = floor(UI.padding * 0.5)
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.fullheight
@@ -11462,7 +11480,7 @@ zmenu_sh.surf_rt.alpha = themeT.menushadow
 
 zmenu_sh.surf_rt.zorder = 9
 
-zmenu_sh.surf_rt.set_pos(zmenu_surface_container.x + 4*scalerate,zmenu_surface_container.y + 8*scalerate,zmenu_surface_container.width,zmenu_surface_container.height)
+zmenu_sh.surf_rt.set_pos(zmenu_surface_container.x + 4 * UI.scalerate,zmenu_surface_container.y + 8 * UI.scalerate,zmenu_surface_container.width,zmenu_surface_container.height)
 
 
 zmenu.simbg = zmenu_surface_container.add_image(AF.folder+"pics/grads/wgradientRa.png",
@@ -11873,7 +11891,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 	//TEST123 CHECK IF THIS CAN BE MOVED OUTSIDE OF THE CREATION
 	if (prfmenu.showing){ 
-		zmenu.blanker = zmenu_surface.add_image(AF.folder+"pics/black.png",0,zmenu.height,fl.w,prfmenu.picrateh+padding)
+		zmenu.blanker = zmenu_surface.add_image(AF.folder+"pics/black.png",0,zmenu.height,fl.w,prfmenu.picrateh+UI.padding)
 		zmenu.blanker.visible = true
 	}
 	
@@ -12878,20 +12896,20 @@ if (prf.AMENABLE){
 	//attractitem.text_surface.set_pos(attract.x,attract.y)
 
 	if ((prf.SPLASHON) && (prf.AMSHOWLOGO)){
-		attractitem.text1 = fe.add_text(attract.msg,attract.x,attract.y-attractitem.surface.y+fl.h-140*scalerate,attractitem.surface.width,140*scalerate)
+		attractitem.text1 = fe.add_text(attract.msg,attract.x,attract.y-attractitem.surface.y+fl.h-140 * UI.scalerate,attractitem.surface.width,140 * UI.scalerate)
 	}
 	else {
 		attractitem.text1 = fe.add_text(attract.msg,attract.x,attract.y,attract.w,attract.w)
 	}
 
-	attractitem.text1.char_size = 72 * scalerate
+	attractitem.text1.char_size = 72 * UI.scalerate
 	attractitem.text1.font = uifonts.gui
 	attractitem.text1.set_rgb (0,0,0)
 	attractitem.text1.alpha = attract.textshadow
 
-	attractitem.text2 = fe.add_text(attract.msg,attractitem.text1.x,attractitem.text1.y-10*scalerate,attractitem.text1.width,attractitem.text1.height)
+	attractitem.text2 = fe.add_text(attract.msg,attractitem.text1.x,attractitem.text1.y-10 * UI.scalerate,attractitem.text1.width,attractitem.text1.height)
 	
-	attractitem.text2.char_size = 70*scalerate
+	attractitem.text2.char_size = 70 * UI.scalerate
 	attractitem.text2.font = uifonts.gui
 	attractitem.text2.set_rgb(255,255,255)
 
@@ -13029,11 +13047,11 @@ zmenu.simpic.preserve_aspect_ratio = false
 
 zmenu.simsys = zmenu_surface_container.add_text("",
 										zmenu.simbg.x,
-										zmenu.simpic.y + zmenu.height - 100*scalerate,
+										zmenu.simpic.y + zmenu.height - 100 * UI.scalerate,
 										disp.width,
-										100*scalerate)
+										100 * UI.scalerate)
 zmenu.simsys.zorder = 10000
-zmenu.simsys.char_size = 50*scalerate
+zmenu.simsys.char_size = 50 * UI.scalerate
 zmenu.simsys.word_wrap = true
 zmenu.simsys.align = Align.TopRight
 zmenu.simsys.font = uifonts.gui
@@ -13045,7 +13063,7 @@ zmenu.simtxt = zmenu_surface_container.add_text("",
 										disp.width,
 										zmenu.height - (zmenu.simpic.y + zmenu.simpic.height))
 zmenu.simtxt.zorder = 10000
-zmenu.simtxt.char_size = 50*scalerate
+zmenu.simtxt.char_size = 50 * UI.scalerate
 zmenu.simtxt.word_wrap = true
 zmenu.simtxt.align = Align.TopCentre
 zmenu.simtxt.font = uifonts.lite
@@ -13198,7 +13216,7 @@ if (prf.OVERCUSTOM != "pics/") {
 
 // Character size: 1.7*(width/columns) or 0.78*(height/rows)
 AF.messageoverlay = fe.add_text("1234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13",fl.x,fl.y,fl.w,fl.h)
-AF.messageoverlay.margin = 50*scalerate
+AF.messageoverlay.margin = 50 * UI.scalerate
 AF.messageoverlay.char_size = (fl.w-2.0*AF.messageoverlay.margin)*1.7/AF.scrape.columns //40 columns text
 AF.messageoverlay.word_wrap = true
 AF.messageoverlay.set_bg_rgb (40,40,40)
@@ -13220,13 +13238,13 @@ local fps = {
 
 
 if (prf.FPSON){
-fps.monitor = fe.add_text("",fe.layout.width*0.5-550*0.5*scalerate,0,550*scalerate,80*scalerate)
+fps.monitor = fe.add_text("",fe.layout.width*0.5-550*0.5 * UI.scalerate,0,550 * UI.scalerate,80 * UI.scalerate)
 //X fps.monitor = fe.add_text("",0,0,fl.w_os,120)
 
 fps.monitor.set_bg_rgb (50,50,50)
 fps.monitor.bg_alpha = 200
 fps.monitor.set_rgb (255,255,255)
-fps.monitor.char_size = 50*scalerate
+fps.monitor.char_size = 50 * UI.scalerate
 fps.monitor.zorder = 20000
 //X fps.monitor.word_wrap = true
 
@@ -13495,8 +13513,8 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 	
 	local ARdata = ARprocess(cropaspect)
 
-	tilez[i].snapz.set_pos(selectorscale * widthpadded * ARdata.x, selectorscale * (widthpadded * ARdata.y - verticalshift), selectorscale * widthpadded * ARdata.w, selectorscale * widthpadded * ARdata.h)
-	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(selectorscale * widthpadded * ARdata.x, selectorscale * (widthpadded * ARdata.y - verticalshift), selectorscale * widthpadded * ARdata.w, selectorscale * widthpadded * ARdata.h)
+	tilez[i].snapz.set_pos(UI.selectorscale * UI.widthpadded * ARdata.x, UI.selectorscale * (UI.widthpadded * ARdata.y - UI.verticalshift), UI.selectorscale * UI.widthpadded * ARdata.w, UI.selectorscale * UI.widthpadded * ARdata.h)
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(UI.selectorscale * UI.widthpadded * ARdata.x, UI.selectorscale * (UI.widthpadded * ARdata.y - UI.verticalshift), UI.selectorscale * UI.widthpadded * ARdata.w, UI.selectorscale * UI.widthpadded * ARdata.h)
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
 
@@ -13549,7 +13567,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 function update_borderglow(i,var,aspect){
 	aspect = clampaspect (aspect)
 
-	local bd_margin = padding * whitemargin
+	local bd_margin = UI.padding * UI.whitemargin
 
 	tilez[i].bd_mx.visible = true
 	tilez[i].glomx.visible = prf.SNAPGLOW
@@ -13566,7 +13584,7 @@ function update_borderglow(i,var,aspect){
 		ARdata = ARprocess(aspect)
 	}
 	*/
-	tilez[i].bd_mx.set_pos (selectorscale * (widthpadded * ARdata.x - bd_margin), selectorscale * (widthpadded * ARdata.y - verticalshift - bd_margin) , selectorscale * (widthpadded * ARdata.w + 2.0*bd_margin), selectorscale * (widthpadded * ARdata.h + 2.0*bd_margin))
+	tilez[i].bd_mx.set_pos (UI.selectorscale * (UI.widthpadded * ARdata.x - bd_margin), UI.selectorscale * (UI.widthpadded * ARdata.y - UI.verticalshift - bd_margin) , UI.selectorscale * (UI.widthpadded * ARdata.w + 2.0*bd_margin), UI.selectorscale * (UI.widthpadded * ARdata.h + 2.0*bd_margin))
 	if (prf.SNAPGLOW) {
 
 		local ARadapter = { x=0,y=0,w=0,h=0,m = 70.0/640.0 }
@@ -13586,7 +13604,7 @@ function update_borderglow(i,var,aspect){
 		snap_glow[i].set_param ("glow", ARglow.x, ARglow.y, ARglow.border)
 
 	}
-	//if (prf.SNAPGLOW) tilez[i].glomx.set_pos(0,-selectorscale*verticalshift)
+	//if (prf.SNAPGLOW) tilez[i].glomx.set_pos(0,-UI.selectorscale*UI.verticalshift)
 }
 
 function update_thumbdecor(i,var,aspect){
@@ -13644,8 +13662,8 @@ function update_thumbdecor(i,var,aspect){
 
 	tilez[i].sh_mx.visible = true
 
-	tilez[i].nw_mx.set_pos (selectorscale * ARdata.x * widthpadded , selectorscale * ( (ARdata.y + ARdata.h) * widthpadded - height/8.0 - verticalshift))
-	tilez[i].tg_mx.set_pos (selectorscale *( (ARdata.x + ARdata.w) * widthpadded - height/8.0), selectorscale * ( (ARdata.y + ARdata.h) * widthpadded - height/10.0 - verticalshift))
+	tilez[i].nw_mx.set_pos (UI.selectorscale * ARdata.x * UI.widthpadded , UI.selectorscale * ( (ARdata.y + ARdata.h) * UI.widthpadded - UI.tileheight/8.0 - UI.verticalshift))
+	tilez[i].tg_mx.set_pos (UI.selectorscale *( (ARdata.x + ARdata.w) * UI.widthpadded - UI.tileheight/8.0), UI.selectorscale * ( (ARdata.y + ARdata.h) * UI.widthpadded - UI.tileheight/10.0 - UI.verticalshift))
 
 }
 
@@ -14178,7 +14196,7 @@ function z_resetthumbvideo(index){
 
 
 function updatescrollerposition(){
-	scroller.x = fl.x+footermargin + ((z_list.index/rows)*rows*1.0/(z_list.size - 1 ))*(fl.w - 2.0*footermargin-scrollersize)
+	scroller.x = fl.x+footermargin + ((z_list.index/UI.rows) * UI.rows*1.0/(z_list.size - 1 ))*(fl.w - 2.0*footermargin-scrollersize)
 	scroller2.x = scroller.x-scrollersize*0.5
 }
 
@@ -14203,7 +14221,7 @@ function resetvarsandpositions(){
 		if (prf.THUMBVIDEO) z_resetthumbvideo(i)
 
 		// cleanup position of tiles
-		picsize (tilez[i].obj , widthpadded, heightpadded,0,-verticalshift*1.0/widthpadded)
+		picsize (tilez[i].obj , UI.widthpadded, UI.heightpadded,0,-UI.verticalshift*1.0/UI.widthpadded)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
@@ -14214,57 +14232,57 @@ function resetvarsandpositions(){
 }
 
 function updatetiles() {
-	corrector = (rows == 1 ? -1 : -((z_list.index + var) % rows) )
+	corrector = (UI.rows == 1 ? -1 : -((z_list.index + var) % UI.rows) )
 
 	// Jump start and stop column
-	column.stop = floor((z_list.index + var )*1.0/rows)
-	column.start = floor((z_list.index)*1.0/rows)
+	column.stop = floor((z_list.index + var )*1.0/UI.rows)
+	column.start = floor((z_list.index)*1.0/UI.rows)
 
 	// Number of effective columns displayed on screen 
-	column.used = ceil((z_list.size )*1.0/rows)
+	column.used = ceil((z_list.size )*1.0/UI.rows)
 
 	column.offset = (column.stop - column.start)
 	
 
 	// This value is used to calculate the offset of the romlist indexes
 	// to derermine focusindex.new, .old, indextemp etc
-	tilesTablePos.Offset += column.offset * rows
+	tilesTablePos.Offset += column.offset * UI.rows
 
 	// Determine center position correction when reaching beginning of list
 	centercorr.shift = 0 // correction of jump dimension
 	centercorr.val = 0 // correction of target position (it is 0 for centered tiles)
 
 	if ((column.stop < deltacol) && (column.start > deltacol - 1)){
-		centercorr.shift = centercorr.zero + (column.stop) * (widthmix + padding)
+		centercorr.shift = centercorr.zero + (column.stop) * (UI.widthmix + UI.padding)
 	}
 	else if ((column.stop < deltacol) && (column.start <= deltacol - 1)){
-		centercorr.shift = (column.offset < 0 ? -1 : 1) * (widthmix + padding)
+		centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
 	}
 	else if ((column.stop >= deltacol) && (column.start <= deltacol - 1)){
-		centercorr.shift = - centercorr.zero - (column.start) * (widthmix + padding)
+		centercorr.shift = - centercorr.zero - (column.start) * (UI.widthmix + UI.padding)
 	}
 
 /*	
 	// check if the target of jump is in the deltacol group going LEFT
 	if ((column.stop < deltacol) && (var < 0) ) {
 		if (column.stop == deltacol - 1 )
-			centercorr.shift = centercorr.zero + (deltacol - 1) * (widthmix + padding)
+			centercorr.shift = centercorr.zero + (deltacol - 1) * (UI.widthmix + UI.padding)
 		else
-			centercorr.shift = - (widthmix + padding)
+			centercorr.shift = - (UI.widthmix + UI.padding)
 	}
 	// check if the start of jump is in the the deltacol group going RIGHT
 	else if ((column.start < deltacol) && (var > 0)) {
 		if (column.start == deltacol - 1 ){
-			centercorr.shift = - centercorr.zero - (deltacol - 1) * (widthmix + padding)
+			centercorr.shift = - centercorr.zero - (deltacol - 1) * (UI.widthmix + UI.padding)
 		}
 		else {
-			centercorr.shift = (widthmix + padding)
+			centercorr.shift = (UI.widthmix + UI.padding)
 		}
 	}
 */
 	//if ((z_list.index + var <= deltacol * rows - 1)){
 	if ((column.stop < deltacol)){
-		centercorr.val = centercorr.zero + floor((z_list.index + var)/rows) * (widthmix + padding)
+		centercorr.val = centercorr.zero + floor((z_list.index + var)/UI.rows) * (UI.widthmix + UI.padding)
 	}
 
 	if (column.offset == 0) {
@@ -14323,8 +14341,8 @@ function changetiledata(i,index,update){
 	}
 	tilez[indexTemp].obj.zorder = -2
 
-	tilesTablePos.X[indexTemp] = (i/rows) * (widthmix + padding) + carrierT.x + centercorr.val + widthpaddedmix*0.5
-	tilesTablePos.Y[indexTemp] = (i%rows) * (height + padding) + carrierT.y + heightpadded * 0.5
+	tilesTablePos.X[indexTemp] = (i/UI.rows) * (UI.widthmix + UI.padding) + carrierT.x + centercorr.val + UI.widthpaddedmix*0.5
+	tilesTablePos.Y[indexTemp] = (i%UI.rows) * (UI.tileheight + UI.padding) + carrierT.y + UI.heightpadded * 0.5
 
 	//TEST101 THIS INTERACTS WITH OFF SCREEN VISIBILITY
 	//tilez[indexTemp].obj.visible = (( (z_list.index + var + index < 0) || (z_list.index + var + index > z_list.size-1) ) == false)
@@ -14436,9 +14454,9 @@ function z_listrefreshlabels(){
 	local x0 = footermargin
 	local x00 = 0
 	local label = {
-		w = 100*scalerate,
-		h = 40 * scalerate,
-		font = 30 * scalerate
+		w = 100 * UI.scalerate,
+		h = 40 * UI.scalerate,
+		font = 30 * UI.scalerate
 	}
 	
 	local label_obj = null
@@ -14449,16 +14467,16 @@ function z_listrefreshlabels(){
 		x0 = (fl.w-w0) * 0.5
 		x00 = 0
 		label = {
-			w = 100 * scalerate,
-			h = 40 * scalerate,
-			font = 30 * scalerate
+			w = 100 * UI.scalerate,
+			h = 40 * UI.scalerate,
+			font = 30 * UI.scalerate
 		}
 
 		if (prf.LOWRES){
 			label = {
-				w = 150 * scalerate,
-				h = 70 * scalerate,
-				font = 45 * scalerate
+				w = 150 * UI.scalerate,
+				h = 70 * UI.scalerate,
+				font = 45 * UI.scalerate
 			}
 		}
 
@@ -14902,7 +14920,7 @@ function on_transition( ttype, var0, ttime ) {
 
 			for (local i = 0; i < tiles.total ; i++ ) {
 
-				changetiledata(i,index,( (ttype == Transition.ToNewList) || ((ttype == Transition.ToNewSelection) && (( ( (column.stop>column.start) && (i/rows >= tiles.total/rows - column.offset) ) || ( (column.stop < column.start) && (i/rows < -column.offset) ))))))
+				changetiledata(i,index,( (ttype == Transition.ToNewList) || ((ttype == Transition.ToNewSelection) && (( ( (column.stop>column.start) && (i/UI.rows >= tiles.total/UI.rows - column.offset) ) || ( (column.stop < column.start) && (i/UI.rows < -column.offset) ))))))
 			
 				index ++
 			}
@@ -15001,9 +15019,9 @@ function on_transition( ttype, var0, ttime ) {
 
 		// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 		// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
-		surfacePos += (column.offset * (widthmix + padding) ) - centercorr.shift
+		surfacePos += (column.offset * (UI.widthmix + UI.padding) ) - centercorr.shift
 
-		impulse2.delta = (column.offset * (widthmix + padding) ) - centercorr.shift
+		impulse2.delta = (column.offset * (UI.widthmix + UI.padding) ) - centercorr.shift
 		impulse2.filtern = 1
 		if (impulse2.delta > impulse2.maxoffset) {
 			impulse2.filtern = 0
@@ -15430,7 +15448,7 @@ function tick( tick_time ) {
 			local zoomtemp = tilesTableZoom[i]
 
 			// update size and glow alpha
-			picsize(tilez[i].obj, widthpadded + (selectorwidth-widthpadded)*(zoomtemp[1]), widthpadded + (selectorwidth-widthpadded)*(zoomtemp[1]) , 0, -verticalshift*1.0/widthpadded)
+			picsize(tilez[i].obj, UI.widthpadded + (UI.selectorwidth-UI.widthpadded)*(zoomtemp[1]), UI.widthpadded + (UI.selectorwidth-UI.widthpadded)*(zoomtemp[1]) , 0, -UI.verticalshift*1.0/UI.widthpadded)
 			
 		}
 	}
@@ -17325,7 +17343,7 @@ function on_signal( sig ){
 				case "up":
 				if (checkrepeat(count.up)){
 
-					if ((z_list.index % rows > 0) && (scroll.jump == false) && (scroll.sortjump == false)) {
+					if ((z_list.index % UI.rows > 0) && (scroll.jump == false) && (scroll.sortjump == false)) {
 						z_list_indexchange (z_list.index -1)
 						if(prf.THEMEAUDIO) snd.plingsound.playing = true
 					}
@@ -17334,7 +17352,7 @@ function on_signal( sig ){
 						tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],0.035,-5.0)
 
 						scroll.jump = false
-						scroll.step = rows
+						scroll.step = UI.rows
 						scroller2.visible = scrollineglow.visible = false
 					}
 					else if (scroll.sortjump == true){
@@ -17365,7 +17383,7 @@ function on_signal( sig ){
 				case "down":
 				if (checkrepeat(count.down)){
 
-				if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % rows < rows -1) && ( ! ( (z_list.index / rows == z_list.size / rows)&&(z_list.index%rows + 1 > (z_list.size -1)%rows) ))) ){
+				if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows -1) && ( ! ( (z_list.index / UI.rows == z_list.size / UI.rows)&&(z_list.index%UI.rows + 1 > (z_list.size -1)%UI.rows) ))) ){
 					if ((corrector == 0) && (z_list.index == z_list.size-1)) return true
 					z_list_indexchange (z_list.index + 1)
 					if(prf.THEMEAUDIO) snd.plingsound.playing = true
@@ -17378,7 +17396,7 @@ function on_signal( sig ){
 					tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
 
 					scroll.jump = true
-					scroll.step = rows*(cols-2)
+					scroll.step = UI.rows*(UI.cols-2)
 					scroller2.visible = scrollineglow.visible = true
 					scroll.sortjump = false
 				}
