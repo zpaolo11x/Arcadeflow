@@ -2074,16 +2074,15 @@ fl.h = fl.h_os * fl.overscan_h
 fl.x = 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x
 fl.y = 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y
 
-function print_table(tablein,level){
-	level ++
-	foreach (i, item in tablein){
-		print (level+" "+i+" "+item+"\n")
-		if (typeof item == "table") print_table(item,level)
-		
+function print_variable(variablein,level){
+	level = level+"   "
+	foreach (item, val in variablein){
+		print (level+" "+(typeof val)+" "+item+" "+val+"\n")
+		if ((typeof val == "table")||(typeof val == "array")) print_variable(val,level)
 	}
 }
 
-print_table(AF,0)
+print_variable(fl,"")
 /*
 fl.surf2 = fe.add_surface (fl.w_os*0.2,fl.h_os*0.2)
 fl.surf2.mipmap = 1
