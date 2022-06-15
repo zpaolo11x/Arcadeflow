@@ -1991,6 +1991,12 @@ else {
 }
 
 // layout preferences
+
+local UI = {
+	rows = prf.HORIZONTALROWS
+	vertical = false
+}
+
 local rows = prf.HORIZONTALROWS
 
 local vertical = false
