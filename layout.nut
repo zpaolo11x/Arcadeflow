@@ -1997,9 +1997,6 @@ local UI = {
 	vertical = false
 }
 
-local rows = prf.HORIZONTALROWS
-
-local vertical = false
 
 //screen layout definition
 local scr = {
@@ -2094,9 +2091,9 @@ fl.surf2 = fe.add_surface (fl.w_os*0.2,fl.h_os*0.2)
 fl.surf2.mipmap = 1
 fl.surf2.zorder = 100000
 */
-if (fl.h_os > fl.w_os) vertical = true
-if (vertical) prf.SLIMLINE = false
-if (vertical) rows = prf.VERTICALROWS
+if (fl.h_os > fl.w_os) UI.vertical = true
+if (UI.vertical) prf.SLIMLINE = false
+if (UI.vertical) rows = prf.VERTICALROWS
 
 rows = (prf.LOWRES ? 1 : rows)
 
@@ -2107,7 +2104,7 @@ fe.layout.page_size = rows
 fe.layout.font = uifonts.general
 
 
-local scalerate = (vertical ? fl.w : fl.h)/1200.0
+local scalerate = (UI.vertical ? fl.w : fl.h)/1200.0
 
 // Changed header spacer from 200 to 220 better centering
 local header = {
@@ -2166,7 +2163,7 @@ local carrierT = {
 
 // Changed selectorscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
-local selectorscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (rows == 1 ? (vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
+local selectorscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
 local whitemargin = 0.15
 local selectorwidth = selectorscale * widthpadded
 
@@ -2221,7 +2218,7 @@ local bgpicT = {
 	ar = 1.0
 }
 
-if (vertical){
+if (UI.vertical){
 	bgT.x = (fl.w_os - fl.h_os) / 2
 	bgT.y = 0
 	bgT.w = fl.h_os
@@ -2251,7 +2248,7 @@ if (prf.KEYLAYOUT == "AZERTY") {
 	key_sizes = [[1,1,1,1,1,1,1,1,1,1,1,1,1], [1,1,1,1,1,1,1,1,1,1,1,1,1], [1,1,1,1,1,1,1,1,1,1,1,1,1], [0,3,0,0,4,0,0,0,3,0,0,3,0],[1]]
 }
 
-if (vertical) {
+if (UI.vertical) {
 	key_rows = ["1234567890","abcdefghij","klmnopqrst","uvwxyz{{{{","}<{} {{}|{","~"]
 	key_sizes = [[1,1,1,1,1,1,1,1,1,1], [1,1,1,1,1,1,1,1,1,1], [1,1,1,1,1,1,1,1,1,1], [1,1,1,1,1,1,1,1,1,1],[0,3,0,0,4,0,0,0,3,0],[1]]
 	if (prf.KEYLAYOUT == "QWERTY") 	{
@@ -7199,7 +7196,7 @@ local overlay = {
 	filterbg = null
 	ex_top = floor(header.h * 0.6)
 	ex_bottom = floor(footer.h * 0.5)
-	in_side = vertical ? floor(footer.h * 0.5) : floor(footer.h * 0.65)
+	in_side = UI.vertical ? floor(footer.h * 0.5) : floor(footer.h * 0.65)
 	x = 0
 	y = 0
 	w = 0
@@ -7241,7 +7238,7 @@ frostpic.matrix = floor(frostpic.size*(11.0/64.0))
 if (frostpic.matrix % 2.0 == 0) frostpic.matrix ++
 frostpic.sigma = frostpic.size*(2.5/64.0)
 
-if (!vertical){
+if (!UI.vertical){
 	frostpic.w = frostpic.size
 	frostpic.h = frostpic.size * fl.h/fl.w
 }
@@ -7635,7 +7632,7 @@ local vidbgfade=[0.0,0.0,0.0,0.0,0.0]
 
 local tiles = {
 	count = cols*rows
-	offscreen = (vertical ? 3 * rows : 4 * rows)
+	offscreen = (UI.vertical ? 3 * rows : 4 * rows)
 	total = null
 }
 tiles.total = tiles.count + 2 * tiles.offscreen
@@ -8044,7 +8041,7 @@ data_surface.set_pos(0,0)
 // Creation of data shadow
 
 local sh_scale = {
-	r1 = (vertical ? 400.0 / fl.w : 400.0 / fl.h)
+	r1 = (UI.vertical ? 400.0 / fl.w : 400.0 / fl.h)
 	r2 = null
 }
 
@@ -8427,7 +8424,7 @@ fl.surf3.set_pos(0,0,fl.w_os*0.2,fl.h_os*0.2)
 
 //local overmenuwidth = (vertical ? fl.w_os * 0.7 : fl.h_os * 0.7)
 local overmenuwidth = selectorwidth * 0.9
-if (((rows == 1) && vertical ) || (!vertical && (rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2) )) overmenuwidth = selectorwidth * 0.6
+if (((rows == 1) && UI.vertical ) || (!UI.vertical && (rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2) )) overmenuwidth = selectorwidth * 0.6
 local overmenu = fl.surf.add_image("pics/ui/overmenu4.png",fl.x + fl.w*0.5-overmenuwidth*0.5,fl.y + fl.h*0.5-overmenuwidth*0.5,overmenuwidth,overmenuwidth)
 overmenu.visible = false
 overmenu.alpha = 0
@@ -8775,7 +8772,7 @@ function optionsmenu2(){
 		zmenuhide()
 		flowT.zmenudecoration = startfade(flowT.zmenudecoration,0.2,0.0)
 
-		keyboard_select (0, vertical ? 1 : 0)
+		keyboard_select (0, UI.vertical ? 1 : 0)
 
 		keyboard_show(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title,AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values ,
 		function(){ //TYPE
@@ -9019,7 +9016,7 @@ function savecurrentoptions(){
 	zmenuhide()
 	flowT.zmenudecoration = startfade(flowT.zmenudecoration,0.2,0.0)
 
-	keyboard_select (0, vertical ? 1 : 0)
+	keyboard_select (0, UI.vertical ? 1 : 0)
 
 	keyboard_show("Name","",
 	function(){ //TYPE
@@ -9717,7 +9714,7 @@ function search_update_rule(){
 
 function keyboard_search(){
 
-	keyboard_select (0, vertical ? 1 : 0)
+	keyboard_select (0, UI.vertical ? 1 : 0)
 
 	keyboard_show("🔍",search.smart,
 	function(){ //TYPE
@@ -10014,7 +10011,7 @@ local hist_textT = {
 	split2 = 0
 }
 
-if (vertical){
+if (UI.vertical){
 
 	if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.h - fl.w)*1.0/fl.w
 
@@ -10190,7 +10187,7 @@ local histgr = {
 	g2 = null
 }
 
-if (!vertical){
+if (!UI.vertical){
 	histgr.black = history_surface.add_image(AF.folder+"pics/black.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os)
 	histgr.g1 = history_surface.add_image(AF.folder+"pics/grads/wgradientT.png",0,0,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5) 
 	histgr.g2 = history_surface.add_image(AF.folder+"pics/grads/wgradientB.png",0,fl.h_os*0.5,fl.w*hist.split_h+0.5*(fl.w_os-fl.w) + fl.w_os*fl.overscan_x,fl.h_os*0.5)
@@ -10212,7 +10209,7 @@ histgr.black.alpha =  (prf.DARKPANEL == null ? 0 : (prf.DARKPANEL == true ? 180 
 local hist_white = null
 
 if (prf.HISTORYPANEL){
-	if (vertical) {
+	if (UI.vertical) {
 		hist_white = history_surface.add_rectangle(0,fl.y + fl.h*hist.split_h,hist_textT.w+(fl.w_os-fl.w),fl.h-hist_screenT.h+0.5*(fl.h_os-fl.h))
 	}
 	else{
@@ -10412,7 +10409,7 @@ hist_textT.col2 = hist_textT.charsize * 5 * 0.88
 local hist_text = null
 
 if (!prf.LOWRES){
-	if (!vertical){ // HORIZONTAL SCREEN
+	if (!UI.vertical){ // HORIZONTAL SCREEN
 		if (hist.panel_ar <= 0.6) { //SMALL PANEL
 			hist_text = {
 				title = hist_text_surf.add_text("", 0, 0*hist_textT.linesize, hist_textT.w, 2 * hist_textT.linesize)
@@ -10548,7 +10545,7 @@ else { //LOW RES MODE
 		buttn = null
 		ratng = null
 		tags = null
-		descr = hist_text_surf.add_text("",0,0,(vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w*0.58 : hist_textT.w,hist_textT.h)
+		descr = hist_text_surf.add_text("",0,0,(UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w*0.58 : hist_textT.w,hist_textT.h)
 	}
 }
 local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad3.glsl")
@@ -10558,7 +10555,7 @@ gradshader.set_texture_param( "texture")
 
 
 function descrshader(enable){
-	if (!vertical) {
+	if (!UI.vertical) {
 		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.25 / hist_textT.h : 0.0, hist_textT.linesize * 3.0 / hist_textT.h)
 		gradshader.set_param ("blanker", 0.0, (hist_text.descr.y + 3)*1.0 / hist_textT.h)
 	}
@@ -10602,7 +10599,7 @@ function hist_text_alpha(a){
 
 if (!prf.LOWRES){
 
-	if (!vertical){
+	if (!UI.vertical){
 		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.title.y + hist_text.title.height,hist_text.title.width - 40*scalerate,1)
 		hist_text["line_tags_top"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.tags.y, hist_text.title.width - 40*scalerate,1)
 		hist_text["line_tags_bot"] <- hist_text_surf.add_rectangle(20*scalerate,hist_text.tags.y + hist_text.tags.height,hist_text.title.width - 40*scalerate,1)
@@ -11942,7 +11939,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			for (local i=0 ; i < ((prf.DMPEXITAF && (prf.JUMPLEVEL==0)) ? zmenu.shown -1 : zmenu.shown); i++){
 				if (glypharray[i] != -1) {
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = ( (vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh*0.5 : zmenu.tileh*(prf.LOWRES?0.65:0.7))
+					zmenu.items[i].char_size = ( (UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh*0.5 : zmenu.tileh*(prf.LOWRES?0.65:0.7))
 					zmenu.items[i].align = Align.MiddleCentre
 					
 					local renamer = systemfont(zmenu.items[i].msg,true)
@@ -11957,7 +11954,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 						zmenu.items[i].line_spacing = 0.6
 						zmenu.items[i].word_wrap = true
 						zmenu.items[i].msg = bobwrapped.text
-						zmenu.items[i].char_size = zmenu.items[i].height * ((vertical && (prf.DMPIMAGES != null) ) ? 1.25/3.0 : 1.8/3.0) 
+						zmenu.items[i].char_size = zmenu.items[i].height * ((UI.vertical && (prf.DMPIMAGES != null) ) ? 1.25/3.0 : 1.8/3.0) 
 					}
 					else zmenu.items[i].msg = renamer
 				}
@@ -12998,11 +12995,11 @@ if(prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
 
 
 zmenu.simpicbg = zmenu_surface_container.add_text("",
-										zmenu.simbg.x + disp.width*0.5 - 0.5 * (vertical ? 0.9 : 0.75) * disp.width,
+										zmenu.simbg.x + disp.width*0.5 - 0.5 * (UI.vertical ? 0.9 : 0.75) * disp.width,
 										//zmenu.y + zmenu.height*0.5 - 0.5*0.75*(zmenu.width*0.5-2.0*zmenu.pad),
 										0,
-										(vertical ? 0.9 : 0.75) * disp.width,
-										(vertical ? 0.9 : 0.75) * disp.width)
+										(UI.vertical ? 0.9 : 0.75) * disp.width,
+										(UI.vertical ? 0.9 : 0.75) * disp.width)
 zmenu.simpicbg.set_bg_rgb(200,0,0)
 zmenu.simpicbg.bg_alpha = 0
 zmenu.simpicbg.zorder = 10000
@@ -15768,7 +15765,7 @@ function tick( tick_time ) {
 			if ((flowT.historyscroll[1] < 0.5) && (flowT.historyscroll[1] > 0.5 - flowT.historyscroll[3]*AF.tsc) && (!hist.scrollreset)) {
 				flowT.historyscroll = [0.5,0.5,0.5,0.0,0.0]
 			}
-			if (!vertical){
+			if (!UI.vertical){
 				hist_screensurf.y = hist_screenT.y + historypadding - hist.direction * 1.50 * fl.h_os * (flowT.historyscroll[1] - 0.5)
 				shadowsurf_rt.y = histglow.y - shadow.radius - hist.direction * 1.50 * fl.h_os * (flowT.historyscroll[1] - 0.5)
 			}
