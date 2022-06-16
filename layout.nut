@@ -7844,7 +7844,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 		gr_overlay.alpha = prf.LOGOSONLY ? 0 : 255
 	}
 
-	txbox = obj.add_text("XXXXXXXXXXXXXXXXXXXXXXXX",UI.zoomedscale*UI.padding*10.0/8.0,UI.zoomedscale*(UI.padding*0.3 + UI.padding*10.0/8.0-UI.verticalshift),UI.zoomedscale*UI.tilewidth*44.0/48.0,UI.zoomedscale*UI.tileheight*44.0/48.0)
+	txbox = obj.add_text("XXXXXXXXXXXXXXXXXXXXXXXX",UI.zoomedscale*UI.padding*10.0/8.0,UI.zoomedscale*(UI.padding*0.3 + UI.padding*10.0/8.0-UI.verticalshift),UI.zoomedwidth*44.0/48.0,UI.zoomedheight*44.0/48.0)
 	txbox.char_size = txbox.height/4.0
 	txbox.word_wrap = true
 	txbox.align = Align.TopCentre
@@ -13413,7 +13413,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 	local ARdata = ARprocess(cropaspect)
 
 	tilez[i].snapz.set_pos(0.5*(UI.zoomedwidth - integereven(UI.zoomedscale * UI.widthpadded * ARdata.w)), 0.5*(UI.zoomedheight - integereven(UI.zoomedscale * UI.heightpadded * ARdata.h))- integer(UI.zoomedscale * UI.verticalshift), integereven(UI.zoomedscale * UI.widthpadded * ARdata.w), integereven(UI.zoomedscale * UI.widthpadded * ARdata.h))
-	print (tilez[i].snapz.x +" "+ tilez[i].snapz.y+" "+tilez[i].snapz.width+" "+tilez[i].snapz.height+"\n")
+	testpr (tilez[i].snapz.x +" "+ tilez[i].snapz.y+" "+tilez[i].snapz.width+" "+tilez[i].snapz.height+"\n")
 	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(UI.zoomedscale * UI.widthpadded * ARdata.x, UI.zoomedscale * (UI.widthpadded * ARdata.y - UI.verticalshift), UI.zoomedscale * UI.widthpadded * ARdata.w, UI.zoomedscale * UI.widthpadded * ARdata.h)
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
@@ -14954,8 +14954,8 @@ local timescale = {
 /// On Tick ///
 function tick( tick_time ) {
 
-	print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
-	print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
+	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
+	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
 	if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
