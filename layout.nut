@@ -7763,7 +7763,7 @@ shaders.lg.hv.set_param ("size", logo.shw*logo.shscale, logo.shh*logo.shscale)
 
 for (local i = 0; i < tiles.total; i++ ) {
 	
-	// main tile object
+	// main tile object at zoomed in size
 	local obj = fl.surf.add_surface(UI.zoomedwidth,UI.zoomedheight)
 
 	obj.origin_x = obj.width * 0.5
@@ -7805,21 +7805,24 @@ for (local i = 0; i < tiles.total; i++ ) {
 		if (!prf.AUDIOVIDSNAPS) gr_vidsz.video_flags = Vid.NoAudio
 	}
 
+	// Place shadow item covering full tile
 	local sh_mx = obj.add_image("pics/decor/tile_shadow.png",0,0,UI.zoomedwidth,UI.zoomedheight)
 	sh_mx.alpha = prf.LOGOSONLY ? 0 : 230
 	
+	// place glow item covering full tile with offset
 	local glomx = obj.add_image("pics/decor/tile_glow.png",0,-UI.zoomedvshift,UI.zoomedwidth,UI.zoomedheight)
 	glomx.alpha = 0
 
-	//TEST138 CORREGGERE verticalshift
-	local bd_mx = obj.add_rectangle(UI.zoomedscale*UI.padding*(1.0-UI.whiteborder),UI.zoomedscale*(-UI.verticalshift + UI.tileheight/8.0 + UI.padding*(1.0 - UI.whiteborder)),UI.zoomedscale*(UI.tilewidth + UI.padding*2.0*UI.whiteborder),UI.zoomedscale*(UI.tileheight*(3/4.0)+UI.padding*2.0*UI.whiteborder))
+	// place white border at fake location
+	local bd_mx = obj.add_rectangle(0,0,1,1)
 	bd_mx.set_rgb(255,255,255)
 	bd_mx.alpha = 0
 	
+	// add snap at fake location
 	local snapz = obj.add_clone(gr_snapz)
 	if(!prf.SNAPGRADIENT) gr_snapz.visible = false
 	snapz.preserve_aspect_ratio = false
-	snapz.set_pos (UI.zoomedscale*UI.padding,UI.zoomedscale*(UI.padding-UI.verticalshift),UI.zoomedscale*UI.tilewidth,UI.zoomedscale*UI.tileheight)
+	snapz.set_pos (0,0,1,1)
 	snapz.alpha = prf.LOGOSONLY ? 0 : 255
 
 	local gr_overlay = null
@@ -7830,7 +7833,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 		gradsurf_rt.visible = false
 		gr_overlay.preserve_aspect_ratio = false
 		// snapz.video_flags = Vid.ImagesOnly
-		gr_overlay.set_pos (UI.zoomedscale*UI.padding,UI.zoomedscale*(UI.padding-UI.verticalshift),UI.zoomedscale*UI.tilewidth,UI.zoomedscale*UI.tileheight)
+		gr_overlay.set_pos (0,0,1,1)
 		snap_grad[i] = fe.add_shader( Shader.Fragment, "glsl/gradalpha_109.glsl" )
 		snap_grad[i].set_texture_param("texturecolor",gradsurf_rt)
 		if (prf.LOGOSONLY)
