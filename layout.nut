@@ -2162,11 +2162,11 @@ UI.scalerate = (UI.vertical ? fl.w : fl.h)/1200.0
 
 // Changed header spacer from 200 to 220 better centering
 UI.header.h = floor (prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate ) // content
-UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : 220 * UI.scalerate)) //spacer
+UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : 240 * UI.scalerate)) //spacer
 
 // Changed header spacer from 100 to 90 better centering
 UI.footer.h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
-UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : 90 * UI.scalerate)) //spacer
+UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : 120 * UI.scalerate)) //spacer
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2 
 
