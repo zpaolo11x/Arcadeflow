@@ -7932,12 +7932,14 @@ for (local i = 0; i < tiles.total; i++ ) {
 	if (!prf.SNAPGRADIENT) gr_vidsz.visible = false
 	// if (!prf.AUDIOVIDSNAPS) vidsz.video_flags = Vid.NoAudio
 
-
-	local nw_mx = obj.add_image("pics/decor/new.png",0,0,UI.zoomedwidth/8.0,UI.zoomedheight/8.0)
+	//local nw_mx = obj.add_image("pics/decor/new.png",selectorscale*padding,selectorscale*(padding-verticalshift+height*6.0/8.0),width*selectorscale/8.0,height*selectorscale/8.0)
+	//local tg_mx = obj.add_image("pics/decor/tag.png",0,0,width*selectorscale/6.0,height*selectorscale/6.0)
+	
+	local nw_mx = obj.add_image("pics/decor/new.png",0,0,UI.zoomedcorewidth/8.0,UI.zoomedcoreheight/8.0)
 	nw_mx.visible = false
 	nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 
-	local tg_mx = obj.add_image("pics/decor/tag.png",0,0,UI.zoomedwidth/6.0,UI.zoomedheight/6.0)
+	local tg_mx = obj.add_image("pics/decor/tag.png",0,0,UI.zoomedcorewidth/6.0,UI.zoomedcoreheight/6.0)
 	tg_mx.visible = false
 	tg_mx.mipmap = true
 	tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
