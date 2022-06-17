@@ -1286,7 +1286,8 @@ prf.JUMPLEVEL <- 0 //Level 0 for parent list, level 1 for sub-lists, exit arcade
 
 prf.OLDOPTIONSPAGE <- false
 
-prf.SPLASHLOGOFILE = ( prf.SPLASHLOGOFILE == "" ? "pics/logo/aflogox.png" : prf.SPLASHLOGOFILE),
+prf.CUSTOMLOGO <- (prf.SPLASHLOGOFILE != "")
+if (!prf.CUSTOMLOGO) prf.SPLASHLOGOFILE = "pics/logo/aflogox.png"
 
 prf.AMSTART <- (prf.AMENABLE == "From start")
 prf.AMENABLE = (prf.AMENABLE != "Disabled")
@@ -1734,11 +1735,15 @@ function absf (n) {
 }
 
 function integer(n){
-	return round(n,1)
+	return (floor(n+(n>0?0.5:-0.5)))
+}
+
+function integerp(n){
+	return (floor(n+0.5))
 }
 
 function integereven(n){
-	local n_round = round(n,1)
+	local n_round = integerp(n)
 	return (n_round + n_round%2.0)
 }
 
@@ -2028,6 +2033,7 @@ local UI = {
 
 	whiteborder = 0
 
+	zoomedblock = 0
 	zoomedscale = 0
 	zoomedwidth = 0
 	zoomedheight = 0
@@ -2046,6 +2052,8 @@ local UI = {
 		h = 0 //content size
 		h2 = 0 //spacer size
 	}
+
+	footermargin = 0
 
 	space = 0
 }
@@ -2157,22 +2165,26 @@ fe.layout.preserve_aspect_ratio = true
 fe.layout.page_size = UI.rows
 fe.layout.font = uifonts.general
 
+prf.PIXELACCURATE <- true
+
 
 UI.scalerate = (UI.vertical ? fl.w : fl.h)/1200.0
 
 // Changed header spacer from 200 to 220 better centering
 UI.header.h = floor (prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate ) // content
-UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : 240 * UI.scalerate)) //spacer
+UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)) //spacer
 
 // Changed header spacer from 100 to 90 better centering
 UI.footer.h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
-UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : 120 * UI.scalerate)) //spacer
+UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
+UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2 
 
 UI.blocks = 6 * UI.rows + UI.rows + 1
 UI.blocksize = UI.space * 1.0/UI.blocks
-UI.blocksize = 5 * round(UI.blocksize/5.0,1) //TEST138
+
+if (prf.PIXELACCURATE) UI.blocksize = 1 * round(UI.blocksize/1.0,1) //TEST138
 
 //TEST138 UNCOMMENT AND CHANGE THIS WITH SLOTS TOO
 /*
@@ -2195,12 +2207,11 @@ UI.tilewidthmix = (prf.FIX169 ? UI.tilewidth169padded : UI.tilewidth)
 
 UI.blocksspace = UI.blocksize * UI.blocks
 
-UI.header.h2 = UI.header.h2 + floor ((UI.space-UI.blocksspace)*0.5)
-UI.footer.h2 = UI.footer.h2 + (UI.space-UI.blocksspace) - floor ((UI.space-UI.blocksspace)*0.5)
+UI.header.h2 = UI.header.h2 + floor ((UI.space - UI.blocksspace)*0.5)
+UI.footer.h2 = UI.footer.h2 + (UI.space-UI.blocksspace) - floor ((UI.space - UI.blocksspace)*0.5)
 UI.space = fl.h - UI.header.h2 - UI.footer.h2
 
-
-UI.verticalshift = UI.coreheight*16.0/480.0
+UI.verticalshift = 0 * UI.coreheight*16.0/480.0
 /* 
 Nominal (for calculation purposes) sizes:
 	Tile size: 640 x 640
@@ -2229,10 +2240,15 @@ print_variable(carrierT,"","carrierT")
 
 UI.zoomedscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
 
-
 UI.whiteborder = 0.15
-UI.zoomedvshift = round(UI.verticalshift * UI.zoomedscale,1)
-UI.zoomedscale = UI.zoomedvshift / UI.verticalshift
+
+
+if (prf.PIXELACCURATE) 
+	UI.zoomedblock = round(UI.zoomedscale * UI.blocksize,1)
+else
+	UI.zoomedblock = UI.zoomedscale * UI.blocksize
+
+UI.zoomedscale = UI.zoomedblock * 1.0/UI.blocksize
 
 UI.zoomedwidth = UI.zoomedscale * UI.tilewidth
 UI.zoomedheight = UI.zoomedscale * UI.tileheight
@@ -2274,7 +2290,7 @@ local lettersize = {
 	//display = (fl.w_os * 30.0/200.0) / uifonts.pixel
 }
 
-local footermargin = 250 * UI.scalerate
+UI.footermargin = floor (250 * UI.scalerate + 0.5)
 local scrollersize = 2 * floor (20 * UI.scalerate * 0.5) + 1
 
 // Blurred backdrop definition
@@ -6111,7 +6127,8 @@ function mfz_apply(startlist){
 	z_liststops()
 
 	z_listrefreshlabels()
-	
+
+
 	if (!startlist) z_listrefreshtiles() //TEST100
 
 	if(z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex) 
@@ -8123,7 +8140,7 @@ data_surface_sh_rt.zorder = -1
 data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
 
-local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,footermargin,UI.footer.h)
+local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filterdata.align = Align.Centre
 filterdata.set_rgb( 255, 255, 255)
 filterdata.word_wrap = true
@@ -8133,7 +8150,7 @@ filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
 
-local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-footermargin,fl.y+fl.h-UI.footer.h,footermargin,UI.footer.h)
+local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.Centre
 filternumbers.set_rgb( 255, 255, 255)
 filternumbers.word_wrap = true
@@ -8142,11 +8159,11 @@ filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local separatorline = data_surface.add_rectangle(fl.x+fl.w-footermargin+footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,footermargin*0.4,1)
+local separatorline = data_surface.add_rectangle(fl.x+fl.w-UI.footermargin+UI.footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,UI.footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 separatorline.visible = !((prf.CLEANLAYOUT))
 
-multifilterglyph = data_surface.add_text("X",fl.x+fl.w-footermargin,fl.y+fl.h-UI.footer.h,footermargin*0.3,UI.footer.h)
+multifilterglyph = data_surface.add_text("X",fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin*0.3,UI.footer.h)
 multifilterglyph.margin = 0
 multifilterglyph.char_size = UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
@@ -8160,16 +8177,16 @@ multifilterglyph.visible = false
 
 
 // scroller definition
-local scrolline = data_surface.add_rectangle(fl.x+footermargin,fl.y+fl.h - UI.footer.h*0.5 - 1, fl.w-2*footermargin, 1 )
+local scrolline = data_surface.add_rectangle(fl.x + UI.footermargin, fl.y + fl.h - UI.footer.h * 0.5 - 1, fl.w-2 * UI.footermargin, 1 )
 //scrolline.alpha = 255
 scrolline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+footermargin, fl.y+fl.h - UI.footer.h*0.5 - 10 * UI.scalerate -1 ,fl.w-2*footermargin, 20 * UI.scalerate + 1)
+local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png",fl.x+UI.footermargin, fl.y+fl.h - UI.footer.h*0.5 - 10 * UI.scalerate -1 ,fl.w-2*UI.footermargin, 20 * UI.scalerate + 1)
 scrollineglow.visible = false
 scrollineglow.alpha = 200
 scrollineglow.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
-local scroller = data_surface.add_image("pics/ui/whitedisc.png",fl.x+footermargin - scrollersize*0.5,fl.y+fl.h-UI.footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
+local scroller = data_surface.add_image("pics/ui/whitedisc.png",fl.x+UI.footermargin - scrollersize*0.5,fl.y+fl.h-UI.footer.h*0.5-(scrollersize + 1 )*0.5,scrollersize,scrollersize)
 scroller.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 local scroller2 = data_surface.add_image("pics/ui/whitedisc2.png",scroller.x - scrollersize*0.5, scroller.y-scrollersize*0.5,scrollersize*2,scrollersize*2)
@@ -8185,7 +8202,7 @@ labelstrip.visible = false
 local labelsurf = data_surface.add_surface (fl.w,fl.h)
 labelsurf.set_pos (fl.x,fl.y)
 
-searchdata = data_surface.add_text(fe.list.search_rule,fl.x,fl.y+fl.h-UI.footer.h*0.5,fl.w,UI.footer.h*0.5)
+searchdata = data_surface.add_text(fe.list.search_rule, fl.x, fl.y+fl.h - UI.footer.h * 0.5, fl.w, UI.footer.h * 0.5)
 searchdata.align = Align.Centre
 searchdata.set_rgb( 255, 255, 255)
 searchdata.word_wrap = true
@@ -8219,8 +8236,8 @@ displayname.align = Align.MiddleCentre
 // fading letter
 local letterobjsurf = {
 	surf = null
-	w = fl.w_os*1.8 //TEST120 was 3.0!!!
-	w3 = fl.w_os*3.0
+	w = fl.w_os * 1.8 //TEST120 was 3.0!!!
+	w3 = fl.w_os * 3.0
 	h = carrierT.h
 	y0 = carrierT.y - data_surface.y
 }
@@ -8235,12 +8252,12 @@ letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
 
 local blsize = {
-	mini = 45 * UI.scalerate,
-	catp = 110 * UI.scalerate,
-	subt = 35 * UI.scalerate,
-	posy = 137 * UI.scalerate,
-	manu = 145 * UI.scalerate,
-	dath = 25 * UI.scalerate
+	mini = floor (45 * UI.scalerate + 0.5),
+	catp = floor (110 * UI.scalerate + 0.5),
+	subt = floor (35 * UI.scalerate + 0.5),
+	posy = floor (137 * UI.scalerate + 0.5),
+	manu = floor (145 * UI.scalerate + 0.5),
+	dath = floor (25 * UI.scalerate + 0.5)
 }
 
 if (prf.LOWRES) {
@@ -8268,8 +8285,8 @@ local gamed = {
 
 // category image
 gamed.catpicT = {
-	x = 30 * UI.scalerate,
-	y = 20 * UI.scalerate,
+	x = floor(30 * UI.scalerate + 0.5),
+	y = floor(20 * UI.scalerate + 0.5),
 	w = blsize.catp,
 	h = blsize.catp
 }
@@ -8283,37 +8300,37 @@ gamed.plypicT = {
 }
 
 gamed.ctlpicT = {
-	x = gamed.plypicT.x + (blsize.mini + 10 * UI.scalerate),
+	x = gamed.plypicT.x + blsize.mini + floor(10 * UI.scalerate + 0.5),
 	y = gamed.plypicT.y,
 	w = blsize.mini,
 	h = blsize.mini
 }
 
 gamed.butpicT = {
-	x = gamed.plypicT.x + 2 * (blsize.mini + 10 * UI.scalerate),
+	x = gamed.plypicT.x + 2 * (blsize.mini + floor(10 * UI.scalerate + 0.5)),
 	y = gamed.plypicT.y,
-	w = blsize.mini * 1.25,
+	w = floor (blsize.mini * 1.25 + 0.5),
 	h = blsize.mini
 }
 
 // main game category
 gamed.maincatT = {
-	x = 20 * UI.scalerate,
-	y = UI.header.h - 20 * UI.scalerate - blsize.subt,
-	w = gamed.plypicT.x - 2 * 20 * UI.scalerate,
+	x = floor (20 * UI.scalerate + 0.5),
+	y = UI.header.h - floor (20 * UI.scalerate + 0.5)- blsize.subt,
+	w = gamed.plypicT.x - 2 * floor (20 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
 
 // right side: manufacturer and year
 gamed.manufacturerpicT = {
-	x = fl.w - 2 * blsize.manu - 30 * UI.scalerate,
-	y = (prf.LOWRES ? 20 * UI.scalerate : 10 * UI.scalerate),
+	x = fl.w - 2 * blsize.manu - floor(30 * UI.scalerate + 0.5),
+	y = (prf.LOWRES ? floor(20 * UI.scalerate +0.5) : floor(10 * UI.scalerate + 0.5)),
 	w = 2 * blsize.manu,
 	h = blsize.manu
 }
 gamed.yearT = {
 	x = gamed.manufacturerpicT.x,
-	y = UI.header.h - 20 * UI.scalerate - blsize.dath,
+	y = UI.header.h - floor (20 * UI.scalerate + 0.5) - blsize.dath,
 	w = gamed.manufacturerpicT.w,
 	h = blsize.dath
 }
@@ -8322,14 +8339,14 @@ gamed.yearT = {
 gamed.mainnameT = {
 	x = gamed.plypicT.x,
 	y = gamed.catpicT.y,
-	w = fl.w - gamed.plypicT.x - gamed.manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
+	w = fl.w - gamed.plypicT.x - gamed.manufacturerpicT.w - floor(30 * UI.scalerate + 0.5) - floor (5 * UI.scalerate + 0.5),
 	h = gamed.catpicT.h
 }
 
 gamed.subnameT = {
-	x = gamed.butpicT.x + gamed.butpicT.w + 15 * UI.scalerate,
+	x = gamed.butpicT.x + gamed.butpicT.w + floor (15 * UI.scalerate + 0.5),
 	y = gamed.maincatT.y,
-	w = fl.w - gamed.butpicT.x - gamed.butpicT.w - 15  * UI.scalerate - gamed.manufacturerpicT.w - 30 * UI.scalerate - 5 * UI.scalerate,
+	w = fl.w - gamed.butpicT.x - gamed.butpicT.w - floor (15  * UI.scalerate + 0.5) - gamed.manufacturerpicT.w - floor (30 * UI.scalerate + 0.5) - floor (5 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
 
@@ -12929,6 +12946,13 @@ else {
 
 aflogo.set_pos(aflogoT.x,aflogoT.y,aflogoT.w,aflogoT.h)
 
+if (!prf.CUSTOMLOGO) {
+	aflogo.width = (1150.0/10.0) * floor((fl.w * 10.0 / 1150.0)+0.5)
+	aflogo.height = aflogo.width*aflogo.texture_height*1.0/aflogo.texture_width
+	aflogo.x = floor((fl.w - aflogo.width)*0.5)
+	aflogo.y = floor((fl.h - aflogo.height)*0.5)
+}
+
 aflogo.visible = prf.SPLASHON
 
 
@@ -13446,9 +13470,9 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 	
 	local ARdata = ARprocess(cropaspect)
 
-	tilez[i].snapz.set_pos(0.5*(UI.zoomedwidth - integereven(UI.zoomedscale * UI.tilewidth * ARdata.w)), 0.5*(UI.zoomedheight - integereven(UI.zoomedscale * UI.tileheight * ARdata.h))- integer(UI.zoomedscale * UI.verticalshift), integereven(UI.zoomedscale * UI.tilewidth * ARdata.w), integereven(UI.zoomedscale * UI.tilewidth * ARdata.h))
+	tilez[i].snapz.set_pos(0.5*(UI.zoomedwidth - integereven(UI.zoomedwidth * ARdata.w)), 0.5*(UI.zoomedheight - integereven(UI.zoomedheight * ARdata.h)) - UI.zoomedvshift, integereven(UI.zoomedwidth * ARdata.w), integereven(UI.zoomedheight * ARdata.h))
 	//testpr (tilez[i].snapz.x +" "+ tilez[i].snapz.y+" "+tilez[i].snapz.width+" "+tilez[i].snapz.height+"\n")
-	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(UI.zoomedscale * UI.tilewidth * ARdata.x, UI.zoomedscale * (UI.tilewidth * ARdata.y - UI.verticalshift), UI.zoomedscale * UI.tilewidth * ARdata.w, UI.zoomedscale * UI.tilewidth * ARdata.h)
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(tilez[i].snapz.x, tilez[i].snapz.y, tilez[i].snapz.width, tilez[i].snapz.height)
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
 
@@ -13501,7 +13525,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 function update_borderglow(i,var,aspect){
 	aspect = clampaspect (aspect)
 
-	local bd_margin = UI.padding * UI.whiteborder
+	local bd_margin = round(UI.zoomedpadding * UI.whiteborder,1)
 	local bd_margin2 = UI.padding * (1.0 - UI.whiteborder)
 	tilez[i].bd_mx.visible = true
 	tilez[i].glomx.visible = prf.SNAPGLOW
@@ -13518,7 +13542,7 @@ function update_borderglow(i,var,aspect){
 		ARdata = ARprocess(aspect)
 	}
 	*/
-	tilez[i].bd_mx.set_pos (tilez[i].snapz.x - UI.zoomedscale * bd_margin, tilez[i].snapz.y - UI.zoomedscale * bd_margin , UI.zoomedscale * (UI.tilewidth * ARdata.w + 2.0*bd_margin), UI.zoomedscale * (UI.tilewidth * ARdata.h + 2.0*bd_margin))
+	tilez[i].bd_mx.set_pos (tilez[i].snapz.x - bd_margin, tilez[i].snapz.y - bd_margin , tilez[i].snapz.width + 2.0*bd_margin, tilez[i].snapz.height + 2.0*bd_margin)
 
 
 	if (prf.SNAPGLOW) {
@@ -13598,8 +13622,8 @@ function update_thumbdecor(i,var,aspect){
 
 	tilez[i].sh_mx.visible = true
 
-	tilez[i].nw_mx.set_pos (UI.zoomedscale * ARdata.x * UI.tilewidth , UI.zoomedscale * ( (ARdata.y + ARdata.h) * UI.tilewidth - UI.coreheight/8.0 - UI.verticalshift))
-	tilez[i].tg_mx.set_pos (UI.zoomedscale *( (ARdata.x + ARdata.w) * UI.tilewidth - UI.coreheight/8.0), UI.zoomedscale * ( (ARdata.y + ARdata.h) * UI.tilewidth - UI.coreheight/10.0 - UI.verticalshift))
+	tilez[i].nw_mx.set_pos (tilez[i].snapz.x , tilez[i].snapz.y + tilez[i].snapz.height - tilez[i].nw_mx.height)
+	tilez[i].tg_mx.set_pos (tilez[i].snapz.x + tilez[i].snapz.width - UI.zoomedcoreheight/8.0, tilez[i].snapz.y + tilez[i].snapz.height - UI.zoomedcoreheight/10.0)
 
 }
 
@@ -14132,7 +14156,7 @@ function z_resetthumbvideo(index){
 
 
 function updatescrollerposition(){
-	scroller.x = fl.x+footermargin + ((z_list.index/UI.rows) * UI.rows*1.0/(z_list.size - 1 ))*(fl.w - 2.0*footermargin-scrollersize)
+	scroller.x = fl.x+UI.footermargin + ((z_list.index/UI.rows) * UI.rows*1.0/(z_list.size - 1 ))*(fl.w - 2.0*UI.footermargin-scrollersize)
 	scroller2.x = scroller.x-scrollersize*0.5
 }
 
@@ -14386,8 +14410,8 @@ function z_listrefreshlabels(){
 	}
 
 	local i = 0
-	local w0 = fl.w - 2 * footermargin
-	local x0 = footermargin
+	local w0 = fl.w - 2 * UI.footermargin
+	local x0 = UI.footermargin
 	local x00 = 0
 	local label = {
 		w = 100 * UI.scalerate,
@@ -14399,7 +14423,7 @@ function z_listrefreshlabels(){
 
 	if (prf.SCROLLERTYPE == "labellist"){
 
-		w0 = (fl.w-2*footermargin)*1.0 
+		w0 = (fl.w-2*UI.footermargin)*1.0 
 		x0 = (fl.w-w0) * 0.5
 		x00 = 0
 		label = {
@@ -14458,7 +14482,7 @@ function z_listrefreshlabels(){
 	}
 
 	if (prf.SCROLLERTYPE == "timeline"){
-		labelstrip.set_pos(fl.x+x0,fl.y+fl.h - UI.footer.h * 0.5,w0,label.h)
+		labelstrip.set_pos(fl.x + x0, fl.y + fl.h - UI.footer.h * 0.5, w0, label.h)
 		labelstrip.set_rgb (themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 		labelstrip.alpha = 100
 		//labelstrip.visible = false
@@ -14507,6 +14531,11 @@ function z_listrefreshlabels(){
 
 		if (labelorder.len() != 0) sortticks[labelorder[0]].visible = false
 	}
+
+//TEST138
+foreach (i, item in sortlabels){
+	print (item.x+"\n")
+}
 
 }
 
