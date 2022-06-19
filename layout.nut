@@ -14501,7 +14501,7 @@ function z_listrefreshlabels(){
 				sortlabelsarray.push(null)
 				sortlabelsarray[labelarrayindex] = data_surface.add_text("",round(fl.x + x0 + labelspacer*0.5 - label.w*0.5,1), round(fl.y + fl.h - UI.footer.h * 0.5,1) , label.w,label.h)
 				sortlabelsarray[labelarrayindex].char_size = 16//TEST138 label.font
-				sortlabelsarray[labelarrayindex].font = "font_7x5PixelsPL"//TEST138 uifonts.lite
+				sortlabelsarray[labelarrayindex].font = "font_5x3pixel"//TEST138 uifonts.lite
 				sortlabelsarray[labelarrayindex].margin = 0
 				sortlabelsarray[labelarrayindex].align = Align.BottomCentre //TEST138 Align.MiddleCentre
 			}
