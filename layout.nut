@@ -2120,6 +2120,8 @@ try {
 	}
 }catch(err){}
 
+
+
 local rotation = {
 	real = null
 	r90 = null
@@ -7296,8 +7298,9 @@ local overlay = {
 }
 
 overlay.charsize = (prf.LOWRES ? floor( 65 * UI.scalerate ) : floor( 50 * UI.scalerate ))
+overlay.charsize = overlay.charsize + overlay.charsize%2.0
 overlay.rowsize = (prf.LOWRES ? (overlay.charsize*2.5) : (overlay.charsize*3.0))
-overlay.labelsize = (overlay.rowsize * 1)
+overlay.labelsize = overlay.rowsize * 1
 overlay.labelcharsize = overlay.charsize * 1
 
 overlay.fullheight = fl.h - UI.header.h - UI.footer.h - overlay.labelsize + overlay.ex_top + overlay.ex_bottom
@@ -7305,6 +7308,7 @@ overlay.fullwidth = ((overlay.fullheight + overlay.labelsize)*3.0/2.0 < (fl.w - 
 
 overlay.fullheight = floor(overlay.fullheight)
 overlay.fullwidth = floor(overlay.fullwidth)
+overlay.fullwidth = overlay.fullwidth + overlay.fullwidth%2.0
 
 overlay.rows = floor(overlay.fullheight/overlay.rowsize)
 if (floor(overlay.rows / 2.0)*2.0 == overlay.rows ) overlay.rows ++
@@ -7315,6 +7319,7 @@ overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.fullheight + overlay.labelsize
 
+print_variable(overlay,"","overlay")
 
 /// Frosted glass surface ///
 
@@ -7327,7 +7332,7 @@ local frostpic = {
 }
 
 frostpic.matrix = floor(frostpic.size*(11.0/64.0))
-if (frostpic.matrix % 2.0 == 0) frostpic.matrix ++
+frostpic.matrix = frostpic.matrix + 1 - frostpic.matrix % 2.0
 frostpic.sigma = frostpic.size*(2.5/64.0)
 
 if (!UI.vertical){
@@ -7339,6 +7344,7 @@ else {
 	frostpic.h = frostpic.size
 }
 
+print_variable(frostpic,"","frostpic")
 
 local frost = {
 	surf_1 = null
@@ -12951,8 +12957,8 @@ aflogo.set_pos(aflogoT.x,aflogoT.y,aflogoT.w,aflogoT.h)
 if (!prf.CUSTOMLOGO) {
 	aflogo.width = (1150.0/10.0) * floor((fl.w * 10.0 / 1150.0)+0.5)
 	aflogo.height = aflogo.width*aflogo.texture_height*1.0/aflogo.texture_width
-	aflogo.x = floor((fl.w - aflogo.width)*0.5)
-	aflogo.y = floor((fl.h - aflogo.height)*0.5)
+	aflogo.x = fl.x + floor((fl.w - aflogo.width)*0.5)
+	aflogo.y = fl.y + floor((fl.h - aflogo.height)*0.5)
 }
 
 aflogo.visible = prf.SPLASHON

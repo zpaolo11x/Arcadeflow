@@ -1,0 +1,2 @@
+13.7
+Correct UI elements alignment with pixels
