@@ -2034,7 +2034,7 @@ local UI = {
 	whiteborder = 0
 
 	zoomedblock = 0
-	zoomedscale = 0
+	zoomscale = 0
 	zoomedwidth = 0
 	zoomedheight = 0
 	zoomedborder = 0
@@ -2207,7 +2207,7 @@ UI.header.h2 = UI.header.h2 + floor ((UI.space - UI.blocksspace)*0.5)
 UI.footer.h2 = UI.footer.h2 + (UI.space-UI.blocksspace) - floor ((UI.space - UI.blocksspace)*0.5)
 UI.space = fl.h - UI.header.h2 - UI.footer.h2
 
-UI.verticalshift = 0 * UI.coreheight*16.0/480.0
+UI.verticalshift = UI.coreheight*16.0/480.0
 /* 
 Nominal (for calculation purposes) sizes:
 	Tile size: 640 x 640
@@ -2230,28 +2230,29 @@ local carrierT = {
 	h = UI.rows * UI.coreheight + UI.rows * UI.padding + UI.padding
 }
 
-// Changed zoomedscale from 1.5 to 1.45 in default zoom
+// Changed zoomscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
 
 
-UI.zoomedscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
+UI.zoomscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) )))
 
 UI.whiteborder = 0.15
 
 
 if (prf.PIXELACCURATE) 
-	UI.zoomedblock = round(UI.zoomedscale * UI.blocksize,1)
+	UI.zoomedblock = round(UI.zoomscale * UI.blocksize,1)
 else
-	UI.zoomedblock = UI.zoomedscale * UI.blocksize
+	UI.zoomedblock = UI.zoomscale * UI.blocksize
 
-UI.zoomedscale = UI.zoomedblock * 1.0/UI.blocksize
+UI.zoomscale = UI.zoomedblock * 1.0/UI.blocksize
 
-UI.zoomedwidth = UI.zoomedscale * UI.tilewidth
-UI.zoomedheight = UI.zoomedscale * UI.tileheight
+UI.zoomedwidth = UI.zoomscale * UI.tilewidth
+UI.zoomedheight = UI.zoomscale * UI.tileheight
 
-UI.zoomedcorewidth = UI.zoomedscale * UI.corewidth
-UI.zoomedcoreheight = UI.zoomedscale * UI.coreheight
-UI.zoomedvshift = UI.zoomedscale * UI.verticalshift
+UI.zoomedcorewidth = UI.zoomscale * UI.corewidth
+UI.zoomedcoreheight = UI.zoomscale * UI.coreheight
+UI.zoomedvshift = floor(UI.zoomscale * UI.verticalshift)
+UI.verticalshift = floor(UI.verticalshift + 0.5)
 UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth)*0.5
 
 // correction data for non-centered first tiles
@@ -2264,7 +2265,7 @@ local centercorr = {
 	shift = null // Is the shift factor added to the usual tile jump
 }
 
-centercorr.zero = - deltacol*(UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding))) / 2 - UI.padding*(1 + UI.zoomedscale*0.5) - UI.widthmix/2 + UI.zoomedwidth/2
+centercorr.zero = - deltacol*(UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding))) / 2 - UI.padding*(1 + UI.zoomscale*0.5) - UI.widthmix/2 + UI.zoomedwidth/2
 centercorr.val = 0
 centercorr.shift = centercorr.zero
 
@@ -7895,7 +7896,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 		gr_overlay.alpha = prf.LOGOSONLY ? 0 : 255
 	}
 
-	txbox = obj.add_text("XXXXXXXXXXXXXXXXXXXXXXXX",(UI.zoomedwidth - UI.zoomedwidth*44.0/48.0)*0.5,UI.zoomedscale*UI.padding*62.0/40.0-UI.zoomedvshift,UI.zoomedwidth*44.0/48.0,UI.zoomedheight*44.0/48.0)
+	txbox = obj.add_text("XXXXXXXXXXXXXXXXXXXXXXXX",(UI.zoomedwidth - UI.zoomedwidth*44.0/48.0)*0.5,UI.zoomscale*UI.padding*62.0/40.0-UI.zoomedvshift,UI.zoomedwidth*44.0/48.0,UI.zoomedheight*44.0/48.0)
 	txbox.char_size = txbox.height/4.0
 	txbox.word_wrap = true
 	txbox.align = Align.TopCentre
@@ -7984,13 +7985,13 @@ for (local i = 0; i < tiles.total; i++ ) {
 	logosurf_rt.visible = true
 
 	if (prf.LOGOSONLY){
-		logosurf_rt.set_pos (UI.zoomedscale*UI.padding*0.5,UI.zoomedscale*(UI.padding*0.6-UI.verticalshift+UI.coreheight*0.25),UI.zoomedscale*(UI.corewidth+UI.padding),UI.zoomedscale*(UI.coreheight*0.5+UI.padding))
+		logosurf_rt.set_pos (UI.zoomscale*UI.padding*0.5,UI.zoomscale*(UI.padding*0.6-UI.verticalshift+UI.coreheight*0.25),UI.zoomscale*(UI.corewidth+UI.padding),UI.zoomscale*(UI.coreheight*0.5+UI.padding))
 	}
 	else {
 		if (!prf.CROPSNAPS)
-			logosurf_rt.set_pos (UI.zoomedscale*UI.padding*0.5,UI.zoomedscale*(UI.padding*0.4*0.5-UI.verticalshift),UI.zoomedscale*(UI.corewidth+UI.padding),UI.zoomedscale*(UI.coreheight*0.5+UI.padding))
+			logosurf_rt.set_pos (UI.zoomscale*UI.padding*0.5,UI.zoomscale*(UI.padding*0.4*0.5-UI.verticalshift),UI.zoomscale*(UI.corewidth+UI.padding),UI.zoomscale*(UI.coreheight*0.5+UI.padding))
 		else
-			logosurf_rt.set_pos (UI.zoomedscale*UI.padding,UI.zoomedscale*(UI.padding-UI.verticalshift),UI.zoomedscale*UI.corewidth,UI.zoomedscale*UI.corewidth*logo.shh/logo.shw)
+			logosurf_rt.set_pos (UI.zoomscale*UI.padding,UI.zoomscale*(UI.padding-UI.verticalshift),UI.zoomscale*UI.corewidth,UI.zoomscale*UI.corewidth*logo.shh/logo.shw)
 	}
 
 	local logoz = obj.add_clone (loshz)
@@ -7998,13 +7999,13 @@ for (local i = 0; i < tiles.total; i++ ) {
 	logoz.preserve_aspect_ratio = true
 
 	if (prf.LOGOSONLY){
-		logoz.set_pos (UI.zoomedscale*UI.padding,UI.zoomedscale*(UI.padding +UI.coreheight*0.25 - UI.verticalshift ),UI.zoomedscale*UI.corewidth,UI.zoomedscale*UI.coreheight*0.5)
+		logoz.set_pos (UI.zoomscale*UI.padding,UI.zoomscale*(UI.padding +UI.coreheight*0.25 - UI.verticalshift ),UI.zoomscale*UI.corewidth,UI.zoomscale*UI.coreheight*0.5)
 	}
 	else {
 		if (!prf.CROPSNAPS)
-			logoz.set_pos (UI.zoomedscale*UI.padding,UI.zoomedscale*(UI.padding*0.6-UI.verticalshift),UI.zoomedscale*UI.corewidth,UI.zoomedscale*UI.coreheight*0.5)
+			logoz.set_pos (UI.zoomscale*UI.padding,UI.zoomscale*(UI.padding*0.6-UI.verticalshift),UI.zoomscale*UI.corewidth,UI.zoomscale*UI.coreheight*0.5)
 		else
-			logoz.set_pos (UI.zoomedscale*(UI.padding+UI.corewidth*logo.margin/logo.shw),UI.zoomedscale*(UI.padding-UI.verticalshift+UI.corewidth*(15/20.0)*logo.margin/logo.shw),UI.zoomedscale*UI.corewidth*logo.w/logo.shw,UI.zoomedscale*UI.coreheight*logo.h/logo.shw)
+			logoz.set_pos (UI.zoomscale*(UI.padding+UI.corewidth*logo.margin/logo.shw),UI.zoomscale*(UI.padding-UI.verticalshift+UI.corewidth*(15/20.0)*logo.margin/logo.shw),UI.zoomscale*UI.corewidth*logo.w/logo.shw,UI.zoomscale*UI.coreheight*logo.h/logo.shw)
 	}
 
 	txt2z = obj.add_text("...",logoz.x,logoz.y,logoz.width,logoz.height)
@@ -8024,7 +8025,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 	txt2z.set_rgb (135,135,135)
 	txt2z.alpha = 255
 
-	//txshz = obj.add_text("[Title]",UI.zoomedscale*(UI.padding +height*(1.0/8.0)),UI.zoomedscale*(UI.padding+height*(1.0/8.0)),UI.zoomedscale*width*3.0/4.0,UI.zoomedscale*height*3.0/4.0)
+	//txshz = obj.add_text("[Title]",UI.zoomscale*(UI.padding +height*(1.0/8.0)),UI.zoomscale*(UI.padding+height*(1.0/8.0)),UI.zoomscale*width*3.0/4.0,UI.zoomscale*height*3.0/4.0)
 	txt1z = obj.add_text("...",logoz.x,logoz.y,logoz.width,logoz.height)
 	txt1z.char_size = logo.shcharsize*(88.0/40.0) * UI.scalerate
 	txt1z.word_wrap = true
@@ -13564,7 +13565,7 @@ function update_borderglow(i,var,aspect){
 		snap_glow[i].set_param ("glow", ARglow.x, ARglow.y, ARglow.border)
 
 	}
-	//if (prf.SNAPGLOW) tilez[i].glomx.set_pos(0,-UI.zoomedscale*UI.verticalshift)
+	//if (prf.SNAPGLOW) tilez[i].glomx.set_pos(0,-UI.zoomscale*UI.verticalshift)
 }
 
 function update_thumbdecor(i,var,aspect){
@@ -14181,7 +14182,7 @@ function resetvarsandpositions(){
 		if (prf.THUMBVIDEO) z_resetthumbvideo(i)
 
 		// cleanup position of tiles
-		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.verticalshift*1.0/UI.tilewidth)
+		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.zoomedvshift*1.0/UI.zoomedwidth)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
@@ -14499,10 +14500,10 @@ function z_listrefreshlabels(){
 			catch(err){
 				sortlabelsarray.push(null)
 				sortlabelsarray[labelarrayindex] = data_surface.add_text("",round(fl.x + x0 + labelspacer*0.5 - label.w*0.5,1), round(fl.y + fl.h - UI.footer.h * 0.5,1) , label.w,label.h)
-				sortlabelsarray[labelarrayindex].char_size = label.font
-				sortlabelsarray[labelarrayindex].font = uifonts.lite
+				sortlabelsarray[labelarrayindex].char_size = 16//TEST138 label.font
+				sortlabelsarray[labelarrayindex].font = "font_7x5PixelsPL"//TEST138 uifonts.lite
 				sortlabelsarray[labelarrayindex].margin = 0
-				sortlabelsarray[labelarrayindex].align = Align.MiddleCentre
+				sortlabelsarray[labelarrayindex].align = Align.BottomCentre //TEST138 Align.MiddleCentre
 			}
 			
 			sortlabelsarray[labelarrayindex].msg = ((z_list.orderby == Info.Category ? categorylabel (key,0) : (z_list.orderby == Info.System ? systemlabel(key) : key))).toupper()
@@ -15406,12 +15407,13 @@ function tick( tick_time ) {
 
 	foreach (i, item in tilesTableZoom){
 		if (checkfade(tilesTableZoom[i])){
+			if (i==focusindex.new) testpr(tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
 
 			// update size and glow alpha
-			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth-UI.tilewidth)*(zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth-UI.tilewidth)*(zoomtemp[1]) , 0, -UI.verticalshift*1.0/UI.tilewidth)
-			
+			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth-UI.tilewidth)*(zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth-UI.tilewidth)*(zoomtemp[1]) , 0, -(UI.zoomedvshift*1.0/UI.zoomedwidth ))
+			if (i==focusindex.new) testpr(tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 		}
 	}
 
