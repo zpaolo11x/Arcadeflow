@@ -1,2 +1,3 @@
 13.7
 Correct UI elements alignment with pixels
+Fixed issue with number of rows in menus
