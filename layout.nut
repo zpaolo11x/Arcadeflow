@@ -2149,7 +2149,7 @@ function print_variable(variablein,level,name){
 	}
 }
 
-print_variable(fl,"","fl")
+
 /*
 fl.surf2 = fe.add_surface (fl.w_os*0.2,fl.h_os*0.2)
 fl.surf2.mipmap = 1
@@ -2180,22 +2180,16 @@ UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!pr
 UI.footer.h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
 UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
 UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
+if (prf.SLIMLINE) UI.footer.h = floor(UI.footer.h * 1.4)
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2 
 
 UI.blocks = 6 * UI.rows + UI.rows + 1
+if (prf.SLIMLINE) UI.blocks = 6 * 2 + 2 + 1
 UI.blocksize = UI.space * 1.0/UI.blocks
 
 if (prf.PIXELACCURATE) UI.blocksize = 1 * round(UI.blocksize/1.0,1) //TEST138
 
-//TEST138 UNCOMMENT AND CHANGE THIS WITH SLOTS TOO
-/*
-UI.coreheight = (fl.h - UI.header.h2 - UI.footer.h2)/(UI.rows + UI.rows*UI.padding_scaler + UI.padding_scaler)
-if ((prf.SLIMLINE) ){
-	UI.coreheight = (fl.h - UI.header.h2 - UI.footer.h2)/(2.0 + 2.0*UI.padding_scaler + UI.padding_scaler)
-	UI.footer.h = 1.4*UI.footer.h
-}
-*/
 UI.coreheight = UI.corewidth = UI.blocksize * 6
 
 UI.padding = UI.blocksize
@@ -2235,7 +2229,7 @@ local carrierT = {
 	w = UI.cols * (UI.widthmix + UI.padding) + UI.padding,
 	h = UI.rows * UI.coreheight + UI.rows * UI.padding + UI.padding
 }
-print_variable(carrierT,"","carrierT")
+
 // Changed zoomedscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
 
@@ -7310,7 +7304,9 @@ overlay.fullheight = floor(overlay.fullheight)
 overlay.fullwidth = floor(overlay.fullwidth)
 overlay.fullwidth = overlay.fullwidth + overlay.fullwidth%2.0
 
-overlay.rows = floor(overlay.fullheight/overlay.rowsize)
+testpr("\n"+overlay.fullheight/overlay.rowsize+"\n")
+
+overlay.rows = ceil(overlay.fullheight/overlay.rowsize)
 if (floor(overlay.rows / 2.0)*2.0 == overlay.rows ) overlay.rows ++
 
 
@@ -7343,8 +7339,6 @@ else {
 	frostpic.w = frostpic.size * fl.w/fl.h
 	frostpic.h = frostpic.size
 }
-
-print_variable(frostpic,"","frostpic")
 
 local frost = {
 	surf_1 = null
@@ -8364,8 +8358,6 @@ if (prf.CLEANLAYOUT) {
 	gamed.subnameT.x = gamed.mainnameT.x
 	gamed.subnameT.w = gamed.mainnameT.w
 }
-
-print_variable(gamed,"","gamed")
 
 print_variable(UI,"","UI")
 
@@ -14539,12 +14531,6 @@ function z_listrefreshlabels(){
 
 		if (labelorder.len() != 0) sortticks[labelorder[0]].visible = false
 	}
-
-//TEST138
-foreach (i, item in sortlabels){
-	print (item.x+"\n")
-}
-
 }
 
 
