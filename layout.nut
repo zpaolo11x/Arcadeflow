@@ -14380,6 +14380,25 @@ function z_updatefilternumbers(idx){
 	filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
 }
 
+function pixelizefont(object, labelfont){
+	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
+	if (floor(labelfont + 0.5) == 5){
+		object.char_size = 16
+		object.font = "font_4x3pixel.ttf"
+		object.align = Align.BottomCentre
+	}
+	if (floor(labelfont + 0.5) == 6){
+		object.char_size = 16
+		object.font = "font_6x4pixel.ttf"
+		object.align = Align.BottomCentre
+	}
+	if (floor(labelfont + 0.5) == 7){
+		object.char_size = 16
+		object.font = "font_7x5PixelsPL.ttf"
+		object.align = Align.BottomCentre
+	}
+}
+
 function z_listrefreshlabels(){
 	// Clean old ticks and labels
 	filterdata.msg = (prf.CLEANLAYOUT ? "" : ( ( (fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name+ "\n")  + gamelistorder(0)))
@@ -14470,6 +14489,9 @@ function z_listrefreshlabels(){
 			sortlabelsarray[labelarrayindex].bg_alpha = 255
 			sortlabelsarray[labelarrayindex].alpha = 255
 			sortlabelsarray[labelarrayindex].visible = true
+							
+			pixelizefont (sortlabelsarray[labelarrayindex],label.font)
+
 			x00 = x00 + w0/labelorder.len()
 			sortlabels[key] <- sortlabelsarray[labelarrayindex]
 			resetkey (key)
@@ -14500,10 +14522,11 @@ function z_listrefreshlabels(){
 			catch(err){
 				sortlabelsarray.push(null)
 				sortlabelsarray[labelarrayindex] = data_surface.add_text("",round(fl.x + x0 + labelspacer*0.5 - label.w*0.5,1), round(fl.y + fl.h - UI.footer.h * 0.5,1) , label.w,label.h)
-				sortlabelsarray[labelarrayindex].char_size = 16//TEST138 label.font
-				sortlabelsarray[labelarrayindex].font = "font_5x3pixel"//TEST138 uifonts.lite
+				sortlabelsarray[labelarrayindex].char_size = label.font
+				sortlabelsarray[labelarrayindex].font = uifonts.lite
 				sortlabelsarray[labelarrayindex].margin = 0
-				sortlabelsarray[labelarrayindex].align = Align.BottomCentre //TEST138 Align.MiddleCentre
+				sortlabelsarray[labelarrayindex].align = Align.MiddleCentre
+				pixelizefont (sortlabelsarray[labelarrayindex],label.font)
 			}
 			
 			sortlabelsarray[labelarrayindex].msg = ((z_list.orderby == Info.Category ? categorylabel (key,0) : (z_list.orderby == Info.System ? systemlabel(key) : key))).toupper()
