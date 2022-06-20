@@ -2272,7 +2272,6 @@ local centercorr = {
 
 centercorr.zero = - deltacol*(UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding))) / 2 - UI.padding*(1 + UI.zoomscale*0.5) - UI.widthmix/2 + UI.zoomedwidth/2
 centercorr.zero = floor(centercorr.zero + 0.5) //TEST138 Added to align centercorr.zero to pixels
-testpr("CENTERCORRZERO 1:"+deltacol*(UI.widthmix + UI.padding)+" 2:"+(fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding)))/2+" 3:"+UI.padding*(1 + UI.zoomscale*0.5)+" 4:"+UI.widthmix/2+" 5:"+UI.zoomedwidth/2+"\n")
 
 centercorr.val = 0
 centercorr.shift = centercorr.zero
@@ -8100,11 +8099,6 @@ for (local i = 0; i < tiles.total; i++ ) {
 	})
 }
 
-testpr ("ttpos: ")
-foreach(i, item in tilesTablePos.X){
-	testpr(item+" ")
-}
-testpr("\n")
 
 impulse2.flow = 0.5
 
@@ -14257,7 +14251,6 @@ function updatetiles() {
 	//if ((z_list.index + var <= deltacol * rows - 1)){
 	if ((column.stop < deltacol)){
 		centercorr.val = centercorr.zero + floor((z_list.index + var)/UI.rows) * (UI.widthmix + UI.padding)
-		testpr("XXXXXXXXXXXXXXX "+centercorr.zero+" "+UI.widthmix+UI.padding+"\n")
 	}
 
 	if (column.offset == 0) {
@@ -14317,8 +14310,6 @@ function changetiledata(i,index,update){
 	tilez[indexTemp].obj.zorder = -2
 
 	tilesTablePos.X[indexTemp] = (i/UI.rows) * (UI.widthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix*0.5
-	testpr("carrierT:"+carrierT.x+" centercorr:"+centercorr.val+"\n")
-	testpr("indextemp:"+indexTemp+" ttposX:"+tilesTablePos.X[indexTemp]+"\n")
 	tilesTablePos.Y[indexTemp] = (i%UI.rows) * (UI.coreheight + UI.padding) + carrierT.y + UI.tileheight * 0.5
 
 	//TEST101 THIS INTERACTS WITH OFF SCREEN VISIBILITY
@@ -15053,11 +15044,6 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
-	foreach (i, item in tilez){
-		testpr (item.obj.x + " ")
-	}
-	testpr("\n")
-
 	if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
@@ -15591,7 +15577,6 @@ function tick( tick_time ) {
 
 		for (local i = 0; i < tiles.total; i++ ) {
 			tilez[i].obj.x = impulse2.tilepos - surfacePosOffset + tilesTablePos.X[i]
-			testpr(i+" IMP: "+impulse2.tilepos+" sPOFF:"+surfacePosOffset+" tTPOS:"+tilesTablePos.X[i]+"\n")
 			tilez[i].obj.y = tilesTablePos.Y[i]
 			
 			//TEST101 ADD VISIBILITY OFF SCREEN CONTROL
