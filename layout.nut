@@ -2241,7 +2241,10 @@ UI.whiteborder = 0.15
 
 if (prf.PIXELACCURATE){
 	UI.zoomedblock = round(UI.zoomscale * UI.blocksize,1)
-	//TEST138 UI.zoomedblock = UI.zoomedblock - UI.zoomedblock%2.0
+	//TEST138 
+	// this was a line used to have an even block size, but it's
+	// not needed because we can round the centercorr.zero
+	// UI.zoomedblock = UI.zoomedblock - UI.zoomedblock%2.0
 }
 else
 	UI.zoomedblock = UI.zoomscale * UI.blocksize
@@ -2268,7 +2271,7 @@ local centercorr = {
 }
 
 centercorr.zero = - deltacol*(UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding))) / 2 - UI.padding*(1 + UI.zoomscale*0.5) - UI.widthmix/2 + UI.zoomedwidth/2
-centercorr.zero = floor(centercorr.zero + 0.5) //TEST138
+centercorr.zero = floor(centercorr.zero + 0.5) //TEST138 Added to align centercorr.zero to pixels
 testpr("CENTERCORRZERO 1:"+deltacol*(UI.widthmix + UI.padding)+" 2:"+(fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding)))/2+" 3:"+UI.padding*(1 + UI.zoomscale*0.5)+" 4:"+UI.widthmix/2+" 5:"+UI.zoomedwidth/2+"\n")
 
 centercorr.val = 0
