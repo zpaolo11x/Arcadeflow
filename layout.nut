@@ -8143,12 +8143,41 @@ if (prf.DATASHADOWSMOOTH){
 	data_surface_sh_2.shader = shader_tx.h
 }
 
+
 data_surface_sh_rt.alpha = themeT.themeshadow
 
 data_surface_sh_rt.zorder = -1
 
 data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
+
+function pixelizefont(object, labelfont){
+	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
+	if (floor(labelfont + 0.5) == 5){
+		object.char_size = 16
+		object.font = "font_4x3pixel.ttf"
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
+	}
+	if (floor(labelfont + 0.5) == 6){
+		object.char_size = 16
+		object.font = "font_6x4pixel.ttf"
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
+	}
+	if (floor(labelfont + 0.5) == 7){
+		object.char_size = 16
+		object.font = "font_7x5PixelsPL.ttf"
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
+	}
+	if (floor(labelfont + 0.5) == 8){
+		object.char_size = 16
+		object.font = "font_Roboto7px.ttf"
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
+	}
+}
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filterdata.align = Align.Centre
@@ -8159,6 +8188,7 @@ filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
+pixelizefont(filterdata,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.Centre
@@ -8168,6 +8198,7 @@ filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * U
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
+pixelizefont(filternumbers,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
 
 local separatorline = data_surface.add_rectangle(fl.x+fl.w-UI.footermargin+UI.footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,UI.footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -10529,33 +10560,6 @@ gradshader.set_texture_param( "texture")
 //gradshader.set_param ("limits", 0.2 , 0.05, 0.5)
 //gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h , 40 * UI.scalerate * 5.0 / hist_textT.h)
 
-function pixelizefont(object, labelfont){
-	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
-	if (floor(labelfont + 0.5) == 5){
-		object.char_size = 16
-		object.font = "font_4x3pixel.ttf"
-		//object.align = Align.BottomCentre
-		object.line_spacing = 0.7
-	}
-	if (floor(labelfont + 0.5) == 6){
-		object.char_size = 16
-		object.font = "font_6x4pixel.ttf"
-		//object.align = Align.BottomCentre
-		object.line_spacing = 0.7
-	}
-	if (floor(labelfont + 0.5) == 7){
-		object.char_size = 16
-		object.font = "font_7x5PixelsPL.ttf"
-		//object.align = Align.BottomCentre
-		object.line_spacing = 0.7
-	}
-	if (floor(labelfont + 0.5) == 8){
-		object.char_size = 16
-		object.font = "font_Roboto7px.ttf"
-		//object.align = Align.BottomCentre
-		object.line_spacing = 0.7
-	}
-}
 
 function descrshader(enable){
 	if (!UI.vertical) {
