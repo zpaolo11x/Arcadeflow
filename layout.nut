@@ -10529,6 +10529,30 @@ gradshader.set_texture_param( "texture")
 //gradshader.set_param ("limits", 0.2 , 0.05, 0.5)
 //gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h , 40 * UI.scalerate * 5.0 / hist_textT.h)
 
+function pixelizefont(object, labelfont){
+	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
+	if (floor(labelfont + 0.5) == 5){
+		object.char_size = 16
+		object.font = "font_4x3pixel.ttf"
+		object.align = Align.BottomCentre
+	}
+	if (floor(labelfont + 0.5) == 6){
+		object.char_size = 16
+		object.font = "font_6x4pixel.ttf"
+		object.align = Align.BottomCentre
+	}
+	if (floor(labelfont + 0.5) == 7){
+		object.char_size = 16
+		object.font = "font_7x5PixelsPL.ttf"
+		object.align = Align.BottomCentre
+	}
+	if (floor(labelfont + 0.5) == 8){
+		object.char_size = 16
+		object.font = "font_Roboto7px.ttf"
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
+	}
+}
 
 function descrshader(enable){
 	if (!UI.vertical) {
@@ -10551,6 +10575,7 @@ foreach (item in hist_text){
 		item.align = Align.MiddleLeft
 		//item.set_bg_rgb(0,0,0)
 		//item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
+		pixelizefont(item, floor(hist_textT.charsize))
 	}
 }
 
@@ -14385,25 +14410,6 @@ function z_listrefreshtiles(){
 
 function z_updatefilternumbers(idx){
 	filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
-}
-
-function pixelizefont(object, labelfont){
-	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
-	if (floor(labelfont + 0.5) == 5){
-		object.char_size = 16
-		object.font = "font_4x3pixel.ttf"
-		object.align = Align.BottomCentre
-	}
-	if (floor(labelfont + 0.5) == 6){
-		object.char_size = 16
-		object.font = "font_6x4pixel.ttf"
-		object.align = Align.BottomCentre
-	}
-	if (floor(labelfont + 0.5) == 7){
-		object.char_size = 16
-		object.font = "font_7x5PixelsPL.ttf"
-		object.align = Align.BottomCentre
-	}
 }
 
 function z_listrefreshlabels(){
