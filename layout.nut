@@ -10534,17 +10534,20 @@ function pixelizefont(object, labelfont){
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
 		object.font = "font_4x3pixel.ttf"
-		object.align = Align.BottomCentre
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
 	}
 	if (floor(labelfont + 0.5) == 6){
 		object.char_size = 16
 		object.font = "font_6x4pixel.ttf"
-		object.align = Align.BottomCentre
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
 	}
 	if (floor(labelfont + 0.5) == 7){
 		object.char_size = 16
 		object.font = "font_7x5PixelsPL.ttf"
-		object.align = Align.BottomCentre
+		//object.align = Align.BottomCentre
+		object.line_spacing = 0.7
 	}
 	if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
@@ -14502,7 +14505,9 @@ function z_listrefreshlabels(){
 			sortlabelsarray[labelarrayindex].bg_alpha = 255
 			sortlabelsarray[labelarrayindex].alpha = 255
 			sortlabelsarray[labelarrayindex].visible = true
-							
+
+			testpr("X"+label.font+"\n")
+
 			pixelizefont (sortlabelsarray[labelarrayindex],label.font)
 
 			x00 = x00 + w0/labelorder.len()
