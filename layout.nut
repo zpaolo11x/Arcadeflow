@@ -8180,7 +8180,7 @@ function pixelizefont(object, labelfont){
 }
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
-filterdata.align = Align.Centre
+filterdata.align = Align.MiddleCentre
 filterdata.set_rgb( 255, 255, 255)
 filterdata.word_wrap = true
 filterdata.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel)
@@ -8196,7 +8196,7 @@ filterdata.align = Align.MiddleCentre
 filterdata.margin = 0
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
-filternumbers.align = Align.Centre
+filternumbers.align = Align.MiddleCentre
 filternumbers.set_rgb( 255, 255, 255)
 filternumbers.word_wrap = true
 filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel)
@@ -8204,6 +8204,11 @@ filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 pixelizefont(filternumbers,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
+filternumbers.font = "font_5x4pixel.ttf"
+filternumbers.line_spacing = 0.7
+filternumbers.align = Align.MiddleCentre
+filternumbers.margin = 0
+
 
 local separatorline = data_surface.add_rectangle(fl.x+fl.w-UI.footermargin+UI.footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,UI.footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -8249,7 +8254,7 @@ local labelsurf = data_surface.add_surface (fl.w,fl.h)
 labelsurf.set_pos (fl.x,fl.y)
 
 searchdata = data_surface.add_text(fe.list.search_rule, fl.x, fl.y+fl.h - UI.footer.h * 0.5, fl.w, UI.footer.h * 0.5)
-searchdata.align = Align.Centre
+searchdata.align = Align.MiddleCentre
 searchdata.set_rgb( 255, 255, 255)
 searchdata.word_wrap = true
 searchdata.char_size = 25 * UI.scalerate
@@ -9757,7 +9762,7 @@ function keyboard_draw() {
 	}
 	
 	keyboard_text = keyboard_surface.add_text(keyboard_entrytext, osd_search.x, osd_search.y, osd_search.width, osd_search.height)
-	keyboard_text.align = Align.Left
+	keyboard_text.align = Align.MiddleLeft
 	keyboard_text.font = uifonts.gui
 	keyboard_text.set_rgb( 255, 255, 255 )
 	keyboard_text.alpha = 255
@@ -10789,7 +10794,7 @@ if (prf.CONTROLOVERLAY){
 	for (local i = 0 ; i < 6 ; i++){
 		hist_over.btsh.push (hist_over.surface.add_text(i,0,0,120 * hist_over.picscale, 65 * hist_over.picscale))
 		hist_over.bt.push (hist_over.surface.add_text(i,0,0,120 * hist_over.picscale, 65 * hist_over.picscale))
-		hist_over.btsh[i].align = hist_over.bt[i].align = Align.Left
+		hist_over.btsh[i].align = hist_over.bt[i].align = Align.MiddleLeft
 		hist_over.btsh[i].char_size = hist_over.bt[i].char_size = 22*hist_over.picscale
 		hist_over.btsh[i].word_wrap = hist_over.bt[i].word_wrap = true
 		hist_over.btsh[i].margin = hist_over.bt[i].margin = 0
