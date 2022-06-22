@@ -8192,6 +8192,8 @@ pixelizefont(filterdata,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.
 testpr(filterdata.font+"\n")
 filterdata.font = "font_5x4pixel.ttf"
 filterdata.line_spacing = 0.5
+filterdata.align = Align.MiddleCentre
+filterdata.margin = 0
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.Centre
