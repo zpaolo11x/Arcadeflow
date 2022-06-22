@@ -8156,26 +8156,26 @@ function pixelizefont(object, labelfont){
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
 		object.font = "font_4x3pixel.ttf"
-		//object.align = Align.BottomCentre
 		object.line_spacing = 0.7
+		object.margin = 0
 	}
 	if (floor(labelfont + 0.5) == 6){
 		object.char_size = 16
-		object.font = "font_6x4pixel.ttf"
-		//object.align = Align.BottomCentre
+		object.font = "font_5x4pixel.ttf"
 		object.line_spacing = 0.7
+		object.margin = 0
 	}
 	if (floor(labelfont + 0.5) == 7){
 		object.char_size = 16
-		object.font = "font_7x5PixelsPL.ttf"
-		//object.align = Align.BottomCentre
+		object.font = "font_6x4pixel.ttf"
 		object.line_spacing = 0.7
+		object.margin = 0
 	}
 	if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
 		object.font = "font_Roboto7px.ttf"
-		//object.align = Align.BottomCentre
 		object.line_spacing = 0.7
+		object.margin = 0
 	}
 }
 
@@ -8188,12 +8188,15 @@ filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
+testpr("filterdata"+"\n")
 pixelizefont(filterdata,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
+/*
 testpr(filterdata.font+"\n")
 filterdata.font = "font_5x4pixel.ttf"
 filterdata.line_spacing = 0.5
 filterdata.align = Align.MiddleCentre
 filterdata.margin = 0
+*/
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.MiddleCentre
@@ -8203,12 +8206,14 @@ filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * U
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
+testpr("filternumbers"+"\n")
 pixelizefont(filternumbers,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
+/*
 filternumbers.font = "font_5x4pixel.ttf"
 filternumbers.line_spacing = 0.7
 filternumbers.align = Align.MiddleCentre
 filternumbers.margin = 0
-
+*/
 
 local separatorline = data_surface.add_rectangle(fl.x+fl.w-UI.footermargin+UI.footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,UI.footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
