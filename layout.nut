@@ -8181,6 +8181,7 @@ function pixelizefont(object, labelfont){
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filterdata.align = Align.MiddleCentre
+filterdata.margin = 0
 filterdata.set_rgb( 255, 255, 255)
 filterdata.word_wrap = true
 filterdata.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel)
@@ -8200,6 +8201,7 @@ filterdata.margin = 0
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.MiddleCentre
+filternumbers.margin = 0
 filternumbers.set_rgb( 255, 255, 255)
 filternumbers.word_wrap = true
 filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel)
@@ -10595,6 +10597,7 @@ foreach (item in hist_text){
 		item.char_size = hist_textT.charsize
 		item.visible = true
 		item.align = Align.MiddleLeft
+		item.margin = hist_textT.charsize*0.4 //TEST138 CONTROLLARE IL MARGINE PER FAR ANDARE A CAPO IL TITOLO
 		//item.set_bg_rgb(0,0,0)
 		//item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
 		pixelizefont(item, floor(hist_textT.charsize))
