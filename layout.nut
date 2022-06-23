@@ -8151,31 +8151,31 @@ data_surface_sh_rt.zorder = -1
 data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
 
-function pixelizefont(object, labelfont){
+function pixelizefont(object, labelfont, margin = 0){
 	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
 		object.font = "font_4x3pixel.ttf"
 		object.line_spacing = 0.7
-		object.margin = 0
+		object.margin = margin
 	}
 	if (floor(labelfont + 0.5) == 6){
 		object.char_size = 16
 		object.font = "font_5x4pixel.ttf"
 		object.line_spacing = 0.7
-		object.margin = 0
+		object.margin = margin
 	}
 	if (floor(labelfont + 0.5) == 7){
 		object.char_size = 16
 		object.font = "font_6x4pixel.ttf"
 		object.line_spacing = 0.7
-		object.margin = 0
+		object.margin = margin
 	}
 	if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
-		object.font = "font_Roboto7px.ttf"
+		object.font = "font_7x6pixel.ttf"
 		object.line_spacing = 0.7
-		object.margin = 0
+		object.margin = margin
 	}
 }
 
@@ -10602,7 +10602,7 @@ foreach (item in hist_text){
 		item.margin = -1//hist_textT.charsize * 0.5 //TEST138 CONTROLLARE IL MARGINE PER FAR ANDARE A CAPO IL TITOLO
 		//item.set_bg_rgb(0,0,0)
 		//item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
-		pixelizefont(item, floor(hist_textT.charsize))
+		pixelizefont(item, floor(hist_textT.charsize),0.5*floor(hist_textT.charsize))
 	}
 }
 
