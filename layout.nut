@@ -8416,6 +8416,7 @@ if (prf.CLEANLAYOUT) {
 }
 
 print_variable(UI,"","UI")
+print_variable(gamed,"","gamed")
 
 local bwtoalpha = fe.add_shader( Shader.Fragment, "glsl/bwtoalpha.glsl" )
 bwtoalpha.set_texture_param( "texture")
@@ -8432,23 +8433,29 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_catpic.shader = bwtoalpha
 	game_catpic.mipmap = 1
 	//game_catpic.fix_masked_image()
-
+//TEST138  pixel perfect cat pic
+/*
+	game_catpic.width = floor(gamed.catpicT.w/16)*16
+	game_catpic.height = floor(gamed.catpicT.w/16)*16
+	game_catpic.x = fl.x + floor(gamed.catpicT.x + 0.5 * gamed.catpicT.w) - 0.5*game_catpic.width
+	game_catpic.y = fl.y + floor(gamed.catpicT.y + 0.5 * gamed.catpicT.h) - 0.5*game_catpic.width
+*/
 	local game_butpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.butpicT.x, fl.y+gamed.butpicT.y, gamed.butpicT.w, gamed.butpicT.h)
-	game_butpic.smooth = true
+	game_butpic.smooth = (gamed.butpicT.h > 10)
 	game_butpic.preserve_aspect_ratio = true
 	game_butpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	game_butpic.shader = bwtoalpha
 	game_butpic.mipmap = 1
 	
 	local game_plypic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.plypicT.x, fl.y+gamed.plypicT.y, gamed.plypicT.w, gamed.plypicT.h)
-	game_plypic.smooth = true
+	game_plypic.smooth = (gamed.plypicT.h > 10)
 	game_plypic.preserve_aspect_ratio = true
 	game_plypic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	game_plypic.shader = bwtoalpha
 	game_plypic.mipmap = 1
 
 	local game_ctlpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.ctlpicT.x, fl.y+gamed.ctlpicT.y, gamed.ctlpicT.w, gamed.ctlpicT.h)
-	game_ctlpic.smooth = true
+	game_ctlpic.smooth = (gamed.ctlpicT.h > 10)
 	game_ctlpic.preserve_aspect_ratio = true
 	game_ctlpic.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	game_ctlpic.shader = bwtoalpha
