@@ -8434,12 +8434,15 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_catpic.mipmap = 1
 	//game_catpic.fix_masked_image()
 //TEST138  pixel perfect cat pic
-/*
-	game_catpic.width = floor(gamed.catpicT.w/16)*16
-	game_catpic.height = floor(gamed.catpicT.w/16)*16
-	game_catpic.x = fl.x + floor(gamed.catpicT.x + 0.5 * gamed.catpicT.w) - 0.5*game_catpic.width
-	game_catpic.y = fl.y + floor(gamed.catpicT.y + 0.5 * gamed.catpicT.h) - 0.5*game_catpic.width
-*/
+
+	testpr("game_catpic:"+game_catpic.width)
+	if (game_catpic.width <= 30){
+		game_catpic.width = floor(gamed.catpicT.w/16)*16
+		game_catpic.height = floor(gamed.catpicT.w/16)*16
+		game_catpic.x = fl.x + floor(gamed.catpicT.x + 0.5 * gamed.catpicT.w) - floor(0.5*game_catpic.width)
+		game_catpic.y = fl.y + floor(gamed.catpicT.y + 0.5 * gamed.catpicT.h) - floor(0.5*game_catpic.width)
+	}
+
 	local game_butpic = data_surface.add_image(AF.folder+"pics/white.png",fl.x+gamed.butpicT.x, fl.y+gamed.butpicT.y, gamed.butpicT.w, gamed.butpicT.h)
 	game_butpic.smooth = (gamed.butpicT.h > 10)
 	game_butpic.preserve_aspect_ratio = true
