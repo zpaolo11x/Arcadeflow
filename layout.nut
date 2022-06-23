@@ -10597,7 +10597,7 @@ foreach (item in hist_text){
 		item.char_size = hist_textT.charsize
 		item.visible = true
 		item.align = Align.MiddleLeft
-		item.margin = hist_textT.charsize * 0.45 //TEST138 CONTROLLARE IL MARGINE PER FAR ANDARE A CAPO IL TITOLO
+		item.margin = -1//hist_textT.charsize * 0.5 //TEST138 CONTROLLARE IL MARGINE PER FAR ANDARE A CAPO IL TITOLO
 		item.set_bg_rgb(0,0,0)
 		item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
 		pixelizefont(item, floor(hist_textT.charsize))
@@ -10606,6 +10606,7 @@ foreach (item in hist_text){
 
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
+	hist_text.title.margin = 0
 	hist_text.title.word_wrap = true
 	//hist_text.tags.align = Align.TopLeft
 	hist_text.descr.first_line_hint = 1
