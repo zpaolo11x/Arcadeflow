@@ -8173,7 +8173,7 @@ function pixelizefont(object, labelfont, margin = 0){
 	}
 	if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
-		object.font = "font_7x6pixel.ttf"
+		object.font = "font_7x6pixel_2.ttf"
 		object.line_spacing = 0.7
 		object.margin = margin
 	}
