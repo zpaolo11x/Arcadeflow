@@ -10598,8 +10598,8 @@ foreach (item in hist_text){
 		item.visible = true
 		item.align = Align.MiddleLeft
 		item.margin = -1//hist_textT.charsize * 0.5 //TEST138 CONTROLLARE IL MARGINE PER FAR ANDARE A CAPO IL TITOLO
-		item.set_bg_rgb(0,0,0)
-		item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
+		//item.set_bg_rgb(0,0,0)
+		//item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
 		pixelizefont(item, floor(hist_textT.charsize))
 	}
 }
