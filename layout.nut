@@ -8464,6 +8464,7 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_maincat.margin = 0
 	game_maincat.line_spacing = 0.8
 	//	game_maincat.set_bg_rgb (255,0,0)
+	pixelizefont(game_maincat, floor((gamed.maincatT.h - 10 * UI.scalerate)/uifonts.pixel)-1)
 
 	local game_mainname = data_surface.add_text("", fl.x + gamed.mainnameT.x, fl.y + gamed.mainnameT.y , gamed.mainnameT.w, gamed.mainnameT.h )
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
@@ -8523,7 +8524,8 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_year.margin = 0
 	game_year.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	// game_year.set_bg_rgb(200,000,100)
-	
+	pixelizefont(game_year, floor((gamed.yearT.h/uifonts.pixel)-1))
+
 	if (prf.CLEANLAYOUT){
 		game_manufacturerpic.visible = game_maincat.visible = game_year.visible = game_manufacturername.visible = game_catpic.visible = game_butpic.visible = game_ctlpic.visible = game_plypic.visible = false
 	}
