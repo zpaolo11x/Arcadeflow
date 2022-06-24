@@ -8153,7 +8153,10 @@ data_surface_sh_rt.zorder = -1
 data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
 
-function pixelizefont(object, labelfont, margin = 0,linespacing=0.7){
+function pixelizefont(object, labelfont, margin = 0,linespacing = 0.7, narrow = false){
+	if (margin == null) margin = 0
+	if (linespacing == null) linespacing = 0.7
+
 	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
@@ -8163,7 +8166,7 @@ function pixelizefont(object, labelfont, margin = 0,linespacing=0.7){
 	}
 	if (floor(labelfont + 0.5) == 6){
 		object.char_size = 16
-		object.font = "font_5x4pixel.ttf"
+		object.font = narrow ? "font_5x3pixel.ttf" : "font_5x4pixel.ttf"
 		object.line_spacing = linespacing
 		object.margin = margin
 	}
@@ -8484,7 +8487,7 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_maincat.margin = 0
 	game_maincat.line_spacing = 0.8
 	//	game_maincat.set_bg_rgb (255,0,0)
-	pixelizefont(game_maincat, floor((gamed.maincatT.h - 10 * UI.scalerate)/uifonts.pixel)-1)
+	pixelizefont(game_maincat, floor((gamed.maincatT.h - 10 * UI.scalerate)/uifonts.pixel)-1,null,null,true)
 
 	local game_mainname = data_surface.add_text("", fl.x + gamed.mainnameT.x, fl.y + gamed.mainnameT.y , gamed.mainnameT.w, gamed.mainnameT.h )
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
@@ -8544,7 +8547,7 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_year.margin = 0
 	game_year.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 	// game_year.set_bg_rgb(200,000,100)
-	pixelizefont(game_year, floor((gamed.yearT.h/uifonts.pixel)-1))
+	pixelizefont(game_year, floor((gamed.yearT.h/uifonts.pixel)-1), null, null, true)
 
 	if (prf.CLEANLAYOUT){
 		game_manufacturerpic.visible = game_maincat.visible = game_year.visible = game_manufacturername.visible = game_catpic.visible = game_butpic.visible = game_ctlpic.visible = game_plypic.visible = false
