@@ -8173,10 +8173,18 @@ function pixelizefont(object, labelfont, margin = 0){
 	}
 	if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
+		object.font = "font_7x5pixel.ttf"
+		object.line_spacing = 0.7
+		object.margin = margin
+	}
+	/*
+	if (floor(labelfont + 0.5) == 9){
+		object.char_size = 16
 		object.font = "font_7x6pixel.ttf"
 		object.line_spacing = 0.7
 		object.margin = margin
 	}
+	*/
 }
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
@@ -10804,17 +10812,17 @@ if (prf.CONTROLOVERLAY){
 		btalign = [Align.TopLeft,Align.TopLeft,Align.TopLeft,Align.TopLeft,Align.TopLeft,Align.TopLeft]
 	}
 
-	hist_over.surface = history_surface.add_surface(hist_screenT.w,hist_screenT.h*(280.0/800.0))
+	hist_over.surface = history_surface.add_surface(hist_screenT.w,floor(hist_screenT.h*(280.0/800.0)))
 
-	hist_over.surface.set_pos (hist_screenT.x,hist_screenT.y+hist_screenT.h*(520.0/800.0))
+	hist_over.surface.set_pos (hist_screenT.x,hist_screenT.y+floor(hist_screenT.h*(520.0/800.0)))
 	hist_over.overcontrol = hist_over.surface.add_image(AF.folder+"pics/transparent.png",0,0,hist_over.surface.width,hist_over.surface.height)
 	hist_over.overbuttons = hist_over.surface.add_image(AF.folder+"pics/transparent.png",0,0,hist_over.surface.width,hist_over.surface.height)
 	hist_over.overbuttons2 = hist_over.surface.add_image(AF.folder+"pics/transparent.png",0,0,hist_over.surface.width,hist_over.surface.height)
 	hist_over.overbuttons.alpha = hist_over.overcontrol.alpha = 220
 
 	for (local i = 0 ; i < 6 ; i++){
-		hist_over.btsh.push (hist_over.surface.add_text(i,0,0,120 * hist_over.picscale, 65 * hist_over.picscale))
-		hist_over.bt.push (hist_over.surface.add_text(i,0,0,120 * hist_over.picscale, 65 * hist_over.picscale))
+		hist_over.btsh.push (hist_over.surface.add_text(i,0,0,ceil(120 * hist_over.picscale), ceil(65 * hist_over.picscale)))
+		hist_over.bt.push (hist_over.surface.add_text(i,0,0,ceil(120 * hist_over.picscale), ceil(65 * hist_over.picscale)))
 		hist_over.btsh[i].align = hist_over.bt[i].align = Align.MiddleLeft
 		hist_over.btsh[i].char_size = hist_over.bt[i].char_size = 22*hist_over.picscale
 		hist_over.btsh[i].word_wrap = hist_over.bt[i].word_wrap = true
@@ -10823,6 +10831,10 @@ if (prf.CONTROLOVERLAY){
 		hist_over.btsh[i].font = hist_over.bt[i].font = uifonts.gui
 		hist_over.btsh[i].set_rgb(80,80,80)
 		hist_over.btsh[i].alpha = 80
+		testpr("BUTTONS "+22*hist_over.picscale+"\n")
+		pixelizefont(hist_over.btsh[i],22*hist_over.picscale)
+		pixelizefont(hist_over.bt[i],22*hist_over.picscale)
+
 	//	hist_over.bt[i].set_bg_rgb(200,0,0)
 	}
 }
@@ -10841,8 +10853,8 @@ function history_updateoverlay(){
 	local labeldata = hist_over.overlaybuttonsdata["0"]
 	try {labeldata = hist_over.overlaybuttonsdata[numbuttons]}catch(err){}
 	for (local i = 0 ; i < 6 ; i++){
-		hist_over.bt[i].set_pos (hist_over.picscale*labeldata.btxy[i][0],hist_over.picscale*labeldata.btxy[i][1])
-		hist_over.btsh[i].set_pos (hist_over.picscale*labeldata.btxy[i][0] + 3 * UI.scalerate,hist_over.picscale*labeldata.btxy[i][1]+5 * UI.scalerate)
+		hist_over.bt[i].set_pos (floor(hist_over.picscale*labeldata.btxy[i][0]),floor(hist_over.picscale*labeldata.btxy[i][1]))
+		hist_over.btsh[i].set_pos (floor(hist_over.picscale*labeldata.btxy[i][0] + 3 * UI.scalerate),floor(hist_over.picscale*labeldata.btxy[i][1]+5 * UI.scalerate))
 		hist_over.btsh[i].align = hist_over.bt[i].align = labeldata.btalign[i]
 		hist_over.btsh[i].msg = hist_over.bt[i].msg =""
 	}
