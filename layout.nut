@@ -7281,6 +7281,7 @@ local overlay = {
 	rows = null
 	fullwidth = null
 	fullheight = null
+	fullheight_temp = null
 
 	background = null
 	listbox = null
@@ -7312,11 +7313,12 @@ overlay.fullheight = floor(overlay.fullheight)
 overlay.fullwidth = floor(overlay.fullwidth)
 overlay.fullwidth = overlay.fullwidth + overlay.fullwidth%2.0
 
-testpr("\n"+overlay.fullheight/overlay.rowsize+"\n")
-
 overlay.rows = ceil(overlay.fullheight/overlay.rowsize)
 if (floor(overlay.rows / 2.0)*2.0 == overlay.rows ) overlay.rows ++
 
+overlay.fullheight_temp = overlay.fullheight
+overlay.fullheight = overlay.rows * floor(overlay.fullheight * 1.0/overlay.rows)
+overlay.labelsize = overlay.labelsize + overlay.fullheight_temp - overlay.fullheight
 
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth) 
 overlay.y = fl.y + UI.header.h - overlay.ex_top
@@ -8151,30 +8153,30 @@ data_surface_sh_rt.zorder = -1
 data_surface_sh_rt.set_pos( 4 * UI.scalerate,7 * UI.scalerate,data_surface.width,data_surface.height)
 
 
-function pixelizefont(object, labelfont, margin = 0){
+function pixelizefont(object, labelfont, margin = 0,linespacing=0.7){
 	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
 		object.font = "font_4x3pixel.ttf"
-		object.line_spacing = 0.7
+		object.line_spacing = linespacing
 		object.margin = margin
 	}
 	if (floor(labelfont + 0.5) == 6){
 		object.char_size = 16
 		object.font = "font_5x4pixel.ttf"
-		object.line_spacing = 0.7
+		object.line_spacing = linespacing
 		object.margin = margin
 	}
 	if (floor(labelfont + 0.5) == 7){
 		object.char_size = 16
 		object.font = "font_6x4pixel.ttf"
-		object.line_spacing = 0.7
+		object.line_spacing = linespacing
 		object.margin = margin
 	}
 	if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
 		object.font = "font_7x5pixel.ttf"
-		object.line_spacing = 0.7
+		object.line_spacing = linespacing
 		object.margin = margin
 	}
 	/*
@@ -10832,8 +10834,8 @@ if (prf.CONTROLOVERLAY){
 		hist_over.btsh[i].set_rgb(80,80,80)
 		hist_over.btsh[i].alpha = 80
 		testpr("BUTTONS "+22*hist_over.picscale+"\n")
-		pixelizefont(hist_over.btsh[i],22*hist_over.picscale)
-		pixelizefont(hist_over.bt[i],22*hist_over.picscale)
+		pixelizefont(hist_over.btsh[i],22*hist_over.picscale,0,0.5)
+		pixelizefont(hist_over.bt[i],22*hist_over.picscale,0,0.5)
 
 	//	hist_over.bt[i].set_bg_rgb(200,0,0)
 	}
@@ -11629,7 +11631,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.glyphh = zmenu.tileh = (overlay.fullheight/overlay.rows)
 		zmenu.height = overlay.fullheight
 	}
-
+print_variable(zmenu,"","zmenu")
 	zmenu.showing = true
 
 	if (glypharray == null) {
@@ -11723,7 +11725,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].set_rgb(255,255,255)
 		//obj_item.set_bg_rgb(100,0,0)
-
+		testpr("zm:"+i+" "+zmenu.items[i].x+" "+zmenu.items[i].y+"\n")
 
 		if ((zmenu.mfm) && (zmenu.noteitems[i].msg == "(0)")) {
 			zmenu.items[i].set_rgb	(81,81,81)
@@ -11739,7 +11741,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.items[i].align = Align.MiddleCentre
 			zmenu.items[i].set_bg_rgb (0,0,0)
 			zmenu.items[i].bg_alpha = 255
-			zmenu.items[i].x = (shrink ? zmenu.tilew - disp.width : zmenu.tilew)*0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad
+			zmenu.items[i].x = floor((shrink ? zmenu.tilew - disp.width : zmenu.tilew)*0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
 			zmenu.items[i].width = zmenu.items[i].msg_width + 2 *zmenu.pad
 			zmenu.strikelines[i].visible = true
 		}
