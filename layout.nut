@@ -10668,6 +10668,8 @@ if (hist_text.title != null) {
 	hist_text.title.word_wrap = true
 	//hist_text.tags.align = Align.TopLeft
 	hist_text.descr.first_line_hint = 1
+	hist_text.title.x = hist_text.title.x + 1 //Add fake 1 pixel margin to title
+	hist_text.title.width = hist_text.title.width -2
 }
 
 function hist_text_rgb(r,g,b){
@@ -10850,9 +10852,9 @@ if (prf.CONTROLOVERLAY){
 		btalign = [Align.TopLeft,Align.TopLeft,Align.TopLeft,Align.TopLeft,Align.TopLeft,Align.TopLeft]
 	}
 
-	hist_over.surface = history_surface.add_surface(hist_screenT.w,floor(hist_screenT.h*(280.0/800.0)))
+	hist_over.surface = history_surface.add_surface(hist_screenT.w, floor(hist_screenT.h*(280.0/800.0)))
 
-	hist_over.surface.set_pos (hist_screenT.x,hist_screenT.y+floor(hist_screenT.h*(520.0/800.0)))
+	hist_over.surface.set_pos (hist_screenT.x, hist_screenT.y+floor(hist_screenT.h*(520.0/800.0)))
 	hist_over.overcontrol = hist_over.surface.add_image(AF.folder+"pics/transparent.png",0,0,hist_over.surface.width,hist_over.surface.height)
 	hist_over.overbuttons = hist_over.surface.add_image(AF.folder+"pics/transparent.png",0,0,hist_over.surface.width,hist_over.surface.height)
 	hist_over.overbuttons2 = hist_over.surface.add_image(AF.folder+"pics/transparent.png",0,0,hist_over.surface.width,hist_over.surface.height)
