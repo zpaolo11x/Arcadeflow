@@ -7276,12 +7276,12 @@ fl.surf = fe.add_surface(fl.w_os,fl.h_os)
 local overlay = {
 	charsize = null
 	rowsize = null
-	labelsize = null
+	labelheight = null
 	labelcharsize = null
 	rows = null
 	fullwidth = null
-	fullheight = null
-	fullheight_temp = null
+	menuheight = null
+	menuheight_temp = null
 
 	background = null
 	listbox = null
@@ -7300,30 +7300,40 @@ local overlay = {
 	h = 0
 }
 
+// Define overlay charsize in integer multiple of 2
 overlay.charsize = (prf.LOWRES ? floor( 65 * UI.scalerate ) : floor( 50 * UI.scalerate ))
 overlay.charsize = overlay.charsize + overlay.charsize%2.0
+
+// First calculation of row size in integer value based on char size
 overlay.rowsize = (prf.LOWRES ? (overlay.charsize*2.5) : (overlay.charsize*3.0))
-overlay.labelsize = overlay.rowsize * 1
+overlay.rowsize = floor(overlay.rowsize)
+overlay.labelheight = overlay.rowsize * 1
 overlay.labelcharsize = overlay.charsize * 1
 
-overlay.fullheight = fl.h - UI.header.h - UI.footer.h - overlay.labelsize + overlay.ex_top + overlay.ex_bottom
-overlay.fullwidth = ((overlay.fullheight + overlay.labelsize)*3.0/2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.fullheight + overlay.labelsize)*3.0/2.0 : (fl.w - 2 * overlay.in_side))
+// First calculation of menuheight (the space for menu entries) and fullwidth
+overlay.menuheight = fl.h - UI.header.h - UI.footer.h - overlay.labelheight + overlay.ex_top + overlay.ex_bottom
+overlay.fullwidth = ((overlay.menuheight + overlay.labelheight)*3.0/2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.menuheight + overlay.labelheight)*3.0/2.0 : (fl.w - 2 * overlay.in_side))
 
-overlay.fullheight = floor(overlay.fullheight)
+// Integer conversion and fullwidth is even
+overlay.menuheight = floor(overlay.menuheight)
 overlay.fullwidth = floor(overlay.fullwidth)
 overlay.fullwidth = overlay.fullwidth + overlay.fullwidth%2.0
 
-overlay.rows = ceil(overlay.fullheight/overlay.rowsize)
+// Calculation of number of rows, always odd
+overlay.rows = ceil(overlay.menuheight/overlay.rowsize)
 if (floor(overlay.rows / 2.0)*2.0 == overlay.rows ) overlay.rows ++
 
-overlay.fullheight_temp = overlay.fullheight
-overlay.fullheight = overlay.rows * floor(overlay.fullheight * 1.0/overlay.rows)
-overlay.labelsize = overlay.labelsize + overlay.fullheight_temp - overlay.fullheight
+// Recalculation of menuheight based on integer row size and rearrangement of label size
+// Maybe this is overcomplicated, better to simplify the part before?
+overlay.menuheight_temp = overlay.menuheight
+overlay.menuheight = overlay.rows * floor(overlay.menuheight * 1.0/overlay.rows)
+overlay.labelheight = overlay.labelheight + overlay.menuheight_temp - overlay.menuheight
+overlay.rowsize = overlay.menuheight * 1.0 / overlay.rows
 
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth) 
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
-overlay.h = overlay.fullheight + overlay.labelsize
+overlay.h = overlay.menuheight + overlay.labelheight
 
 print_variable(overlay,"","overlay")
 
@@ -8157,39 +8167,43 @@ function pixelizefont(object, labelfont, margin = 0,linespacing = 0.7, narrow = 
 	if (margin == null) margin = 0
 	if (linespacing == null) linespacing = 0.7
 
-	testpr("SIZECHECK:"+floor(labelfont + 0.5)+"\n")
+	testpr("SIZECHECK:"+floor(labelfont + 0.5))
+
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
 		object.font = "font_4x3pixel.ttf"
 		object.line_spacing = linespacing
 		object.margin = margin
 	}
-	if (floor(labelfont + 0.5) == 6){
+	else if (floor(labelfont + 0.5) == 6){
 		object.char_size = 16
 		object.font = narrow ? "font_5x3pixel.ttf" : "font_5x4pixel.ttf"
 		object.line_spacing = linespacing
 		object.margin = margin
 	}
-	if (floor(labelfont + 0.5) == 7){
+	else if (floor(labelfont + 0.5) == 7){
 		object.char_size = 16
 		object.font = "font_6x4pixel.ttf"
 		object.line_spacing = linespacing
 		object.margin = margin
 	}
-	if (floor(labelfont + 0.5) == 8){
+	else if (floor(labelfont + 0.5) == 8){
 		object.char_size = 16
 		object.font = "font_7x5pixel.ttf"
 		object.line_spacing = linespacing
 		object.margin = margin
 	}
-	/*
-	if (floor(labelfont + 0.5) == 9){
+	else if (floor(labelfont + 0.5) == 9){
 		object.char_size = 16
-		object.font = "font_7x6pixel.ttf"
+		object.font = "font_7x6pixel_2.ttf"
 		object.line_spacing = 0.7
 		object.margin = margin
 	}
-	*/
+	else {
+		testpr (" NO PIXELFONT\n")
+		return
+	}
+	testpr(" DONE\n")
 }
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
@@ -8622,7 +8636,7 @@ overlay.background.set_rgb(themeT.listboxbg,themeT.listboxbg,themeT.listboxbg)
 //overlay.background.set_bg_rgb(255,0,0)
 overlay.background.alpha = themeT.listboxalpha
 
-overlay.listbox = fe.add_listbox( overlay.x, overlay.y + overlay.labelsize, overlay.w , overlay.fullheight )
+overlay.listbox = fe.add_listbox( overlay.x, overlay.y + overlay.labelheight, overlay.w , overlay.menuheight )
 overlay.listbox.rows = overlay.rows
 overlay.listbox.char_size = overlay.charsize
 overlay.listbox.bg_alpha = 0
@@ -8635,7 +8649,7 @@ overlay.listbox.font = uifonts.gui
 overlay.listbox.align = Align.MiddleCentre
 overlay.listbox.sel_alpha = 255
 
-overlay.label = fe.add_text("LABEL", overlay.x, overlay.y, overlay.w, overlay.labelsize )
+overlay.label = fe.add_text("LABEL", overlay.x, overlay.y, overlay.w, overlay.labelheight )
 overlay.label.char_size = overlay.labelcharsize
 overlay.label.set_rgb(themeT.listboxselbg.r,themeT.listboxselbg.g,themeT.listboxselbg.b)
 overlay.label.align = Align.MiddleCentre
@@ -8643,7 +8657,7 @@ overlay.label.font = uifonts.gui
 overlay.label.set_bg_rgb(0,200,0)
 overlay.label.bg_alpha = 0
 
-overlay.sidelabel = fe.add_text("", overlay.x, overlay.y, overlay.w, overlay.labelsize )
+overlay.sidelabel = fe.add_text("", overlay.x, overlay.y, overlay.w, overlay.labelheight )
 overlay.sidelabel.char_size = overlay.labelcharsize*0.6
 overlay.sidelabel.set_rgb(themeT.listboxselbg.r,themeT.listboxselbg.g,themeT.listboxselbg.b)
 overlay.sidelabel.align = Align.MiddleRight
@@ -8652,7 +8666,7 @@ overlay.sidelabel.set_bg_rgb(0,200,0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 
-overlay.glyph = fe.add_text("", overlay.x + UI.padding, overlay.y, overlay.labelsize*0.98, overlay.labelsize*0.98 )
+overlay.glyph = fe.add_text("", overlay.x + UI.padding, overlay.y, overlay.labelheight*0.98, overlay.labelheight*0.98 )
 overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize*1.25
@@ -8662,7 +8676,7 @@ overlay.glyph.bg_alpha = 0
 overlay.glyph.set_rgb(themeT.listboxselbg.r,themeT.listboxselbg.g,themeT.listboxselbg.b)
 overlay.glyph.word_wrap = true
 
-overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelsize-2,overlay.w,2)
+overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelheight-2,overlay.w,2)
 
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-UI.footer.h+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
@@ -8830,32 +8844,41 @@ local prfmenu = {
 	browserfile = ""
 	browserdir = []
 	//	picratew = overlay.fullwidth * 0.3
-	picrateh = overlay.fullheight * 0.4
-	//	picratew = 1.25 * overlay.fullheight * 0.4
+	picrateh = overlay.menuheight * 0.4
+	//	picratew = 1.25 * overlay.menuheight * 0.4
 	picratew = overlay.fullwidth * 0.3
 
 }
 
-prfmenu.picratew = prfmenu.picrateh = (overlay.fullheight * 1.0 / overlay.rows) * 2.0 - UI.padding * 0.5
+// First calculation of bottom panel
+prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - UI.padding * 0.5
+testpr("                   "+"picrtew0 "+prfmenu.picratew+"\n")
+testpr("                   "+"picrtew1 "+(prfmenu.picratew + UI.padding*0.5)+"\n")
+prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew)*1.0/overlay.rows))
+testpr("                   "+"picrtew2 "+prfmenu.picratew+"\n")
+prfmenu.picrateh = prfmenu.picratew
 
 //prfmenu.description.set_bg_rgb(100,0,0)
 prfmenu.description.char_size = 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
+prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
 prfmenu.description.margin = 0
 prfmenu.description.set_rgb (themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //overlay.listbox.set_bg_rgb(80,0,0)
 //overlay.listbox.bg_alpha = 128
+testpr("DESCRIPTION\n")
+pixelizefont(prfmenu.description,48 * UI.scalerate-1)
 
 prfmenu.helppic.preserve_aspect_ratio = true
 
 prfmenu.bg.set_rgb (themeT.optionspanelrgb,themeT.optionspanelrgb,themeT.optionspanelrgb)
 prfmenu.bg.alpha = themeT.optionspanelalpha
 
-prfmenu.bg.set_pos(overlay.x,overlay.y + overlay.labelsize + overlay.fullheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
+prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew , prfmenu.picrateh)
 prfmenu.description.set_pos (prfmenu.bg.x + UI.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*UI.padding , prfmenu.picrateh)
-
+testpr("\n\nprfmenu:"+prfmenu.bg.x+" "+prfmenu.bg.y+"\n\n")
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
 function buildselectarray(options,selection){
@@ -9817,6 +9840,9 @@ function keyboard_draw() {
 		textkey.set_bg_rgb (60,60,60)
 		textkey.bg_alpha = 128
 		textkey.align = Align.MiddleCentre
+		
+		testpr("textkey ")
+		pixelizefont(textkey,(80*0+75) * UI.scalerate)
 
 		kb.keys[ key ] <- textkey
 		
@@ -9829,25 +9855,32 @@ function keyboard_draw() {
 	{
 		local col_count = 0
 		local osd = {
-			x = ( keyboard_surface.width * 0.1 ) * 1.0,
-			y = ( keyboard_surface.height * 0.4 ) * 1.0,
+			x = floor( keyboard_surface.width * 0.1 ) * 1.0,
+			y = floor( keyboard_surface.height * 0.4 ) * 1.0,
 			width = ( keyboard_surface.width * 0.8 ) * 1.0,
 			height = ( keyboard_surface.height * 0.5 ) * 1.0
 		}
+		osd.width = keyboard_surface.width - 2 * osd.x
 
-		local key_width = ( osd.width / row.len() ) * 1.0
-		local key_height = ( osd.height / key_rows.len() ) * 1.0
+		local key_width = floor( (osd.width / row.len() ) * 1.0)
+		local key_height = floor( (osd.height / key_rows.len() ) * 1.0)
+
+		testpr ("key_size:"+key_width+"x"+key_height+" osd_pos:"+osd.x+"x"+osd.y+"\n")
+		testpr("ROWLEN"+row.len()+"\n")
 		foreach (idchar, char in row )
 		{
 			local current_key_width = key_width * key_sizes[idrow][idchar]
 			if ((char.tochar() != "{") && (char.tochar() != "}")) {
 				local key_image = kb.keys[char.tochar()]
 				local pos = {
-					x = osd.x + ( key_width * col_count )+2,
-					y = osd.y + key_height * row_count+2,
-					w = current_key_width-4,
-					h = key_height-4
+					x = osd.x + ( key_width * col_count ) + 2,
+					y = osd.y + key_height * row_count + 2,
+					w = current_key_width - 4,
+					h = key_height - 4
 				}
+				
+				pos.x = pos.x + (osd.width - key_width * row.len() )*0.5
+
 				key_image.set_pos( pos.x, pos.y, pos.w, pos.h )
 			}
 			col_count = col_count + key_sizes[idrow][idchar]
@@ -11326,7 +11359,7 @@ function history_changegame(direction){
 
 local disp0 = {
 	w = overlay.fullwidth
-	h = overlay.fullheight
+	h = overlay.menuheight
 }
 
 // DISPLAY ARTWORKS (FOR DISPLAYS MENU)
@@ -11345,10 +11378,10 @@ local disp = {
 	speed = null
 	pad = UI.padding
 	width = null
-	height = overlay.fullheight
+	height = overlay.menuheight
 	spacing = null
 	x = null
-	y = overlay.y + overlay.labelsize
+	y = overlay.y + overlay.labelheight
 	starter = false
 	shown = 0
 
@@ -11414,7 +11447,7 @@ function update_allgames_collections(verbose){
 zmenu = {
 	items = []
 	tilew = overlay.w 
-	tileh = floor(overlay.fullheight/overlay.rows)
+	tileh = floor(overlay.menuheight/overlay.rows)
 	pos0 = []
 
 	xstart = 0
@@ -11423,16 +11456,16 @@ zmenu = {
 	pad = floor(UI.padding * 0.5)
 	width = overlay.w
 	fullwidth = overlay.w
-	height = overlay.fullheight
+	height = overlay.menuheight
 	x = overlay.x
-	y = overlay.y + overlay.labelsize
+	y = overlay.y + overlay.labelheight
 	shown = 0 // Number of entry in the list
 	selected = 0 // Index of the selected entry
 	glyphs = []
 	notes = []
 	noteitems = []
-	glyphw = floor(overlay.fullheight/overlay.rows)
-	glyphh = floor(overlay.fullheight/overlay.rows)
+	glyphw = floor(overlay.menuheight/overlay.rows)
+	glyphh = floor(overlay.menuheight/overlay.rows)
 	midoffset = 0
 	virtualheight = 0
 	blanker = null
@@ -11618,7 +11651,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	zmenu.reactright = right
 	overlay.label.msg = title
 	overlay.glyph.msg = gly(titleglyph)
-	overlay.glyph.x = fl.x + fl.w * 0.5 - overlay.label.msg_width * 0.5 - overlay.labelsize
+	overlay.glyph.x = fl.x + fl.w * 0.5 - overlay.label.msg_width * 0.5 - overlay.labelheight
 
 	overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = true
 
@@ -11631,8 +11664,8 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.height = prfmenu.bg.y - zmenu.y
 	}
 	else {
-		zmenu.glyphh = zmenu.tileh = (overlay.fullheight/overlay.rows)
-		zmenu.height = overlay.fullheight
+		zmenu.glyphh = zmenu.tileh = (overlay.menuheight/overlay.rows)
+		zmenu.height = overlay.menuheight
 	}
 print_variable(zmenu,"","zmenu")
 	zmenu.showing = true
