@@ -8665,6 +8665,7 @@ overlay.sidelabel.font = uifonts.lite
 overlay.sidelabel.set_bg_rgb(0,200,0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
+pixelizefont (overlay.sidelabel, overlay.labelcharsize*0.6,2)
 
 overlay.glyph = fe.add_text("", overlay.x + UI.padding, overlay.y, overlay.labelheight*0.98, overlay.labelheight*0.98 )
 overlay.glyph.font = uifonts.glyphs
