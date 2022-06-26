@@ -11602,6 +11602,7 @@ zmenu.sidelabel.font = uifonts.lite
 zmenu.sidelabel.set_bg_rgb(0,200,0)
 zmenu.sidelabel.bg_alpha = 0
 zmenu.sidelabel.word_wrap = true
+pixelizefont (zmenu.sidelabel,overlay.labelcharsize*0.8,2)
 
 zmenu.blanker = zmenu_surface.add_rectangle(0,0,1,1)
 zmenu.blanker.set_rgb(0,0,0)
@@ -11609,7 +11610,10 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrink,dmpart,center,midscroll,singleline,response,left = null,right = null){
-
+if (sidearray != null) {
+	testpr ("SIDEARRAY\n")
+	foreach(i,item in sidearray)testpr(i+" "+item+"\n")
+} else testpr ("SIDEARRAY NULL\n")
 	zmenu.singleline = singleline
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
@@ -11786,7 +11790,7 @@ print_variable(zmenu,"","zmenu")
 		}
 
 		// Check if there's space for item _and_ notes
-		if (!center){
+		if (!center){//TEST138 check integer qui
 			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > (zmenu.tilew - zmenu.items[i].x)) {
 				zmenu.items[i].width = zmenu.items[i].width * 0.5
 				zmenu.noteitems[i].x = zmenu.items[i].x + zmenu.items[i].width
