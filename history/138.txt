@@ -1,3 +1,5 @@
 13.8
+Added support for pixel perfect fonts
 Correct UI elements alignment with pixels
 Fixed issue with number of rows in menus
+Fixed issue when converting romlist to db

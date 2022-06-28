@@ -1,4 +1,4 @@
-// Arcadeflow - v 13.7
+// Arcadeflow - v 13.8
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -74,7 +74,7 @@ function returngly(){
 // General AF data table
 local AF = {
 	uniglyphs = returngly()
-	version = "13.7"
+	version = "13.8"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -2188,7 +2188,7 @@ UI.blocks = 6 * UI.rows + UI.rows + 1
 if (prf.SLIMLINE) UI.blocks = 6 * 2 + 2 + 1
 UI.blocksize = UI.space * 1.0/UI.blocks
 
-if (prf.PIXELACCURATE) UI.blocksize = 1 * round(UI.blocksize/1.0,1) //TEST138
+if (prf.PIXELACCURATE) UI.blocksize = 1 * round(UI.blocksize/1.0,1)
 
 UI.coreheight = UI.corewidth = UI.blocksize * 6
 
@@ -2271,7 +2271,7 @@ local centercorr = {
 }
 
 centercorr.zero = - deltacol*(UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2*(UI.widthmix + UI.padding))) / 2 - UI.padding*(1 + UI.zoomscale*0.5) - UI.widthmix/2 + UI.zoomedwidth/2
-centercorr.zero = floor(centercorr.zero + 0.5) //TEST138 Added to align centercorr.zero to pixels
+centercorr.zero = floor(centercorr.zero + 0.5) // Added to align centercorr.zero to pixels
 
 centercorr.val = 0
 centercorr.shift = centercorr.zero
@@ -4078,8 +4078,8 @@ function refreshromlist(romlist, fulllist){
 			z_list.db1[romlist][gamename].z_players = listfields[7]
 			z_list.db1[romlist][gamename].z_rotation = listfields[8]
 			z_list.db1[romlist][gamename].z_control = listfields[9]
-			z_list.db1[romlist][gamename].z_buttons = listfields[16]
-			try{z_list.db1[romlist][gamename].z_series = listfields[17]}catch(err){}
+			z_list.db1[romlist][gamename].z_buttons = subst_replace(listfields[16],ap,"'")
+			try{z_list.db1[romlist][gamename].z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
 			try{z_list.db1[romlist][gamename].z_region = listfields[19]}catch(err){}
 			//if (z_list.db1[romlist][gamename].z_region == "") z_list.db1[romlist][gamename].z_region = regionsfromfile(gamename)
 
@@ -4172,8 +4172,8 @@ function portromlist(romlist){
 		cleanromlist[listfields[0]].z_players = listfields[7]
 		cleanromlist[listfields[0]].z_rotation = listfields[8]
 		cleanromlist[listfields[0]].z_control = listfields[9]
-		cleanromlist[listfields[0]].z_buttons = listfields[16]
-		try{cleanromlist[listfields[0]].z_series = listfields[17]}catch(err){}
+		cleanromlist[listfields[0]].z_buttons = subst_replace(listfields[16],ap,"'")
+		try{cleanromlist[listfields[0]].z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
 		try{cleanromlist[listfields[0]].z_region = listfields[19]}catch(err){}
 		try{cleanromlist[listfields[0]].z_rating = listfields[20]}catch(err){}
 
@@ -6864,14 +6864,6 @@ function wrap( i, N ) {
 	return i
 }
 
-// scale a picture with origin at the center
-function picscale (obj,scale){
-	obj.width = obj.width * scale
-	obj.height = obj.height * scale
-	obj.origin_x = obj.width * 0.5
-	obj.origin_y = obj.height * 0.5
-}
-
 // resize a picture with origin at the center
 function picsize (obj,sizex,sizey,offx,offy){
 	obj.origin_x = obj.width * 0.5 + offx * obj.width
@@ -7334,8 +7326,6 @@ overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
-
-print_variable(overlay,"","overlay")
 
 /// Frosted glass surface ///
 
@@ -8167,8 +8157,6 @@ function pixelizefont(object, labelfont, margin = 0,linespacing = 0.7, narrow = 
 	if (margin == null) margin = 0
 	if (linespacing == null) linespacing = 0.7
 
-	testpr("SIZECHECK:"+floor(labelfont + 0.5))
-
 	if (floor(labelfont + 0.5) == 5){
 		object.char_size = 16
 		object.font = "font_4x3pixel.ttf"
@@ -8200,10 +8188,8 @@ function pixelizefont(object, labelfont, margin = 0,linespacing = 0.7, narrow = 
 		object.margin = margin
 	}
 	else {
-		testpr (" NO PIXELFONT\n")
 		return
 	}
-	testpr(" DONE\n")
 }
 
 local filterdata = data_surface.add_text("footer",fl.x,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
@@ -8216,7 +8202,6 @@ filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
-testpr("filterdata"+"\n")
 pixelizefont(filterdata,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
 /*
 testpr(filterdata.font+"\n")
@@ -8235,7 +8220,6 @@ filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * U
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
-testpr("filternumbers"+"\n")
 pixelizefont(filternumbers,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
 /*
 filternumbers.font = "font_5x4pixel.ttf"
@@ -8442,9 +8426,6 @@ if (prf.CLEANLAYOUT) {
 	gamed.subnameT.w = gamed.mainnameT.w
 }
 
-print_variable(UI,"","UI")
-print_variable(gamed,"","gamed")
-
 local bwtoalpha = fe.add_shader( Shader.Fragment, "glsl/bwtoalpha.glsl" )
 bwtoalpha.set_texture_param( "texture")
 
@@ -8460,9 +8441,8 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_catpic.shader = bwtoalpha
 	game_catpic.mipmap = 1
 	//game_catpic.fix_masked_image()
-//TEST138  pixel perfect cat pic
-
-	testpr("game_catpic:"+game_catpic.width)
+   
+	// pixel perfect cat pic
 	if (game_catpic.width <= 30){
 		game_catpic.width = floor(gamed.catpicT.w/16)*16
 		game_catpic.height = floor(gamed.catpicT.w/16)*16
@@ -8853,10 +8833,7 @@ local prfmenu = {
 
 // First calculation of bottom panel
 prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - UI.padding * 0.5
-testpr("                   "+"picrtew0 "+prfmenu.picratew+"\n")
-testpr("                   "+"picrtew1 "+(prfmenu.picratew + UI.padding*0.5)+"\n")
 prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew)*1.0/overlay.rows))
-testpr("                   "+"picrtew2 "+prfmenu.picratew+"\n")
 prfmenu.picrateh = prfmenu.picratew
 
 //prfmenu.description.set_bg_rgb(100,0,0)
@@ -8868,7 +8845,6 @@ prfmenu.description.margin = 0
 prfmenu.description.set_rgb (themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //overlay.listbox.set_bg_rgb(80,0,0)
 //overlay.listbox.bg_alpha = 128
-testpr("DESCRIPTION\n")
 pixelizefont(prfmenu.description,48 * UI.scalerate-1)
 
 prfmenu.helppic.preserve_aspect_ratio = true
@@ -8879,7 +8855,6 @@ prfmenu.bg.alpha = themeT.optionspanelalpha
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew , prfmenu.picrateh)
 prfmenu.description.set_pos (prfmenu.bg.x + UI.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*UI.padding , prfmenu.picrateh)
-testpr("\n\nprfmenu:"+prfmenu.bg.x+" "+prfmenu.bg.y+"\n\n")
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
 function buildselectarray(options,selection){
@@ -9842,7 +9817,6 @@ function keyboard_draw() {
 		textkey.bg_alpha = 128
 		textkey.align = Align.MiddleCentre
 		
-		testpr("textkey ")
 		pixelizefont(textkey,(80*0+75) * UI.scalerate)
 
 		kb.keys[ key ] <- textkey
@@ -9866,8 +9840,6 @@ function keyboard_draw() {
 		local key_width = floor( (osd.width / row.len() ) * 1.0)
 		local key_height = floor( (osd.height / key_rows.len() ) * 1.0)
 
-		testpr ("key_size:"+key_width+"x"+key_height+" osd_pos:"+osd.x+"x"+osd.y+"\n")
-		testpr("ROWLEN"+row.len()+"\n")
 		foreach (idchar, char in row )
 		{
 			local current_key_width = key_width * key_sizes[idrow][idchar]
@@ -10656,7 +10628,7 @@ foreach (item in hist_text){
 		item.char_size = hist_textT.charsize
 		item.visible = true
 		item.align = Align.MiddleLeft
-		item.margin = -1//hist_textT.charsize * 0.5 //TEST138 CONTROLLARE IL MARGINE PER FAR ANDARE A CAPO IL TITOLO
+		item.margin = -1
 		//item.set_bg_rgb(0,0,0)
 		//item.bg_alpha = 250.0*(item.y/hist_textT.linesize)/10.0
 		pixelizefont(item, floor(hist_textT.charsize),0.5*floor(hist_textT.charsize))
@@ -10872,7 +10844,6 @@ if (prf.CONTROLOVERLAY){
 		hist_over.btsh[i].font = hist_over.bt[i].font = uifonts.gui
 		hist_over.btsh[i].set_rgb(80,80,80)
 		hist_over.btsh[i].alpha = 80
-		testpr("BUTTONS "+22*hist_over.picscale+"\n")
 		pixelizefont(hist_over.btsh[i],22*hist_over.picscale,0,0.5)
 		pixelizefont(hist_over.bt[i],22*hist_over.picscale,0,0.5)
 
@@ -11610,10 +11581,6 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrink,dmpart,center,midscroll,singleline,response,left = null,right = null){
-if (sidearray != null) {
-	testpr ("SIDEARRAY\n")
-	foreach(i,item in sidearray)testpr(i+" "+item+"\n")
-} else testpr ("SIDEARRAY NULL\n")
 	zmenu.singleline = singleline
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
@@ -11674,7 +11641,7 @@ if (sidearray != null) {
 		zmenu.glyphh = zmenu.tileh = (overlay.menuheight/overlay.rows)
 		zmenu.height = overlay.menuheight
 	}
-print_variable(zmenu,"","zmenu")
+
 	zmenu.showing = true
 
 	if (glypharray == null) {
@@ -11768,7 +11735,6 @@ print_variable(zmenu,"","zmenu")
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].set_rgb(255,255,255)
 		//obj_item.set_bg_rgb(100,0,0)
-		testpr("zm:"+i+" "+zmenu.items[i].x+" "+zmenu.items[i].y+"\n")
 
 		if ((zmenu.mfm) && (zmenu.noteitems[i].msg == "(0)")) {
 			zmenu.items[i].set_rgb	(81,81,81)
@@ -11790,7 +11756,7 @@ print_variable(zmenu,"","zmenu")
 		}
 
 		// Check if there's space for item _and_ notes
-		if (!center){//TEST138 check integer qui
+		if (!center){
 			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > (zmenu.tilew - zmenu.items[i].x)) {
 				zmenu.items[i].width = zmenu.items[i].width * 0.5
 				zmenu.noteitems[i].x = zmenu.items[i].x + zmenu.items[i].width
@@ -13599,7 +13565,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 	local ARdata = ARprocess(cropaspect)
 
 	tilez[i].snapz.set_pos(0.5*(UI.zoomedwidth - integereven(UI.zoomedwidth * ARdata.w)), 0.5*(UI.zoomedheight - integereven(UI.zoomedheight * ARdata.h)) - UI.zoomedvshift, integereven(UI.zoomedwidth * ARdata.w), integereven(UI.zoomedheight * ARdata.h))
-	//testpr (tilez[i].snapz.x +" "+ tilez[i].snapz.y+" "+tilez[i].snapz.width+" "+tilez[i].snapz.height+"\n")
+
 	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(tilez[i].snapz.x, tilez[i].snapz.y, tilez[i].snapz.width, tilez[i].snapz.height)
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
@@ -14598,8 +14564,6 @@ function z_listrefreshlabels(){
 			sortlabelsarray[labelarrayindex].alpha = 255
 			sortlabelsarray[labelarrayindex].visible = true
 
-			testpr("X"+label.font+"\n")
-
 			pixelizefont (sortlabelsarray[labelarrayindex],label.font)
 
 			x00 = x00 + w0/labelorder.len()
@@ -15540,13 +15504,11 @@ function tick( tick_time ) {
 
 	foreach (i, item in tilesTableZoom){
 		if (checkfade(tilesTableZoom[i])){
-			//TEST138 if (i==focusindex.new) testpr(tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
 
 			// update size and glow alpha
 			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth-UI.tilewidth)*(zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth-UI.tilewidth)*(zoomtemp[1]) , 0, -(UI.zoomedvshift*1.0/UI.zoomedwidth ))
-			//TEST138 if (i==focusindex.new) testpr(tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 		}
 	}
 

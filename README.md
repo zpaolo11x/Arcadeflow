@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 13.7 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 13.8 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,12 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 13.7 #
+## What's new in v 13.8 #
 
-- Added support for multi-monitor setups
-- Fixed issue with CRC check of large files on Windows
+- Added support for pixel perfect fonts
+- Correct UI elements alignment with pixels
+- Fixed issue with number of rows in menus
+- Fixed issue when converting romlist to db
 
 ## Emulator system identifier #
 
@@ -290,14 +292,14 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Detailed game data' : Show extra data after the game name before the history text
 - 'Control panel overlay' : Show controller and buttons overlay on history page
 
-❗ MULTIPLE MONITOR ❗
+MULTIPLE MONITOR
 Configure the appearence of a second monitor
 
-- '❗ Enable multiple monitor ❗' : Enable Arcadeflow multiple monitor suport
-- '❗ Monitor identifier ❗' : Select the identification number for the external monitor
-- '❗ Correct aspect ratio ❗' : Select if the image on the second monitor should be stretched or not
-- '❗ Main media source ❗' : Select the artwork source to be used on secondary monitor
-- '❗ Alternate media source ❗' : Select the artwork source to be used on secondary monitor in case first one is not present
+- 'Enable multiple monitor' : Enable Arcadeflow multiple monitor suport
+- 'Monitor identifier' : Select the identification number for the external monitor
+- 'Correct aspect ratio' : Select if the image on the second monitor should be stretched or not
+- 'Main media source' : Select the artwork source to be used on secondary monitor
+- 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
 AUDIO
 Configure layout sounds and audio options for videos
@@ -331,6 +333,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v13.7*
+
+- Added support for multi-monitor setups
+- Fixed issue with CRC check of large files on Windows
 
 *v13.6*
 
