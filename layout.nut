@@ -2869,7 +2869,7 @@ function getemulatordata(emulatorname){
 			
 		}
 	}
-	if (artworktable.snap.find(";") != null){
+	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
 		artworktable.video <- fe.path_expand(split(artworktable.snap,";")[1])
 		artworktable.snap = fe.path_expand(split(artworktable.snap,";")[0])
 	}
