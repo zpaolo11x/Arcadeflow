@@ -1,0 +1,2 @@
+13.9
+Fixed issue when snaps are not defined
