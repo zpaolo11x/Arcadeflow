@@ -12645,7 +12645,12 @@ function displaygrouped1(){
 			// Now it's the right moment to add code for AF Collecitons
 			if (prf.ALLGAMES){
 				foreach (item, val in z_af_collections.arr){
-					if (val.group == disp.grouplabel[disp.gmenu0]){
+					local itemcount = 0
+					foreach (ic, itemc in dispglyphs){
+						if (itemc != -1) itemcount ++
+					}
+					// Only collection category and categories with more than 1 display show "all games"
+					if (((itemcount >1) || (val.group == "COLLECTIONS") ) && (val.group == disp.grouplabel[disp.gmenu0])){
 						showarray.insert(0,val.id)
 						dispnotes.insert(0,"")
 						groupnotes.insert(0,"")

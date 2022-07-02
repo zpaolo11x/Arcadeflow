@@ -1,3 +1,4 @@
 13.9
+Category collection not shown if there's only one display
 Reorganised options menu main page
 Fixed issue when snaps are not defined
