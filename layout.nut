@@ -682,6 +682,7 @@ function monitorlist(){
 }
 
 local menucounter = 0
+local sorter = {}
 
 AF.prefs.l0.push({label = "GENERAL", glyph = 0xe993, description = "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc"})
 AF.prefs.l1.push([
@@ -708,6 +709,88 @@ AF.prefs.l1.push([
 ])
 
 menucounter ++
+AF.prefs.l0.push({ label = "THUMBNAILS", glyph = 0xe915, description = "Chose the aspect ratio of thumbnails, video thumbnails and decorations"})
+AF.prefs.l1.push([
+{v = 7.2, varname = "cropsnaps", glyph = 0xea57, initvar = function(val,prf){prf.CROPSNAPS <- val}, title = "Aspect ratio", help = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation", options = ["Adaptive", "Square"], values = [false, true], selection = 0, picsel= ["aradaptive"+AF.prefs.imgext,"arsquare"+AF.prefs.imgext],pic = "arsquare"+AF.prefs.imgext},
+{v = 8.7, varname = "morphaspect", glyph = 0xea57, initvar = function(val,prf){prf.MORPHASPECT <- val}, title = "Morph snap ratio", help = "Chose if you want the box to morph into the actual game video or if it must be cropped", options = ["Morph video", "Crop video"], values = [true, false], selection = 0},
+{v = 10.9, varname = "fix169", glyph = 0xea57, initvar = function(val,prf){prf.FIX169 <- val}, title = "Optimize vertical arcade", help = "Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 10.4, varname = "tilezoom", glyph = 0xea57, initvar = function(val,prf){prf.TILEZOOM <- val}, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
+{v = 10.7, varname = "logosonly", glyph = 0xea6d, initvar = function(val,prf){prf.LOGOSONLY <- val}, title = "Show only logos", help = "If enabled, only game tilte logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = -100},
+{v = 8.8, varname = "titleart", glyph = 0xe915, initvar = function(val,prf){prf.TITLEART <- val}, title = "Snapshot artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
+{v = 8.4, varname = "titleonsnap", glyph = 0xea6d, initvar = function(val,prf){prf.TITLEONSNAP <- val}, title = "Show game title", help = "Show the title of the game over the thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 0.0, varname = "", glyph = -1, title = "Box Art Options", selection = -100},
+{v = 7.2, varname = "boxartmode", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTMODE <- val}, title = "Box Art mode", help = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["boxarton"+AF.prefs.imgext,"boxartoff"+AF.prefs.imgext], pic = "boxart"+AF.prefs.imgext},
+{v = 7.2, varname = "titleonbox", glyph = 0xe918, initvar = function(val,prf){prf.TITLEONBOX <- val}, title = "Game title over box art", help = "Shows the game title artwork overlayed on the box art graphics" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["boxarttitle"+AF.prefs.imgext,"boxarton"+AF.prefs.imgext],pic = "boxarttitle"+AF.prefs.imgext},
+{v = 7.2, varname = "boxartsource", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTSOURCE <- val}, title = "Box Art artwork source", help = "Chose the artwork source for box art graphics" , options = ["flyer", "fanart"], values = ["flyer", "fanart"], selection = 0 },
+{v = 0.0, varname = "", glyph = -1, title = "Video Snaps", selection = -100},
+{v = 7.2, varname = "thumbvideo", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDEO <- val}, title = "Video thumbs", help = "Enable video overlay on snapshot thumbnails" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 8.5, varname = "fadevideotitle", glyph = 0xe913, initvar = function(val,prf){prf.FADEVIDEOTITLE <- val}, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 8.4, varname = "thumbvidelay", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDELAY <- val}, title = "Video delay multiplier", help = "Increase video load delay" , options = ["0.25x","0.5x","1x", "2x","3x","4x","5x"], values = [0.25,0.5,1,2,3,4,5], selection = 2},
+{v = 7.2, varname = "missingwheel", glyph = 0xea6d, initvar = function(val,prf){prf.MISSINGWHEEL <- val}, title = "Generate missing title art", help = "If no game title is present, the layout can generate it" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["missingwheelyes"+AF.prefs.imgext,"missingwheelno"+AF.prefs.imgext],pic = "missingwheel"+AF.prefs.imgext},
+{v = 0.0, varname = "", glyph = -1, title = "Decorations", selection = -100},
+{v = 9.6, varname = "redcross", glyph = 0xe936, initvar = function(val,prf){prf.REDCROSS <- val}, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "newgame", glyph = 0xe936, initvar = function(val,prf){prf.NEWGAME <- val}, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
+{v = 7.2, varname = "tagshow", glyph = 0xe936, initvar = function(val,prf){prf.TAGSHOW <- val}, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decortag"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decortag"+AF.prefs.imgext},
+{v = 7.2, varname = "tagname", glyph = 0xe936, initvar = function(val,prf){prf.TAGNAME <- val}, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = "", values = "", selection = AF.req.keyboard}, 
+{v = 7.2, varname = "gbrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.GBRECOLOR <- val}, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference" , options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL" ,"NONE"], selection = 0, picsel = ["gb"+AF.prefs.imgext,"gbclassic"+AF.prefs.imgext,"gbpocket"+AF.prefs.imgext,"gblight"+AF.prefs.imgext,"gbnone"+AF.prefs.imgext],pic = "gb"+AF.prefs.imgext},
+{v = 10.3, varname = "crtrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.CRTRECOLOR <- val}, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette" , options = ["Yes", "No"], values = [true,false], selection = 1},
+])
+
+menucounter ++
+AF.prefs.l0.push({ label = "BACKGROUND", glyph = 0xe90c, description = "Chose the layout background theme in main page and in History page, or select custom backgrounds"})
+AF.prefs.l1.push([
+{v = 7.2, varname = "colortheme", glyph = 0xe90c, initvar = function(val,prf){prf.COLORTHEME <- val}, title = "Overlay color", help = "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered" , options = ["Basic", "Dark", "Light", "Pop"], values =["basic", "dark", "light", "pop"], selection = 3, picsel = ["overlaybasic"+AF.prefs.imgext,"overlaydark"+AF.prefs.imgext,"overlaylight"+AF.prefs.imgext,"overlaypop"+AF.prefs.imgext], pic = "overlay"+AF.prefs.imgext},
+{v = 8.9, varname = "overcustom", glyph = 0xe930, initvar = function(val,prf){prf.OVERCUSTOM <- val}, title = "Custom overlay", help = "Insert custom PNG to be overlayed over everything", options = "", values = "pics/", selection = AF.req.filereqs},
+{v = 8.4, varname = "bgcustom", glyph = 0xe930, initvar = function(val,prf){prf.BGCUSTOM <- val}, title = "Custom main BG image", help = "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)", options = "", values = "pics/", selection = AF.req.filereqs,pic="bgcustom"+AF.prefs.imgext},
+{v = 8.4, varname = "bgcustomstretch", glyph = 0xea57, initvar = function(val,prf){prf.BGCUSTOMSTRETCH <- val}, title = "Format of main BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustom"+AF.prefs.imgext},
+{v = 0.0, varname = "", glyph = -1, title = "History BG", selection = -100},
+{v = 8.4, varname = "bgcustomhistory", glyph = 0xe930, initvar = function(val,prf){prf.BGCUSTOMHISTORY <- val}, title = "Custom history BG image", help = "Insert custom background art path for history page (leave blank if the same as main background)", options = "", values ="pics/", selection = AF.req.filereqs,pic="bgcustomhistory"+AF.prefs.imgext},
+{v = 8.4, varname = "bgcustomhistorystretch", glyph = 0xea57, initvar = function(val,prf){prf.BGCUSTOMHISTORYSTRETCH <- val}, title = "Format of history BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustomhistory"+AF.prefs.imgext},
+{v = 0.0, varname = "", glyph = -1, title = "BG Snaps", selection = -100},
+{v = 7.2, varname = "layersnap", glyph = 0xe90d, initvar = function(val,prf){prf.LAYERSNAP <- val}, title = "Background snap", help = "Add a faded game snapshot to the background" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["bgsnapyes"+AF.prefs.imgext,"bgsnapno"+AF.prefs.imgext],pic="bgsnap"+AF.prefs.imgext},
+{v = 7.2, varname = "layervideo", glyph = 0xe913, initvar = function(val,prf){prf.LAYERVIDEO <- val}, title = "Animate BG snap", help = "Animate video on background" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "layervidelay", glyph = 0xe913, initvar = function(val,prf){prf.LAYERVIDELAY <- val}, title = "Delay BG animation", help = "Don't load immediately the background video animation" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 0.0, varname = "", glyph = -1, title = "Per Display", selection = -100},
+{v = 7.5, varname = "bgperdisplay", glyph = 0xe912, initvar = function(val,prf){prf.BGPERDISPLAY <- val}, title = "Per Display background", help = "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display" , options = ["Yes","No"], values = [true,false], selection = 1},
+])
+
+menucounter ++
+AF.prefs.l0.push({ label = "LOGO", glyph = 0xe916, description = "Customize the splash logo at the start of Arcadeflow"})
+AF.prefs.l1.push([
+{v = 7.2, varname = "splashon", glyph = 0xe916, initvar = function(val,prf){prf.SPLASHON <- val}, title = "Enable splash logo", help = "Enable or disable the AF start logo" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["logoyes"+AF.prefs.imgext,"logono"+AF.prefs.imgext], pic = "logoyes"+AF.prefs.imgext},
+{v = 7.2, varname = "splashlogofile", glyph = 0xe930, initvar = function(val,prf){prf.SPLASHLOGOFILE <- val}, title = "Custom splash logo", help = "Insert the path to a custom AF splash logo (or keep blank for default logo)", options = "", values ="", selection = AF.req.filereqs,pic = "logocustom"+AF.prefs.imgext},
+])
+
+menucounter ++
+AF.prefs.l0.push({ label = "COLOR CYCLE", glyph = 0xe982, description = "Enable and edit color cycling animation of tile highlight border"})
+AF.prefs.l1.push([
+{v = 10.7, varname = "huecycle", glyph = 0xe982, initvar = function(val,prf){prf.HUECYCLE <- val}, title = "Enable color cycle", help = "Enable/disable color cycling of the tile higlight border", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 0.0, varname = "", glyph = -1, title = "Cycle Options", selection = -100},
+{v = 10.7, varname = "hcspeed", glyph = 0xe9a6, initvar = function(val,prf){prf.HCSPEED <- val}, title = "Cycle speed", help = "Select the speed of color cycle" options = ["Slow", "Medium", "Fast"], values = [2, 5, 8], selection = 1},
+{v = 10.7, varname = "hccolor", glyph = 0xe90c, initvar = function(val,prf){prf.HCCOLOR <- val}, title = "Cycle color", help = "Select a color intensity preset for the cycle" , options = ["Standard","Popping", "Light"], values = ["0.7_0.7","1.0_0.5","1.0_0.9"], selection = 0},
+{v = 10.7, varname = "hcpingpong", glyph = 0xea2d, initvar = function(val,prf){prf.HCPINGPONG <- val}, title = "Ping Pong effect", help = "Enable this if you want the cycle to revert once finished instead of restarting" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 12.8, varname = "hchuestart", glyph = 0xe994, initvar = function(val,prf){prf.HCHUESTART <- val}, title = "Start hue", help = "Define the start value of the hue cycle (0 - 359)", options = "", values = "", selection = AF.req.huevalue},
+{v = 12.8, varname = "hchuestop", glyph = 0xe994, initvar = function(val,prf){prf.HCHUESTOP <- val}, title = "Stop hue", help = "Define the stop value of the hue cycle (0 - 359)", options = "", values = "", selection = -8},
+])
+
+menucounter ++
+AF.prefs.l0.push({ label = "AUDIO", glyph = 0xea27, description = "Configure layout sounds and audio options for videos"})
+AF.prefs.l1.push([
+{v = 7.2, varname = "themeaudio", glyph = 0xea27, initvar = function(val,prf){prf.THEMEAUDIO <- val}, title = "Enable theme sounds", help = "Enable audio sounds when browsing and moving around the theme" options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "audiovidsnaps", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDSNAPS <- val}, title = "Audio in videos (thumbs)", help = "Select wether you want to play audio in videos on thumbs" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
+{v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
+])
+
+
+menucounter++
+AF.prefs.l0.push({label = "", glyph = -1, description = ""})
+AF.prefs.l1.push([])
+
+menucounter ++
 AF.prefs.l0.push({label = "BUTTONS", glyph = 0xea54, description = "Define custom control buttons for different features of Arcadeflow"})
 AF.prefs.l1.push([
 {v = 7.2, varname = "overmenubutton", glyph = 0xea54, initvar = function(val,prf){prf.OVERMENUBUTTON <- val}, title = "Context menu button", help = "Chose the button to open the game context menu" , options = ["None","Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none","select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "contextmenu"+AF.prefs.imgext},
@@ -725,13 +808,102 @@ AF.prefs.l1.push([
 ])
 
 menucounter ++
+sorter.rawset("um", menucounter)
 AF.prefs.l0.push({label = "UTILITY MENU", glyph = 0xe9bd, description = "Customize the utility menu entries that you want to see in the menu"})
 AF.prefs.l1.push([
 {v = 10.5, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(18), selection = AF.req.menusort},
-{v = 10.5, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[2][0].values = sortstring(18)}, selection = AF.req.executef},
+{v = 10.5, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(18)}, selection = AF.req.executef},
 ])
 
 menucounter ++
+AF.prefs.l0.push({ label = "DISPLAYS MENU PAGE", glyph = 0xe912, description = "Arcadeflow has its own Displays Menu page that can be configured here"})
+AF.prefs.l1.push([
+{v = 8.7, varname = "dmpenabled", glyph = 0xe912, initvar = function(val,prf){prf.DMPENABLED <- val}, title = "Enable Arcadeflow Displays Menu page", help = "If you disable Arcadeflow menu page you can use other layouts as displays menu" , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 9.0, varname = "olddisplaychange", glyph = 0xe912, initvar = function(val,prf){prf.OLDDISPLAYCHANGE <- val}, title = "Enable Fast Displays Change", help = "Disable fast display change if you want to use other layouts for different displays" , options = ["Yes", "No"], values= [false,true],selection = 0},
+{v = 0.0, varname = "", glyph = -1, title = "Look and Feel", selection = -100},
+{v = 7.2, varname = "dmpgeneratelogo", glyph = 0xe90d, initvar = function(val,prf){prf.DMPGENERATELOGO <- val}, title = "Generate display logo", help = "Generate displays name related artwork for displays list" , options = ["Yes","No"], values = [true,false], selection = 0,picsel=["dmplistlogoyes"+AF.prefs.imgext,"dmplistlogono"+AF.prefs.imgext], pic = "dmplistlogo"+AF.prefs.imgext},
+{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "By display name", "By system year", "By system brand then name", "By system brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
+{v = 9.4, varname = "dmpseparators", glyph = 0xeaf5, initvar = function(val,prf){prf.DMPSEPARATORS <- val}, title = "Show group separators", help = "When sorting by brand show separators in the menu for each brand" , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 12.3, varname = "dmpimages", glyph = 0xea77, initvar = function(val,prf){prf.DMPIMAGES <- val}, title = "Displays menu layout", help = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder" , options = ["List", "List with artwork", "list with walls"], values= [null,"ARTWORK","WALLS"],selection = 2, picsel = ["dmplistartno"+AF.prefs.imgext,"dmplistartyes"+AF.prefs.imgext],pic = "dmplistartyes"+AF.prefs.imgext},
+{v = 9.8, varname = "dmart", glyph = 0xe90d, initvar = function(val,prf){prf.DMART <- val}, title = "Artwork Source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
+{v = 12.3, varname = "dmcategoryart", glyph = 0xe90d, initvar = function(val,prf){prf.DMCATEGORYART <- val}, title = "Enable category artwork", help = "You can separately enable/disable artwork for categories like console, computer, pinball etc." , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 7.3, varname = "dmpgrouped", glyph = 0xea78, initvar = function(val,prf){prf.DMPGROUPED <- val}, title = "Categorized Displays Menu", help = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections" , options = ["Yes", "No"], values= [true,false],selection = 0, picsel = ["dmpgroupedyes"+AF.prefs.imgext,"dmpgroupedno"+AF.prefs.imgext],pic = "dmpgroupedyes"+AF.prefs.imgext},
+{v = 7.4, varname = "dmpexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPEXITAF <- val}, title = "Add Exit Arcadeflow to menu", help = "Add an entry to exit Arcadeflow from the displays menu page" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 0.0, varname = "", glyph = -1, title = "Behavior", selection = -100},
+{v = 7.4, varname = "dmpatstart", glyph = 0xea7a, initvar = function(val,prf){prf.DMPATSTART <- val}, title = "Open the Displays Menu at startup", help = "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 7.4, varname = "dmpoutexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPOUTEXITAF <- val}, title = "Exit AF when leaving Menu", help = "The esc button from Displays Menu triggers the exit from Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 7.4, varname = "dmpifexitaf", glyph = 0xea7a, initvar = function(val,prf){prf.DMPIFEXITAF <- val}, title = "Enter Menu when leaving display", help = "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
+])
+
+
+menucounter ++
+AF.prefs.l0.push({ label = "HISTORY PAGE", glyph = 0xe923, description = "Configure the History page where larger thumbnail and game history data are shown"})
+AF.prefs.l1.push([
+{v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = -100},
+{v = 8.8, varname = "crtgeometry", glyph = 0xe95b, initvar = function(val,prf){prf.CRTGEOMETRY <- val}, title = "CRT deformation", help = "Enable CRT deformation for CRT snaps" options = ["Yes", "No"], values =[true,false], selection = 0},
+{v = 7.2, varname = "scanlinemode", glyph = 0xe95b, initvar = function(val,prf){prf.SCANLINEMODE <- val}, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline" options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2, picsel = ["slscanline"+AF.prefs.imgext,"slhalfres"+AF.prefs.imgext,"slaperture"+AF.prefs.imgext,"slnone"+AF.prefs.imgext],pic = "sl"+AF.prefs.imgext},
+{v = 7.2, varname = "lcdmode", glyph = 0xe959, initvar = function(val,prf){prf.LCDMODE <- val}, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1, picsel = ["lcdmatrix"+AF.prefs.imgext, "lcdhalfres"+AF.prefs.imgext, "lcdnone"+AF.prefs.imgext],pic = "lcd"+AF.prefs.imgext},
+{v = 0.0, varname = "", glyph = -1, title = "Layout", selection = -100},
+{v = 8.3, varname = "historysize", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYSIZE <- val}, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45,0.65,0.75,-1.0], selection = 1},
+{v = 7.2, varname = "historypanel", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYPANEL <- val}, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true,false], selection = 0, picsel = ["histpanelyes"+AF.prefs.imgext,"histpanelno"+AF.prefs.imgext],pic="histpanelyes"+AF.prefs.imgext},
+{v = 7.2, varname = "darkpanel", glyph = 0xe923, initvar = function(val,prf){prf.DARKPANEL <- val}, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true,false,null], selection = 1,picsel=["histpaneldark"+AF.prefs.imgext,"histpaneldefault"+AF.prefs.imgext,"histpanelnone"+AF.prefs.imgext],pic = "histpaneldefault"+AF.prefs.imgext},
+{v = 8.2, varname = "histmininame", glyph = 0xe923, initvar = function(val,prf){prf.HISTMININAME <- val}, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false,true], selection = 0},
+{v = 8.3, varname = "controloverlay", glyph = 0xe923, initvar = function(val,prf){prf.CONTROLOVERLAY <- val}, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Yes", "No"], values = [true,false], selection = 0},
+])
+
+
+menucounter ++
+AF.prefs.l0.push({ label = "ATTRACT MODE", glyph = 0xe9a5, description = "Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here"})
+AF.prefs.l1.push([
+{v = 7.2, varname = "amenable", glyph = 0xe9a5, initvar = function(val,prf){prf.AMENABLE <- val}, title = "Enable attract mode", help = "Enable or disable attract mode at layout startup" , options = ["From start", "Inactivity only", "Disabled"], values =["From start", "Inactivity only", "Disabled"], selection = 1,pic = "attractmode"+AF.prefs.imgext},
+{v = 0.0, varname = "", glyph = -1, title = "Look & Feel", selection = -100},
+{v = 7.2, varname = "amtimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMTIMER <- val}, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = "", values ="120", selection = AF.req.keyboard},
+{v = 7.2, varname = "amchangetimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMCHANGETIMER <- val}, title = "Game change time (s)", help = "Time interval between each game change", options = "", values = "10", selection = AF.req.keyboard},
+{v = 9.1, varname = "amshowlogo", glyph = 0xea6d, initvar = function(val,prf){prf.AMSHOWLOGO <- val}, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "ammessage", glyph = 0xea6d, initvar = function(val,prf){prf.AMMESSAGE <- val}, title = "Attract message", help = "Text to show during attract mode", options = "", values = " - PRESS ANY KEY - ", selection = AF.req.keyboard,pic = "attractmode"+AF.prefs.imgext},
+{v = 0.0, varname = "", glyph = -1, title = "Sound", selection = -100},
+{v = 7.2, varname = "amtune", glyph = 0xe911, initvar = function(val,prf){prf.AMTUNE <- val}, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
+{v = 7.2, varname = "amsound", glyph = 0xea27, initvar = function(val,prf){prf.AMSOUND <- val}, title = "Enable game sound", help = "Enable game sounds during attract mode" , options = ["Yes","No"], values = [true,false], selection = 0},
+])
+
+menucounter ++
+AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
+AF.prefs.l1.push([
+{v = 8.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = "", values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
+{v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = -100},
+{v = 12.8, varname = "overscanw", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANW <- val}, title = "Width %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
+{v = 12.8, varname = "overscanh", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANH <- val}, title = "Height %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
+{v = 12.8, varname = "overscanx", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANX <- val}, title = "Shift X %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
+{v = 12.8, varname = "overscany", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANY <- val}, title = "Shift Y %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
+{v = 0.0, varname = "", glyph = -1, title = "Effects", selection = -100},
+{v = 7.2, varname = "lowspecmode", glyph = 0xe994, initvar = function(val,prf){prf.LOWSPECMODE <- val}, title = "Low Spec mode", help = "Reduce most visual effects to boost speed on lower spec systems" , options = ["Yes","No"], values = [true,false], selection = 1, picsel=["lslowspec"+AF.prefs.imgext,"lsdefault"+AF.prefs.imgext], pic = "lslowspec1"+AF.prefs.imgext},
+{v = 7.2, varname = "datashadowsmooth", glyph = 0xe994, initvar = function(val,prf){prf.DATASHADOWSMOOTH <- val}, title = "Smooth shadow", help = "Enable smooth shadow under game title and data in the GUI" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnodrop"+AF.prefs.imgext], pic = "lsdrop"+AF.prefs.imgext},
+{v = 7.2, varname = "snapglow", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGLOW <- val}, title = "Glow effect", help = "Add a glowing halo around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnoglow"+AF.prefs.imgext],pic = "lsglow"+AF.prefs.imgext},
+{v = 7.2, varname = "snapgradient", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGRADIENT <- val}, title = "Thumb gradient", help = "Blurs the artwork behind the game logo so it's more readable" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsgradient"+AF.prefs.imgext],pic = "lsgradient1"+AF.prefs.imgext},
+])
+
+
+menucounter ++
+AF.prefs.l0.push({ label = "MULTIPLE MONITOR", glyph = 0xeaf8, description = "Configure the appearence of a second monitor"})
+AF.prefs.l1.push([
+{v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = -100},
+{v = 13.7, varname = "multimon", glyph = 0xeaf8, initvar = function(val,prf){prf.MULTIMON <- val}, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
+{v = 13.7, varname = "monitornumber", glyph = 0xeaf9, initvar = function(val,prf){prf.MONITORNUMBER <- val}, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = ["Monitor 1", "Monitor 2","Monitor 3"], values = [1,2,3], selection = 0},
+{v = 13.7, varname = "monitoraspect", glyph = 0xea57, initvar = function(val,prf){prf.MONITORASPECT <- val}, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
+{v = 13.7, varname = "monitormedia1", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA1 <- val}, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
+{v = 13.7, varname = "monitormedia2", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA2 <- val}, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
+])
+
+
+menucounter++
+AF.prefs.l0.push({label = "", glyph = -1, description = ""})
+AF.prefs.l1.push([])
+
+
+menucounter ++
+sorter.rawset("scrape", menucounter)
 AF.prefs.l0.push({ label = "SCRAPE AND METADATA", glyph = 0xea80, description = "You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "SCRAPING", selection = -100},
@@ -742,7 +914,7 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "errorscrape", glyph = 0xe9c4, initvar = function(val,prf){prf.ERRORSCRAPE <- val}, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping" , options = ["Yes","No"], values= [true,false],selection = 1},
 {v = 10.0, varname = "mediascrape", glyph = 0xe90d, initvar = function(val,prf){prf.MEDIASCRAPE <- val}, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping" , options = ["Overwrite media", "Only missing","No media scrape"], values= ["ALL_MEDIA","MISSING_MEDIA","NO_MEDIA"],selection = 1},
 {v = 10.0, varname = "regionprefs", glyph = 0xe9ca, initvar = function(val,prf){prf.REGIONPREFS <- val}, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference" , options = function(){return(AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
-{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[3][4].values = sortstring(6)}, selection = AF.req.executef},
+{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(6)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = -100},
 {v = 10.0, varname = "ss_username", glyph = 0xe971, initvar = function(val,prf){prf.SS_USERNAME <- val}, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "ss_password", glyph = 0xe98d, initvar = function(val,prf){prf.SS_PASSWORD <- val}, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
@@ -776,125 +948,9 @@ AF.prefs.l1.push([
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
-menucounter ++
-AF.prefs.l0.push({ label = "DISPLAYS MENU PAGE", glyph = 0xe912, description = "Arcadeflow has its own Displays Menu page that can be configured here"})
-AF.prefs.l1.push([
-{v = 8.7, varname = "dmpenabled", glyph = 0xe912, initvar = function(val,prf){prf.DMPENABLED <- val}, title = "Enable Arcadeflow Displays Menu page", help = "If you disable Arcadeflow menu page you can use other layouts as displays menu" , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 9.0, varname = "olddisplaychange", glyph = 0xe912, initvar = function(val,prf){prf.OLDDISPLAYCHANGE <- val}, title = "Enable Fast Displays Change", help = "Disable fast display change if you want to use other layouts for different displays" , options = ["Yes", "No"], values= [false,true],selection = 0},
-{v = 0.0, varname = "", glyph = -1, title = "Look and Feel", selection = -100},
-{v = 7.2, varname = "dmpgeneratelogo", glyph = 0xe90d, initvar = function(val,prf){prf.DMPGENERATELOGO <- val}, title = "Generate display logo", help = "Generate displays name related artwork for displays list" , options = ["Yes","No"], values = [true,false], selection = 0,picsel=["dmplistlogoyes"+AF.prefs.imgext,"dmplistlogono"+AF.prefs.imgext], pic = "dmplistlogo"+AF.prefs.imgext},
-{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "By display name", "By system year", "By system brand then name", "By system brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
-{v = 9.4, varname = "dmpseparators", glyph = 0xeaf5, initvar = function(val,prf){prf.DMPSEPARATORS <- val}, title = "Show group separators", help = "When sorting by brand show separators in the menu for each brand" , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 12.3, varname = "dmpimages", glyph = 0xea77, initvar = function(val,prf){prf.DMPIMAGES <- val}, title = "Displays menu layout", help = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder" , options = ["List", "List with artwork", "list with walls"], values= [null,"ARTWORK","WALLS"],selection = 2, picsel = ["dmplistartno"+AF.prefs.imgext,"dmplistartyes"+AF.prefs.imgext],pic = "dmplistartyes"+AF.prefs.imgext},
-{v = 9.8, varname = "dmart", glyph = 0xe90d, initvar = function(val,prf){prf.DMART <- val}, title = "Artwork Source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
-{v = 12.3, varname = "dmcategoryart", glyph = 0xe90d, initvar = function(val,prf){prf.DMCATEGORYART <- val}, title = "Enable category artwork", help = "You can separately enable/disable artwork for categories like console, computer, pinball etc." , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 7.3, varname = "dmpgrouped", glyph = 0xea78, initvar = function(val,prf){prf.DMPGROUPED <- val}, title = "Categorized Displays Menu", help = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections" , options = ["Yes", "No"], values= [true,false],selection = 0, picsel = ["dmpgroupedyes"+AF.prefs.imgext,"dmpgroupedno"+AF.prefs.imgext],pic = "dmpgroupedyes"+AF.prefs.imgext},
-{v = 7.4, varname = "dmpexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPEXITAF <- val}, title = "Add Exit Arcadeflow to menu", help = "Add an entry to exit Arcadeflow from the displays menu page" , options = ["Yes", "No"], values= [true,false],selection = 1},
-{v = 0.0, varname = "", glyph = -1, title = "Behavior", selection = -100},
-{v = 7.4, varname = "dmpatstart", glyph = 0xea7a, initvar = function(val,prf){prf.DMPATSTART <- val}, title = "Open the Displays Menu at startup", help = "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode" , options = ["Yes", "No"], values= [true,false],selection = 1},
-{v = 7.4, varname = "dmpoutexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPOUTEXITAF <- val}, title = "Exit AF when leaving Menu", help = "The esc button from Displays Menu triggers the exit from Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
-{v = 7.4, varname = "dmpifexitaf", glyph = 0xea7a, initvar = function(val,prf){prf.DMPIFEXITAF <- val}, title = "Enter Menu when leaving display", help = "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
-])
 
 menucounter ++
-AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
-AF.prefs.l1.push([
-{v = 8.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = "", values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
-{v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = -100},
-{v = 12.8, varname = "overscanw", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANW <- val}, title = "Width %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
-{v = 12.8, varname = "overscanh", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANH <- val}, title = "Height %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
-{v = 12.8, varname = "overscanx", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANX <- val}, title = "Shift X %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
-{v = 12.8, varname = "overscany", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANY <- val}, title = "Shift Y %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
-{v = 0.0, varname = "", glyph = -1, title = "Effects", selection = -100},
-{v = 7.2, varname = "lowspecmode", glyph = 0xe994, initvar = function(val,prf){prf.LOWSPECMODE <- val}, title = "Low Spec mode", help = "Reduce most visual effects to boost speed on lower spec systems" , options = ["Yes","No"], values = [true,false], selection = 1, picsel=["lslowspec"+AF.prefs.imgext,"lsdefault"+AF.prefs.imgext], pic = "lslowspec1"+AF.prefs.imgext},
-{v = 7.2, varname = "datashadowsmooth", glyph = 0xe994, initvar = function(val,prf){prf.DATASHADOWSMOOTH <- val}, title = "Smooth shadow", help = "Enable smooth shadow under game title and data in the GUI" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnodrop"+AF.prefs.imgext], pic = "lsdrop"+AF.prefs.imgext},
-{v = 7.2, varname = "snapglow", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGLOW <- val}, title = "Glow effect", help = "Add a glowing halo around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnoglow"+AF.prefs.imgext],pic = "lsglow"+AF.prefs.imgext},
-{v = 7.2, varname = "snapgradient", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGRADIENT <- val}, title = "Thumb gradient", help = "Blurs the artwork behind the game logo so it's more readable" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsgradient"+AF.prefs.imgext],pic = "lsgradient1"+AF.prefs.imgext},
-])
-
-menucounter ++
-AF.prefs.l0.push({ label = "THUMBNAILS", glyph = 0xe915, description = "Chose the aspect ratio of thumbnails, video thumbnails and decorations"})
-AF.prefs.l1.push([
-{v = 7.2, varname = "cropsnaps", glyph = 0xea57, initvar = function(val,prf){prf.CROPSNAPS <- val}, title = "Aspect ratio", help = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation", options = ["Adaptive", "Square"], values = [false, true], selection = 0, picsel= ["aradaptive"+AF.prefs.imgext,"arsquare"+AF.prefs.imgext],pic = "arsquare"+AF.prefs.imgext},
-{v = 8.7, varname = "morphaspect", glyph = 0xea57, initvar = function(val,prf){prf.MORPHASPECT <- val}, title = "Morph snap ratio", help = "Chose if you want the box to morph into the actual game video or if it must be cropped", options = ["Morph video", "Crop video"], values = [true, false], selection = 0},
-{v = 10.9, varname = "fix169", glyph = 0xea57, initvar = function(val,prf){prf.FIX169 <- val}, title = "Optimize vertical arcade", help = "Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 10.4, varname = "tilezoom", glyph = 0xea57, initvar = function(val,prf){prf.TILEZOOM <- val}, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
-{v = 10.7, varname = "logosonly", glyph = 0xea6d, initvar = function(val,prf){prf.LOGOSONLY <- val}, title = "Show only logos", help = "If enabled, only game tilte logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = -100},
-{v = 8.8, varname = "titleart", glyph = 0xe915, initvar = function(val,prf){prf.TITLEART <- val}, title = "Snapshot artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
-{v = 8.4, varname = "titleonsnap", glyph = 0xea6d, initvar = function(val,prf){prf.TITLEONSNAP <- val}, title = "Show game title", help = "Show the title of the game over the thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 0.0, varname = "", glyph = -1, title = "Box Art Options", selection = -100},
-{v = 7.2, varname = "boxartmode", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTMODE <- val}, title = "Box Art mode", help = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["boxarton"+AF.prefs.imgext,"boxartoff"+AF.prefs.imgext], pic = "boxart"+AF.prefs.imgext},
-{v = 7.2, varname = "titleonbox", glyph = 0xe918, initvar = function(val,prf){prf.TITLEONBOX <- val}, title = "Game title over box art", help = "Shows the game title artwork overlayed on the box art graphics" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["boxarttitle"+AF.prefs.imgext,"boxarton"+AF.prefs.imgext],pic = "boxarttitle"+AF.prefs.imgext},
-{v = 7.2, varname = "boxartsource", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTSOURCE <- val}, title = "Box Art artwork source", help = "Chose the artwork source for box art graphics" , options = ["flyer", "fanart"], values = ["flyer", "fanart"], selection = 0 },
-{v = 0.0, varname = "", glyph = -1, title = "Video Snaps", selection = -100},
-{v = 7.2, varname = "thumbvideo", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDEO <- val}, title = "Video thumbs", help = "Enable video overlay on snapshot thumbnails" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 8.5, varname = "fadevideotitle", glyph = 0xe913, initvar = function(val,prf){prf.FADEVIDEOTITLE <- val}, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 8.4, varname = "thumbvidelay", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDELAY <- val}, title = "Video delay multiplier", help = "Increase video load delay" , options = ["0.25x","0.5x","1x", "2x","3x","4x","5x"], values = [0.25,0.5,1,2,3,4,5], selection = 2},
-{v = 7.2, varname = "missingwheel", glyph = 0xea6d, initvar = function(val,prf){prf.MISSINGWHEEL <- val}, title = "Generate missing title art", help = "If no game title is present, the layout can generate it" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["missingwheelyes"+AF.prefs.imgext,"missingwheelno"+AF.prefs.imgext],pic = "missingwheel"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "Decorations", selection = -100},
-{v = 9.6, varname = "redcross", glyph = 0xe936, initvar = function(val,prf){prf.REDCROSS <- val}, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "newgame", glyph = 0xe936, initvar = function(val,prf){prf.NEWGAME <- val}, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
-{v = 7.2, varname = "tagshow", glyph = 0xe936, initvar = function(val,prf){prf.TAGSHOW <- val}, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decortag"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decortag"+AF.prefs.imgext},
-{v = 7.2, varname = "tagname", glyph = 0xe936, initvar = function(val,prf){prf.TAGNAME <- val}, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = "", values = "", selection = AF.req.keyboard}, 
-{v = 7.2, varname = "gbrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.GBRECOLOR <- val}, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference" , options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL" ,"NONE"], selection = 0, picsel = ["gb"+AF.prefs.imgext,"gbclassic"+AF.prefs.imgext,"gbpocket"+AF.prefs.imgext,"gblight"+AF.prefs.imgext,"gbnone"+AF.prefs.imgext],pic = "gb"+AF.prefs.imgext},
-{v = 10.3, varname = "crtrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.CRTRECOLOR <- val}, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette" , options = ["Yes", "No"], values = [true,false], selection = 1},
-])
-
-menucounter ++
-AF.prefs.l0.push({ label = "COLOR CYCLE", glyph = 0xe982, description = "Enable and edit color cycling animation of tile highlight border"})
-AF.prefs.l1.push([
-{v = 10.7, varname = "huecycle", glyph = 0xe982, initvar = function(val,prf){prf.HUECYCLE <- val}, title = "Enable color cycle", help = "Enable/disable color cycling of the tile higlight border", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 0.0, varname = "", glyph = -1, title = "Cycle Options", selection = -100},
-{v = 10.7, varname = "hcspeed", glyph = 0xe9a6, initvar = function(val,prf){prf.HCSPEED <- val}, title = "Cycle speed", help = "Select the speed of color cycle" options = ["Slow", "Medium", "Fast"], values = [2, 5, 8], selection = 1},
-{v = 10.7, varname = "hccolor", glyph = 0xe90c, initvar = function(val,prf){prf.HCCOLOR <- val}, title = "Cycle color", help = "Select a color intensity preset for the cycle" , options = ["Standard","Popping", "Light"], values = ["0.7_0.7","1.0_0.5","1.0_0.9"], selection = 0},
-{v = 10.7, varname = "hcpingpong", glyph = 0xea2d, initvar = function(val,prf){prf.HCPINGPONG <- val}, title = "Ping Pong effect", help = "Enable this if you want the cycle to revert once finished instead of restarting" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 12.8, varname = "hchuestart", glyph = 0xe994, initvar = function(val,prf){prf.HCHUESTART <- val}, title = "Start hue", help = "Define the start value of the hue cycle (0 - 359)", options = "", values = "", selection = AF.req.huevalue},
-{v = 12.8, varname = "hchuestop", glyph = 0xe994, initvar = function(val,prf){prf.HCHUESTOP <- val}, title = "Stop hue", help = "Define the stop value of the hue cycle (0 - 359)", options = "", values = "", selection = -8},
-])
-
-menucounter ++
-AF.prefs.l0.push({ label = "BACKGROUND", glyph = 0xe90c, description = "Chose the layout background theme in main page and in History page, or select custom backgrounds"})
-AF.prefs.l1.push([
-{v = 7.2, varname = "colortheme", glyph = 0xe90c, initvar = function(val,prf){prf.COLORTHEME <- val}, title = "Overlay color", help = "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered" , options = ["Basic", "Dark", "Light", "Pop"], values =["basic", "dark", "light", "pop"], selection = 3, picsel = ["overlaybasic"+AF.prefs.imgext,"overlaydark"+AF.prefs.imgext,"overlaylight"+AF.prefs.imgext,"overlaypop"+AF.prefs.imgext], pic = "overlay"+AF.prefs.imgext},
-{v = 8.9, varname = "overcustom", glyph = 0xe930, initvar = function(val,prf){prf.OVERCUSTOM <- val}, title = "Custom overlay", help = "Insert custom PNG to be overlayed over everything", options = "", values = "pics/", selection = AF.req.filereqs},
-{v = 8.4, varname = "bgcustom", glyph = 0xe930, initvar = function(val,prf){prf.BGCUSTOM <- val}, title = "Custom main BG image", help = "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)", options = "", values = "pics/", selection = AF.req.filereqs,pic="bgcustom"+AF.prefs.imgext},
-{v = 8.4, varname = "bgcustomstretch", glyph = 0xea57, initvar = function(val,prf){prf.BGCUSTOMSTRETCH <- val}, title = "Format of main BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustom"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "History BG", selection = -100},
-{v = 8.4, varname = "bgcustomhistory", glyph = 0xe930, initvar = function(val,prf){prf.BGCUSTOMHISTORY <- val}, title = "Custom history BG image", help = "Insert custom background art path for history page (leave blank if the same as main background)", options = "", values ="pics/", selection = AF.req.filereqs,pic="bgcustomhistory"+AF.prefs.imgext},
-{v = 8.4, varname = "bgcustomhistorystretch", glyph = 0xea57, initvar = function(val,prf){prf.BGCUSTOMHISTORYSTRETCH <- val}, title = "Format of history BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustomhistory"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "BG Snaps", selection = -100},
-{v = 7.2, varname = "layersnap", glyph = 0xe90d, initvar = function(val,prf){prf.LAYERSNAP <- val}, title = "Background snap", help = "Add a faded game snapshot to the background" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["bgsnapyes"+AF.prefs.imgext,"bgsnapno"+AF.prefs.imgext],pic="bgsnap"+AF.prefs.imgext},
-{v = 7.2, varname = "layervideo", glyph = 0xe913, initvar = function(val,prf){prf.LAYERVIDEO <- val}, title = "Animate BG snap", help = "Animate video on background" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "layervidelay", glyph = 0xe913, initvar = function(val,prf){prf.LAYERVIDELAY <- val}, title = "Delay BG animation", help = "Don't load immediately the background video animation" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 0.0, varname = "", glyph = -1, title = "Per Display", selection = -100},
-{v = 7.5, varname = "bgperdisplay", glyph = 0xe912, initvar = function(val,prf){prf.BGPERDISPLAY <- val}, title = "Per Display background", help = "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display" , options = ["Yes","No"], values = [true,false], selection = 1},
-])
-
-menucounter ++
-AF.prefs.l0.push({ label = "LOGO", glyph = 0xe916, description = "Customize the splash logo at the start of Arcadeflow"})
-AF.prefs.l1.push([
-{v = 7.2, varname = "splashon", glyph = 0xe916, initvar = function(val,prf){prf.SPLASHON <- val}, title = "Enable splash logo", help = "Enable or disable the AF start logo" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["logoyes"+AF.prefs.imgext,"logono"+AF.prefs.imgext], pic = "logoyes"+AF.prefs.imgext},
-{v = 7.2, varname = "splashlogofile", glyph = 0xe930, initvar = function(val,prf){prf.SPLASHLOGOFILE <- val}, title = "Custom splash logo", help = "Insert the path to a custom AF splash logo (or keep blank for default logo)", options = "", values ="", selection = AF.req.filereqs,pic = "logocustom"+AF.prefs.imgext},
-])
-
-menucounter ++
-AF.prefs.l0.push({ label = "ATTRACT MODE", glyph = 0xe9a5, description = "Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here"})
-AF.prefs.l1.push([
-{v = 7.2, varname = "amenable", glyph = 0xe9a5, initvar = function(val,prf){prf.AMENABLE <- val}, title = "Enable attract mode", help = "Enable or disable attract mode at layout startup" , options = ["From start", "Inactivity only", "Disabled"], values =["From start", "Inactivity only", "Disabled"], selection = 1,pic = "attractmode"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "Look & Feel", selection = -100},
-{v = 7.2, varname = "amtimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMTIMER <- val}, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = "", values ="120", selection = AF.req.keyboard},
-{v = 7.2, varname = "amchangetimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMCHANGETIMER <- val}, title = "Game change time (s)", help = "Time interval between each game change", options = "", values = "10", selection = AF.req.keyboard},
-{v = 9.1, varname = "amshowlogo", glyph = 0xea6d, initvar = function(val,prf){prf.AMSHOWLOGO <- val}, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "ammessage", glyph = 0xea6d, initvar = function(val,prf){prf.AMMESSAGE <- val}, title = "Attract message", help = "Text to show during attract mode", options = "", values = " - PRESS ANY KEY - ", selection = AF.req.keyboard,pic = "attractmode"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "Sound", selection = -100},
-{v = 7.2, varname = "amtune", glyph = 0xe911, initvar = function(val,prf){prf.AMTUNE <- val}, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
-{v = 7.2, varname = "amsound", glyph = 0xea27, initvar = function(val,prf){prf.AMSOUND <- val}, title = "Enable game sound", help = "Enable game sounds during attract mode" , options = ["Yes","No"], values = [true,false], selection = 0},
-])
-
-menucounter ++
+sorter.rawset("mf", menucounter)
 AF.prefs.l0.push({ label = "SEARCH & FILTERS", glyph = 0xe986, description = "Configure the search page and multifilter options"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Search", selection = -100},
@@ -903,46 +959,14 @@ AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Multifilter", selection = -100},
 {v = 7.9, varname = "savemfz", glyph = 0xeaed, initvar = function(val,prf){prf.SAVEMFZ <- val}, title = "Save Multifilter sessions", help = "Save the Multifilter of each display when exiting Arcadeflow or changing list" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 12.8, varname = "mfzvector", glyph = 0xeaed, initvar = function(val,prf){prf.MFZVECTOR <- val}, title = "Customize Multifilter Menu", help = "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(mfztablenames(multifilterz.l0))}, values = sortstring(16), selection = AF.req.menusort},
-{v = 12.8, varname = "mfzvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.MFZVECTORRESET <- val}, title = "Reset Multifilter Menu", help = "Reset sorting and selection of Multifilter Menu entries" , options = "", values = function(){AF.prefs.l1[12][5].values = sortstring(16)}, selection = AF.req.executef},
-])
-
-menucounter ++
-AF.prefs.l0.push({ label = "HISTORY PAGE", glyph = 0xe923, description = "Configure the History page where larger thumbnail and game history data are shown"})
-AF.prefs.l1.push([
-{v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = -100},
-{v = 8.8, varname = "crtgeometry", glyph = 0xe95b, initvar = function(val,prf){prf.CRTGEOMETRY <- val}, title = "CRT deformation", help = "Enable CRT deformation for CRT snaps" options = ["Yes", "No"], values =[true,false], selection = 0},
-{v = 7.2, varname = "scanlinemode", glyph = 0xe95b, initvar = function(val,prf){prf.SCANLINEMODE <- val}, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline" options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2, picsel = ["slscanline"+AF.prefs.imgext,"slhalfres"+AF.prefs.imgext,"slaperture"+AF.prefs.imgext,"slnone"+AF.prefs.imgext],pic = "sl"+AF.prefs.imgext},
-{v = 7.2, varname = "lcdmode", glyph = 0xe959, initvar = function(val,prf){prf.LCDMODE <- val}, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1, picsel = ["lcdmatrix"+AF.prefs.imgext, "lcdhalfres"+AF.prefs.imgext, "lcdnone"+AF.prefs.imgext],pic = "lcd"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "Layout", selection = -100},
-{v = 8.3, varname = "historysize", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYSIZE <- val}, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45,0.65,0.75,-1.0], selection = 1},
-{v = 7.2, varname = "historypanel", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYPANEL <- val}, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true,false], selection = 0, picsel = ["histpanelyes"+AF.prefs.imgext,"histpanelno"+AF.prefs.imgext],pic="histpanelyes"+AF.prefs.imgext},
-{v = 7.2, varname = "darkpanel", glyph = 0xe923, initvar = function(val,prf){prf.DARKPANEL <- val}, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true,false,null], selection = 1,picsel=["histpaneldark"+AF.prefs.imgext,"histpaneldefault"+AF.prefs.imgext,"histpanelnone"+AF.prefs.imgext],pic = "histpaneldefault"+AF.prefs.imgext},
-{v = 8.2, varname = "histmininame", glyph = 0xe923, initvar = function(val,prf){prf.HISTMININAME <- val}, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false,true], selection = 0},
-{v = 8.3, varname = "controloverlay", glyph = 0xe923, initvar = function(val,prf){prf.CONTROLOVERLAY <- val}, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Yes", "No"], values = [true,false], selection = 0},
+{v = 12.8, varname = "mfzvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.MFZVECTORRESET <- val}, title = "Reset Multifilter Menu", help = "Reset sorting and selection of Multifilter Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.mf][5].values = sortstring(16)}, selection = AF.req.executef},
 ])
 
 
-menucounter ++
-AF.prefs.l0.push({ label = "MULTIPLE MONITOR", glyph = 0xeaf8, description = "Configure the appearence of a second monitor"})
-AF.prefs.l1.push([
-{v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = -100},
-{v = 13.7, varname = "multimon", glyph = 0xeaf8, initvar = function(val,prf){prf.MULTIMON <- val}, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
-{v = 13.7, varname = "monitornumber", glyph = 0xeaf9, initvar = function(val,prf){prf.MONITORNUMBER <- val}, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = ["Monitor 1", "Monitor 2","Monitor 3"], values = [1,2,3], selection = 0},
-{v = 13.7, varname = "monitoraspect", glyph = 0xea57, initvar = function(val,prf){prf.MONITORASPECT <- val}, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
-{v = 13.7, varname = "monitormedia1", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA1 <- val}, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
-{v = 13.7, varname = "monitormedia2", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA2 <- val}, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
-])
+menucounter++
+AF.prefs.l0.push({label = "", glyph = -1, description = ""})
+AF.prefs.l1.push([])
 
-menucounter ++
-AF.prefs.l0.push({ label = "AUDIO", glyph = 0xea27, description = "Configure layout sounds and audio options for videos"})
-AF.prefs.l1.push([
-{v = 7.2, varname = "themeaudio", glyph = 0xea27, initvar = function(val,prf){prf.THEMEAUDIO <- val}, title = "Enable theme sounds", help = "Enable audio sounds when browsing and moving around the theme" options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "audiovidsnaps", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDSNAPS <- val}, title = "Audio in videos (thumbs)", help = "Select wether you want to play audio in videos on thumbs" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
-{v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
-])
 
 menucounter ++
 AF.prefs.l0.push({ label = "UPDATES", glyph = 0xe91c, description = "Configure update notifications"})
@@ -6303,9 +6327,24 @@ function getallgamesdb(logopic){
 				z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
 				z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))	
 			}
-			
 		}
 	}
+	/*
+	TEST TO CHECK MULTIEMU ROMLISTS
+	local romlistarray = []
+	local romlistpath = fe.path_expand(FeConfigDirectory + "romlists/")
+	local romlistdir = DirectoryListing(romlistpath,false).results
+	local rlfile = ""
+	local rlitemname = ""
+	foreach(i, item in romlistdir) {
+		if ((item.slice(0,3) != "AF ") && (item.slice(-3)=="txt") && (item.slice(0,2) != "._")){
+			rlitemname = item.slice(0,-4)
+			if (!AF.emulatordata.rawin(rlitemname)) {
+				testpr("RLX:"+rlitemname+"\n")
+			}
+		}
+	}
+	*/
 	textobj.visible = false
 	timestop("GamesDB")
 }
@@ -9151,6 +9190,17 @@ function optionsmenu0(){
 			try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help}catch(err){prfmenu.description.msg=""}
 			optionsmenu1()
 		}
+	},
+	null,
+	function (){
+		for (local i = zmenu.selected; i < items.len(); i++){
+			if (zmenu.strikelines[i].visible) {
+				zmenu.selected = i+1
+				break
+			}
+		}
+		//zmenu.selected = 5
+		//optionsmenu0()
 	})
 }
 
@@ -11752,6 +11802,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.items[i].bg_alpha = 255
 			zmenu.items[i].x = floor((shrink ? zmenu.tilew - disp.width : zmenu.tilew)*0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
 			zmenu.items[i].width = zmenu.items[i].msg_width + 2 *zmenu.pad
+			zmenu.items[i].visible = zmenu.items[i].msg != ""		
 			zmenu.strikelines[i].visible = true
 		}
 
