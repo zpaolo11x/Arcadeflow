@@ -426,7 +426,7 @@ z_af_collections.arr.reverse()
 // Update the attract.cfg to incorporate all the collections
 // This function doesn't reboot the layout, so changes are not effective
 // until AM re-reads the config file
-function buildconfig(allgames){
+function buildconfig(allgames, tempprf){
 	local cfgtable = AF.config
 
 	// First step purges special AF collections
@@ -445,7 +445,7 @@ function buildconfig(allgames){
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				filters = ["filter               All","filter               Favourites","rule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["global_filter","rule                 FileIsAvailable equals 1", "filter               All","filter               Favourites","rule                 Favourite equals 1"] : ["filter               All","filter               Favourites","rule                 Favourite equals 1"]
 			})
 		}
 	}
@@ -3999,7 +3999,7 @@ function saveromdb(romlist,zdb,dbext){
 
 function updateallgamescollections(tempprf){
 	if (tempprf.ALLGAMES) {
-		buildconfig(tempprf.ALLGAMES)
+		buildconfig(tempprf.ALLGAMESm tempprf)
 		update_allgames_collections(true)
 	}	
 }
@@ -4045,7 +4045,7 @@ function refreshselectedromlists(tempprf){
 		refreshromlist(item, false)
 	}
 	if (tempprf.ALLGAMES) {
-		buildconfig(tempprf.ALLGAMES)
+		buildconfig(tempprf.ALLGAMES, tempprf)
 		update_allgames_collections(true)
 	}
 	// this function doesn't need to reboot the layout
@@ -4202,11 +4202,12 @@ function portromlist(romlist){
 			continue
 		}
 		listfields = split_complete(listline,";")
+		listfields[0] = strip(listfields[0])
 		if(listfields[2] != romlist) continue
 		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
 		cleanromlist[listfields[0]] <- {}
 		cleanromlist[listfields[0]] = clone (z_fields1)
-		cleanromlist[listfields[0]].z_title = subst_replace(listfields[1],ap,"'")
+		cleanromlist[listfields[0]].z_title = strip(subst_replace(listfields[1],ap,"'"))
 		cleanromlist[listfields[0]].z_year = listfields[4]
 		cleanromlist[listfields[0]].z_manufacturer = subst_replace(listfields[5],ap,"'")
 		cleanromlist[listfields[0]].z_category = listfields[6]
@@ -6348,6 +6349,8 @@ function getallgamesdb(logopic){
 			}
 		}
 	}
+
+	print_variable(AF.emulatordata,"","EMUDATA")
 	/*
 	TEST TO CHECK MULTIEMU ROMLISTS
 	local romlistarray = []
@@ -11450,37 +11453,68 @@ function update_allgames_collections(verbose){
 
 	local allgamesromlist = ""
 
+
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
-	foreach (item, val in z_af_collections.tab){
-		// The all games collections are generated only if they are not in "OTHER" 
-		// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
-		if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
-			// build the name for the allgames romlist
-			local filename = AF.romlistfolder + item + ".txt"
-			local strline = ""
+	if (!prf.MASTERLIST) {
+		foreach (item, val in z_af_collections.tab){
+			// The all games collections are generated only if they are not in "OTHER" 
+			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
+			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
+				// build the name for the allgames romlist
+				local filename = AF.romlistfolder + item + ".txt"
+				local strline = ""
 
-			// Add the group romlist to the all games romlsit list
-			allgamesromlist += " " + ap + AF.romlistfolder + item+".txt" + ap
+				// Add the group romlist to the all games romlsit list
+				allgamesromlist += " " + ap + AF.romlistfolder + item+".txt" + ap
 
-			foreach (item2, val2 in disp.structure[val.group].disps){
-				if (val2.inmenu) {
-					if(verbose)z_splash_message ("Collection:"+item+"\nRomlist:"+val2.romlist+"\n")
-					strline+= " "+ap+AF.romlistfolder +  val2.romlist + ".txt" + ap
+				foreach (item2, val2 in disp.structure[val.group].disps){
+					if (val2.inmenu) {
+						if(verbose)z_splash_message ("Collection:"+item+"\nRomlist:"+val2.romlist+"\n")
+						strline+= " "+ap+AF.romlistfolder +  val2.romlist + ".txt" + ap
+					}
 				}
+				system((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
 			}
-			system((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
 		}
 	}
-		// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
-		// existing groups
-		// if (prf.MASTERLIST) allgamesromlist = " "+ap+prf.MASTERPATH+ap //TEST139 if master romlist is used, just copy that as all games romlist
-		if (!prf.MASTERLIST){
-			system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
-			system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
-			system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
+	else { //TEST139 READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
+		local listfile = ReadTextFile(prf.MASTERPATH)
+		local listline = listfile.read_line()
+		local listfields = []
+		local outfiles = {}
+		local sysname = ""
+		while (!listfile.eos()){
+			listline = listfile.read_line()
+			if ((listline == "") || (listline[0].tochar()=="#")){
+				print("")
+				continue
+			}
+			listfields = split_complete(listline,";")
+			foreach (item, val in z_af_collections.tab){
+				try {sysname = AF.emulatordata[listfields[2]].mainsysname}catch (err){sysname = ""}
+				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)){
+					testpr (item + " " + listfields[2]+" "+listfields[0]+"\n")
+					// Create output file handler
+					if (!outfiles.rawin(item)){
+						testpr(item+"\n")
+						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
+						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
+					}
+					outfiles[item].write_line(listline+"\n")
+				}
+			}
 		}
+	}	
+
+	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
+	// existing groups
+	if (prf.MASTERLIST) allgamesromlist = " "+ap+prf.MASTERPATH+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
+		
 	//fe.set_display(fe.list.display_index)
 }
 
@@ -14732,7 +14766,7 @@ function checkrepeat(counter){
 /// Check ALLGAMES status ///
 
 if (prf.ALLGAMES != AF.config.collections){
-	buildconfig(prf.ALLGAMES)
+	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
 		update_allgames_collections(true)
 	}
