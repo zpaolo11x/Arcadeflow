@@ -289,6 +289,7 @@ function parseconfig(){
 						displaytable[id].rawset(split(inline,"\t ")[0],inline.slice(21))
 						break
 					case "filter":
+					case "global_filter":
 					case "rule":
 						displaytable[id].filters.push(inline)
 						break
