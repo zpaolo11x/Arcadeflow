@@ -6350,7 +6350,6 @@ function getallgamesdb(logopic){
 		}
 	}
 
-	print_variable(AF.emulatordata,"","EMUDATA")
 	/*
 	TEST TO CHECK MULTIEMU ROMLISTS
 	local romlistarray = []
@@ -11164,7 +11163,7 @@ function history_updatetext(){
 
 		local lookup = af_get_history_offset( sys, rom, alt, cloneof )
 
-		local tempdesc = ""
+		local tempdesc = "" //this description comes from history.dat
 
 		if ( lookup >= 0 ){
 			//fe.overlay.splash_message(lookup + " " + my_config)
@@ -11184,12 +11183,19 @@ function history_updatetext(){
 					tempdesc = tempdesc + item + "\n"
 			}
 		}
-		local tempdesc2 = ""
+
+		local tempdesc3 = "" //this comes from the overview
+		tempdesc3 = fe.game_info(Info.Overview)
+
+		if(tempdesc3 != "") tempdesc = tempdesc3+"\n\n"
+
+		local tempdesc2 = "" //This comes from the romlist
 				foreach (i, item in z_list.gametable[z_list.index].z_description) 
 					tempdesc2 = tempdesc2 + item + "\n"
 		if ((tempdesc2 != "?") && (tempdesc2 != "")){
 			tempdesc = tempdesc2 + "\n\n"
 		}
+
 
 		if (prf.LOWRES) tempdesc = hist_text.descr.msg + "\n"+tempdesc
 
@@ -11485,6 +11491,7 @@ function update_allgames_collections(verbose, tempprf){
 		local listfields = []
 		local outfiles = {}
 		local sysname = ""
+		local cursysname = ""
 		while (!listfile.eos()){
 			listline = listfile.read_line()
 			if ((listline == "") || (listline[0].tochar()=="#")){
@@ -11495,10 +11502,14 @@ function update_allgames_collections(verbose, tempprf){
 			foreach (item, val in z_af_collections.tab){
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname}catch (err){sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)){
-					testpr (item + " " + listfields[2]+" "+listfields[0]+"\n")
 					// Create output file handler
+						if(verbose && (sysname != cursysname)){
+							testpr("Collection:"+item+", System:"+sysname+"\n")
+							z_splash_message ("Collection:"+item+"\nSystem:"+sysname+"\n")
+							cursysname = sysname
+						}
 					if (!outfiles.rawin(item)){
-						testpr(item+"\n")
+	
 						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
 						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
 					}
@@ -11506,11 +11517,13 @@ function update_allgames_collections(verbose, tempprf){
 				}
 			}
 		}
+		foreach (item in outfiles) item.close_file()
 	}	
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
 	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+tempprf.MASTERPATH+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	testpr("\n\nCOMMAND:"+((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)+"\n\n")
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)

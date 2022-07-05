@@ -598,6 +598,7 @@ panasonic 3do,0,0,3DO,CRT,NONE,4,3,CONSOLE,3DO Company,1993,3DO,29,iso,joystick 
 3do
 
 pc,0,0,PC,CRT,NONE,4,3,COMPUTER,Various,null,PC,135,dossier,joystick (8-way),1
+pc games
 
 pinball arcade,0,0,PAR,CRT,NONE,4,3,PINBALL,Various,null,Pinball Arcade,200,fichier,null,null
 
