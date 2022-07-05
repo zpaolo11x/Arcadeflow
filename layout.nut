@@ -1,4 +1,4 @@
-// Arcadeflow - v 13.8
+// Arcadeflow - v 13.9
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -74,7 +74,7 @@ function returngly(){
 // General AF data table
 local AF = {
 	uniglyphs = returngly()
-	version = "13.8"
+	version = "13.9"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -147,7 +147,7 @@ local AF = {
 
 	LNG = ""
 }
-
+print("\n\n"+AF.romlistfolder+"\n")
 AF.vernum = AF.version.tofloat()*10
 
 // GitHub versioning data table
@@ -946,6 +946,9 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "refreshromlist", glyph = 0xe982, initvar = function(val,prf){prf.REFRESHROMLIST <- val}, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data" , options = "", values = function(){local tempprf = generateprefstable();refreshselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.0, varname = "cleanromlist", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANROMIST <- val}, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data" , options = "", values = function(){local tempprf = generateprefstable();resetselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.3, varname = "resetlastplayed", glyph = 0xe97c, initvar = function(val,prf){prf.RESETLASTPLAYED <- val}, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
+{v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = -100},
+{v = 13.9, varname = "masterlist", glyph = 0xe95c, initvar = function(val,prf){prf.MASTERLIST <- val}, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it" , options = ["Yes", "No"], values = [true, false],selection = 1},
+{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation.", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ROMLIST EXPORT", selection = -100},
 {v = 12.0, varname = "buildxml", glyph = 0xe961, initvar = function(val,prf){prf.BUILDXML <- val}, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation" , options = "", values = function(){buildgamelistxml()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = -100},
@@ -1439,9 +1442,6 @@ try{prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err){
 	prf.MONITORNUMBER = 0
 }
 
-//TEST139 MASTER
-prf.MASTERLIST <- true
-prf.MASTERPATH <- AF.romlistfolder + "All Systems.txt"
 
 // End prf setup
 
@@ -3999,8 +3999,8 @@ function saveromdb(romlist,zdb,dbext){
 
 function updateallgamescollections(tempprf){
 	if (tempprf.ALLGAMES) {
-		buildconfig(tempprf.ALLGAMESm tempprf)
-		update_allgames_collections(true)
+		buildconfig(tempprf.ALLGAMES, tempprf)
+		update_allgames_collections(true,tempprf)
 	}	
 }
 
@@ -4046,7 +4046,7 @@ function refreshselectedromlists(tempprf){
 	}
 	if (tempprf.ALLGAMES) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
-		update_allgames_collections(true)
+		update_allgames_collections(true,tempprf)
 	}
 	// this function doesn't need to reboot the layout
 	// since it's run from the options menu where reboot
@@ -11447,7 +11447,7 @@ disp.x = overlay.w - disp.tilew
 disp.bgtileh = disp.tilew*9.0/16.0
 if (prf.DMPIMAGES == "WALLS") disp.spacing = disp.bgtileh
 
-function update_allgames_collections(verbose){
+function update_allgames_collections(verbose, tempprf){
 	// Build the table of display data
 	builddisplaystructure()
 
@@ -11457,7 +11457,7 @@ function update_allgames_collections(verbose){
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
-	if (!prf.MASTERLIST) {
+	if (!tempprf.MASTERLIST) {
 		foreach (item, val in z_af_collections.tab){
 			// The all games collections are generated only if they are not in "OTHER" 
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
@@ -11510,7 +11510,7 @@ function update_allgames_collections(verbose){
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
-	if (prf.MASTERLIST) allgamesromlist = " "+ap+prf.MASTERPATH+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+tempprf.MASTERPATH+ap //TEST139 if master romlist is used, just copy that as all games romlist
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
@@ -14768,7 +14768,7 @@ function checkrepeat(counter){
 if (prf.ALLGAMES != AF.config.collections){
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
-		update_allgames_collections(true)
+		update_allgames_collections(true,prf)
 	}
 	//fe.signal("reload")
 	fe.signal("exit_to_desktop")
@@ -15219,7 +15219,6 @@ function tick( tick_time ) {
 
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
-
 	if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
