@@ -11522,7 +11522,7 @@ function update_allgames_collections(verbose, tempprf){
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
-	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+tempprf.MASTERPATH+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
 	testpr("\n\nCOMMAND:"+((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)+"\n\n")
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
