@@ -147,7 +147,7 @@ local AF = {
 
 	LNG = ""
 }
-print("\n\n"+AF.romlistfolder+"\n")
+
 AF.vernum = AF.version.tofloat()*10
 
 // GitHub versioning data table
@@ -11504,7 +11504,6 @@ function update_allgames_collections(verbose, tempprf){
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)){
 					// Create output file handler
 						if(verbose && (sysname != cursysname)){
-							testpr("Collection:"+item+", System:"+sysname+"\n")
 							z_splash_message ("Collection:"+item+"\nSystem:"+sysname+"\n")
 							cursysname = sysname
 						}
@@ -11523,7 +11522,6 @@ function update_allgames_collections(verbose, tempprf){
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
 	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
-	testpr("\n\nCOMMAND:"+((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)+"\n\n")
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
 	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
@@ -12987,6 +12985,7 @@ function attractkick(){
 }
 
 function attractupdatesnap(){
+	if (z_list.size == 0) return
 	local randload = (z_list.size*rand()/RAND_MAX)
 	attractitem.snap.file_name = fe.get_art("snap",z_list.gametable[randload].z_felistindex - fe.list.index)
 	if (attractitem.snap.texture_width * attractitem.snap.texture_height == 0) {
