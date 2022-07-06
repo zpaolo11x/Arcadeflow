@@ -16564,19 +16564,21 @@ function on_signal( sig ){
 			local ifplus = modwrap(fe.list.display_index + 1, fe.displays.len())
 			local ifminus = modwrap(fe.list.display_index - 1, fe.displays.len())
 			
-			fe.set_display(fe.list.display_index,false,false) //TEST191
-			/*
-			OLD METHOD BEFORE THE NEW SET_DISPLAY
-			if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null){
-				fe.signal("next_display")
-				fe.signal("prev_display")
+			try{ 
+				fe.set_display(fe.list.display_index,false,false) //TEST139
+			}catch(err){
+			
+			//OLD METHOD BEFORE THE NEW SET_DISPLAY
+				if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null){
+					fe.signal("next_display")
+					fe.signal("prev_display")
+				}
+				else if (fe.displays[ifminus].layout.tolower().find("arcadeflow") != null){
+					fe.signal("prev_display")
+					fe.signal("next_display")
+				}
+				else fe.signal("reload")
 			}
-			else if (fe.displays[ifminus].layout.tolower().find("arcadeflow") != null){
-				fe.signal("prev_display")
-				fe.signal("next_display")
-			}
-			else fe.signal("reload")
-			*/
 
 			
 			// Alternative method, reloads the whole layout
