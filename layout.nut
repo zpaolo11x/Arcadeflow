@@ -6,12 +6,8 @@
 
 /*
 
-	drivingambulanceguide <- FAI 10
 drivingcatch
-	drivingfiretruckguide <- FAI 10
 drivingguideandcollect
-	drivingtruckguide <- FAI 10
-	fighterdrivingvertical <- FAI 10
 mazerunjump
 misc.coinpusher
 misc.dogsitter
