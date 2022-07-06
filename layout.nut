@@ -12471,62 +12471,71 @@ function checkforupdates(force){
 }
 
 function jumptodisplay(targetdisplay){
-	local jumps = 0
-	local jumpsfw = 0
-	local jumpsbw = 0
-	local noamfw = false //there's a display going forward that doesn't use AF
-	local noambw = false //there's a display going backward that doesn't use AF
-	local oldjump = false
-	local jumpscollfw = false //there's a collection display going forward (potentially slow)
-	local jumpscollbw = false //there's a collection display going backward (potentially slow)
 
-	for (local i = 0; i < fe.displays.len(); i++){
-		local ifw = modwrap(fe.list.display_index + i, fe.displays.len())
-		if (fe.displays[ifw].layout.tolower().find("arcadeflow") == null) noamfw = true
-		if (fe.displays[ifw].name.find("AF ") == 0) jumpscollfw = true
-		if (ifw == targetdisplay) break
-		if (fe.displays[ifw].in_cycle) jumpsfw ++				
+	try{
+		fe.set_display(targetdisplay,false,false)
+		zmenu.dmp = false
+		umvisible = false
+		frosthide()
+		zmenuhide()
 	}
-
-	for (local i = 0; i < fe.displays.len(); i++){
-		local ibw = modwrap(fe.list.display_index - i, fe.displays.len())
-		if (fe.displays[ibw].layout.tolower().find("arcadeflow") == null) noambw = true
-		if (fe.displays[ibw].name.find("AF ") == 0) jumpscollbw = true
-		if (ibw == targetdisplay) break
-		if (fe.displays[ibw].in_cycle) jumpsbw --
-	}
-
-	if (noamfw && noambw) oldjump = true
-	else if (noamfw && !noambw) jumps = jumpsbw
-	else if (!noamfw && noambw) jumps = jumpsfw
-	else if (jumpscollfw) jumps = jumpsbw
-	else if (jumpscollbw) jumps = jumpsfw
-	else if (abs(jumpsfw) < abs(jumpsbw)) jumps = jumpsfw 
-	else jumps = jumpsbw
-
-	// local jumps = targetdisplay - fe.list.display_index
+	catch(err){
 	
-	zmenu.dmp = false
-	umvisible = false
-	frosthide()
-	zmenuhide()
+		local jumps = 0
+		local jumpsfw = 0
+		local jumpsbw = 0
+		local noamfw = false //there's a display going forward that doesn't use AF
+		local noambw = false //there's a display going backward that doesn't use AF
+		local oldjump = false
+		local jumpscollfw = false //there's a collection display going forward (potentially slow)
+		local jumpscollbw = false //there's a collection display going backward (potentially slow)
+
+		for (local i = 0; i < fe.displays.len(); i++){
+			local ifw = modwrap(fe.list.display_index + i, fe.displays.len())
+			if (fe.displays[ifw].layout.tolower().find("arcadeflow") == null) noamfw = true
+			if (fe.displays[ifw].name.find("AF ") == 0) jumpscollfw = true
+			if (ifw == targetdisplay) break
+			if (fe.displays[ifw].in_cycle) jumpsfw ++				
+		}
+
+		for (local i = 0; i < fe.displays.len(); i++){
+			local ibw = modwrap(fe.list.display_index - i, fe.displays.len())
+			if (fe.displays[ibw].layout.tolower().find("arcadeflow") == null) noambw = true
+			if (fe.displays[ibw].name.find("AF ") == 0) jumpscollbw = true
+			if (ibw == targetdisplay) break
+			if (fe.displays[ibw].in_cycle) jumpsbw --
+		}
+
+		if (noamfw && noambw) oldjump = true
+		else if (noamfw && !noambw) jumps = jumpsbw
+		else if (!noamfw && noambw) jumps = jumpsfw
+		else if (jumpscollfw) jumps = jumpsbw
+		else if (jumpscollbw) jumps = jumpsfw
+		else if (abs(jumpsfw) < abs(jumpsbw)) jumps = jumpsfw 
+		else jumps = jumpsbw
+		
+		zmenu.dmp = false
+		umvisible = false
+		frosthide()
+		zmenuhide()
 
 
-	if ((prf.OLDDISPLAYCHANGE) || oldjump){
-		fe.set_display(targetdisplay)
-		prf.JUMPDISPLAYS = false
-		jumps = 0
-	}
+		if ((prf.OLDDISPLAYCHANGE) || oldjump){
+			fe.set_display(targetdisplay)
+			prf.JUMPDISPLAYS = false
+			jumps = 0
+		}
 
-	if (jumps != 0 ) {
-		prf.JUMPSTEPS = abs(jumps)
-		prf.JUMPDISPLAYS = true
-	}
-	if ( jumps > 0 ) {
-		for (local i = 0; i < jumps; i++) fe.signal("next_display")
-	}
-	if ( jumps < 0 )  {
-		for (local i = 0; i < abs(jumps); i++) fe.signal("prev_display")
+		if (jumps != 0 ) {
+			prf.JUMPSTEPS = abs(jumps)
+			prf.JUMPDISPLAYS = true
+		}
+		if ( jumps > 0 ) {
+			for (local i = 0; i < jumps; i++) fe.signal("next_display")
+		}
+		if ( jumps < 0 )  {
+			for (local i = 0; i < abs(jumps); i++) fe.signal("prev_display")
+		}
 	}
 }
 
@@ -14843,7 +14852,6 @@ if (prf.ALLGAMES != AF.config.collections){
 	if (OS == "Windows") system("start attractplus-console.exe")
 	else if (OS == "OSX") system("./attractplus &")
 	else system("attractplus &")
-	//fe.set_display(fe.list.display_index)
 }
 
 fe.layout.font = uifonts.mono
@@ -16457,7 +16465,6 @@ function deletecurrentrom(){
 	//saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db1[z_list.gametable[z_list.index].z_emulator],"db1")
 	z_listrefreshtiles()
 
-//	fe.set_display(fe.list.display_index)
 }
 
 function buildgamelistxml(){
@@ -16556,6 +16563,10 @@ function on_signal( sig ){
 			// This reloads the romlist without reloading the layout, but if the other display is not AF it can cause issues 
 			local ifplus = modwrap(fe.list.display_index + 1, fe.displays.len())
 			local ifminus = modwrap(fe.list.display_index - 1, fe.displays.len())
+			
+			fe.set_display(fe.list.display_index,false,false) //TEST191
+			/*
+			OLD METHOD BEFORE THE NEW SET_DISPLAY
 			if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null){
 				fe.signal("next_display")
 				fe.signal("prev_display")
@@ -16565,7 +16576,7 @@ function on_signal( sig ){
 				fe.signal("next_display")
 			}
 			else fe.signal("reload")
-			
+			*/
 
 			
 			// Alternative method, reloads the whole layout
