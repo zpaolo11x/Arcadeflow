@@ -30,8 +30,6 @@ multiplaycards
 multiplaymisc.
 puzzlecards
 puzzlepaint
-shooter2.5d
-shootermotorbike
 shooteroutline
 shooterscrolling
 sportsvolley-soccer
