@@ -34,8 +34,6 @@ shooter2.5d
 shootermotorbike
 shooteroutline
 shooterscrolling
-shooterunderwater
-simulationpetmanagementsimulation
 sportsvolley-soccer
 ttl*ball&paddlebreakout
 ttl*ball&paddlepong
@@ -55,7 +53,6 @@ ttl*shooterunderwater
 ttl*shooterversus
 ttl*sportsbaseball
 ttl*sportshorseracing
-whac-a-molefootsteps
 
 
 */
