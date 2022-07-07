@@ -6,8 +6,6 @@
 
 /*
 
-drivingguideandcollect
-mazerunjump
 misc.coinpusher
 misc.dogsitter
 misc.gamblingboard
