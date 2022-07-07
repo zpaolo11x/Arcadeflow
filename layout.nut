@@ -6,7 +6,6 @@
 
 /*
 
-drivingcatch
 drivingguideandcollect
 mazerunjump
 misc.coinpusher
@@ -31,8 +30,6 @@ multiplaymisc.
 puzzlecards
 puzzlepaint
 shooteroutline
-shooterscrolling
-sportsvolley-soccer
 ttl*ball&paddlebreakout
 ttl*ball&paddlepong
 ttl*drivingdemolitionderby
