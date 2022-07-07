@@ -1112,7 +1112,7 @@ function historytext(){
 		}
 		scanver --
 	}
-	verfile = ReadTextFile (AF.folder+"10.txt")
+	verfile = ReadTextFile (AF.folder+"history/10.txt")
 	while (!verfile.eos()){
 		history.push (verfile.read_line()+"\n")
 	}	
