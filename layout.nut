@@ -43,8 +43,6 @@ ttl*shooterunderwater
 ttl*shooterversus
 ttl*sportsbaseball
 ttl*sportshorseracing
-
-
 */
 
 // Load file nut
