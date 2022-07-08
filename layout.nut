@@ -32,13 +32,6 @@ ttl*drivingrace
 ttl*drivingracetrack
 ttl*mazeshootersmall
 ttl*quizquestionsinenglish
-ttl*shooterfield
-ttl*shooterflying1stperson
-ttl*shooterflyingvertical
-ttl*shootergallery
-ttl*shootergun
-ttl*shootermisc.vertical
-ttl*shooterunderwater
 
 */
 
