@@ -39,9 +39,9 @@ ttl*shootergallery
 ttl*shootergun
 ttl*shootermisc.vertical
 ttl*shooterunderwater
-ttl*shooterversus
-ttl*sportsbaseball
-ttl*sportshorseracing
+	ttl*shooterversus
+	ttl*sportsbaseball
+	ttl*sportshorseracing
 */
 
 // Load file nut
