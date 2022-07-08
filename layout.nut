@@ -1,8 +1,51 @@
-// Arcadeflow - v 13.8
+// Arcadeflow - v 13.9
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
+
+/*
+
+misc.coinpusher
+misc.dogsitter
+misc.gamblingboard
+misc.jumpandbounce
+misc.laserdiscsimulator
+misc.multiplay
+misc.order
+misc.prediction
+misc.printclub
+misc.redemption
+misc.shootphotos
+misc.spank
+misc.unknown
+misc.versus
+multigamegambling
+multigamegamblingboard
+multigamemini-games
+multiplaycards
+multiplaymisc.
+ttl*ball&paddlebreakout
+ttl*ball&paddlepong
+ttl*drivingdemolitionderby
+ttl*drivingmotorbike
+ttl*drivingrace
+ttl*drivingracetrack
+ttl*mazeshootersmall
+ttl*quizquestionsinenglish
+ttl*shooterfield
+ttl*shooterflying1stperson
+ttl*shooterflyingvertical
+ttl*shootergallery
+ttl*shootergun
+ttl*shootermisc.vertical
+ttl*shooterunderwater
+ttl*shooterversus
+ttl*sportsbaseball
+ttl*sportshorseracing
+
+
+*/
 
 // Load file nut
 fe.do_nut("nut_file.nut")
@@ -74,7 +117,7 @@ function returngly(){
 // General AF data table
 local AF = {
 	uniglyphs = returngly()
-	version = "13.8"
+	version = "13.9"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -263,6 +306,7 @@ function parseconfig(){
 	local postdisplays = []
 	local id = 0
 	local af_collections = false
+
 	inline = cfgfile.read_line()
 	while (inline[0].tochar() == "#"){
 		if (inline.find("# Enable AF Collections") == 0) af_collections = true
@@ -289,6 +333,10 @@ function parseconfig(){
 						displaytable[id].rawset(split(inline,"\t ")[0],inline.slice(21))
 						break
 					case "filter":
+					case "sort_by":
+					case "list_limit":
+					case "exception":
+					case "global_filter":
 					case "rule":
 						displaytable[id].filters.push(inline)
 						break
@@ -417,10 +465,11 @@ z_af_collections.arr.push (z_af_collections.tab["AF All Handheld Games"])
 z_af_collections.arr.push (z_af_collections.tab["AF All Computer Games"])
 z_af_collections.arr.push (z_af_collections.tab["AF All Pinball Games"])
 z_af_collections.arr.reverse()
+
 // Update the attract.cfg to incorporate all the collections
 // This function doesn't reboot the layout, so changes are not effective
 // until AM re-reads the config file
-function buildconfig(allgames){
+function buildconfig(allgames, tempprf){
 	local cfgtable = AF.config
 
 	// First step purges special AF collections
@@ -439,7 +488,7 @@ function buildconfig(allgames){
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				filters = ["filter               All","filter               Favourites","rule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["global_filter","rule                 FileIsAvailable equals 1", "filter               All","filter               Favourites","rule                 Favourite equals 1"] : ["filter               All","filter               Favourites","rule                 Favourite equals 1"]
 			})
 		}
 	}
@@ -457,8 +506,9 @@ function buildconfig(allgames){
 		cfgfile.write_line ("\tromlist              "+value.romlist+"\n")		
 		cfgfile.write_line ("\tin_cycle             "+value.in_cycle+"\n")		
 		cfgfile.write_line ("\tin_menu              "+value.in_menu+"\n")		
-		foreach (item2, val2 in value.filters)
-			cfgfile.write_line("\t"+val2+"\n")
+		foreach (item2, val2 in value.filters){
+			cfgfile.write_line( ((val2.slice(0,6) == "filter") || (val2 == "global_filter")) ? "\t"+val2+"\n" : "\t\t"+val2+"\n")
+		}
 		cfgfile.write_line("\n")
 	}
 
@@ -939,6 +989,9 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "refreshromlist", glyph = 0xe982, initvar = function(val,prf){prf.REFRESHROMLIST <- val}, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data" , options = "", values = function(){local tempprf = generateprefstable();refreshselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.0, varname = "cleanromlist", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANROMIST <- val}, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data" , options = "", values = function(){local tempprf = generateprefstable();resetselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.3, varname = "resetlastplayed", glyph = 0xe97c, initvar = function(val,prf){prf.RESETLASTPLAYED <- val}, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
+{v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = -100},
+{v = 13.9, varname = "masterlist", glyph = 0xe95c, initvar = function(val,prf){prf.MASTERLIST <- val}, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it" , options = ["Yes", "No"], values = [true, false],selection = 1},
+{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation.", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ROMLIST EXPORT", selection = -100},
 {v = 12.0, varname = "buildxml", glyph = 0xe961, initvar = function(val,prf){prf.BUILDXML <- val}, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation" , options = "", values = function(){buildgamelistxml()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = -100},
@@ -1056,7 +1109,7 @@ function historytext(){
 		}
 		scanver --
 	}
-	verfile = ReadTextFile (AF.folder+"10.txt")
+	verfile = ReadTextFile (AF.folder+"history/10.txt")
 	while (!verfile.eos()){
 		history.push (verfile.read_line()+"\n")
 	}	
@@ -1431,6 +1484,7 @@ try{prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err){
 	print ("Error on monitor number\n")
 	prf.MONITORNUMBER = 0
 }
+
 
 // End prf setup
 
@@ -3988,8 +4042,8 @@ function saveromdb(romlist,zdb,dbext){
 
 function updateallgamescollections(tempprf){
 	if (tempprf.ALLGAMES) {
-		buildconfig(tempprf.ALLGAMES)
-		update_allgames_collections(true)
+		buildconfig(tempprf.ALLGAMES, tempprf)
+		update_allgames_collections(true,tempprf)
 	}	
 }
 
@@ -4034,8 +4088,8 @@ function refreshselectedromlists(tempprf){
 		refreshromlist(item, false)
 	}
 	if (tempprf.ALLGAMES) {
-		buildconfig(tempprf.ALLGAMES)
-		update_allgames_collections(true)
+		buildconfig(tempprf.ALLGAMES, tempprf)
+		update_allgames_collections(true,tempprf)
 	}
 	// this function doesn't need to reboot the layout
 	// since it's run from the options menu where reboot
@@ -4177,19 +4231,26 @@ function portromlist(romlist){
 	local cleanromlist = {}
 	local cleanromlist2 = {} 
 	local listpath = AF.romlistfolder + romlist + ".txt"
+
+	if (prf.MASTERLIST) listpath = prf.MASTERPATH //TEST139
+
+
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
 	local listfields = []
 	while (!listfile.eos()){
 		listline = listfile.read_line()
-		if (listline == "") {
+		if ((listline == "") || (listline[0].tochar()=="#")){
 			print("")
 			continue
 		}
 		listfields = split_complete(listline,";")
+		listfields[0] = strip(listfields[0])
+		if(listfields[2] != romlist) continue
+		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
 		cleanromlist[listfields[0]] <- {}
 		cleanromlist[listfields[0]] = clone (z_fields1)
-		cleanromlist[listfields[0]].z_title = subst_replace(listfields[1],ap,"'")
+		cleanromlist[listfields[0]].z_title = strip(subst_replace(listfields[1],ap,"'"))
 		cleanromlist[listfields[0]].z_year = listfields[4]
 		cleanromlist[listfields[0]].z_manufacturer = subst_replace(listfields[5],ap,"'")
 		cleanromlist[listfields[0]].z_category = listfields[6]
@@ -6293,6 +6354,8 @@ function getallgamesdb(logopic){
 	local emulatordir = DirectoryListing(emulatorpath,false).results
 	local file = ""
 	local itemname = ""
+
+
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3)=="cfg") && (item.slice(0,2) != "._")){
@@ -6313,7 +6376,7 @@ function getallgamesdb(logopic){
 			*/
 
 			// The emulator has a self named romlist
-			if (file_exist(AF.romlistfolder + itemname + ".txt")) {
+			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) { //TEST139 If we are in masterlist keep scanning for db
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
 				z_splash_message("")//("\n\n\n\n\n\n\n"+"NOW LOADING\n"+textrate (i,(emulatordir.len()-1),numchars)+"\n")//(i*100/(emulatordir.len()-1))+"%")
 				//XXXXXX textobj.msg = textrate (i,(emulatordir.len()-1),numchars)
@@ -6329,6 +6392,7 @@ function getallgamesdb(logopic){
 			}
 		}
 	}
+
 	/*
 	TEST TO CHECK MULTIEMU ROMLISTS
 	local romlistarray = []
@@ -11142,7 +11206,7 @@ function history_updatetext(){
 
 		local lookup = af_get_history_offset( sys, rom, alt, cloneof )
 
-		local tempdesc = ""
+		local tempdesc = "" //this description comes from history.dat
 
 		if ( lookup >= 0 ){
 			//fe.overlay.splash_message(lookup + " " + my_config)
@@ -11162,12 +11226,19 @@ function history_updatetext(){
 					tempdesc = tempdesc + item + "\n"
 			}
 		}
-		local tempdesc2 = ""
+
+		local tempdesc3 = "" //this comes from the overview
+		tempdesc3 = fe.game_info(Info.Overview)
+
+		if(tempdesc3 != "") tempdesc = tempdesc3+"\n\n"
+
+		local tempdesc2 = "" //This comes from the romlist
 				foreach (i, item in z_list.gametable[z_list.index].z_description) 
 					tempdesc2 = tempdesc2 + item + "\n"
 		if ((tempdesc2 != "?") && (tempdesc2 != "")){
 			tempdesc = tempdesc2 + "\n\n"
 		}
+
 
 		if (prf.LOWRES) tempdesc = hist_text.descr.msg + "\n"+tempdesc
 
@@ -11425,43 +11496,79 @@ disp.x = overlay.w - disp.tilew
 disp.bgtileh = disp.tilew*9.0/16.0
 if (prf.DMPIMAGES == "WALLS") disp.spacing = disp.bgtileh
 
-function update_allgames_collections(verbose){
+function update_allgames_collections(verbose, tempprf){
 	// Build the table of display data
 	builddisplaystructure()
 
 	local allgamesromlist = ""
 
+
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
-	foreach (item, val in z_af_collections.tab){
-		// The all games collections are generated only if they are not in "OTHER" 
-		// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
-		if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
-			// build the name for the allgames romlist
-			local filename = AF.romlistfolder + item + ".txt"
-			local strline = ""
+	if (!tempprf.MASTERLIST) {
+		foreach (item, val in z_af_collections.tab){
+			// The all games collections are generated only if they are not in "OTHER" 
+			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
+			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
+				// build the name for the allgames romlist
+				local filename = AF.romlistfolder + item + ".txt"
+				local strline = ""
 
-			// Add the group romlist to the all games romlsit list
-			allgamesromlist += " " + ap + AF.romlistfolder + item+".txt" + ap
+				// Add the group romlist to the all games romlsit list
+				allgamesromlist += " " + ap + AF.romlistfolder + item+".txt" + ap
 
-			foreach (item2, val2 in disp.structure[val.group].disps){
-				if (val2.inmenu) {
-					if(verbose)z_splash_message ("Collection:"+item+"\nRomlist:"+val2.romlist+"\n")
-					strline+= " "+ap+AF.romlistfolder +  val2.romlist + ".txt" + ap
+				foreach (item2, val2 in disp.structure[val.group].disps){
+					if (val2.inmenu) {
+						if(verbose)z_splash_message ("Collection:"+item+"\nRomlist:"+val2.romlist+"\n")
+						strline+= " "+ap+AF.romlistfolder +  val2.romlist + ".txt" + ap
+					}
+				}
+				system((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
+			}
+		}
+	}
+	else { //TEST139 READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
+		local listfile = ReadTextFile(prf.MASTERPATH)
+		local listline = listfile.read_line()
+		local listfields = []
+		local outfiles = {}
+		local sysname = ""
+		local cursysname = ""
+		while (!listfile.eos()){
+			listline = listfile.read_line()
+			if ((listline == "") || (listline[0].tochar()=="#")){
+				print("")
+				continue
+			}
+			listfields = split_complete(listline,";")
+			foreach (item, val in z_af_collections.tab){
+				try {sysname = AF.emulatordata[listfields[2]].mainsysname}catch (err){sysname = ""}
+				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)){
+					// Create output file handler
+						if(verbose && (sysname != cursysname)){
+							z_splash_message ("Collection:"+item+"\nSystem:"+sysname+"\n")
+							cursysname = sysname
+						}
+					if (!outfiles.rawin(item)){
+	
+						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
+						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
+					}
+					outfiles[item].write_line(listline+"\n")
 				}
 			}
-			system((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
-
 		}
+		foreach (item in outfiles) item.close_file()
+	}	
 
-	}
-		// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
-		// existing groups
-		system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
-		system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
-		system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
-
+	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
+	// existing groups
+	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
+		
 	//fe.set_display(fe.list.display_index)
 }
 
@@ -12351,62 +12458,71 @@ function checkforupdates(force){
 }
 
 function jumptodisplay(targetdisplay){
-	local jumps = 0
-	local jumpsfw = 0
-	local jumpsbw = 0
-	local noamfw = false //there's a display going forward that doesn't use AF
-	local noambw = false //there's a display going backward that doesn't use AF
-	local oldjump = false
-	local jumpscollfw = false //there's a collection display going forward (potentially slow)
-	local jumpscollbw = false //there's a collection display going backward (potentially slow)
 
-	for (local i = 0; i < fe.displays.len(); i++){
-		local ifw = modwrap(fe.list.display_index + i, fe.displays.len())
-		if (fe.displays[ifw].layout.tolower().find("arcadeflow") == null) noamfw = true
-		if (fe.displays[ifw].name.find("AF ") == 0) jumpscollfw = true
-		if (ifw == targetdisplay) break
-		if (fe.displays[ifw].in_cycle) jumpsfw ++				
+	try{
+		fe.set_display(targetdisplay,false,false)
+		zmenu.dmp = false
+		umvisible = false
+		frosthide()
+		zmenuhide()
 	}
-
-	for (local i = 0; i < fe.displays.len(); i++){
-		local ibw = modwrap(fe.list.display_index - i, fe.displays.len())
-		if (fe.displays[ibw].layout.tolower().find("arcadeflow") == null) noambw = true
-		if (fe.displays[ibw].name.find("AF ") == 0) jumpscollbw = true
-		if (ibw == targetdisplay) break
-		if (fe.displays[ibw].in_cycle) jumpsbw --
-	}
-
-	if (noamfw && noambw) oldjump = true
-	else if (noamfw && !noambw) jumps = jumpsbw
-	else if (!noamfw && noambw) jumps = jumpsfw
-	else if (jumpscollfw) jumps = jumpsbw
-	else if (jumpscollbw) jumps = jumpsfw
-	else if (abs(jumpsfw) < abs(jumpsbw)) jumps = jumpsfw 
-	else jumps = jumpsbw
-
-	// local jumps = targetdisplay - fe.list.display_index
+	catch(err){
 	
-	zmenu.dmp = false
-	umvisible = false
-	frosthide()
-	zmenuhide()
+		local jumps = 0
+		local jumpsfw = 0
+		local jumpsbw = 0
+		local noamfw = false //there's a display going forward that doesn't use AF
+		local noambw = false //there's a display going backward that doesn't use AF
+		local oldjump = false
+		local jumpscollfw = false //there's a collection display going forward (potentially slow)
+		local jumpscollbw = false //there's a collection display going backward (potentially slow)
+
+		for (local i = 0; i < fe.displays.len(); i++){
+			local ifw = modwrap(fe.list.display_index + i, fe.displays.len())
+			if (fe.displays[ifw].layout.tolower().find("arcadeflow") == null) noamfw = true
+			if (fe.displays[ifw].name.find("AF ") == 0) jumpscollfw = true
+			if (ifw == targetdisplay) break
+			if (fe.displays[ifw].in_cycle) jumpsfw ++				
+		}
+
+		for (local i = 0; i < fe.displays.len(); i++){
+			local ibw = modwrap(fe.list.display_index - i, fe.displays.len())
+			if (fe.displays[ibw].layout.tolower().find("arcadeflow") == null) noambw = true
+			if (fe.displays[ibw].name.find("AF ") == 0) jumpscollbw = true
+			if (ibw == targetdisplay) break
+			if (fe.displays[ibw].in_cycle) jumpsbw --
+		}
+
+		if (noamfw && noambw) oldjump = true
+		else if (noamfw && !noambw) jumps = jumpsbw
+		else if (!noamfw && noambw) jumps = jumpsfw
+		else if (jumpscollfw) jumps = jumpsbw
+		else if (jumpscollbw) jumps = jumpsfw
+		else if (abs(jumpsfw) < abs(jumpsbw)) jumps = jumpsfw 
+		else jumps = jumpsbw
+		
+		zmenu.dmp = false
+		umvisible = false
+		frosthide()
+		zmenuhide()
 
 
-	if ((prf.OLDDISPLAYCHANGE) || oldjump){
-		fe.set_display(targetdisplay)
-		prf.JUMPDISPLAYS = false
-		jumps = 0
-	}
+		if ((prf.OLDDISPLAYCHANGE) || oldjump){
+			fe.set_display(targetdisplay)
+			prf.JUMPDISPLAYS = false
+			jumps = 0
+		}
 
-	if (jumps != 0 ) {
-		prf.JUMPSTEPS = abs(jumps)
-		prf.JUMPDISPLAYS = true
-	}
-	if ( jumps > 0 ) {
-		for (local i = 0; i < jumps; i++) fe.signal("next_display")
-	}
-	if ( jumps < 0 )  {
-		for (local i = 0; i < abs(jumps); i++) fe.signal("prev_display")
+		if (jumps != 0 ) {
+			prf.JUMPSTEPS = abs(jumps)
+			prf.JUMPDISPLAYS = true
+		}
+		if ( jumps > 0 ) {
+			for (local i = 0; i < jumps; i++) fe.signal("next_display")
+		}
+		if ( jumps < 0 )  {
+			for (local i = 0; i < abs(jumps); i++) fe.signal("prev_display")
+		}
 	}
 }
 
@@ -12921,6 +13037,7 @@ function attractkick(){
 }
 
 function attractupdatesnap(){
+	if (z_list.size == 0) return
 	local randload = (z_list.size*rand()/RAND_MAX)
 	attractitem.snap.file_name = fe.get_art("snap",z_list.gametable[randload].z_felistindex - fe.list.index)
 	if (attractitem.snap.texture_width * attractitem.snap.texture_height == 0) {
@@ -14713,16 +14830,15 @@ function checkrepeat(counter){
 /// Check ALLGAMES status ///
 
 if (prf.ALLGAMES != AF.config.collections){
-	buildconfig(prf.ALLGAMES)
+	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
-		update_allgames_collections(true)
+		update_allgames_collections(true,prf)
 	}
 	//fe.signal("reload")
 	fe.signal("exit_to_desktop")
 	if (OS == "Windows") system("start attractplus-console.exe")
 	else if (OS == "OSX") system("./attractplus &")
 	else system("attractplus &")
-	//fe.set_display(fe.list.display_index)
 }
 
 fe.layout.font = uifonts.mono
@@ -15166,7 +15282,6 @@ function tick( tick_time ) {
 
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
-
 	if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
@@ -16337,7 +16452,6 @@ function deletecurrentrom(){
 	//saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db1[z_list.gametable[z_list.index].z_emulator],"db1")
 	z_listrefreshtiles()
 
-//	fe.set_display(fe.list.display_index)
 }
 
 function buildgamelistxml(){
@@ -16436,16 +16550,22 @@ function on_signal( sig ){
 			// This reloads the romlist without reloading the layout, but if the other display is not AF it can cause issues 
 			local ifplus = modwrap(fe.list.display_index + 1, fe.displays.len())
 			local ifminus = modwrap(fe.list.display_index - 1, fe.displays.len())
-			if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null){
-				fe.signal("next_display")
-				fe.signal("prev_display")
-			}
-			else if (fe.displays[ifminus].layout.tolower().find("arcadeflow") != null){
-				fe.signal("prev_display")
-				fe.signal("next_display")
-			}
-			else fe.signal("reload")
 			
+			try{ 
+				fe.set_display(fe.list.display_index,false,false) //TEST139
+			}catch(err){
+			
+			//OLD METHOD BEFORE THE NEW SET_DISPLAY
+				if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null){
+					fe.signal("next_display")
+					fe.signal("prev_display")
+				}
+				else if (fe.displays[ifminus].layout.tolower().find("arcadeflow") != null){
+					fe.signal("prev_display")
+					fe.signal("next_display")
+				}
+				else fe.signal("reload")
+			}
 
 			
 			// Alternative method, reloads the whole layout
