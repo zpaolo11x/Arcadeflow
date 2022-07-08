@@ -5,7 +5,6 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 /*
-
 misc.coinpusher
 misc.dogsitter
 misc.gamblingboard
