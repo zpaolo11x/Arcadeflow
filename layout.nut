@@ -25,9 +25,6 @@ multigamegamblingboard
 multigamemini-games
 multiplaycards
 multiplaymisc.
-puzzlecards
-puzzlepaint
-shooteroutline
 ttl*ball&paddlebreakout
 ttl*ball&paddlepong
 ttl*drivingdemolitionderby
