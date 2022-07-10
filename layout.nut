@@ -24,14 +24,14 @@ multigamegamblingboard
 multigamemini-games
 multiplaycards
 multiplaymisc.
-ttl*ball&paddlebreakout
-ttl*ball&paddlepong
-ttl*drivingdemolitionderby
+	ttl*ball&paddlebreakout
+	ttl*ball&paddlepong
+	ttl*drivingdemolitionderby
 	ttl*drivingmotorbike
 	ttl*drivingrace
 	ttl*drivingracetrack
-ttl*mazeshootersmall
-ttl*quizquestionsinenglish
+	ttl*mazeshootersmall
+	ttl*quizquestionsinenglish
 
 */
 
