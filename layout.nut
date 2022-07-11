@@ -4,17 +4,6 @@
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
-/*
-misc.gamblingboard
-misc.order
-misc.prediction
-misc.redemption
-multigamegambling
-multigamegamblingboard
-multigamemini-games
-multiplaycards
-*/
-
 // Load file nut
 fe.do_nut("nut_file.nut")
 

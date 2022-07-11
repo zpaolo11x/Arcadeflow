@@ -1,0 +1,8 @@
+misc.gamblingboard
+misc.order
+misc.prediction
+misc.redemption
+multigamegambling
+multigamegamblingboard
+multigamemini-games
+multiplaycards
