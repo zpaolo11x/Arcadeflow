@@ -4,4 +4,4 @@
 .gitignore export-ignore
 .travis.yml export-ignore
 asciilogo.txt export-ignore
-todo.txt
+todo.txt export-ignore
