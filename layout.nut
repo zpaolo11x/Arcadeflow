@@ -5,25 +5,14 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 /*
-misc.coinpusher
-misc.dogsitter
 misc.gamblingboard
-misc.jumpandbounce
-misc.laserdiscsimulator
-misc.multiplay
 misc.order
 misc.prediction
-misc.printclub
 misc.redemption
-misc.shootphotos
-misc.spank
-misc.unknown
-misc.versus
 multigamegambling
 multigamegamblingboard
 multigamemini-games
 multiplaycards
-multiplaymisc.
 */
 
 // Load file nut
