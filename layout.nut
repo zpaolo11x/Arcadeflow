@@ -6677,7 +6677,7 @@ function z_liststops(){
 			local rdate = z_list.gametable2[i].z_rundate.tostring()
 			if (rdate == "00000000000000") temp.push("?")
 			else {
-				temp.push( "'"+rdate.slice(2,4)+"/"+rdate.slice(4,6).tointeger()+1)
+				temp.push( "'"+rdate.slice(2,4)+"/"+(100+(rdate.slice(4,6).tointeger()+1)).tostring().slice(1,3))
 			}
 		} 
 
@@ -6685,7 +6685,7 @@ function z_liststops(){
 			local rdate = z_list.gametable2[i].z_favdate.tostring()
 			if (rdate == "00000000000000") temp.push("?")
 			else {
-				temp.push( "'"+rdate.slice(2,4)+"/"+rdate.slice(4,6).tointeger()+1)
+				temp.push( "'"+rdate.slice(2,4)+"/"+(100+(rdate.slice(4,6).tointeger()+1)).tostring().slice(1,3))
 			}
 		} 
 
