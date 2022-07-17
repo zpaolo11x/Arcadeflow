@@ -9784,6 +9784,9 @@ local keyboard_text = null
 
 function keyboard_show(text_base,entrytext,f_type,f_back,f_done){
 
+	keyboard_surface.visible = true
+	keyboard_surface.redraw = true
+
 	// Initialize keyboard data structure and functions
 	kb.text_base = text_base
 	kb.f_type = f_type
@@ -9931,6 +9934,8 @@ function keyboard_draw() {
 		}
 		row_count++
 	}
+	keyboard_surface.visible = false
+	keyboard_surface.redraw = false
 }
 
 keyboard_draw()
@@ -10923,6 +10928,8 @@ if (prf.CONTROLOVERLAY){
 }
 
 history_surface.visible = false
+history_surface.redraw = false
+
 history_surface.alpha = 0
 history_surface.set_pos(0,0)
 
@@ -11224,7 +11231,8 @@ function history_show(h_startup)
 	if (prf.CONTROLOVERLAY) history_updateoverlay()
 
 	if (h_startup) {
-		history_surface.visible=true
+		history_surface.visible = true
+		history_surface.redraw = true
 		flowT.history = startfade (flowT.history,0.05,3.0)
 		flowT.histtext = startfade (flowT.histtext,0.05,-3.0)
 		/*
@@ -11240,7 +11248,6 @@ function history_show(h_startup)
 function history_hide() {
 	tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],0.015,-5.0)
 
-	//history_surface.visible = false
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
 
@@ -12060,6 +12067,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
 	
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
+	zmenu_surface_container.redraw = zmenu_sh.surf_rt.redraw = true
 
 	local menucorrect = 0
 	if (zmenu.shown - 1 - zmenu.selected < (overlay.rows -1) / 2) menucorrect =  (overlay.rows -1) / 2 - zmenu.shown +1 + zmenu.selected
@@ -12241,6 +12249,7 @@ function zmenunavigate_down(signal){
 zmenu.xstop = 0
 
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
+zmenu_surface_container.redraw = zmenu_sh.surf_rt.redraw = false
 
 function gh_latestdata(op){
 
@@ -12985,7 +12994,7 @@ function attractkick(){
 
 	attract.start = true
 	attract.starttimer = false
-	attractitem.surface.visible = true
+	attractitem.surface.visible = attractitem.surface.redraw = true
 	attractitem.text1.visible = attractitem.text2.visible = true
 	attractitem.snap.shader = attractitem.shader_2_lottes
 
@@ -13125,7 +13134,7 @@ if (prf.AMENABLE){
 
 		attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 		attractitem.snap.shader = noshader
-		attractitem.surface.visible = false
+		attractitem.surface.visible = attractitem.surface.redraw = false
 		attractitem.text1.visible = attractitem.text2.visible = false
 		attractitem.surface.alpha = 0
 		attractitem.text1.alpha = attractitem.text2.alpha = 0
@@ -14408,6 +14417,7 @@ function resetvarsandpositions(){
 		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.zoomedvshift*1.0/UI.zoomedwidth)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
+		tilez[i].obj.redraw = false
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilesTableUpdate[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilez[i].bd_mx.alpha = tilez[i].bd_mx_alpha = 0
@@ -15069,6 +15079,7 @@ function on_transition( ttype, var0, ttime ) {
 	if (ttype == Transition.HideOverlay){
 
 		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
+		zmenu_surface_container.redraw = zmenu_sh.surf_rt.redraw = false
 
 		//overlay.listbox.width = overlay.fullwidth
 		zmenu_sh.surf_2.shader = noshader
@@ -15236,7 +15247,6 @@ local timescale = {
 
 /// On Tick ///
 function tick( tick_time ) {
-
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 	if (prf.HUECYCLE){
@@ -15774,12 +15784,24 @@ function tick( tick_time ) {
 			
 			//TEST101 ADD VISIBILITY OFF SCREEN CONTROL
 			local offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
-			if (tilez[i].obj.visible && tilez[i].offlist) tilez[i].obj.visible = false
-			else if (!tilez[i].offlist){
-				if (tilez[i].obj.visible && offscreen) tilez[i].obj.visible = false
-				if (!tilez[i].obj.visible && !offscreen) tilez[i].obj.visible = true
+			if (tilez[i].obj.visible && tilez[i].offlist) {
+				tilez[i].obj.visible = false
+				tilez[i].obj.redraw = false				
 			}
-			if (z_list.size == 0) tilez[i].obj.visible = false
+			else if (!tilez[i].offlist){
+				if (tilez[i].obj.visible && offscreen) {
+					tilez[i].obj.visible = false
+					tilez[i].obj.redraw = false
+				}
+				if (!tilez[i].obj.visible && !offscreen) {
+					tilez[i].obj.visible = true
+					tilez[i].obj.redraw = true
+				}
+			}
+			if (z_list.size == 0) {
+				tilez[i].obj.visible = false
+				tilez[i].obj.redraw = false
+			}
 			globalposnew = tilez[focusindex.new].obj.x
 		}
 
@@ -15876,6 +15898,10 @@ function tick( tick_time ) {
 
 	if (checkfade (flowT.keyboard)){
 		flowT.keyboard = fadeupdate(flowT.keyboard)
+		if (endfade (flowT.keyboard) == 0){
+			keyboard_surface.visible = false
+			keyboard_surface.redraw = false				
+		}
 		keyboard_surface.alpha = 255 * flowT.keyboard[1]
 	}	
 
@@ -15924,6 +15950,7 @@ function tick( tick_time ) {
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
 			zmenu_sh.surf_rt.visible = false
+			zmenu_sh.surf_rt.redraw = false
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
@@ -15933,6 +15960,8 @@ function tick( tick_time ) {
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
 			zmenu_surface_container.visible = false
+				zmenu_surface_container.redraw = false
+
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false		
 		}
 		overlay.sidelabel.alpha = 255 * (flowT.zmenutx[1])
@@ -16040,7 +16069,7 @@ function tick( tick_time ) {
 
 			attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 			attractitem.snap.shader = noshader
-			attractitem.surface.visible = false
+			attractitem.surface.visible = attractitem.surface.redraw = false
 			attractitem.text1.visible = attractitem.text2.visible = false
 			attract.starttimer = true
 			if(prf.AMTUNE != "") {
@@ -16121,6 +16150,7 @@ function tick( tick_time ) {
 			shadowsurf_rt.shader = noshader
 			hist_text_surf.shader = noshader
 			history_surface.visible = false
+			history_surface.redraw = false
 		}
 
 		history_surface.alpha = 255 * flowT.history[1]
