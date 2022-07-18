@@ -15973,7 +15973,7 @@ function tick( tick_time ) {
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
 			zmenu_sh.surf_rt.visible = false
-			zmenu_sh.surf_rt.redraw = false
+			zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
@@ -15983,7 +15983,7 @@ function tick( tick_time ) {
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
 			zmenu_surface_container.visible = false
-			zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+			zmenu_surface_container.redraw = zmenu_surface.redraw = false
 
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false		
 		}
