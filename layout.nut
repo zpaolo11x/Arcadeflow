@@ -7464,6 +7464,7 @@ frost.surf_rt.set_pos(overlay.x,overlay.y,overlay.w,overlay.h)
 
 frost.surf_rt.alpha = 0
 frost.surf_rt.visible = false
+frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 
 shader_fr.alpha.set_texture_param( "texture",frost.surf_rt)
 shader_fr.alpha.set_param ( "alpha",0.0 )
@@ -8145,6 +8146,8 @@ for (local i = 0; i < tiles.total; i++ ) {
 		txshz = txshz
 		txbox = txbox
 		
+		surfs = [gradsurf_rt, gradsurf_1, logosurf_rt, logosurf_1]
+
 		offset = 0
 		index = 0
 
@@ -8161,6 +8164,12 @@ for (local i = 0; i < tiles.total; i++ ) {
 	})
 }
 
+function tile_redraw(i,status){
+	tilez[i].obj.redraw = status
+	foreach (item in tilez[i].surfs){
+		item.redraw = status
+	}
+}
 
 impulse2.flow = 0.5
 
@@ -8768,12 +8777,14 @@ function frostshaders (turnon){
 	if (turnon){
 	//	frost.top.shader = flipshader
 		frost.surf_rt.visible = true
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
 		frost.surf_1.shader = shader_fr.h
 		frost.pic.shader = shader_fr.v
 	}
 	else{
 	//	frost.top.shader = noshader
 		frost.surf_rt.visible = false
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 		frost.surf_1.shader = noshader
 		frost.pic.shader = noshader
 	}
@@ -10089,6 +10100,7 @@ function add_new_tag(){
 /// History Page ///
 
 
+
 local hist = {
 	direction = 0,
 	split_h = 0.55,
@@ -10927,11 +10939,7 @@ if (prf.CONTROLOVERLAY){
 	}
 }
 
-history_surface.visible = false
-history_surface.redraw = false
 
-history_surface.alpha = 0
-history_surface.set_pos(0,0)
 
 function history_updateoverlay(){
 	
@@ -11232,7 +11240,7 @@ function history_show(h_startup)
 
 	if (h_startup) {
 		history_surface.visible = true
-		history_surface.redraw = true
+		history_redraw(true)
 		flowT.history = startfade (flowT.history,0.05,3.0)
 		flowT.histtext = startfade (flowT.histtext,0.05,-3.0)
 		/*
@@ -11280,7 +11288,21 @@ function history_exit () {
 	history_hide()
 }
 
-// Fade helper functions
+function history_redraw(status){
+	history_surface.redraw = status
+	hist_text_surf.redraw = status
+	shadowsurf_rt.redraw = status
+	shadowsurf_2.redraw = status
+	shadowsurf_1.redraw = status
+	hist_screensurf.redraw = status
+	hist_over.surface.redraw = status
+}
+
+history_surface.visible = false
+history_redraw(false)
+
+history_surface.alpha = 0
+history_surface.set_pos(0,0)
 
 /// Fade mechanics routines ///
 
@@ -12067,7 +12089,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
 	
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
-	zmenu_surface_container.redraw = zmenu_sh.surf_rt.redraw = true
+	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 
 	local menucorrect = 0
 	if (zmenu.shown - 1 - zmenu.selected < (overlay.rows -1) / 2) menucorrect =  (overlay.rows -1) / 2 - zmenu.shown +1 + zmenu.selected
@@ -12249,7 +12271,7 @@ function zmenunavigate_down(signal){
 zmenu.xstop = 0
 
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
-zmenu_surface_container.redraw = zmenu_sh.surf_rt.redraw = false
+zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 
 function gh_latestdata(op){
 
@@ -14417,7 +14439,7 @@ function resetvarsandpositions(){
 		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.zoomedvshift*1.0/UI.zoomedwidth)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
-		tilez[i].obj.redraw = false
+		tile_redraw(i,false)
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilesTableUpdate[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilez[i].bd_mx.alpha = tilez[i].bd_mx_alpha = 0
@@ -14772,6 +14794,7 @@ function z_listrefreshlabels(){
 }
 
 
+
 function repeatsignal (sig,counter){
 	if (fe.get_input_state(sig)==false) {
 		count.countstep = 0
@@ -15079,7 +15102,7 @@ function on_transition( ttype, var0, ttime ) {
 	if (ttype == Transition.HideOverlay){
 
 		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
-		zmenu_surface_container.redraw = zmenu_sh.surf_rt.redraw = false
+		zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 
 		//overlay.listbox.width = overlay.fullwidth
 		zmenu_sh.surf_2.shader = noshader
@@ -15786,21 +15809,21 @@ function tick( tick_time ) {
 			local offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
-				tilez[i].obj.redraw = false				
+				tile_redraw(i,false)
 			}
 			else if (!tilez[i].offlist){
 				if (tilez[i].obj.visible && offscreen) {
 					tilez[i].obj.visible = false
-					tilez[i].obj.redraw = false
+					tile_redraw(i,false)
 				}
 				if (!tilez[i].obj.visible && !offscreen) {
 					tilez[i].obj.visible = true
-					tilez[i].obj.redraw = true
+					tile_redraw(i,true)
 				}
 			}
 			if (z_list.size == 0) {
 				tilez[i].obj.visible = false
-				tilez[i].obj.redraw = false
+				tile_redraw(i,false)
 			}
 			globalposnew = tilez[focusindex.new].obj.x
 		}
@@ -15960,7 +15983,7 @@ function tick( tick_time ) {
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
 			zmenu_surface_container.visible = false
-				zmenu_surface_container.redraw = false
+			zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false		
 		}
@@ -16150,7 +16173,7 @@ function tick( tick_time ) {
 			shadowsurf_rt.shader = noshader
 			hist_text_surf.shader = noshader
 			history_surface.visible = false
-			history_surface.redraw = false
+			history_redraw(false)
 		}
 
 		history_surface.alpha = 255 * flowT.history[1]
