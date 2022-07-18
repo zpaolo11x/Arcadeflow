@@ -8369,7 +8369,7 @@ displayname.word_wrap = true
 displayname.alpha = 0
 displayname.font = uifonts.gui
 displayname.align = Align.MiddleCentre
-
+displaynamesurf.surf.redraw = false
 
 // fading letter
 local letterobjsurf = {
@@ -8388,6 +8388,7 @@ letterobj.font = uifonts.gui
 letterobj.set_rgb(themeT.themelettercolor,themeT.themelettercolor,themeT.themelettercolor)
 letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
+letterobjsurf.surf.redraw = false
 
 local blsize = {
 	mini = floor (45 * UI.scalerate + 0.5),
@@ -15033,6 +15034,7 @@ function on_transition( ttype, var0, ttime ) {
 		displayname.msg = fe.filters[fe.list.filter_index].name
 
 		flowT.alphadisplay = startfade (flowT.alphadisplay,0.04,-2.0)
+		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0,0.0,0.0,0.0,0.0]		
 		flowT.zoomdisplay = startfade (flowT.zoomdisplay,0.015,-2.0)
 	}
@@ -15043,6 +15045,7 @@ function on_transition( ttype, var0, ttime ) {
 		displayname.msg = displaynamelogo(0)
 
 		flowT.alphadisplay = startfade (flowT.alphadisplay,0.04,-2.0)
+		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0,0.0,0.0,0.0,0.0]		
 		flowT.zoomdisplay = startfade (flowT.zoomdisplay,0.015,-2.0)
 
@@ -15168,6 +15171,7 @@ function on_transition( ttype, var0, ttime ) {
 			// Update the letter item, checking if it can use a system font
 			letterobj.msg = systemfont (l2,false)
 			flowT.alphaletter = startfade (flowT.alphaletter,0.06,-2.0)
+			letterobjsurf.surf.redraw = true
 			flowT.zoomletter = [0.0,0.0,0.0,0.0,0.0]		
 			flowT.zoomletter = startfade (flowT.zoomletter,0.03,-2.0)
 		}
@@ -15609,6 +15613,9 @@ function tick( tick_time ) {
 		if (endfade(flowT.alphaletter) == 1.0) {
 			flowT.alphaletter = startfade (flowT.alphaletter,-0.06,2.0)		
 		}
+		if (endfade(flowT.alphaletter) == 0.0) {
+			letterobjsurf.surf.redraw = false
+		}
 		letterobj.alpha = 255 * flowT.alphaletter[1]
 	}
 
@@ -15624,6 +15631,9 @@ function tick( tick_time ) {
 		flowT.alphadisplay = fadeupdate(flowT.alphadisplay)
 		if ( (endfade(flowT.alphadisplay) == 1.0) ) {
 			flowT.alphadisplay = startfade (flowT.alphadisplay,-0.04,2.0)		
+		} 
+		if ( (endfade(flowT.alphadisplay) == 0.0) ) {
+			displaynamesurf.surf.redraw = false		
 		} 
 		displayname.alpha  = 255 * flowT.alphadisplay[1]
 	}
