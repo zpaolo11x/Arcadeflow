@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 13.9 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.0 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,13 +10,8 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 13.9 #
+## What's new in v 14.0 #
 
-- Added support for new AM+ display loading
-- Category collection not shown if there's only one display
-- Added an option to make AF compatible with master romlist setups
-- Reorganised options menu main page
-- Fixed issue when snaps are not defined
 
 ## Emulator system identifier #
 
@@ -300,14 +295,14 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
 - 'Import only available roms' : Import entrief from the games list only if the rom file is actually available
 
-❗ ROMLIST MANAGEMENT ❗
+ROMLIST MANAGEMENT
 Manage romlists and collections
 
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
 - 'Reset current romlist' : Rescan the romlist erasing and regenerating all romlist data
 - 'Reset last played' : Remove all last played data from the current romlist
-- '❗ Enable Master Romlist ❗' : Turn this on and set master romlist path so AF can manage it
-- '❗ Master Romlist Path ❗' : If you are using a master romlist, locate it here to enable AF master romlist optimisation.
+- 'Enable Master Romlist' : Turn this on and set master romlist path so AF can manage it
+- 'Master Romlist Path' : If you are using a master romlist, locate it here to enable AF master romlist optimisation.
 - 'Export to gamelist xml' : You can export your romlist in the XML format used by EmulationStation
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
@@ -348,6 +343,14 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v13.9*
+
+- Added support for new AM+ display loading
+- Category collection not shown if there's only one display
+- Added an option to make AF compatible with master romlist setups
+- Reorganised options menu main page
+- Fixed issue when snaps are not defined
 
 *v13.8*
 
