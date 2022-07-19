@@ -12,6 +12,8 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 
 ## What's new in v 14.0 #
 
+- Improved performance by optimizing surface redraw
+- Fixed issue with date display
 
 ## Emulator system identifier #
 
