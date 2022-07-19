@@ -7464,6 +7464,7 @@ frost.surf_rt.set_pos(overlay.x,overlay.y,overlay.w,overlay.h)
 
 frost.surf_rt.alpha = 0
 frost.surf_rt.visible = false
+frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 
 shader_fr.alpha.set_texture_param( "texture",frost.surf_rt)
 shader_fr.alpha.set_param ( "alpha",0.0 )
@@ -8145,6 +8146,8 @@ for (local i = 0; i < tiles.total; i++ ) {
 		txshz = txshz
 		txbox = txbox
 		
+		surfs = [gradsurf_rt, gradsurf_1, logosurf_rt, logosurf_1]
+
 		offset = 0
 		index = 0
 
@@ -8161,6 +8164,12 @@ for (local i = 0; i < tiles.total; i++ ) {
 	})
 }
 
+function tile_redraw(i,status){
+	tilez[i].obj.redraw = status
+	foreach (item in tilez[i].surfs){
+		item.redraw = status
+	}
+}
 
 impulse2.flow = 0.5
 
@@ -8360,7 +8369,7 @@ displayname.word_wrap = true
 displayname.alpha = 0
 displayname.font = uifonts.gui
 displayname.align = Align.MiddleCentre
-
+displaynamesurf.surf.redraw = false
 
 // fading letter
 local letterobjsurf = {
@@ -8379,6 +8388,7 @@ letterobj.font = uifonts.gui
 letterobj.set_rgb(themeT.themelettercolor,themeT.themelettercolor,themeT.themelettercolor)
 letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
+letterobjsurf.surf.redraw = false
 
 local blsize = {
 	mini = floor (45 * UI.scalerate + 0.5),
@@ -8768,12 +8778,14 @@ function frostshaders (turnon){
 	if (turnon){
 	//	frost.top.shader = flipshader
 		frost.surf_rt.visible = true
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
 		frost.surf_1.shader = shader_fr.h
 		frost.pic.shader = shader_fr.v
 	}
 	else{
 	//	frost.top.shader = noshader
 		frost.surf_rt.visible = false
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 		frost.surf_1.shader = noshader
 		frost.pic.shader = noshader
 	}
@@ -9784,6 +9796,9 @@ local keyboard_text = null
 
 function keyboard_show(text_base,entrytext,f_type,f_back,f_done){
 
+	keyboard_surface.visible = true
+	keyboard_surface.redraw = true
+
 	// Initialize keyboard data structure and functions
 	kb.text_base = text_base
 	kb.f_type = f_type
@@ -9931,6 +9946,8 @@ function keyboard_draw() {
 		}
 		row_count++
 	}
+	keyboard_surface.visible = false
+	keyboard_surface.redraw = false
 }
 
 keyboard_draw()
@@ -10082,6 +10099,7 @@ function add_new_tag(){
 
 
 /// History Page ///
+
 
 
 local hist = {
@@ -10922,9 +10940,7 @@ if (prf.CONTROLOVERLAY){
 	}
 }
 
-history_surface.visible = false
-history_surface.alpha = 0
-history_surface.set_pos(0,0)
+
 
 function history_updateoverlay(){
 	
@@ -11224,7 +11240,8 @@ function history_show(h_startup)
 	if (prf.CONTROLOVERLAY) history_updateoverlay()
 
 	if (h_startup) {
-		history_surface.visible=true
+		history_surface.visible = true
+		history_redraw(true)
 		flowT.history = startfade (flowT.history,0.05,3.0)
 		flowT.histtext = startfade (flowT.histtext,0.05,-3.0)
 		/*
@@ -11240,7 +11257,6 @@ function history_show(h_startup)
 function history_hide() {
 	tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],0.015,-5.0)
 
-	//history_surface.visible = false
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
 
@@ -11273,7 +11289,21 @@ function history_exit () {
 	history_hide()
 }
 
-// Fade helper functions
+function history_redraw(status){
+	history_surface.redraw = status
+	hist_text_surf.redraw = status
+	shadowsurf_rt.redraw = status
+	shadowsurf_2.redraw = status
+	shadowsurf_1.redraw = status
+	hist_screensurf.redraw = status
+	hist_over.surface.redraw = status
+}
+
+history_surface.visible = false
+history_redraw(false)
+
+history_surface.alpha = 0
+history_surface.set_pos(0,0)
 
 /// Fade mechanics routines ///
 
@@ -12060,6 +12090,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
 	
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
+	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 
 	local menucorrect = 0
 	if (zmenu.shown - 1 - zmenu.selected < (overlay.rows -1) / 2) menucorrect =  (overlay.rows -1) / 2 - zmenu.shown +1 + zmenu.selected
@@ -12241,6 +12272,7 @@ function zmenunavigate_down(signal){
 zmenu.xstop = 0
 
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
+zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 
 function gh_latestdata(op){
 
@@ -12985,7 +13017,7 @@ function attractkick(){
 
 	attract.start = true
 	attract.starttimer = false
-	attractitem.surface.visible = true
+	attractitem.surface.visible = attractitem.surface.redraw = true
 	attractitem.text1.visible = attractitem.text2.visible = true
 	attractitem.snap.shader = attractitem.shader_2_lottes
 
@@ -13125,7 +13157,7 @@ if (prf.AMENABLE){
 
 		attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 		attractitem.snap.shader = noshader
-		attractitem.surface.visible = false
+		attractitem.surface.visible = attractitem.surface.redraw = false
 		attractitem.text1.visible = attractitem.text2.visible = false
 		attractitem.surface.alpha = 0
 		attractitem.text1.alpha = attractitem.text2.alpha = 0
@@ -14408,6 +14440,7 @@ function resetvarsandpositions(){
 		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.zoomedvshift*1.0/UI.zoomedwidth)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
+		tile_redraw(i,false)
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilesTableUpdate[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilez[i].bd_mx.alpha = tilez[i].bd_mx_alpha = 0
@@ -14762,6 +14795,7 @@ function z_listrefreshlabels(){
 }
 
 
+
 function repeatsignal (sig,counter){
 	if (fe.get_input_state(sig)==false) {
 		count.countstep = 0
@@ -15000,6 +15034,7 @@ function on_transition( ttype, var0, ttime ) {
 		displayname.msg = fe.filters[fe.list.filter_index].name
 
 		flowT.alphadisplay = startfade (flowT.alphadisplay,0.04,-2.0)
+		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0,0.0,0.0,0.0,0.0]		
 		flowT.zoomdisplay = startfade (flowT.zoomdisplay,0.015,-2.0)
 	}
@@ -15010,6 +15045,7 @@ function on_transition( ttype, var0, ttime ) {
 		displayname.msg = displaynamelogo(0)
 
 		flowT.alphadisplay = startfade (flowT.alphadisplay,0.04,-2.0)
+		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0,0.0,0.0,0.0,0.0]		
 		flowT.zoomdisplay = startfade (flowT.zoomdisplay,0.015,-2.0)
 
@@ -15069,6 +15105,7 @@ function on_transition( ttype, var0, ttime ) {
 	if (ttype == Transition.HideOverlay){
 
 		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
+		zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 
 		//overlay.listbox.width = overlay.fullwidth
 		zmenu_sh.surf_2.shader = noshader
@@ -15134,6 +15171,7 @@ function on_transition( ttype, var0, ttime ) {
 			// Update the letter item, checking if it can use a system font
 			letterobj.msg = systemfont (l2,false)
 			flowT.alphaletter = startfade (flowT.alphaletter,0.06,-2.0)
+			letterobjsurf.surf.redraw = true
 			flowT.zoomletter = [0.0,0.0,0.0,0.0,0.0]		
 			flowT.zoomletter = startfade (flowT.zoomletter,0.03,-2.0)
 		}
@@ -15236,7 +15274,6 @@ local timescale = {
 
 /// On Tick ///
 function tick( tick_time ) {
-
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 	if (prf.HUECYCLE){
@@ -15576,6 +15613,9 @@ function tick( tick_time ) {
 		if (endfade(flowT.alphaletter) == 1.0) {
 			flowT.alphaletter = startfade (flowT.alphaletter,-0.06,2.0)		
 		}
+		if (endfade(flowT.alphaletter) == 0.0) {
+			letterobjsurf.surf.redraw = false
+		}
 		letterobj.alpha = 255 * flowT.alphaletter[1]
 	}
 
@@ -15591,6 +15631,9 @@ function tick( tick_time ) {
 		flowT.alphadisplay = fadeupdate(flowT.alphadisplay)
 		if ( (endfade(flowT.alphadisplay) == 1.0) ) {
 			flowT.alphadisplay = startfade (flowT.alphadisplay,-0.04,2.0)		
+		} 
+		if ( (endfade(flowT.alphadisplay) == 0.0) ) {
+			displaynamesurf.surf.redraw = false		
 		} 
 		displayname.alpha  = 255 * flowT.alphadisplay[1]
 	}
@@ -15774,12 +15817,24 @@ function tick( tick_time ) {
 			
 			//TEST101 ADD VISIBILITY OFF SCREEN CONTROL
 			local offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
-			if (tilez[i].obj.visible && tilez[i].offlist) tilez[i].obj.visible = false
-			else if (!tilez[i].offlist){
-				if (tilez[i].obj.visible && offscreen) tilez[i].obj.visible = false
-				if (!tilez[i].obj.visible && !offscreen) tilez[i].obj.visible = true
+			if (tilez[i].obj.visible && tilez[i].offlist) {
+				tilez[i].obj.visible = false
+				tile_redraw(i,false)
 			}
-			if (z_list.size == 0) tilez[i].obj.visible = false
+			else if (!tilez[i].offlist){
+				if (tilez[i].obj.visible && offscreen) {
+					tilez[i].obj.visible = false
+					tile_redraw(i,false)
+				}
+				if (!tilez[i].obj.visible && !offscreen) {
+					tilez[i].obj.visible = true
+					tile_redraw(i,true)
+				}
+			}
+			if (z_list.size == 0) {
+				tilez[i].obj.visible = false
+				tile_redraw(i,false)
+			}
 			globalposnew = tilez[focusindex.new].obj.x
 		}
 
@@ -15876,6 +15931,10 @@ function tick( tick_time ) {
 
 	if (checkfade (flowT.keyboard)){
 		flowT.keyboard = fadeupdate(flowT.keyboard)
+		if (endfade (flowT.keyboard) == 0){
+			keyboard_surface.visible = false
+			keyboard_surface.redraw = false				
+		}
 		keyboard_surface.alpha = 255 * flowT.keyboard[1]
 	}	
 
@@ -15924,6 +15983,7 @@ function tick( tick_time ) {
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
 			zmenu_sh.surf_rt.visible = false
+			zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
@@ -15933,6 +15993,8 @@ function tick( tick_time ) {
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
 			zmenu_surface_container.visible = false
+			zmenu_surface_container.redraw = zmenu_surface.redraw = false
+
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false		
 		}
 		overlay.sidelabel.alpha = 255 * (flowT.zmenutx[1])
@@ -16040,7 +16102,7 @@ function tick( tick_time ) {
 
 			attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 			attractitem.snap.shader = noshader
-			attractitem.surface.visible = false
+			attractitem.surface.visible = attractitem.surface.redraw = false
 			attractitem.text1.visible = attractitem.text2.visible = false
 			attract.starttimer = true
 			if(prf.AMTUNE != "") {
@@ -16121,6 +16183,7 @@ function tick( tick_time ) {
 			shadowsurf_rt.shader = noshader
 			hist_text_surf.shader = noshader
 			history_surface.visible = false
+			history_redraw(false)
 		}
 
 		history_surface.alpha = 255 * flowT.history[1]
