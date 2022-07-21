@@ -4197,19 +4197,53 @@ function portromlist(romlist){
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
 	local listfields = []
+	local tempfields = []
+	local listline2 = ""
+	local tempchar = ""
 	while (!listfile.eos()){
+		listline2 = ""
+		tempchar = ""
+
 		listline = listfile.read_line()
 		if ((listline == "") || (listline[0].tochar()=="#")){
 			print("")
 			continue
 		}
+		//🧱
+				testpr("LL1:"+listline + "\n")
+
+		listfields = []
+		if ((listline[0].tochar() == ap)) {
+			local i = 0
+			testpr(i+" A\n")
+			while (i < listline.len()){
+				testpr(i+" B\n")
+				if (listline[i].tochar() == ap){
+					testpr(i+" C\n")
+					i++
+					while (listline[i].tochar() != ap){
+						tempchar = listline[i].tochar()
+						listline2 = listline2 + (tempchar == ";" ? "🧱" : tempchar)
+						i++
+					}
+					i++
+				}
+				else {
+					testpr(i+" D\n")
+					listline2 = listline2 + listline[i].tochar()
+					i++
+				}
+			}
+			testpr("LL2:"+listline2 + "\n")
+		}
+		if (listline2 != "") listline = listline2
 		listfields = split_complete(listline,";")
-		listfields[0] = strip(listfields[0])
+		listfields[0] = strip(subst_replace(listfields[0],"🧱",";"))
 		if(listfields[2] != romlist) continue
 		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
 		cleanromlist[listfields[0]] <- {}
 		cleanromlist[listfields[0]] = clone (z_fields1)
-		cleanromlist[listfields[0]].z_title = strip(subst_replace(listfields[1],ap,"'"))
+		cleanromlist[listfields[0]].z_title = strip(subst_replace(subst_replace(listfields[1],ap,"'"),"🧱",";"))
 		cleanromlist[listfields[0]].z_year = listfields[4]
 		cleanromlist[listfields[0]].z_manufacturer = subst_replace(listfields[5],ap,"'")
 		cleanromlist[listfields[0]].z_category = listfields[6]
