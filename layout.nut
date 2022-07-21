@@ -17542,7 +17542,10 @@ function on_signal( sig ){
 
 				case prf.OVERMENUBUTTON:
 					if (z_list.size == 0) return true
-					if (z_list.gametable[z_list.index].z_system == "") return false
+					if (z_list.gametable[z_list.index].z_system == "") {
+						debugpr("No system defined, is this a display link?\n")
+						return false
+					}
 					overmenu_show()
 				return true
 
