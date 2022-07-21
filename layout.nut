@@ -4210,16 +4210,12 @@ function portromlist(romlist){
 			continue
 		}
 		//🧱
-				testpr("LL1:"+listline + "\n")
 
 		listfields = []
 		if ((listline[0].tochar() == ap)) {
 			local i = 0
-			testpr(i+" A\n")
 			while (i < listline.len()){
-				testpr(i+" B\n")
 				if (listline[i].tochar() == ap){
-					testpr(i+" C\n")
 					i++
 					while (listline[i].tochar() != ap){
 						tempchar = listline[i].tochar()
@@ -4229,12 +4225,10 @@ function portromlist(romlist){
 					i++
 				}
 				else {
-					testpr(i+" D\n")
 					listline2 = listline2 + listline[i].tochar()
 					i++
 				}
 			}
-			testpr("LL2:"+listline2 + "\n")
 		}
 		if (listline2 != "") listline = listline2
 		listfields = split_complete(listline,";")
