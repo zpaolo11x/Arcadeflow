@@ -4080,6 +4080,42 @@ function regionsfromfile(title){
 	return (filenameregions)
 }
 
+function splitlistline(listline){
+	local i = 0
+	local listline2 = ""
+	local tempchar = ""
+	local listfields = []
+
+	if ((listline[0].tochar() == ap)) {
+		while (i < listline.len()){
+			if (listline[i].tochar() == ap){
+				i++
+				while (listline[i].tochar() != ap){
+					tempchar = listline[i].tochar()
+					listline2 = listline2 + (tempchar == ";" ? "🧱" : tempchar)
+					i++
+				}
+				i++
+			}
+			else {
+				listline2 = listline2 + listline[i].tochar()
+				i++
+			}
+		}
+	}
+	if (listline2 != "") listline = listline2
+
+	listfields = split_complete(listline,";")
+
+	if (listline2 != ""){
+		foreach (i, item in listfields){
+			listfields[i] = subst_replace(item,"🧱",";")
+		}
+	}
+
+	return listfields
+}
+
 // This function updates the AM romlist using attract command line options
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
@@ -4101,7 +4137,7 @@ function refreshromlist(romlist, fulllist){
 
 	while (!listfile.eos()){
 		listline = listfile.read_line()
-		listfields = split_complete(listline,";")
+		listfields = splitlistline(listline)
 		gamename = listfields[0]
 
 		if (fulllist || !z_list.db1[romlist].rawin(gamename)){
@@ -4197,47 +4233,22 @@ function portromlist(romlist){
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
 	local listfields = []
-	local tempfields = []
-	local listline2 = ""
-	local tempchar = ""
 	while (!listfile.eos()){
-		listline2 = ""
-		tempchar = ""
 
 		listline = listfile.read_line()
 		if ((listline == "") || (listline[0].tochar()=="#")){
 			print("")
 			continue
 		}
-		//🧱
 
-		listfields = []
-		if ((listline[0].tochar() == ap)) {
-			local i = 0
-			while (i < listline.len()){
-				if (listline[i].tochar() == ap){
-					i++
-					while (listline[i].tochar() != ap){
-						tempchar = listline[i].tochar()
-						listline2 = listline2 + (tempchar == ";" ? "🧱" : tempchar)
-						i++
-					}
-					i++
-				}
-				else {
-					listline2 = listline2 + listline[i].tochar()
-					i++
-				}
-			}
-		}
-		if (listline2 != "") listline = listline2
-		listfields = split_complete(listline,";")
-		listfields[0] = strip(subst_replace(listfields[0],"🧱",";"))
+		listfields = splitlistline(listline)
+
+		listfields[0] = strip(listfields[0])
 		if(listfields[2] != romlist) continue
 		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
 		cleanromlist[listfields[0]] <- {}
 		cleanromlist[listfields[0]] = clone (z_fields1)
-		cleanromlist[listfields[0]].z_title = strip(subst_replace(subst_replace(listfields[1],ap,"'"),"🧱",";"))
+		cleanromlist[listfields[0]].z_title = strip(subst_replace(listfields[1],ap,"'"))
 		cleanromlist[listfields[0]].z_year = listfields[4]
 		cleanromlist[listfields[0]].z_manufacturer = subst_replace(listfields[5],ap,"'")
 		cleanromlist[listfields[0]].z_category = listfields[6]
