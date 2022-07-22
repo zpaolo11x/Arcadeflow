@@ -4149,42 +4149,6 @@ function splitlistline(str_in){
 
 }
 
-function splitlistline_OLD(listline){
-	local i = 0
-	local listline2 = ""
-	local tempchar = ""
-	local listfields = []
-
-	if ((listline[0].tochar() == ap)) {
-		while (i < listline.len()){
-			if (listline[i].tochar() == ap){
-				i++
-				while (listline[i].tochar() != ap){
-					tempchar = listline[i].tochar()
-					listline2 = listline2 + (tempchar == ";" ? "🧱" : tempchar)
-					i++
-				}
-				i++
-			}
-			else {
-				listline2 = listline2 + listline[i].tochar()
-				i++
-			}
-		}
-	}
-	if (listline2 != "") listline = listline2
-
-	listfields = split_complete(listline,";")
-
-	if (listline2 != ""){
-		foreach (i, item in listfields){
-			listfields[i] = subst_replace(item,"🧱",";")
-		}
-	}
-
-	return listfields
-}
-
 // This function updates the AM romlist using attract command line options
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
@@ -11646,7 +11610,9 @@ function update_allgames_collections(verbose, tempprf){
 				print("")
 				continue
 			}
-			listfields = split_complete(listline,";")
+
+			listfields = splitlistline(listline)
+
 			foreach (item, val in z_af_collections.tab){
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname}catch (err){sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)){
