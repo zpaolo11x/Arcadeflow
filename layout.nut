@@ -4080,7 +4080,76 @@ function regionsfromfile(title){
 	return (filenameregions)
 }
 
-function splitlistline(listline){
+function splitlistline(str_in){
+
+	local intoken = false
+	local i = 0
+	local str_char = ""
+	local str_len = str_in.len()
+	local str_out = ""
+	local listfields = []
+
+	while (i < str_len){
+		str_char = str_in[i].tochar()
+		if ((str_char == ";") && (intoken)){
+			str_out = str_out + "🧱"
+			i++
+			continue
+		}
+
+		if ((str_char == ap) && (intoken)) {
+			if (i == str_len-1) {
+				intoken = false
+				i++
+				continue
+			}
+			else if(str_in[i+1].tochar()==";"){
+				intoken = false
+				i++
+				continue
+			}
+			else {
+				str_out = str_out + str_char
+				i++
+				continue
+			}
+		}
+
+		if ((str_char == ap) && (i == 0)) {
+			intoken = true
+			i++
+			continue
+		}
+
+		if ((str_char == ap) && (!intoken)){
+			if (str_in[i-1].tochar() == ";") {
+				intoken = true
+				i++
+				continue
+			}
+			else {
+				str_out = str_out + str_char
+				i++
+				continue
+			}
+		}
+
+		str_out = str_out + str_char
+		i++
+	}
+
+	listfields = split_complete(str_out,";")
+
+	foreach (i, item in listfields){
+		listfields[i] = subst_replace(item,"🧱",";")
+	}
+
+
+	return listfields
+
+}
+
+function splitlistline_OLD(listline){
 	local i = 0
 	local listline2 = ""
 	local tempchar = ""
