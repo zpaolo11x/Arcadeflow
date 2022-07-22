@@ -4080,6 +4080,75 @@ function regionsfromfile(title){
 	return (filenameregions)
 }
 
+function splitlistline(str_in){
+
+	local intoken = false
+	local i = 0
+	local str_char = ""
+	local str_len = str_in.len()
+	local str_out = ""
+	local listfields = []
+
+	while (i < str_len){
+		str_char = str_in[i].tochar()
+		if ((str_char == ";") && (intoken)){
+			str_out = str_out + "🧱"
+			i++
+			continue
+		}
+
+		if ((str_char == ap) && (intoken)) {
+			if (i == str_len-1) {
+				intoken = false
+				i++
+				continue
+			}
+			else if(str_in[i+1].tochar()==";"){
+				intoken = false
+				i++
+				continue
+			}
+			else {
+				str_out = str_out + str_char
+				i++
+				continue
+			}
+		}
+
+		if ((str_char == ap) && (i == 0)) {
+			intoken = true
+			i++
+			continue
+		}
+
+		if ((str_char == ap) && (!intoken)){
+			if (str_in[i-1].tochar() == ";") {
+				intoken = true
+				i++
+				continue
+			}
+			else {
+				str_out = str_out + str_char
+				i++
+				continue
+			}
+		}
+
+		str_out = str_out + str_char
+		i++
+	}
+
+	listfields = split_complete(str_out,";")
+
+	foreach (i, item in listfields){
+		listfields[i] = subst_replace(item,"🧱",";")
+	}
+
+
+	return listfields
+
+}
+
 // This function updates the AM romlist using attract command line options
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
@@ -4101,7 +4170,7 @@ function refreshromlist(romlist, fulllist){
 
 	while (!listfile.eos()){
 		listline = listfile.read_line()
-		listfields = split_complete(listline,";")
+		listfields = splitlistline(listline)
 		gamename = listfields[0]
 
 		if (fulllist || !z_list.db1[romlist].rawin(gamename)){
@@ -4198,12 +4267,15 @@ function portromlist(romlist){
 	local listline = listfile.read_line() //skip beginning headers
 	local listfields = []
 	while (!listfile.eos()){
+
 		listline = listfile.read_line()
 		if ((listline == "") || (listline[0].tochar()=="#")){
 			print("")
 			continue
 		}
-		listfields = split_complete(listline,";")
+
+		listfields = splitlistline(listline)
+
 		listfields[0] = strip(listfields[0])
 		if(listfields[2] != romlist) continue
 		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
@@ -11538,7 +11610,9 @@ function update_allgames_collections(verbose, tempprf){
 				print("")
 				continue
 			}
-			listfields = split_complete(listline,";")
+
+			listfields = splitlistline(listline)
+
 			foreach (item, val in z_af_collections.tab){
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname}catch (err){sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)){
