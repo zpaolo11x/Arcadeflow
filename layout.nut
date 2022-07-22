@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
+	timer = true
 	timetable = {}
 }
 
@@ -6610,7 +6610,7 @@ function nameclean (s){
 		else if (s.find("Vs. ") == 0) s = s.slice(4,s.len())
 		else if (s.find("Vs ") == 0) s = s.slice(3,s.len())
 	}
-	return s
+	return char_replace(s,":"," ")
 }
 
 function sortclean (s){
