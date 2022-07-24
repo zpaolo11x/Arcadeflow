@@ -10191,6 +10191,7 @@ function add_new_tag(){
 		z_list.boot2[fe.list.index].z_tags.push (keyboard_entrytext)
 		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
 
+		z_list.tagstableglobal.rawset(keyboard_entrytext,0)
 		z_updatetagstable()
 
 		mfz_build(true)
