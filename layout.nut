@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -3563,6 +3563,7 @@ local z_list = {
 	reverse = false
 	layoutstart = false
 	tagstable = {}
+	tagstableglobal = {}
 	favsarray = []
 
 	rundatetable = {}
@@ -4735,6 +4736,7 @@ z_list.allromlists = allromlists()
 // listcreate is run
 
 function z_updatetagstable(){
+	testpr("UPDATETAGSTABLE\n")
 	// Clear the tags table
 	z_list.tagstable = {}
 
@@ -6420,6 +6422,13 @@ function getallgamesdb(logopic){
 				}
 				z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
 				z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
+
+				// Build global tags table
+				foreach (id, item in z_list.db2[itemname]){
+					foreach (id2, item2 in item.z_tags){
+						z_list.tagstableglobal.rawset(item2,0)
+					}
+				}
 			}
 		}
 	}
@@ -10079,7 +10088,8 @@ function tags_menu(){
 
 	local tagsarray = []
 	local tagstatus = []
-	foreach (item, array in z_list.tagstable) {
+	local tagsnotes = []
+	foreach (item, array in z_list.tagstableglobal) {
 		//if ((item != "COMPLETED") && (item != "HIDDEN")) {
 			tagsarray.push(item)
 			tagstatus.push(0)
@@ -10087,22 +10097,38 @@ function tags_menu(){
 	}
 	tagsarray.sort (@(a,b) a.tolower()<=>b.tolower())
 
+	foreach (i, item in tagsarray){
+		tagsnotes.push(z_list.tagstable.rawin(item) ? "" : "None")
+	}
+
+	tagsarray.insert (0,"")
+	tagstatus.insert (0,-1)
+	tagsnotes.insert (0,"")
+
 	tagsarray.insert (0,"HIDDEN")
 	tagstatus.insert (0, z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)
+	tagsnotes.insert (0,"")
 	tagsarray.insert (0,"COMPLETED")
 	tagstatus.insert (0,z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a)
+	tagsnotes.insert (0,"")
 
 
-	for (local i = 2 ; i < tagsarray.len() ; i++){
+	for (local i = 3 ; i < tagsarray.len() ; i++){
 		tagstatus[i] = (z_list.gametable2[z_list.index].z_tags.find(tagsarray[i]) == null) ? 0xea0a : 0xea0b
 	}
 
+	tagsarray.push ("")
+	tagstatus.push (-1)
+	tagsnotes.push ("")
+
 	tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",AF.LNG) : ltxt("Show Hidden",AF.LNG))
 	tagstatus.push (0)
+	tagsnotes.push ("")
 	tagsarray.push (ltxt("New Tag",AF.LNG))
 	tagstatus.push (0xeaee)
+	tagsnotes.push ("")
 
-	zmenudraw (tagsarray,tagstatus,null,ltxt("TAGS",AF.LNG),0xeaef,0,false,false,true,false,false,
+	zmenudraw (tagsarray,tagstatus,tagsnotes,ltxt("TAGS",AF.LNG),0xeaef,0,false,false,true,false,false,
 	function(out){
 		if (out == -1) { //BACK
 			frosthide()
@@ -10133,6 +10159,7 @@ function tags_menu(){
 					//remove_tag (tagsarray[out])
 				}
 			}
+			z_updatetagstable() //TEST141 sposta sopra e fallo solo se il tag non era nella tagstable :O
 			saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
 
 			mfz_build(true)
