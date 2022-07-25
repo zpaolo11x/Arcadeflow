@@ -1,3 +1,4 @@
 14.1
 Reorganised fonts files
 Fixed issue when rom name contains ";"
+Tags menu show tags from all romlists
