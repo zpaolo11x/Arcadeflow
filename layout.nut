@@ -4736,7 +4736,6 @@ z_list.allromlists = allromlists()
 // listcreate is run
 
 function z_updatetagstable(){
-	testpr("UPDATETAGSTABLE\n")
 	// Clear the tags table
 	z_list.tagstable = {}
 
