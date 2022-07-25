@@ -10098,10 +10098,10 @@ function tags_menu(){
 	tagsarray.sort (@(a,b) a.tolower()<=>b.tolower())
 
 	foreach (i, item in tagsarray){
-		tagsnotes.push(z_list.tagstable.rawin(item) ? "" : "None")
+		tagsnotes.push(z_list.tagstable.rawin(item) ? "" : "not here")
 	}
 
-	tagsarray.insert (0,"")
+	tagsarray.insert (0,"USER TAGS")
 	tagstatus.insert (0,-1)
 	tagsnotes.insert (0,"")
 
