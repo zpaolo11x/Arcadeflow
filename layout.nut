@@ -957,6 +957,7 @@ AF.prefs.l1.push([
 {v = 12.1, varname = "allgames", glyph = 0xe95c, initvar = function(val,prf){prf.ALLGAMES <- val}, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
 {v = 12.0, varname = "updateallgames", glyph = 0xe95c, initvar = function(val,prf){prf.UPDATEALLGAMES <- val}, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = -100},
+{v = 10.9, varname = "enablehidden", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
@@ -10104,15 +10105,18 @@ function tags_menu(){
 	tagstatus.insert (0,-1)
 	tagsnotes.insert (0,"")
 
-	tagsarray.insert (0,"HIDDEN")
-	tagstatus.insert (0, z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)
-	tagsnotes.insert (0,"")
+	if (prf.ENABLEHIDDEN){
+		tagsarray.insert (0,"HIDDEN")
+		tagstatus.insert (0, z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)
+		tagsnotes.insert (0,"")
+	}
+
 	tagsarray.insert (0,"COMPLETED")
 	tagstatus.insert (0,z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a)
 	tagsnotes.insert (0,"")
 
 
-	for (local i = 3 ; i < tagsarray.len() ; i++){
+	for (local i = (prf.ENABLEHIDDEN ? 3 : 2) ; i < tagsarray.len() ; i++){
 		tagstatus[i] = (z_list.gametable2[z_list.index].z_tags.find(tagsarray[i]) == null) ? 0xea0a : 0xea0b
 	}
 
@@ -10120,9 +10124,11 @@ function tags_menu(){
 	tagstatus.push (-1)
 	tagsnotes.push ("")
 
-	tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",AF.LNG) : ltxt("Show Hidden",AF.LNG))
-	tagstatus.push (0)
-	tagsnotes.push ("")
+	if(prf.ENABLEHIDDEN){
+		tagsarray.push (prf.SHOWHIDDEN ? ltxt("Hide Hidden",AF.LNG) : ltxt("Show Hidden",AF.LNG))
+		tagstatus.push (0)
+		tagsnotes.push ("")
+	}
 	tagsarray.push (ltxt("New Tag",AF.LNG))
 	tagstatus.push (0xeaee)
 	tagsnotes.push ("")
@@ -10133,7 +10139,7 @@ function tags_menu(){
 			frosthide()
 			zmenuhide()
 		}
-		else if (out == tagsarray.len()-2){ //CHANGE HIDDEN STATUS
+		else if ((out == tagsarray.len()-2) && (prf.ENABLEHIDDEN)){ //CHANGE HIDDEN STATUS
 			zmenuhide()
 			frosthide()
 			prf.SHOWHIDDEN = !prf.SHOWHIDDEN
@@ -10147,7 +10153,7 @@ function tags_menu(){
 		else {
 
 			if (out == 0) z_list.boot2[fe.list.index].z_completed = !z_list.boot2[fe.list.index].z_completed
-			else if (out == 1) z_list.boot2[fe.list.index].z_hidden = !z_list.boot2[fe.list.index].z_hidden
+			else if ((out == 1) && (prf.ENABLEHIDDEN)) z_list.boot2[fe.list.index].z_hidden = !z_list.boot2[fe.list.index].z_hidden
 			else {
 				if (tagstatus[out] == 0xea0a) {
 					z_list.boot2[fe.list.index].z_tags.push (tagsarray[out])

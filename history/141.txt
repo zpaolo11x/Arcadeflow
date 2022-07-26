@@ -2,3 +2,4 @@
 Reorganised fonts files
 Fixed issue when rom name contains ";"
 Tags menu show tags from all romlists
+Added an option to enable/disable game hiding
