@@ -8257,7 +8257,7 @@ function tile_redraw(i,status){
 	if (!AF.canredraw) return
 	tilez[i].obj.redraw = status
 	foreach (item in tilez[i].surfs){
-		if (item != null) item.redraw = status
+		if (item != null) item.redraw = status //Fixed for low spec mode
 	}
 }
 
