@@ -957,7 +957,7 @@ AF.prefs.l1.push([
 {v = 12.1, varname = "allgames", glyph = 0xe95c, initvar = function(val,prf){prf.ALLGAMES <- val}, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
 {v = 12.0, varname = "updateallgames", glyph = 0xe95c, initvar = function(val,prf){prf.UPDATEALLGAMES <- val}, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = -100},
-{v = 10.9, varname = "enablehidden", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 14.1, varname = "enablehidden", glyph = 0xe997, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
