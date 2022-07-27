@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.0 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.1 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,12 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.0 #
+## What's new in v 14.1 #
 
-- Improved performance by optimizing surface redraw
-- Fixed issue with date display
+- Reorganised fonts files
+- Fixed issue when rom name contains ";"
+- Tags menu show tags from all romlists
+- Added an option to enable/disable game hiding
 
 ## Emulator system identifier #
 
@@ -297,7 +299,7 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
 - 'Import only available roms' : Import entrief from the games list only if the rom file is actually available
 
-ROMLIST MANAGEMENT
+❗ ROMLIST MANAGEMENT ❗
 Manage romlists and collections
 
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
@@ -308,6 +310,7 @@ Manage romlists and collections
 - 'Export to gamelist xml' : You can export your romlist in the XML format used by EmulationStation
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
+- '❗ Enable game hiding ❗' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
 
 SEARCH & FILTERS
@@ -345,6 +348,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.0*
+
+- Improved performance by optimizing surface redraw
+- Fixed issue with date display
 
 *v13.9*
 
