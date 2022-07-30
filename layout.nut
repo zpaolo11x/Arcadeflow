@@ -73,6 +73,9 @@ function returngly(){
 
 // General AF data table
 local AF = {
+
+	freezeboot = true
+
 	uniglyphs = returngly()
 	version = "14.1"
 	vernum = 0
@@ -8241,7 +8244,11 @@ for (local i = 0; i < tiles.total; i++ ) {
 		index = 0
 
 		AR = ({snap = 1.0, vids = 1.0, crop = 1.0, current = 1.0})
-		offlist = false // True if the tile is offscreen (and therfore put to visible = false)
+		offlist = false // True if the tile is outside of the list (and therfore put to visible = false)
+		offscreen = false
+		frozen = false
+		updated = false
+		freezecount = 0
 		alphazero = 255 // This is the alpha value of the tile, can be 255 or different if it's a "hidden" game
 		alphafade = 0 // This is the alpha counter for the tile, when fading happens
 
@@ -8259,6 +8266,24 @@ function tile_redraw(i,status){
 	foreach (item in tilez[i].surfs){
 		if (item != null) item.redraw = status //Fixed for low spec mode
 	}
+}
+
+function tile_clear(i,status){
+	if (!AF.canredraw) return
+	tilez[i].obj.clear = status
+	foreach (item in tilez[i].surfs){
+		if (item != null) item.clear = status //Fixed for low spec mode
+	}
+}
+
+function tile_freeze(i,status){
+
+	if (!AF.canredraw) return
+	tilez[i].obj.clear = !status
+	foreach (item in tilez[i].surfs){
+		if (item != null) item.clear = !status //Fixed for low spec mode
+	}
+	tile_redraw(i,!status)
 }
 
 impulse2.flow = 0.5
@@ -13896,6 +13921,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 }
 
 function update_borderglow(i,var,aspect){
+	testpr("update_borderglow\n")
 	aspect = clampaspect (aspect)
 
 	local bd_margin = round(UI.zoomedpadding * UI.whiteborder,1)
@@ -14557,12 +14583,14 @@ function resetvarsandpositions(){
 		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.zoomedvshift*1.0/UI.zoomedwidth)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
+		tile_clear(i,false)
 		tile_redraw(i,false)
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilesTableUpdate[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilez[i].bd_mx.alpha = tilez[i].bd_mx_alpha = 0
 		tilez[i].glomx.alpha = tilez[i].glomx_alpha = 0
 	}
+	testpr("AAA\n")
 }
 
 function updatetiles() {
@@ -14643,6 +14671,7 @@ function changetiledata(i,index,update){
 	if (z_list.size > 0) indexoffsetvar = (z_list.gametable[modwrap(z_list.index + index + var ,z_list.size)].z_felistindex) - fe.list.index
 
 	if ((update) && (z_list.size > 0)){
+		testpr("                                                 XXXXXXXX\n")
 		// old style access: fe.get_art must reference old romlist
 		tilez[indexTemp].loshz.file_name = fe.get_art("wheel" , indexoffsetvar,0,Art.ImagesOnly)
 		tilez[indexTemp].gr_snapz.file_name = fe.get_art((prf.BOXARTMODE ? prf.BOXARTSOURCE : (prf.TITLEART ? "title" : "snap")) , indexoffsetvar,0,Art.ImagesOnly)
@@ -14671,7 +14700,7 @@ function changetiledata(i,index,update){
 		// Update visibility of horizontal or vertical shadows, glow, indicator etc
 		update_thumbdecor(indexTemp,var,tilez[indexTemp].AR.crop)
 		if (tilez[indexTemp].bd_mx_alpha != 0) update_borderglow(indexTemp,var,tilez[indexTemp].AR.crop)
-
+		tilez[indexTemp].freezecount = 2
 	}
 	tilez[indexTemp].obj.zorder = -2
 
@@ -14681,14 +14710,19 @@ function changetiledata(i,index,update){
 	//TEST101 THIS INTERACTS WITH OFF SCREEN VISIBILITY
 	//tilez[indexTemp].obj.visible = (( (z_list.index + var + index < 0) || (z_list.index + var + index > z_list.size-1) ) == false)
 	tilez[indexTemp].offlist = (( (z_list.index + var + index < 0) || (z_list.index + var + index > z_list.size-1) ))
+	//if(tilez[indexTemp].offlist) tile_freeze(indexTemp,true)
 	//index++
+	tilez[i].updated = true
 }
 
 function finaltileupdate(){
-
 		// updates the size and features of the previously selected item and new selected item
 		focusindex.new = wrap( floor(tiles.total/2)-1-corrector + tilesTablePos.Offset, tiles.total )
 		focusindex.old = wrap( floor(tiles.total/2)-1-corrector -var + tilesTablePos.Offset, tiles.total )
+
+		tile_clear(focusindex.new,true)
+		tile_redraw(focusindex.new,true)
+		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
 			tilesTableZoom[focusindex.old] = startfade (tilesTableZoom[focusindex.old],-0.055,1.0)
@@ -14699,9 +14733,11 @@ function finaltileupdate(){
 		tilesTableUpdate[focusindex.new] = startfade (tilesTableUpdate[focusindex.new],0.035,-5.0)
 
 		//activate video load counter
-		if ((prf.THUMBVIDEO) ){
-			gr_vidszTableFade[focusindex.old] = startfade (gr_vidszTableFade[focusindex.old],prf.LOGOSONLY ? -0.04 : -0.01,1.0)
-			aspectratioMorph[focusindex.old] = startfade (aspectratioMorph[focusindex.old],-0.08,1.0)
+		if ((prf.THUMBVIDEO)){
+			if(focusindex.old != focusindex.new){ //TEST142
+				gr_vidszTableFade[focusindex.old] = startfade (gr_vidszTableFade[focusindex.old],prf.LOGOSONLY ? -0.04 : -0.01,1.0)
+				aspectratioMorph[focusindex.old] = startfade (aspectratioMorph[focusindex.old],-0.08,1.0)
+			}
 			vidpos[focusindex.old] = 0
 
 			if (tilez[focusindex.new].gr_vidsz.alpha == 0) {
@@ -14724,6 +14760,7 @@ function finaltileupdate(){
 }
 
 function z_listrefreshtiles(){
+	testpr("z_listrefreshtiles\n")
 	logotitle = null
 	boxtitle = null
 
@@ -15111,6 +15148,8 @@ function on_transition( ttype, var0, ttime ) {
 			mfz_populatereverse()
 			} catch(err){}
 		mfz_apply(true)
+
+
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
@@ -15393,7 +15432,90 @@ local timescale = {
 function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
-	if (prf.HUECYCLE){
+
+
+	foreach (i, item in tilez){
+		if (item.freezecount == 2){
+			tile_clear(i,true)
+			tile_redraw(i,true)
+			tilez[i].freezecount = 1
+		}
+		else if (item.freezecount == 1){
+			tile_clear(i,false)
+			tile_redraw(i,false)
+			tilez[i].freezecount = 0
+		}
+	}
+
+/*
+if (AF.freezeboot ){
+	AF.freezeboot = false
+	foreach (i, item in tilez){
+		tile_redraw(i,false)
+		tile_clear(i,false)
+		tilez[i].frozen = true
+	}
+}
+*/
+/*
+		foreach (i, item in tilez){
+			if (AF.freezeboot){
+				testpr("BBB\n")
+				tile_clear(i,false)
+				tile_redraw(i,false)
+				tilez[i].frozen = true
+			}
+
+			else if ((item.offscreen)&&(!item.frozen)) {
+				tile_redraw(i,false)
+				tile_clear(i,false)
+				tilez[i].frozen = true
+			}
+			else if ((!item.offscreen)&&(item.frozen)){
+				tile_redraw(i,true)
+				tile_clear(i,true)
+				tilez[i].frozen = false
+			}
+
+		}
+		if (AF.freezeboot )AF.freezeboot = false
+		*/
+
+testpr("    ")
+	for (local i = 0; i < tiles.total; i++ ) {
+		testpr(i==focusindex.new ? "V":" ")
+		//testpr(checkfade(gr_vidszTableFade[i]) ? "O":"-")
+	}
+testpr("\n")
+	testpr ("CL: ")
+	for (local i = 0; i < tiles.total; i++ ) {
+		testpr(tilez[i].obj.clear ? "O":"-")
+	}
+	testpr("\n")
+
+	testpr ("RD: ")
+	for (local i = 0; i < tiles.total; i++ ) {
+		testpr(tilez[i].obj.redraw ? "O":"-")
+	}
+	testpr("\n")
+
+	testpr ("OF: ")
+	for (local i = 0; i < tiles.total; i++ ) {
+		testpr(tilez[i].offscreen ? "X":" ")
+	}
+	testpr("\n")
+
+	testpr ("FR: ")
+	for (local i = 0; i < tiles.total; i++ ) {
+		testpr(tilez[i].frozen ? "F":" ")
+	}
+	testpr("\n")
+
+
+
+
+
+		if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
 		huecycle.hue = huecycle.hue + huecycle.speed
@@ -15773,6 +15895,11 @@ function tick( tick_time ) {
 				tilez[i].glomx.visible = false
 				tilez[i].glomx.shader = noshader
 				tilez[i].bd_mx.visible = false
+				if (tilez[i].vidsz.alpha == 0) {
+					//tile_redraw(i,false)
+					//tile_clear(i,false)
+					tilez[i].freezecount = 2
+				}
 			}
 
 			if (updatetemp[3] < 0){
@@ -15835,6 +15962,11 @@ function tick( tick_time ) {
 					tilez[i].nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 					tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 				}
+				if (tilez[i].bd_mx_alpha == 0) {
+					//tile_redraw(i,false)
+					//tile_clear(i,false)
+					tilez[i].freezecount = 2
+				}//TEST142
 			}
 
 			if (prf.LOGOSONLY) {
@@ -15933,23 +16065,31 @@ function tick( tick_time ) {
 			tilez[i].obj.y = tilesTablePos.Y[i]
 
 			//TEST101 ADD VISIBILITY OFF SCREEN CONTROL
-			local offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
+			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
+				tile_clear(i,false)
 				tile_redraw(i,false)
 			}
 			else if (!tilez[i].offlist){
-				if (tilez[i].obj.visible && offscreen) {
+				if (tilez[i].obj.visible && to_offscreen) {
 					tilez[i].obj.visible = false
-					tile_redraw(i,false)
+					//tile_clear(i,false)
+					//tile_redraw(i,false)
 				}
-				if (!tilez[i].obj.visible && !offscreen) {
+				if (!tilez[i].obj.visible && !to_offscreen) {
 					tilez[i].obj.visible = true
-					tile_redraw(i,true)
-				}
+					//TEST142 mettere questo diepndente dall'update...
+						//tile_clear(i,true)
+						//tile_redraw(i,true)
+					}
 			}
+
+			tilez[i].offscreen = to_offscreen
+
 			if (z_list.size == 0) {
 				tilez[i].obj.visible = false
+				tile_clear(i,false)
 				tile_redraw(i,false)
 			}
 			globalposnew = tilez[focusindex.new].obj.x
@@ -16305,6 +16445,9 @@ function tick( tick_time ) {
 
 		history_surface.alpha = 255 * flowT.history[1]
 	}
+
+
+
 }
 
 //Category functions used for category filter menu
@@ -16664,6 +16807,20 @@ function parsevolume(op){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
+
+	//TEST142
+	if (sig == "custom1"){
+		for (local i = 0; i < tiles.total ; i++ ) {
+			tile_clear(i,false)
+			tile_redraw(i,false)
+		}
+	}
+	if (sig == "custom2"){
+		for (local i = 0; i < tiles.total ; i++ ) {
+			tile_clear(i,true)
+			tile_redraw(i,true)
+		}
+	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
