@@ -74,8 +74,6 @@ function returngly(){
 // General AF data table
 local AF = {
 
-	freezeboot = true
-
 	uniglyphs = returngly()
 	version = "14.1"
 	vernum = 0
@@ -8245,9 +8243,6 @@ for (local i = 0; i < tiles.total; i++ ) {
 
 		AR = ({snap = 1.0, vids = 1.0, crop = 1.0, current = 1.0})
 		offlist = false // True if the tile is outside of the list (and therfore put to visible = false)
-		offscreen = false
-		frozen = false
-		updated = false
 		freezecount = 0
 		alphazero = 255 // This is the alpha value of the tile, can be 255 or different if it's a "hidden" game
 		alphafade = 0 // This is the alpha counter for the tile, when fading happens
@@ -8279,11 +8274,10 @@ function tile_clear(i,status){
 function tile_freeze(i,status){
 
 	if (!AF.canredraw) return
-	tilez[i].obj.clear = !status
+	tilez[i].obj.clear = tilez[i].obj.redraw = !status
 	foreach (item in tilez[i].surfs){
-		if (item != null) item.clear = !status //Fixed for low spec mode
+		if (item != null) item.clear = item.redraw = !status //Fixed for low spec mode
 	}
-	tile_redraw(i,!status)
 }
 
 impulse2.flow = 0.5
@@ -14712,7 +14706,6 @@ function changetiledata(i,index,update){
 	tilez[indexTemp].offlist = (( (z_list.index + var + index < 0) || (z_list.index + var + index > z_list.size-1) ))
 	//if(tilez[indexTemp].offlist) tile_freeze(indexTemp,true)
 	//index++
-	tilez[i].updated = true
 }
 
 function finaltileupdate(){
@@ -14720,8 +14713,9 @@ function finaltileupdate(){
 		focusindex.new = wrap( floor(tiles.total/2)-1-corrector + tilesTablePos.Offset, tiles.total )
 		focusindex.old = wrap( floor(tiles.total/2)-1-corrector -var + tilesTablePos.Offset, tiles.total )
 
-		tile_clear(focusindex.new,true)
-		tile_redraw(focusindex.new,true)
+		tile_freeze(focusindex.new,false)
+		//tile_clear(focusindex.new,true)
+		//tile_redraw(focusindex.new,true)
 		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
@@ -15436,50 +15430,15 @@ function tick( tick_time ) {
 
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
-			tile_clear(i,true)
-			tile_redraw(i,true)
+			tile_freeze(i,false)
 			tilez[i].freezecount = 1
 		}
 		else if (item.freezecount == 1){
-			tile_clear(i,false)
-			tile_redraw(i,false)
+			tile_freeze(i,true)
 			tilez[i].freezecount = 0
 		}
 	}
 
-/*
-if (AF.freezeboot ){
-	AF.freezeboot = false
-	foreach (i, item in tilez){
-		tile_redraw(i,false)
-		tile_clear(i,false)
-		tilez[i].frozen = true
-	}
-}
-*/
-/*
-		foreach (i, item in tilez){
-			if (AF.freezeboot){
-				testpr("BBB\n")
-				tile_clear(i,false)
-				tile_redraw(i,false)
-				tilez[i].frozen = true
-			}
-
-			else if ((item.offscreen)&&(!item.frozen)) {
-				tile_redraw(i,false)
-				tile_clear(i,false)
-				tilez[i].frozen = true
-			}
-			else if ((!item.offscreen)&&(item.frozen)){
-				tile_redraw(i,true)
-				tile_clear(i,true)
-				tilez[i].frozen = false
-			}
-
-		}
-		if (AF.freezeboot )AF.freezeboot = false
-		*/
 
 testpr("    ")
 	for (local i = 0; i < tiles.total; i++ ) {
@@ -15498,21 +15457,6 @@ testpr("\n")
 		testpr(tilez[i].obj.redraw ? "O":"-")
 	}
 	testpr("\n")
-
-	testpr ("OF: ")
-	for (local i = 0; i < tiles.total; i++ ) {
-		testpr(tilez[i].offscreen ? "X":" ")
-	}
-	testpr("\n")
-
-	testpr ("FR: ")
-	for (local i = 0; i < tiles.total; i++ ) {
-		testpr(tilez[i].frozen ? "F":" ")
-	}
-	testpr("\n")
-
-
-
 
 
 		if (prf.HUECYCLE){
@@ -15896,8 +15840,6 @@ testpr("\n")
 				tilez[i].glomx.shader = noshader
 				tilez[i].bd_mx.visible = false
 				if (tilez[i].vidsz.alpha == 0) {
-					//tile_redraw(i,false)
-					//tile_clear(i,false)
 					tilez[i].freezecount = 2
 				}
 			}
@@ -15963,8 +15905,6 @@ testpr("\n")
 					tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 				}
 				if (tilez[i].bd_mx_alpha == 0) {
-					//tile_redraw(i,false)
-					//tile_clear(i,false)
 					tilez[i].freezecount = 2
 				}//TEST142
 			}
@@ -16068,29 +16008,21 @@ testpr("\n")
 			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
-				tile_clear(i,false)
-				tile_redraw(i,false)
+				tile_freeze(i,true)
 			}
 			else if (!tilez[i].offlist){
 				if (tilez[i].obj.visible && to_offscreen) {
 					tilez[i].obj.visible = false
-					//tile_clear(i,false)
-					//tile_redraw(i,false)
 				}
 				if (!tilez[i].obj.visible && !to_offscreen) {
 					tilez[i].obj.visible = true
-					//TEST142 mettere questo diepndente dall'update...
-						//tile_clear(i,true)
-						//tile_redraw(i,true)
-					}
+				}
 			}
-
-			tilez[i].offscreen = to_offscreen
 
 			if (z_list.size == 0) {
 				tilez[i].obj.visible = false
-				tile_clear(i,false)
-				tile_redraw(i,false)
+				tile_freeze(i,true)
+
 			}
 			globalposnew = tilez[focusindex.new].obj.x
 		}
