@@ -14603,7 +14603,6 @@ function resetvarsandpositions(){
 		tilez[i].bd_mx.alpha = tilez[i].bd_mx_alpha = 0
 		tilez[i].glomx.alpha = tilez[i].glomx_alpha = 0
 	}
-	testpr("AAA\n")
 }
 
 function updatetiles() {
@@ -14772,7 +14771,6 @@ function finaltileupdate(){
 }
 
 function z_listrefreshtiles(){
-	testpr("z_listrefreshtiles\n")
 	logotitle = null
 	boxtitle = null
 
