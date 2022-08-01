@@ -74,6 +74,9 @@ function returngly(){
 // General AF data table
 local AF = {
 
+	dat_freeze = true
+	dat_freezecount = 0
+
 	uniglyphs = returngly()
 	version = "14.1"
 	vernum = 0
@@ -8458,6 +8461,16 @@ searchdata.visible = true
 searchdata.font = uifonts.gui
 searchdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
+
+function data_freeze(status){
+	testpr("FREEZE:"+status+"\n")
+	data_surface.clear = data_surface.redraw = !status
+	data_surface_sh_rt.clear = data_surface_sh_rt.redraw = !status
+	data_surface_sh_2.clear = data_surface_sh_2.redraw = !status
+	data_surface_sh_1.clear = data_surface_sh_1.redraw = !status
+	labelsurf.clear = labelsurf.redraw = !status
+}
+
 function displaynamelogo (offset){
 	return systemfont (z_disp[fe.list.display_index].cleanname,false)
 }
@@ -13915,7 +13928,6 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 }
 
 function update_borderglow(i,var,aspect){
-	testpr("update_borderglow\n")
 	aspect = clampaspect (aspect)
 
 	local bd_margin = round(UI.zoomedpadding * UI.whiteborder,1)
@@ -14665,7 +14677,6 @@ function changetiledata(i,index,update){
 	if (z_list.size > 0) indexoffsetvar = (z_list.gametable[modwrap(z_list.index + index + var ,z_list.size)].z_felistindex) - fe.list.index
 
 	if ((update) && (z_list.size > 0)){
-		testpr("                                                 XXXXXXXX\n")
 		// old style access: fe.get_art must reference old romlist
 		tilez[indexTemp].loshz.file_name = fe.get_art("wheel" , indexoffsetvar,0,Art.ImagesOnly)
 		tilez[indexTemp].gr_snapz.file_name = fe.get_art((prf.BOXARTMODE ? prf.BOXARTSOURCE : (prf.TITLEART ? "title" : "snap")) , indexoffsetvar,0,Art.ImagesOnly)
@@ -15312,6 +15323,8 @@ function on_transition( ttype, var0, ttime ) {
 	// if the transition is to a new selection initialize crossfade, scrolling and srfpos.Pos
 	if( (ttype == Transition.ToNewSelection) ){
 
+		data_freeze (false)
+
 		debugpr ("TRANSBLOCK 3.0 - TNS - TRANSITION TO NEW SELECTION ONLY \n")
 
 		local l1 = z_list.jumptable[z_list.index].key
@@ -15439,7 +15452,19 @@ function tick( tick_time ) {
 		}
 	}
 
+	if (AF.dat_freezecount == 2){
+		testpr("A\n")
+		data_freeze(false)
+		AF.dat_freezecount = 1
+	}
+	else if (AF.dat_freezecount == 1){
+		testpr("B\n")
+		data_freeze(true)
+		AF.dat_freezecount = 0
+	}
 
+
+/*
 testpr("    ")
 	for (local i = 0; i < tiles.total; i++ ) {
 		testpr(i==focusindex.new ? "V":" ")
@@ -15458,7 +15483,7 @@ testpr("\n")
 	}
 	testpr("\n")
 
-
+*/
 		if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
@@ -15934,6 +15959,7 @@ testpr("\n")
 	}
 
 
+	AF.dat_freeze = true
 	// crossfade of game data
 	for (local i = 0 ; i < dat.stacksize ; i++){
 		if (dat.alphapos[i] != 0 ){
@@ -15950,6 +15976,10 @@ testpr("\n")
 				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.ply_array[i].alpha
 			}
 		}
+		if (dat.alphapos[i] != 0) AF.dat_freeze = false
+	}
+	if (AF.dat_freeze && data_surface.redraw) {
+		AF.dat_freezecount = 1
 	}
 
 	//EASE PRINT
@@ -17807,6 +17837,8 @@ function on_signal( sig ){
 				case "up":
 				if (checkrepeat(count.up)){
 
+					data_freeze(false)
+
 					if ((z_list.index % UI.rows > 0) && (scroll.jump == false) && (scroll.sortjump == false)) {
 						z_list_indexchange (z_list.index -1)
 						if(prf.THEMEAUDIO) snd.plingsound.playing = true
@@ -17847,36 +17879,38 @@ function on_signal( sig ){
 				case "down":
 				if (checkrepeat(count.down)){
 
-				if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows -1) && ( ! ( (z_list.index / UI.rows == z_list.size / UI.rows)&&(z_list.index%UI.rows + 1 > (z_list.size -1)%UI.rows) ))) ){
-					if ((corrector == 0) && (z_list.index == z_list.size-1)) return true
-					z_list_indexchange (z_list.index + 1)
-					if(prf.THEMEAUDIO) snd.plingsound.playing = true
-				}
+					data_freeze(false)
 
-				// if you go down and label list is not active, activate scroll.jump
-				else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")){
-					if(prf.THEMEAUDIO) snd.wooshsound.playing = true
+					if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows -1) && ( ! ( (z_list.index / UI.rows == z_list.size / UI.rows)&&(z_list.index%UI.rows + 1 > (z_list.size -1)%UI.rows) ))) ){
+						if ((corrector == 0) && (z_list.index == z_list.size-1)) return true
+						z_list_indexchange (z_list.index + 1)
+						if(prf.THEMEAUDIO) snd.plingsound.playing = true
+					}
 
-					tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
+					// if you go down and label list is not active, activate scroll.jump
+					else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")){
+						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
 
-					scroll.jump = true
-					scroll.step = UI.rows*(UI.cols-2)
-					scroller2.visible = scrollineglow.visible = true
-					scroll.sortjump = false
-				}
+						tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
 
-				// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
-				else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))){
-					if(prf.THEMEAUDIO) snd.wooshsound.playing = true
+						scroll.jump = true
+						scroll.step = UI.rows*(UI.cols-2)
+						scroller2.visible = scrollineglow.visible = true
+						scroll.sortjump = false
+					}
 
-					tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
+					// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
+					else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))){
+						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
 
-					scroll.jump = false
-					scroller2.visible = scrollineglow.visible = false
-					scroll.sortjump = true
-					labelstrip.visible = true
-				}
-				count.down++
+						tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
+
+						scroll.jump = false
+						scroller2.visible = scrollineglow.visible = false
+						scroll.sortjump = true
+						labelstrip.visible = true
+					}
+					count.down++
 				}
 				return true
 
