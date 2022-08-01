@@ -884,7 +884,7 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
 AF.prefs.l1.push([
-{v = 8.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 8.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = "", values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
 {v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = -100},
