@@ -8473,11 +8473,9 @@ function data_freeze(status){
 }
 
 function bgs_freeze(status){
-	testpr("FREEZE:"+status+"\n")
 	bglay.surf_rt.redraw = bglay.surf_rt.clear = !status
 	bglay.surf_2.redraw = bglay.surf_2.clear = !status
 	bglay.surf_1.redraw = bglay.surf_1.clear = !status
-
 }
 
 function displaynamelogo (offset){
