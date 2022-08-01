@@ -15323,7 +15323,7 @@ function on_transition( ttype, var0, ttime ) {
 	// if the transition is to a new selection initialize crossfade, scrolling and srfpos.Pos
 	if( (ttype == Transition.ToNewSelection) ){
 
-		data_freeze (false)
+		if (!data_surface.redraw) data_freeze(false)
 
 		debugpr ("TRANSBLOCK 3.0 - TNS - TRANSITION TO NEW SELECTION ONLY \n")
 
@@ -15453,12 +15453,10 @@ function tick( tick_time ) {
 	}
 
 	if (AF.dat_freezecount == 2){
-		testpr("A\n")
 		data_freeze(false)
 		AF.dat_freezecount = 1
 	}
 	else if (AF.dat_freezecount == 1){
-		testpr("B\n")
 		data_freeze(true)
 		AF.dat_freezecount = 0
 	}
@@ -17837,7 +17835,7 @@ function on_signal( sig ){
 				case "up":
 				if (checkrepeat(count.up)){
 
-					data_freeze(false)
+					if (!data_surface.redraw) data_freeze(false)
 
 					if ((z_list.index % UI.rows > 0) && (scroll.jump == false) && (scroll.sortjump == false)) {
 						z_list_indexchange (z_list.index -1)
@@ -17879,7 +17877,7 @@ function on_signal( sig ){
 				case "down":
 				if (checkrepeat(count.down)){
 
-					data_freeze(false)
+					if (!data_surface.redraw) data_freeze(false)
 
 					if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows -1) && ( ! ( (z_list.index / UI.rows == z_list.size / UI.rows)&&(z_list.index%UI.rows + 1 > (z_list.size -1)%UI.rows) ))) ){
 						if ((corrector == 0) && (z_list.index == z_list.size-1)) return true
