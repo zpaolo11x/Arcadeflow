@@ -77,6 +77,8 @@ local AF = {
 	dat_freeze = true
 	dat_freezecount = 0
 
+	bgs_freezecount = 0
+
 	uniglyphs = returngly()
 	version = "14.1"
 	vernum = 0
@@ -8463,12 +8465,19 @@ searchdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themet
 
 
 function data_freeze(status){
-	testpr("FREEZE:"+status+"\n")
 	data_surface.clear = data_surface.redraw = !status
 	data_surface_sh_rt.clear = data_surface_sh_rt.redraw = !status
 	data_surface_sh_2.clear = data_surface_sh_2.redraw = !status
 	data_surface_sh_1.clear = data_surface_sh_1.redraw = !status
 	labelsurf.clear = labelsurf.redraw = !status
+}
+
+function bgs_freeze(status){
+	testpr("FREEZE:"+status+"\n")
+	bglay.surf_rt.redraw = bglay.surf_rt.clear = !status
+	bglay.surf_2.redraw = bglay.surf_2.clear = !status
+	bglay.surf_1.redraw = bglay.surf_1.clear = !status
+
 }
 
 function displaynamelogo (offset){
@@ -15324,6 +15333,7 @@ function on_transition( ttype, var0, ttime ) {
 	if( (ttype == Transition.ToNewSelection) ){
 
 		if (!data_surface.redraw) data_freeze(false)
+		if (!bglay.surf_1.redraw) bgs_freeze(false)
 
 		debugpr ("TRANSBLOCK 3.0 - TNS - TRANSITION TO NEW SELECTION ONLY \n")
 
@@ -15440,7 +15450,6 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
-
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
@@ -15461,7 +15470,14 @@ function tick( tick_time ) {
 		AF.dat_freezecount = 0
 	}
 
-
+	if (AF.bgs_freezecount == 2){
+		bgs_freeze(false)
+		AF.bgs_freezecount = 1
+	}
+	else if (AF.bgs_freezecount == 1){
+		bgs_freeze(true)
+		AF.bgs_freezecount = 0
+	}
 /*
 testpr("    ")
 	for (local i = 0; i < tiles.total; i++ ) {
@@ -15813,6 +15829,8 @@ testpr("\n")
 			if (prf.LAYERSNAP) bgs.bgvid_array[i].alpha = 255 * bgs.flowalpha[i][1]
 		}
 	}
+
+	if (bglay.surf_1.redraw && (bgs.bgpic_array[bgs.stacksize-1].alpha == 255)) AF.bgs_freezecount = 1
 
 	if (checkfade(flowT.alphaletter)){
 		flowT.alphaletter = fadeupdate(flowT.alphaletter)
