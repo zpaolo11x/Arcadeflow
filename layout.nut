@@ -816,6 +816,7 @@ AF.prefs.l1.push([
 {v = 7.5, varname = "searchbutton", glyph = 0xea54, initvar = function(val,prf){prf.SEARCHBUTTON <- val}, title = "Search menu button", help = "Chose the button to use to directly open the search menu instead of using the utility menu" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "inputscreenkeys"+AF.prefs.imgext},
 {v = 7.6, varname = "categorybutton", glyph = 0xea54, initvar = function(val,prf){prf.CATEGORYBUTTON <- val}, title = "Category menu button", help = "Chose the button to use to open the list of game categories" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 7.6, varname = "multifilterbutton", glyph = 0xea54, initvar = function(val,prf){prf.MULTIFILTERBUTTON <- val}, title = "Multifilter menu button", help = "Chose the button to use to open the menu for dynamic filtering of romlist" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 14.2, varname = "favbutton", glyph = 0xea54, initvar = function(val,prf){prf.FAVBUTTON <- val}, title = "Show favorites button", help = "Chose the button to use to toggle favorite filtering" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = -100},
 {v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume." , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "ROM Management", selection = -100},
@@ -1356,7 +1357,7 @@ savelanguage(AF.LNG)
 
 // Check conflicts in custom buttons
 function check_buttons(){
-	local buttonarray = [prf.SWITCHMODEBUTTON , prf.UTILITYMENUBUTTON, prf.OVERMENUBUTTON, prf.HISTORYBUTTON, prf.SEARCHBUTTON,prf.CATEGORYBUTTON,prf.MULTIFILTERBUTTON,prf.DELETEBUTTON,prf.VOLUMEBUTTON]
+	local buttonarray = [prf.SWITCHMODEBUTTON , prf.UTILITYMENUBUTTON, prf.OVERMENUBUTTON, prf.HISTORYBUTTON, prf.SEARCHBUTTON,prf.CATEGORYBUTTON,prf.MULTIFILTERBUTTON,prf.DELETEBUTTON,prf.VOLUMEBUTTON,prf.FAVBUTTON]
 	local conflict = false
 	for (local i = 0 ; i < buttonarray.len() ; i++){
 		if (buttonarray[i] != "none") {
@@ -3844,6 +3845,7 @@ local z_fields1 = {
 	// values used to check filtering of the game
 	"z_inmfz" : true,			// {game in multifilter, filtermetatable}
 	"z_insearch" : true,		// true if game is in search results
+	"z_infav" : true,		// true if game is in search results
 	"z_incat" : true,			// true if game is in category menu selection
 	"z_inmots2" : true		// true if game is in "more of the same" results
 
@@ -5953,7 +5955,7 @@ function mfz_refreshnum(catin){
 				}
 			}
 			//if ((z_list.boot[i].z_inmfz || (id0 == catin)) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
-			if (inmfz && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
+			if (inmfz && (z_list.boot[i].z_infav && z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
 			//if (mfz_checkin(i-fe.list.index,catin) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
 				if ((vals.l1array)){
 					foreach (i2, item2 in vals.l1name){
@@ -6263,6 +6265,7 @@ function mfz_apply(startlist){
 
 	z_updatefilternumbers(z_list.index)
 
+	data_freeze(false) //TEST142
 	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
 	/*
 			z_listrefreshtiles()
@@ -6279,6 +6282,7 @@ local	search = {
 	catg = ["",""] // This is the search field from category menu
 	mots = ["",""]
 	mots2string = [""]
+	fav = false // This is true if favourite filter is on
 }
 
 function updatesearchdatamsg(){
@@ -6286,6 +6290,7 @@ function updatesearchdatamsg(){
 	if (search.catg[0] != "") textarray.push( "📁:"+search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) )
 	if (search.smart != "")	textarray.push ( "🔍:"+search.smart )
 	if (search.mots2string != "")	textarray.push ( "🔎"+search.mots2string )
+	if (search.fav)	textarray.push ( "FAV" )
 
 	local out = textarray[0]
 
@@ -6329,6 +6334,13 @@ function z_catfilter(index){
 
 	return false
 
+}
+
+function z_favfilter(index){
+
+	if (!search.fav) return true
+
+	return (z_list.boot2[index + fe.list.index].z_favourite)
 }
 
 function z_mots2filter(index){
@@ -6587,11 +6599,12 @@ function z_listcreate(){
 		z_list.boot[i].z_insearch = z_listsearch(ifeindex)
 		z_list.boot[i].z_incat = z_catfilter(ifeindex)
 		z_list.boot[i].z_inmots2 = z_mots2filter(ifeindex)
+		z_list.boot[i].rawset("z_infav", z_favfilter(ifeindex))
 
 		if ((checkfilter)){
 			ifilter++
 
-			if (z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2 && (!z_list.boot2[i].z_hidden || prf.SHOWHIDDEN) ) {
+			if (z_list.boot[i].z_infav &&z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2 && (!z_list.boot2[i].z_hidden || prf.SHOWHIDDEN) ) {
 				z_list.jumptable.push (
 					{
 						index = ireal
@@ -8473,6 +8486,7 @@ function data_freeze(status){
 }
 
 function bgs_freeze(status){
+	testpr("bgs_freeze:"+status+"\n")
 	bglay.surf_rt.redraw = bglay.surf_rt.clear = !status
 	bglay.surf_2.redraw = bglay.surf_2.clear = !status
 	bglay.surf_1.redraw = bglay.surf_1.clear = !status
@@ -13691,6 +13705,7 @@ function updatebgsnap (index){
 	// index è l'indice di riferimento della tilez
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
+	bgs_freeze(false)
 	bgs.bgpic_array[bgs.stacksize-1].file_name  = fe.get_art((prf.BOXARTMODE ? (prf.LAYERSNAP ? "snap" : prf.BOXARTSOURCE) : (prf.TITLEART ? (prf.LAYERSNAP ? "snap" : "title") : "snap")) , tilez[index].offset,0,Art.ImagesOnly)
 
 	if (prf.MULTIMON) {
@@ -14061,6 +14076,27 @@ function new_search(){
 	zmenuhide()
 }
 
+function favtoggle(){
+	/*
+	try {
+		if (multifilterz.l0["Favourite"].menu["Favourite"].filtered){
+			multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
+		}
+		else multifilterz.l0["Favourite"].menu["Favourite"].filtered = true
+
+		mfz_populate()
+		mfz_apply(false)
+		if (zmenu.showing) utilitymenu(umpresel)
+	}
+	catch (err){return}
+	*/
+	search.fav = !search.fav
+mfz_populate()
+		mfz_apply(false)
+		if (zmenu.showing) utilitymenu(umpresel)
+
+}
+
 umtable = []
 
 function sortarrays(){
@@ -14245,6 +14281,8 @@ function buildutilitymenu(){
 			return (ltxt(out,AF.LNG))
 		}
 		command = function(){
+			favtoggle()
+		/*
 			try {
 				if (multifilterz.l0["Favourite"].menu["Favourite"].filtered){
 					multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
@@ -14257,6 +14295,7 @@ function buildutilitymenu(){
 				utilitymenu(umpresel)
 			}
 			catch (err){return}
+			*/
 		}
 	})
 
@@ -15971,7 +16010,7 @@ function tick( tick_time ) {
 		}
 		if (dat.alphapos[i] != 0) AF.dat_freeze = false
 	}
-	if (AF.dat_freeze && data_surface.redraw) {
+	if (AF.dat_freeze && data_surface.redraw && (displayname.alpha == 0)) {
 		AF.dat_freezecount = 1
 	}
 
@@ -16973,6 +17012,11 @@ function on_signal( sig ){
 		if (keyboard_visible()) return true
 
 		switchmode()
+		return true
+	}
+
+	if ((sig == prf.FAVBUTTON)&& !zmenu.showing ){
+		favtoggle()
 		return true
 	}
 
