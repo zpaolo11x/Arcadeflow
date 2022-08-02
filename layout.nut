@@ -16154,7 +16154,7 @@ testpr("\n")
 	}
 
 	if (prf.UPDATECHECK){
-		if ((tick_time >= 6000) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
+		if ((tick_time >= 8000) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
 		}
