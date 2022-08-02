@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.1
+// Arcadeflow - v 14.2
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.1"
+	version = "14.2"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -884,7 +884,7 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
 AF.prefs.l1.push([
-{v = 8.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 14.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = "", values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
 {v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = -100},
@@ -15474,27 +15474,8 @@ function tick( tick_time ) {
 		bgs_freeze(true)
 		AF.bgs_freezecount = 0
 	}
-/*
-testpr("    ")
-	for (local i = 0; i < tiles.total; i++ ) {
-		testpr(i==focusindex.new ? "V":" ")
-		//testpr(checkfade(gr_vidszTableFade[i]) ? "O":"-")
-	}
-testpr("\n")
-	testpr ("CL: ")
-	for (local i = 0; i < tiles.total; i++ ) {
-		testpr(tilez[i].obj.clear ? "O":"-")
-	}
-	testpr("\n")
 
-	testpr ("RD: ")
-	for (local i = 0; i < tiles.total; i++ ) {
-		testpr(tilez[i].obj.redraw ? "O":"-")
-	}
-	testpr("\n")
-
-*/
-		if (prf.HUECYCLE){
+	if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
 		huecycle.hue = huecycle.hue + huecycle.speed
