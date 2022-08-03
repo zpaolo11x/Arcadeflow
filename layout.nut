@@ -6595,10 +6595,10 @@ function z_listcreate(){
 		}
 		//if (mfz_on()) checkfilter = mfz_checkin(ifeindex).inmfz
 
-		z_list.boot[i].z_inmfz = mfz_status
-		z_list.boot[i].z_insearch = z_listsearch(ifeindex)
-		z_list.boot[i].z_incat = z_catfilter(ifeindex)
-		z_list.boot[i].z_inmots2 = z_mots2filter(ifeindex)
+		z_list.boot[i].rawset("z_inmfz", mfz_status)
+		z_list.boot[i].rawset("z_insearch", z_listsearch(ifeindex))
+		z_list.boot[i].rawset("z_incat", z_catfilter(ifeindex))
+		z_list.boot[i].rawset("z_inmots2", z_mots2filter(ifeindex))
 		z_list.boot[i].rawset("z_infav", z_favfilter(ifeindex))
 
 		if ((checkfilter)){
@@ -6863,7 +6863,7 @@ function z_filteredlistupdateindex(reindex){
 		return
 	}
 
-	if(!mfz_checkin(0).inmfz || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN )){
+	if(!mfz_checkin(0).inmfz || !z_favfilter(0) || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN )){
 		z_list.index = 0
 		z_list.newindex = 0
 
@@ -8486,7 +8486,6 @@ function data_freeze(status){
 }
 
 function bgs_freeze(status){
-	testpr("bgs_freeze:"+status+"\n")
 	bglay.surf_rt.redraw = bglay.surf_rt.clear = !status
 	bglay.surf_2.redraw = bglay.surf_2.clear = !status
 	bglay.surf_1.redraw = bglay.surf_1.clear = !status
@@ -14090,8 +14089,11 @@ function favtoggle(){
 	}
 	catch (err){return}
 	*/
-	search.fav = !search.fav
-mfz_populate()
+		search.fav = !search.fav
+
+		updatesearchdatamsg()
+
+		//mfz_populate()
 		mfz_apply(false)
 		if (zmenu.showing) utilitymenu(umpresel)
 
@@ -14277,7 +14279,7 @@ function buildutilitymenu(){
 		id = 0
 		sidenote = function(){
 			local out = ""
-			try {out = multifilterz.l0["Favourite"].menu["Favourite"].filtered ? "FAVOURITES" : "ALL GAMES"} catch(err){}
+			try {out = search.fav ? "FAVOURITES" : "ALL GAMES"} catch(err){}
 			return (ltxt(out,AF.LNG))
 		}
 		command = function(){
@@ -16801,20 +16803,6 @@ function parsevolume(op){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
-
-	//TEST142
-	if (sig == "custom1"){
-		for (local i = 0; i < tiles.total ; i++ ) {
-			tile_clear(i,false)
-			tile_redraw(i,false)
-		}
-	}
-	if (sig == "custom2"){
-		for (local i = 0; i < tiles.total ; i++ ) {
-			tile_clear(i,true)
-			tile_redraw(i,true)
-		}
-	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
