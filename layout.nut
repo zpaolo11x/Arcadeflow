@@ -6290,7 +6290,7 @@ function updatesearchdatamsg(){
 	if (search.catg[0] != "") textarray.push( "📁:"+search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) )
 	if (search.smart != "")	textarray.push ( "🔍:"+search.smart )
 	if (search.mots2string != "")	textarray.push ( "🔎"+search.mots2string )
-	if (search.fav)	textarray.push ( "FAV" )
+	if (search.fav)	textarray.push ( "★" )
 
 	local out = textarray[0]
 
@@ -8290,7 +8290,6 @@ function tile_clear(i,status){
 }
 
 function tile_freeze(i,status){
-
 	if (!AF.canredraw) return
 	tilez[i].obj.clear = tilez[i].obj.redraw = !status
 	foreach (item in tilez[i].surfs){
@@ -11993,7 +11992,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0,0,1,1)
 		}
-		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad , zmenu.tileh*0.5 + zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.pad) + (shrink ?  -1.0* disp.width : 0), 1)
+		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad , floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.pad) + (shrink ?  -1.0* disp.width : 0), 1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255,255,255)
 		zmenu.strikelines[i].alpha = 128
@@ -12277,7 +12276,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.strikelines[i].y = zmenu.pos0[i] + zmenu.tileh*0.5 + zmenu.xstop
+		zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh*0.5) + zmenu.xstop
 	}
 
 	for (local i = 0 ; i < zmenu.shown; i++){
@@ -12440,8 +12439,8 @@ function zmenunavigate_down(signal){
 
 zmenu.xstop = 0
 
-zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 function gh_latestdata(op){
 
@@ -15311,8 +15310,8 @@ function on_transition( ttype, var0, ttime ) {
 
 	if (ttype == Transition.HideOverlay){
 
-		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 		if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 		//overlay.listbox.width = overlay.fullwidth
 		zmenu_sh.surf_2.shader = noshader
@@ -15487,6 +15486,8 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
+//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
+//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
@@ -15759,7 +15760,7 @@ function tick( tick_time ) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.strikelines[i].y = zmenu.pos0[i] + zmenu.tileh*0.5 + zmenu.xstart + zmenu.speed
+				zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh*0.5) + zmenu.xstart + zmenu.speed
 
 			}
 
@@ -15767,11 +15768,12 @@ function tick( tick_time ) {
 		}
 		else {
 			zmenu.xstart = zmenu.xstop
+			zmenu.speed = 0
 			for (local i = 0;i < zmenu.shown ; i++) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.strikelines[i].y = zmenu.pos0[i] +zmenu.tileh*0.5 + zmenu.xstop
+				zmenu.strikelines[i].y = zmenu.pos0[i] +floor(zmenu.tileh*0.5) + zmenu.xstop
 			}
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
@@ -16235,8 +16237,8 @@ function tick( tick_time ) {
 	if (checkfade (flowT.zmenush)){
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
-			zmenu_sh.surf_rt.visible = false
 			if (AF.canredraw) zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+			zmenu_sh.surf_rt.visible = false
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
@@ -16245,8 +16247,8 @@ function tick( tick_time ) {
 	if (checkfade (flowT.zmenutx)){
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
-			zmenu_surface_container.visible = false
 			if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = false
+			zmenu_surface_container.visible = false
 
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
 		}
