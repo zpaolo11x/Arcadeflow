@@ -14,6 +14,7 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 
 - Improved performance optimising tile redraw
 - Fixed Cave background image
+- Added new button for favourites filter
 
 ## Emulator system identifier #
 
@@ -188,7 +189,7 @@ Configure layout sounds and audio options for videos
 
 
 
-BUTTONS
+❗ BUTTONS ❗
 Define custom control buttons for different features of Arcadeflow
 
 - 'Context menu button' : Chose the button to open the game context menu
@@ -198,6 +199,7 @@ Define custom control buttons for different features of Arcadeflow
 - 'Search menu button' : Chose the button to use to directly open the search menu instead of using the utility menu
 - 'Category menu button' : Chose the button to use to open the list of game categories
 - 'Multifilter menu button' : Chose the button to use to open the menu for dynamic filtering of romlist
+- '❗ Show favorites button ❗' : Chose the button to use to toggle favorite filtering
 - 'Volume button' : Chose the button to use to change system volume.
 - 'Delete ROM button' : Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
 
