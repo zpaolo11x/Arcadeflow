@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.1
+// Arcadeflow - v 14.2
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -73,8 +73,14 @@ function returngly(){
 
 // General AF data table
 local AF = {
+
+	dat_freeze = true
+	dat_freezecount = 0
+
+	bgs_freezecount = 0
+
 	uniglyphs = returngly()
-	version = "14.1"
+	version = "14.2"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -810,6 +816,7 @@ AF.prefs.l1.push([
 {v = 7.5, varname = "searchbutton", glyph = 0xea54, initvar = function(val,prf){prf.SEARCHBUTTON <- val}, title = "Search menu button", help = "Chose the button to use to directly open the search menu instead of using the utility menu" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "inputscreenkeys"+AF.prefs.imgext},
 {v = 7.6, varname = "categorybutton", glyph = 0xea54, initvar = function(val,prf){prf.CATEGORYBUTTON <- val}, title = "Category menu button", help = "Chose the button to use to open the list of game categories" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 7.6, varname = "multifilterbutton", glyph = 0xea54, initvar = function(val,prf){prf.MULTIFILTERBUTTON <- val}, title = "Multifilter menu button", help = "Chose the button to use to open the menu for dynamic filtering of romlist" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 14.2, varname = "favbutton", glyph = 0xea54, initvar = function(val,prf){prf.FAVBUTTON <- val}, title = "Show favorites button", help = "Chose the button to use to toggle favorite filtering" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = -100},
 {v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume." , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "ROM Management", selection = -100},
@@ -878,7 +885,7 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
 AF.prefs.l1.push([
-{v = 8.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 14.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = "", values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
 {v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = -100},
@@ -1350,7 +1357,7 @@ savelanguage(AF.LNG)
 
 // Check conflicts in custom buttons
 function check_buttons(){
-	local buttonarray = [prf.SWITCHMODEBUTTON , prf.UTILITYMENUBUTTON, prf.OVERMENUBUTTON, prf.HISTORYBUTTON, prf.SEARCHBUTTON,prf.CATEGORYBUTTON,prf.MULTIFILTERBUTTON,prf.DELETEBUTTON,prf.VOLUMEBUTTON]
+	local buttonarray = [prf.SWITCHMODEBUTTON , prf.UTILITYMENUBUTTON, prf.OVERMENUBUTTON, prf.HISTORYBUTTON, prf.SEARCHBUTTON,prf.CATEGORYBUTTON,prf.MULTIFILTERBUTTON,prf.DELETEBUTTON,prf.VOLUMEBUTTON,prf.FAVBUTTON]
 	local conflict = false
 	for (local i = 0 ; i < buttonarray.len() ; i++){
 		if (buttonarray[i] != "none") {
@@ -3838,6 +3845,7 @@ local z_fields1 = {
 	// values used to check filtering of the game
 	"z_inmfz" : true,			// {game in multifilter, filtermetatable}
 	"z_insearch" : true,		// true if game is in search results
+	"z_infav" : true,		// true if game is in search results
 	"z_incat" : true,			// true if game is in category menu selection
 	"z_inmots2" : true		// true if game is in "more of the same" results
 
@@ -5947,7 +5955,7 @@ function mfz_refreshnum(catin){
 				}
 			}
 			//if ((z_list.boot[i].z_inmfz || (id0 == catin)) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
-			if (inmfz && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
+			if (inmfz && (z_list.boot[i].z_infav && z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
 			//if (mfz_checkin(i-fe.list.index,catin) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
 				if ((vals.l1array)){
 					foreach (i2, item2 in vals.l1name){
@@ -6257,6 +6265,7 @@ function mfz_apply(startlist){
 
 	z_updatefilternumbers(z_list.index)
 
+	data_freeze(false) //TEST142
 	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
 	/*
 			z_listrefreshtiles()
@@ -6273,6 +6282,7 @@ local	search = {
 	catg = ["",""] // This is the search field from category menu
 	mots = ["",""]
 	mots2string = [""]
+	fav = false // This is true if favourite filter is on
 }
 
 function updatesearchdatamsg(){
@@ -6280,6 +6290,7 @@ function updatesearchdatamsg(){
 	if (search.catg[0] != "") textarray.push( "📁:"+search.catg[0]+(search.catg[1] == "" ? "" : "/"+search.catg[1]) )
 	if (search.smart != "")	textarray.push ( "🔍:"+search.smart )
 	if (search.mots2string != "")	textarray.push ( "🔎"+search.mots2string )
+	if (search.fav)	textarray.push ( "★" )
 
 	local out = textarray[0]
 
@@ -6323,6 +6334,13 @@ function z_catfilter(index){
 
 	return false
 
+}
+
+function z_favfilter(index){
+
+	if (!search.fav) return true
+
+	return (z_list.boot2[index + fe.list.index].z_favourite)
 }
 
 function z_mots2filter(index){
@@ -6577,15 +6595,16 @@ function z_listcreate(){
 		}
 		//if (mfz_on()) checkfilter = mfz_checkin(ifeindex).inmfz
 
-		z_list.boot[i].z_inmfz = mfz_status
-		z_list.boot[i].z_insearch = z_listsearch(ifeindex)
-		z_list.boot[i].z_incat = z_catfilter(ifeindex)
-		z_list.boot[i].z_inmots2 = z_mots2filter(ifeindex)
+		z_list.boot[i].rawset("z_inmfz", mfz_status)
+		z_list.boot[i].rawset("z_insearch", z_listsearch(ifeindex))
+		z_list.boot[i].rawset("z_incat", z_catfilter(ifeindex))
+		z_list.boot[i].rawset("z_inmots2", z_mots2filter(ifeindex))
+		z_list.boot[i].rawset("z_infav", z_favfilter(ifeindex))
 
 		if ((checkfilter)){
 			ifilter++
 
-			if (z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2 && (!z_list.boot2[i].z_hidden || prf.SHOWHIDDEN) ) {
+			if (z_list.boot[i].z_infav &&z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2 && (!z_list.boot2[i].z_hidden || prf.SHOWHIDDEN) ) {
 				z_list.jumptable.push (
 					{
 						index = ireal
@@ -6844,7 +6863,7 @@ function z_filteredlistupdateindex(reindex){
 		return
 	}
 
-	if(!mfz_checkin(0).inmfz || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN )){
+	if(!mfz_checkin(0).inmfz || !z_favfilter(0) || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN )){
 		z_list.index = 0
 		z_list.newindex = 0
 
@@ -8241,7 +8260,8 @@ for (local i = 0; i < tiles.total; i++ ) {
 		index = 0
 
 		AR = ({snap = 1.0, vids = 1.0, crop = 1.0, current = 1.0})
-		offlist = false // True if the tile is offscreen (and therfore put to visible = false)
+		offlist = false // True if the tile is outside of the list (and therfore put to visible = false)
+		freezecount = 0
 		alphazero = 255 // This is the alpha value of the tile, can be 255 or different if it's a "hidden" game
 		alphafade = 0 // This is the alpha counter for the tile, when fading happens
 
@@ -8258,6 +8278,22 @@ function tile_redraw(i,status){
 	tilez[i].obj.redraw = status
 	foreach (item in tilez[i].surfs){
 		if (item != null) item.redraw = status //Fixed for low spec mode
+	}
+}
+
+function tile_clear(i,status){
+	if (!AF.canredraw) return
+	tilez[i].obj.clear = status
+	foreach (item in tilez[i].surfs){
+		if (item != null) item.clear = status //Fixed for low spec mode
+	}
+}
+
+function tile_freeze(i,status){
+	if (!AF.canredraw) return
+	tilez[i].obj.clear = tilez[i].obj.redraw = !status
+	foreach (item in tilez[i].surfs){
+		if (item != null) item.clear = item.redraw = !status //Fixed for low spec mode
 	}
 }
 
@@ -8438,6 +8474,21 @@ searchdata.char_size = 25 * UI.scalerate
 searchdata.visible = true
 searchdata.font = uifonts.gui
 searchdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
+
+
+function data_freeze(status){
+	data_surface.clear = data_surface.redraw = !status
+	data_surface_sh_rt.clear = data_surface_sh_rt.redraw = !status
+	data_surface_sh_2.clear = data_surface_sh_2.redraw = !status
+	data_surface_sh_1.clear = data_surface_sh_1.redraw = !status
+	labelsurf.clear = labelsurf.redraw = !status
+}
+
+function bgs_freeze(status){
+	bglay.surf_rt.redraw = bglay.surf_rt.clear = !status
+	bglay.surf_2.redraw = bglay.surf_2.clear = !status
+	bglay.surf_1.redraw = bglay.surf_1.clear = !status
+}
 
 function displaynamelogo (offset){
 	return systemfont (z_disp[fe.list.display_index].cleanname,false)
@@ -11941,7 +11992,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0,0,1,1)
 		}
-		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad , zmenu.tileh*0.5 + zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.pad) + (shrink ?  -1.0* disp.width : 0), 1)
+		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad , floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.pad) + (shrink ?  -1.0* disp.width : 0), 1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255,255,255)
 		zmenu.strikelines[i].alpha = 128
@@ -12225,7 +12276,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.strikelines[i].y = zmenu.pos0[i] + zmenu.tileh*0.5 + zmenu.xstop
+		zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh*0.5) + zmenu.xstop
 	}
 
 	for (local i = 0 ; i < zmenu.shown; i++){
@@ -12388,8 +12439,8 @@ function zmenunavigate_down(signal){
 
 zmenu.xstop = 0
 
-zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 function gh_latestdata(op){
 
@@ -13652,6 +13703,7 @@ function updatebgsnap (index){
 	// index è l'indice di riferimento della tilez
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
+	bgs_freeze(false)
 	bgs.bgpic_array[bgs.stacksize-1].file_name  = fe.get_art((prf.BOXARTMODE ? (prf.LAYERSNAP ? "snap" : prf.BOXARTSOURCE) : (prf.TITLEART ? (prf.LAYERSNAP ? "snap" : "title") : "snap")) , tilez[index].offset,0,Art.ImagesOnly)
 
 	if (prf.MULTIMON) {
@@ -14022,6 +14074,30 @@ function new_search(){
 	zmenuhide()
 }
 
+function favtoggle(){
+	/*
+	try {
+		if (multifilterz.l0["Favourite"].menu["Favourite"].filtered){
+			multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
+		}
+		else multifilterz.l0["Favourite"].menu["Favourite"].filtered = true
+
+		mfz_populate()
+		mfz_apply(false)
+		if (zmenu.showing) utilitymenu(umpresel)
+	}
+	catch (err){return}
+	*/
+		search.fav = !search.fav
+
+		updatesearchdatamsg()
+
+		//mfz_populate()
+		mfz_apply(false)
+		if (zmenu.showing) utilitymenu(umpresel)
+
+}
+
 umtable = []
 
 function sortarrays(){
@@ -14202,10 +14278,12 @@ function buildutilitymenu(){
 		id = 0
 		sidenote = function(){
 			local out = ""
-			try {out = multifilterz.l0["Favourite"].menu["Favourite"].filtered ? "FAVOURITES" : "ALL GAMES"} catch(err){}
+			try {out = search.fav ? "FAVOURITES" : "ALL GAMES"} catch(err){}
 			return (ltxt(out,AF.LNG))
 		}
 		command = function(){
+			favtoggle()
+		/*
 			try {
 				if (multifilterz.l0["Favourite"].menu["Favourite"].filtered){
 					multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
@@ -14218,6 +14296,7 @@ function buildutilitymenu(){
 				utilitymenu(umpresel)
 			}
 			catch (err){return}
+			*/
 		}
 	})
 
@@ -14557,6 +14636,7 @@ function resetvarsandpositions(){
 		picsize (tilez[i].obj , UI.tilewidth, UI.tileheight,0,-UI.zoomedvshift*1.0/UI.zoomedwidth)
 		tilez[i].obj.zorder = -2
 		tilez[i].obj.visible = false
+		tile_clear(i,false)
 		tile_redraw(i,false)
 		tilesTableZoom[i] = [0.0,0.0,0.0,0.0,0.0]
 		tilesTableUpdate[i] = [0.0,0.0,0.0,0.0,0.0]
@@ -14671,7 +14751,7 @@ function changetiledata(i,index,update){
 		// Update visibility of horizontal or vertical shadows, glow, indicator etc
 		update_thumbdecor(indexTemp,var,tilez[indexTemp].AR.crop)
 		if (tilez[indexTemp].bd_mx_alpha != 0) update_borderglow(indexTemp,var,tilez[indexTemp].AR.crop)
-
+		tilez[indexTemp].freezecount = 2
 	}
 	tilez[indexTemp].obj.zorder = -2
 
@@ -14681,14 +14761,19 @@ function changetiledata(i,index,update){
 	//TEST101 THIS INTERACTS WITH OFF SCREEN VISIBILITY
 	//tilez[indexTemp].obj.visible = (( (z_list.index + var + index < 0) || (z_list.index + var + index > z_list.size-1) ) == false)
 	tilez[indexTemp].offlist = (( (z_list.index + var + index < 0) || (z_list.index + var + index > z_list.size-1) ))
+	//if(tilez[indexTemp].offlist) tile_freeze(indexTemp,true)
 	//index++
 }
 
 function finaltileupdate(){
-
 		// updates the size and features of the previously selected item and new selected item
 		focusindex.new = wrap( floor(tiles.total/2)-1-corrector + tilesTablePos.Offset, tiles.total )
 		focusindex.old = wrap( floor(tiles.total/2)-1-corrector -var + tilesTablePos.Offset, tiles.total )
+
+		tile_freeze(focusindex.new,false)
+		//tile_clear(focusindex.new,true)
+		//tile_redraw(focusindex.new,true)
+		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
 			tilesTableZoom[focusindex.old] = startfade (tilesTableZoom[focusindex.old],-0.055,1.0)
@@ -14699,9 +14784,11 @@ function finaltileupdate(){
 		tilesTableUpdate[focusindex.new] = startfade (tilesTableUpdate[focusindex.new],0.035,-5.0)
 
 		//activate video load counter
-		if ((prf.THUMBVIDEO) ){
-			gr_vidszTableFade[focusindex.old] = startfade (gr_vidszTableFade[focusindex.old],prf.LOGOSONLY ? -0.04 : -0.01,1.0)
-			aspectratioMorph[focusindex.old] = startfade (aspectratioMorph[focusindex.old],-0.08,1.0)
+		if ((prf.THUMBVIDEO)){
+			if(focusindex.old != focusindex.new){ //TEST142
+				gr_vidszTableFade[focusindex.old] = startfade (gr_vidszTableFade[focusindex.old],prf.LOGOSONLY ? -0.04 : -0.01,1.0)
+				aspectratioMorph[focusindex.old] = startfade (aspectratioMorph[focusindex.old],-0.08,1.0)
+			}
 			vidpos[focusindex.old] = 0
 
 			if (tilez[focusindex.new].gr_vidsz.alpha == 0) {
@@ -15111,6 +15198,8 @@ function on_transition( ttype, var0, ttime ) {
 			mfz_populatereverse()
 			} catch(err){}
 		mfz_apply(true)
+
+
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
@@ -15221,8 +15310,8 @@ function on_transition( ttype, var0, ttime ) {
 
 	if (ttype == Transition.HideOverlay){
 
-		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 		if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 		//overlay.listbox.width = overlay.fullwidth
 		zmenu_sh.surf_2.shader = noshader
@@ -15278,6 +15367,9 @@ function on_transition( ttype, var0, ttime ) {
 
 	// if the transition is to a new selection initialize crossfade, scrolling and srfpos.Pos
 	if( (ttype == Transition.ToNewSelection) ){
+
+		if (!data_surface.redraw) data_freeze(false)
+		if (!bglay.surf_1.redraw) bgs_freeze(false)
 
 		debugpr ("TRANSBLOCK 3.0 - TNS - TRANSITION TO NEW SELECTION ONLY \n")
 
@@ -15393,6 +15485,38 @@ local timescale = {
 function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
+
+//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
+//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+	foreach (i, item in tilez){
+		if (item.freezecount == 2){
+			tile_freeze(i,false)
+			tilez[i].freezecount = 1
+		}
+		else if (item.freezecount == 1){
+			tile_freeze(i,true)
+			tilez[i].freezecount = 0
+		}
+	}
+
+	if (AF.dat_freezecount == 2){
+		data_freeze(false)
+		AF.dat_freezecount = 1
+	}
+	else if (AF.dat_freezecount == 1){
+		data_freeze(true)
+		AF.dat_freezecount = 0
+	}
+
+	if (AF.bgs_freezecount == 2){
+		bgs_freeze(false)
+		AF.bgs_freezecount = 1
+	}
+	else if (AF.bgs_freezecount == 1){
+		bgs_freeze(true)
+		AF.bgs_freezecount = 0
+	}
+
 	if (prf.HUECYCLE){
 		huecycle.RGB = hsl2rgb(huecycle.hue,huecycle.saturation,huecycle.lightness)
 
@@ -15636,7 +15760,7 @@ function tick( tick_time ) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.strikelines[i].y = zmenu.pos0[i] + zmenu.tileh*0.5 + zmenu.xstart + zmenu.speed
+				zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh*0.5) + zmenu.xstart + zmenu.speed
 
 			}
 
@@ -15644,11 +15768,12 @@ function tick( tick_time ) {
 		}
 		else {
 			zmenu.xstart = zmenu.xstop
+			zmenu.speed = 0
 			for (local i = 0;i < zmenu.shown ; i++) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.strikelines[i].y = zmenu.pos0[i] +zmenu.tileh*0.5 + zmenu.xstop
+				zmenu.strikelines[i].y = zmenu.pos0[i] +floor(zmenu.tileh*0.5) + zmenu.xstop
 			}
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
@@ -15725,6 +15850,8 @@ function tick( tick_time ) {
 		}
 	}
 
+	if (bglay.surf_1.redraw && (bgs.bgpic_array[bgs.stacksize-1].alpha == 255)) AF.bgs_freezecount = 1
+
 	if (checkfade(flowT.alphaletter)){
 		flowT.alphaletter = fadeupdate(flowT.alphaletter)
 		if (endfade(flowT.alphaletter) == 1.0) {
@@ -15773,6 +15900,9 @@ function tick( tick_time ) {
 				tilez[i].glomx.visible = false
 				tilez[i].glomx.shader = noshader
 				tilez[i].bd_mx.visible = false
+				if (tilez[i].vidsz.alpha == 0) {
+					tilez[i].freezecount = 2
+				}
 			}
 
 			if (updatetemp[3] < 0){
@@ -15835,6 +15965,9 @@ function tick( tick_time ) {
 					tilez[i].nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 					tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 				}
+				if (tilez[i].bd_mx_alpha == 0) {
+					tilez[i].freezecount = 2
+				}//TEST142
 			}
 
 			if (prf.LOGOSONLY) {
@@ -15862,6 +15995,7 @@ function tick( tick_time ) {
 	}
 
 
+	AF.dat_freeze = true
 	// crossfade of game data
 	for (local i = 0 ; i < dat.stacksize ; i++){
 		if (dat.alphapos[i] != 0 ){
@@ -15878,6 +16012,10 @@ function tick( tick_time ) {
 				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.ply_array[i].alpha
 			}
 		}
+		if (dat.alphapos[i] != 0) AF.dat_freeze = false
+	}
+	if (AF.dat_freeze && data_surface.redraw && (displayname.alpha == 0)) {
+		AF.dat_freezecount = 1
 	}
 
 	//EASE PRINT
@@ -15933,24 +16071,24 @@ function tick( tick_time ) {
 			tilez[i].obj.y = tilesTablePos.Y[i]
 
 			//TEST101 ADD VISIBILITY OFF SCREEN CONTROL
-			local offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
+			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
-				tile_redraw(i,false)
+				tile_freeze(i,true)
 			}
 			else if (!tilez[i].offlist){
-				if (tilez[i].obj.visible && offscreen) {
+				if (tilez[i].obj.visible && to_offscreen) {
 					tilez[i].obj.visible = false
-					tile_redraw(i,false)
 				}
-				if (!tilez[i].obj.visible && !offscreen) {
+				if (!tilez[i].obj.visible && !to_offscreen) {
 					tilez[i].obj.visible = true
-					tile_redraw(i,true)
 				}
 			}
+
 			if (z_list.size == 0) {
 				tilez[i].obj.visible = false
-				tile_redraw(i,false)
+				tile_freeze(i,true)
+
 			}
 			globalposnew = tilez[focusindex.new].obj.x
 		}
@@ -16040,7 +16178,7 @@ function tick( tick_time ) {
 	}
 
 	if (prf.UPDATECHECK){
-		if ((tick_time >= 6000) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
+		if ((tick_time >= 8000) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
 		}
@@ -16099,8 +16237,8 @@ function tick( tick_time ) {
 	if (checkfade (flowT.zmenush)){
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
-			zmenu_sh.surf_rt.visible = false
 			if (AF.canredraw) zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+			zmenu_sh.surf_rt.visible = false
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
@@ -16109,8 +16247,8 @@ function tick( tick_time ) {
 	if (checkfade (flowT.zmenutx)){
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
-			zmenu_surface_container.visible = false
 			if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = false
+			zmenu_surface_container.visible = false
 
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
 		}
@@ -16305,6 +16443,9 @@ function tick( tick_time ) {
 
 		history_surface.alpha = 255 * flowT.history[1]
 	}
+
+
+
 }
 
 //Category functions used for category filter menu
@@ -16861,6 +17002,11 @@ function on_signal( sig ){
 		if (keyboard_visible()) return true
 
 		switchmode()
+		return true
+	}
+
+	if ((sig == prf.FAVBUTTON)&& !zmenu.showing ){
+		favtoggle()
 		return true
 	}
 
@@ -17718,6 +17864,8 @@ function on_signal( sig ){
 				case "up":
 				if (checkrepeat(count.up)){
 
+					if (!data_surface.redraw) data_freeze(false)
+
 					if ((z_list.index % UI.rows > 0) && (scroll.jump == false) && (scroll.sortjump == false)) {
 						z_list_indexchange (z_list.index -1)
 						if(prf.THEMEAUDIO) snd.plingsound.playing = true
@@ -17758,36 +17906,38 @@ function on_signal( sig ){
 				case "down":
 				if (checkrepeat(count.down)){
 
-				if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows -1) && ( ! ( (z_list.index / UI.rows == z_list.size / UI.rows)&&(z_list.index%UI.rows + 1 > (z_list.size -1)%UI.rows) ))) ){
-					if ((corrector == 0) && (z_list.index == z_list.size-1)) return true
-					z_list_indexchange (z_list.index + 1)
-					if(prf.THEMEAUDIO) snd.plingsound.playing = true
-				}
+					if (!data_surface.redraw) data_freeze(false)
 
-				// if you go down and label list is not active, activate scroll.jump
-				else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")){
-					if(prf.THEMEAUDIO) snd.wooshsound.playing = true
+					if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows -1) && ( ! ( (z_list.index / UI.rows == z_list.size / UI.rows)&&(z_list.index%UI.rows + 1 > (z_list.size -1)%UI.rows) ))) ){
+						if ((corrector == 0) && (z_list.index == z_list.size-1)) return true
+						z_list_indexchange (z_list.index + 1)
+						if(prf.THEMEAUDIO) snd.plingsound.playing = true
+					}
 
-					tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
+					// if you go down and label list is not active, activate scroll.jump
+					else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")){
+						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
 
-					scroll.jump = true
-					scroll.step = UI.rows*(UI.cols-2)
-					scroller2.visible = scrollineglow.visible = true
-					scroll.sortjump = false
-				}
+						tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
 
-				// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
-				else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))){
-					if(prf.THEMEAUDIO) snd.wooshsound.playing = true
+						scroll.jump = true
+						scroll.step = UI.rows*(UI.cols-2)
+						scroller2.visible = scrollineglow.visible = true
+						scroll.sortjump = false
+					}
 
-					tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
+					// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
+					else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))){
+						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
 
-					scroll.jump = false
-					scroller2.visible = scrollineglow.visible = false
-					scroll.sortjump = true
-					labelstrip.visible = true
-				}
-				count.down++
+						tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],-0.035,-5.0)
+
+						scroll.jump = false
+						scroller2.visible = scrollineglow.visible = false
+						scroll.sortjump = true
+						labelstrip.visible = true
+					}
+					count.down++
 				}
 				return true
 
