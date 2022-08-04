@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.1 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.2 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,12 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.1 #
+## What's new in v 14.2 #
 
-- Reorganised fonts files
-- Fixed issue when rom name contains ";"
-- Tags menu show tags from all romlists
-- Added an option to enable/disable game hiding
+- Improved performance optimising tile redraw
+- Fixed Cave background image
+- Added new button for favourites filter
 
 ## Emulator system identifier #
 
@@ -190,7 +189,7 @@ Configure layout sounds and audio options for videos
 
 
 
-BUTTONS
+❗ BUTTONS ❗
 Define custom control buttons for different features of Arcadeflow
 
 - 'Context menu button' : Chose the button to open the game context menu
@@ -200,6 +199,7 @@ Define custom control buttons for different features of Arcadeflow
 - 'Search menu button' : Chose the button to use to directly open the search menu instead of using the utility menu
 - 'Category menu button' : Chose the button to use to open the list of game categories
 - 'Multifilter menu button' : Chose the button to use to open the menu for dynamic filtering of romlist
+- '❗ Show favorites button ❗' : Chose the button to use to toggle favorite filtering
 - 'Volume button' : Chose the button to use to change system volume.
 - 'Delete ROM button' : Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
 
@@ -249,10 +249,10 @@ Arcadeflow has its own attract mode screensaver that kicks in after some inactiv
 - 'Background music' : Path to a music file to play in background
 - 'Enable game sound' : Enable game sounds during attract mode
 
-PERFORMANCE & FX
+❗ PERFORMANCE & FX ❗
 Turn on or off special effects that might impact on Arcadeflow performance
 
-- 'Adjust performance' : Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
+- '❗ Adjust performance ❗' : Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
 - 'Resolution W x H' : Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution
 - 'Raspberry Pi fix' : This applies to systems that gives weird results when getting back from a game, reloading the layout as needed
 - 'Width %' : For screens with overscan, define which percentage of the screen will be filled with actual content
@@ -299,7 +299,7 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
 - 'Import only available roms' : Import entrief from the games list only if the rom file is actually available
 
-❗ ROMLIST MANAGEMENT ❗
+ROMLIST MANAGEMENT
 Manage romlists and collections
 
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
@@ -310,7 +310,7 @@ Manage romlists and collections
 - 'Export to gamelist xml' : You can export your romlist in the XML format used by EmulationStation
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
-- '❗ Enable game hiding ❗' : Enable or disable the options to hide games using tags menu
+- 'Enable game hiding' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
 
 SEARCH & FILTERS
@@ -348,6 +348,13 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.1*
+
+- Reorganised fonts files
+- Fixed issue when rom name contains ;
+- Tags menu show tags from all romlists
+- Added an option to enable-disable game hiding
 
 *v14.0*
 
