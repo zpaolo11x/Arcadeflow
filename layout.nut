@@ -153,8 +153,6 @@ local AF = {
 	emulatordata = {}
 
 	LNG = ""
-
-	canredraw = false
 }
 
 AF.vernum = AF.version.tofloat()*10
@@ -1329,9 +1327,6 @@ foreach (item, val in prf){
 	prfzero [item] <- val
 }
 
-// Prefs variables used as temporary checks for using grouped displays menu
-prf.JUMPDISPLAYS <- false //This is used for group display jump, to avoid reordering lists until we are at the right spot
-prf.JUMPSTEPS <- 0
 prf.JUMPLEVEL <- 0 //Level 0 for parent list, level 1 for sub-lists, exit arcadeflow added only on parent list
 
 prf.OLDOPTIONSPAGE <- false
@@ -7426,13 +7421,8 @@ function categorycolor(offset,index){
 /// Main layout surface ///
 
 fl.surf = fe.add_surface(fl.w_os,fl.h_os)
+fl.surf.redraw = true
 
-try{
-	fl.surf.redraw = true
-	AF.canredraw = true
-}catch(err){
-	AF.canredraw = false
-}
 // fl.surf.mipmap = 1
 // fl.surf.zorder = -1000
 
@@ -7578,7 +7568,7 @@ frost.surf_rt.set_pos(overlay.x,overlay.y,overlay.w,overlay.h)
 
 frost.surf_rt.alpha = 0
 frost.surf_rt.visible = false
-if (AF.canredraw) frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
+frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 
 shader_fr.alpha.set_texture_param( "texture",frost.surf_rt)
 shader_fr.alpha.set_param ( "alpha",0.0 )
@@ -8280,7 +8270,6 @@ for (local i = 0; i < tiles.total; i++ ) {
 }
 
 function tile_redraw(i,status){
-	if (!AF.canredraw) return
 	tilez[i].obj.redraw = status
 	foreach (item in tilez[i].surfs){
 		if (item != null) item.redraw = status //Fixed for low spec mode
@@ -8288,7 +8277,6 @@ function tile_redraw(i,status){
 }
 
 function tile_clear(i,status){
-	if (!AF.canredraw) return
 	tilez[i].obj.clear = status
 	foreach (item in tilez[i].surfs){
 		if (item != null) item.clear = status //Fixed for low spec mode
@@ -8296,7 +8284,6 @@ function tile_clear(i,status){
 }
 
 function tile_freeze(i,status){
-	if (!AF.canredraw) return
 	tilez[i].obj.clear = tilez[i].obj.redraw = !status
 	foreach (item in tilez[i].surfs){
 		if (item != null) item.clear = item.redraw = !status //Fixed for low spec mode
@@ -8516,7 +8503,7 @@ displayname.word_wrap = true
 displayname.alpha = 0
 displayname.font = uifonts.gui
 displayname.align = Align.MiddleCentre
-if (AF.canredraw) displaynamesurf.surf.redraw = false
+displaynamesurf.surf.redraw = false
 
 // fading letter
 local letterobjsurf = {
@@ -8535,7 +8522,7 @@ letterobj.font = uifonts.gui
 letterobj.set_rgb(themeT.themelettercolor,themeT.themelettercolor,themeT.themelettercolor)
 letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
-if (AF.canredraw) letterobjsurf.surf.redraw = false
+letterobjsurf.surf.redraw = false
 
 local blsize = {
 	mini = floor (45 * UI.scalerate + 0.5),
@@ -8925,14 +8912,14 @@ function frostshaders (turnon){
 	if (turnon){
 	//	frost.top.shader = flipshader
 		frost.surf_rt.visible = true
-		if (AF.canredraw) frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
 		frost.surf_1.shader = shader_fr.h
 		frost.pic.shader = shader_fr.v
 	}
 	else{
 	//	frost.top.shader = noshader
 		frost.surf_rt.visible = false
-		if (AF.canredraw) frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 		frost.surf_1.shader = noshader
 		frost.pic.shader = noshader
 	}
@@ -9944,7 +9931,7 @@ local keyboard_text = null
 function keyboard_show(text_base,entrytext,f_type,f_back,f_done){
 
 	keyboard_surface.visible = true
-	if (AF.canredraw) keyboard_surface.redraw = true
+	keyboard_surface.redraw = true
 
 	// Initialize keyboard data structure and functions
 	kb.text_base = text_base
@@ -10094,7 +10081,7 @@ function keyboard_draw() {
 		row_count++
 	}
 	keyboard_surface.visible = false
-	if (AF.canredraw) keyboard_surface.redraw = false
+	keyboard_surface.redraw = false
 }
 
 keyboard_draw()
@@ -11461,7 +11448,6 @@ function history_exit () {
 }
 
 function history_redraw(status){
-	if (!AF.canredraw) return
 	history_surface.redraw = status
 	hist_text_surf.redraw = status
 	shadowsurf_rt.redraw = status
@@ -12264,7 +12250,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
-	if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
+	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 
 	local menucorrect = 0
 	if (zmenu.shown - 1 - zmenu.selected < (overlay.rows -1) / 2) menucorrect =  (overlay.rows -1) / 2 - zmenu.shown +1 + zmenu.selected
@@ -12445,7 +12431,7 @@ function zmenunavigate_down(signal){
 
 zmenu.xstop = 0
 
-if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 function gh_latestdata(op){
@@ -12621,72 +12607,11 @@ function checkforupdates(force){
 }
 
 function jumptodisplay(targetdisplay){
-
-	try{
-		fe.set_display(targetdisplay,false,false)
-		zmenu.dmp = false
-		umvisible = false
-		frosthide()
-		zmenuhide()
-	}
-	catch(err){
-
-		local jumps = 0
-		local jumpsfw = 0
-		local jumpsbw = 0
-		local noamfw = false //there's a display going forward that doesn't use AF
-		local noambw = false //there's a display going backward that doesn't use AF
-		local oldjump = false
-		local jumpscollfw = false //there's a collection display going forward (potentially slow)
-		local jumpscollbw = false //there's a collection display going backward (potentially slow)
-
-		for (local i = 0; i < fe.displays.len(); i++){
-			local ifw = modwrap(fe.list.display_index + i, fe.displays.len())
-			if (fe.displays[ifw].layout.tolower().find("arcadeflow") == null) noamfw = true
-			if (fe.displays[ifw].name.find("AF ") == 0) jumpscollfw = true
-			if (ifw == targetdisplay) break
-			if (fe.displays[ifw].in_cycle) jumpsfw ++
-		}
-
-		for (local i = 0; i < fe.displays.len(); i++){
-			local ibw = modwrap(fe.list.display_index - i, fe.displays.len())
-			if (fe.displays[ibw].layout.tolower().find("arcadeflow") == null) noambw = true
-			if (fe.displays[ibw].name.find("AF ") == 0) jumpscollbw = true
-			if (ibw == targetdisplay) break
-			if (fe.displays[ibw].in_cycle) jumpsbw --
-		}
-
-		if (noamfw && noambw) oldjump = true
-		else if (noamfw && !noambw) jumps = jumpsbw
-		else if (!noamfw && noambw) jumps = jumpsfw
-		else if (jumpscollfw) jumps = jumpsbw
-		else if (jumpscollbw) jumps = jumpsfw
-		else if (abs(jumpsfw) < abs(jumpsbw)) jumps = jumpsfw
-		else jumps = jumpsbw
-
-		zmenu.dmp = false
-		umvisible = false
-		frosthide()
-		zmenuhide()
-
-
-		if ((prf.OLDDISPLAYCHANGE) || oldjump){
-			fe.set_display(targetdisplay)
-			prf.JUMPDISPLAYS = false
-			jumps = 0
-		}
-
-		if (jumps != 0 ) {
-			prf.JUMPSTEPS = abs(jumps)
-			prf.JUMPDISPLAYS = true
-		}
-		if ( jumps > 0 ) {
-			for (local i = 0; i < jumps; i++) fe.signal("next_display")
-		}
-		if ( jumps < 0 )  {
-			for (local i = 0; i < abs(jumps); i++) fe.signal("prev_display")
-		}
-	}
+	fe.set_display(targetdisplay,false,false)
+	zmenu.dmp = false
+	umvisible = false
+	frosthide()
+	zmenuhide()
 }
 
 function displayungrouped (){
@@ -13191,7 +13116,7 @@ function attractkick(){
 
 	attract.start = true
 	attract.starttimer = false
-	if (AF.canredraw) attractitem.surface.visible = attractitem.surface.redraw = true
+	attractitem.surface.visible = attractitem.surface.redraw = true
 	attractitem.text1.visible = attractitem.text2.visible = true
 	attractitem.snap.shader = attractitem.shader_2_lottes
 
@@ -13331,7 +13256,7 @@ if (prf.AMENABLE){
 
 		attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 		attractitem.snap.shader = noshader
-		if (AF.canredraw) attractitem.surface.visible = attractitem.surface.redraw = false
+		attractitem.surface.visible = attractitem.surface.redraw = false
 		attractitem.text1.visible = attractitem.text2.visible = false
 		attractitem.surface.alpha = 0
 		attractitem.text1.alpha = attractitem.text2.alpha = 0
@@ -15151,8 +15076,6 @@ function on_transition( ttype, var0, ttime ) {
 //		z_saverundatetofile()
 	}
 
-	if ((ttype == Transition.ToNewList) && (prf.JUMPDISPLAYS)) return false
-
 	if (ttype == Transition.FromGame) {
 		/*
 		flowT.data = startfade (flowT.data,0.06,3.0)
@@ -15246,7 +15169,7 @@ function on_transition( ttype, var0, ttime ) {
 		displayname.msg = fe.filters[fe.list.filter_index].name
 
 		flowT.alphadisplay = startfade (flowT.alphadisplay,0.04,-2.0)
-		if (AF.canredraw) displaynamesurf.surf.redraw = true
+		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0,0.0,0.0,0.0,0.0]
 		flowT.zoomdisplay = startfade (flowT.zoomdisplay,0.015,-2.0)
 	}
@@ -15257,7 +15180,7 @@ function on_transition( ttype, var0, ttime ) {
 		displayname.msg = displaynamelogo(0)
 
 		flowT.alphadisplay = startfade (flowT.alphadisplay,0.04,-2.0)
-		if (AF.canredraw) displaynamesurf.surf.redraw = true
+		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0,0.0,0.0,0.0,0.0]
 		flowT.zoomdisplay = startfade (flowT.zoomdisplay,0.015,-2.0)
 
@@ -15316,7 +15239,7 @@ function on_transition( ttype, var0, ttime ) {
 
 	if (ttype == Transition.HideOverlay){
 
-		if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+		zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 		//overlay.listbox.width = overlay.fullwidth
@@ -15386,7 +15309,7 @@ function on_transition( ttype, var0, ttime ) {
 			// Update the letter item, checking if it can use a system font
 			letterobj.msg = systemfont (l2,false)
 			flowT.alphaletter = startfade (flowT.alphaletter,0.06,-2.0)
-			if (AF.canredraw) letterobjsurf.surf.redraw = true
+			letterobjsurf.surf.redraw = true
 			flowT.zoomletter = [0.0,0.0,0.0,0.0,0.0]
 			flowT.zoomletter = startfade (flowT.zoomletter,0.03,-2.0)
 		}
@@ -15864,7 +15787,7 @@ function tick( tick_time ) {
 			flowT.alphaletter = startfade (flowT.alphaletter,-0.06,2.0)
 		}
 		if (endfade(flowT.alphaletter) == 0.0) {
-			if (AF.canredraw) letterobjsurf.surf.redraw = false
+			letterobjsurf.surf.redraw = false
 		}
 		letterobj.alpha = 255 * flowT.alphaletter[1]
 	}
@@ -15883,7 +15806,7 @@ function tick( tick_time ) {
 			flowT.alphadisplay = startfade (flowT.alphadisplay,-0.04,2.0)
 		}
 		if ( (endfade(flowT.alphadisplay) == 0.0) ) {
-			if (AF.canredraw) displaynamesurf.surf.redraw = false
+			displaynamesurf.surf.redraw = false
 		}
 		displayname.alpha  = 255 * flowT.alphadisplay[1]
 	}
@@ -16194,7 +16117,7 @@ function tick( tick_time ) {
 		flowT.keyboard = fadeupdate(flowT.keyboard)
 		if (endfade (flowT.keyboard) == 0){
 			keyboard_surface.visible = false
-			if (AF.canredraw) keyboard_surface.redraw = false
+			keyboard_surface.redraw = false
 		}
 		keyboard_surface.alpha = 255 * flowT.keyboard[1]
 	}
@@ -16243,7 +16166,7 @@ function tick( tick_time ) {
 	if (checkfade (flowT.zmenush)){
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
-			if (AF.canredraw) zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+			zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 			zmenu_sh.surf_rt.visible = false
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
@@ -16253,7 +16176,7 @@ function tick( tick_time ) {
 	if (checkfade (flowT.zmenutx)){
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
-			if (AF.canredraw) zmenu_surface_container.redraw = zmenu_surface.redraw = false
+			zmenu_surface_container.redraw = zmenu_surface.redraw = false
 			zmenu_surface_container.visible = false
 
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
@@ -16363,7 +16286,7 @@ function tick( tick_time ) {
 
 			attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 			attractitem.snap.shader = noshader
-			if (AF.canredraw) attractitem.surface.visible = attractitem.surface.redraw = false
+			attractitem.surface.visible = attractitem.surface.redraw = false
 			attractitem.text1.visible = attractitem.text2.visible = false
 			attract.starttimer = true
 			if(prf.AMTUNE != "") {
@@ -16974,11 +16897,6 @@ function on_signal( sig ){
 		deletecurrentrom()
 	}
 
-	// Manage display jumps for nested displays list
-	if (  ((sig == "prev_display") || (sig == "next_display")) && (prf.JUMPDISPLAYS)) {
-		prf.JUMPSTEPS --
-		if (prf.JUMPSTEPS == 0) prf.JUMPDISPLAYS = false
-	}
 
 	// Key response when attract mode is enabled (running or not)
 	if (prf.AMENABLE){
@@ -17126,7 +17044,6 @@ function on_signal( sig ){
 	if ((zmenu.showing) && (sig != "displays_menu") && ((sig != "layout_options"))){
 		if (sig == "screenshot") return false
 		if (sig == "reload") return false
-		//if (!prf.JUMPDISPLAYS && ((sig == "prev_display") || (sig == "next_display")))  return false
 
 		if (sig == "up") {
 			if (checkrepeat(count.up)){
