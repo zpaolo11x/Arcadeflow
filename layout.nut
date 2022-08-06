@@ -209,8 +209,6 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.general
 }
 
-if (FeVersionNum < 250) z_splash_message (ltxt("Arcadeflow requires at least Attract Mode v2.5.0",AF.LNG))
-
 /// Config management ///
 
 /* Principles of ALLGAMES collections:
@@ -1326,8 +1324,6 @@ local prfzero = {}
 foreach (item, val in prf){
 	prfzero [item] <- val
 }
-
-prf.JUMPLEVEL <- 0 //Level 0 for parent list, level 1 for sub-lists, exit arcadeflow added only on parent list
 
 prf.OLDOPTIONSPAGE <- false
 
@@ -11773,6 +11769,9 @@ zmenu = {
 	simtxt = null
 	simsys = null
 
+	jumplevel = 0 //Level 0 for parent list, level 1 for sub-lists, exit arcadeflow added only on parent list
+
+
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
@@ -12304,7 +12303,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		if ((prf.DMPSORT == "year") && prf.DMPENABLED)  overlay.sidelabel.msg = "\n"+ltxt("BY YEAR",AF.LNG)
 
 		if (prf.DMPGENERATELOGO) {
-			for (local i=0 ; i < ((prf.DMPEXITAF && (prf.JUMPLEVEL==0)) ? zmenu.shown -1 : zmenu.shown); i++){
+			for (local i=0 ; i < ((prf.DMPEXITAF && (zmenu.jumplevel==0)) ? zmenu.shown -1 : zmenu.shown); i++){
 				if (glypharray[i] != -1) {
 					zmenu.items[i].font = uifonts.gui
 					zmenu.items[i].char_size = ( (UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh*0.5 : zmenu.tileh*(prf.LOWRES?0.65:0.7))
@@ -12607,7 +12606,7 @@ function checkforupdates(force){
 }
 
 function jumptodisplay(targetdisplay){
-	fe.set_display(targetdisplay,false,false)
+	fe.set_display(targetdisplay,false,prf.OLDDISPLAYCHANGE)
 	zmenu.dmp = false
 	umvisible = false
 	frosthide()
@@ -12616,7 +12615,7 @@ function jumptodisplay(targetdisplay){
 
 function displayungrouped (){
 	zmenu.dmp = true
-	prf.JUMPLEVEL = 0
+	zmenu.jumplevel = 0
 
 	// Array of display table entries to show in the menu
 	local menuarray = []
@@ -12759,7 +12758,7 @@ function displayungrouped (){
 
 function displaygrouped1(){
 	zmenu.dmp = true
-	prf.JUMPLEVEL = 0
+	zmenu.jumplevel = 0
 
 	// Displays the group menu
 	zmenudraw (disp.groupname,null,null,ltxt("DISPLAYS",AF.LNG),0xe912,disp.gmenu0out,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,true,(prf.DMPIMAGES != null) && prf.DMCATEGORYART,false,
@@ -12812,7 +12811,7 @@ function displaygrouped1(){
 				menuarray.sort (@(a,b) a.sortkey <=> b.sortkey)
 			}
 
-			prf.JUMPLEVEL = 1
+			zmenu.jumplevel = 1
 
 			// Define menu display arrays
 			local showarray = []
@@ -12968,7 +12967,7 @@ function builddisplaystructure(){
 
 function displaygrouped(){
 	zmenu.dmp = true
-	prf.JUMPLEVEL = 0
+	zmenu.jumplevel = 0
 
 	builddisplaystructure()
 
