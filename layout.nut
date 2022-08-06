@@ -193,7 +193,7 @@ local uifonts = {
 	arcade = "fonts/font_CPMono_Black.otf"
 	arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
 	glyphs = "fonts/font_glyphs.ttf"
-	mono = "fonts/font_RobotoMono-Variablefonts/font_wght.ttf"
+	mono = "fonts/font_RobotoMono-VariableFont_wght.ttf"
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 }
