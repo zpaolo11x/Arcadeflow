@@ -9078,7 +9078,9 @@ function updatemenu(level,var){
 	else if (level == 2) {
 		prfmenu.helppic.set_rgb(255,255,255)
 
-		try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][zmenu.selected].picsel[AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection]}
+		try {
+			prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][zmenu.selected].picsel[AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection]
+		}
 		catch(err){
 			try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][var].pic}
 			catch (err) {
@@ -9102,7 +9104,7 @@ function updatemenu(level,var){
 }
 
 //Third level menu
-function optionsmenu2(){
+function optionsmenu_lev3(){
 	prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help
 	prfmenu.level = 3
 
@@ -9116,10 +9118,10 @@ function optionsmenu2(){
 				if(prf.THEMEAUDIO) snd.clicksound.playing = true
 				AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection = prfmenu.res2
 				prfmenu.outres2 = prfmenu.res2
-				optionsmenu2()
+				optionsmenu_lev3()
 			}
 			else {
-				optionsmenu1()
+				optionsmenu_lev2()
 			}
 		})
 	}
@@ -9135,33 +9137,33 @@ function optionsmenu2(){
 			return
 		},
 		function(){ //BACK
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		},
 		function(){ //DONE
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = keyboard_entrytext
 			prfmenu.res2 = -1
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		)
 
 		//AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = fe.overlay.edit_dialog( AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values )
 		//prfmenu.res2 = -1
-		//optionsmenu1()
+		//optionsmenu_lev2()
 
 	}
 	else if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection == AF.req.textentr){
 		// TEXT INPUT OPTION (selection = AF.req.textentr)
 		AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = fe.overlay.edit_dialog( AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values )
 		prfmenu.res2 = -1
-		optionsmenu1()
+		optionsmenu_lev2()
 	}
 	else if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection == AF.req.executef){
 		// EXECUTE FUNCTION OPTION (selection = AF.req.executef)
 		AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values()
 		prfmenu.res2 = -1
-		optionsmenu1()
+		optionsmenu_lev2()
 	}
 	else if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection == AF.req.filereqs){
 		// FILE REQUESTER OPTION (selection = AF.req.filereqs)
@@ -9205,11 +9207,13 @@ function optionsmenu2(){
 }
 
 //Second menu level
-function optionsmenu1(){
+function optionsmenu_lev2(){
 
 	prfmenu.level = 2
+	zmenu.selected = prfmenu.outres1 //TEST143
 
 	updatemenu(prfmenu.level,prfmenu.outres1)
+
 
 	zmenudraw (getsubmenu(prfmenu.outres0),getsubmenuglyphs(prfmenu.outres0),getsubmenunotes(prfmenu.outres0),AF.prefs.l0[prfmenu.outres0].label,AF.prefs.l0[prfmenu.outres0].glyph,prfmenu.outres1,false,false,false,false,false,
 	function(prfmenures1){
@@ -9218,11 +9222,11 @@ function optionsmenu1(){
 		try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help}catch(err){prfmenu.description.msg=""}
 		if (prfmenu.res1 == -1) {
 			prfmenu.outres1 = 0
-			optionsmenu0()
+			optionsmenu_lev1()
 		}
 		else {
 			prfmenu.outres1 = prfmenu.res1
-			optionsmenu2()
+			optionsmenu_lev3()
 		}
 	}
 	function(){//Left
@@ -9234,7 +9238,7 @@ function optionsmenu1(){
 				AF.prefs.l1[prfmenu.outres0][zmenu.selected].values = AF.prefs.l1[prfmenu.outres0][zmenu.selected].options[0]
 
 			prfmenu.outres1 = zmenu.selected
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 
@@ -9245,7 +9249,7 @@ function optionsmenu1(){
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection = AF.prefs.l1[prfmenu.outres0][zmenu.selected].values.len() - 1
 			prfmenu.outres1 = zmenu.selected
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		if (AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection > 0){
@@ -9253,7 +9257,7 @@ function optionsmenu1(){
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection --
 			prfmenu.outres1 = zmenu.selected
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 	}
@@ -9266,7 +9270,7 @@ function optionsmenu1(){
 				AF.prefs.l1[prfmenu.outres0][zmenu.selected].values = AF.prefs.l1[prfmenu.outres0][zmenu.selected].options[1]
 
 			prfmenu.outres1 = zmenu.selected
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 
@@ -9277,7 +9281,7 @@ function optionsmenu1(){
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection = 0
 			prfmenu.outres1 = zmenu.selected
-			optionsmenu1()
+			optionsmenu_lev2()
 
 			return
 		}
@@ -9286,14 +9290,14 @@ function optionsmenu1(){
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection ++
 			prfmenu.outres1 = zmenu.selected
-			optionsmenu1()
+			optionsmenu_lev2()
 		}
 	})
 }
 
 
 //First menu level
-function optionsmenu0(){
+function optionsmenu_lev1(){
 	prfmenu.description.msg = AF.prefs.l0[prfmenu.outres0].description
 	prfmenu.level = 1
 	updatemenu(prfmenu.level,prfmenu.outres0)
@@ -9351,7 +9355,7 @@ function optionsmenu0(){
 				prfmenu.outres1++
 			}
 			try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help}catch(err){prfmenu.description.msg=""}
-			optionsmenu1()
+			optionsmenu_lev2()
 		}
 	},
 	null,
@@ -9363,11 +9367,11 @@ function optionsmenu0(){
 			}
 		}
 		//zmenu.selected = 5
-		//optionsmenu0()
+		//optionsmenu_lev1()
 	})
 }
 
-function optionsmenu(){
+function optionsmenu_boot(){
 
 	prfmenu.res0 = prfmenu.res1 = prfmenu.res2 = prfmenu.outres0 = prfmenu.outres1 = prfmenu.outres2 = prfmenu.level = 0
 	prfmenu.showing = true
@@ -9376,7 +9380,7 @@ function optionsmenu(){
 
 	selection_pre = generateselectiontable()
 
-	optionsmenu0()
+	optionsmenu_lev1()
 }
 
 function savecurrentoptions(){
@@ -9391,7 +9395,7 @@ function savecurrentoptions(){
 	},
 	function(){ //BACK
 		prfmenu.res2 = -1
-		optionsmenu1()
+		optionsmenu_lev2()
 		return
 	},
 	function(){ //DONE
@@ -9406,7 +9410,7 @@ function savecurrentoptions(){
 		}
 
 		prfmenu.res2 = -1
-		optionsmenu1()
+		optionsmenu_lev2()
 		return
 	}
 	)
@@ -9423,7 +9427,7 @@ function restoreoptions(){
 		zmenudraw (optionsnames,null,null,"Options files",null,0,false,false,false,false,false,
 		function(out){
 			if (out == -1){
-				optionsmenu1()
+				optionsmenu_lev2()
 			}
 			else {
 				local prefsfilepath = fe.path_expand(AF.folder + "options/" + optionsnames.results[out]+".txt")
@@ -9465,21 +9469,21 @@ function rgbselector(rgb,sel,old,start){
 		if (out == -1) {
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		else if (out == 5){
 			//SET DEFAULT
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = ""
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		else {
 			//SET RGB
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = rgb[0]+" "+rgb[1]+" "+rgb[2]
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 	}
@@ -9527,21 +9531,21 @@ function hueselector(hue,sel,old,start){
 		if (out == -1) {
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		else if (out == 5){
 			//SET DEFAULT
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = ""
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		else {
 			//SET VAL
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = hue
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 	}
@@ -9600,7 +9604,7 @@ function sliderval(name,val,sel,old,start,vmin,vmax,def){
 	function(out){
 		if (out == -1) {
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		else if (out == 3){
@@ -9608,13 +9612,13 @@ function sliderval(name,val,sel,old,start,vmin,vmax,def){
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = def
 			//val = ""
 			//sliderval(val,zmenu.selected,old,false,vmin,vmax,def)
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		else {
 			//SET VAL
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = val
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 	}
@@ -9721,13 +9725,13 @@ function filebrowser1(file0){
 		if (out == -1) {
 			prfmenu.browsershowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = file0
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 		if (out == 0) {
 			prfmenu.browsershowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = AF.prefs.defaults[AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname.toupper()]
-			optionsmenu1()
+			optionsmenu_lev2()
 			return
 		}
 
@@ -9746,7 +9750,7 @@ function filebrowser1(file0){
 			if (!fe.path_test(fb.startdir,PathTest.IsDirectory)) {
 				prfmenu.browsershowing = false
 				AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = fb.startdir
-				optionsmenu1()
+				optionsmenu_lev2()
 				return (fb.startdir)
 			}
 
@@ -16589,7 +16593,7 @@ function sortmenu(vector,namevector,presel,glyph,title){
 				v0 = v0 + vector[i]+","
 			}
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = v0
-			optionsmenu1()
+			optionsmenu_lev2()
 		}
 		else {
 			vector[zmenu.selected] = -1 * vector[zmenu.selected]
@@ -17187,7 +17191,7 @@ function on_signal( sig ){
 
 
 		frostshow()
-		optionsmenu() // This is the final part where custom code to manage the signal can be added.
+		optionsmenu_boot() // This is the final part where custom code to manage the signal can be added.
 
 		return true
 	}

@@ -1,2 +1,3 @@
 14.3
 Fixed font path for scraper
+Fixed issue with options menu images
