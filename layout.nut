@@ -12040,6 +12040,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].margin = 0
 		zmenu.items[i].align = (center ? Align.MiddleCentre : Align.MiddleLeft)
 		zmenu.items[i].bg_alpha = 0
+		zmenu.items[i].line_spacing = 1.0
 		zmenu.items[i].set_rgb(255,255,255)
 		//obj_item.set_bg_rgb(100,0,0)
 
@@ -13370,6 +13371,7 @@ zmenu.simsys.char_size = 50 * UI.scalerate
 zmenu.simsys.word_wrap = true
 zmenu.simsys.align = Align.TopRight
 zmenu.simsys.font = uifonts.gui
+zmenu.simsys.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //zmenu.simsys.set_bg_rgb(200,0,0)
 
 zmenu.simtxt = zmenu_surface_container.add_text("",
@@ -13382,6 +13384,7 @@ zmenu.simtxt.char_size = 50 * UI.scalerate
 zmenu.simtxt.word_wrap = true
 zmenu.simtxt.align = Align.TopCentre
 zmenu.simtxt.font = uifonts.lite
+zmenu.simtxt.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 
 function zmenusimvisible(visibility){
 	zmenu.simpicshT.visible = zmenu.simpicshB.visible = zmenu.simpicshL.visible = zmenu.simpicshR.visible = visibility
