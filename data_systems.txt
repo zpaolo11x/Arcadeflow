@@ -539,6 +539,13 @@ nintendo nes,256,240,NES,CRT,NONE,4,3,CONSOLE,Nintendo,1985,Nintendo Entertainme
 nintendo entertainment system
 nes
 
+nintendo playchoice 10,256,240,PC10,CRT,NONE,4,3,ARCADE,Nintendo,1986,PlayChoice 10,75,rom,joystick (8-way),2
+nintendo playchoice-10
+playchoice 10
+playchoice-10
+playchoice
+nintendo playchoice
+
 nintendo satellaview,256,224,SATV,CRT,NONE,4,3,CONSOLE,Nintendo,1995,Satellaview,107,rom,joystick (8-way),4
 satellaview
 
@@ -561,6 +568,11 @@ nintendo super game boy,160,144,SGB,CRT,NONE,0,0,CONSOLE,Nintendo,1994,Super Gam
 super gameboy
 nintendo super gameboy
 super game boy
+
+nintendo super system,256,224,NSSYS,CRT,NONE,4,3,ARCADE,Nintendo,1991,Nintendo Super System,75,rom,joystick (8-way),4
+nintendo supersystem
+super system
+supersystem
 
 nintendo switch,0,0,SWT,LCD,NONE,0,0,HANDHELD,Nintendo,2017,Nintendo Switch,225,rom,joystick (8-way),4
 switch
@@ -734,6 +746,18 @@ megadrive
 mega drive
 sega mega drive
 
+sega mega play,0,0,SM-P,CRT,NONE,4,3,ARCADE,Sega,1991,Mega Play,75,rom,joystick (8-way),3
+mega play
+mega-play
+sega mega-play
+megaplay
+sega megaplay
+
+sega mega tech,0,0,SM-T,CRT,NONE,4,3,ARCADE,Sega,1989,Mega Tech,75,rom,joystick (8-way),3
+mega tech
+mega-tech
+sega mega-tech
+
 sega model 2,0,0,SM2,CRT,NONE,-4,3,ARCADE,Sega,1993,Sega Model 2,54,rom,null,null
 model 2
 sega model2
@@ -823,7 +847,7 @@ ql
 sinclair zx spectrum,256,192,ZX-S,CRT,NONE,4,3,COMPUTER,Sinclair,1982,ZX Spectrum,76,rom,joystick (8-way),1
 zx spectrum
 sinclair spectrum
-spectrum	
+spectrum
 
 sinclair zx spectrum 3,256,192,SP3,CRT,NONE,4,3,COMPUTER,Sinclair,1987,ZX Spectrum 3,76,rom,joystick (8-way),1
 zx spectrum +3
@@ -834,7 +858,7 @@ spectrum +3
 sinclair zx81,0,0,ZX81,CRT,NONE,4,3,COMPUTER,Sinclair,1981,ZX 81,77,rom,joystick (8-way),1
 zx 81
 sinclair zx 81
-zx81	
+zx81
 
 snk,0,0,SNK,CRT,NONE,-4,3,ARCADE,SNK,null,SNK,154,rom,null,null
 snk classics
