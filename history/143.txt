@@ -1,4 +1,5 @@
 14.3
+Added 4 new systems
 Fixed font path for scraper
 Fixed issue with options menu images
 Fixed menu line spacing
