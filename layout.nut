@@ -8716,7 +8716,7 @@ for (local i = 0; i < dat.stacksize; i++){
 	game_manufacturerpic.char_size = gamed.manufacturerpicT.h-5 * UI.scalerate
 	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
-	game_manufacturerpic.font = "fonts/font_manufacturers.ttf"
+	game_manufacturerpic.font = "fonts/font_manufacturers_2.ttf"
 	//game_manufacturerpic.set_bg_rgb(255,0,0)
 
 
