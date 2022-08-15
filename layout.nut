@@ -184,7 +184,7 @@ try {AF.LNG = loadlanguage ()} catch (err){}
 
 // font definition
 local uifonts = {
-	gui = "fonts/font_Roboto-Allcaps-EXT3X.ttf"
+	gui = "fonts/font_Roboto-Allcaps-EXT4X.ttf"
 	general = "fonts/font_Roboto-Bold.ttf"
 	condensed = "fonts/font_Roboto-Condensed-Bold.ttf"
 	lite = "fonts/font_Roboto-Regular.ttf"
