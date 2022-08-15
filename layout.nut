@@ -6735,6 +6735,7 @@ function z_listsort(orderby,reverse){
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby,reverse]
 		savetabletofile(SORTTABLE,"pref_sortorder.txt")
 	}
+
 }
 
 // Creates an array for prev-next jump
@@ -14144,6 +14145,7 @@ function buildutilitymenu(){
 					*/
 
 					z_listsort(result_sort[0],result_sort[1])
+					AF.dat_freezecount = 2 //TEST144
 					z_liststupdateindex() //When sorting the index is always there, and no need to rebuild the list
 					z_liststops()
 					z_listrefreshlabels()
