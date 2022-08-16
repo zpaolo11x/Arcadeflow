@@ -13536,7 +13536,7 @@ if (prf.OVERCUSTOM != "pics/") {
 // Character size: 1.7*(width/columns) or 0.78*(height/rows)
 AF.messageoverlay = fe.add_text("1234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13",fl.x,fl.y,fl.w,fl.h)
 AF.messageoverlay.margin = 50 * UI.scalerate
-AF.messageoverlay.char_size = (fl.w-2.0*AF.messageoverlay.margin)*1.7/AF.scrape.columns //40 columns text
+AF.messageoverlay.char_size = floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) //40 columns text
 AF.messageoverlay.word_wrap = true
 AF.messageoverlay.set_bg_rgb (40,40,40)
 AF.messageoverlay.bg_alpha = 220+0*240

@@ -1,3 +1,4 @@
 14.4
 Fixed GBA logo issues
 Fixed labels update when sorting
+Fixed number of columns in scraper messages
