@@ -13544,7 +13544,13 @@ AF.messageoverlay.align = Align.TopLeft
 AF.messageoverlay.font = uifonts.mono
 AF.messageoverlay.visible = false
 AF.messageoverlay.zorder = 100
-//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
+
+if (floor(floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) + 0.5) == 8) {
+	AF.messageoverlay.char_size = 16
+	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
+}
+
+	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
 
 local fps = {

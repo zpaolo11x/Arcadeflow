@@ -2,3 +2,4 @@
 Fixed GBA logo issues
 Fixed labels update when sorting
 Fixed number of columns in scraper messages
+Added pixel font on scrape screen
