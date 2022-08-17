@@ -13545,6 +13545,12 @@ AF.messageoverlay.font = uifonts.mono
 AF.messageoverlay.visible = false
 AF.messageoverlay.zorder = 100
 
+testpr("FLOATSIZE:"+((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns)+"\n")
+
+testpr("CHAR SIZE:"+floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns)+"\n")
+
+testpr("FONT SIZE:"+floor(floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) + 0.5)+"\n")
+
 if (floor(floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) + 0.5) == 8) {
 	AF.messageoverlay.char_size = 16
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
