@@ -13534,24 +13534,18 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7*(width/columns) or 0.78*(height/rows)
-AF.messageoverlay = fe.add_text("1234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13",fl.x,fl.y,fl.w,fl.h)
+AF.messageoverlay = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13",fl.x,fl.y,fl.w,fl.h)
 AF.messageoverlay.margin = 50 * UI.scalerate
-AF.messageoverlay.char_size = floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) //40 columns text
+AF.messageoverlay.char_size = floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) //40 columns text
 AF.messageoverlay.word_wrap = true
 AF.messageoverlay.set_bg_rgb (40,40,40)
 AF.messageoverlay.bg_alpha = 220+0*240
 AF.messageoverlay.align = Align.TopLeft
 AF.messageoverlay.font = uifonts.mono
-AF.messageoverlay.visible = false
+AF.messageoverlay.visible = true
 AF.messageoverlay.zorder = 100
 
-testpr("FLOATSIZE:"+((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns)+"\n")
-
-testpr("CHAR SIZE:"+floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns)+"\n")
-
-testpr("FONT SIZE:"+floor(floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) + 0.5)+"\n")
-
-if (floor(floor((fl.w-2.0*AF.messageoverlay.margin)*1.65/AF.scrape.columns) + 0.5) == 8) {
+if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8) {
 	AF.messageoverlay.char_size = 16
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
 }
