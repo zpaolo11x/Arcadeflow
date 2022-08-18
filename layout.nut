@@ -13542,7 +13542,7 @@ AF.messageoverlay.set_bg_rgb (40,40,40)
 AF.messageoverlay.bg_alpha = 220+0*240
 AF.messageoverlay.align = Align.TopLeft
 AF.messageoverlay.font = uifonts.mono
-AF.messageoverlay.visible = true
+AF.messageoverlay.visible = false
 AF.messageoverlay.zorder = 100
 
 if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8) {
