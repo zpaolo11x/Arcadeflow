@@ -11455,7 +11455,7 @@ function history_redraw(status){
 	shadowsurf_2.redraw = status
 	shadowsurf_1.redraw = status
 	hist_screensurf.redraw = status
-	hist_over.surface.redraw = status
+	if(prf.CONTROLOVERLAY) hist_over.surface.redraw = status
 }
 
 history_surface.visible = false
