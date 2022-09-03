@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.4
+// Arcadeflow - v 14.5
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.4"
+	version = "14.5"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -861,7 +861,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "historypanel", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYPANEL <- val}, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true,false], selection = 0, picsel = ["histpanelyes"+AF.prefs.imgext,"histpanelno"+AF.prefs.imgext],pic="histpanelyes"+AF.prefs.imgext},
 {v = 7.2, varname = "darkpanel", glyph = 0xe923, initvar = function(val,prf){prf.DARKPANEL <- val}, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true,false,null], selection = 1,picsel=["histpaneldark"+AF.prefs.imgext,"histpaneldefault"+AF.prefs.imgext,"histpanelnone"+AF.prefs.imgext],pic = "histpaneldefault"+AF.prefs.imgext},
 {v = 8.2, varname = "histmininame", glyph = 0xe923, initvar = function(val,prf){prf.HISTMININAME <- val}, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false,true], selection = 0},
-{v = 8.3, varname = "controloverlay", glyph = 0xe923, initvar = function(val,prf){prf.CONTROLOVERLAY <- val}, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Yes", "No"], values = [true,false], selection = 0},
+{v = 14.5, varname = "controloverlay", glyph = 0xe923, initvar = function(val,prf){prf.CONTROLOVERLAY <- val}, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Always", "Never","Arcade only"], values = ["always","never","arcade"], selection = 0},
 ])
 
 
@@ -11034,7 +11034,7 @@ local hist_over = {
 	btsh = []
 }
 
-if (prf.CONTROLOVERLAY){
+if (prf.CONTROLOVERLAY != "never"){
 
 	hist_over.overlaybuttonsdata["6"] <- {
 		pic = "6.png"
@@ -11102,6 +11102,14 @@ if (prf.CONTROLOVERLAY){
 
 
 function history_updateoverlay(){
+
+
+	if ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE")) {
+		hist_over.surface.visible = false
+	} else {
+		hist_over.surface.visible = true
+	}
+
 
 	try {hist_over.overcontrol.file_name = "metapics/overlaycontroller/"+controller_pic (z_list.gametable[z_list.index].z_control)}catch(err){}
 
@@ -11396,7 +11404,7 @@ function history_show(h_startup)
 
 	history_updatesnap()
 	history_updatetext()
-	if (prf.CONTROLOVERLAY) history_updateoverlay()
+	if (prf.CONTROLOVERLAY != "never") history_updateoverlay()
 
 	if (h_startup) {
 		history_surface.visible = true
@@ -11455,7 +11463,7 @@ function history_redraw(status){
 	shadowsurf_2.redraw = status
 	shadowsurf_1.redraw = status
 	hist_screensurf.redraw = status
-	if(prf.CONTROLOVERLAY) hist_over.surface.redraw = status
+	if(prf.CONTROLOVERLAY != "never") hist_over.surface.redraw = status
 }
 
 history_surface.visible = false
@@ -16248,12 +16256,12 @@ function tick( tick_time ) {
 
 		if (endfade(flowT.historydata) == 1) {
 			history_updatetext()
-			if (prf.CONTROLOVERLAY) history_updateoverlay()
+			if (prf.CONTROLOVERLAY != "never") history_updateoverlay()
 			flowT.historydata = startfade (flowT.historydata,-0.101,3.0)
 		}
 
 		hist_text_alpha (255 * (1.0 - flowT.historydata[1]))
-		if(prf.CONTROLOVERLAY) hist_over.surface.alpha = 255 * (1.0 - flowT.historydata[1])*(1.0 - flowT.historydata[1])*(1.0 - flowT.historydata[1])
+		if(prf.CONTROLOVERLAY != "never") hist_over.surface.alpha = 255 * (1.0 - flowT.historydata[1])*(1.0 - flowT.historydata[1])*(1.0 - flowT.historydata[1])
 
 		if (prf.HISTORYPANEL) {
 			hist_titletxt_bot.alpha = hist_title.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1])
