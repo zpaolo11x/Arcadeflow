@@ -5977,7 +5977,9 @@ function mfz_refreshnum(catin){
 function mfz_menu2(presel){
 	//2nd level menu is never translated and is always sorted by value
 
-	local valcurrent = multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+	local valcurrent = null
+
+	if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
 
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu[mf.cat1].submenu , 2, false,true)
 	local namearray = mfzdat.names
@@ -5997,7 +5999,10 @@ function mfz_menu2(presel){
 	numberarray.insert (0,"")
 	numberarray.insert (0,"")
 
-	if ((valcurrent.l1name == mf.cat1) && (presel==0)) presel = indexarray.find(valcurrent.l2name)
+	if (valcurrent == null) presel = 0 //TEST145 CAMBIARE non sempre zero
+	else {
+		if ((valcurrent.l1name == mf.cat1) && (presel==0)) presel = indexarray.find(valcurrent.l2name)
+	}
 
 	zmenudraw (namearray,filterarray, numberarray,mf.cat1,0xeaed,presel,false,false,false,false,false,
 	function(out){
@@ -6047,7 +6052,7 @@ function mfz_menu1(presel){
 	filterarray.insert(0,0xea0f)
 	numberarray.insert (0,"")
 
-	if (valcurrent == null) presel = 0
+	if (valcurrent == null) presel = 0 //TEST145 CAMBIARE non sempre zero
 	else {
 		if ((presel == -1) && !(valcurrent.l1array)) presel = indexarray.find(valcurrent.l1name)
 		else if (presel == -1) presel = 0
