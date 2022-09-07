@@ -1,3 +1,4 @@
 14.5
 Added option to show controls overlay only on arcade games
 Fixed issue with controls overlay
+Added two new systems: Sega Pico and Acan
