@@ -6033,6 +6033,10 @@ function mfz_menu2(presel){
 			mfz_save()
 
 		}
+	},
+	null, //LEFT
+	function(){ //RIGHT
+		zmenunavigate_down("right",true)
 	})
 }
 
@@ -6115,6 +6119,10 @@ function mfz_menu1(presel){
 
 
 		}
+	},
+	null, //LEFT
+	function(){ //RIGHT
+		zmenunavigate_down("right",true)
 	})
 }
 
@@ -12422,11 +12430,11 @@ function zmenunavigate_up(signal){
 	count[signal] ++
 }
 
-function zmenunavigate_down(signal){
+function zmenunavigate_down(signal,mfskip = false){
 	if (zmenu.selected < count.skipdown) {
 		zmenu.selected = zmenu.selected + 1
 
-		while ((zmenu.strikelines[zmenu.selected].visible)){// || (zmenu.mfm && (zmenu.notes[zmenu.selected] == "(0)"))){
+		while ((zmenu.strikelines[zmenu.selected].visible) || (mfskip && (zmenu.notes[zmenu.selected] == "(0)"))){
 			if (zmenu.selected < count.skipdown) {
 				zmenu.selected = zmenu.selected + 1
 			}
@@ -12439,7 +12447,7 @@ function zmenunavigate_down(signal){
 	else if (count[signal] == 0){
 		zmenu.selected = 0
 
-		while ((zmenu.strikelines[zmenu.selected].visible)){ // || (zmenu.mfm && (zmenu.notes[zmenu.selected] == "(0)"))){
+		while ((zmenu.strikelines[zmenu.selected].visible) || (mfskip && (zmenu.notes[zmenu.selected] == "(0)"))){
 			if (zmenu.selected < count.skipdown) {
 				zmenu.selected = zmenu.selected + 1
 			}
