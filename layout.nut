@@ -5975,7 +5975,6 @@ function mfz_refreshnum(catin){
 }
 
 function mfz_menu2(presel){
-	testpr("ZMENU 2\n")
 
 	//2nd level menu is never translated and is always sorted by value
 
@@ -6038,7 +6037,7 @@ function mfz_menu2(presel){
 }
 
 function mfz_menu1(presel){
-	testpr("ZMENU 1\n")
+
 	local valcurrent = null
 
 	if (z_list.size > 0) valcurrent = multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
@@ -6056,13 +6055,10 @@ function mfz_menu1(presel){
 
 
 	if(presel == -1) {
-		testpr("A\n")
 		if ((valcurrent != null) && !(valcurrent.l1array)) {
-			testpr("B\n")
 			presel = indexarray.find(valcurrent.l1name)
 		}
 		else {
-			testpr("C\n")
 			presel = 0
 		}
 	}
