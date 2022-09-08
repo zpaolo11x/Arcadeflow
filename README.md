@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.4 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.5 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,12 +10,12 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.4 #
+## What's new in v 14.5 #
 
-- Fixed GBA logo issues
-- Fixed labels update when sorting
-- Fixed number of columns in scraper messages
-- Added pixel font on scrape screen
+- Added option to show controls overlay only on arcade games
+- Added two new systems: Sega Pico and Acan
+- In multifilter menu you can skip void entries with "right"
+- Fixed issue with controls overlay
 
 ## Emulator system identifier #
 
@@ -239,7 +239,7 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Exit AF when leaving Menu' : The esc button from Displays Menu triggers the exit from Arcadeflow
 - 'Enter Menu when leaving display' : The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
 
-#### HISTORY PAGE
+#### ❗ HISTORY PAGE ❗
 Configure the History page where larger thumbnail and game history data are shown
 
 - Video Effects
@@ -251,7 +251,7 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Text panel style' : Select the look of the history text panel
 - 'Game panel style' : Select the look of the history game panel
 - 'Detailed game data' : Show extra data after the game name before the history text
-- 'Control panel overlay' : Show controller and buttons overlay on history page
+- '❗ Control panel overlay ❗' : Show controller and buttons overlay on history page
 
 #### ATTRACT MODE
 Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here
@@ -371,6 +371,13 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.4*
+
+- Fixed GBA logo issues
+- Fixed labels update when sorting
+- Fixed number of columns in scraper messages
+- Added pixel font on scrape screen
 
 *v14.3*
 
