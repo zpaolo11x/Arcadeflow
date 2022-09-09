@@ -1888,6 +1888,7 @@ local count = {
 	forcedown = false
 	skipup = 0
 	skipdown = 0
+	mfskipdown = 0
 }
 
 count.movestep = count.movestepslow
@@ -11931,7 +11932,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
 
 	count.skipup = 0
-	count.skipdown = menuarray.len() - 1
+	count.skipdown = count.mfskipdown = menuarray.len() - 1
 	count.forceup = false
 	count.forcedown = false
 
@@ -12431,16 +12432,17 @@ function zmenunavigate_up(signal){
 }
 
 function zmenunavigate_down(signal,mfskip = false){
-	if (zmenu.selected < count.skipdown) {
+	if ((!mfskip && (zmenu.selected < count.skipdown)) || (mfskip && (zmenu.selected < count.mfskipdown))) {
 		zmenu.selected = zmenu.selected + 1
 
 		while ((zmenu.strikelines[zmenu.selected].visible) || (mfskip && (zmenu.notes[zmenu.selected] == "(0)"))){
-			if (zmenu.selected < count.skipdown) {
+			if ((!mfskip && (zmenu.selected < count.skipdown)) || (mfskip && (zmenu.selected < count.mfskipdown))) {
 				zmenu.selected = zmenu.selected + 1
 			}
 			else {
 				zmenu.selected = zmenu.selected - 1
-				count.skipdown = zmenu.selected
+				if (!mfskip) count.skipdown = zmenu.selected
+				else count.mfskipdown = zmenu.selected
 			}
 		}
 	}
