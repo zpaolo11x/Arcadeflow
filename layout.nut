@@ -12448,8 +12448,8 @@ function zmenunavigate_down(signal,mfskip = false){
 	}
 	else if (count[signal] == 0){
 		zmenu.selected = 0
-
-		while ((zmenu.strikelines[zmenu.selected].visible) || (mfskip && (zmenu.notes[zmenu.selected] == "(0)"))){
+		//No need to add mfskip check here because mf menu never has first line "(0)"
+		while ((zmenu.strikelines[zmenu.selected].visible) ){
 			if (zmenu.selected < count.skipdown) {
 				zmenu.selected = zmenu.selected + 1
 			}
