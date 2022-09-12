@@ -286,6 +286,12 @@ BR | Otimiza o tema para telas de baixa resolução, forçando o layout de uma l
 FR | Optimize ce theme pour résolutions basses. Agencement à une ligne forcé, police plus grande et agencement plus simple.
 DE | Optimierung des Theme für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout
 
+EN | Custom color
+IT | Colore personalizzato
+
+EN | Define a custom color for UI elements using sliders
+IT | Definisci un colore personalizzato da usare per gli elementi della UI
+
 EN | BUTTONS
 IT | PULSANTI
 ES | BOTONES
@@ -378,6 +384,18 @@ IT | Seleziona il tasto da usare per richiamare il menu multifiltro, per filtrar
 ES | Selecciona la tecla para abrir el menú multifiltro, para filtrar dinámicamente la lista de juegos
 DE | Taste zum Öffnen des Menü für dynamisches Filtern der Romliste auswählen
 
+EN | Show favorites button
+IT | Tasto modalità preferiti
+
+EN | Chose the button to use to toggle favorite filtering
+IT | Seleziona il tasto da usare per mostrare solo i giochi preferiti
+
+EN | Volume button
+IT | Tasto volume
+
+EN | Chose the button to use to change system volume
+IT | Seleziona il tasto da usare per regolare il volume di sistema
+
 EN | Delete ROM button
 IT | Tasto elimina ROM
 ES | Eliminar una ROM
@@ -464,6 +482,12 @@ EN | You can decide if you want to scrape all roms, only roms with no scrape dat
 IT | Puoi scegliere se vuoi fare lo scrape di tutte le rom, solo quelle che non hanno dati o che hanno un match non perfetto
 ES | Puedes decidir si quieres hacer scrape a todas tus roms, solo las roms sin datos o las que no ha encontrado correctamente
 DE | Auswählen ob alle ROMs, nur ROMs ohne Scrapedaten oder ROMs mit Daten die nicht perfekt übereinstimmen gescraped werden sollen
+
+EN | Scrape error roms
+IT | Scrape di rom con errore
+
+EN | When scraping you can include or exclude roms that gave an error in the previous scraping
+IT | Durante lo scraping puoi includere o escludere le rom che hanno generato errori precedentemente
 
 EN | All roms
 IT | Tutte le rom
@@ -599,6 +623,9 @@ EN | Import entrief from the games list only if the rom file is actually availab
 IT | Importa i dati dalla lista xml solo se la rom è effettivamente disponibile
 ES | Importa los datos de la lista xml solo si la rom está realmente disponible
 DE | Importiere Daten aus der XML Liste nur wenn das ROM tatsächlich vorhanden ist
+
+EN | ROMLIST MANAGEMENT
+IT | GESTIONE ROMLIST
 
 EN | DISPLAYS MENU MODE
 IT | Modalità Displays Menu
@@ -743,12 +770,12 @@ ES | Por año del sistema
 DE | Nach Systemjahr
 
 EN | By system brand then name
-IT | Per marca e nome del sistema
+IT | Per marca e nome sistema
 ES | Por marca y nombre del sistema
 DE | Nach Systemmarke, dann Name
 
 EN | By system brand then year
-IT | Per marca e anno del sistema
+IT | Per marca e anno sistema
 ES | Por marca y año del sistema
 DE | Nach Systemmarke, dann Jahr
 
@@ -937,6 +964,30 @@ IT | Fix per sistemi che non funzionano bene quando si torna al layout da un gio
 ES | Fix para el sistema cuando un juego no funciona bien, recarga el layout si es necesario
 DE | Fix für Systeme mit Problemen nach Rückkehr aus einem Spiel, neuladen des Layouts wenn notwendig
 
+EN | Width %
+IT | Larghezza %
+
+EN | For screens with overscan, define which percentage of the screen will be filled with actual content
+IT | Per schermi con overscan, definisce la percentuale di schermo con contenuto
+
+EN | Height %
+IT | Altezza %
+
+EN | For screens with overscan, define which percentage of the screen will be filled with actual content
+IT | Per schermi con overscan, definisce la percentuale di schermo con contenuto
+
+EN | Shift X %
+IT | Spostamento X %
+
+EN | For screens with overscan, screen will be shifted by the percentage
+IT | Per schermi con overscan, lo schermo verrà spostato della percentuale
+
+EN | Shift Y %
+IT | Spostamento Y %
+
+EN | For screens with overscan, screen will be shifted by the percentage
+IT | Per schermi con overscan, lo schermo verrà spostato della percentuale
+
 EN | Smooth shadow
 IT | Ombre morbide
 ES | Sombra suave
@@ -1087,6 +1138,12 @@ IT | Ridotto
 
 EN | None
 IT | Nessuno
+
+EN | Show only logos
+IT | Mostra solo loghi
+
+EN | If enabled, only game tilte logos will be shown instead of the screenshot
+IT | Se abilitato, solo i loghi dei giochi verranno mostrati al posto degli screenshot
 
 EN | Morph video
 IT | Trasforma il video
@@ -1562,6 +1619,9 @@ BR | PESQUISAR
 FR | RECHERCHE
 DE | SUCHE & FILTER
 
+EN | Search and Filters
+IT | Ricerca e filtri
+
 EN | Configure the search page and multifilter options
 IT | Configura la pagina di ricerca e il multifiltro
 ES | Configura la página de búsqueda
@@ -1761,6 +1821,15 @@ IT | Mostra pulsanti e controller del gioco in sovrimpressione
 ES | Muestra los controles y botones superpuestos en la pagina del Historial
 DE | Zeige Controller und Buttons Overlay auf der History Seite
 
+EN | Always
+IT | Sempre
+
+EN | Never
+IT | Mai
+
+EN | Arcade only
+IT | Solo Arcade
+
 EN | History.dat
 IT | History.dat
 ES | History.dat
@@ -1896,6 +1965,12 @@ IT | Seleziona un file audio da riprodurre mentre si usa Arcadeflow
 ES | Selecciona un archivo de audio para reproducir mientras usas Arcadeflow
 DE | Datei für Hintergrundmusik auswählen, die während Arcadeflow gespielt werden soll
 
+EN | Randomize background music
+IT | Musica di fondo casuale
+
+EN | If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music
+IT | Se abilitato, Arcadeflow riprodurrà casualmente tutti i file mp3 nella cartella della musica di fondo
+
 EN | Stop bg music in attract mode
 IT | Ferma la musica di fondo in attract mode
 ES | Parar la música de fondo en el modo ATTRACT
@@ -1975,6 +2050,99 @@ EN | Restore AF options from a previously saved file
 IT | Ripristina le opzioni di AF da un file salvato
 ES | Restaura las opciones de AF de un archivo guardado
 DE | Zuvor gespeicherte AF Einstellungen wiederherstellen
+
+EN | MULTIPLE MONITOR
+IT | MONITOR MULTIPLI
+
+EN | Configure the appearence of a second monitor
+IT | Configura l'aspetto di un secondo monitor
+
+EN | Enable multiple monitor
+IT | Abilita monitor multipli
+
+EN | Enable Arcadeflow multiple monitor suport
+IT | Abilita il supporto per monitor multipli in Arcadeflow
+
+EN | Monitor identifier
+IT | Identificatore monitor
+
+EN | Select the identification number for the external monitor
+IT | Seleziona il numero identificatore per il monitor esterno
+
+EN | Correct aspect ratio
+IT | Correggi rapporto di forma
+
+EN | Select if the image on the second monitor should be stretched or not
+IT | Scegli se l'immagine sul secondo monitor deve essere stirata o mantenere il rapporto corretto
+
+EN | Main media source
+IT | Fonte principale
+
+EN | Select the artwork source to be used on secondary monitor
+IT | Seleziona la fonte principale delle immagini da mostrare sul secondo monitor
+
+EN | Alternate media source
+IT | Fonte alternativa
+
+EN | Select the artwork source to be used on secondary monitor in case first one is not present
+IT | Selezione la fonte delle immagini da usare nel caso non sia disponibile la prima
+
+EN | COLOR CYCLE
+IT | CICLATURA COLORI
+
+EN | Enable and edit color cycling animation of tile highlight border
+IT | Attiva e configura l'animazione di ciclatura colori per il bordo evidenziato
+
+EN | Enable color cycle
+IT | Abilita ciclatura colori
+
+EN | Enable/disable color cycling of the tile higlight border
+IT | Attiva o disattiva l'effetto di ciclatura del colore del bordo della miniatura selezionata
+
+EN | Cycle Options
+IT | Opzioni ciclatura
+
+EN | Cycle speed
+IT | Velocità di ciclatura
+
+EN | Select the speed of color cycle
+IT | Seleziona la velocità con cui ciclano i colori
+
+EN | Slow
+IT | Lento
+
+EN | Medium
+IT | Medio
+
+EN | Fast
+IT | Veloce
+
+EN | Cycle color
+IT | Colore della ciclatura
+
+EN | Select a color intensity preset for the cycle
+IT | Seleziona l'intensità del colore
+
+EN | Popping
+IT | Sgargiante
+
+EN | Ping Pong effect
+IT | Effetto Ping Pong
+
+EN | Enable this if you want the cycle to revert once finished instead of restarting
+IT | Abilita questo effetto per far ritornare indietro il colore a ogni ciclo
+
+EN | Start hue
+IT | Tinta di partenza
+
+EN | Define the start value of the hue cycle (0 - 359)
+IT | Definici la tinta da cui parte la ciclatura (0 - 359)
+
+EN | Stop hue
+IT | Tinta di fine
+
+EN | Define the stop value of the hue cycle (0 - 359)
+IT | Definisce l'ultima tinta della ciclatura (0 - 359)
 
 EN | DEBUG
 IT | DEBUG
@@ -2211,6 +2379,9 @@ ES | Buscar por
 BR | Pesquisar por
 FR | Chercher pour
 DE | Suche nach
+
+EN | NO SEARCH
+IT | NESSUNA
 
 EN | Search
 IT | Cerca
@@ -2760,6 +2931,9 @@ ES | Lista con imagen
 FR | Liste avec images
 DE | Liste mit Artwork
 
+EN | list with walls
+IT | Lista con sfondi
+
 EN | Adaptive
 IT | Adattato
 ES | Adaptado
@@ -2948,5 +3122,23 @@ IT | ATTENZIONE!
 EN | Delete ROM
 IT | Cancella ROM
 
+EN | ROM Management
+IT | Gestione ROM
+
 EN | Delete
 IT | Elimina
+
+# SLIDER CONTROLS
+
+EN | ACTIONS
+IT | AZIONI
+
+EN | APPLY
+IT | APPLICA
+
+EN | RGB Color
+IT | Colore RGB
+
+EN | HUE Value
+IT | Valore HUE
+

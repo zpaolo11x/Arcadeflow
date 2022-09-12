@@ -706,7 +706,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "cleanlayout", glyph = 0xe997, initvar = function(val,prf){prf.CLEANLAYOUT <- val}, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
 {v = 7.2, varname = "lowres", glyph = 0xe997, initvar = function(val,prf){prf.LOWRES <- val}, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
 {v = 7.2, varname = "baserotation", glyph = 0xea2e, initvar = function(val,prf){prf.BASEROTATION <- val}, title = "Screen rotation", help = "Rotate screen" , options = ["None", "Left", "Right", "Flip"], values =["none", "left", "right", "flip"], selection =0,picsel=["rotnone"+AF.prefs.imgext,"rotleft"+AF.prefs.imgext,"rotright"+AF.prefs.imgext,"rotflip"+AF.prefs.imgext],pic = "rotright"+AF.prefs.imgext},
-{v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements, R G B space separated" , options = "", values = "", selection = AF.req.rgbvalue},
+{v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "showsubname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSUBNAME <- val}, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosubname"+AF.prefs.imgext]},
 {v = 7.2, varname = "showsysname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSYSNAME <- val}, title = "Display System Name", help = "Shows the System name under the game title" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosystem"+AF.prefs.imgext]},
@@ -809,13 +809,13 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "utilitymenubutton", glyph = 0xea54, initvar = function(val,prf){prf.UTILITYMENUBUTTON <- val}, title = "Utility menu button", help = "Chose the button to open the utility menu" , options = ["None", "Up", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "up", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "utilitymenu"+AF.prefs.imgext},
 {v = 7.2, varname = "historybutton", glyph = 0xea54, initvar = function(val,prf){prf.HISTORYBUTTON <- val}, title = "History page button", help = "Chose the button to open the history or overview page" , options = ["None", "Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "bgcustomhistory"+AF.prefs.imgext},
 {v = 7.2, varname = "switchmodebutton", glyph = 0xea54, initvar = function(val,prf){prf.SWITCHMODEBUTTON <- val}, title = "Thumbnail mode button", help = "Chose the button to use to switch from snapshot mode to box art mode" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 3,pic = "boxarton"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "Search & Filter", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Search and Filters", selection = AF.req.liner},
 {v = 7.5, varname = "searchbutton", glyph = 0xea54, initvar = function(val,prf){prf.SEARCHBUTTON <- val}, title = "Search menu button", help = "Chose the button to use to directly open the search menu instead of using the utility menu" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "inputscreenkeys"+AF.prefs.imgext},
 {v = 7.6, varname = "categorybutton", glyph = 0xea54, initvar = function(val,prf){prf.CATEGORYBUTTON <- val}, title = "Category menu button", help = "Chose the button to use to open the list of game categories" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 7.6, varname = "multifilterbutton", glyph = 0xea54, initvar = function(val,prf){prf.MULTIFILTERBUTTON <- val}, title = "Multifilter menu button", help = "Chose the button to use to open the menu for dynamic filtering of romlist" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 14.2, varname = "favbutton", glyph = 0xea54, initvar = function(val,prf){prf.FAVBUTTON <- val}, title = "Show favorites button", help = "Chose the button to use to toggle favorite filtering" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
-{v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume." , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "ROM Management", selection = AF.req.liner},
 {v = 9.8, varname = "deletebutton", glyph = 0xea54, initvar = function(val,prf){prf.DELETEBUTTON <- val}, title = "Delete ROM button", help = "Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 ])
@@ -9495,7 +9495,7 @@ function rgbselector(rgb,sel,old,start){
 
 	local spaces = zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)
 
-	zmenudraw(["R:  "+textrate(rgb[0],255,spaces,"Ⓞ ","Ⓟ "),"G:  "+textrate(rgb[1],255,spaces,"Ⓞ ","Ⓟ "),"B:  "+textrate(rgb[2],255,spaces,"Ⓞ ","Ⓟ "),"ACTIONS","APPLY","DEFAULT"],[0,0,0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[rgb[0],rgb[1],rgb[2],"","",""],"RGB Color",0xe992,sel,false,false,false,false,false,
+	zmenudraw(["R:  "+textrate(rgb[0],255,spaces,"Ⓞ ","Ⓟ "),"G:  "+textrate(rgb[1],255,spaces,"Ⓞ ","Ⓟ "),"B:  "+textrate(rgb[2],255,spaces,"Ⓞ ","Ⓟ "),ltxt("ACTIONS",AF.LNG),ltxt("APPLY",AF.LNG),ltxt("DEFAULT",AF.LNG)],[0,0,0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[rgb[0],rgb[1],rgb[2],"","",""],ltxt("RGB Color",AF.LNG),0xe992,sel,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9557,7 +9557,7 @@ function hueselector(hue,sel,old,start){
 
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
 
-	zmenudraw(["HUE:  "+textrate(hue,359,spaces,"Ⓞ ","Ⓟ "),"ACTIONS","APPLY","DEFAULT"],[0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[hue,"","",""],"HUE Value",0xe992,sel,false,false,false,false,false,
+	zmenudraw(["HUE:  "+textrate(hue,359,spaces,"Ⓞ ","Ⓟ "),ltxt("ACTIONS",AF.LNG),ltxt("APPLY",AF.LNG),ltxt("DEFAULT",AF.LNG)],[0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[hue,"","",""],ltxt("HUE Value",AF.LNG),0xe992,sel,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9631,7 +9631,7 @@ function sliderval(name,val,sel,old,start,vmin,vmax,def){
 */
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
-	zmenudraw([vmin +" "+ textrate(val - vmin,vmax - vmin,spaces,"Ⓞ ","Ⓟ ") + vmax,"ACTIONS","APPLY","DEFAULT"],[0,-1,0,(val == def) ? 0xea10 : 0xe965],[val,"","",""],name,0xe992,sel,false,false,false,false,false,
+	zmenudraw([vmin +" "+ textrate(val - vmin,vmax - vmin,spaces,"Ⓞ ","Ⓟ ") + vmax,ltxt("ACTIONS",AF.LNG),ltxt("APPLY",AF.LNG),ltxt("DEFAULT",AF.LNG)],[0,-1,0,(val == def) ? 0xea10 : 0xe965],[val,"","",""],name,0xe992,sel,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
@@ -14366,7 +14366,7 @@ function buildutilitymenu(){
 		id = 0
 		order = 0
 		sidenote = function(){
-			return (search.smart == "" ? "NO SEARCH" : search.smart)
+			return (search.smart == "" ? ltxt("NO SEARCH",AF.LNG) : search.smart)
 		}
 		command = function(){
 			new_search()
