@@ -627,6 +627,84 @@ DE | Importiere Daten aus der XML Liste nur wenn das ROM tatsächlich vorhanden 
 EN | ROMLIST MANAGEMENT
 IT | GESTIONE ROMLIST
 
+EN | Manage romlists and collections
+IT | Gestisci le romlist e le collezioni
+
+EN | ROMLISTS
+IT | ROMLIST
+
+EN | Refresh current romlist
+IT | Aggiorna questa romlist
+
+EN | Refresh the romlist with added/removed roms, won't reset current data
+IT | Aggiorna la romlist con le rom aggiunte/rimosse, non resetta i dati
+
+EN | Reset current romlist
+IT | Reset di questa romlist
+
+EN | Rescan the romlist erasing and regenerating all romlist data
+IT | Ricrea la romlist cancellando e rigenerando tutti i dati
+
+EN | Reset last played
+IT | Cancella ultimi giocati
+
+EN | Remove all last played data from the current romlist
+IT | Rimuovi tutti i dati dell'ultimo lancio da questa romlist
+
+EN | MASTER ROMLIST
+IT | MASTER ROMLIST
+
+EN | Enable Master Romlist
+IT | Abilita la Master Romlist
+
+EN | Turn this on and set master romlist path so AF can manage it
+IT | Attiva e imposta il path della Master Romlist così AF la può gestire
+
+EN | Master Romlist Path
+IT | Percorso Master Romlist
+
+EN | If you are using a master romlist, locate it here to enable AF master romlist optimisation
+IT | Se usi una master romlist, indica il path in cui è salvata per abilitare l'ottimizzazione
+
+EN | ROMLIST EXPORT
+IT | ESPORTA ROMLIST
+
+EN | Export to gamelist xml
+IT | Esporta a gamelist xml
+
+EN | You can export your romlist in the XML format used by EmulationStation
+IT | Puoi esportare la romlist nel formato XML usato da EmulationStation
+
+EN | COLLECTIONS
+IT | COLLEZIONI
+
+EN | Enable all games collections
+IT | Abilita le collezioni all games
+
+EN | If enabled, Arcadeflow will create All Games compilations
+IT | Se abilitato, Arcadeflow creerà delle collezioni All Games
+
+EN | Update all games collections
+IT | Aggiorna le collezioni all games
+
+EN | Force the update of all games collections, use when you remove displays
+IT | Forza l'aggiornamento delle collezioni all games, da usare quando si rimuove un display
+
+EN | DANGER ZONE
+IT | ZONA PERICOLOSA
+
+EN | Enable game hiding
+IT | Abilita nascondi giochi
+
+EN | Enable or disable the options to hide games using tags menu
+IT | Abilita o disabilità le opzioni per nascondere i giochi dal menu tag
+
+EN | Enable rom delete
+IT | Abilita cancellazione rom
+
+EN | Enable or disable the options to delete a rom
+IT | Abilita o disabilita le opzioni per cancellare i file delle rom
+
 EN | DISPLAYS MENU MODE
 IT | Modalità Displays Menu
 ES | Modo Display Menú
