@@ -13538,7 +13538,7 @@ function similarmenu(){
 		prfmenu.helppic.file_name = fe.get_art ("snap",zmenu.similar[0].data.z_felistindex - fe.list.index)
 		*/
 		frostshow()
-		zmenudraw (namearray,null,null,"Similar Games",0xeaf7,0,true,false,true,false,false,
+		zmenudraw (namearray,null,null,ltxt("Similar Games",AF.LNG),0xeaf7,0,true,false,true,false,false,
 			function(out){
 
 				if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
@@ -17352,7 +17352,9 @@ function on_signal( sig ){
 			frostshow()
 			overmenu_hide(false)
 
-			zmenudraw (["More of the same...","Similar games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":"Disabled"], ltxt("Game Menu",AF.LNG),0xe916,0,false,false,false,false,false,
+
+
+			zmenudraw (ltxtarray(["More of the same...","Similar Games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],AF.LNG),[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":ltxt("Disabled",AF.LNG)], ltxt("Game Menu",AF.LNG),0xe916,0,false,false,false,false,false,
 			function (result){
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
@@ -17367,7 +17369,7 @@ function on_signal( sig ){
 					switcharray.push(ltxt("Favourite state",AF.LNG))
 					switcharray.push(ltxt("Series",AF.LNG))
 					switcharray.push(ltxt("Rating",AF.LNG))
-					switcharray.push(ltxt("Arcade system",AF.LNG))
+					switcharray.push(ltxt("Arcade System",AF.LNG))
 
 					switchnotes.push( z_list.gametable[z_list.index].z_year)
 					switchnotes.push( (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0,3) : "")+"x")
@@ -17499,7 +17501,7 @@ function on_signal( sig ){
 					metamenu(0)
 				}
 				if (result == 5){ // Delete ROM
-					zmenudraw (["Delete","Cancel"],[0xea10,0xea0f],null,"Delete "+fe.game_info(Info.Name)+"?",0xe9ac,1,false,false,true,false,false,
+					zmenudraw (ltxtarray(["Delete","Cancel"],AF.LNG),[0xea10,0xea0f],null,"Delete "+fe.game_info(Info.Name)+"?",0xe9ac,1,false,false,true,false,false,
 					function (result){
 						if (result == 0){
 							deletecurrentrom()

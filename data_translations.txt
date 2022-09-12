@@ -2924,3 +2924,29 @@ IT | Valori
 
 EN | Manual entry
 IT | Inserisci
+
+# OVERMENU
+
+EN | Game Menu
+IT | Menu Gioco
+
+EN | More of the same...
+IT | Altri dello stesso...
+
+EN | Similar Games
+IT | Giochi simili
+
+EN | Scrape selected game
+IT | Scrape questo gioco
+
+EN | Edit metadata
+IT | Modifica metadati
+
+EN | CAUTION!
+IT | ATTENZIONE!
+
+EN | Delete ROM
+IT | Cancella ROM
+
+EN | Delete
+IT | Elimina
