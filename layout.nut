@@ -706,7 +706,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "cleanlayout", glyph = 0xe997, initvar = function(val,prf){prf.CLEANLAYOUT <- val}, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
 {v = 7.2, varname = "lowres", glyph = 0xe997, initvar = function(val,prf){prf.LOWRES <- val}, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
 {v = 7.2, varname = "baserotation", glyph = 0xea2e, initvar = function(val,prf){prf.BASEROTATION <- val}, title = "Screen rotation", help = "Rotate screen" , options = ["None", "Left", "Right", "Flip"], values =["none", "left", "right", "flip"], selection =0,picsel=["rotnone"+AF.prefs.imgext,"rotleft"+AF.prefs.imgext,"rotright"+AF.prefs.imgext,"rotflip"+AF.prefs.imgext],pic = "rotright"+AF.prefs.imgext},
-{v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements, R G B space separated" , options = "", values = "", selection = AF.req.rgbvalue},
+{v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "showsubname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSUBNAME <- val}, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosubname"+AF.prefs.imgext]},
 {v = 7.2, varname = "showsysname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSYSNAME <- val}, title = "Display System Name", help = "Shows the System name under the game title" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosystem"+AF.prefs.imgext]},
@@ -809,13 +809,13 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "utilitymenubutton", glyph = 0xea54, initvar = function(val,prf){prf.UTILITYMENUBUTTON <- val}, title = "Utility menu button", help = "Chose the button to open the utility menu" , options = ["None", "Up", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "up", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "utilitymenu"+AF.prefs.imgext},
 {v = 7.2, varname = "historybutton", glyph = 0xea54, initvar = function(val,prf){prf.HISTORYBUTTON <- val}, title = "History page button", help = "Chose the button to open the history or overview page" , options = ["None", "Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "bgcustomhistory"+AF.prefs.imgext},
 {v = 7.2, varname = "switchmodebutton", glyph = 0xea54, initvar = function(val,prf){prf.SWITCHMODEBUTTON <- val}, title = "Thumbnail mode button", help = "Chose the button to use to switch from snapshot mode to box art mode" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 3,pic = "boxarton"+AF.prefs.imgext},
-{v = 0.0, varname = "", glyph = -1, title = "Search & Filter", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Search and Filters", selection = AF.req.liner},
 {v = 7.5, varname = "searchbutton", glyph = 0xea54, initvar = function(val,prf){prf.SEARCHBUTTON <- val}, title = "Search menu button", help = "Chose the button to use to directly open the search menu instead of using the utility menu" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "inputscreenkeys"+AF.prefs.imgext},
 {v = 7.6, varname = "categorybutton", glyph = 0xea54, initvar = function(val,prf){prf.CATEGORYBUTTON <- val}, title = "Category menu button", help = "Chose the button to use to open the list of game categories" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 7.6, varname = "multifilterbutton", glyph = 0xea54, initvar = function(val,prf){prf.MULTIFILTERBUTTON <- val}, title = "Multifilter menu button", help = "Chose the button to use to open the menu for dynamic filtering of romlist" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 14.2, varname = "favbutton", glyph = 0xea54, initvar = function(val,prf){prf.FAVBUTTON <- val}, title = "Show favorites button", help = "Chose the button to use to toggle favorite filtering" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
-{v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume." , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "ROM Management", selection = AF.req.liner},
 {v = 9.8, varname = "deletebutton", glyph = 0xea54, initvar = function(val,prf){prf.DELETEBUTTON <- val}, title = "Delete ROM button", help = "Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 ])
@@ -954,7 +954,7 @@ AF.prefs.l1.push([
 {v = 12.3, varname = "resetlastplayed", glyph = 0xe97c, initvar = function(val,prf){prf.RESETLASTPLAYED <- val}, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = AF.req.liner},
 {v = 13.9, varname = "masterlist", glyph = 0xe95c, initvar = function(val,prf){prf.MASTERLIST <- val}, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it" , options = ["Yes", "No"], values = [true, false],selection = 1},
-{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation.", options = "", values = "", selection = AF.req.filereqs},
+{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ROMLIST EXPORT", selection = AF.req.liner},
 {v = 12.0, varname = "buildxml", glyph = 0xe961, initvar = function(val,prf){prf.BUILDXML <- val}, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation" , options = "", values = function(){buildgamelistxml()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = AF.req.liner},
@@ -1478,7 +1478,7 @@ orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",AF.LNG),"_")[0]
 orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",AF.LNG),"_")[0]
 
 orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavD.",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavDt",AF.LNG),"_")[0]
 orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",AF.LNG),"_")[0]
 orderdatalabel [z_info.z_series] <- split(ltxt("_Series",AF.LNG),"_")[0]
 
@@ -4429,6 +4429,8 @@ local metadata = {
 				]
 }
 
+metadata.names = ltxtarray(metadata.names,AF.LNG)
+
 local meta_edited = {}
 local meta_original = {}
 local all_meta_edited = {}
@@ -4568,11 +4570,11 @@ function metamenu(starter){
 				local metanotes = []
 				local metaglyphs = []
 
-				metaarray.push ("Original")
+				metaarray.push (ltxt("Original",AF.LNG))
 				metanotes.push (meta_unedited)
 				metaglyphs.push (0xe965)
 
-				metaarray.push ("Values")
+				metaarray.push (ltxt("Values",AF.LNG))
 				metanotes.push ("")
 				metaglyphs.push (-1)
 
@@ -4601,15 +4603,15 @@ function metamenu(starter){
 				local metanotes = []
 				local metaglyphs = []
 
-				metaarray.push ("Original")
+				metaarray.push (ltxt("Original",AF.LNG))
 				metanotes.push (meta_unedited)
 				metaglyphs.push (0xe965)
 
-				metaarray.push ("Manual entry")
+				metaarray.push (ltxt("Manual entry",AF.LNG))
 				metanotes.push ("")
 				metaglyphs.push (0xe955)
 
-				metaarray.push ("Values")
+				metaarray.push (ltxt("Values",AF.LNG))
 				metanotes.push ("")
 				metaglyphs.push (-1)
 
@@ -9493,7 +9495,7 @@ function rgbselector(rgb,sel,old,start){
 
 	local spaces = zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)
 
-	zmenudraw(["R:  "+textrate(rgb[0],255,spaces,"Ⓞ ","Ⓟ "),"G:  "+textrate(rgb[1],255,spaces,"Ⓞ ","Ⓟ "),"B:  "+textrate(rgb[2],255,spaces,"Ⓞ ","Ⓟ "),"ACTIONS","APPLY","DEFAULT"],[0,0,0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[rgb[0],rgb[1],rgb[2],"","",""],"RGB Color",0xe992,sel,false,false,false,false,false,
+	zmenudraw(["R:  "+textrate(rgb[0],255,spaces,"Ⓞ ","Ⓟ "),"G:  "+textrate(rgb[1],255,spaces,"Ⓞ ","Ⓟ "),"B:  "+textrate(rgb[2],255,spaces,"Ⓞ ","Ⓟ "),ltxt("ACTIONS",AF.LNG),ltxt("APPLY",AF.LNG),ltxt("DEFAULT",AF.LNG)],[0,0,0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[rgb[0],rgb[1],rgb[2],"","",""],ltxt("RGB Color",AF.LNG),0xe992,sel,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9555,7 +9557,7 @@ function hueselector(hue,sel,old,start){
 
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
 
-	zmenudraw(["HUE:  "+textrate(hue,359,spaces,"Ⓞ ","Ⓟ "),"ACTIONS","APPLY","DEFAULT"],[0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[hue,"","",""],"HUE Value",0xe992,sel,false,false,false,false,false,
+	zmenudraw(["HUE:  "+textrate(hue,359,spaces,"Ⓞ ","Ⓟ "),ltxt("ACTIONS",AF.LNG),ltxt("APPLY",AF.LNG),ltxt("DEFAULT",AF.LNG)],[0,-1,0,(start && (old=="")) ? 0xea10 : 0xe965],[hue,"","",""],ltxt("HUE Value",AF.LNG),0xe992,sel,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9629,7 +9631,7 @@ function sliderval(name,val,sel,old,start,vmin,vmax,def){
 */
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
-	zmenudraw([vmin +" "+ textrate(val - vmin,vmax - vmin,spaces,"Ⓞ ","Ⓟ ") + vmax,"ACTIONS","APPLY","DEFAULT"],[0,-1,0,(val == def) ? 0xea10 : 0xe965],[val,"","",""],name,0xe992,sel,false,false,false,false,false,
+	zmenudraw([vmin +" "+ textrate(val - vmin,vmax - vmin,spaces,"Ⓞ ","Ⓟ ") + vmax,ltxt("ACTIONS",AF.LNG),ltxt("APPLY",AF.LNG),ltxt("DEFAULT",AF.LNG)],[0,-1,0,(val == def) ? 0xea10 : 0xe965],[val,"","",""],name,0xe992,sel,false,false,false,false,false,
 	function(out){
 		if (out == -1) {
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
@@ -12079,7 +12081,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].line_spacing = 1.0
 		zmenu.items[i].set_rgb(255,255,255)
-		//obj_item.set_bg_rgb(100,0,0)
+		//zmenu.items[i].set_bg_rgb(100,0,0)
 
 		if ((zmenu.mfm) && (zmenu.noteitems[i].msg == "(0)")) {
 			zmenu.items[i].set_rgb	(81,81,81)
@@ -13536,7 +13538,7 @@ function similarmenu(){
 		prfmenu.helppic.file_name = fe.get_art ("snap",zmenu.similar[0].data.z_felistindex - fe.list.index)
 		*/
 		frostshow()
-		zmenudraw (namearray,null,null,"Similar Games",0xeaf7,0,true,false,true,false,false,
+		zmenudraw (namearray,null,null,ltxt("Similar Games",AF.LNG),0xeaf7,0,true,false,true,false,false,
 			function(out){
 
 				if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
@@ -14364,7 +14366,7 @@ function buildutilitymenu(){
 		id = 0
 		order = 0
 		sidenote = function(){
-			return (search.smart == "" ? "NO SEARCH" : search.smart)
+			return (search.smart == "" ? ltxt("NO SEARCH",AF.LNG) : search.smart)
 		}
 		command = function(){
 			new_search()
@@ -17350,7 +17352,9 @@ function on_signal( sig ){
 			frostshow()
 			overmenu_hide(false)
 
-			zmenudraw (["More of the same...","Similar games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":"Disabled"], ltxt("Game Menu",AF.LNG),0xe916,0,false,false,false,false,false,
+
+
+			zmenudraw (ltxtarray(["More of the same...","Similar Games","Scrape selected game","Edit metadata","CAUTION!","Delete ROM"],AF.LNG),[0xe987,0xeaf7,0xe9c2,0xe906,-1,0xe9ac],["","","","","",prf.ENABLEDELETE?"":ltxt("Disabled",AF.LNG)], ltxt("Game Menu",AF.LNG),0xe916,0,false,false,false,false,false,
 			function (result){
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
@@ -17365,7 +17369,7 @@ function on_signal( sig ){
 					switcharray.push(ltxt("Favourite state",AF.LNG))
 					switcharray.push(ltxt("Series",AF.LNG))
 					switcharray.push(ltxt("Rating",AF.LNG))
-					switcharray.push(ltxt("Arcade system",AF.LNG))
+					switcharray.push(ltxt("Arcade System",AF.LNG))
 
 					switchnotes.push( z_list.gametable[z_list.index].z_year)
 					switchnotes.push( (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0,3) : "")+"x")
@@ -17497,7 +17501,7 @@ function on_signal( sig ){
 					metamenu(0)
 				}
 				if (result == 5){ // Delete ROM
-					zmenudraw (["Delete","Cancel"],[0xea10,0xea0f],null,"Delete "+fe.game_info(Info.Name)+"?",0xe9ac,1,false,false,true,false,false,
+					zmenudraw (ltxtarray(["Delete","Cancel"],AF.LNG),[0xea10,0xea0f],null,"Delete "+fe.game_info(Info.Name)+"?",0xe9ac,1,false,false,true,false,false,
 					function (result){
 						if (result == 0){
 							deletecurrentrom()

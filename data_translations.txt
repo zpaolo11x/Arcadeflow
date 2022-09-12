@@ -165,7 +165,7 @@ DE | Zeige den Langnamen des Spiels
 
 EN | Shows the part of the rom name with version and region data
 IT | Mostra la parte del nome del gioco che contine iformazioni come la versione e la regione
-ES | Muestra la parte del nombre que indica la versión y la región 
+ES | Muestra la parte del nombre que indica la versión y la región
 BR | Exibe a parte do nome do jogo que contém as informações sobre a versão e região
 FR | Montre la partie du nom du rom avec la version et l'information sur la région
 DE | Zeigt den Rom Namen mit Version und Region Informationen
@@ -233,8 +233,8 @@ DE | Artikel bei Sortierung ignorieren
 
 EN | When sorting by Title ignore articles
 IT | Ignora gli articoli quando la lista è ordinata per titolo
-ES | Cuando organiza por título se ignora el artículo 
-BR | Ao organizar pelo título, ignora os artigos nos nomes dos jogos 
+ES | Cuando organiza por título se ignora el artículo
+BR | Ao organizar pelo título, ignora os artigos nos nomes dos jogos
 FR | Ignorez les articles quand vous trier des titres
 DE | Bei Sortierung nach Titel, werden Artikel ignoriert
 
@@ -253,7 +253,7 @@ DE | Sortierungsreihenfolge speichern
 
 EN | Custom sort order is saved through Arcadeflow sessions
 IT | L'ordinamento delle liste è salvato tra una sesione e l'altra
-ES | Guarda el orden seleccionado para la próxima sesión 
+ES | Guarda el orden seleccionado para la próxima sesión
 BR | A organização personalizada da lista é mantida entre as sessões do Arcadeflow
 FR | L'ordre de triage personnalisé est sauvegardé entre les sessions d'Arcadeflow
 DE | Benutzerdefinierte Sortierreihenfolge wird in Arcadeflow-Sitzungen gespeichert
@@ -274,17 +274,23 @@ DE | Drehe Bildschirm
 
 EN | Low resolution
 IT | Bassa risoluzione
-ES | Baja resolución 
+ES | Baja resolución
 BR | Baixa resolução
 FR | résolution basse
 DE | Geringe Auflösung
 
 EN | Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout
-IT | Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout 
+IT | Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout
 ES | Optimiza el tema para pantallas con baja resolución: sólo muestra una fila, agranda la fuente y limpia el layout
 BR | Otimiza o tema para telas de baixa resolução, forçando o layout de uma linha, fonte ampliada e layout simplificado
 FR | Optimize ce theme pour résolutions basses. Agencement à une ligne forcé, police plus grande et agencement plus simple.
 DE | Optimierung des Theme für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout
+
+EN | Custom color
+IT | Colore personalizzato
+
+EN | Define a custom color for UI elements using sliders
+IT | Definisci un colore personalizzato da usare per gli elementi della UI
 
 EN | BUTTONS
 IT | PULSANTI
@@ -378,6 +384,18 @@ IT | Seleziona il tasto da usare per richiamare il menu multifiltro, per filtrar
 ES | Selecciona la tecla para abrir el menú multifiltro, para filtrar dinámicamente la lista de juegos
 DE | Taste zum Öffnen des Menü für dynamisches Filtern der Romliste auswählen
 
+EN | Show favorites button
+IT | Tasto modalità preferiti
+
+EN | Chose the button to use to toggle favorite filtering
+IT | Seleziona il tasto da usare per mostrare solo i giochi preferiti
+
+EN | Volume button
+IT | Tasto volume
+
+EN | Chose the button to use to change system volume
+IT | Seleziona il tasto da usare per regolare il volume di sistema
+
 EN | Delete ROM button
 IT | Tasto elimina ROM
 ES | Eliminar una ROM
@@ -406,8 +424,8 @@ ES | Personaliza el menú de utilidades
 DE | Utility Menü anpassen
 
 EN | Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
-IT | Riordina e personalizza il menu Utility: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare 
-ES | Ordena y selecciona la categorias del menú de utilidades: Derecha/Izquierda para mover los items arriba o abajo, Select para activas/desactivar el item 
+IT | Riordina e personalizza il menu Utility: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare
+ES | Ordena y selecciona la categorias del menú de utilidades: Derecha/Izquierda para mover los items arriba o abajo, Select para activas/desactivar el item
 DE | Sortieren und Auswählen von Utility Menü Einträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren
 
 EN | Reset Utility Menu
@@ -464,6 +482,12 @@ EN | You can decide if you want to scrape all roms, only roms with no scrape dat
 IT | Puoi scegliere se vuoi fare lo scrape di tutte le rom, solo quelle che non hanno dati o che hanno un match non perfetto
 ES | Puedes decidir si quieres hacer scrape a todas tus roms, solo las roms sin datos o las que no ha encontrado correctamente
 DE | Auswählen ob alle ROMs, nur ROMs ohne Scrapedaten oder ROMs mit Daten die nicht perfekt übereinstimmen gescraped werden sollen
+
+EN | Scrape error roms
+IT | Scrape di rom con errore
+
+EN | When scraping you can include or exclude roms that gave an error in the previous scraping
+IT | Durante lo scraping puoi includere o escludere le rom che hanno generato errori precedentemente
 
 EN | All roms
 IT | Tutte le rom
@@ -582,7 +606,7 @@ DE | Wenn ein RetroPie XML Pfad im Emulatorfeld "import_extras" angegeben ist, w
 
 EN | Prefer genreid categories
 IT | Preferisci le categorie genreid
-ES | Preferencia del tipo de genreID 
+ES | Preferencia del tipo de genreID
 DE | Genreid Kategorien bevorzugen
 
 EN | If GenreID is specified in your games list, use that instead of usual categories
@@ -599,6 +623,87 @@ EN | Import entrief from the games list only if the rom file is actually availab
 IT | Importa i dati dalla lista xml solo se la rom è effettivamente disponibile
 ES | Importa los datos de la lista xml solo si la rom está realmente disponible
 DE | Importiere Daten aus der XML Liste nur wenn das ROM tatsächlich vorhanden ist
+
+EN | ROMLIST MANAGEMENT
+IT | GESTIONE ROMLIST
+
+EN | Manage romlists and collections
+IT | Gestisci le romlist e le collezioni
+
+EN | ROMLISTS
+IT | ROMLIST
+
+EN | Refresh current romlist
+IT | Aggiorna questa romlist
+
+EN | Refresh the romlist with added/removed roms, won't reset current data
+IT | Aggiorna la romlist con le rom aggiunte/rimosse, non resetta i dati
+
+EN | Reset current romlist
+IT | Reset di questa romlist
+
+EN | Rescan the romlist erasing and regenerating all romlist data
+IT | Ricrea la romlist cancellando e rigenerando tutti i dati
+
+EN | Reset last played
+IT | Cancella ultimi giocati
+
+EN | Remove all last played data from the current romlist
+IT | Rimuovi tutti i dati dell'ultimo lancio da questa romlist
+
+EN | MASTER ROMLIST
+IT | MASTER ROMLIST
+
+EN | Enable Master Romlist
+IT | Abilita la Master Romlist
+
+EN | Turn this on and set master romlist path so AF can manage it
+IT | Attiva e imposta il path della Master Romlist così AF la può gestire
+
+EN | Master Romlist Path
+IT | Percorso Master Romlist
+
+EN | If you are using a master romlist, locate it here to enable AF master romlist optimisation
+IT | Se usi una master romlist, indica il path in cui è salvata per abilitare l'ottimizzazione
+
+EN | ROMLIST EXPORT
+IT | ESPORTA ROMLIST
+
+EN | Export to gamelist xml
+IT | Esporta a gamelist xml
+
+EN | You can export your romlist in the XML format used by EmulationStation
+IT | Puoi esportare la romlist nel formato XML usato da EmulationStation
+
+EN | COLLECTIONS
+IT | COLLEZIONI
+
+EN | Enable all games collections
+IT | Abilita le collezioni all games
+
+EN | If enabled, Arcadeflow will create All Games compilations
+IT | Se abilitato, Arcadeflow creerà delle collezioni All Games
+
+EN | Update all games collections
+IT | Aggiorna le collezioni all games
+
+EN | Force the update of all games collections, use when you remove displays
+IT | Forza l'aggiornamento delle collezioni all games, da usare quando si rimuove un display
+
+EN | DANGER ZONE
+IT | ZONA PERICOLOSA
+
+EN | Enable game hiding
+IT | Abilita nascondi giochi
+
+EN | Enable or disable the options to hide games using tags menu
+IT | Abilita o disabilità le opzioni per nascondere i giochi dal menu tag
+
+EN | Enable rom delete
+IT | Abilita cancellazione rom
+
+EN | Enable or disable the options to delete a rom
+IT | Abilita o disabilita le opzioni per cancellare i file delle rom
 
 EN | DISPLAYS MENU MODE
 IT | Modalità Displays Menu
@@ -646,7 +751,7 @@ IT | Genera la grafica per i nomi
 ES | Generar imagen para el nombre del Display
 BR | Gerar arte para os nomes do Display
 FR | Generez un graphique pour les noms manquants des Displays
-DE | Generiere Bild für Displayname 
+DE | Generiere Bild für Displayname
 
 EN | If no display title is present, the layout can generate it
 IT | Se non c'è la grafica per i nomi dei Display, il layout può crearla automaticamente
@@ -743,12 +848,12 @@ ES | Por año del sistema
 DE | Nach Systemjahr
 
 EN | By system brand then name
-IT | Per marca e nome del sistema
+IT | Per marca e nome sistema
 ES | Por marca y nombre del sistema
 DE | Nach Systemmarke, dann Name
 
 EN | By system brand then year
-IT | Per marca e anno del sistema
+IT | Per marca e anno sistema
 ES | Por marca y año del sistema
 DE | Nach Systemmarke, dann Jahr
 
@@ -937,6 +1042,30 @@ IT | Fix per sistemi che non funzionano bene quando si torna al layout da un gio
 ES | Fix para el sistema cuando un juego no funciona bien, recarga el layout si es necesario
 DE | Fix für Systeme mit Problemen nach Rückkehr aus einem Spiel, neuladen des Layouts wenn notwendig
 
+EN | Width %
+IT | Larghezza %
+
+EN | For screens with overscan, define which percentage of the screen will be filled with actual content
+IT | Per schermi con overscan, definisce la percentuale di schermo con contenuto
+
+EN | Height %
+IT | Altezza %
+
+EN | For screens with overscan, define which percentage of the screen will be filled with actual content
+IT | Per schermi con overscan, definisce la percentuale di schermo con contenuto
+
+EN | Shift X %
+IT | Spostamento X %
+
+EN | For screens with overscan, screen will be shifted by the percentage
+IT | Per schermi con overscan, lo schermo verrà spostato della percentuale
+
+EN | Shift Y %
+IT | Spostamento Y %
+
+EN | For screens with overscan, screen will be shifted by the percentage
+IT | Per schermi con overscan, lo schermo verrà spostato della percentuale
+
 EN | Smooth shadow
 IT | Ombre morbide
 ES | Sombra suave
@@ -960,7 +1089,7 @@ DE | Mattiertes Glass
 
 EN | Enable a frosted glass effect for overlay menus
 IT | Abilita l'effetto vetro opaco per i menu
-ES | Activa un efecto cristal mate para el menú 
+ES | Activa un efecto cristal mate para el menú
 BR | Ativa um efeito de vidro fosco no menu
 FR | Active un effet de vitre givrée sur le menu
 DE | Aktiviere einen mattiertes Glas Effekt für Overlay Menüs
@@ -1088,6 +1217,12 @@ IT | Ridotto
 EN | None
 IT | Nessuno
 
+EN | Show only logos
+IT | Mostra solo loghi
+
+EN | If enabled, only game tilte logos will be shown instead of the screenshot
+IT | Se abilitato, solo i loghi dei giochi verranno mostrati al posto degli screenshot
+
 EN | Morph video
 IT | Trasforma il video
 ES | Transformación del video
@@ -1106,7 +1241,7 @@ DE | Quelle Snapshot Artwork
 EN | Chose if you want the snapshot artwork from gameplay or title screen
 IT | Scegli se le miniature devono essere schermate del gioco o i titoli
 ES | Elige si quieres una captura del juego o la pantalla de título
-DE | Auswählen ob das Vorschaubild vom Spiel Screenshot oder Titelbildschirm sein soll 
+DE | Auswählen ob das Vorschaubild vom Spiel Screenshot oder Titelbildschirm sein soll
 
 EN | Gameplay
 IT | Schermata del gioco
@@ -1137,7 +1272,7 @@ DE | Video Vorschau
 
 EN | Enable video overlay on snapshot thumbnails
 IT | Abilita la sovrapposizione dei video alle miniature statiche
-ES | Activa el video en lugar de la miniatura estática 
+ES | Activa el video en lugar de la miniatura estática
 BR | Ativa a sobreposição de vídeo sobre as miniaturas estáticas
 FR | Activez les videos miniatures dessus les captures miniatures.
 DE | Aktiviere Video Overlay auf snaphot Vorschaubild
@@ -1164,11 +1299,11 @@ IT | Aumenta il ritardo del caricamento dei video
 ES | Aumenta el retraso al cargar el video
 BR | Aumenta o retardo no carregamento do vídeo
 FR | Augmente le délais de chargement des vidéos
-DE | Erhöhe Video-Ladeverzögerung 
+DE | Erhöhe Video-Ladeverzögerung
 
 EN | Generate missing title art
 IT | Grafica per titoli mancanti
-ES | Generar imagen para el título 
+ES | Generar imagen para el título
 BR | Gerar arte do título ausente
 FR | Générez les graphiques manquant pour les titres
 DE | Erstelle Grafiken für fehlende Titel
@@ -1413,7 +1548,7 @@ DE | Splash Logo beim Start von Arcadeflow anpassen
 EN | Enable splash logo
 IT | Abilita il logo iniziale
 ES | Activar el logo inicial
-BR | Ativa o logotipo ao iniciar 
+BR | Ativa o logotipo ao iniciar
 FR | Activez le logo de chargement
 DE | Aktiviere Splash Logo
 
@@ -1472,7 +1607,7 @@ EN | Enable or disable attract mode at layout startup
 IT | Abilita o disabilita la modalità ATTRACT al lancio del layout
 ES | Activa o desactiva el modo ATTRACT al inicio del layout
 BR | Ativa ou desativa o modo VINHETA ao iniciar o layout
-FR | Activez ou désactivez le mode SEDUCTION au déclanchement 
+FR | Activez ou désactivez le mode SEDUCTION au déclanchement
 DE | Aktiviere/Deaktiviere Attract Mode beim Layout Start
 
 EN | Background music
@@ -1562,6 +1697,9 @@ BR | PESQUISAR
 FR | RECHERCHE
 DE | SUCHE & FILTER
 
+EN | Search and Filters
+IT | Ricerca e filtri
+
 EN | Configure the search page and multifilter options
 IT | Configura la pagina di ricerca e il multifiltro
 ES | Configura la página de búsqueda
@@ -1608,13 +1746,13 @@ ES | Personalizar el menú Multifiltro
 DE | Multifilter Menu anpassen
 
 EN | Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item
-IT | Riordina e personalizza il menu Multifiltro: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare 
-ES | Selecciona y ordena el menú Multifiltro: Derecha/Izquierda  para mover el elemento del menú, Select para activarlo/desactivarlo 
+IT | Riordina e personalizza il menu Multifiltro: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare
+ES | Selecciona y ordena el menú Multifiltro: Derecha/Izquierda  para mover el elemento del menú, Select para activarlo/desactivarlo
 DE | Sortieren und auswählen von Multifilter Menüeinträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren
 
 EN | Reset Multifilter Menu
 IT | Ripristina il Menu multifiltro
-ES | Reseterar el menu Multifiltro 
+ES | Reseterar el menu Multifiltro
 DE | Multifilter Menü zurücksetzen
 
 EN | Reset sorting and selection of Multifilter Menu entries
@@ -1690,7 +1828,7 @@ DE | Größe des Textfeldes
 
 EN | Select the size of the history panel at the expense of snapshot area
 IT | Seleziona la dimensione del pannello di testo a spese dall'area del video
-ES | Selecciona el tamaño del texto del Historial a expensas del modificar el área del video 
+ES | Selecciona el tamaño del texto del Historial a expensas del modificar el área del video
 DE | Größe des Historyfeld auswählen, auf Kosten des Snapshotbereichs
 
 EN | Small
@@ -1761,6 +1899,15 @@ IT | Mostra pulsanti e controller del gioco in sovrimpressione
 ES | Muestra los controles y botones superpuestos en la pagina del Historial
 DE | Zeige Controller und Buttons Overlay auf der History Seite
 
+EN | Always
+IT | Sempre
+
+EN | Never
+IT | Mai
+
+EN | Arcade only
+IT | Solo Arcade
+
 EN | History.dat
 IT | History.dat
 ES | History.dat
@@ -1791,7 +1938,7 @@ DE | Einstellen ob Einträge für Klone im Index mit aufgenommen werden sollen. 
 
 EN | Generate History index
 IT | Genera l'indice History
-ES | Generar índice 
+ES | Generar índice
 BR | Gerar índice
 FR | Générez l'indice
 DE | History Index erstellen
@@ -1801,7 +1948,7 @@ IT | Genera ora il file indice di history.dat (può impiegare un po' di tempo)
 ES | Genera el índice del History.dat (puede tardar un poco)
 BR | Gera o índice do history.dat (pode levar alguns minutos)
 FR | Générez l'index de history.dot maintenant (ceci peut prendre du temps)
-DE | History.dat Index jetzt erstellen 
+DE | History.dat Index jetzt erstellen
 
 EN | Command.dat
 IT | Command.dat
@@ -1819,7 +1966,7 @@ DE | Pfad zur Command.dat
 
 EN | Generate Command index
 IT | Genera l'indice Command
-ES | Generar índice 
+ES | Generar índice
 BR | Gerar índice
 FR | Générez l'indice
 DE | Erstelle Command Index
@@ -1895,6 +2042,12 @@ EN | Chose a background music file to play while using Arcadeflow
 IT | Seleziona un file audio da riprodurre mentre si usa Arcadeflow
 ES | Selecciona un archivo de audio para reproducir mientras usas Arcadeflow
 DE | Datei für Hintergrundmusik auswählen, die während Arcadeflow gespielt werden soll
+
+EN | Randomize background music
+IT | Musica di fondo casuale
+
+EN | If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music
+IT | Se abilitato, Arcadeflow riprodurrà casualmente tutti i file mp3 nella cartella della musica di fondo
 
 EN | Stop bg music in attract mode
 IT | Ferma la musica di fondo in attract mode
@@ -1975,6 +2128,99 @@ EN | Restore AF options from a previously saved file
 IT | Ripristina le opzioni di AF da un file salvato
 ES | Restaura las opciones de AF de un archivo guardado
 DE | Zuvor gespeicherte AF Einstellungen wiederherstellen
+
+EN | MULTIPLE MONITOR
+IT | MONITOR MULTIPLI
+
+EN | Configure the appearence of a second monitor
+IT | Configura l'aspetto di un secondo monitor
+
+EN | Enable multiple monitor
+IT | Abilita monitor multipli
+
+EN | Enable Arcadeflow multiple monitor suport
+IT | Abilita il supporto per monitor multipli in Arcadeflow
+
+EN | Monitor identifier
+IT | Identificatore monitor
+
+EN | Select the identification number for the external monitor
+IT | Seleziona il numero identificatore per il monitor esterno
+
+EN | Correct aspect ratio
+IT | Correggi rapporto di forma
+
+EN | Select if the image on the second monitor should be stretched or not
+IT | Scegli se l'immagine sul secondo monitor deve essere stirata o mantenere il rapporto corretto
+
+EN | Main media source
+IT | Fonte principale
+
+EN | Select the artwork source to be used on secondary monitor
+IT | Seleziona la fonte principale delle immagini da mostrare sul secondo monitor
+
+EN | Alternate media source
+IT | Fonte alternativa
+
+EN | Select the artwork source to be used on secondary monitor in case first one is not present
+IT | Selezione la fonte delle immagini da usare nel caso non sia disponibile la prima
+
+EN | COLOR CYCLE
+IT | CICLATURA COLORI
+
+EN | Enable and edit color cycling animation of tile highlight border
+IT | Attiva e configura l'animazione di ciclatura colori per il bordo evidenziato
+
+EN | Enable color cycle
+IT | Abilita ciclatura colori
+
+EN | Enable/disable color cycling of the tile higlight border
+IT | Attiva o disattiva l'effetto di ciclatura del colore del bordo della miniatura selezionata
+
+EN | Cycle Options
+IT | Opzioni ciclatura
+
+EN | Cycle speed
+IT | Velocità di ciclatura
+
+EN | Select the speed of color cycle
+IT | Seleziona la velocità con cui ciclano i colori
+
+EN | Slow
+IT | Lento
+
+EN | Medium
+IT | Medio
+
+EN | Fast
+IT | Veloce
+
+EN | Cycle color
+IT | Colore della ciclatura
+
+EN | Select a color intensity preset for the cycle
+IT | Seleziona l'intensità del colore
+
+EN | Popping
+IT | Sgargiante
+
+EN | Ping Pong effect
+IT | Effetto Ping Pong
+
+EN | Enable this if you want the cycle to revert once finished instead of restarting
+IT | Abilita questo effetto per far ritornare indietro il colore a ogni ciclo
+
+EN | Start hue
+IT | Tinta di partenza
+
+EN | Define the start value of the hue cycle (0 - 359)
+IT | Definici la tinta da cui parte la ciclatura (0 - 359)
+
+EN | Stop hue
+IT | Tinta di fine
+
+EN | Define the stop value of the hue cycle (0 - 359)
+IT | Definisce l'ultima tinta della ciclatura (0 - 359)
 
 EN | DEBUG
 IT | DEBUG
@@ -2212,6 +2458,9 @@ BR | Pesquisar por
 FR | Chercher pour
 DE | Suche nach
 
+EN | NO SEARCH
+IT | NESSUNA
+
 EN | Search
 IT | Cerca
 ES | Buscar
@@ -2234,7 +2483,7 @@ FR | mode séduction
 DE | Attract Mode
 
 EN | Snaps tiles
-IT | Mostra Snap 
+IT | Mostra Snap
 ES | Mostrar Snap
 BR | Mostrar Capturas
 FR | Montrez Captures Miniatures
@@ -2284,7 +2533,7 @@ IT | Ignora aggiornamento
 ES | Ignorar actualización
 DE | Update ignorieren
 
-EN | New version: 
+EN | New version:
 IT | Nuova versione:
 ES | Nueva versión:
 DE | Neue Version:
@@ -2313,8 +2562,8 @@ DE | Kategorien
 
 # SORT, SEARCH AND MULTIFILTER MENU
 
-EN | Search 
-IT | Cerca 
+EN | Search
+IT | Cerca
 ES | Buscar
 BR | Pesquisar
 FR | Recherche
@@ -2340,6 +2589,9 @@ IT | Giocatori
 ES | Jugadores
 DE | Spieler
 
+EN | Rotation
+IT | Orientamento
+
 EN | Favourite
 IT | Preferito
 ES | Favorito
@@ -2354,6 +2606,18 @@ EN | Buttons
 IT | Pulsanti
 ES | Botones
 DE | Buttons
+
+EN | Region
+IT | Regione
+
+EN | Rating
+IT | Voto
+
+EN | Series
+IT | Serie
+
+EN | Arcade System
+IT | Sistema Arcade
 
 EN | Controls
 IT | Controlli
@@ -2382,7 +2646,7 @@ DE | Vertikal
 
 EN | Title
 IT | Titolo
-ES | Título 
+ES | Título
 BR | Título
 FR | Titre
 DE | Titel
@@ -2403,7 +2667,7 @@ DE | Jahr
 
 EN | Category
 IT | Categoria
-ES | Categoría 
+ES | Categoría
 BR | Categoria
 FR | Catégorie
 DE | Kategorie
@@ -2603,6 +2867,18 @@ BR | _Dispon
 FR | _Dispo
 DE | _Vorhanden
 
+EN | _Run
+IT | _Data
+
+EN | _FavDt
+IT | _PrefDt
+
+EN | _Rate
+IT | _Voto
+
+EN | _Series
+IT | _Serie
+
 # MORE OF THE SAME SUBMENU
 
 EN | More of the same
@@ -2614,7 +2890,7 @@ DE | Mehr vom gleichen
 
 EN | Decade
 IT | Decennio
-ES | Década 
+ES | Década
 BR | Década
 FR | Décénnie
 DE | Jahrzehnt
@@ -2622,7 +2898,7 @@ DE | Jahrzehnt
 EN | Main Category
 IT | Categoria principale
 ES | Categoría Principal
-BR | Categoria principal 
+BR | Categoria principal
 FR | Catégorie principale
 DE | Hauptkategorie
 
@@ -2635,7 +2911,7 @@ DE | Unterkategorie
 
 EN | Orientation
 IT | Orientamento
-ES | Orientación 
+ES | Orientación
 BR | Orientação
 FR | Orientation
 DE | Orientierung
@@ -2732,6 +3008,9 @@ IT | Lista con immagini
 ES | Lista con imagen
 FR | Liste avec images
 DE | Liste mit Artwork
+
+EN | list with walls
+IT | Lista con sfondi
 
 EN | Adaptive
 IT | Adattato
@@ -2847,7 +3126,7 @@ DE | Attract Ordner
 
 EN | Arcadeflow Folder
 IT | Cartella Arcadeflow
-ES | Directorio de Arcadeflow 
+ES | Directorio de Arcadeflow
 DE | Arcadflow Ordner
 
 EN | DEFAULT
@@ -2883,3 +3162,61 @@ IT | Riavvia
 
 EN | Sleep
 IT | Sospendi
+
+# METADATA EDITOR
+
+EN | Game Metadata
+IT | Metadati del Gioco
+
+EN | Original
+IT | Originale
+
+EN | Values
+IT | Valori
+
+EN | Manual entry
+IT | Inserisci
+
+# OVERMENU
+
+EN | Game Menu
+IT | Menu Gioco
+
+EN | More of the same...
+IT | Altri dello stesso...
+
+EN | Similar Games
+IT | Giochi simili
+
+EN | Scrape selected game
+IT | Scrape questo gioco
+
+EN | Edit metadata
+IT | Modifica metadati
+
+EN | CAUTION!
+IT | ATTENZIONE!
+
+EN | Delete ROM
+IT | Cancella ROM
+
+EN | ROM Management
+IT | Gestione ROM
+
+EN | Delete
+IT | Elimina
+
+# SLIDER CONTROLS
+
+EN | ACTIONS
+IT | AZIONI
+
+EN | APPLY
+IT | APPLICA
+
+EN | RGB Color
+IT | Colore RGB
+
+EN | HUE Value
+IT | Valore HUE
+
