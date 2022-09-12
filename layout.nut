@@ -12081,7 +12081,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].line_spacing = 1.0
 		zmenu.items[i].set_rgb(255,255,255)
-		//obj_item.set_bg_rgb(100,0,0)
+		//zmenu.items[i].set_bg_rgb(100,0,0)
 
 		if ((zmenu.mfm) && (zmenu.noteitems[i].msg == "(0)")) {
 			zmenu.items[i].set_rgb	(81,81,81)
