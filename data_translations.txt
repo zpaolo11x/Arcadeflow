@@ -165,7 +165,7 @@ DE | Zeige den Langnamen des Spiels
 
 EN | Shows the part of the rom name with version and region data
 IT | Mostra la parte del nome del gioco che contine iformazioni come la versione e la regione
-ES | Muestra la parte del nombre que indica la versión y la región 
+ES | Muestra la parte del nombre que indica la versión y la región
 BR | Exibe a parte do nome do jogo que contém as informações sobre a versão e região
 FR | Montre la partie du nom du rom avec la version et l'information sur la région
 DE | Zeigt den Rom Namen mit Version und Region Informationen
@@ -233,8 +233,8 @@ DE | Artikel bei Sortierung ignorieren
 
 EN | When sorting by Title ignore articles
 IT | Ignora gli articoli quando la lista è ordinata per titolo
-ES | Cuando organiza por título se ignora el artículo 
-BR | Ao organizar pelo título, ignora os artigos nos nomes dos jogos 
+ES | Cuando organiza por título se ignora el artículo
+BR | Ao organizar pelo título, ignora os artigos nos nomes dos jogos
 FR | Ignorez les articles quand vous trier des titres
 DE | Bei Sortierung nach Titel, werden Artikel ignoriert
 
@@ -253,7 +253,7 @@ DE | Sortierungsreihenfolge speichern
 
 EN | Custom sort order is saved through Arcadeflow sessions
 IT | L'ordinamento delle liste è salvato tra una sesione e l'altra
-ES | Guarda el orden seleccionado para la próxima sesión 
+ES | Guarda el orden seleccionado para la próxima sesión
 BR | A organização personalizada da lista é mantida entre as sessões do Arcadeflow
 FR | L'ordre de triage personnalisé est sauvegardé entre les sessions d'Arcadeflow
 DE | Benutzerdefinierte Sortierreihenfolge wird in Arcadeflow-Sitzungen gespeichert
@@ -274,13 +274,13 @@ DE | Drehe Bildschirm
 
 EN | Low resolution
 IT | Bassa risoluzione
-ES | Baja resolución 
+ES | Baja resolución
 BR | Baixa resolução
 FR | résolution basse
 DE | Geringe Auflösung
 
 EN | Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout
-IT | Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout 
+IT | Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout
 ES | Optimiza el tema para pantallas con baja resolución: sólo muestra una fila, agranda la fuente y limpia el layout
 BR | Otimiza o tema para telas de baixa resolução, forçando o layout de uma linha, fonte ampliada e layout simplificado
 FR | Optimize ce theme pour résolutions basses. Agencement à une ligne forcé, police plus grande et agencement plus simple.
@@ -406,8 +406,8 @@ ES | Personaliza el menú de utilidades
 DE | Utility Menü anpassen
 
 EN | Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
-IT | Riordina e personalizza il menu Utility: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare 
-ES | Ordena y selecciona la categorias del menú de utilidades: Derecha/Izquierda para mover los items arriba o abajo, Select para activas/desactivar el item 
+IT | Riordina e personalizza il menu Utility: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare
+ES | Ordena y selecciona la categorias del menú de utilidades: Derecha/Izquierda para mover los items arriba o abajo, Select para activas/desactivar el item
 DE | Sortieren und Auswählen von Utility Menü Einträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren
 
 EN | Reset Utility Menu
@@ -582,7 +582,7 @@ DE | Wenn ein RetroPie XML Pfad im Emulatorfeld "import_extras" angegeben ist, w
 
 EN | Prefer genreid categories
 IT | Preferisci le categorie genreid
-ES | Preferencia del tipo de genreID 
+ES | Preferencia del tipo de genreID
 DE | Genreid Kategorien bevorzugen
 
 EN | If GenreID is specified in your games list, use that instead of usual categories
@@ -646,7 +646,7 @@ IT | Genera la grafica per i nomi
 ES | Generar imagen para el nombre del Display
 BR | Gerar arte para os nomes do Display
 FR | Generez un graphique pour les noms manquants des Displays
-DE | Generiere Bild für Displayname 
+DE | Generiere Bild für Displayname
 
 EN | If no display title is present, the layout can generate it
 IT | Se non c'è la grafica per i nomi dei Display, il layout può crearla automaticamente
@@ -960,7 +960,7 @@ DE | Mattiertes Glass
 
 EN | Enable a frosted glass effect for overlay menus
 IT | Abilita l'effetto vetro opaco per i menu
-ES | Activa un efecto cristal mate para el menú 
+ES | Activa un efecto cristal mate para el menú
 BR | Ativa um efeito de vidro fosco no menu
 FR | Active un effet de vitre givrée sur le menu
 DE | Aktiviere einen mattiertes Glas Effekt für Overlay Menüs
@@ -1106,7 +1106,7 @@ DE | Quelle Snapshot Artwork
 EN | Chose if you want the snapshot artwork from gameplay or title screen
 IT | Scegli se le miniature devono essere schermate del gioco o i titoli
 ES | Elige si quieres una captura del juego o la pantalla de título
-DE | Auswählen ob das Vorschaubild vom Spiel Screenshot oder Titelbildschirm sein soll 
+DE | Auswählen ob das Vorschaubild vom Spiel Screenshot oder Titelbildschirm sein soll
 
 EN | Gameplay
 IT | Schermata del gioco
@@ -1137,7 +1137,7 @@ DE | Video Vorschau
 
 EN | Enable video overlay on snapshot thumbnails
 IT | Abilita la sovrapposizione dei video alle miniature statiche
-ES | Activa el video en lugar de la miniatura estática 
+ES | Activa el video en lugar de la miniatura estática
 BR | Ativa a sobreposição de vídeo sobre as miniaturas estáticas
 FR | Activez les videos miniatures dessus les captures miniatures.
 DE | Aktiviere Video Overlay auf snaphot Vorschaubild
@@ -1164,11 +1164,11 @@ IT | Aumenta il ritardo del caricamento dei video
 ES | Aumenta el retraso al cargar el video
 BR | Aumenta o retardo no carregamento do vídeo
 FR | Augmente le délais de chargement des vidéos
-DE | Erhöhe Video-Ladeverzögerung 
+DE | Erhöhe Video-Ladeverzögerung
 
 EN | Generate missing title art
 IT | Grafica per titoli mancanti
-ES | Generar imagen para el título 
+ES | Generar imagen para el título
 BR | Gerar arte do título ausente
 FR | Générez les graphiques manquant pour les titres
 DE | Erstelle Grafiken für fehlende Titel
@@ -1413,7 +1413,7 @@ DE | Splash Logo beim Start von Arcadeflow anpassen
 EN | Enable splash logo
 IT | Abilita il logo iniziale
 ES | Activar el logo inicial
-BR | Ativa o logotipo ao iniciar 
+BR | Ativa o logotipo ao iniciar
 FR | Activez le logo de chargement
 DE | Aktiviere Splash Logo
 
@@ -1472,7 +1472,7 @@ EN | Enable or disable attract mode at layout startup
 IT | Abilita o disabilita la modalità ATTRACT al lancio del layout
 ES | Activa o desactiva el modo ATTRACT al inicio del layout
 BR | Ativa ou desativa o modo VINHETA ao iniciar o layout
-FR | Activez ou désactivez le mode SEDUCTION au déclanchement 
+FR | Activez ou désactivez le mode SEDUCTION au déclanchement
 DE | Aktiviere/Deaktiviere Attract Mode beim Layout Start
 
 EN | Background music
@@ -1608,13 +1608,13 @@ ES | Personalizar el menú Multifiltro
 DE | Multifilter Menu anpassen
 
 EN | Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item
-IT | Riordina e personalizza il menu Multifiltro: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare 
-ES | Selecciona y ordena el menú Multifiltro: Derecha/Izquierda  para mover el elemento del menú, Select para activarlo/desactivarlo 
+IT | Riordina e personalizza il menu Multifiltro: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare
+ES | Selecciona y ordena el menú Multifiltro: Derecha/Izquierda  para mover el elemento del menú, Select para activarlo/desactivarlo
 DE | Sortieren und auswählen von Multifilter Menüeinträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren
 
 EN | Reset Multifilter Menu
 IT | Ripristina il Menu multifiltro
-ES | Reseterar el menu Multifiltro 
+ES | Reseterar el menu Multifiltro
 DE | Multifilter Menü zurücksetzen
 
 EN | Reset sorting and selection of Multifilter Menu entries
@@ -1690,7 +1690,7 @@ DE | Größe des Textfeldes
 
 EN | Select the size of the history panel at the expense of snapshot area
 IT | Seleziona la dimensione del pannello di testo a spese dall'area del video
-ES | Selecciona el tamaño del texto del Historial a expensas del modificar el área del video 
+ES | Selecciona el tamaño del texto del Historial a expensas del modificar el área del video
 DE | Größe des Historyfeld auswählen, auf Kosten des Snapshotbereichs
 
 EN | Small
@@ -1791,7 +1791,7 @@ DE | Einstellen ob Einträge für Klone im Index mit aufgenommen werden sollen. 
 
 EN | Generate History index
 IT | Genera l'indice History
-ES | Generar índice 
+ES | Generar índice
 BR | Gerar índice
 FR | Générez l'indice
 DE | History Index erstellen
@@ -1801,7 +1801,7 @@ IT | Genera ora il file indice di history.dat (può impiegare un po' di tempo)
 ES | Genera el índice del History.dat (puede tardar un poco)
 BR | Gera o índice do history.dat (pode levar alguns minutos)
 FR | Générez l'index de history.dot maintenant (ceci peut prendre du temps)
-DE | History.dat Index jetzt erstellen 
+DE | History.dat Index jetzt erstellen
 
 EN | Command.dat
 IT | Command.dat
@@ -1819,7 +1819,7 @@ DE | Pfad zur Command.dat
 
 EN | Generate Command index
 IT | Genera l'indice Command
-ES | Generar índice 
+ES | Generar índice
 BR | Gerar índice
 FR | Générez l'indice
 DE | Erstelle Command Index
@@ -2234,7 +2234,7 @@ FR | mode séduction
 DE | Attract Mode
 
 EN | Snaps tiles
-IT | Mostra Snap 
+IT | Mostra Snap
 ES | Mostrar Snap
 BR | Mostrar Capturas
 FR | Montrez Captures Miniatures
@@ -2284,7 +2284,7 @@ IT | Ignora aggiornamento
 ES | Ignorar actualización
 DE | Update ignorieren
 
-EN | New version: 
+EN | New version:
 IT | Nuova versione:
 ES | Nueva versión:
 DE | Neue Version:
@@ -2313,8 +2313,8 @@ DE | Kategorien
 
 # SORT, SEARCH AND MULTIFILTER MENU
 
-EN | Search 
-IT | Cerca 
+EN | Search
+IT | Cerca
 ES | Buscar
 BR | Pesquisar
 FR | Recherche
@@ -2340,6 +2340,9 @@ IT | Giocatori
 ES | Jugadores
 DE | Spieler
 
+EN | Rotation
+IT | Orientamento
+
 EN | Favourite
 IT | Preferito
 ES | Favorito
@@ -2354,6 +2357,18 @@ EN | Buttons
 IT | Pulsanti
 ES | Botones
 DE | Buttons
+
+EN | Region
+IT | Regione
+
+EN | Rating
+IT | Voto
+
+EN | Series
+IT | Serie
+
+EN | Arcade System
+IT | Sistema Arcade
 
 EN | Controls
 IT | Controlli
@@ -2382,7 +2397,7 @@ DE | Vertikal
 
 EN | Title
 IT | Titolo
-ES | Título 
+ES | Título
 BR | Título
 FR | Titre
 DE | Titel
@@ -2403,7 +2418,7 @@ DE | Jahr
 
 EN | Category
 IT | Categoria
-ES | Categoría 
+ES | Categoría
 BR | Categoria
 FR | Catégorie
 DE | Kategorie
@@ -2603,6 +2618,18 @@ BR | _Dispon
 FR | _Dispo
 DE | _Vorhanden
 
+EN | _Run
+IT | _Data
+
+EN | _FavDt
+IT | _PrefDt
+
+EN | _Rate
+IT | _Voto
+
+EN | _Series
+IT | _Serie
+
 # MORE OF THE SAME SUBMENU
 
 EN | More of the same
@@ -2614,7 +2641,7 @@ DE | Mehr vom gleichen
 
 EN | Decade
 IT | Decennio
-ES | Década 
+ES | Década
 BR | Década
 FR | Décénnie
 DE | Jahrzehnt
@@ -2622,7 +2649,7 @@ DE | Jahrzehnt
 EN | Main Category
 IT | Categoria principale
 ES | Categoría Principal
-BR | Categoria principal 
+BR | Categoria principal
 FR | Catégorie principale
 DE | Hauptkategorie
 
@@ -2635,7 +2662,7 @@ DE | Unterkategorie
 
 EN | Orientation
 IT | Orientamento
-ES | Orientación 
+ES | Orientación
 BR | Orientação
 FR | Orientation
 DE | Orientierung
@@ -2847,7 +2874,7 @@ DE | Attract Ordner
 
 EN | Arcadeflow Folder
 IT | Cartella Arcadeflow
-ES | Directorio de Arcadeflow 
+ES | Directorio de Arcadeflow
 DE | Arcadflow Ordner
 
 EN | DEFAULT
@@ -2883,3 +2910,17 @@ IT | Riavvia
 
 EN | Sleep
 IT | Sospendi
+
+# METADATA EDITOR
+
+EN | Game Metadata
+IT | Metadati del Gioco
+
+EN | Original
+IT | Originale
+
+EN | Values
+IT | Valori
+
+EN | Manual entry
+IT | Inserisci

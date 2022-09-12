@@ -1478,7 +1478,7 @@ orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",AF.LNG),"_")[0]
 orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",AF.LNG),"_")[0]
 
 orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavD.",AF.LNG),"_")[0]
+orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavDt",AF.LNG),"_")[0]
 orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",AF.LNG),"_")[0]
 orderdatalabel [z_info.z_series] <- split(ltxt("_Series",AF.LNG),"_")[0]
 
@@ -4429,6 +4429,8 @@ local metadata = {
 				]
 }
 
+metadata.names = ltxtarray(metadata.names,AF.LNG)
+
 local meta_edited = {}
 local meta_original = {}
 local all_meta_edited = {}
@@ -4568,11 +4570,11 @@ function metamenu(starter){
 				local metanotes = []
 				local metaglyphs = []
 
-				metaarray.push ("Original")
+				metaarray.push (ltxt("Original",AF.LNG))
 				metanotes.push (meta_unedited)
 				metaglyphs.push (0xe965)
 
-				metaarray.push ("Values")
+				metaarray.push (ltxt("Values",AF.LNG))
 				metanotes.push ("")
 				metaglyphs.push (-1)
 
@@ -4601,15 +4603,15 @@ function metamenu(starter){
 				local metanotes = []
 				local metaglyphs = []
 
-				metaarray.push ("Original")
+				metaarray.push (ltxt("Original",AF.LNG))
 				metanotes.push (meta_unedited)
 				metaglyphs.push (0xe965)
 
-				metaarray.push ("Manual entry")
+				metaarray.push (ltxt("Manual entry",AF.LNG))
 				metanotes.push ("")
 				metaglyphs.push (0xe955)
 
-				metaarray.push ("Values")
+				metaarray.push (ltxt("Values",AF.LNG))
 				metanotes.push ("")
 				metaglyphs.push (-1)
 
