@@ -26,55 +26,6 @@ function split_complete(str_in, separator){
 	return outarray
 }
 
-function ra_init(){
-	local ra = {}
-
-	local ap = '"'.tochar()
-
-	ra.binpath <- fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch")
-
-	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
-						(OS == "Windows") ? fe.path_expand("") :
-						fe.path_expand("$HOME/.config/retroarch/")
-
-	ra.corepath <- fe.path_expand(ra.basepath+"cores/")
-	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
-						(OS == "Windows") ? fe.path_expand("") :
-						ra.corepath
-
-	ra.corelist <- []
-	ra.coretable <- {}
-	local dirlist = DirectoryListing (ra.corepath,false).results
-	foreach (i,item in dirlist){
-		if (item.find("_libretro") != null) {
-			ra.coretable.rawset(item.slice(0,item.find("_libretro")),{})
-			ra.corelist.push(item.slice(0,item.find("_libretro")))
-		}
-	}
-	local coreinfofile = null
-	local stringline = "#"
-	foreach (i,item in ra.corelist){
-		stringline = "#"
-		coreinfofile = ReadTextFile (fe.path_expand(ra.infopath+item+"_libretro.info"))
-		print(fe.path_expand(ra.infopath+item+"_libretro.info")+"\n")
-		while (stringline[0].tochar() == "#"){
-			stringline = coreinfofile.read_line()
-		}
-		ra.coretable[item].rawset("shortname",item)
-		ra.coretable[item].rawset("displayname",stringline.slice(stringline.find(ap)+1,-1))
-	}
-
-	ra.corelist.sort(@(a,b) ra.coretable[a].displayname <=> ra.coretable[b].displayname)
-
-	foreach(i, item in ra.corelist){
-		print (i+" "+item+" "+ra.coretable[item].displayname+"\n")
-	}
-
-	return (ra)
-}
-
-local ra = ra_init()
-
 // COME CAMBIA AR DA AF98
 /*
 Modificare la funzione GetAR in modo che restituisca l'AR _DA MOSTRARE_ pre-clamp,
@@ -16848,55 +16799,110 @@ function parsevolume(op){
 	}
 }
 
+/// RetroArch Functions ///
 
+// ra_init initialise the ra table with data regarding RA and cores
+local ra = {}
+function ra_init(){
+
+	ra.binpath <- fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch")
+
+	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
+						(OS == "Windows") ? fe.path_expand("") :
+						fe.path_expand("$HOME/.config/retroarch/")
+
+	ra.corepath <- fe.path_expand(ra.basepath+"cores/")
+	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
+						(OS == "Windows") ? fe.path_expand("") :
+						ra.corepath
+
+	ra.corelist <- []
+	ra.coretable <- {}
+	local dirlist = DirectoryListing (ra.corepath,false).results
+	foreach (i,item in dirlist){
+		if (item.find("_libretro") != null) {
+			ra.coretable.rawset(item.slice(0,item.find("_libretro")),{})
+			ra.corelist.push(item.slice(0,item.find("_libretro")))
+		}
+	}
+	local coreinfofile = null
+	local stringline = "#"
+	foreach (i,item in ra.corelist){
+		stringline = "#"
+		coreinfofile = ReadTextFile (fe.path_expand(ra.infopath+item+"_libretro.info"))
+		print(fe.path_expand(ra.infopath+item+"_libretro.info")+"\n")
+		while (stringline[0].tochar() == "#"){
+			stringline = coreinfofile.read_line()
+		}
+		ra.coretable[item].rawset("shortname",item)
+		ra.coretable[item].rawset("displayname",stringline.slice(stringline.find(ap)+1,-1))
+	}
+
+	ra.corelist.sort(@(a,b) ra.coretable[a].displayname <=> ra.coretable[b].displayname)
+
+	foreach(i, item in ra.corelist){
+		print (i+" "+item+" "+ra.coretable[item].displayname+"\n")
+	}
+}
+
+ra_init()
+function ra_updatecfg(){
+
+}
+
+function ra_getemucore(emulator){
+	local args = split (AF.emulatordata[emulator].args," ")[1]
+	return(ra.coretable[args].shortname)
+}
+
+function ra_selectcoremenu(startcore){
+
+	local startpos = ra.corelist.find(startcore)
+	local coremenulist = []
+	local coreglyphs = []
+	foreach (i, item in ra.corelist){
+		coremenulist.push(ra.coretable[item].displayname)
+		coreglyphs.push (i == startpos ? 0xea10 : 0)
+	}
+	frostshow()
+	zmenudraw(coremenulist,coreglyphs,null,"Retroarch Cores",null,startpos,false,false,false,false,false,
+	function (result){
+		if (result == -1) {
+			frosthide()
+			zmenuhide()
+		} else {
+			local filearray = []
+			local emufile = ReadTextFile(FeConfigDirectory+"emulators/"+z_list.gametable[z_list.index].z_emulator+".cfg")
+			while (!emufile.eos()){
+				filearray.push (emufile.read_line())
+			}
+			foreach (i, item in filearray){
+				if (item.find("executable") == 0) {
+					filearray[i] = "executable           " + ra.binpath
+				}
+				else if (item.find("args") == 0) {
+					filearray[i] = "args                 -L " + ra.corelist[result] + " "+ap+"[romfilename]"+ap
+				}
+			}
+			local emuoutfile = WriteTextFile(FeConfigDirectory+"emulators/"+z_list.gametable[z_list.index].z_emulator+".cfg")
+			foreach (i, item in filearray){
+				emuoutfile.write_line(item+"\n")
+			}
+			emuoutfile.close_file()
+			frosthide()
+			zmenuhide()
+			restartAM()
+
+		}
+	})
+}
 
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
 	if (sig == "custom1"){
-		local args = AF.emulatordata[z_list.gametable[z_list.index].z_emulator].args
-		args = split (args," ")[1]
-		testpr (ra.coretable[args].displayname+"\n")
-		local startpos = ra.corelist.find(ra.coretable[args].shortname)
-		local coremenulist = []
-		local coreglyphs = []
-		foreach (i, item in ra.corelist){
-			coremenulist.push(ra.coretable[item].displayname)
-			coreglyphs.push (i == startpos ? 0xea10 : 0)
-		}
-		frostshow()
-		zmenudraw(coremenulist,coreglyphs,null,"Retroarch Cores",null,startpos,false,false,false,false,false,
-		function (result){
-			if (result == -1) {
-				frosthide()
-				zmenuhide()
-			} else {
-				local filearray = []
-				local emufile = ReadTextFile(FeConfigDirectory+"emulators/"+z_list.gametable[z_list.index].z_emulator+".cfg")
-				while (!emufile.eos()){
-					filearray.push (emufile.read_line())
-				}
-				foreach (i, item in filearray){
-					if (item.find("executable") == 0) {
-						filearray[i] = "executable           " + ra.binpath
-					}
-					else if (item.find("args") == 0) {
-						filearray[i] = "args                 -L " + ra.corelist[result] + " "+ap+"[romfilename]"+ap
-					}
-				}
-				local emuoutfile = WriteTextFile(FeConfigDirectory+"emulators/"+z_list.gametable[z_list.index].z_emulator+".cfg")
-				foreach (i, item in filearray){
-					emuoutfile.write_line(item+"\n")
-				}
-				emuoutfile.close_file()
-				frosthide()
-				zmenuhide()
-				restartAM()
-
-			}
-		})
-
+		ra_selectcoremenu(ra_getemucore(z_list.gametable[z_list.index].z_emulator))
 	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
