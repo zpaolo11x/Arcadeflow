@@ -969,9 +969,9 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({ label = "RETROARCH INTEGRATION", glyph = 0xeafa, description = "Assign retroarch cores to emulators"})
 AF.prefs.l1.push([
-	{v = 14.6, varname = "raenabled", glyph = 0xe997, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
-	{v = 14.6, varname = "raexepath", glyph = 0xeafa, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "RetroArch executable", help = "Browse to the executable of RetroArch", options = "", values = "", selection = AF.req.filereqs},
-	{v = 14.6, varname = "racustomcorepath", glyph = 0xeafa, initvar = function(val,prf){prf.RACUSTOMCOREPATH <- val}, title = "Custom Core folder", help = "Define a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.filereqs},
+	{v = 14.6, varname = "raenabled", glyph = 0xeafa, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
+	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "RetroArch executable", help = "Browse to the executable of RetroArch", options = "", values = "", selection = AF.req.filereqs},
+	{v = 14.6, varname = "racustomcorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACUSTOMCOREPATH <- val}, title = "Custom Core folder", help = "Define a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.filereqs},
 ])
 
 menucounter ++
