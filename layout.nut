@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.5
+// Arcadeflow - v 14.6
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.5"
+	version = "14.6"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -965,6 +965,14 @@ AF.prefs.l1.push([
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
+
+menucounter ++
+AF.prefs.l0.push({ label = "RETROARCH INTEGRATION", glyph = 0xeafa, description = "Assign retroarch cores to emulators"})
+AF.prefs.l1.push([
+	{v = 14.6, varname = "raenabled", glyph = 0xe997, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
+	{v = 14.6, varname = "raexepath", glyph = 0xeafa, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "RetroArch executable", help = "Browse to the executable of RetroArch", options = "", values = "", selection = AF.req.filereqs},
+	{v = 14.6, varname = "racustomcorepath", glyph = 0xeafa, initvar = function(val,prf){prf.RACUSTOMCOREPATH <- val}, title = "Custom Core folder", help = "Define a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.filereqs},
+])
 
 menucounter ++
 sorter.rawset("mf", menucounter)
@@ -16805,13 +16813,13 @@ function parsevolume(op){
 local ra = {}
 function ra_init(){
 
-	ra.binpath <- fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch")
+	ra.binpath <- fe.path_expand(prf.RAEXEPATH)
 
 	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
 						(OS == "Windows") ? fe.path_expand("") :
 						fe.path_expand("$HOME/.config/retroarch/")
 
-	ra.corepath <- fe.path_expand(ra.basepath+"cores/")
+	ra.corepath <- prf.RACUSTOMCOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACUSTOMCOREPATH
 	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
 						(OS == "Windows") ? fe.path_expand("") :
 						ra.corepath
@@ -16846,8 +16854,26 @@ function ra_init(){
 }
 
 ra_init()
-function ra_updatecfg(){
 
+function ra_updatecfg(emulator,core){
+	local filearray = []
+	local emufile = ReadTextFile(FeConfigDirectory+"emulators/"+emulator+".cfg")
+	while (!emufile.eos()){
+		filearray.push (emufile.read_line())
+	}
+	foreach (i, item in filearray){
+		if (item.find("executable") == 0) {
+			filearray[i] = "executable           " + ra.binpath
+		}
+		else if (item.find("args") == 0) {
+			filearray[i] = "args                 -L " + core + " "+ap+"[romfilename]"+ap
+		}
+	}
+	local emuoutfile = WriteTextFile(FeConfigDirectory+"emulators/"+emulator+".cfg")
+	foreach (i, item in filearray){
+		emuoutfile.write_line(item+"\n")
+	}
+	emuoutfile.close_file()
 }
 
 function ra_getemucore(emulator){
@@ -16856,7 +16882,6 @@ function ra_getemucore(emulator){
 }
 
 function ra_selectcoremenu(startcore){
-
 	local startpos = ra.corelist.find(startcore)
 	local coremenulist = []
 	local coreglyphs = []
@@ -16865,34 +16890,16 @@ function ra_selectcoremenu(startcore){
 		coreglyphs.push (i == startpos ? 0xea10 : 0)
 	}
 	frostshow()
-	zmenudraw(coremenulist,coreglyphs,null,"Retroarch Cores",null,startpos,false,false,false,false,false,
+	zmenudraw(coremenulist,coreglyphs,null,"Retroarch Cores",0xeafa,startpos,false,false,false,false,false,
 	function (result){
 		if (result == -1) {
 			frosthide()
 			zmenuhide()
 		} else {
-			local filearray = []
-			local emufile = ReadTextFile(FeConfigDirectory+"emulators/"+z_list.gametable[z_list.index].z_emulator+".cfg")
-			while (!emufile.eos()){
-				filearray.push (emufile.read_line())
-			}
-			foreach (i, item in filearray){
-				if (item.find("executable") == 0) {
-					filearray[i] = "executable           " + ra.binpath
-				}
-				else if (item.find("args") == 0) {
-					filearray[i] = "args                 -L " + ra.corelist[result] + " "+ap+"[romfilename]"+ap
-				}
-			}
-			local emuoutfile = WriteTextFile(FeConfigDirectory+"emulators/"+z_list.gametable[z_list.index].z_emulator+".cfg")
-			foreach (i, item in filearray){
-				emuoutfile.write_line(item+"\n")
-			}
-			emuoutfile.close_file()
+			ra_updatecfg(z_list.gametable[z_list.index].z_emulator,ra.corelist[result])
 			frosthide()
 			zmenuhide()
 			restartAM()
-
 		}
 	})
 }
