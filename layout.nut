@@ -16852,7 +16852,7 @@ function ra_init(){
 	ra.coretable <- {}
 	local dirlist = DirectoryListing (ra.corepath,false).results
 	foreach (i,item in dirlist){
-		if (item.find("_libretro") != null) {
+		if ((item.find("_libretro") != null) && (item.find(".info") == null)) {
 			ra.coretable.rawset(item.slice(0,item.find("_libretro")),{})
 			ra.corelist.push(item.slice(0,item.find("_libretro")))
 		}
