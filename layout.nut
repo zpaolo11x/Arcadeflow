@@ -2941,7 +2941,19 @@ function getemulatordata(emulatorname){
 		}
 	}
 
-	racore = (executable.tolower().find("retroarch") != null) ? split(args," ")[1] : ""
+	if (executable.tolower().find("retroarch") == null) racore = ""
+	else {
+		racore = args
+		if (racore.find("_libretro") != null){
+			racore = racore.slice(0,racore.find("_libretro"))
+			if (racore[0].tochar() == ap)
+				racore = racore.slice(1,0)
+
+			racore = split(racore,"/\\ ")
+			racore = racore[racore.len()-1]
+		}
+		else racore = split(args," ")[1]
+	}
 
 	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
 		artworktable.video <- fe.path_expand(split(artworktable.snap,";")[1])
@@ -16897,12 +16909,6 @@ function ra_updatecfg(emulator,core){
 	emuoutfile.close_file()
 }
 
-function ra_getemucore(emulator){
-	local args = split (AF.emulatordata[emulator].args," ")
-	if (args.len()>1) args = args[1] else args =""
-	return(args=="" ? "" : ra.coretable[args].shortname)
-}
-
 function ra_applychanges(){
 	local emuarray = []
 	local corearray = []
@@ -16946,7 +16952,7 @@ function ra_applychanges(){
 }
 
 function ra_selectcore(startemu){
-	local oldcore = ra_getemucore(startemu)
+	local oldcore = AF.emulatordata[startemu].racore
 	local newcore = ra.todolist.rawin(startemu) ? ra.todolist[startemu] : ""
 
 	local startpos = newcore == "" ? ra.corelist.find(oldcore) : ra.corelist.find(newcore)
@@ -16966,11 +16972,8 @@ function ra_selectcore(startemu){
 		} else {
 			if (oldcore != ra.corelist[result]) ra.todolist.rawset(startemu,ra.corelist[result])
 			else ra.todolist.rawdelete(startemu)
-			ra_selectemu(startemu)
-			//ra_updatecfg(z_list.gametable[z_list.index].z_emulator,ra.corelist[result])
-			//frosthide()
-			//zmenuhide()
-			//restartAM()
+			//OLD VERSION: ra_selectemu(startemu)
+			ra_selectcore(startemu)
 		}
 	})
 }
@@ -17002,7 +17005,7 @@ function ra_selectemu(startemu){
 			ra_applychanges()
 		}
 		else {
-			if (ra_getemucore(emulist[result]) == "") {
+			if (AF.emulatordata[emulist[result]].racore == "") {
 				zmenudraw(ltxtarray(["Yes","No"],AF.LNG),[0xea10,0xea0f],null,"Apply RA core?",0xeafa,0,false,false,true,false,false,
 				function (result2){
 					if (result2 == 0) ra_selectcore(emulist[result])
