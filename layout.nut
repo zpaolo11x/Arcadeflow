@@ -16835,17 +16835,17 @@ function ra_init(){
 
 	ra.binpath <- 	(prf.RAEXEPATH != "") ? fe.path_expand(prf.RAEXEPATH) :
 						(OS == "OSX") ? fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch") :
-						(OS == "Windows") ? fe.path_expand("") :
+						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\retroarch.exe") :
 						fe.path_expand("retroarch")
 
 	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
-						(OS == "Windows") ? fe.path_expand("") :
+						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\") :
 						fe.path_expand("$HOME/.config/retroarch/")
 
 	ra.corepath <- prf.RACOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACOREPATH
 
 	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
-						(OS == "Windows") ? fe.path_expand("") :
+						(OS == "Windows") ? fe.path_expand(ra.basepath+"info\\") :
 						ra.corepath
 
 	ra.corelist <- []
