@@ -258,6 +258,13 @@ WORKFLOW
 	In the end the layout must be reloaded
 */
 
+function restartAM(){
+	fe.signal("exit_to_desktop")
+	if (OS == "Windows") system("start attractplus-console.exe")
+	else if (OS == "OSX") system("./attractplus &")
+	else system("attractplus &")
+}
+
 // This function parses the attract.cfg and builds a structure for all displays
 function parseconfig(){
 	local cfgfile = ReadTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
@@ -970,8 +977,8 @@ menucounter ++
 AF.prefs.l0.push({ label = "RETROARCH INTEGRATION", glyph = 0xeafa, description = "Assign retroarch cores to emulators"})
 AF.prefs.l1.push([
 	{v = 14.6, varname = "raenabled", glyph = 0xeafa, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
-	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "RetroArch executable", help = "Browse to the executable of RetroArch", options = "", values = "", selection = AF.req.filereqs},
-	{v = 14.6, varname = "racustomcorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACUSTOMCOREPATH <- val}, title = "Custom Core folder", help = "Define a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.filereqs},
+	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "Custom executable folder", help = "Browse to the executable of RetroArch if not installed in your OS default location", options = "", values = "", selection = AF.req.filereqs},
+	{v = 14.6, varname = "racorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACOREPATH <- val}, title = "Custom Core folder", help = "Define a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.filereqs},
 ])
 
 menucounter ++
@@ -12652,7 +12659,7 @@ function checkforupdates(force){
 				function(out){
 					zmenuhide()
 					frosthide()
-					fe.signal("exit_to_desktop")
+					restartAM()
 				})
 			}
 		}
@@ -15029,13 +15036,6 @@ function checkrepeat(counter){
 
 /// Check ALLGAMES status ///
 
-function restartAM(){
-	fe.signal("exit_to_desktop")
-	if (OS == "Windows") system("start attractplus-console.exe")
-	else if (OS == "OSX") system("./attractplus &")
-	else system("attractplus &")
-}
-
 if (prf.ALLGAMES != AF.config.collections){
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
@@ -16813,13 +16813,17 @@ function parsevolume(op){
 local ra = {}
 function ra_init(){
 
-	ra.binpath <- fe.path_expand(prf.RAEXEPATH)
+	ra.binpath <- 	(prf.RAEXEPATH != "") ? fe.path_expand(prf.RAEXEPATH) :
+						(OS == "OSX") ? fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch") :
+						(OS == "Windows") ? fe.path_expand("") :
+						fe.path_expand("retroarch")
 
 	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
 						(OS == "Windows") ? fe.path_expand("") :
 						fe.path_expand("$HOME/.config/retroarch/")
 
-	ra.corepath <- prf.RACUSTOMCOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACUSTOMCOREPATH
+	ra.corepath <- prf.RACOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACOREPATH
+
 	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
 						(OS == "Windows") ? fe.path_expand("") :
 						ra.corepath
