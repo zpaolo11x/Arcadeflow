@@ -14496,7 +14496,7 @@ function buildutilitymenu(){
 		id = 0
 		order = 0
 		sidenote = function(){
-			return (prf.RAENABLED ? "☰" : "DISABLED")
+			return (prf.RAENABLED ? "☰" : ltxt("DISABLED",AF.LNG))
 		}
 		command = function(){
 			if (!prf.RAENABLED) return
@@ -16925,14 +16925,14 @@ function ra_applychanges(){
 		zmenuhide()
 	} else {
 		menuarray.insert(0,"")
-		menuarray.insert(0,"Discard changes")
-		menuarray.insert(0,"Apply changes")
+		menuarray.insert(0,ltxt("Discard changes",AF.LNG))
+		menuarray.insert(0,ltxt("Apply changes",AF.LNG))
 
 		glypharray.insert(0,-1)
 		glypharray.insert(0,0xea0f)
 		glypharray.insert(0,0xea10)
 
-		zmenudraw(menuarray,glypharray,null,"Cores assigned",0xeafa,0,false,false,false,false,false,
+		zmenudraw(menuarray,glypharray,null,ltxt("Assigned cores",AF.LNG),0xeafa,0,false,false,false,false,false,
 		function (result){
 			if ((result == -1) || (result == 1)) {
 				ra.todolist = {}
@@ -16970,7 +16970,7 @@ function ra_selectcore(startemu){
 		}
 	}
 	frostshow()
-	zmenudraw(coremenulist,coreglyphs,null,"Select Core",0xeafa,startpos,false,false,false,false,false,
+	zmenudraw(coremenulist,coreglyphs,null,ltxt("Select core",AF.LNG),0xeafa,startpos,false,false,false,false,false,
 	function (result){
 		if (result == -1) {
 			ra_selectemu(startemu)
@@ -17004,14 +17004,14 @@ function ra_selectemu(startemu){
 	}
 
 	frostshow()
-	zmenudraw(emulist,todoglyph,corelist,"Select Emulator",0xeafa,startpos,false,false,false,false,false,
+	zmenudraw(emulist,todoglyph,corelist,ltxt("Select emulator",AF.LNG),0xeafa,startpos,false,false,false,false,false,
 	function (result){
 		if (result == -1){
 			ra_applychanges()
 		}
 		else {
 			if (AF.emulatordata[emulist[result]].racore == "") {
-				zmenudraw(ltxtarray(["Yes","No"],AF.LNG),[0xea10,0xea0f],null,"Apply RA core?",0xeafa,0,false,false,true,false,false,
+				zmenudraw(ltxtarray(["Yes","No"],AF.LNG),[0xea10,0xea0f],null,ltxt("Apply RA core",AF.LNG)+"?",0xeafa,0,false,false,true,false,false,
 				function (result2){
 					if (result2 == 0) ra_selectcore(emulist[result])
 					else if (result2 == 1) {
