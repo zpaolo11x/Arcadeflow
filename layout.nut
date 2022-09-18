@@ -16900,17 +16900,65 @@ function ra_updatecfg(emulator,core){
 }
 
 function ra_getemucore(emulator){
-	local args = split (AF.emulatordata[emulator].args," ")[1]
-	return(ra.coretable[args].shortname)
+	local args = split (AF.emulatordata[emulator].args," ")
+	if (args.len()>1) args = args[1] else args =""
+	return(args=="" ? "" : ra.coretable[args].shortname)
 }
 
-function ra_selectcore(startcore,startemu){
-	local startpos = ra.corelist.find(startcore)
+function ra_applychanges(){
+	local emuarray = []
+	local corearray = []
+	local menuarray = []
+	local glypharray = []
+	foreach (item, val in ra.todolist){
+		emuarray.push(item)
+		corearray.push(val)
+		menuarray.push (item+": "+val)
+		glypharray.push(0)
+	}
+	if (emuarray.len() == 0) {
+		frosthide()
+		zmenuhide()
+	} else {
+		menuarray.insert(0,"")
+		menuarray.insert(0,"Discard changes")
+		menuarray.insert(0,"Apply changes")
+
+		glypharray.insert(0,-1)
+		glypharray.insert(0,0xea0f)
+		glypharray.insert(0,0xea10)
+
+		zmenudraw(menuarray,glypharray,null,"Cores assigned",0xeafa,0,false,false,false,false,false,
+		function (result){
+			if ((result == -1) || (result == 1)) {
+				ra.todolist = {}
+				frosthide()
+				zmenuhide()
+			}
+			else if (result == 0) {
+				foreach (i, item in emuarray){
+					ra_updatecfg(emuarray[i],corearray[i])
+				}
+				frosthide()
+				zmenuhide()
+				restartAM()
+			}
+		})
+	}
+}
+
+function ra_selectcore(startemu){
+	local oldcore = ra_getemucore(startemu)
+	local newcore = ra.todolist.rawin(startemu) ? ra.todolist[startemu] : ""
+
+	local startpos = newcore == "" ? ra.corelist.find(oldcore) : ra.corelist.find(newcore)
+	if (startpos == null) startpos = 0
+
 	local coremenulist = []
 	local coreglyphs = []
 	foreach (i, item in ra.corelist){
 		coremenulist.push(ra.coretable[item].displayname)
-		coreglyphs.push (i == startpos ? 0xea10 : ((ra.todolist.rawin(startemu) && (ra.todolist[startemu] == ra.coretable[item].shortname) ) ? 0xe905 : 0))
+		coreglyphs.push (i == ra.corelist.find(oldcore) ? 0xea10 : (ra.corelist.find(newcore) == i ? 0xe905 : 0))
 	}
 	frostshow()
 	zmenudraw(coremenulist,coreglyphs,null,"Select Core",0xeafa,startpos,false,false,false,false,false,
@@ -16918,7 +16966,8 @@ function ra_selectcore(startcore,startemu){
 		if (result == -1) {
 			ra_selectemu(startemu)
 		} else {
-			ra.todolist.rawset(startemu,ra.corelist[result])
+			if (oldcore != ra.corelist[result]) ra.todolist.rawset(startemu,ra.corelist[result])
+			else ra.todolist.rawdelete(startemu)
 			ra_selectemu(startemu)
 			//ra_updatecfg(z_list.gametable[z_list.index].z_emulator,ra.corelist[result])
 			//frosthide()
@@ -16941,15 +16990,12 @@ function ra_selectemu(startemu){
 	foreach (item, val in AF.emulatordata){
 		emulist.push (item)
 	}
-	emulist.sort()
 
+	emulist.sort()
 	startpos = emulist.find(currentemu)
 
 	foreach (i, val in emulist){
-		corelist.push (AF.emulatordata[val].racore == "" ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) +")")
-	}
-
-	foreach(i, val in emulist){
+		corelist.push (((AF.emulatordata[val].racore == "") && (!ra.todolist.rawin(val))) ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) +")")
 		todoglyph.push ((ra.todolist.rawin(val) ) ? 0xe905 : 0)
 	}
 
@@ -16957,11 +17003,22 @@ function ra_selectemu(startemu){
 	zmenudraw(emulist,todoglyph,corelist,"Select Emulator",0xeafa,startpos,false,false,false,false,false,
 	function (result){
 		if (result == -1){
-			frosthide()
-			zmenuhide()
+			ra_applychanges()
 		}
 		else {
-			ra_selectcore(ra_getemucore(emulist[result]),emulist[result])
+			if (ra_getemucore(emulist[result]) == "") {
+				zmenudraw(ltxtarray(["Yes","No"],AF.LNG),[0xea10,0xea0f],null,"Apply RA core?",0xeafa,0,false,false,true,false,false,
+				function (result2){
+					if (result2 == 0) ra_selectcore(emulist[result])
+					else if (result2 == 1) {
+						ra.todolist.rawdelete(emulist[result])
+						ra_selectemu(startemu)
+					}
+					else ra_selectemu(startemu)
+				})
+			}
+			else ra_selectcore(emulist[result])
+
 		}
 	})
 }
