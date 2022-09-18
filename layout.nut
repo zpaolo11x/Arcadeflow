@@ -16962,7 +16962,12 @@ function ra_selectcore(startemu){
 	local coreglyphs = []
 	foreach (i, item in ra.corelist){
 		coremenulist.push(ra.coretable[item].displayname)
-		coreglyphs.push (i == ra.corelist.find(oldcore) ? 0xea10 : (ra.corelist.find(newcore) == i ? 0xe905 : 0))
+		if ((oldcore == newcore) || (newcore == "")){
+			coreglyphs.push (i == ra.corelist.find(oldcore) ? 0xea10 : 0)
+		}
+		else {
+			coreglyphs.push (i == ra.corelist.find(oldcore) ? 0xea11 : (ra.corelist.find(newcore) == i ? 0xea10 : 0))
+		}
 	}
 	frostshow()
 	zmenudraw(coremenulist,coreglyphs,null,"Select Core",0xeafa,startpos,false,false,false,false,false,
