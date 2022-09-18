@@ -14490,7 +14490,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Change emulator core",AF.LNG)
+		label = ltxt ("Change core assignment",AF.LNG)
 		glyph = 0xeafa
 		visible = true
 		id = 0

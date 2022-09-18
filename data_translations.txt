@@ -2608,6 +2608,9 @@ IT | Seleziona emulatore
 EN | Apply RA core
 IT | Applica un core RA
 
+EN | Change core assignment
+IT | Modifica assegnazione core
+
 # SORT, SEARCH AND MULTIFILTER MENU
 
 EN | Search
