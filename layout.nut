@@ -14484,9 +14484,10 @@ function buildutilitymenu(){
 		id = 0
 		order = 0
 		sidenote = function(){
-			return "☰"
+			return (prf.RAENABLED ? "☰" : "DISABLED")
 		}
 		command = function(){
+			if (!prf.RAENABLED) return
 			umvisible = false
 			ra_selectemu(z_list.gametable[z_list.index].z_emulator)
 		}
@@ -16861,7 +16862,7 @@ function ra_init(){
 	foreach (i,item in ra.corelist){
 		stringline = "#"
 		coreinfofile = ReadTextFile (fe.path_expand(ra.infopath+item+"_libretro.info"))
-		print(fe.path_expand(ra.infopath+item+"_libretro.info")+"\n")
+
 		while (stringline[0].tochar() == "#"){
 			stringline = coreinfofile.read_line()
 		}
@@ -16871,12 +16872,9 @@ function ra_init(){
 
 	ra.corelist.sort(@(a,b) ra.coretable[a].displayname <=> ra.coretable[b].displayname)
 
-	foreach(i, item in ra.corelist){
-		print (i+" "+item+" "+ra.coretable[item].displayname+"\n")
-	}
 }
 
-ra_init()
+if (prf.RAENABLED) ra_init()
 
 function ra_updatecfg(emulator,core){
 	local filearray = []
@@ -16978,8 +16976,6 @@ function ra_selectcore(startemu){
 }
 
 function ra_selectemu(startemu){
-	testpr("SELECT EMU\n")
-	print_variable(ra.todolist,"","")
 
 	local startpos = 0
 	local currentemu = startemu
@@ -17026,12 +17022,6 @@ function ra_selectemu(startemu){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
-
-	if (sig == "custom1"){
-		print_variable(AF.emulatordata,0,"")
-		ra_selectemu(z_list.gametable[z_list.index].z_emulator)
-		//ra_selectcoremenu(ra_getemucore(z_list.gametable[z_list.index].z_emulator))
-	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
