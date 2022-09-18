@@ -2876,6 +2876,7 @@ function getemulatordata(emulatorname){
 		artworktable = {}
 		executable = null
 		args = null
+		racore = null
 	}
 	local infile = ReadTextFile (FeConfigDirectory+"emulators/"+emulatorname)
    local inline = ""
@@ -2889,6 +2890,7 @@ function getemulatordata(emulatorname){
 	local workdir = ""
 	local executable = ""
 	local args = ""
+	local racore = ""
 
 	while (!infile.eos()){
 		inline = infile.read_line()
@@ -2938,6 +2940,9 @@ function getemulatordata(emulatorname){
 
 		}
 	}
+
+	racore = (executable.tolower().find("retroarch") != null) ? split(args," ")[1] : ""
+
 	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
 		artworktable.video <- fe.path_expand(split(artworktable.snap,";")[1])
 		artworktable.snap = fe.path_expand(split(artworktable.snap,";")[0])
@@ -2964,6 +2969,7 @@ function getemulatordata(emulatorname){
 	out.artworktable = artworktable
 	out.executable = executable
 	out.args = args
+	out.racore = racore
 
 	return (out)
 }
@@ -14295,20 +14301,6 @@ function buildutilitymenu(){
 		}
 		command = function(){
 			favtoggle()
-		/*
-			try {
-				if (multifilterz.l0["Favourite"].menu["Favourite"].filtered){
-					multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
-				}
-				else multifilterz.l0["Favourite"].menu["Favourite"].filtered = true
-
-
-				mfz_populate()
-				mfz_apply(false)
-				utilitymenu(umpresel)
-			}
-			catch (err){return}
-			*/
 		}
 	})
 
@@ -14472,6 +14464,31 @@ function buildutilitymenu(){
 			savetabletofile (DISPLAYTABLE,"pref_thumbtype.txt")
 			fe.signal("reload")
 			if(prf.THEMEAUDIO) snd.wooshsound.playing = true
+		}
+	})
+
+	umtable.push ({
+		label = ltxt("RetroArch Integration",AF.LNG)
+		glyph = -1
+		visible = true
+		order = 0
+		id = 0
+		sidenote = function (){return ""}
+		command = function (){return}
+	})
+
+	umtable.push ({
+		label = ltxt ("Change emulator core",AF.LNG)
+		glyph = 0xeafa
+		visible = true
+		id = 0
+		order = 0
+		sidenote = function(){
+			return "☰"
+		}
+		command = function(){
+			umvisible = false
+			ra_selectcoremenu(ra_getemucore(z_list.gametable[z_list.index].z_emulator))
 		}
 	})
 
@@ -16813,6 +16830,8 @@ function parsevolume(op){
 local ra = {}
 function ra_init(){
 
+	ra.todolist <- {}
+
 	ra.binpath <- 	(prf.RAEXEPATH != "") ? fe.path_expand(prf.RAEXEPATH) :
 						(OS == "OSX") ? fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch") :
 						(OS == "Windows") ? fe.path_expand("") :
@@ -16885,25 +16904,64 @@ function ra_getemucore(emulator){
 	return(ra.coretable[args].shortname)
 }
 
-function ra_selectcoremenu(startcore){
+function ra_selectcore(startcore,startemu){
 	local startpos = ra.corelist.find(startcore)
 	local coremenulist = []
 	local coreglyphs = []
 	foreach (i, item in ra.corelist){
 		coremenulist.push(ra.coretable[item].displayname)
-		coreglyphs.push (i == startpos ? 0xea10 : 0)
+		coreglyphs.push (i == startpos ? 0xea10 : ((ra.todolist.rawin(startemu) && (ra.todolist[startemu] == ra.coretable[item].shortname) ) ? 0xe905 : 0))
 	}
 	frostshow()
-	zmenudraw(coremenulist,coreglyphs,null,"Retroarch Cores",0xeafa,startpos,false,false,false,false,false,
+	zmenudraw(coremenulist,coreglyphs,null,"Select Core",0xeafa,startpos,false,false,false,false,false,
 	function (result){
 		if (result == -1) {
-			frosthide()
-			zmenuhide()
+			ra_selectemu(startemu)
 		} else {
-			ra_updatecfg(z_list.gametable[z_list.index].z_emulator,ra.corelist[result])
+			ra.todolist.rawset(startemu,ra.corelist[result])
+			ra_selectemu(startemu)
+			//ra_updatecfg(z_list.gametable[z_list.index].z_emulator,ra.corelist[result])
+			//frosthide()
+			//zmenuhide()
+			//restartAM()
+		}
+	})
+}
+
+function ra_selectemu(startemu){
+	testpr("SELECT EMU\n")
+	print_variable(ra.todolist,"","")
+
+	local startpos = 0
+	local currentemu = startemu
+
+	local emulist = []
+	local corelist = []
+	local todoglyph = []
+	foreach (item, val in AF.emulatordata){
+		emulist.push (item)
+	}
+	emulist.sort()
+
+	startpos = emulist.find(currentemu)
+
+	foreach (i, val in emulist){
+		corelist.push (AF.emulatordata[val].racore == "" ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) +")")
+	}
+
+	foreach(i, val in emulist){
+		todoglyph.push ((ra.todolist.rawin(val) ) ? 0xe905 : 0)
+	}
+
+	frostshow()
+	zmenudraw(emulist,todoglyph,corelist,"Select Emulator",0xeafa,startpos,false,false,false,false,false,
+	function (result){
+		if (result == -1){
 			frosthide()
 			zmenuhide()
-			restartAM()
+		}
+		else {
+			ra_selectcore(ra_getemucore(emulist[result]),emulist[result])
 		}
 	})
 }
@@ -16913,7 +16971,9 @@ function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
 	if (sig == "custom1"){
-		ra_selectcoremenu(ra_getemucore(z_list.gametable[z_list.index].z_emulator))
+		print_variable(AF.emulatordata,0,"")
+		ra_selectemu(z_list.gametable[z_list.index].z_emulator)
+		//ra_selectcoremenu(ra_getemucore(z_list.gametable[z_list.index].z_emulator))
 	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
