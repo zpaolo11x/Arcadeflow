@@ -1,2 +1,4 @@
-14.5
+14.6
+It is now possible to change RA cores from AF UI
+Added option to enable RetroArch integration
 Fixed issue with multifilter jumps

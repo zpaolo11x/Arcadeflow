@@ -1690,6 +1690,30 @@ BR | Texto a ser exibido durante o modo vinhenta (ATTRACT)
 FR | Texte qui apparait durant le mode SEDUCTION
 DE | Text der während des Attract Mode angezeigt werden soll
 
+EN | RETROARCH INTEGRATION
+IT | INTEGRA RETROARCH
+
+EN | Assign retroarch cores to emulators
+IT | Assegna i core RetroArch ai diversi emulatori
+
+EN | Enable RetroArch integration
+IT | Abilita integrazione RetroArch
+
+EN | Enable or disable the integration of RetroArch
+IT | Abilita o disabilita l'integrazione di Retroarch
+
+EN | Custom executable path
+IT | Path eseguibile custom
+
+EN | Enter the path to RetroArch executable if not installed in your OS default location
+IT | Inserisci il percorso all'eseguibile di RetroArch se non usi la directory standard
+
+EN | Custom Core folder
+IT | Directory core custom
+
+EN | Enter a custom folder for RA cores if not using standard locations
+IT | Inserisci il percorso di una cartella dei core se non utilizzi la directory standard
+
 EN | SEARCH & FILTERS
 IT | RICERCA E FILTRI
 ES | BUSCAR
@@ -2559,6 +2583,33 @@ EN | Categories
 IT | Categorie
 ES | Categorias
 DE | Kategorien
+
+EN | RetroArch Integration
+IT | Integrazione RetroArch
+
+EN | DISABLED
+IT | DISABILITATO
+
+EN | Discard changes
+IT | Annulla modifiche
+
+EN | Apply changes
+IT | Applica modifiche
+
+EN | Assigned cores
+IT | Core assegnati
+
+EN | Select core
+IT | Seleziona core
+
+EN | Select emulator
+IT | Seleziona emulatore
+
+EN | Apply RA core
+IT | Applica un core RA
+
+EN | Change core assignment
+IT | Modifica assegnazione core
 
 # SORT, SEARCH AND MULTIFILTER MENU
 

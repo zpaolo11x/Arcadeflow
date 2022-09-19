@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.5
+// Arcadeflow - v 14.6
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.5"
+	version = "14.6"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -257,6 +257,13 @@ WORKFLOW
 
 	In the end the layout must be reloaded
 */
+
+function restartAM(){
+	fe.signal("exit_to_desktop")
+	if (OS == "Windows") system("start attractplus-console.exe")
+	else if (OS == "OSX") system("./attractplus &")
+	else system("attractplus &")
+}
 
 // This function parses the attract.cfg and builds a structure for all displays
 function parseconfig(){
@@ -824,8 +831,8 @@ menucounter ++
 sorter.rawset("um", menucounter)
 AF.prefs.l0.push({label = "UTILITY MENU", glyph = 0xe9bd, description = "Customize the utility menu entries that you want to see in the menu"})
 AF.prefs.l1.push([
-{v = 10.5, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(18), selection = AF.req.menusort},
-{v = 10.5, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(18)}, selection = AF.req.executef},
+{v = 14.6, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(20), selection = AF.req.menusort},
+{v = 14.6, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(20)}, selection = AF.req.executef},
 ])
 
 menucounter ++
@@ -965,6 +972,14 @@ AF.prefs.l1.push([
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
+
+menucounter ++
+AF.prefs.l0.push({ label = "RETROARCH INTEGRATION", glyph = 0xeafa, description = "Assign retroarch cores to emulators"})
+AF.prefs.l1.push([
+	{v = 14.6, varname = "raenabled", glyph = 0xeafa, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
+	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "Custom executable path", help = "Enter the path to RetroArch executable if not installed in your OS default location", options = "", values = "", selection = AF.req.textentr},
+	{v = 14.6, varname = "racorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACOREPATH <- val}, title = "Custom Core folder", help = "Enter a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.textentr},
+])
 
 menucounter ++
 sorter.rawset("mf", menucounter)
@@ -2859,6 +2874,9 @@ function getemulatordata(emulatorname){
 		importextras = null
 		mainsysname = null
 		artworktable = {}
+		executable = null
+		args = null
+		racore = null
 	}
 	local infile = ReadTextFile (FeConfigDirectory+"emulators/"+emulatorname)
    local inline = ""
@@ -2870,10 +2888,20 @@ function getemulatordata(emulatorname){
 	local mainsysname = ""
 	local artworktable = {}
 	local workdir = ""
+	local executable = ""
+	local args = ""
+	local racore = ""
 
 	while (!infile.eos()){
 		inline = infile.read_line()
-		if (inline.find("rompath") == 0) {
+		if (inline.find("executable") == 0) {
+			executable = strip(inline.slice(10))
+			executable = fe.path_expand(executable)
+		}
+		else if (inline.find("args") == 0) {
+			args = strip(inline.slice(4))
+		}
+		else if (inline.find("rompath") == 0) {
 			rompath = strip(inline.slice(7))
 			rompath = fe.path_expand(rompath)
 			if ((rompath.slice(-1) != "\\") && (rompath.slice(-1) != "/")) rompath = rompath + "/"
@@ -2912,6 +2940,21 @@ function getemulatordata(emulatorname){
 
 		}
 	}
+
+	if (executable.tolower().find("retroarch") == null) racore = ""
+	else {
+		racore = args
+		if (racore.find("_libretro") != null){
+			racore = racore.slice(0,racore.find("_libretro"))
+			if (racore[0].tochar() == ap)
+				racore = racore.slice(1,0)
+
+			racore = split(racore,"/\\ ")
+			racore = racore[racore.len()-1]
+		}
+		else racore = split(args," ")[1]
+	}
+
 	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
 		artworktable.video <- fe.path_expand(split(artworktable.snap,";")[1])
 		artworktable.snap = fe.path_expand(split(artworktable.snap,";")[0])
@@ -2936,6 +2979,9 @@ function getemulatordata(emulatorname){
 	out.importextras = extras
 	out.mainsysname = mainsysname
 	out.artworktable = artworktable
+	out.executable = executable
+	out.args = args
+	out.racore = racore
 
 	return (out)
 }
@@ -12631,7 +12677,7 @@ function checkforupdates(force){
 				function(out){
 					zmenuhide()
 					frosthide()
-					fe.signal("exit_to_desktop")
+					restartAM()
 				})
 			}
 		}
@@ -14267,20 +14313,6 @@ function buildutilitymenu(){
 		}
 		command = function(){
 			favtoggle()
-		/*
-			try {
-				if (multifilterz.l0["Favourite"].menu["Favourite"].filtered){
-					multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
-				}
-				else multifilterz.l0["Favourite"].menu["Favourite"].filtered = true
-
-
-				mfz_populate()
-				mfz_apply(false)
-				utilitymenu(umpresel)
-			}
-			catch (err){return}
-			*/
 		}
 	})
 
@@ -14444,6 +14476,32 @@ function buildutilitymenu(){
 			savetabletofile (DISPLAYTABLE,"pref_thumbtype.txt")
 			fe.signal("reload")
 			if(prf.THEMEAUDIO) snd.wooshsound.playing = true
+		}
+	})
+
+	umtable.push ({
+		label = ltxt("RetroArch Integration",AF.LNG)
+		glyph = -1
+		visible = true
+		order = 0
+		id = 0
+		sidenote = function (){return ""}
+		command = function (){return}
+	})
+
+	umtable.push ({
+		label = ltxt ("Change core assignment",AF.LNG)
+		glyph = 0xeafa
+		visible = true
+		id = 0
+		order = 0
+		sidenote = function(){
+			return (prf.RAENABLED ? "☰" : ltxt("DISABLED",AF.LNG))
+		}
+		command = function(){
+			if (!prf.RAENABLED) return
+			umvisible = false
+			ra_selectemu(z_list.gametable[z_list.index].z_emulator)
 		}
 	})
 
@@ -15014,10 +15072,7 @@ if (prf.ALLGAMES != AF.config.collections){
 		update_allgames_collections(true,prf)
 	}
 	//fe.signal("reload")
-	fe.signal("exit_to_desktop")
-	if (OS == "Windows") system("start attractplus-console.exe")
-	else if (OS == "OSX") system("./attractplus &")
-	else system("attractplus &")
+	restartAM()
 }
 
 fe.layout.font = uifonts.mono
@@ -16782,7 +16837,195 @@ function parsevolume(op){
 	}
 }
 
+/// RetroArch Functions ///
 
+// ra_init initialise the ra table with data regarding RA and cores
+local ra = {}
+function ra_init(){
+
+	ra.todolist <- {}
+
+	ra.binpath <- 	(prf.RAEXEPATH != "") ? fe.path_expand(prf.RAEXEPATH) :
+						(OS == "OSX") ? fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch") :
+						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\retroarch.exe") :
+						fe.path_expand("retroarch")
+
+	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
+						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\") :
+						fe.path_expand("$HOME/.config/retroarch/")
+
+	ra.corepath <- prf.RACOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACOREPATH
+
+	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
+						(OS == "Windows") ? fe.path_expand(ra.basepath+"info\\") :
+						ra.corepath
+
+	ra.corelist <- []
+	ra.coretable <- {}
+	local dirlist = DirectoryListing (ra.corepath,false).results
+	foreach (i,item in dirlist){
+		if ((item.find("_libretro") != null) && (item.find(".info") == null)) {
+			ra.coretable.rawset(item.slice(0,item.find("_libretro")),{})
+			ra.corelist.push(item.slice(0,item.find("_libretro")))
+		}
+	}
+	local coreinfofile = null
+	local stringline = "#"
+	foreach (i,item in ra.corelist){
+		stringline = "#"
+		coreinfofile = ReadTextFile (fe.path_expand(ra.infopath+item+"_libretro.info"))
+
+		while (stringline[0].tochar() == "#"){
+			stringline = coreinfofile.read_line()
+		}
+		ra.coretable[item].rawset("shortname",item)
+		ra.coretable[item].rawset("displayname",stringline.slice(stringline.find(ap)+1,-1))
+	}
+
+	ra.corelist.sort(@(a,b) ra.coretable[a].displayname <=> ra.coretable[b].displayname)
+
+}
+
+if (prf.RAENABLED) ra_init()
+
+function ra_updatecfg(emulator,core){
+	local filearray = []
+	local emufile = ReadTextFile(FeConfigDirectory+"emulators/"+emulator+".cfg")
+	while (!emufile.eos()){
+		filearray.push (emufile.read_line())
+	}
+	foreach (i, item in filearray){
+		if (item.find("executable") == 0) {
+			filearray[i] = "executable           " + ra.binpath
+		}
+		else if (item.find("args") == 0) {
+			filearray[i] = "args                 -L " + core + " "+ap+"[romfilename]"+ap
+		}
+	}
+	local emuoutfile = WriteTextFile(FeConfigDirectory+"emulators/"+emulator+".cfg")
+	foreach (i, item in filearray){
+		emuoutfile.write_line(item+"\n")
+	}
+	emuoutfile.close_file()
+}
+
+function ra_applychanges(){
+	local emuarray = []
+	local corearray = []
+	local menuarray = []
+	local glypharray = []
+	foreach (item, val in ra.todolist){
+		emuarray.push(item)
+		corearray.push(val)
+		menuarray.push (item+": "+val)
+		glypharray.push(0)
+	}
+	if (emuarray.len() == 0) {
+		frosthide()
+		zmenuhide()
+	} else {
+		menuarray.insert(0,"")
+		menuarray.insert(0,ltxt("Discard changes",AF.LNG))
+		menuarray.insert(0,ltxt("Apply changes",AF.LNG))
+
+		glypharray.insert(0,-1)
+		glypharray.insert(0,0xea0f)
+		glypharray.insert(0,0xea10)
+
+		zmenudraw(menuarray,glypharray,null,ltxt("Assigned cores",AF.LNG),0xeafa,0,false,false,false,false,false,
+		function (result){
+			if ((result == -1) || (result == 1)) {
+				ra.todolist = {}
+				frosthide()
+				zmenuhide()
+			}
+			else if (result == 0) {
+				foreach (i, item in emuarray){
+					ra_updatecfg(emuarray[i],corearray[i])
+				}
+				frosthide()
+				zmenuhide()
+				restartAM()
+			}
+		})
+	}
+}
+
+function ra_selectcore(startemu){
+	local oldcore = AF.emulatordata[startemu].racore
+	local newcore = ra.todolist.rawin(startemu) ? ra.todolist[startemu] : ""
+
+	local startpos = newcore == "" ? ra.corelist.find(oldcore) : ra.corelist.find(newcore)
+	if (startpos == null) startpos = 0
+
+	local coremenulist = []
+	local coreglyphs = []
+	foreach (i, item in ra.corelist){
+		coremenulist.push(ra.coretable[item].displayname)
+		if ((oldcore == newcore) || (newcore == "")){
+			coreglyphs.push (i == ra.corelist.find(oldcore) ? 0xea10 : 0)
+		}
+		else {
+			coreglyphs.push (i == ra.corelist.find(oldcore) ? 0xea11 : (ra.corelist.find(newcore) == i ? 0xea10 : 0))
+		}
+	}
+	frostshow()
+	zmenudraw(coremenulist,coreglyphs,null,ltxt("Select core",AF.LNG),0xeafa,startpos,false,false,false,false,false,
+	function (result){
+		if (result == -1) {
+			ra_selectemu(startemu)
+		} else {
+			if (oldcore != ra.corelist[result]) ra.todolist.rawset(startemu,ra.corelist[result])
+			else ra.todolist.rawdelete(startemu)
+			//OLD VERSION: ra_selectemu(startemu)
+			ra_selectcore(startemu)
+		}
+	})
+}
+
+function ra_selectemu(startemu){
+
+	local startpos = 0
+	local currentemu = startemu
+
+	local emulist = []
+	local corelist = []
+	local todoglyph = []
+	foreach (item, val in AF.emulatordata){
+		emulist.push (item)
+	}
+
+	emulist.sort()
+	startpos = emulist.find(currentemu)
+
+	foreach (i, val in emulist){
+		corelist.push (((AF.emulatordata[val].racore == "") && (!ra.todolist.rawin(val))) ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) +")")
+		todoglyph.push ((ra.todolist.rawin(val) ) ? 0xe905 : 0)
+	}
+
+	frostshow()
+	zmenudraw(emulist,todoglyph,corelist,ltxt("Select emulator",AF.LNG),0xeafa,startpos,false,false,false,false,false,
+	function (result){
+		if (result == -1){
+			ra_applychanges()
+		}
+		else {
+			if (AF.emulatordata[emulist[result]].racore == "") {
+				zmenudraw(ltxtarray(["Yes","No"],AF.LNG),[0xea10,0xea0f],null,ltxt("Apply RA core",AF.LNG)+"?",0xeafa,0,false,false,true,false,false,
+				function (result2){
+					if (result2 == 0) ra_selectcore(emulist[result])
+					else if (result2 == 1) {
+						ra.todolist.rawdelete(emulist[result])
+						ra_selectemu(startemu)
+					}
+					else ra_selectemu(startemu)
+				})
+			}
+			else ra_selectcore(emulist[result])
+
+		}
+	})
+}
 
 /// On Signal ///
 function on_signal( sig ){
