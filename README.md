@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.5 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.6 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,12 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.5 #
+## What's new in v 14.6 #
 
-- Added option to show controls overlay only on arcade games
-- Added two new systems: Sega Pico and Acan
-- In multifilter menu you can skip void entries with "right"
-- Fixed issue with controls overlay
+- It is now possible to change RA cores from AF UI
+- Added option to enable RetroArch integration
+- Fixed issue with multifilter jumps
 
 ## Emulator system identifier #
 
@@ -112,7 +111,7 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Clean layout' : Reduce game data shown on screen
 - 'Low resolution' : Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout
 - 'Screen rotation' : Rotate screen
-- 'Custom color' : Define a custom color for UI elements, R G B space separated
+- 'Custom color' : Define a custom color for UI elements using sliders
 - Game Data
 - 'Display Game Long Name' : Shows the part of the rom name with version and region data
 - 'Display System Name' : Shows the System name under the game title
@@ -204,21 +203,21 @@ Define custom control buttons for different features of Arcadeflow
 - 'Utility menu button' : Chose the button to open the utility menu
 - 'History page button' : Chose the button to open the history or overview page
 - 'Thumbnail mode button' : Chose the button to use to switch from snapshot mode to box art mode
-- Search & Filter
+- Search and Filters
 - 'Search menu button' : Chose the button to use to directly open the search menu instead of using the utility menu
 - 'Category menu button' : Chose the button to use to open the list of game categories
 - 'Multifilter menu button' : Chose the button to use to open the menu for dynamic filtering of romlist
 - 'Show favorites button' : Chose the button to use to toggle favorite filtering
 - Sound
-- 'Volume button' : Chose the button to use to change system volume.
+- 'Volume button' : Chose the button to use to change system volume
 - ROM Management
 - 'Delete ROM button' : Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
 
-#### UTILITY MENU
+#### ❗ UTILITY MENU ❗
 Customize the utility menu entries that you want to see in the menu
 
-- 'Customize Utility Menu' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
-- 'Reset Utility Menu' : Reset sorting and selection of Utility Menu entries
+- '❗ Customize Utility Menu ❗' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
+- '❗ Reset Utility Menu ❗' : Reset sorting and selection of Utility Menu entries
 
 #### DISPLAYS MENU PAGE
 Arcadeflow has its own Displays Menu page that can be configured here
@@ -239,7 +238,7 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Exit AF when leaving Menu' : The esc button from Displays Menu triggers the exit from Arcadeflow
 - 'Enter Menu when leaving display' : The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
 
-#### ❗ HISTORY PAGE ❗
+#### HISTORY PAGE
 Configure the History page where larger thumbnail and game history data are shown
 
 - Video Effects
@@ -251,7 +250,7 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Text panel style' : Select the look of the history text panel
 - 'Game panel style' : Select the look of the history game panel
 - 'Detailed game data' : Show extra data after the game name before the history text
-- '❗ Control panel overlay ❗' : Show controller and buttons overlay on history page
+- 'Control panel overlay' : Show controller and buttons overlay on history page
 
 #### ATTRACT MODE
 Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here
@@ -328,7 +327,7 @@ Manage romlists and collections
 - 'Reset last played' : Remove all last played data from the current romlist
 - MASTER ROMLIST
 - 'Enable Master Romlist' : Turn this on and set master romlist path so AF can manage it
-- 'Master Romlist Path' : If you are using a master romlist, locate it here to enable AF master romlist optimisation.
+- 'Master Romlist Path' : If you are using a master romlist, locate it here to enable AF master romlist optimisation
 - ROMLIST EXPORT
 - 'Export to gamelist xml' : You can export your romlist in the XML format used by EmulationStation
 - COLLECTIONS
@@ -337,6 +336,13 @@ Manage romlists and collections
 - DANGER ZONE
 - 'Enable game hiding' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
+
+#### ❗ RETROARCH INTEGRATION ❗
+Assign retroarch cores to emulators
+
+- '❗ Enable RetroArch integration ❗' : Enable or disable the integration of RetroArch
+- '❗ Custom executable path ❗' : Enter the path to RetroArch executable if not installed in your OS default location
+- '❗ Custom Core folder ❗' : Enter a custom folder for RA cores if not using standard locations
 
 #### SEARCH & FILTERS
 Configure the search page and multifilter options
@@ -371,6 +377,13 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.5*
+
+- Added option to show controls overlay only on arcade games
+- Added two new systems: Sega Pico and Acan
+- In multifilter menu you can skip void entries with "right"
+- Fixed issue with controls overlay
 
 *v14.4*
 
