@@ -979,6 +979,7 @@ AF.prefs.l1.push([
 	{v = 14.6, varname = "raenabled", glyph = 0xeafa, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
 	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "Custom executable path", help = "Enter the path to RetroArch executable if not installed in your OS default location", options = "", values = "", selection = AF.req.textentr},
 	{v = 14.6, varname = "racorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACOREPATH <- val}, title = "Custom Core folder", help = "Enter a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.textentr},
+	{v = 14.7, varname = "rainfopath", glyph = 0xe930, initvar = function(val,prf){prf.RAINFOPATH <- val}, title = "Custom Info folder", help = "Enter a custom folder for RA info files if not using standard locations", options = "", values = "", selection = AF.req.textentr},
 ])
 
 menucounter ++
@@ -16845,20 +16846,36 @@ function ra_init(){
 
 	ra.todolist <- {}
 
-	ra.binpath <- 	(prf.RAEXEPATH != "") ? fe.path_expand(prf.RAEXEPATH) :
-						(OS == "OSX") ? fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch") :
-						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\retroarch.exe") :
-						fe.path_expand("retroarch")
+	if (OS == "Windows"){
+		if (file_exist(fe.path_expand("C:\\RetroArch-Win64\\retroarch.exe"))) {
+			ra.basepath <- fe.path_expand("C:\\RetroArch-Win64\\")
+		}
+		else if (file_exist(fe.path_expand("C:\\RetroArch-Win32\\retroarch.exe"))) {
+			ra.basepath <- fe.path_expand("C:\\RetroArch-Win32\\")
+		}
+		else ra.basepath <- ""
 
-	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
-						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\") :
-						fe.path_expand("$HOME/.config/retroarch/")
+		ra.binpath <- fe.path_expand(ra.basepath+"retroarch.exe")
+		ra.corepath <- fe.path_expand(ra.basepath+"cores\\")
+		ra.infopath <- fe.path_expand(ra.basepath+"info\\")
+	}
+	else if (OS == "OSX"){
+		ra.binpath <- fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch")
+		ra.basepath <- fe.path_expand("$HOME/Library/Application Support/RetroArch/")
+		ra.corepath <- fe.path_expand(ra.basepath+"cores/")
+		ra.infopath <- fe.path_expand(ra.basepath+"info/")
+		}
+	}
+	else {
+		ra.binpath <- fe.path_expand("retroarch")
+		ra.basepath <- fe.path_expand("$HOME/.config/retroarch/")
+		ra.corepath <- fe.path_expand(ra.basepath+"cores/")
+		ra.infopath <- fe.path_expand(ra.basepath+"cores/")
+	}
 
-	ra.corepath <- prf.RACOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACOREPATH
-
-	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
-						(OS == "Windows") ? fe.path_expand(ra.basepath+"info\\") :
-						ra.corepath
+	if (prf.RAEXEPATH != "") ra.binpath = fe.path_expand(prf.RAEXEPATH)
+	if (prf.RACOREPATH != "") ra.corepath = fe.path_expand(prf.RACOREPATH)
+	if (prf.RAINFOPATH != "") ra.infopath = fe.path_expand(prf.INFOPATH)
 
 	ra.corelist <- []
 	ra.coretable <- {}
