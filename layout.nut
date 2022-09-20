@@ -16875,7 +16875,7 @@ function ra_init(){
 
 	if (prf.RAEXEPATH != "") ra.binpath = fe.path_expand(prf.RAEXEPATH)
 	if (prf.RACOREPATH != "") ra.corepath = fe.path_expand(prf.RACOREPATH)
-	if (prf.RAINFOPATH != "") ra.infopath = fe.path_expand(prf.INFOPATH)
+	if (prf.RAINFOPATH != "") ra.infopath = fe.path_expand(prf.RAINFOPATH)
 
 	ra.corelist <- []
 	ra.coretable <- {}
