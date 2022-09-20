@@ -4449,7 +4449,7 @@ function cleandatabase(temppref){
 		buildconfig(temppref.ALLGAMES, temppref)
 		update_allgames_collections(true,temppref)
 	}
-	restartAM()
+	//restartAM()
 }
 
 
