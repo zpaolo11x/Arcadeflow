@@ -968,6 +968,7 @@ AF.prefs.l1.push([
 {v = 12.1, varname = "allgames", glyph = 0xe95c, initvar = function(val,prf){prf.ALLGAMES <- val}, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
 {v = 12.0, varname = "updateallgames", glyph = 0xe95c, initvar = function(val,prf){prf.UPDATEALLGAMES <- val}, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = AF.req.liner},
+{v = 14.7, varname = "cleandatabase", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANDATABASE <- val}, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry" , options = "", values = function(){local tempprf = generateprefstable();cleandatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 14.1, varname = "enablehidden", glyph = 0xe997, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
@@ -4403,7 +4404,7 @@ function resetromlist(){
 	fe.set_display(fe.list.display_index)
 }
 
-function cleandatabase(){
+function cleandatabase(temppref){
 	local has_emulator = false
 	local has_romlist = false
 	local filepresent = false
@@ -4444,9 +4445,9 @@ function cleandatabase(){
 		saveromdb(item, z_list.db1[item], "db1")
 		saveromdb(item, z_list.db2[item], "db2")
 	}
-	if (prf.ALLGAMES) {
-		buildconfig(prf.ALLGAMES, prf)
-		update_allgames_collections(true,prf)
+	if (temppref.ALLGAMES) {
+		buildconfig(temppref.ALLGAMES, temppref)
+		update_allgames_collections(true,temppref)
 	}
 	restartAM()
 }
