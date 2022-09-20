@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.6
+// Arcadeflow - v 14.7
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.6"
+	version = "14.7"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -4403,6 +4403,53 @@ function resetromlist(){
 	fe.set_display(fe.list.display_index)
 }
 
+function cleandatabase(){
+	local has_emulator = false
+	local has_romlist = false
+	local filepresent = false
+	local todolist = []
+	foreach(item, val in z_list.db1){
+
+		// Check if each db entry has an emulator and a romlist
+		has_emulator = file_exist(FeConfigDirectory+"emulators/"+item+".cfg")
+		has_romlist = file_exist(AF.romlistfolder+item+".txt")
+
+		// If not delete this db main entry
+		if (!(has_emulator && has_romlist)) {
+			z_list.db1.rawdelete(item)
+			z_list.db2.rawdelete(item)
+			// Dovrei cancellare il file effettivo
+		} else {
+			// The entry has emulator and romlist, let's scan games
+			foreach (item2, val2 in val){
+				filepresent = false
+				foreach (i3, item3 in AF.emulatordata[item].romextarray){
+					if (file_exist (AF.emulatordata[item].rompath+item2+item3)) {
+						filepresent = true
+						break
+					}
+				}
+				if (!filepresent) {
+					testpr("EMULATOR:"+item+" GAME:"+item2+" NOT PRESENT\n")
+					z_list.db1[item].rawdelete(item2)
+					z_list.db2[item].rawdelete(item2)
+				}
+			}
+		}
+	}
+
+	// Now save the updated db files
+	foreach(item, val in z_list.db1){
+		refreshromlist(item,false)
+		saveromdb(item, z_list.db1[item], "db1")
+		saveromdb(item, z_list.db2[item], "db2")
+	}
+	if (prf.ALLGAMES) {
+		buildconfig(prf.ALLGAMES, prf)
+		update_allgames_collections(true,prf)
+	}
+	restartAM()
+}
 
 
 // Routine that returns an emty copy of the game data table
@@ -16864,7 +16911,6 @@ function ra_init(){
 		ra.basepath <- fe.path_expand("$HOME/Library/Application Support/RetroArch/")
 		ra.corepath <- fe.path_expand(ra.basepath+"cores/")
 		ra.infopath <- fe.path_expand(ra.basepath+"info/")
-		}
 	}
 	else {
 		ra.binpath <- fe.path_expand("retroarch")
@@ -17047,6 +17093,10 @@ function ra_selectemu(startemu){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
+
+	if (sig == "custom1"){
+		cleandatabase()
+	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
