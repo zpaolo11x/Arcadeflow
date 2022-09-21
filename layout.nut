@@ -4440,7 +4440,6 @@ function cleandatabase(temppref){
 					}
 				}
 				if (!filepresent) {
-					testpr("EMULATOR:"+item+" GAME:"+item2+" NOT PRESENT\n")
 					z_list.db1[item].rawdelete(item2)
 					z_list.db2[item].rawdelete(item2)
 				}
