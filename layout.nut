@@ -1,180 +1,180 @@
-{
-    "editor.minimap.enabled": false,
-    "editor.renderWhitespace": "none",
-    "workbench.activityBar.visible": true,
-    "editor.tabSize": 3,
-    "workbench.editor.labelFormat": "short",
-    "git.ignoreMissingGitWarning": true,
-    //"workbench.colorCustomizations": {
-    //"editorIndentGuide.activeBackground": "#a08484",
-    //},
-    "highlight.regexes": {
-      "(///.*///)()": [
-        {
-          "overviewRulerColor": "#cbdbed",
-          "backgroundColor": "#337ccc",
-          "color": "#ffffff",
-          "fontWeight": "bold",
-        },
-        {
-          "isWholeLine": "true",
-          "border": "1px solid #337ccc",
-          "borderWidth": "0px 0px 2px 0px"
-        }
-      ],
-        "(// ?MK)(.*)(//)": [
-          {
-            "overviewRulerColor": "#cbdbed",
-            "backgroundColor": "#337ccc"
-          },
-          {
-            "backgroundColor": "#337ccc",
-            "fontWeight": "bold",
-            "color": "#ffffff"
-          },
-          {
-            "isWholeLine": "true",
-            "color": "#ffffff",
-            "border": "1px solid #337ccc",
-            "borderWidth": "0px 0px 2px 0px"
-          }
-        ],
-        "(// ?TEST ?)(.*)": [
-          {
-            "overviewRulerColor": "#ff0000",
-            "backgroundColor": "#ff0000",
-            "color": "#ffffff",
-            "fontWeight": "bold",
-            "borderRadius": "50px"
-          },
-          {
-            "backgroundColor": "#d90000",
-            "color": "#ffffff"
-          }
-        ],
-        "(// ?DEBUG ?)(.*)": [
-          {
-            "backgroundColor": "#00d000",
-            "color": "#ffffff",
-            "fontWeight": "bold"
-          },
-          {
-            "backgroundColor": "#00a000",
-            "color": "#ffffff"
-          }
-        ],
-        "(timestart)": [
-          {
-            "color": "#00FF00",
-            "fontWeight": "bold"
-          }
-        ],
-        "(timestop)": [
-          {
-            "color": "#FF0000",
-            "fontWeight": "bold"
-          }
-        ],
-        "(// )(@\\w+)": [
-          {},
-          {
-            "color": "#4de0ff"
-          }
-        ]
-      },
+// Arcadeflow - v 14.7
+// Attract Mode Theme by zpaolo11x
+//
+// Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
+// Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
-    "[squirrel]": {},
-    "telemetry.enableCrashReporter": false,
-    "telemetry.enableTelemetry": false,
-    "update.enableWindowsBackgroundUpdates": false,
-    /*
-    "workbench.colorCustomizations": {
-      "[Streams Light]": {
-        "editor.selectionBackground": "#E2F5FF",
-        "editorBracketMatch.background": "#7D7D7D66",
-        "editorCursor.foreground": "#000000"
-      },
-      "[Streams Dark]": {
-        "editor.selectionBackground": "#2F4F4F",
-        "editorBracketMatch.background": "#7D7D7D66",
-        "editorCursor.foreground": "#FFFFFF"
-      }
-    },
-    */
-    "todo-tree.highlights.customHighlight": {
+// Load file nut
+fe.do_nut("nut_file.nut")
 
-      "///": {
-        "foreground": "#0090FF"
-      },
-      "TEST": {
-        "foreground": "#FF0000"
-      },
-      "DEBUG": {
-        "foreground": "#008000"
-      }
-    },
-    "todo-tree.highlights.defaultHighlight": {
-      "foreground": "#008000",
-      "type": "none"
-    },
-    "todo-tree.tree.expanded": true,
-    "todo-tree.tree.flat": true,
-    "todo-tree.tree.grouped": true,
-    "todo-tree.general.tags": [
-      "///",
-      "TEST",
-      "DEBUG"
-    ],
-    "bracket-pair-colorizer-2.colors": [
-      "#DCDCAA",
-      "#AADCAA",
-      "#F0C0FF"
-    ],
-    "bracket-pair-colorizer-2.showBracketsInGutter": true,
-    "breadcrumbs.enabled": false,
-    "http.proxyStrictSSL": false,
-    "sync.code": "4/wwGsqJ5V7CFR5H_x6-U87hbAnAKU98G8lgtVYNWaHuOxC8wKQ_g7vRA",
-    "sync.credentials": "{\"access_token\":\"ya29.Il-_B9yY5Y5mzN3qofwDKybcm--uINGaU1BXu6BP8AnTtjNrgZx-2O3wXBdxmtHVxxxFIauTff_HcOFOL8NlRkxwdvGSWz_6PkdWgEYZULsGbx_ahBmAayBD8Hz4LuyzTQ\",\"refresh_token\":\"1//09kiRAG_NVrQVCgYIARAAGAkSNwF-L9IrMLvgT9_VTfpLzIZnFNA-ltQoS8Y1zMOksdoYS0EZ1O3YNGmX796Qc8b0OwNkWNplJb4\",\"scope\":\"https://www.googleapis.com/auth/drive\",\"token_type\":\"Bearer\",\"expiry_date\":1582544205850}",
-    "editor.renderControlCharacters": true,
-    "todo-tree.tree.showScanModeButton": false,
-    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
-    "todo-tree.tree.buttons.scanMode": true,
-    "todo-tree.tree.scanMode": "current file",
-    "todo-tree.tree.sort": false,
-    "security.workspace.trust.untrustedFiles": "open",
-    "diffEditor.maxComputationTime": 0,
-    "workbench.editor.untitled.hint": "hidden",
-    "editor.bracketPairColorization.enabled": true,
-    "editor.guides.bracketPairs": "active",
-    "editor.unicodeHighlight.nonBasicASCII": false,
-    "githubPullRequests.queries": [
-      {
-        "label": "Waiting For My Review",
-        "query": "is:open review-requested:${user}"
-      },
-      {
-        "label": "Assigned To Me",
-        "query": "is:open assignee:${user}"
-      },
-      {
-        "label": "Created By Me",
-        "query": "is:open author:${user}"
-      }
-    ],
-    "explorer.confirmDelete": false,
-    "editor.fontFamily": "Menlo,Monaco,monospace",
-    "editor.fontSize": 15,
-    "editor.fontWeight": "Regular",
-    "settingsSync.ignoredSettings": [
-      "editor.fontSize",
-      "editor.fontWeight",
-      "editor.fontFamily"
-    ],
-    "window.autoDetectHighContrast": false,
-    "editor.fontLigatures": false,
-    "git.allowForcePush": true,
-    "git.confirmSync": false,
-  }al zmenu = null
+function z_write_line(file, line){
+	local b = blob( line.len() )
+	foreach (id, item in line)
+		b.writen( item, 'b' )
+	file.writeblob( b )
+}
+
+function split_complete(str_in, separator){
+	local outarray = []
+	local index = 0
+	while (str_in.find (separator) != null){
+		index = str_in.find (separator)
+		outarray.push (str_in.slice(0,index))
+		str_in = str_in.slice(index+separator.len())
+	}
+	outarray.push(str_in)
+	return outarray
+}
+
+// COME CAMBIA AR DA AF98
+/*
+Modificare la funzione GetAR in modo che restituisca l'AR _DA MOSTRARE_ pre-clamp,
+così per il GG è 4/3 come letto da System, per MAME è 3:4 o 4:3 secondo "orientation"
+per altri handheld è texture W/H stretto, se siamo in boxart mode è semplicemente texture W/H
+
+l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimensione dell'artwork.
+*/
+
+//EASE PRINT
+//local CCC = 0
+
+local elapse = {
+	name = ""
+	t1 = 0
+	t2 = 0
+	timer = false
+	timetable = {}
+}
+
+local ap = '"'.tochar()
+
+function timestart(name){
+	if (!elapse.timer) return
+	print ("\n    "+name+" START\n")
+	elapse.timetable.rawset(name, fe.layout.time)
+}
+
+function timestop(name){
+	if (!elapse.timer) return
+	elapse.t2 = fe.layout.time
+	print("\n    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n\n")
+}
+
+local IDX = array(100000)
+
+// Support array for quick sort
+foreach (i, item in IDX) {IDX[i] = format("%s%5u","\x00",i)}
+
+// Support array for unicode mapping
+function returngly(){
+	local uniglyph = [" ","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
+	return (uniglyph)
+}
+
+// General AF data table
+local AF = {
+
+	dat_freeze = true
+	dat_freezecount = 0
+
+	bgs_freezecount = 0
+
+	uniglyphs = returngly()
+	version = "14.7"
+	vernum = 0
+	folder = fe.script_dir
+	subfolder = ""
+	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
+	emulatorsfolder = fe.path_expand(FeConfigDirectory + "emulators/")
+	bgsongs = []
+
+	config = null
+
+	soundvolume = 0
+
+	prefs = {
+		l0 = []
+		a0 = []
+		l1 = []
+		gl0 = [] //glyph array
+		imgpath = "help_images/"
+		imgext = ".jpg"
+		getout = false
+		defaults = null
+		driveletters = null
+	}
+
+	req = {
+		keyboard = -1
+		executef = -2
+		filereqs = -3
+		menusort = -4
+		exenoret = -5
+		textentr = -6
+		rgbvalue = -7
+		huevalue = -8
+		slideint = -9
+		liner = -100
+	}
+
+	updatechecking = false
+	boxmessage = [""]
+	messageoverlay = null
+	tsc = 1.0 // Scaling of timer for different parameters
+
+	scrape = {
+		stack = []
+		regiontable = ["wor","us","eu","ss","jp"]
+		regionprefs = [] //This will be populated by options table
+		checktable = {}
+		purgedromdirlist = null
+		listoflists = null
+		emudata = null
+		forcemedia = false
+		romlist = ""
+		inprf = {}
+		scrapelist_file = null
+		scrapelist_lines = null
+		romlist_file = null
+		romlist_lines = null
+		quit = false
+		totalroms = 0
+		doneroms = 0
+		columns = 60
+		separator1 = ""
+		separator2 = ""
+		onegame = ""
+		dispatchid = 0
+		requests = ""
+		report = {}
+		threads = 0
+	}
+
+	emulatordata = {}
+
+	LNG = ""
+}
+
+AF.vernum = AF.version.tofloat()*10
+
+// GitHub versioning data table
+local gh = {
+	latest_version = 0
+	release_notes = 0
+}
+
+function gly(index){
+	local unizero = 0xe900
+	try {return (AF.uniglyphs[index - unizero + 1])} catch (err) {return ""}
+}
+
+AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
+for (local i = 0 ; i < AF.scrape.columns;i++){
+	AF.scrape.separator1 += "-"
+	AF.scrape.separator2 += "="
+}
+
+local zmenu = null
 
 // Load language file
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too.
@@ -4447,7 +4447,6 @@ function cleandatabase(temppref){
 			}
 		}
 	}
-
 
 	// Now save the updated db files
 	foreach(item, val in z_list.db1){
