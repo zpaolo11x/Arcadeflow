@@ -4405,11 +4405,20 @@ function resetromlist(){
 }
 
 function cleandatabase(temppref){
+
+	if (temppref.MASTERLIST) {
+		z_edit_dialog("Not possible when master romlist is enabled")
+		return
+	}
+
+	z_splash_message("Cleanup...")
+
 	local has_emulator = false
 	local has_romlist = false
 	local filepresent = false
 	local todolist = []
 	foreach(item, val in z_list.db1){
+		z_splash_message(item+"\nCleaning Database")
 
 		// Check if each db entry has an emulator and a romlist
 		has_emulator = file_exist(FeConfigDirectory+"emulators/"+item+".cfg")
@@ -4441,14 +4450,18 @@ function cleandatabase(temppref){
 
 	// Now save the updated db files
 	foreach(item, val in z_list.db1){
+		z_splash_message(item+"\nRefresh Romlist [ ]\nUpdate Database [ ]")
 		refreshromlist(item,false)
+		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [ ]")
 		saveromdb(item, z_list.db1[item], "db1")
+		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [*]")
 		saveromdb(item, z_list.db2[item], "db2")
 	}
 	if (temppref.ALLGAMES) {
 		buildconfig(temppref.ALLGAMES, temppref)
 		update_allgames_collections(true,temppref)
 	}
+	z_splash_message("All Done")
 	//restartAM()
 }
 
