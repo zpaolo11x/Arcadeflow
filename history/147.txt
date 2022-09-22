@@ -2,3 +2,4 @@
 Added new option to remove unused entries in games db
 Added support for RA 32 Bit in Windows
 Added new options for RetroArch custom folders
+Fixed deleted tags showing in list

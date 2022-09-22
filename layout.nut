@@ -4854,6 +4854,7 @@ z_list.allromlists = allromlists()
 function z_updatetagstable(){
 	// Clear the tags table
 	z_list.tagstable = {}
+	z_list.tagstableglobal = {}
 
 	foreach (id, item in z_list.boot2){
 		foreach (id2, item2 in item.z_tags){
@@ -4861,6 +4862,13 @@ function z_updatetagstable(){
 		}
 	}
 
+	foreach (itemname, value in z_list.db2){
+		foreach (id, item in z_list.db2[itemname]){
+			foreach (id2, item2 in item.z_tags){
+				z_list.tagstableglobal.rawset(item2,0)
+			}
+		}
+	}
 	/*
 	foreach (romlistid, val in z_list.allromlists){
 		local tagsarray = []
