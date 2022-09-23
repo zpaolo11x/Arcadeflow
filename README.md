@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.6 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.7 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,11 +10,13 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.6 #
+## What's new in v 14.7 #
 
-- It is now possible to change RA cores from AF UI
-- Added option to enable RetroArch integration
-- Fixed issue with multifilter jumps
+- Added option to reset database without affecting romlist
+- Added new option to remove unused entries in games db
+- Added support for RA 32 Bit in Windows
+- Added new options for RetroArch custom folders
+- Fixed deleted tags showing in list
 
 ## Emulator system identifier #
 
@@ -213,11 +215,11 @@ Define custom control buttons for different features of Arcadeflow
 - ROM Management
 - 'Delete ROM button' : Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
 
-#### ❗ UTILITY MENU ❗
+#### UTILITY MENU
 Customize the utility menu entries that you want to see in the menu
 
-- '❗ Customize Utility Menu ❗' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
-- '❗ Reset Utility Menu ❗' : Reset sorting and selection of Utility Menu entries
+- 'Customize Utility Menu' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
+- 'Reset Utility Menu' : Reset sorting and selection of Utility Menu entries
 
 #### DISPLAYS MENU PAGE
 Arcadeflow has its own Displays Menu page that can be configured here
@@ -318,11 +320,12 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
 - 'Import only available roms' : Import entrief from the games list only if the rom file is actually available
 
-#### ROMLIST MANAGEMENT
+#### ❗ ROMLIST MANAGEMENT ❗
 Manage romlists and collections
 
 - ROMLISTS
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
+- '❗ Erase romlist database ❗' : Doesn't rescan the romlist, bur erases all game database information
 - 'Reset current romlist' : Rescan the romlist erasing and regenerating all romlist data
 - 'Reset last played' : Remove all last played data from the current romlist
 - MASTER ROMLIST
@@ -334,15 +337,17 @@ Manage romlists and collections
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
 - DANGER ZONE
+- '❗ Cleanup database ❗' : Rescans all the romlists adding/removing roms, then purges the database to remove unused entry
 - 'Enable game hiding' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
 
 #### ❗ RETROARCH INTEGRATION ❗
 Assign retroarch cores to emulators
 
-- '❗ Enable RetroArch integration ❗' : Enable or disable the integration of RetroArch
-- '❗ Custom executable path ❗' : Enter the path to RetroArch executable if not installed in your OS default location
-- '❗ Custom Core folder ❗' : Enter a custom folder for RA cores if not using standard locations
+- 'Enable RetroArch integration' : Enable or disable the integration of RetroArch
+- 'Custom executable path' : Enter the path to RetroArch executable if not installed in your OS default location
+- 'Custom Core folder' : Enter a custom folder for RA cores if not using standard locations
+- '❗ Custom Info folder ❗' : Enter a custom folder for RA info files if not using standard locations
 
 #### SEARCH & FILTERS
 Configure the search page and multifilter options
@@ -377,6 +382,12 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.6*
+
+- It is now possible to change RA cores from AF UI
+- Added option to enable RetroArch integration
+- Fixed issue with multifilter jumps
 
 *v14.5*
 

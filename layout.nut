@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.6
+// Arcadeflow - v 14.7
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.6"
+	version = "14.7"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -260,9 +260,9 @@ WORKFLOW
 
 function restartAM(){
 	fe.signal("exit_to_desktop")
-	if (OS == "Windows") system("start attractplus-console.exe")
-	else if (OS == "OSX") system("./attractplus &")
-	else system("attractplus &")
+	if (OS == "Windows") system ("start attractplus-console.exe")
+	else if (OS == "OSX") system ("./attractplus &")
+	else system ("attractplus &")
 }
 
 // This function parses the attract.cfg and builds a structure for all displays
@@ -534,13 +534,13 @@ function unzipfile (zipfilepath, outputpath){
    local fout = null
 
 	// Create output folder if needed
-   system("mkdir " + ap + outputpath + ap)
+   system ("mkdir " + ap + outputpath + ap)
 
    foreach (id, item in zipdir){
 
       // Item is a folder, create it
       if ((item.slice(-1)=="/") && (!(split(item,"/")[split(item,"/").len()-1].slice(0,1)=="."))) {
-         system("mkdir " + ap + outputpath + item + ap)
+         system ("mkdir " + ap + outputpath + item + ap)
       }
 
       // Item is a file, unpack it to the proper folder
@@ -957,6 +957,7 @@ AF.prefs.l0.push({ label = "ROMLIST MANAGEMENT", glyph = 0xea80, description = "
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "ROMLISTS", selection = AF.req.liner},
 {v = 12.0, varname = "refreshromlist", glyph = 0xe982, initvar = function(val,prf){prf.REFRESHROMLIST <- val}, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data" , options = "", values = function(){local tempprf = generateprefstable();refreshselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 14.7, varname = "resetdatabase", glyph = 0xe97c, initvar = function(val,prf){prf.RESETDATABASE <- val}, title = "Erase romlist database", help = "Doesn't rescan the romlist, bur erases all game database information" , options = "", values = function(){local tempprf = generateprefstable();eraseselecteddatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.0, varname = "cleanromlist", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANROMIST <- val}, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data" , options = "", values = function(){local tempprf = generateprefstable();resetselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.3, varname = "resetlastplayed", glyph = 0xe97c, initvar = function(val,prf){prf.RESETLASTPLAYED <- val}, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = AF.req.liner},
@@ -968,6 +969,7 @@ AF.prefs.l1.push([
 {v = 12.1, varname = "allgames", glyph = 0xe95c, initvar = function(val,prf){prf.ALLGAMES <- val}, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
 {v = 12.0, varname = "updateallgames", glyph = 0xe95c, initvar = function(val,prf){prf.UPDATEALLGAMES <- val}, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = AF.req.liner},
+{v = 14.7, varname = "cleandatabase", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANDATABASE <- val}, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry" , options = "", values = function(){local tempprf = generateprefstable();cleandatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 14.1, varname = "enablehidden", glyph = 0xe997, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
@@ -2467,19 +2469,19 @@ function parsecommanddat(){
 
 function powerman(action){
 	if (action == "SHUTDOWN"){
-		if (OS == "OSX") system("osascript -e 'tell app "+ap+"System Events"+ap+" to shut down'")
-		else if (OS == "Windows") system("shutdown /s /t 0")
-		else system("sudo shutdown -h now")
+		if (OS == "OSX") system ("osascript -e 'tell app "+ap+"System Events"+ap+" to shut down'")
+		else if (OS == "Windows") system ("shutdown /s /t 0")
+		else system ("sudo shutdown -h now")
 	}
 	if (action == "REBOOT"){
-		if (OS == "OSX") system("osascript -e 'tell app "+ap+"System Events"+ap+" to restart'")
-		else if (OS == "Windows") system("shutdown /r /t 0")
-		else system("sudo reboot")
+		if (OS == "OSX") system ("osascript -e 'tell app "+ap+"System Events"+ap+" to restart'")
+		else if (OS == "Windows") system ("shutdown /r /t 0")
+		else system ("sudo reboot")
 	}
 	if (action == "SUSPEND"){
-		if (OS == "OSX") system("osascript -e 'tell app "+ap+"System Events"+ap+" to sleep'")
-		else if (OS == "Windows") system("shutdown /h")
-		else system("sudo pm-hibernate")
+		if (OS == "OSX") system ("osascript -e 'tell app "+ap+"System Events"+ap+" to sleep'")
+		else if (OS == "Windows") system ("shutdown /h")
+		else system ("sudo pm-hibernate")
 	}
 }
 
@@ -2701,7 +2703,7 @@ function exitcommand(){
 		if (index0 != null) {
 			templine2 = strip(templine.slice(index0+12,templine.len()))
 			if (templine2 == "") return
-			system(templine2)
+			system (templine2)
 			return
 		}
 	}
@@ -3153,7 +3155,7 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 	}
 
 
-	system(execss)
+	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
 	suspend()
 
@@ -3238,7 +3240,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
 
-	system(execss)
+	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
 	scraprt("ID"+scrapeid+"-createjson suspend\n")
@@ -3568,20 +3570,20 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			if (tempdataA != null) {
 				if ( !(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext)))) {
 					if (OS == "Windows"){
-						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
+						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
 					}
 					else {
-						system("curl -f --create-dirs -s " + ap + tempdataA.url + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap+ (emuartcat == "wheel" ? "": " &"))
+						system ("curl -f --create-dirs -s " + ap + tempdataA.url + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap+ (emuartcat == "wheel" ? "": " &"))
 					}
 				}
 
 				if ((tempdata.len()>0) && (emuartcat == "wheel") && (  !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext))) ){
 
 					if (OS == "Windows"){
-						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
 					else {
-						system("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
+						system ("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
 					}
 				}
 
@@ -3589,10 +3591,10 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			else if(tempdata.len()>0){
 				if ( !(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension)))) {
 					if (OS == "Windows"){
-						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
 					else {
-						system("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
+						system ("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
 					}
 				}
 			}
@@ -4072,6 +4074,15 @@ function resetselectedromlists(tempprf){
 	updateallgamescollections(tempprf)
 }
 
+function eraseselecteddatabase(tempprf){
+	foreach (item, val in z_list.allromlists) {
+		local listpath1 = AF.romlistfolder + item + ".db1"
+		local listpath2 = AF.romlistfolder + item + ".db2"
+		try {remove (listpath1)}catch(err){print("ERROR1\n")}
+		try {remove (listpath2)}catch(err){print("ERROR2\n")}
+	}
+}
+
 function resetlastplayed(){
 	foreach (i, item in z_list.boot2){
 		item.z_rundate = "00000000000000"
@@ -4403,6 +4414,65 @@ function resetromlist(){
 	fe.set_display(fe.list.display_index)
 }
 
+function cleandatabase(temppref){
+
+	if (temppref.MASTERLIST) {
+		z_edit_dialog("Not possible when master romlist is enabled")
+		return
+	}
+
+	z_splash_message("Cleanup...")
+
+	local has_emulator = false
+	local has_romlist = false
+	local filepresent = false
+	local todolist = []
+	foreach(item, val in z_list.db1){
+		z_splash_message(item+"\nCleaning Database")
+
+		// Check if each db entry has an emulator and a romlist
+		has_emulator = file_exist(FeConfigDirectory+"emulators/"+item+".cfg")
+		has_romlist = file_exist(AF.romlistfolder+item+".txt")
+
+		// If not delete this db main entry
+		if (!(has_emulator && has_romlist)) {
+			z_list.db1.rawdelete(item)
+			z_list.db2.rawdelete(item)
+			// Dovrei cancellare il file effettivo
+		} else {
+			// The entry has emulator and romlist, let's scan games
+			foreach (item2, val2 in val){
+				filepresent = false
+				foreach (i3, item3 in AF.emulatordata[item].romextarray){
+					if (file_exist (AF.emulatordata[item].rompath+item2+item3)) {
+						filepresent = true
+						break
+					}
+				}
+				if (!filepresent) {
+					z_list.db1[item].rawdelete(item2)
+					z_list.db2[item].rawdelete(item2)
+				}
+			}
+		}
+	}
+
+	// Now save the updated db files
+	foreach(item, val in z_list.db1){
+		z_splash_message(item+"\nRefresh Romlist [ ]\nUpdate Database [ ]")
+		refreshromlist(item,false)
+		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [ ]")
+		saveromdb(item, z_list.db1[item], "db1")
+		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [*]")
+		saveromdb(item, z_list.db2[item], "db2")
+	}
+	if (temppref.ALLGAMES) {
+		buildconfig(temppref.ALLGAMES, temppref)
+		update_allgames_collections(true,temppref)
+	}
+	z_splash_message("All Done")
+	//restartAM()
+}
 
 
 // Routine that returns an emty copy of the game data table
@@ -4794,6 +4864,7 @@ z_list.allromlists = allromlists()
 function z_updatetagstable(){
 	// Clear the tags table
 	z_list.tagstable = {}
+	z_list.tagstableglobal = {}
 
 	foreach (id, item in z_list.boot2){
 		foreach (id2, item2 in item.z_tags){
@@ -4801,6 +4872,13 @@ function z_updatetagstable(){
 		}
 	}
 
+	foreach (itemname, value in z_list.db2){
+		foreach (id, item in z_list.db2[itemname]){
+			foreach (id2, item2 in item.z_tags){
+				z_list.tagstableglobal.rawset(item2,0)
+			}
+		}
+	}
 	/*
 	foreach (romlistid, val in z_list.allromlists){
 		local tagsarray = []
@@ -11755,7 +11833,7 @@ function update_allgames_collections(verbose, tempprf){
 						strline+= " "+ap+AF.romlistfolder +  val2.romlist + ".txt" + ap
 					}
 				}
-				system((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
+				system ((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
 			}
 		}
 	}
@@ -11798,9 +11876,9 @@ function update_allgames_collections(verbose, tempprf){
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
 	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
-	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
-	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
-	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
+	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
+	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
+	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
 
 	//fe.set_display(fe.list.display_index)
 }
@@ -12617,15 +12695,15 @@ function checkforupdates(force){
 				system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				// Create target directory
 				z_splash_message( "Installing...")
-				system("mkdir "+ ap + newaffolderTEMP + ap)
-				system("mkdir "+ ap + newaffolder + ap)
+				system ("mkdir "+ ap + newaffolderTEMP + ap)
+				system ("mkdir "+ ap + newaffolder + ap)
 				// Unpack layout
 				unzipfile (AF.folder + newafname +".zip", newaffolderTEMP)
 				local ghfolder = DirectoryListing(newaffolderTEMP)
 				foreach (item in ghfolder.results){
 					local ghfolder2 = DirectoryListing(item)
 					foreach (item2 in ghfolder2.results){
-						system(OS == "Windows" ?
+						system (OS == "Windows" ?
 							"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
 							"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
 					}
@@ -12638,7 +12716,7 @@ function checkforupdates(force){
 				foreach (item in dir.results){
 					if (item.find("pref_")) {
 						local basename = item.slice(item.find("pref_"),item.len())
-						system((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
+						system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
 					}
 				}
 				// Remove downloaded file
@@ -16740,7 +16818,7 @@ function deletecurrentrom(){
 	foreach (i, item in AF.emulatordata[emulatorname].romextarray){
 		print ("Deleting " + gamepath + item + "\n")
 		try {
-			system("mkdir " + ap + rompath + "deleted" + ap)
+			system ("mkdir " + ap + rompath + "deleted" + ap)
 		} catch(err){}
 
 		if (item == ".m3u"){
@@ -16750,7 +16828,7 @@ function deletecurrentrom(){
 				local frompath = ap + rompath + inm3uline + ap
 				local topath = ap + rompath + "deleted/" + inm3uline + ap
 				try {
-					system(OS == "Windows" ?
+					system (OS == "Windows" ?
 						"move " + char_replace(frompath,"/","\\") + " " + char_replace(topath,"/","\\") :
 						"mv " + frompath + " " + topath )
 				}catch(err){}
@@ -16758,7 +16836,7 @@ function deletecurrentrom(){
 		}
 
 		try{
-			system(OS == "Windows" ?
+			system (OS == "Windows" ?
 			"move "+ ap + char_replace(rompath,"/","\\") + "\\"+gamepath + item + ap + " " + ap + char_replace(rompath,"/","\\") + "\\deleted\\" +gamepath + item + ap :
 			"mv " + ap + rompath + gamepath + item + ap + " " + ap + rompath + "deleted/" +gamepath + item + ap )
 		} catch (err) {print ("skipped\n")}
@@ -16864,7 +16942,6 @@ function ra_init(){
 		ra.basepath <- fe.path_expand("$HOME/Library/Application Support/RetroArch/")
 		ra.corepath <- fe.path_expand(ra.basepath+"cores/")
 		ra.infopath <- fe.path_expand(ra.basepath+"info/")
-		}
 	}
 	else {
 		ra.binpath <- fe.path_expand("retroarch")
@@ -17264,8 +17341,8 @@ function on_signal( sig ){
 			function(out){
 				if (out != -1){
 					AF.soundvolume = 10 - out
-					if (OS == "OSX") system("osascript -e "+ap+"Set Volume "+(0.7*AF.soundvolume)+ap)
-					else if (OS == "Windows") system(ap+char_replace(AF.folder,"/","\\") + "\\SetVol.exe"+ap+" "+AF.soundvolume*10+" unmute")
+					if (OS == "OSX") system ("osascript -e "+ap+"Set Volume "+(0.7*AF.soundvolume)+ap)
+					else if (OS == "Windows") system (ap+char_replace(AF.folder,"/","\\") + "\\SetVol.exe"+ap+" "+AF.soundvolume*10+" unmute")
 					else system ("amixer set Master "+AF.soundvolume*10+"%")
 				}
 				zmenuhide()
