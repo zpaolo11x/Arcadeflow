@@ -1,4 +1,5 @@
 /docs export-ignore
+/aaa_bgms export-ignore
 .appveyor.yml export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
