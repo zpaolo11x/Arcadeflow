@@ -15811,6 +15811,7 @@ function tick( tick_time ) {
 		if (timescale.values == timescale.limits) {
 			timescale.delay = -1
 			if (prf.ADAPTSPEED) AF.tsc = 60.0 / (1000.0/(timescale.sum/timescale.values))
+			else AF.tsc = 60.0/ScreenRefreshRate
 			foreach (item,value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
 			}
