@@ -517,7 +517,9 @@ kingsoft kingsoftgmbh
 kixx
 koei koeicoltd
 kogado kogadosoftwareproducts
-konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc
+konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|0,1986
+konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|1986,2003
+konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|2004,10000
 konamicenturi
 konaminintendoofamerica
 krisalis krisalissoftware krisalissoftwareltd
