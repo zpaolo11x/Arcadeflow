@@ -6333,7 +6333,7 @@ function z_list_updategamedata(index){
 
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
-	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer)
+	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer,z_list.boot[index].z_year)
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (z_list.boot[index].z_category)
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 	dat.but_array[dat.stacksize - 1].file_name = (AF.folder+"metapics/buttons/" + z_list.boot[index].z_buttons+"button.png")
