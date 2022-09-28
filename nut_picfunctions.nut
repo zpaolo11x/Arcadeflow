@@ -110,7 +110,7 @@ function manufacturer_vec(s){
 // USED ONE
 function manufacturer_vec_name(name,year){
    local s = name
-   if ((year!="") && (year!="?")) year = year.tointeger() else year = 0
+   if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
 //	local t = fe.game_info( Info.Title, offset )
 
    local sout = manufacturer_parser (s)
