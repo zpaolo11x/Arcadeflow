@@ -1,8 +1,6 @@
 NOTE:
 Gremlin è Gremlin Industries, arcade americano
 Gli altri Gremlin sono tutti gremlin graphics o gremlin interactive che ha il logo rettangolare
-Sammy è una sola e vanno messi insieme i due loghi e i due nomi
-Rifare HAL labs col logo svg
 
 0000000000aflogo
 20thcenturyfox 20thcenturyfoxvideogames foxvideogames
@@ -429,13 +427,15 @@ graftgold graftgoldltd
 grandslam grandslamentertainment grandslamentertainments grandslamentertainmentltd
 graphicresearch
 great greatcoltd
-gremlin gremlininteractiveltd
-gremlingraphics gremlingraphicssoftware gremlingraphicssoftwareltd gremlininteractive
+gremlinindustries
+gremlingraphics gremlingraphicssoftware gremlingraphicssoftwareltd gremlininteractive gremlininteractiveltd
 grev
 gtinteractive gtinteractivesoftware gtinteractivesoftwarecorp
 gtisoftware
 guildhall guildhallleisureservice guildhallleisureservicesltd
-hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo
+hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|0,1988
+hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1989,1993
+hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1994,10000
 hanafram
 hanaho hanahogames
 hard
@@ -497,7 +497,8 @@ intecinc intec
 interceptorsoftware interceptor
 interplay interplayproductions interplayproductionsinc interplayentertainmentcorp
 interstelcorporation interstel interstelcorp
-irem iremamerica iremcorp
+irem iremamerica iremcorp|0,2001
+irem iremamerica iremcorp|2002,10000
 iremhudson iremlicensedfromhudsonsoft
 iremlicensedfrombroderbund
 jaleco jalecoentertainment jalecoltd
@@ -651,9 +652,9 @@ naxat
 naxatsoft
 nazca
 ncs ncscorporation
-nec
+nec nechomeelectronics|0,1992
+nec nechomeelectronics|1993,10000
 necavenue
-nechomeelectronics
 necinterchannel
 neo
 newdealproductions newdealproductionssa
@@ -809,9 +810,9 @@ saffire
 sagescreation
 salamandersoftwae
 salescurve scigames
-sammy americansammy sammyindustries sammystudios sammyindustriesjapan
+sammy americansammy sammyindustries sammystudios sammyindustriesjapan sammycorporation sammyusacorporation|0,1997
+sammy americansammy sammyindustries sammystudios sammyindustriesjapan sammycorporation sammyusacorporation|1997,10000
 sammyaicom
-sammycorporation sammyusacorporation
 sancho
 sankindo
 sanritsu sanritsudenki
