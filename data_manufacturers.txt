@@ -614,7 +614,9 @@ microsoft microsoftcorporation
 microsphere microspherecomputerservicesltd
 microstyle
 microvalue
-midway midwaygames midwaygamesinc midwayhomeentertainment
+midway midwaygames midwaygamesinc midwayhomeentertainment|0,1991
+midway midwaygames midwaygamesinc midwayhomeentertainment|1992,1997
+midway midwaygames midwaygamesinc midwayhomeentertainment|1998,10000
 midwaygeneralcomputercorporation
 mikrogen mikrogenltd
 milestone milestoneinc
@@ -860,7 +862,10 @@ shinen shinenmultimedia
 shiny shinyentertainment
 shoesoft
 shuwasystemtrading
-sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|0,1992
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|1993,1998
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|1999,2000
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|2001,10000
 sigmaenterprisesinc sigma sigmaentinc sigmaenterprises
 sikorsoft
 silkys
