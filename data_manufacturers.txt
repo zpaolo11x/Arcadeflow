@@ -103,7 +103,8 @@ asmik
 asmikaceentertainment asmikaceentertainmentinc
 asmikcorporationofamerica
 asp aspsoftware
-atari ataricorp ataricorporation atarigames atarigamescorporation atariinc atariage atarisa
+atari ataricorp ataricorporation atarigames atarigamescorporation atariinc atariage atarisa|0,2002
+atari ataricorp ataricorporation atarigames atarigamescorporation atariinc atariage atarisa|2003,10000
 atarikeegames
 atarimindscape
 atarisoft
@@ -325,7 +326,10 @@ electricdreams electricdreamsinc
 electricdreamssoftware
 electricsoftware electricsoftwarelimited
 electrobrain electrobraincorp
-electronicarts electronicartsinc electronicartscanada
+electronicarts electronicartsinc electronicartscanada|0,1993
+electronicarts electronicartsinc electronicartscanada|1994,1997
+electronicarts electronicartsinc electronicartscanada|1998,1999
+electronicarts electronicartsinc electronicartscanada|2000,10000
 electronicartsvictor
 electronicdevicesitaly
 electronicdevicesitalyecogamesslspain
@@ -555,8 +559,10 @@ login loginsoft
 logotron logotronltd
 loriciel loriciels loricielsa
 lothlorien mclothlorien mclothlorienltd
-lucasartsentertainmentcompanyllc lucasarts
-lucasfilm lucasfilmgames lucasfilmgamesllc lucasfilmltd
+lucasartsentertainmentcompanyllc lucasarts|0,2005
+lucasartsentertainmentcompanyllc lucasarts|2006,10000
+lucasfilm lucasfilmgames lucasfilmgamesllc lucasfilmltd|0,1987
+lucasfilm lucasfilmgames lucasfilmgamesllc lucasfilmltd|1988,10000
 lyversoft
 macsensoftware
 magicalcompany magicalcompanymahou
@@ -955,7 +961,8 @@ system4
 systemsacom
 systemsoft
 tadcorporation tad
-taito taitoamericacorporation taitocorporation taitocorporationjapan taitodobrasil taitosoftware taitoeuropecorporation
+taito taitoamericacorporation taitocorporation taitocorporationjapan taitodobrasil taitosoftware taitoeuropecorporation|0,1987
+taito taitoamericacorporation taitocorporation taitocorporationjapan taitodobrasil taitosoftware taitoeuropecorporation|1988,10000
 taitocorporationwilliams
 taitomidway
 taitonamco
@@ -1052,7 +1059,12 @@ tsunami tsunamimediainc
 tti turbotechnologies turbotechnologiesinc
 tuning
 tynesoft tynesoftcomputersoftware
-ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|0,1988
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|1989,1992
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|1993,1994
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|1995,2003
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2004,2017
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2018,10000
 ucom
 ultimateplaythegame ultimate
 ultra ultrasoft ultragames
