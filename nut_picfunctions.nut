@@ -20,7 +20,7 @@ local datasplit = []
 local datemin = 0
 local datemax = 0
 local namestr = ""
-testpr("A\n")
+
 while ( !manufile.eos() ) {
    datemin = 0
    datemax = 10000
@@ -50,7 +50,7 @@ function print_variable(variablein,level,name){
 		if ((typeof val == "table")||(typeof val == "array")) print_variable(val,level,"")
 	}
 }
-print_variable(manufdata,"","")
+
 /*
 while ( !manufile.eos() ) {
 
@@ -73,7 +73,7 @@ while ( !manufile.eos() ) {
    }
 }
 */
-testpr("B\n")
+
 function manufacturer_parser(inputstring){
    local s = inputstring
    local s2 = split( s, "*%_/: .()-,<>?&'+’!・~·" )
@@ -128,9 +128,6 @@ function manufacturer_vec_name(name,year){
 
 	return  ( (sout == "") ? "" : valueout)
 }
-
-print ("LOGO:" + manufacturer_vec_name("aackosoft","?") + "\n")
-print ("LOGO:" + manufacturer_vec_name("aackosoft","2200") + "\n")
 
 local controllertable = {
    "joystick (8-way)" : "control_joystick_8way.png",
