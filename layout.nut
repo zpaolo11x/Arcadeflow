@@ -2974,6 +2974,7 @@ function getemulatordata(emulatorname){
 	}
 
 	if (executable.tolower().find("retroarch") == null) racore = ""
+	else if (args.find("-L ") == null) racore = ""
 	else {
 		racore = args
 		start = racore.find("-L ")+3
