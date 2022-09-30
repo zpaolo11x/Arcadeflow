@@ -10,7 +10,8 @@ absoluteentertainment absoluteentertainmentinc
 academy academysoftware academysoft
 access accesssoftware accessoftwareinc accessgames
 acclaim acclaimjapan
-accolade accoladeinc
+accolade accoladeinc|0,1990
+accolade accoladeinc|1991,10000
 ace acesoftware
 acid acidsoftware
 acidplan
@@ -129,7 +130,9 @@ bbcsoft
 beamsoftware beamsoftwareptyltd
 bec
 beebug
-bethesdasoftworks bethasdasoftworks bethesdasoftwork
+bethesdagamestudios
+bethesdasoftworks bethasdasoftworks bethesdasoftwork|0,2000
+bethesdasoftworks bethasdasoftworks bethesdasoftwork|2001,10000
 beyondbelief
 beyondsoftware beyondchallengingsoftware
 bio100
@@ -166,7 +169,8 @@ bullfrog bullfrogproductions bullfrogproductionsltd
 byteback
 californiadreams
 camerica
-capcom capcomcoltd
+capcom capcomcoltd|0,1988
+capcom capcomcoltd|1989,10000
 capcomarika
 capcomincredibletechnologies
 capcomromstar
@@ -210,7 +214,9 @@ cobrasoft
 cocktail cocktailsoft
 cocktelvision cocktel coktelvision coktel
 coconutsjapan
-codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware
+codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|0,1993
+codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|1994,2017
+codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|2018,10000
 coleco colecoindustriesinc
 comad
 commavid commavidinc
@@ -223,7 +229,8 @@ compilesega
 comptiq
 computerconcepts
 conspiracyentertainment conspiracyentertainmentcorp
-coredesign coredesignltd
+coredesign coredesignltd|0,2002
+coredesign coredesignltd|2003,10000
 coreland
 corelandsega
 cosmi cosmicorporation
