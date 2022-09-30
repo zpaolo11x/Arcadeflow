@@ -532,7 +532,8 @@ kanekotaito kanekotaitocorporationjapan
 kanekowarashi
 kansascitysystems
 keegames
-kemco
+kemco|0,1992
+kemco|1993,10000
 kingrecord kingrecords
 kingsoft kingsoftgmbh
 kixx
@@ -762,7 +763,10 @@ playmates playmatesinteractive
 playmorecapcom
 pocketmoneysoftware
 polarware
-ponycanyon ponyaca
+ponycanyon ponyaca|0,1986
+ponycanyon ponyaca|1987,2012
+ponycanyon ponyaca|2013,2017
+ponycanyon ponyaca|2018,10000
 ponytailsoft ponytail ponytalesoft ponytale
 poppo poppocoltd
 postern
@@ -777,7 +781,8 @@ psikyo
 psk
 pss psssoftware personalsoftwareservices
 psyclapse
-psygnosis psygnosislimited
+psygnosis psygnosislimited|0,1996
+psygnosis psygnosislimited|1997,10000
 pulsonic
 qualitysoftware
 quantumqualityproductions
@@ -794,7 +799,11 @@ rainbowarts rainbowartssoftwaregmbh rainbowartssoftgold
 raizing
 raizingeighting
 randomhouse
-rare rareltd
+rare rareltd|0,1994
+rare rareltd|1995,2003
+rare rareltd|2004,2010
+rare rareltd|2011,2015
+rare rareltd|1016,10000
 rareelectronicarts
 rarenintendoofamerica
 ravensoftwarecorporation
