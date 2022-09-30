@@ -902,7 +902,10 @@ sirius siriussoftware siriussoftwareinc
 sirtechsoftwareinc sirtech sirtechsoftware
 skythinksystem skythinksystems skythinksystemcoltd skythinksystemscoltd
 smash16
-snk snkcorporation
+snk snkcorporation|0,1985
+snk snkcorporation|1986,1987
+snk snkcorporation|1988,1989
+snk snkcorporation|1990,10000
 snkpallas
 snkplaymore
 sofel sofelcoltd
@@ -937,7 +940,9 @@ spinnakersoftware spinnakersoftwarecorporation spinnaker
 spotlightsoftware
 sprite
 sps
-square
+square|0,1986
+square|1987,1992
+square|1993,10000
 squareenix
 squaresoft
 ssg ssgstrategicstudiesgroupptyltd
@@ -1038,7 +1043,11 @@ thepowerhouse powerhousethe
 thinkingrabbit
 thorcomputersoftware thor thorsoftware
 thornemi thornemivideo thornemivideoltd
-thq
+thq|0,1994
+thq|1995,1997
+thq|1998,2000
+thq|2001,2011
+thq|2012,10000
 thqnordic
 tiertexdesignstudios tiertexltd tiertex
 tigervision
