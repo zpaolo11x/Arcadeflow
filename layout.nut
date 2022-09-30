@@ -5355,7 +5355,7 @@ multifilterz.l0["Manufacturer"] <- {
 		levcheck = function(index){
 			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 
-			local v = z_list.boot[index+fe.list.index].z_manufacturer
+			local v = z_list.boot[index+fe.list.index].z_manufacturer.tolower()
 
 			// Return data when no category is selected
 			if ((v=="") || (v=="<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
