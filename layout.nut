@@ -4,39 +4,6 @@
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
-local apx = '"'.tochar()
-
-function testx(args){
-	print ("ARGS:"+args+"\n")
-	local racore = args
-	local start = racore.find("-L ")+3
-	local stop = racore.find("_libretro")
-
-	if (stop != null){
-		racore = racore.slice(start,stop)
-	} else {
-		racore = racore.slice(start)
-	}
-	racore = split(racore," ")[0]
-	racore = split(racore,"/\\ ")
-	racore = racore[racore.len()-1]
-
-	print ("CORE:"+racore+"\n")
-
-}
-
-testx("-L puae "+apx+"[romfilename]"+apx)
-
-testx("-L cores/puae_libretro.dll "+apx+"[romfilename]"+apx)
-
-testx(apx+"[romfilename]"+apx+" -L puae")
-
-testx(apx+"[romfilename]"+apx+" -L puae_libretro.dll")
-
-testx(apx+"[romfilename]"+apx+" -L /Applications/RetroArch.app/Contents/Resources/cores/prosystem_libretro.dylib --appendconfig "+apx+"/Volumes/Dati/Roms/Atari 7800/bezels/config/prosystem/7800.cfg|/Volumes/Dati/Roms/Atari 7800/bezels/overlays/7800.cfg"+apx)
-
-pippo = 0
-
 // Load file nut
 fe.do_nut("nut_file.nut")
 
