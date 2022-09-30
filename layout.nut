@@ -2921,6 +2921,8 @@ function getemulatordata(emulatorname){
 	local executable = ""
 	local args = ""
 	local racore = ""
+	local start = 0
+	local stop = 0
 
 	while (!infile.eos()){
 		inline = infile.read_line()
@@ -2974,15 +2976,17 @@ function getemulatordata(emulatorname){
 	if (executable.tolower().find("retroarch") == null) racore = ""
 	else {
 		racore = args
-		if (racore.find("_libretro") != null){
-			racore = racore.slice(0,racore.find("_libretro"))
-			if (racore[0].tochar() == ap)
-				racore = racore.slice(1,0)
+		start = racore.find("-L ")+3
+		stop = racore.find("_libretro")
 
-			racore = split(racore,"/\\ ")
-			racore = racore[racore.len()-1]
+		if (stop != null){
+			racore = racore.slice(start,stop)
+		} else {
+			racore = racore.slice(start)
 		}
-		else racore = split(args," ")[1]
+		racore = split(racore," ")[0]
+		racore = split(racore,"/\\ ")
+		racore = racore[racore.len()-1]
 	}
 
 	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
