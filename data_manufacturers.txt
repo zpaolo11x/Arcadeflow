@@ -346,7 +346,8 @@ empireinteractive
 empiresoftware
 encore encoresoftware encoresoftwareinc
 englishsoftware englishsoftwarecompany englishsoftwarecompanythe
-enix enixamericainc
+enix enixamericainc|0,1984
+enix enixamericainc|1985,10000
 eolith
 eolithplaymore
 eolithsnk
@@ -435,7 +436,8 @@ grandslam grandslamentertainment grandslamentertainments grandslamentertainmentl
 graphicresearch
 great greatcoltd
 gremlinindustries
-gremlingraphics gremlingraphicssoftware gremlingraphicssoftwareltd gremlininteractive gremlininteractiveltd
+gremlingraphics gremlingraphicssoftware gremlingraphicssoftwareltd
+gremlininteractive gremlininteractiveltd
 grev
 gtinteractive gtinteractivesoftware gtinteractivesoftwarecorp
 gtisoftware
@@ -498,7 +500,9 @@ incredibletechnologies incredibletechnologiesinc
 inder
 infinitedreams
 infocom infocominc
-infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas
+infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|0,1996
+infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|1997,2000
+infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|2001,10000
 informationglobalservice
 intecinc intec
 interceptorsoftware interceptor
@@ -508,7 +512,10 @@ irem iremamerica iremcorp|0,2001
 irem iremamerica iremcorp|2002,10000
 iremhudson iremlicensedfromhudsonsoft
 iremlicensedfrombroderbund
-jaleco jalecoentertainment jalecoltd
+jaleco jalecoentertainment jalecoltd|0,1988
+jaleco jalecoentertainment jalecoltd|1989,2002
+jaleco jalecoentertainment jalecoltd|2002,2007
+jaleco jalecoentertainment jalecoltd|2008,10000
 jaleconmk
 jalecopccw
 janis
