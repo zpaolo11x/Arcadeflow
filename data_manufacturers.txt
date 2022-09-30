@@ -781,8 +781,8 @@ psikyo
 psk
 pss psssoftware personalsoftwareservices
 psyclapse
-psygnosis psygnosislimited|0,1996
-psygnosis psygnosislimited|1997,10000
+psygnosis psygnosislimited|0,1995
+psygnosis psygnosislimited|1996,10000
 pulsonic
 qualitysoftware
 quantumqualityproductions
