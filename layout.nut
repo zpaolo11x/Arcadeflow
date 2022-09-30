@@ -1036,7 +1036,6 @@ function reset_layout() {
 	try { remove (AF.folder + "pref_checkdate.txt") } catch (err) {}
 	try { remove (AF.folder + "scrapelog.txt") } catch (err) {}
 	try { remove (AF.folder + "latest_version.txt") } catch (err) {}
-	try { remove (AF.folder + "ss_login.txt") } catch (err) {}
 
 	local dir = DirectoryListing( AF.folder )
 	foreach (item in dir.results){
