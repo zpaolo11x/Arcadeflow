@@ -1208,21 +1208,27 @@ function generateselectiontable(){
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
 function saveprefdata(prf,target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
+   local ss_prfpath = fe.path_expand( AF.folder+"ss_login.txt")
    if (target != null) prfpath = target
 	local prffile = WriteTextFile (prfpath)
+	local ss_prffile = WriteTextFile (ss_prfpath)
 	prffile.write_line (AF.version+"\n")
    foreach (label, val in prf){
-      prffile.write_line ("|" + label + "|" + val+"|\n")
+      if ((label != "SS_USERNAME") && (label != "SS_PASSWORD")) prffile.write_line ("|" + label + "|" + val+"|\n")
+		else ss_prffile.write_line ("|" + label + "|" + val+"|\n")
    }
 	prffile.close_file()
+	ss_prffile.close_file()
 }
 
 // readprefdata() reads values of a selection and puts them in the preferences structure.
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
 function readprefdata(target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
+   local ss_prfpath = fe.path_expand( AF.folder+"ss_login.txt")
    if (target != null) prfpath = target
 	local prffile = ReadTextFile (prfpath)
+	local ss_prffile = ReadTextFile (ss_prfpath)
    local ptable = {}
 	local version = ""
 	try {	version = prffile.read_line() } catch (err) {
@@ -1239,7 +1245,7 @@ function readprefdata(target){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
 				local tempdat = AF.prefs.l1[i][j] //Instancing!
 
-				if (tempdat.varname.toupper() == z[0]) {
+				if ((tempdat.varname.toupper() == z[0]) && ( (tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD") )) {
 					if (tempdat.v.tofloat() <= version.tofloat() ) {
 						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
 						else if (z.len() == 1) tempdat.values = ""
@@ -1252,6 +1258,28 @@ function readprefdata(target){
 			}
 		}
 	}
+	while (!ss_prffile.eos()){
+		local ss_templine = ss_prffile.read_line()
+		local ss_z = split (ss_templine,"|")
+		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
+			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
+				local ss_tempdat = AF.prefs.l1[i][j] //Instancing!
+
+				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ( (ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD") )) {
+					testpr("X\n")
+					if (ss_tempdat.v.tofloat() <= version.tofloat() ) {
+						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
+						else if (ss_z.len() == 1) ss_tempdat.values = ""
+						else ss_tempdat.values = ss_z[1]
+					}
+					else {
+						warnmessage = warnmessage + ("- "+ ss_tempdat.title + "\n")
+					}
+				}
+			}
+		}
+	}
+
 	if (warnmessage != "") {
 		z_splash_message ("Reset prefs:\n\n" + warnmessage)
 		return false
@@ -3131,6 +3159,7 @@ function textrate (num,den,columns,ch1,ch0){
 	}
 	return out
 }
+
 
 local dispatcher = []
 local dispatchernum = 0
