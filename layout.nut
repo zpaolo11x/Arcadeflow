@@ -11071,6 +11071,11 @@ foreach (item in hist_text){
 	}
 }
 
+hist_text.descr.line_spacing = 1.15
+pixelizefont(hist_text.descr, floor(hist_textT.charsize),0.5*floor(hist_textT.charsize),0.7*1.15)
+hist_text.descr.y = hist_text.descr.y + 0.25*hist_textT.linesize
+hist_text.descr.height = hist_text.descr.height - 0.25*hist_textT.linesize
+
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
 	hist_text.title.margin = 0

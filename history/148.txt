@@ -1,4 +1,5 @@
 14.8
+Increased line spacing in history page description
 Manufacturer logos are now differentiated by year
 Fixed manufacturer multifilter to be case-insensitive
 Moved ScreenScraper login data to ss_login.txt file
