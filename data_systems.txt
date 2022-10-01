@@ -371,6 +371,9 @@ pc engine duo
 nec pc engine gt,256,224,PCE-GT,LCD,NONE,0,0,HANDHELD,NEC,1990,PC Engine GT,31,rom,joystick (8-way),2
 pc engine gt
 
+nec pc engine lt,256,224,PCE-LT,LCD,NONE,0,0,HANDHELD,NEC,1991,PC Engine LT,31,rom,joystick (8-way),2
+pc engine gt
+
 nec pc engine,256,224,PCE,CRT,NONE,4,3,CONSOLE,NEC,1987,PC Engine,31,rom,joystick (8-way),2
 pc engine
 
@@ -543,6 +546,16 @@ nintendo nes,256,240,NES,CRT,NONE,4,3,CONSOLE,Nintendo,1985,Nintendo Entertainme
 nintendo entertainment system
 nes
 
+nintendo nes new-style,256,240,NES-NS,CRT,NONE,4,3,CONSOLE,Nintendo,1993,Nintendo Entertainment System New-Style,3,rom,joystick (8-way),2
+nintendo entertainment system new-style
+nes new-style
+
+nintendo new famicom,256,240,NES-NS,CRT,NONE,4,3,CONSOLE,Nintendo,1993,Family Computer New,3,rom,joystick (8-way),2
+nintendo new family computer
+new famicom
+new family computer
+family computer new
+
 nintendo playchoice 10,256,240,PC10,CRT,NONE,4,3,ARCADE,Nintendo,1986,PlayChoice 10,75,rom,joystick (8-way),2
 nintendo playchoice-10
 playchoice 10
@@ -565,8 +578,18 @@ super nintendo entertainment system
 nintendo super nintendo entertainment system
 snes
 
+nintendo snes new-style,256,224,SNES,CRT,NONE,4,3,CONSOLE,Nintendo,1997,Super NES New-Style,4,rom,joystick (8-way),4
+super nintendo new-style
+super nintendo entertainment system new-style
+nintendo super nintendo entertainment system new-style
+snes new-style
+super nes new-style
+
 nintendo super famicom,256,224,SFAM,CRT,NONE,4,3,CONSOLE,Nintendo,1990,Super Famicom,4,rom,joystick (8-way),4
 super famicom
+
+nintendo super famicom jr,256,224,SF-JR,CRT,NONE,4,3,CONSOLE,Nintendo,1998,Super Famicom Jr,4,rom,joystick (8-way),4
+super famicom jr
 
 nintendo super game boy,160,144,SGB,CRT,NONE,0,0,CONSOLE,Nintendo,1994,Super Game Boy,9,rom,joystick (8-way),2
 super gameboy
