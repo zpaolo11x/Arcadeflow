@@ -3257,7 +3257,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (romcrc != null) execss += "&crc="+romcrc
 		if (systemid != null) execss += "&systemeid="+systemid
 		if (romtype != null) execss += "&romtype="+romtype
-		if (romfilename != null) execss += "&romnom="+romfilename
+		if (romfilename != null) execss += "&romnom="+romfilename+".xxx"
 		if (romsize != null) execss += "&romtaille="+romsize
 		execss += ap + " " + ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "json.nut" + ap + " "+ ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "json.txt" + ap
 	}
@@ -3268,7 +3268,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (romcrc != null) execss += "&crc="+romcrc
 		if (systemid != null) execss += "&systemeid="+systemid
 		if (romtype != null) execss += "&romtype="+romtype
-		if (romfilename != null) execss += "&romnom="+romfilename
+		if (romfilename != null) execss += "&romnom="+romfilename+".xxx"
 		if (romsize != null) execss += "&romtaille="+romsize
 		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
