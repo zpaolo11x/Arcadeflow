@@ -1267,14 +1267,9 @@ function readprefdata(target){
 				local ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ( (ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD") )) {
-					if (ss_tempdat.v.tofloat() <= version.tofloat() ) {
 						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
 						else if (ss_z.len() == 1) ss_tempdat.values = ""
 						else ss_tempdat.values = ss_z[1]
-					}
-					else {
-						warnmessage = warnmessage + ("- "+ ss_tempdat.title + "\n")
-					}
 				}
 			}
 		}
