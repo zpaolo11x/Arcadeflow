@@ -14066,17 +14066,20 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
 
-	if (aspect > cropaspect){ // Cut sides
-		tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width * (cropaspect/aspect)
-		tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height
-		tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.5*(tilez[i].snapz.texture_width - tilez[i].snapz.subimg_width)
-		tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.0
-	}
-	else { // Cut top and bottom
-		tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width
-		tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height * (aspect/cropaspect)
-		tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.0
-		tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.5*(tilez[i].snapz.texture_height - tilez[i].snapz.subimg_height)
+	// Select cases where the snap itself needs to be recropped
+	if (prf.MORPHASPECT || (!prf.BOXARTMODE && prf.CROPSNAPS)){
+		if (aspect > cropaspect){ // Cut sides
+			tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width * (cropaspect/aspect)
+			tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height
+			tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.5*(tilez[i].snapz.texture_width - tilez[i].snapz.subimg_width)
+			tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.0
+		}
+		else { // Cut top and bottom
+			tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width
+			tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height * (aspect/cropaspect)
+			tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.0
+			tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.5*(tilez[i].snapz.texture_height - tilez[i].snapz.subimg_height)
+		}
 	}
 
 	// VIDEO SNAPS CROPPER
