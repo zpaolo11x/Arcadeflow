@@ -3249,6 +3249,8 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 	foreach (i,item in urlencoder1){
 		romfilename = subst_replace (romfilename, urlencoder1[i],urlencoder2[i])
 	}
+	romfilename = subst_replace (romfilename, ".","")
+	romfilename = subst_replace (romfilename, " ","")
 
 	local execss = ""
 	if (OS == "Windows"){
@@ -3258,7 +3260,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (romcrc != null) execss += "&crc="+romcrc
 		if (systemid != null) execss += "&systemeid="+systemid
 		if (romtype != null) execss += "&romtype="+romtype
-		if (romfilename != null) execss += "&romnom="+romfilename+"..xxx"
+		if (romfilename != null) execss += "&romnom="+romfilename
 		if (romsize != null) execss += "&romtaille="+romsize
 		execss += ap + " " + ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "json.nut" + ap + " "+ ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "json.txt" + ap
 	}
@@ -3269,7 +3271,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (romcrc != null) execss += "&crc="+romcrc
 		if (systemid != null) execss += "&systemeid="+systemid
 		if (romtype != null) execss += "&romtype="+romtype
-		if (romfilename != null) execss += "&romnom="+romfilename+"..xxx"
+		if (romfilename != null) execss += "&romnom="+romfilename
 		if (romsize != null) execss += "&romtaille="+romsize
 		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
@@ -3366,44 +3368,65 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 	//TEST120 Should we add the retry check to the arcade scrape portion or not???
-	if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
-
-      local getcrc = matchrom(scrapeid,romname) //This is the CRC of a rom with matched name
-      // Scraped rom has correct CRC, no more scraping needed
-      if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
-			dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
-         dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-      }
-      else {
-         if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
-         else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
-
-         echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
-         // Once the name is perfectly matched, a new scrape is done to get proper rom status
+	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
+		// If stripped rom fails, try with non-stripped rom
+      if ((dispatcher[scrapeid].jsonstatus == "ERROR")){
          dispatcher[scrapeid].jsonstatus = null
-		   scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
-			//TEST132 changed to stripped romname (was just romname)
-			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
-		   scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
+		   scraprt("ID"+scrapeid+"-getromdata call createjson ERR\n")
+			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+		   scraprt("ID"+scrapeid+"-getromdata suspend ERR\n")
 			suspend()
 		   scraprt("ID"+scrapeid+"-getromdata resumed\n")
+		}
 
-			if (dispatcher[scrapeid].jsonstatus != "ERROR"){
-            dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-            echoprint ("Matched NAME "+dispatcher[scrapeid].gamedata.filename+" with " +dispatcher[scrapeid].gamedata.matchedrom+"\n")
-         }
-      }
+		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
 
-      if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+
+			local getcrc = matchrom(scrapeid,romname) //This is the CRC of a rom with matched name
+			// Scraped rom has correct CRC, no more scraping needed
+			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
+				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+			}
+			else {
+				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
+				// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
+				if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
+				else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
+
+				echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
+				// Once the name is perfectly matched, a new scrape is done to get proper rom status
+				dispatcher[scrapeid].jsonstatus = null
+				scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
+				//TEST132 changed to stripped romname (was just romname)
+				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
+				scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
+				suspend()
+				scraprt("ID"+scrapeid+"-getromdata resumed\n")
+
+				if (dispatcher[scrapeid].jsonstatus != "ERROR"){
+					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+					echoprint ("Matched NAME "+dispatcher[scrapeid].gamedata.filename+" with " +dispatcher[scrapeid].gamedata.matchedrom+"\n")
+				}
+			}
+
+			if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+		}
+		else {
+			echoprint ("ERROR\n")
+			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
+		}
    }
    else if(dispatcher[scrapeid].jsonstatus == "RETRY"){
       echoprint ("RETRY\n")
       dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
    }
-   else if(dispatcher[scrapeid].jsonstatus == "ERROR"){
-      echoprint ("ERROR\n")
+   /*
+	else if(dispatcher[scrapeid].jsonstatus == "ERROR"){
+		echoprint ("ERROR\n")
       dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
    }
+	*/
    //dispatcher[scrapeid].gamedata = gamedata
    dispatcher[scrapeid].done = true
 

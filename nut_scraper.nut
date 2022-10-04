@@ -66,6 +66,9 @@ function cleanWHDL(inputname){
 
 function matchrom(scrapeid, filename){
 
+   // Returns two crc values: one is from the rom directly matched during the scraping
+   // the other is from one of the roms in the list, matching the name of current rom
+
    local jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")
    local crc_from_romlist = ""
 
@@ -81,17 +84,14 @@ function matchrom(scrapeid, filename){
          romcleanname = item.romfilename.slice(0,-1*(1+romext.len()))
       }
 
-      //TEST131 print (romcleanname+"\n")
-      // If the name of the current rom matches the name of the rom in the list, returns the crc associated
-      //testpr("*** ORIGINAL: "+romcleanname+" == "+filename+"\n")
+      // If the name of the current rom matches the name of the rom in the list, sets crc_from_romlist the crc associated
       if (romcleanname == filename) {
          crc_from_romlist = item.romcrc
          break
       }
-      //TEST132
-      // Add here custom check for Amiga WHDLoad filename without version
+      // Add here custom check for Amiga WHDLoad filename without version, that is:
+      // if a rom in the list has the same name except for version, the crc is used
       else if (romcleanname.find("_v") != null){
-         //testpr("*** CHECKING: "+cleanWHDL(romcleanname)+" == "+cleanWHDL(filename)+"\n\n")
          if (cleanWHDL(romcleanname) == cleanWHDL(filename)){
             crc_from_romlist = item.romcrc
             break
