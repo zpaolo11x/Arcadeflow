@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.7 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.8 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,13 +10,15 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.7 #
+## What's new in v 14.8 #
 
-- Added option to reset database without affecting romlist
-- Added new option to remove unused entries in games db
-- Added support for RA 32 Bit in Windows
-- Added new options for RetroArch custom folders
-- Fixed deleted tags showing in list
+- Added new systems: PC Engine LT, SNES and NES new designs
+- Added option for Vertical Arcade video snaps
+- Increased line spacing in history page description
+- Manufacturer logos are now differentiated by year
+- Moved ScreenScraper login data to ss_login.txt file
+- Fixed manufacturer multifilter to be case-insensitive
+- Fixed SS issue when scraping games with dot in the name
 
 ## Emulator system identifier #
 
@@ -126,7 +128,7 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Enable sorting' : Enable custom realtime sorting, diable to keep romlist sort order
 - 'Save sort order' : Custom sort order is saved through Arcadeflow sessions
 
-#### THUMBNAILS
+#### ❗ THUMBNAILS ❗
 Chose the aspect ratio of thumbnails, video thumbnails and decorations
 
 - 'Aspect ratio' : Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation
@@ -146,6 +148,7 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Fade title on video' : Fades game title and decoration when the video is playing
 - 'Video delay multiplier' : Increase video load delay
 - 'Generate missing title art' : If no game title is present, the layout can generate it
+- '❗ Vertical arcade videos ❗' : Enable this option if you are using 9:16 videos from the Vertical Arcade project
 - Decorations
 - 'Game not available indicator' : Games that are not available will be marked with a red cross overlay
 - 'New game indicator' : Games not played are marked with a glyph
@@ -320,12 +323,12 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
 - 'Import only available roms' : Import entrief from the games list only if the rom file is actually available
 
-#### ❗ ROMLIST MANAGEMENT ❗
+#### ROMLIST MANAGEMENT
 Manage romlists and collections
 
 - ROMLISTS
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
-- '❗ Erase romlist database ❗' : Doesn't rescan the romlist, bur erases all game database information
+- 'Erase romlist database' : Doesn't rescan the romlist, bur erases all game database information
 - 'Reset current romlist' : Rescan the romlist erasing and regenerating all romlist data
 - 'Reset last played' : Remove all last played data from the current romlist
 - MASTER ROMLIST
@@ -337,17 +340,17 @@ Manage romlists and collections
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
 - DANGER ZONE
-- '❗ Cleanup database ❗' : Rescans all the romlists adding/removing roms, then purges the database to remove unused entry
+- 'Cleanup database' : Rescans all the romlists adding/removing roms, then purges the database to remove unused entry
 - 'Enable game hiding' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
 
-#### ❗ RETROARCH INTEGRATION ❗
+#### RETROARCH INTEGRATION
 Assign retroarch cores to emulators
 
 - 'Enable RetroArch integration' : Enable or disable the integration of RetroArch
 - 'Custom executable path' : Enter the path to RetroArch executable if not installed in your OS default location
 - 'Custom Core folder' : Enter a custom folder for RA cores if not using standard locations
-- '❗ Custom Info folder ❗' : Enter a custom folder for RA info files if not using standard locations
+- 'Custom Info folder' : Enter a custom folder for RA info files if not using standard locations
 
 #### SEARCH & FILTERS
 Configure the search page and multifilter options
@@ -382,6 +385,14 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.7*
+
+- Added option to reset database without affecting romlist
+- Added new option to remove unused entries in games db
+- Added support for RA 32 Bit in Windows
+- Added new options for RetroArch custom folders
+- Fixed deleted tags showing in list
 
 *v14.6*
 

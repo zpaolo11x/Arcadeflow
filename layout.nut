@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.7
+// Arcadeflow - v 14.8
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.7"
+	version = "14.8"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -747,6 +747,7 @@ AF.prefs.l1.push([
 {v = 8.5, varname = "fadevideotitle", glyph = 0xe913, initvar = function(val,prf){prf.FADEVIDEOTITLE <- val}, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 8.4, varname = "thumbvidelay", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDELAY <- val}, title = "Video delay multiplier", help = "Increase video load delay" , options = ["0.25x","0.5x","1x", "2x","3x","4x","5x"], values = [0.25,0.5,1,2,3,4,5], selection = 2},
 {v = 7.2, varname = "missingwheel", glyph = 0xea6d, initvar = function(val,prf){prf.MISSINGWHEEL <- val}, title = "Generate missing title art", help = "If no game title is present, the layout can generate it" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["missingwheelyes"+AF.prefs.imgext,"missingwheelno"+AF.prefs.imgext],pic = "missingwheel"+AF.prefs.imgext},
+{v = 14.8, varname = "vid169", glyph = 0xea57, initvar = function(val,prf){prf.VID169 <- val}, title = "Vertical arcade videos", help = "Enable this option if you are using 9:16 videos from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Decorations", selection = AF.req.liner},
 {v = 9.6, varname = "redcross", glyph = 0xe936, initvar = function(val,prf){prf.REDCROSS <- val}, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 7.2, varname = "newgame", glyph = 0xe936, initvar = function(val,prf){prf.NEWGAME <- val}, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
@@ -1208,21 +1209,27 @@ function generateselectiontable(){
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
 function saveprefdata(prf,target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
+   local ss_prfpath = fe.path_expand( AF.folder+"ss_login.txt")
    if (target != null) prfpath = target
 	local prffile = WriteTextFile (prfpath)
+	local ss_prffile = WriteTextFile (ss_prfpath)
 	prffile.write_line (AF.version+"\n")
    foreach (label, val in prf){
-      prffile.write_line ("|" + label + "|" + val+"|\n")
+      if ((label != "SS_USERNAME") && (label != "SS_PASSWORD")) prffile.write_line ("|" + label + "|" + val+"|\n")
+		else ss_prffile.write_line ("|" + label + "|" + val+"|\n")
    }
 	prffile.close_file()
+	ss_prffile.close_file()
 }
 
 // readprefdata() reads values of a selection and puts them in the preferences structure.
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
 function readprefdata(target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
+   local ss_prfpath = fe.path_expand( AF.folder+"ss_login.txt")
    if (target != null) prfpath = target
 	local prffile = ReadTextFile (prfpath)
+	local ss_prffile = ReadTextFile (ss_prfpath)
    local ptable = {}
 	local version = ""
 	try {	version = prffile.read_line() } catch (err) {
@@ -1239,7 +1246,7 @@ function readprefdata(target){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
 				local tempdat = AF.prefs.l1[i][j] //Instancing!
 
-				if (tempdat.varname.toupper() == z[0]) {
+				if ((tempdat.varname.toupper() == z[0]) && ( (tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD") )) {
 					if (tempdat.v.tofloat() <= version.tofloat() ) {
 						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
 						else if (z.len() == 1) tempdat.values = ""
@@ -1252,6 +1259,22 @@ function readprefdata(target){
 			}
 		}
 	}
+	while (!ss_prffile.eos()){
+		local ss_templine = ss_prffile.read_line()
+		local ss_z = split (ss_templine,"|")
+		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
+			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
+				local ss_tempdat = AF.prefs.l1[i][j] //Instancing!
+
+				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ( (ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD") )) {
+						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
+						else if (ss_z.len() == 1) ss_tempdat.values = ""
+						else ss_tempdat.values = ss_z[1]
+				}
+			}
+		}
+	}
+
 	if (warnmessage != "") {
 		z_splash_message ("Reset prefs:\n\n" + warnmessage)
 		return false
@@ -2894,6 +2917,8 @@ function getemulatordata(emulatorname){
 	local executable = ""
 	local args = ""
 	local racore = ""
+	local start = 0
+	local stop = 0
 
 	while (!infile.eos()){
 		inline = infile.read_line()
@@ -2945,17 +2970,20 @@ function getemulatordata(emulatorname){
 	}
 
 	if (executable.tolower().find("retroarch") == null) racore = ""
+	else if (args.find("-L ") == null) racore = ""
 	else {
 		racore = args
-		if (racore.find("_libretro") != null){
-			racore = racore.slice(0,racore.find("_libretro"))
-			if (racore[0].tochar() == ap)
-				racore = racore.slice(1,0)
+		start = racore.find("-L ")+3
+		stop = racore.find("_libretro")
 
-			racore = split(racore,"/\\ ")
-			racore = racore[racore.len()-1]
+		if (stop != null){
+			racore = racore.slice(start,stop)
+		} else {
+			racore = racore.slice(start)
 		}
-		else racore = split(args," ")[1]
+		racore = split(racore," ")[0]
+		racore = split(racore,"/\\ ")
+		racore = racore[racore.len()-1]
 	}
 
 	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
@@ -3132,6 +3160,7 @@ function textrate (num,den,columns,ch1,ch0){
 	return out
 }
 
+
 local dispatcher = []
 local dispatchernum = 0
 
@@ -3215,6 +3244,8 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 	foreach (i,item in urlencoder1){
 		romfilename = subst_replace (romfilename, urlencoder1[i],urlencoder2[i])
 	}
+	romfilename = subst_replace (romfilename, ".","")
+	romfilename = subst_replace (romfilename, " ","")
 
 	local execss = ""
 	if (OS == "Windows"){
@@ -3332,44 +3363,65 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 	//TEST120 Should we add the retry check to the arcade scrape portion or not???
-	if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
-
-      local getcrc = matchrom(scrapeid,romname) //This is the CRC of a rom with matched name
-      // Scraped rom has correct CRC, no more scraping needed
-      if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
-			dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
-         dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-      }
-      else {
-         if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
-         else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
-
-         echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
-         // Once the name is perfectly matched, a new scrape is done to get proper rom status
+	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
+		// If stripped rom fails, try with non-stripped rom
+      if ((dispatcher[scrapeid].jsonstatus == "ERROR")){
          dispatcher[scrapeid].jsonstatus = null
-		   scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
-			//TEST132 changed to stripped romname (was just romname)
-			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
-		   scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
+		   scraprt("ID"+scrapeid+"-getromdata call createjson ERR\n")
+			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+		   scraprt("ID"+scrapeid+"-getromdata suspend ERR\n")
 			suspend()
 		   scraprt("ID"+scrapeid+"-getromdata resumed\n")
+		}
 
-			if (dispatcher[scrapeid].jsonstatus != "ERROR"){
-            dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-            echoprint ("Matched NAME "+dispatcher[scrapeid].gamedata.filename+" with " +dispatcher[scrapeid].gamedata.matchedrom+"\n")
-         }
-      }
+		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
 
-      if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+
+			local getcrc = matchrom(scrapeid,romname) //This is the CRC of a rom with matched name
+			// Scraped rom has correct CRC, no more scraping needed
+			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
+				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+			}
+			else {
+				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
+				// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
+				if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
+				else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
+
+				echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
+				// Once the name is perfectly matched, a new scrape is done to get proper rom status
+				dispatcher[scrapeid].jsonstatus = null
+				scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
+				//TEST132 changed to stripped romname (was just romname)
+				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
+				scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
+				suspend()
+				scraprt("ID"+scrapeid+"-getromdata resumed\n")
+
+				if (dispatcher[scrapeid].jsonstatus != "ERROR"){
+					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+					echoprint ("Matched NAME "+dispatcher[scrapeid].gamedata.filename+" with " +dispatcher[scrapeid].gamedata.matchedrom+"\n")
+				}
+			}
+
+			if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+		}
+		else {
+			echoprint ("ERROR\n")
+			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
+		}
    }
    else if(dispatcher[scrapeid].jsonstatus == "RETRY"){
       echoprint ("RETRY\n")
       dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
    }
-   else if(dispatcher[scrapeid].jsonstatus == "ERROR"){
-      echoprint ("ERROR\n")
+   /*
+	else if(dispatcher[scrapeid].jsonstatus == "ERROR"){
+		echoprint ("ERROR\n")
       dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
    }
+	*/
    //dispatcher[scrapeid].gamedata = gamedata
    dispatcher[scrapeid].done = true
 
@@ -5355,7 +5407,7 @@ multifilterz.l0["Manufacturer"] <- {
 		levcheck = function(index){
 			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 
-			local v = z_list.boot[index+fe.list.index].z_manufacturer
+			local v = z_list.boot[index+fe.list.index].z_manufacturer.tolower()
 
 			// Return data when no category is selected
 			if ((v=="") || (v=="<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
@@ -6333,7 +6385,7 @@ function z_list_updategamedata(index){
 
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
-	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer)
+	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer,z_list.boot[index].z_year)
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (z_list.boot[index].z_category)
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 	dat.but_array[dat.stacksize - 1].file_name = (AF.folder+"metapics/buttons/" + z_list.boot[index].z_buttons+"button.png")
@@ -11038,6 +11090,11 @@ foreach (item in hist_text){
 	}
 }
 
+hist_text.descr.line_spacing = 1.15
+pixelizefont(hist_text.descr, floor(hist_textT.charsize),0.5*floor(hist_textT.charsize),0.7*1.15)
+hist_text.descr.y = hist_text.descr.y + 0.25*hist_textT.linesize
+hist_text.descr.height = hist_text.descr.height - 0.25*hist_textT.linesize
+
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
 	hist_text.title.margin = 0
@@ -14009,34 +14066,39 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
 
-	if (aspect > cropaspect){ // Cut sides
-		tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width * (cropaspect/aspect)
-		tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height
-		tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.5*(tilez[i].snapz.texture_width - tilez[i].snapz.subimg_width)
-		tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.0
-	}
-	else { // Cut top and bottom
-		tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width
-		tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height * (aspect/cropaspect)
-		tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.0
-		tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.5*(tilez[i].snapz.texture_height - tilez[i].snapz.subimg_height)
+	// Select cases where the snap itself needs to be recropped
+	if (prf.MORPHASPECT || (!prf.BOXARTMODE && prf.CROPSNAPS)){
+		if (aspect > cropaspect){ // Cut sides
+			tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width * (cropaspect/aspect)
+			tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height
+			tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.5*(tilez[i].snapz.texture_width - tilez[i].snapz.subimg_width)
+			tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.0
+		}
+		else { // Cut top and bottom
+			tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width
+			tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height * (aspect/cropaspect)
+			tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.0
+			tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.5*(tilez[i].snapz.texture_height - tilez[i].snapz.subimg_height)
+		}
 	}
 
 	// VIDEO SNAPS CROPPER
 	if (prf.THUMBVIDEO){
 		tilez[i].vidsz.set_pos(tilez[i].snapz.x,tilez[i].snapz.y,tilez[i].snapz.width,tilez[i].snapz.height)
 
-		if (vidAR > cropaspect){ // Cut sides
-			tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width * (cropaspect/vidAR)
-			tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height
-			tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.5*(tilez[i].vidsz.texture_width - tilez[i].vidsz.subimg_width)
-			tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.0
-		}
-		else { // Cut top and bottom
-			tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width
-			tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height * (vidAR/cropaspect)
-			tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
-			tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
+		if (!prf.VID169){
+			if (vidAR > cropaspect){ // Cut sides
+				tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width * (cropaspect/vidAR)
+				tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height
+				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.5*(tilez[i].vidsz.texture_width - tilez[i].vidsz.subimg_width)
+				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.0
+			}
+			else { // Cut top and bottom
+				tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width
+				tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height * (vidAR/cropaspect)
+				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
+				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
+			}
 		}
 	}
 
@@ -16262,7 +16324,7 @@ function tick( tick_time ) {
 					tilez[i].gr_vidsz.file_name = fe.get_art("snap",vidindex[i])
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
-					tilez[i].AR.vids = getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+					tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
 
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
 					if (!prf.MORPHASPECT) update_snapcrop (i,0,0,z_list.index,tilez[i].AR.vids,tilez[i].AR.crop)

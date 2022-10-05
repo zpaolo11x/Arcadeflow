@@ -12,15 +12,50 @@ local manufinc = 0
 local manufdata = {}
 local manufpath = fe.path_expand( affolder+"data_manufacturers.txt")
 
-local manufile = file( manufpath, "rb" )
-local filelen = manufile.len().tofloat()
+local manufile = ReadTextFile( manufpath)
 local arrayline = ""
-
+local instr = ""
+local vector = []
+local datasplit = []
+local datemin = 0
+local datemax = 0
+local namestr = ""
 
 while ( !manufile.eos() ) {
-   
+   datemin = 0
+   datemax = 10000
+   instr = manufile.read_line()
+   datasplit = split(instr,"|")
+   if (datasplit.len()>1){
+      datemin = split(datasplit[1],",")[0].tointeger()
+      datemax = split(datasplit[1],",")[1].tointeger()
+   }
+   vector = split(datasplit[0]," ")
+   foreach (i, item in vector){
+      if(!manufdata.rawin(item)) manufdata.rawset(item,[])
+
+      manufdata[item].push({
+         logo = manufinc
+         dmin = datemin
+         dmax = datemax
+      })
+   }
+   manufinc++
+}
+function print_variable(variablein,level,name){
+	if (level == "") print ("* "+name+" *\n")
+	level = level+"   "
+	foreach (item, val in variablein){
+		print (level+" "+(typeof val)+" "+item+" "+val+"\n")
+		if ((typeof val == "table")||(typeof val == "array")) print_variable(val,level,"")
+	}
+}
+
+/*
+while ( !manufile.eos() ) {
+
    local char = manufile.readn( 'b' )
-   
+
    if ((char != 10) && (char != 13)) {
       if (char != 32){
          arrayline = arrayline + char.tochar()
@@ -37,6 +72,7 @@ while ( !manufile.eos() ) {
       manufinc++
    }
 }
+*/
 
 function manufacturer_parser(inputstring){
    local s = inputstring
@@ -56,8 +92,8 @@ function manufacturer_parser(inputstring){
 
 function manufacturer_vec(s){
  //  local s = z_list.gametable(offset).z_manufacturer
-//	local t = fe.game_info( Info.Title, offset )	
-	
+//	local t = fe.game_info( Info.Title, offset )
+
    local sout = manufacturer_parser (s)
 
    local valueout = ""
@@ -71,18 +107,23 @@ function manufacturer_vec(s){
 	return  ( (sout == "") ? "" : valueout)
 }
 
-function manufacturer_vec_name(name){
+// USED ONE
+function manufacturer_vec_name(name,year){
    local s = name
-//	local t = fe.game_info( Info.Title, offset )	
-	
+   if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
+//	local t = fe.game_info( Info.Title, offset )
+
    local sout = manufacturer_parser (s)
 
    local valueout = ""
-   try {
-      valueout = manufvector[manufdata[sout]]
-   }
-   catch (err){
-      valueout = ""
+   if(manufdata.rawin(sout)){
+      foreach (item, val in manufdata[sout]){
+         if ((year >= val.dmin) && (year <= val.dmax)) {
+            valueout = manufvector[val.logo]
+            break
+         }
+      }
+      //valueout = manufvector[manufdata[sout]]
    }
 
 	return  ( (sout == "") ? "" : valueout)
@@ -191,14 +232,14 @@ function controller_pic(s){
    }
    catch ( err ) {
       return ("control_.png")
-   }  
+   }
 }
 
 
 function manufacturer_pic(offset){
    local s = fe.game_info( Info.Manufacturer, offset )
-//	local t = fe.game_info( Info.Title, offset )	
-	
+//	local t = fe.game_info( Info.Title, offset )
+
    local s2 = split( s, "*%_/: .()-,<>?&+!・~·" )
 	local sout =""
 	if ( s2.len() > 1 ) {
@@ -787,7 +828,7 @@ function manufacturer_list(){
    for (local i = 0; i<fe.list.size; i++){
       zout = manufacturer_pic(i)
       s = fe.game_info( Info.Manufacturer, i )
-	   t = fe.game_info( Info.Title, i )	
+	   t = fe.game_info( Info.Title, i )
 
       if (!(file_exist(affolder + zout))){
          indexer ++
@@ -805,7 +846,7 @@ function manufacturer_list_vector(){
    for (local i = 0; i<fe.list.size; i++){
       zout = manufacturer_vec(i)
       s = fe.game_info( Info.Manufacturer, i )
-	   t = fe.game_info( Info.Title, i )	
+	   t = fe.game_info( Info.Title, i )
       txout = manufacturer_parser(s)
 
       if (zout == ""){
@@ -829,8 +870,8 @@ function missing_manufacturer_list_vector(z_list){
    }
    for (local i = 0; i<z_list.boot.len(); i++){
       s = z_list.boot[i].z_manufacturer
-	   t = z_list.boot[i].z_title	
-	   u = z_list.boot[i].z_system	
+	   t = z_list.boot[i].z_title
+	   u = z_list.boot[i].z_system
       zout = manufacturer_vec(s)
       txout = manufacturer_parser(s)
 
@@ -849,7 +890,7 @@ function category_list(){
    for (local i = 0; i<fe.list.size; i++){
       zout = category_pic(i)
       s = fe.game_info( Info.Category, i )
-	   t = fe.game_info( Info.Title, i )	
+	   t = fe.game_info( Info.Title, i )
 
       if (!(file_exist(affolder + zout ))){
          indexer ++

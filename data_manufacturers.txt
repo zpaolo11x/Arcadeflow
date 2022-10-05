@@ -10,7 +10,8 @@ absoluteentertainment absoluteentertainmentinc
 academy academysoftware academysoft
 access accesssoftware accessoftwareinc accessgames
 acclaim acclaimjapan
-accolade accoladeinc
+accolade accoladeinc|0,1990
+accolade accoladeinc|1991,10000
 ace acesoftware
 acid acidsoftware
 acidplan
@@ -99,7 +100,8 @@ asmik
 asmikaceentertainment asmikaceentertainmentinc
 asmikcorporationofamerica
 asp aspsoftware
-atari ataricorp ataricorporation atarigames atarigamescorporation atariinc atariage atarisa
+atari ataricorp ataricorporation atarigames atarigamescorporation atariinc atariage atarisa|0,2002
+atari ataricorp ataricorporation atarigames atarigamescorporation atariinc atariage atarisa|2003,10000
 atarikeegames
 atarimindscape
 atarisoft
@@ -128,7 +130,9 @@ bbcsoft
 beamsoftware beamsoftwareptyltd
 bec
 beebug
-bethesdasoftworks bethasdasoftworks bethesdasoftworks
+bethesdagamestudios
+bethesdasoftworks bethasdasoftworks bethesdasoftwork|0,2000
+bethesdasoftworks bethasdasoftworks bethesdasoftwork|2001,10000
 beyondbelief
 beyondsoftware beyondchallengingsoftware
 bio100
@@ -165,7 +169,8 @@ bullfrog bullfrogproductions bullfrogproductionsltd
 byteback
 californiadreams
 camerica
-capcom capcomcoltd
+capcom capcomcoltd|0,1988
+capcom capcomcoltd|1989,10000
 capcomarika
 capcomincredibletechnologies
 capcomromstar
@@ -209,7 +214,9 @@ cobrasoft
 cocktail cocktailsoft
 cocktelvision cocktel coktelvision coktel
 coconutsjapan
-codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware
+codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|0,1993
+codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|1994,2017
+codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|2018,10000
 coleco colecoindustriesinc
 comad
 commavid commavidinc
@@ -222,7 +229,8 @@ compilesega
 comptiq
 computerconcepts
 conspiracyentertainment conspiracyentertainmentcorp
-coredesign coredesignltd
+coredesign coredesignltd|0,2002
+coredesign coredesignltd|2003,10000
 coreland
 corelandsega
 cosmi cosmicorporation
@@ -321,7 +329,10 @@ electricdreams electricdreamsinc
 electricdreamssoftware
 electricsoftware electricsoftwarelimited
 electrobrain electrobraincorp
-electronicarts electronicartsinc electronicartscanada
+electronicarts electronicartsinc electronicartscanada|0,1993
+electronicarts electronicartsinc electronicartscanada|1994,1997
+electronicarts electronicartsinc electronicartscanada|1998,1999
+electronicarts electronicartsinc electronicartscanada|2000,10000
 electronicartsvictor
 electronicdevicesitaly
 electronicdevicesitalyecogamesslspain
@@ -335,7 +346,8 @@ empireinteractive
 empiresoftware
 encore encoresoftware encoresoftwareinc
 englishsoftware englishsoftwarecompany englishsoftwarecompanythe
-enix enixamericainc
+enix enixamericainc|0,1984
+enix enixamericainc|1985,10000
 eolith
 eolithplaymore
 eolithsnk
@@ -423,13 +435,16 @@ graftgold graftgoldltd
 grandslam grandslamentertainment grandslamentertainments grandslamentertainmentltd
 graphicresearch
 great greatcoltd
-gremlin gremlininteractiveltd
-gremlingraphics gremlingraphicssoftware gremlingraphicssoftwareltd gremlininteractive
+gremlinindustries
+gremlingraphics gremlingraphicssoftware gremlingraphicssoftwareltd
+gremlininteractive gremlininteractiveltd
 grev
 gtinteractive gtinteractivesoftware gtinteractivesoftwarecorp
 gtisoftware
 guildhall guildhallleisureservice guildhallleisureservicesltd
-hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo
+hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|0,1988
+hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1989,1993
+hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1994,10000
 hanafram
 hanaho hanahogames
 hard
@@ -485,16 +500,22 @@ incredibletechnologies incredibletechnologiesinc
 inder
 infinitedreams
 infocom infocominc
-infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas
+infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|0,1996
+infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|1997,2000
+infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|2001,10000
 informationglobalservice
 intecinc intec
 interceptorsoftware interceptor
 interplay interplayproductions interplayproductionsinc interplayentertainmentcorp
 interstelcorporation interstel interstelcorp
-irem iremamerica iremcorp
+irem iremamerica iremcorp|0,2001
+irem iremamerica iremcorp|2002,10000
 iremhudson iremlicensedfromhudsonsoft
 iremlicensedfrombroderbund
-jaleco jalecoentertainment jalecoltd
+jaleco jalecoentertainment jalecoltd|0,1988
+jaleco jalecoentertainment jalecoltd|1989,2002
+jaleco jalecoentertainment jalecoltd|2002,2007
+jaleco jalecoentertainment jalecoltd|2008,10000
 jaleconmk
 jalecopccw
 janis
@@ -511,13 +532,16 @@ kanekotaito kanekotaitocorporationjapan
 kanekowarashi
 kansascitysystems
 keegames
-kemco
+kemco|0,1992
+kemco|1993,10000
 kingrecord kingrecords
 kingsoft kingsoftgmbh
 kixx
 koei koeicoltd
 kogado kogadosoftwareproducts
-konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc
+konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|0,1986
+konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|1986,2003
+konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|2004,10000
 konamicenturi
 konaminintendoofamerica
 krisalis krisalissoftware krisalissoftwareltd
@@ -546,8 +570,10 @@ login loginsoft
 logotron logotronltd
 loriciel loriciels loricielsa
 lothlorien mclothlorien mclothlorienltd
-lucasartsentertainmentcompanyllc lucasarts
-lucasfilm lucasfilmgames lucasfilmgamesllc lucasfilmltd
+lucasartsentertainmentcompanyllc lucasarts|0,2005
+lucasartsentertainmentcompanyllc lucasarts|2006,10000
+lucasfilm lucasfilmgames lucasfilmgamesllc lucasfilmltd|0,1987
+lucasfilm lucasfilmgames lucasfilmgamesllc lucasfilmltd|1988,10000
 lyversoft
 macsensoftware
 magicalcompany magicalcompanymahou
@@ -603,7 +629,9 @@ microsoft microsoftcorporation
 microsphere microspherecomputerservicesltd
 microstyle
 microvalue
-midway midwaygames midwaygamesinc midwayhomeentertainment
+midway midwaygames midwaygamesinc midwayhomeentertainment|0,1991
+midway midwaygames midwaygamesinc midwayhomeentertainment|1992,1997
+midway midwaygames midwaygamesinc midwayhomeentertainment|1998,10000
 midwaygeneralcomputercorporation
 mikrogen mikrogenltd
 milestone milestoneinc
@@ -643,9 +671,9 @@ naxat
 naxatsoft
 nazca
 ncs ncscorporation
-nec
+nec nechomeelectronics|0,1992
+nec nechomeelectronics|1993,10000
 necavenue
-nechomeelectronics
 necinterchannel
 neo
 newdealproductions newdealproductionssa
@@ -735,7 +763,10 @@ playmates playmatesinteractive
 playmorecapcom
 pocketmoneysoftware
 polarware
-ponycanyon ponyaca
+ponycanyon ponyaca|0,1986
+ponycanyon ponyaca|1987,2012
+ponycanyon ponyaca|2013,2017
+ponycanyon ponyaca|2018,10000
 ponytailsoft ponytail ponytalesoft ponytale
 poppo poppocoltd
 postern
@@ -750,7 +781,8 @@ psikyo
 psk
 pss psssoftware personalsoftwareservices
 psyclapse
-psygnosis psygnosislimited
+psygnosis psygnosislimited|0,1995
+psygnosis psygnosislimited|1996,10000
 pulsonic
 qualitysoftware
 quantumqualityproductions
@@ -767,7 +799,11 @@ rainbowarts rainbowartssoftwaregmbh rainbowartssoftgold
 raizing
 raizingeighting
 randomhouse
-rare rareltd
+rare rareltd|0,1994
+rare rareltd|1995,2003
+rare rareltd|2004,2010
+rare rareltd|2011,2015
+rare rareltd|1016,10000
 rareelectronicarts
 rarenintendoofamerica
 ravensoftwarecorporation
@@ -801,9 +837,9 @@ saffire
 sagescreation
 salamandersoftwae
 salescurve scigames
-sammy americansammy sammyindustries sammystudios sammyindustriesjapan
+sammy americansammy sammyindustries sammystudios sammyindustriesjapan sammycorporation sammyusacorporation|0,1997
+sammy americansammy sammyindustries sammystudios sammyindustriesjapan sammycorporation sammyusacorporation|1997,10000
 sammyaicom
-sammycorporation sammyusacorporation
 sancho
 sankindo
 sanritsu sanritsudenki
@@ -849,7 +885,10 @@ shinen shinenmultimedia
 shiny shinyentertainment
 shoesoft
 shuwasystemtrading
-sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|0,1992
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|1993,1998
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|1999,2000
+sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|2001,10000
 sigmaenterprisesinc sigma sigmaentinc sigmaenterprises
 sikorsoft
 silkys
@@ -863,7 +902,10 @@ sirius siriussoftware siriussoftwareinc
 sirtechsoftwareinc sirtech sirtechsoftware
 skythinksystem skythinksystems skythinksystemcoltd skythinksystemscoltd
 smash16
-snk snkcorporation
+snk snkcorporation|0,1985
+snk snkcorporation|1986,1987
+snk snkcorporation|1988,1989
+snk snkcorporation|1990,10000
 snkpallas
 snkplaymore
 sofel sofelcoltd
@@ -898,7 +940,9 @@ spinnakersoftware spinnakersoftwarecorporation spinnaker
 spotlightsoftware
 sprite
 sps
-square
+square|0,1986
+square|1987,1992
+square|1993,10000
 squareenix
 squaresoft
 ssg ssgstrategicstudiesgroupptyltd
@@ -946,7 +990,8 @@ system4
 systemsacom
 systemsoft
 tadcorporation tad
-taito taitoamericacorporation taitocorporation taitocorporationjapan taitodobrasil taitosoftware taitoeuropecorporation
+taito taitoamericacorporation taitocorporation taitocorporationjapan taitodobrasil taitosoftware taitoeuropecorporation|0,1987
+taito taitoamericacorporation taitocorporation taitocorporationjapan taitodobrasil taitosoftware taitoeuropecorporation|1988,10000
 taitocorporationwilliams
 taitomidway
 taitonamco
@@ -998,7 +1043,11 @@ thepowerhouse powerhousethe
 thinkingrabbit
 thorcomputersoftware thor thorsoftware
 thornemi thornemivideo thornemivideoltd
-thq
+thq|0,1994
+thq|1995,1997
+thq|1998,2000
+thq|2001,2011
+thq|2012,10000
 thqnordic
 tiertexdesignstudios tiertexltd tiertex
 tigervision
@@ -1043,7 +1092,12 @@ tsunami tsunamimediainc
 tti turbotechnologies turbotechnologiesinc
 tuning
 tynesoft tynesoftcomputersoftware
-ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|0,1988
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|1989,1992
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|1993,1994
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|1995,2003
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2004,2017
+ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2018,10000
 ucom
 ultimateplaythegame ultimate
 ultra ultrasoft ultragames

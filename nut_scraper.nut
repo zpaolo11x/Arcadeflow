@@ -7,7 +7,7 @@ foreach (i, item in unichar){
 local echoon = false
 
 function echoprint (intext){
-   if (echoon) print(intext) 
+   if (echoon) print(intext)
 }
 
 function uniclean(instring){
@@ -65,7 +65,10 @@ function cleanWHDL(inputname){
 
 
 function matchrom(scrapeid, filename){
-   
+
+   // Returns two crc values: one is from the rom directly matched during the scraping
+   // the other is from one of the roms in the list, matching the name of current rom
+
    local jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")
    local crc_from_romlist = ""
 
@@ -74,27 +77,24 @@ function matchrom(scrapeid, filename){
 
       local romext = split(item.romfilename,".")
       local romcleanname = ""
-      if (romext.len() == 1) 
+      if (romext.len() == 1)
          romcleanname = item.romfilename
       else {
          romext = romext[romext.len()-1]
          romcleanname = item.romfilename.slice(0,-1*(1+romext.len()))
       }
 
-      //TEST131 print (romcleanname+"\n")
-      // If the name of the current rom matches the name of the rom in the list, returns the crc associated
-      //testpr("*** ORIGINAL: "+romcleanname+" == "+filename+"\n")
+      // If the name of the current rom matches the name of the rom in the list, sets crc_from_romlist the crc associated
       if (romcleanname == filename) {
          crc_from_romlist = item.romcrc
          break
       }
-      //TEST132
-      // Add here custom check for Amiga WHDLoad filename without version
+      // Add here custom check for Amiga WHDLoad filename without version, that is:
+      // if a rom in the list has the same name except for version, the crc is used
       else if (romcleanname.find("_v") != null){
-         //testpr("*** CHECKING: "+cleanWHDL(romcleanname)+" == "+cleanWHDL(filename)+"\n\n")
          if (cleanWHDL(romcleanname) == cleanWHDL(filename)){
             crc_from_romlist = item.romcrc
-            break         
+            break
          }
       }
    }
@@ -229,7 +229,7 @@ function parsejson(scrapeid, gamedata){
 
    if (romregions = "") {
       try {romregions = jstab.response.jeu.regions.shortname} catch (err){}
-      try {romregionsarray = split(romregions,", ")} catch (err){}      
+      try {romregionsarray = split(romregions,", ")} catch (err){}
    }
 
 
@@ -271,7 +271,7 @@ function parsejson(scrapeid, gamedata){
    try{gamedata.rating = jstab.response.jeu.note.text.tointeger()*1.0/2.0} catch (err){}
    // At the moment filters synopsis and only gets the english version (hardcoded, may change in the future)
    try{gamedata.synopsis = collapsetable(jstab.response.jeu.synopsis,"langue")[langtouse]}catch(err){}
-   // Scans the release date table to look for the rom region entry, if not found it scans the whole 
+   // Scans the release date table to look for the rom region entry, if not found it scans the whole
    // table and basically outputs the topmost entry, whatever it is
    try{gamedata.releasedate = split(filtertable(collapsetable(jstab.response.jeu.dates,"region"),regionprefs,true),"-")[0]}catch(err){}
    // Scans the whole familles table for noms, if the language is the correct one it returns it, otherwise it keeps
@@ -295,7 +295,7 @@ function parsejson(scrapeid, gamedata){
          if (item.principale == "0") genresarray_sub.push (genretable[langtouse])
       }
    } catch (err) {}
-   if (genresarray_sub.len() != 0) 
+   if (genresarray_sub.len() != 0)
       gamedata.genre = genresarray_sub[0]
    else if (genresarray_main.len() != 0)
       gamedata.genre = genresarray_main[0]
@@ -304,7 +304,7 @@ function parsejson(scrapeid, gamedata){
    foreach (i, item in extraitems){
       try{if ((jstab.response.jeu.rom[item] == "1") && (gamedata.filename.tolower().find(item)!=null)) gamedata.extradata += (gamedata.extradata == "" ? item : ","+item)} catch (err){}
    }
-   
+
    try {
       gamedata.requests = jstab.response.ssuser.requeststoday+"/"+jstab.response.ssuser.maxrequestsperday
    }catch(err){}
@@ -314,14 +314,14 @@ function parsejson(scrapeid, gamedata){
    }catch(err){
       gamedata.notgame = false
    }
-   //TEST111 
+   //TEST111
    print ("NOTGAME:"+jstab.response.jeu.notgame+"\n")
    /*
    foreach (id,value in gamedata){
      echoprint (id+":"+value+"\n")
    }
    */
-   
+
    //TEST104 TODO: Maybe add actions parsing here and use that as input also for numbuttons
    //TEST104 TODO: or use the same controles to get the game control functions (should be the same)
 
@@ -337,7 +337,7 @@ function parsejson(scrapeid, gamedata){
       local a_controls_table = {}
       foreach (i,item in a_controls_array) {
          local zip = split (item,"=")
-         if (zip.len()>1) a_controls_table[zip[0]] <- zip[1] 
+         if (zip.len()>1) a_controls_table[zip[0]] <- zip[1]
       }
       try{gamedata.a_buttons = a_controls_table["P1NumButtons"]}
          catch(err)
@@ -362,7 +362,7 @@ function parsejson(scrapeid, gamedata){
       catmap["box-2D"] <- "flyer"
       catmap["marquee"] <- "marquee"
    */
-   
+
    gamedata.media = {}
    foreach (id, item in AF_cat){
       gamedata.media[item] <- []
@@ -416,7 +416,7 @@ function parsejson(scrapeid, gamedata){
             }
          }
 
-         // No correct rom region, for the second round we take 
+         // No correct rom region, for the second round we take
          // the first available region from wor and ss entries
          if (filteredarray == null) {
        //     echoprint ("round2\n")
@@ -429,7 +429,7 @@ function parsejson(scrapeid, gamedata){
                      filteredarray = [item3]
                   }
                }
-            }           
+            }
          }
 
          if (filteredarray == null) filteredarray = [item[0]]
@@ -472,7 +472,7 @@ function getromcrc(filepath){
    else {
       blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
    }
-   
+
    local i = 0
    local crc = 0xFFFFFFFF
    local mask = 0
@@ -513,7 +513,7 @@ function getromcrc_halfbyte(filepath){
    else {
       blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
    }
-   
+
    local i = 0
    local crc = 0xFFFFFFFF
    local mask = 0
@@ -522,7 +522,7 @@ function getromcrc_halfbyte(filepath){
       byte = blb[i]
       crc = Crc32Lookup16[(crc ^  byte      ) & 0x0F] ^ (crc >> 4)
       crc = Crc32Lookup16[(crc ^ (byte >> 4)) & 0x0F] ^ (crc >> 4)
- 
+
       i = i + 1
    }
    crc = ~crc
@@ -678,7 +678,7 @@ function getromcrc_lookup(filepath){
    else {
       blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
    }
-   
+
    local i = 0
    local crc = 0xFFFFFFFF
    while (i<blb.len()) {
@@ -723,7 +723,7 @@ function getromcrc_lookup4(filepath){
    local byte = 0
    while (i<blb.len()-4) {
       one = blb.readn('i') ^ crc
-      crc = Crc32Lookup4[0][(one >> 24) & 0xFF] ^ 
+      crc = Crc32Lookup4[0][(one >> 24) & 0xFF] ^
       Crc32Lookup4[1][(one >> 16) & 0xFF] ^
       Crc32Lookup4[2][(one >> 8) & 0xFF] ^
       Crc32Lookup4[3][one & 0xFF]
@@ -738,7 +738,7 @@ function getromcrc_lookup4(filepath){
 
    return ([format("%X",crc).slice(-8),format("%x",crc).slice(-8)])
 
-} 
+}
 
 
 function getromcrc_old(filepath){
@@ -754,7 +754,7 @@ function getromcrc_old(filepath){
    else {
       blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
    }
-   
+
    local i = 0
    local crc = 0xFFFFFFFF
    while (i<blb.len()) {
