@@ -14086,17 +14086,19 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 	if (prf.THUMBVIDEO){
 		tilez[i].vidsz.set_pos(tilez[i].snapz.x,tilez[i].snapz.y,tilez[i].snapz.width,tilez[i].snapz.height)
 
-		if (vidAR > cropaspect){ // Cut sides
-			tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width * (cropaspect/vidAR)
-			tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height
-			tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.5*(tilez[i].vidsz.texture_width - tilez[i].vidsz.subimg_width)
-			tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.0
-		}
-		else { // Cut top and bottom
-			tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width
-			tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height * (vidAR/cropaspect)
-			tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
-			tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
+		if (!prf.VID169){
+			if (vidAR > cropaspect){ // Cut sides
+				tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width * (cropaspect/vidAR)
+				tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height
+				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.5*(tilez[i].vidsz.texture_width - tilez[i].vidsz.subimg_width)
+				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.0
+			}
+			else { // Cut top and bottom
+				tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width
+				tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height * (vidAR/cropaspect)
+				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
+				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
+			}
 		}
 	}
 
