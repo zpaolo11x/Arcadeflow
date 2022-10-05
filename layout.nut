@@ -1829,7 +1829,7 @@ function integereven(n){
 	local n_round = integerp(n)
 	return (n_round + n_round%2.0)
 }
-
+/*
 function hsl2rgb (H,S,L){
 	local C = (1.0 - absf(2.0 * L - 1.0)) * S
 	local X = C * (1.0 - absf( ((H*1.0/60.0) % 2 ) - 1.0 ))
@@ -1849,6 +1849,22 @@ function hsl2rgb (H,S,L){
 		R = (R1 + m)
 		G = (G1 + m)
 		B = (B1 + m)
+	}
+	return (OUT)
+}
+*/
+function hsl2rgb( H,S,L )
+{
+	local R = min(max(absf(((H / 360.0 * 6.0 + 0.0) % 6.0)-3.0)-1.0, 0.0), 1.0 )
+	local G = min(max(absf(((H / 360.0 * 6.0 + 4.0) % 6.0)-3.0)-1.0, 0.0), 1.0 )
+	local B = min(max(absf(((H / 360.0 * 6.0 + 2.0) % 6.0)-3.0)-1.0, 0.0), 1.0 )
+   R = (L + S * (R-0.5)*(1.0-absf(2.0*L-1.0)))
+   G = (L + S * (G-0.5)*(1.0-absf(2.0*L-1.0)))
+   B = (L + S * (B-0.5)*(1.0-absf(2.0*L-1.0)))
+	local OUT ={
+		R = (R)
+		G = (G)
+		B = (B)
 	}
 	return (OUT)
 }
