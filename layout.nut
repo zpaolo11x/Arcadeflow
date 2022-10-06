@@ -1855,16 +1855,14 @@ function hsl2rgb (H,S,L){
 */
 function hsl2rgb( H,S,L )
 {
-	local R = min(max(absf(((H / 360.0 * 6.0 + 0.0) % 6.0)-3.0)-1.0, 0.0), 1.0 )
-	local G = min(max(absf(((H / 360.0 * 6.0 + 4.0) % 6.0)-3.0)-1.0, 0.0), 1.0 )
-	local B = min(max(absf(((H / 360.0 * 6.0 + 2.0) % 6.0)-3.0)-1.0, 0.0), 1.0 )
-   R = (L + S * (R-0.5)*(1.0-absf(2.0*L-1.0)))
-   G = (L + S * (G-0.5)*(1.0-absf(2.0*L-1.0)))
-   B = (L + S * (B-0.5)*(1.0-absf(2.0*L-1.0)))
+	local RGB = [0.0,4.0,2.0]
+	RGB.apply(function(value){
+		return((L + S * ((min(max(absf(((H / 360.0 * 6.0 + value) % 6.0) - 3.0) - 1.0, 0.0), 1.0 )) - 0.5) * (1.0 - absf(2.0 * L - 1.0))))
+	})
 	local OUT ={
-		R = (R)
-		G = (G)
-		B = (B)
+		R = (RGB[0])
+		G = (RGB[1])
+		B = (RGB[2])
 	}
 	return (OUT)
 }
