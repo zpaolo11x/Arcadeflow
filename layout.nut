@@ -14019,6 +14019,9 @@ function clampaspect (aspect){
 
 // Function that updates snap position, size and internal crop
 function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
+	local w0 = 0
+	local h0 = 0
+
 	if (cropaspect == 0){ //INITIALIZE NEW ARTWORK ASPECT
 		cropaspect = clampaspect (aspect)
 		if (prf.CROPSNAPS && !prf.BOXARTMODE) cropaspect = 1.0
@@ -14113,6 +14116,17 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
 				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
 			}
+		} else {
+			// Rotate video
+
+			w0 = tilez[i].vidsz.width
+			h0 = tilez[i].vidsz.height
+
+			tilez[i].vidsz.rotation = 90
+			tilez[i].vidsz.x = tilez[i].vidsz.x + w0
+			tilez[i].vidsz.width = h0
+			tilez[i].vidsz.height = w0
+
 		}
 	}
 
@@ -15678,8 +15692,8 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
-//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
-//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+	//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
+	//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
