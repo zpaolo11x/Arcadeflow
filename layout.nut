@@ -6485,6 +6485,7 @@ function mfz_apply(startlist){
 	debugpr("mfz_apply\n")
 	// Create z_list
 	bar_run(z_listcreate)
+
 	testpr("X\n")
 	if (prf.ENABLESORT) z_list_startorder()
 	z_list.layoutstart = false
