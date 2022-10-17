@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
+	timer = true
 	timetable = {}
 }
 
@@ -153,6 +153,10 @@ local AF = {
 	emulatordata = {}
 
 	LNG = ""
+
+	progbar = null
+	progindex = 0
+	progrunning = false
 }
 
 AF.vernum = AF.version.tofloat()*10
@@ -4928,6 +4932,7 @@ z_list.allromlists = allromlists()
 // listcreate is run
 
 function z_updatetagstable(){
+	timestart("    z_updatetagstable")
 	// Clear the tags table
 	z_list.tagstable = {}
 	z_list.tagstableglobal = {}
@@ -4984,6 +4989,7 @@ function z_updatetagstable(){
 
 	}
 	*/
+	timestop ("    z_updatetagstable")
 }
 
 function z_initfavsfromfiles(){
@@ -5775,6 +5781,8 @@ function mfz_build (reset){
 
 	// Scan the whole romlist
 	for (local i = 0 ; i < fe.list.size ; i++) {
+		//testpr(0xeafb+floor(i*10.0/(fe.list.size-1))+"\n")
+		//AF.progbar.msg = gly(0xeafb + floor(i*10.0/(fe.list.size-1)))
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 		foreach (id0, table0 in multifilterz.l0){
 			local vals = table0.levcheck(i-fe.list.index)
@@ -6133,6 +6141,9 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
+		//AF.progbar.msg = gly(0xeafb + floor(i*5.0/(z_list.boot.len()-1)))
+		//AF.progbar.x = AF.progbar.x+1
+
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
 			local vals = table0.levcheck(i - fe.list.index)
@@ -6416,7 +6427,7 @@ function z_list_updategamedata(index){
 
 // Applies the multifilter to the romlist updating all the tiles
 function mfz_apply(startlist){
-	timestart ("mfz_apply")
+	timestart("mfz_apply")
 	local bootlist_index_remap = 0
 	local bootlist_index_old = 0
 	try {bootlist_index_old = z_list.gametable[z_list.index].z_felistindex}catch(err){}
@@ -6691,14 +6702,11 @@ function getallgamesdb(logopic){
 
 // create a proxy list, takes a while but should make faster filtering and sorting changes
 function z_listboot(){
-	timestart ("z_listboot")
+	timestart("z_listboot")
 	debugpr("z_listboot\n")
 	z_list.allromlists = allromlists()
 
-
-	timestart("z_updatetagstable")
 	z_updatetagstable()
-	timestop("z_updatetagstable")
 	//z_initfavsfromfiles()
 	//z_initrundatefromfiles()
 	//z_initfavdatefromfiles()
@@ -6760,9 +6768,7 @@ timestart("boot")
 
 timestop("boot")
 
-timestart("updatetags")
 	z_updatetagstable()
-timestop("updatetags")
 
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
@@ -6787,9 +6793,9 @@ local nolist_blanker = null
 local data_surface = null
 // Create the new list from current fe.list
 function z_listcreate(){
-
+	timestart("    z_listcreate")
 	debugpr("LIST: Create\n")
-
+	AF.progrunning = true
 	z_list.gametable.clear()
 	z_list.gametable2.clear()
 	z_list.jumptable.clear()
@@ -6800,9 +6806,14 @@ function z_listcreate(){
 	z_list.size = 0
 
 	local felist = array(fe.list.size)
-
+	local timezero = fe.layout.time
 	foreach (i, item in z_list.boot){
-
+		if (fe.layout.time - timezero >= 60) {
+			testpr("XXXXXXXXXXXXXXXXXX")
+			timezero = fe.layout.time
+		}
+		AF.progbar.x = i/10
+		testpr(AF.progbar.x+"\n")
 		local ifeindex = i - fe.list.index
 		local checkfilter = true
 		local checkmeta = null
@@ -6846,6 +6857,7 @@ function z_listcreate(){
 	multifilterglyph.visible = mfz_on()
 
 	nolist_blanker.visible = (z_list.size == 0)
+	timestop("    z_listcreate")
 }
 
 // scrap articles from names
@@ -6961,6 +6973,7 @@ function z_listsort(orderby,reverse){
 
 // Creates an array for prev-next jump
 function z_liststops(){
+	timestart("    z_liststops")
 	local temp = []
 
 	for (local i = 0 ; i < z_list.size ; i++){
@@ -7063,6 +7076,7 @@ function z_liststops(){
 		}
 		//z_list.jumptable[i].prev = modwrap (z_list.jumptable[i].stop - 1 , z_list.size)
 	}
+	timestop("    z_liststops")
 }
 
 // Function to re-sync the index when a list has been ordered
@@ -7076,6 +7090,7 @@ function z_liststupdateindex(){
 }
 
 function z_filteredlistupdateindex(reindex){
+	timestart("    z_filteredlistupdateindex")
 	if (reindex != null) {
 		z_list.newindex = z_list.index = reindex
 		fe.list.index = z_list.gametable[reindex].z_felistindex
@@ -7092,6 +7107,7 @@ function z_filteredlistupdateindex(reindex){
 		z_liststupdateindex()
 		z_list.newindex = z_list.index
 	}
+	timestop("    z_filteredlistupdateindex")
 }
 
 // Function to apply a change to the z_list
@@ -13785,7 +13801,19 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
 }
 
-	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
+/// Progress Bar ///
+
+AF.progbar = fe.add_rectangle(0.5*(fl.w_os - 200*UI.scalerate) , 0.5*(fl.h_os - 200*UI.scalerate), 200*UI.scalerate, 200*UI.scalerate) //TEST149 CHECK CENTERING WITH OD
+/*
+AF.progbar.margin = 0
+AF.progbar.align = Align.MiddleCentre
+AF.progbar.font = uifonts.glyphs
+AF.progbar.charsize = 200*UI.scalerate
+AF.progbar.zorder = 100000
+AF.progbar.word_wrap = true
+*/
+
+//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
 
 local fps = {
@@ -15022,6 +15050,7 @@ function finaltileupdate(){
 }
 
 function z_listrefreshtiles(){
+	timestart ("    z_listrefreshtiles")
 	logotitle = null
 	boxtitle = null
 
@@ -15043,15 +15072,18 @@ function z_listrefreshtiles(){
 		}
 
 		finaltileupdate()
-
+	timestop("    z_listrefreshtiles")
 	//}
 }
 
 function z_updatefilternumbers(idx){
+	timestart ("    z_updatefilternumbers")
 	filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
+	timestop ("    z_updatefilternumbers")
 }
 
 function z_listrefreshlabels(){
+	timestart("    z_listrefreshlabels")
 	// Clean old ticks and labels
 	filterdata.msg = (prf.CLEANLAYOUT ? "" : ( ( (fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name+ "\n")  + gamelistorder(0)))
 
@@ -15207,6 +15239,7 @@ function z_listrefreshlabels(){
 
 		if (labelorder.len() != 0) sortticks[labelorder[0]].visible = false
 	}
+	timestop("    z_listrefreshlabels")
 }
 
 
@@ -15694,6 +15727,7 @@ function tick( tick_time ) {
 
 	//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 	//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
