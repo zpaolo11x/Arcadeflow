@@ -40,6 +40,7 @@ function bar_init(){
 	bar_time1 = bar_time0
 }
 
+
 function bar_update(i, max){
 	bar_time1 = clock()
 	if ((floor(10*i*1.0/max) != bar_pos) && (bar_time1 - bar_time0 >= 1.0/ScreenRefreshRate)) {
