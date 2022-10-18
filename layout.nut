@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
+	timer = true
 	timetable = {}
 }
 
@@ -57,7 +57,7 @@ function timestart(name){
 function timestop(name){
 	if (!elapse.timer) return
 	elapse.t2 = fe.layout.time
-	print("\n    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n\n")
+	print("    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n")
 }
 
 local IDX = array(100000)
@@ -153,6 +153,13 @@ local AF = {
 	emulatordata = {}
 
 	LNG = ""
+
+	bar = {
+		time0 = 0
+		time1 = 0
+		progress = 0
+
+	}
 }
 
 AF.vernum = AF.version.tofloat()*10
@@ -207,6 +214,24 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.condensed
 	fe.overlay.edit_dialog(text1,text2)
 	fe.layout.font = uifonts.general
+}
+
+
+function bar_update(i,init,max){
+	if (i == init){
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		return
+	}
+	AF.bar.time1 = clock()
+	if ((ceil(10*i*1.0/max) != AF.bar.progress) && (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate)) {
+		AF.bar.progress = ceil(10*i*1.0/max)
+		AF.bar.time0 = AF.bar.time1
+		fe.layout.font = uifonts.glyphs
+		fe.overlay.splash_message(gly(0xeafb+AF.bar.progress))
+		fe.layout.font = uifonts.general
+	}
 }
 
 /// Config management ///
@@ -6136,6 +6161,8 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
+		bar_update(i,0,z_list.boot.len())
+
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
 			local vals = table0.levcheck(i - fe.list.index)
@@ -6797,7 +6824,11 @@ function z_listcreate(){
 	z_list.size = 0
 
 	local felist = array(fe.list.size)
+
 	foreach (i, item in z_list.boot){
+
+		bar_update(i,0,z_list.boot.len())
+
 		local ifeindex = i - fe.list.index
 		local checkfilter = true
 		local checkmeta = null
@@ -6867,7 +6898,7 @@ function aggregatedisplayfilter(){
 
 // Function to sort the list
 function z_listsort(orderby,reverse){
-
+	timestart("    z_listsort")
 	local blanker = "                                                            "
 	if (z_list.size == 0) return
 
@@ -6952,6 +6983,7 @@ function z_listsort(orderby,reverse){
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby,reverse]
 		savetabletofile(SORTTABLE,"pref_sortorder.txt")
 	}
+	timestop("    z_listsort")
 
 }
 
