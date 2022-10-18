@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -162,7 +162,7 @@ local AF = {
 		picbg = null
 		size = 300
 		dark = 40
-		darkalpha = 60
+		darkalpha = 100
 	}
 }
 
@@ -222,43 +222,56 @@ function z_edit_dialog(text1,text2){
 
 
 function bar_update(i,init,max){
+//	print ("i:"+i+" ")
 	local redraw = false
 	if (i == init){
+		print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
 		AF.bar.pic.visible = true
 		AF.bar.picbg.visible = true
-		AF.bar.picbg.msg=gly(0xeafb+11)
+		AF.bar.picbg.msg=gly(0xeafb+12)
+		AF.bar.pic.msg = gly(0xeafb)
 		return
 	}
+
 	if (i == max-1){
+		print("CLOSE\n")
 		AF.bar.pic.visible = false
 		AF.bar.picbg.visible = false
 		return
 	}
+
 	AF.bar.time1 = clock()
 
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		print (" FRAME ")
 		if (i <= max*0.2) {
+			print ("i<max*0.2")
 			redraw = true
 			AF.bar.pic.alpha = 255 * i/(max*0.2)
 			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
 		}
-		else if (i >= max*0.8){
+		else if (i >= max*0.9){
+			print ("i>max*0.8")
 			redraw = true
-			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.8)/(max*0.2))
-			AF.bar.picbg.alpha = AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
+			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
+			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
 		}
 
-		if (ceil(10*i*1.0/max) != AF.bar.progress){
-			AF.bar.progress = ceil(10*i*1.0/max)
+		if (floor(11*i*1.0/max) != AF.bar.progress){
+			AF.bar.progress = floor(11*i*1.0/max)
 			AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
+			print (" progress:"+AF.bar.progress+" ")
 			redraw = true
 		}
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
+		print("\n")
+
 	}
+
 }
 
 /// Config management ///
