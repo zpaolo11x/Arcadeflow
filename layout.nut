@@ -158,7 +158,8 @@ local AF = {
 		time0 = 0
 		time1 = 0
 		progress = 0
-
+		pic = null
+		picbg = null
 	}
 }
 
@@ -218,19 +219,40 @@ function z_edit_dialog(text1,text2){
 
 
 function bar_update(i,init,max){
+	local redraw = false
 	if (i == init){
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
+		AF.bar.pic.visible = true
+		AF.bar.picbg.visible = true
+		AF.bar.picbg.msg=gly(0xeafb+11)
+		return
+	}
+	if (i == max-1){
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
 		return
 	}
 	AF.bar.time1 = clock()
-	if ((ceil(10*i*1.0/max) != AF.bar.progress) && (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate)) {
-		AF.bar.progress = ceil(10*i*1.0/max)
+
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		if (i <= max*0.2) {
+			redraw = true
+			AF.bar.pic.alpha = AF.bar.picbg.alpha = 255 * i/(max*0.2)
+		}
+		else if (i >= max*0.8){
+			redraw = true
+			AF.bar.pic.alpha = AF.bar.picbg.alpha = 255 * (1.0-(i-max*0.8)/(max*0.2))
+		}
+
+		if (ceil(10*i*1.0/max) != AF.bar.progress){
+			AF.bar.progress = ceil(10*i*1.0/max)
+			AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
+			redraw = true
+		}
 		AF.bar.time0 = AF.bar.time1
-		fe.layout.font = uifonts.glyphs
-		fe.overlay.splash_message(gly(0xeafb+AF.bar.progress))
-		fe.layout.font = uifonts.general
+		if (redraw) fe.layout.redraw()
 	}
 }
 
@@ -13816,6 +13838,21 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 	AF.messageoverlay.char_size = 16
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
 }
+
+/// PROGRESS BAR ///
+
+AF.bar.picbg = fe.add_text("",0.5*(fl.w_os - 200*UI.scalerate) , 0.5*(fl.h_os - 200*UI.scalerate), 200*UI.scalerate, 200*UI.scalerate) //TEST149 CHECK CENTERING WITH OD
+AF.bar.pic = fe.add_text("",0.5*(fl.w_os - 200*UI.scalerate) , 0.5*(fl.h_os - 200*UI.scalerate), 200*UI.scalerate, 200*UI.scalerate) //TEST149 CHECK CENTERING WITH OD
+AF.bar.pic.font = AF.bar.picbg.font = "fonts/font_glyphs.ttf"
+AF.bar.pic.margin = AF.bar.picbg.margin = 0
+AF.bar.pic.align = AF.bar.picbg.align = Align.MiddleCentre
+AF.bar.pic.charsize = 200*UI.scalerate
+AF.bar.picbg.charsize = 200*UI.scalerate
+AF.bar.picbg.zorder = 100000
+AF.bar.pic.zorder = 100001
+AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = true
+AF.bar.pic.visible = AF.bar.picbg.visible = false
+AF.bar.picbg.set_rgb(0,0,0)
 
 //Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
