@@ -51,12 +51,12 @@ local ap = '"'.tochar()
 function timestart(name){
 	if (!elapse.timer) return
 	print ("\n    "+name+" START\n")
-	elapse.timetable.rawset(name, floor(clock()*1000))
+	elapse.timetable.rawset(name, fe.layout.time)
 }
 
 function timestop(name){
 	if (!elapse.timer) return
-	elapse.t2 =  floor(clock()*1000)
+	elapse.t2 = fe.layout.time
 	print("\n    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n\n")
 }
 
@@ -153,42 +153,6 @@ local AF = {
 	emulatordata = {}
 
 	LNG = ""
-}
-
-local bar = {
-	pic = null
-	thread = null
-	pos = 0
-	redraw = false
-	time0 = 0
-	time1 = 0
-}
-function bar_run(functiontorun){
-	testpr("A\n")
-	bar.thread = newthread(functiontorun)
-	bar.thread.call(fe.list.index,fe.list.size)
-}
-
-function bar_init(){
-	bar.redraw = true
-	bar.time0 = clock()
-	bar.time1 = bar.time0
-}
-
-
-function bar_update(i, max, span){
-	bar.time1 = clock()
-	if ((floor(span*i*1.0/max) != bar.pos) && (bar.time1 - bar.time0 >= 1.0/ScreenRefreshRate)) {
-		bar.pos = floor(span*i*1.0/max)
-		bar.time0 = bar.time1
-		suspend()
-	}
-}
-
-function bar_close(span){
-	bar.pos = span
-	suspend()
-	bar.redraw = false
 }
 
 AF.vernum = AF.version.tofloat()*10
@@ -5814,7 +5778,6 @@ function mfz_build (reset){
 	// Scan the whole romlist
 	for (local i = 0 ; i < fe.list.size ; i++) {
 		//testpr(0xeafb+floor(i*10.0/(fe.list.size-1))+"\n")
-		//AF.progbar.msg = gly(0xeafb + floor(i*10.0/(fe.list.size-1)))
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 		foreach (id0, table0 in multifilterz.l0){
 			local vals = table0.levcheck(i-fe.list.index)
@@ -6173,9 +6136,6 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
-		//AF.progbar.msg = gly(0xeafb + floor(i*5.0/(z_list.boot.len()-1)))
-		//AF.progbar.x = AF.progbar.x+1
-
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
 			local vals = table0.levcheck(i - fe.list.index)
@@ -6484,9 +6444,7 @@ function mfz_apply(startlist){
 
 	debugpr("mfz_apply\n")
 	// Create z_list
-	bar_run(z_listcreate)
-
-	testpr("X\n")
+	z_listcreate()
 	if (prf.ENABLESORT) z_list_startorder()
 	z_list.layoutstart = false
 	if (prf.ENABLESORT) z_listsort(z_list.orderby,z_list.reverse)
@@ -6826,30 +6784,21 @@ timestop("boot")
 local nolist_blanker = null
 local data_surface = null
 // Create the new list from current fe.list
-function z_listcreate(felistindex,felistsize){
-
+function z_listcreate(){
 	timestart("    z_listcreate")
 	debugpr("LIST: Create\n")
-	testpr("B\n")
-
 	z_list.gametable.clear()
 	z_list.gametable2.clear()
 	z_list.jumptable.clear()
-	testpr("W\n")
-	z_list.index = z_list.newindex = felistindex
+	z_list.index = z_list.newindex = fe.list.index
 
 	local ireal = 0
 	local ifilter = 0
 	z_list.size = 0
 
-	local felist = array(felistsize)
-	testpr("C\n")
-	bar_init()
-	testpr("D\n")
+	local felist = array(fe.list.size)
 	foreach (i, item in z_list.boot){
-		bar_update(i,z_list.boot.len(),10)
-
-		local ifeindex = i - felistindex
+		local ifeindex = i - fe.list.index
 		local checkfilter = true
 		local checkmeta = null
 		local mfz_status = {inmfz = true, meta = true}
@@ -6888,8 +6837,7 @@ function z_listcreate(felistindex,felistsize){
 			}
 		}
 	}
-	bar_close(10)
-	testpr("Y\n")
+
 	multifilterglyph.visible = mfz_on()
 
 	nolist_blanker.visible = (z_list.size == 0)
@@ -13837,17 +13785,6 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
 }
 
-/// Progress Bar ///
-
-bar.pic = fe.add_text("",0.5*(fl.w_os - 200*UI.scalerate) , 0.5*(fl.h_os - 200*UI.scalerate), 200*UI.scalerate, 200*UI.scalerate) //TEST149 CHECK CENTERING WITH OD
-bar.pic.font = "fonts/font_glyphs.ttf"
-bar.pic.margin = 0
-bar.pic.align = Align.MiddleCentre
-bar.pic.charsize = 200
-bar.pic.zorder = 100000
-bar.pic.word_wrap = true
-bar.pic.set_bg_rgb(200,0,0)
-
 //Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
 
@@ -15762,12 +15699,6 @@ function tick( tick_time ) {
 
 	//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 	//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-
-	if (bar.redraw) {
-		bar.pic.msg = gly(0xeafb+bar.pos)
-		bar.thread.wakeup()
-		return //only update bar
-	}
 
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
