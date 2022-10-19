@@ -161,8 +161,8 @@ local AF = {
 		pic = null
 		picbg = null
 		size = 300
-		dark = 40
-		darkalpha = 100
+		dark = 60
+		darkalpha = 90
 	}
 }
 
@@ -237,7 +237,7 @@ function bar_update(i,init,max){
 	}
 
 	if (i == max-1){
-		print("CLOSE\n")
+		//print("CLOSE\n")
 		AF.bar.pic.visible = false
 		AF.bar.picbg.visible = false
 		return
@@ -246,15 +246,15 @@ function bar_update(i,init,max){
 	AF.bar.time1 = clock()
 
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
-		print (" FRAME ")
+		//print (" FRAME ")
 		if (i <= max*0.2) {
-			print ("i<max*0.2")
+			//print ("i<max*0.2")
 			redraw = true
 			AF.bar.pic.alpha = 255 * i/(max*0.2)
 			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
 		}
 		else if (i >= max*0.9){
-			print ("i>max*0.8")
+			//print ("i>max*0.8")
 			redraw = true
 			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
 			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
@@ -263,12 +263,12 @@ function bar_update(i,init,max){
 		if (floor(11*i*1.0/max) != AF.bar.progress){
 			AF.bar.progress = floor(11*i*1.0/max)
 			AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
-			print (" progress:"+AF.bar.progress+" ")
+			//print (" progress:"+AF.bar.progress+" ")
 			redraw = true
 		}
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
-		print("\n")
+		//print("\n")
 
 	}
 
