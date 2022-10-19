@@ -1,3 +1,4 @@
 14.9
+Added progress bar for long filtering operations
 Fixed vertical arcade videos
 Increased buttons and players number in metadta editor

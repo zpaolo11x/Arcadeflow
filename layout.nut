@@ -225,7 +225,7 @@ function bar_update(i,init,max){
 //	print ("i:"+i+" ")
 	local redraw = false
 	if (i == init){
-		print("INIT\n")
+		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
