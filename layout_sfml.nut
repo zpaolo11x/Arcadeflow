@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.8
+// Arcadeflow - v 14.6
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -57,7 +57,7 @@ function timestart(name){
 function timestop(name){
 	if (!elapse.timer) return
 	elapse.t2 = fe.layout.time
-	print("    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n")
+	print("\n    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n\n")
 }
 
 local IDX = array(100000)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.8"
+	version = "14.6"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -153,17 +153,6 @@ local AF = {
 	emulatordata = {}
 
 	LNG = ""
-
-	bar = {
-		time0 = 0
-		time1 = 0
-		progress = 0
-		pic = null
-		picbg = null
-		size = 300
-		dark = 60
-		darkalpha = 90
-	}
 }
 
 AF.vernum = AF.version.tofloat()*10
@@ -220,60 +209,6 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.general
 }
 
-
-function bar_update(i,init,max){
-//	print ("i:"+i+" ")
-	local redraw = false
-	if (i == init){
-		//print("INIT\n")
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.pic.visible = true
-		AF.bar.picbg.visible = true
-		AF.bar.picbg.msg=gly(0xeafb+12)
-		AF.bar.pic.msg = gly(0xeafb)
-		return
-	}
-
-	if (i == max-1){
-		//print("CLOSE\n")
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		return
-	}
-
-	AF.bar.time1 = clock()
-
-	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
-		//print (" FRAME ")
-		if (i <= max*0.2) {
-			//print ("i<max*0.2")
-			redraw = true
-			AF.bar.pic.alpha = 255 * i/(max*0.2)
-			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
-		}
-		else if (i >= max*0.9){
-			//print ("i>max*0.8")
-			redraw = true
-			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
-			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
-		}
-
-		if (floor(11*i*1.0/max) != AF.bar.progress){
-			AF.bar.progress = floor(11*i*1.0/max)
-			AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
-			//print (" progress:"+AF.bar.progress+" ")
-			redraw = true
-		}
-		AF.bar.time0 = AF.bar.time1
-		if (redraw) fe.layout.redraw()
-		//print("\n")
-
-	}
-
-}
-
 /// Config management ///
 
 /* Principles of ALLGAMES collections:
@@ -325,9 +260,9 @@ WORKFLOW
 
 function restartAM(){
 	fe.signal("exit_to_desktop")
-	if (OS == "Windows") system ("start attractplus-console.exe")
-	else if (OS == "OSX") system ("./attractplus &")
-	else system ("attractplus &")
+	if (OS == "Windows") system("start attractplus-console.exe")
+	else if (OS == "OSX") system("./attractplus &")
+	else system("attractplus &")
 }
 
 // This function parses the attract.cfg and builds a structure for all displays
@@ -599,13 +534,13 @@ function unzipfile (zipfilepath, outputpath){
    local fout = null
 
 	// Create output folder if needed
-   system ("mkdir " + ap + outputpath + ap)
+   system("mkdir " + ap + outputpath + ap)
 
    foreach (id, item in zipdir){
 
       // Item is a folder, create it
       if ((item.slice(-1)=="/") && (!(split(item,"/")[split(item,"/").len()-1].slice(0,1)=="."))) {
-         system ("mkdir " + ap + outputpath + item + ap)
+         system("mkdir " + ap + outputpath + item + ap)
       }
 
       // Item is a file, unpack it to the proper folder
@@ -812,7 +747,6 @@ AF.prefs.l1.push([
 {v = 8.5, varname = "fadevideotitle", glyph = 0xe913, initvar = function(val,prf){prf.FADEVIDEOTITLE <- val}, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 8.4, varname = "thumbvidelay", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDELAY <- val}, title = "Video delay multiplier", help = "Increase video load delay" , options = ["0.25x","0.5x","1x", "2x","3x","4x","5x"], values = [0.25,0.5,1,2,3,4,5], selection = 2},
 {v = 7.2, varname = "missingwheel", glyph = 0xea6d, initvar = function(val,prf){prf.MISSINGWHEEL <- val}, title = "Generate missing title art", help = "If no game title is present, the layout can generate it" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["missingwheelyes"+AF.prefs.imgext,"missingwheelno"+AF.prefs.imgext],pic = "missingwheel"+AF.prefs.imgext},
-{v = 14.8, varname = "vid169", glyph = 0xea57, initvar = function(val,prf){prf.VID169 <- val}, title = "Vertical arcade videos", help = "Enable this option if you are using 9:16 videos from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Decorations", selection = AF.req.liner},
 {v = 9.6, varname = "redcross", glyph = 0xe936, initvar = function(val,prf){prf.REDCROSS <- val}, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 7.2, varname = "newgame", glyph = 0xe936, initvar = function(val,prf){prf.NEWGAME <- val}, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
@@ -867,7 +801,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
 {v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 14.9, varname = "bgtunevolume", glyph = 0xe994, initvar = function(val,prf){prf.BGTUNEVOLUME <- val}, title = "Background volume", help = "Set the volume for background music", options = [0,100,100], values = 100, selection = AF.req.slideint},
+{v = 14.6, varname = "bgtunevolume", glyph = 0xe994, initvar = function(val,prf){prf.BGTUNEVOLUME <- val}, title = "Background volume", help = "Set the volume for background music", options = [0,100,100], values = 100, selection = AF.req.slideint},
 {v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
@@ -898,9 +832,9 @@ menucounter ++
 sorter.rawset("um", menucounter)
 AF.prefs.l0.push({label = "UTILITY MENU", glyph = 0xe9bd, description = "Customize the utility menu entries that you want to see in the menu"})
 AF.prefs.l1.push([
-{v = 14.6, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(20), selection = AF.req.menusort},
-{v = 14.6, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(20)}, selection = AF.req.executef},
-])
+	{v = 14.6, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(20), selection = AF.req.menusort},
+	{v = 14.6, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(20)}, selection = AF.req.executef},
+	])
 
 menucounter ++
 AF.prefs.l0.push({ label = "DISPLAYS MENU PAGE", glyph = 0xe912, description = "Arcadeflow has its own Displays Menu page that can be configured here"})
@@ -1024,19 +958,17 @@ AF.prefs.l0.push({ label = "ROMLIST MANAGEMENT", glyph = 0xea80, description = "
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "ROMLISTS", selection = AF.req.liner},
 {v = 12.0, varname = "refreshromlist", glyph = 0xe982, initvar = function(val,prf){prf.REFRESHROMLIST <- val}, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data" , options = "", values = function(){local tempprf = generateprefstable();refreshselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 14.7, varname = "resetdatabase", glyph = 0xe97c, initvar = function(val,prf){prf.RESETDATABASE <- val}, title = "Erase romlist database", help = "Doesn't rescan the romlist, bur erases all game database information" , options = "", values = function(){local tempprf = generateprefstable();eraseselecteddatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.0, varname = "cleanromlist", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANROMIST <- val}, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data" , options = "", values = function(){local tempprf = generateprefstable();resetselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 12.3, varname = "resetlastplayed", glyph = 0xe97c, initvar = function(val,prf){prf.RESETLASTPLAYED <- val}, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = AF.req.liner},
 {v = 13.9, varname = "masterlist", glyph = 0xe95c, initvar = function(val,prf){prf.MASTERLIST <- val}, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it" , options = ["Yes", "No"], values = [true, false],selection = 1},
-{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation", options = "", values = "", selection = AF.req.filereqs},
+{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation.", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ROMLIST EXPORT", selection = AF.req.liner},
 {v = 12.0, varname = "buildxml", glyph = 0xe961, initvar = function(val,prf){prf.BUILDXML <- val}, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation" , options = "", values = function(){buildgamelistxml()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = AF.req.liner},
 {v = 12.1, varname = "allgames", glyph = 0xe95c, initvar = function(val,prf){prf.ALLGAMES <- val}, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
 {v = 12.0, varname = "updateallgames", glyph = 0xe95c, initvar = function(val,prf){prf.UPDATEALLGAMES <- val}, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = AF.req.liner},
-{v = 14.7, varname = "cleandatabase", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANDATABASE <- val}, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry" , options = "", values = function(){local tempprf = generateprefstable();cleandatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 14.1, varname = "enablehidden", glyph = 0xe997, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
@@ -1048,7 +980,6 @@ AF.prefs.l1.push([
 	{v = 14.6, varname = "raenabled", glyph = 0xeafa, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
 	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "Custom executable path", help = "Enter the path to RetroArch executable if not installed in your OS default location", options = "", values = "", selection = AF.req.textentr},
 	{v = 14.6, varname = "racorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACOREPATH <- val}, title = "Custom Core folder", help = "Enter a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.textentr},
-	{v = 14.7, varname = "rainfopath", glyph = 0xe930, initvar = function(val,prf){prf.RAINFOPATH <- val}, title = "Custom Info folder", help = "Enter a custom folder for RA info files if not using standard locations", options = "", values = "", selection = AF.req.textentr},
 ])
 
 menucounter ++
@@ -1275,27 +1206,21 @@ function generateselectiontable(){
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
 function saveprefdata(prf,target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
-   local ss_prfpath = fe.path_expand( AF.folder+"ss_login.txt")
    if (target != null) prfpath = target
 	local prffile = WriteTextFile (prfpath)
-	local ss_prffile = WriteTextFile (ss_prfpath)
 	prffile.write_line (AF.version+"\n")
    foreach (label, val in prf){
-      if ((label != "SS_USERNAME") && (label != "SS_PASSWORD")) prffile.write_line ("|" + label + "|" + val+"|\n")
-		else ss_prffile.write_line ("|" + label + "|" + val+"|\n")
+      prffile.write_line ("|" + label + "|" + val+"|\n")
    }
 	prffile.close_file()
-	ss_prffile.close_file()
 }
 
 // readprefdata() reads values of a selection and puts them in the preferences structure.
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
 function readprefdata(target){
    local prfpath = fe.path_expand( AF.folder+"pref_layoutoptions.txt")
-   local ss_prfpath = fe.path_expand( AF.folder+"ss_login.txt")
    if (target != null) prfpath = target
 	local prffile = ReadTextFile (prfpath)
-	local ss_prffile = ReadTextFile (ss_prfpath)
    local ptable = {}
 	local version = ""
 	try {	version = prffile.read_line() } catch (err) {
@@ -1312,7 +1237,7 @@ function readprefdata(target){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
 				local tempdat = AF.prefs.l1[i][j] //Instancing!
 
-				if ((tempdat.varname.toupper() == z[0]) && ( (tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD") )) {
+				if (tempdat.varname.toupper() == z[0]) {
 					if (tempdat.v.tofloat() <= version.tofloat() ) {
 						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
 						else if (z.len() == 1) tempdat.values = ""
@@ -1325,22 +1250,6 @@ function readprefdata(target){
 			}
 		}
 	}
-	while (!ss_prffile.eos()){
-		local ss_templine = ss_prffile.read_line()
-		local ss_z = split (ss_templine,"|")
-		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
-			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-				local ss_tempdat = AF.prefs.l1[i][j] //Instancing!
-
-				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ( (ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD") )) {
-						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
-						else if (ss_z.len() == 1) ss_tempdat.values = ""
-						else ss_tempdat.values = ss_z[1]
-				}
-			}
-		}
-	}
-
 	if (warnmessage != "") {
 		z_splash_message ("Reset prefs:\n\n" + warnmessage)
 		return false
@@ -1898,7 +1807,7 @@ function integereven(n){
 	local n_round = integerp(n)
 	return (n_round + n_round%2.0)
 }
-/*
+
 function hsl2rgb (H,S,L){
 	local C = (1.0 - absf(2.0 * L - 1.0)) * S
 	local X = C * (1.0 - absf( ((H*1.0/60.0) % 2 ) - 1.0 ))
@@ -1918,20 +1827,6 @@ function hsl2rgb (H,S,L){
 		R = (R1 + m)
 		G = (G1 + m)
 		B = (B1 + m)
-	}
-	return (OUT)
-}
-*/
-function hsl2rgb( H,S,L )
-{
-	local RGB = [0.0,4.0,2.0]
-	RGB.apply(function(value){
-		return((L + S * ((min(max(absf(((H / 360.0 * 6.0 + value) % 6.0) - 3.0) - 1.0, 0.0), 1.0 )) - 0.5) * (1.0 - absf(2.0 * L - 1.0))))
-	})
-	local OUT ={
-		R = (RGB[0])
-		G = (RGB[1])
-		B = (RGB[2])
 	}
 	return (OUT)
 }
@@ -2575,19 +2470,19 @@ function parsecommanddat(){
 
 function powerman(action){
 	if (action == "SHUTDOWN"){
-		if (OS == "OSX") system ("osascript -e 'tell app "+ap+"System Events"+ap+" to shut down'")
-		else if (OS == "Windows") system ("shutdown /s /t 0")
-		else system ("sudo shutdown -h now")
+		if (OS == "OSX") system("osascript -e 'tell app "+ap+"System Events"+ap+" to shut down'")
+		else if (OS == "Windows") system("shutdown /s /t 0")
+		else system("sudo shutdown -h now")
 	}
 	if (action == "REBOOT"){
-		if (OS == "OSX") system ("osascript -e 'tell app "+ap+"System Events"+ap+" to restart'")
-		else if (OS == "Windows") system ("shutdown /r /t 0")
-		else system ("sudo reboot")
+		if (OS == "OSX") system("osascript -e 'tell app "+ap+"System Events"+ap+" to restart'")
+		else if (OS == "Windows") system("shutdown /r /t 0")
+		else system("sudo reboot")
 	}
 	if (action == "SUSPEND"){
-		if (OS == "OSX") system ("osascript -e 'tell app "+ap+"System Events"+ap+" to sleep'")
-		else if (OS == "Windows") system ("shutdown /h")
-		else system ("sudo pm-hibernate")
+		if (OS == "OSX") system("osascript -e 'tell app "+ap+"System Events"+ap+" to sleep'")
+		else if (OS == "Windows") system("shutdown /h")
+		else system("sudo pm-hibernate")
 	}
 }
 
@@ -2809,7 +2704,7 @@ function exitcommand(){
 		if (index0 != null) {
 			templine2 = strip(templine.slice(index0+12,templine.len()))
 			if (templine2 == "") return
-			system (templine2)
+			system(templine2)
 			return
 		}
 	}
@@ -3000,8 +2895,6 @@ function getemulatordata(emulatorname){
 	local executable = ""
 	local args = ""
 	local racore = ""
-	local start = 0
-	local stop = 0
 
 	while (!infile.eos()){
 		inline = infile.read_line()
@@ -3053,20 +2946,17 @@ function getemulatordata(emulatorname){
 	}
 
 	if (executable.tolower().find("retroarch") == null) racore = ""
-	else if (args.find("-L ") == null) racore = ""
 	else {
 		racore = args
-		start = racore.find("-L ")+3
-		stop = racore.find("_libretro")
+		if (racore.find("_libretro") != null){
+			racore = racore.slice(0,racore.find("_libretro"))
+			if (racore[0].tochar() == ap)
+				racore = racore.slice(1,0)
 
-		if (stop != null){
-			racore = racore.slice(start,stop)
-		} else {
-			racore = racore.slice(start)
+			racore = split(racore,"/\\ ")
+			racore = racore[racore.len()-1]
 		}
-		racore = split(racore," ")[0]
-		racore = split(racore,"/\\ ")
-		racore = racore[racore.len()-1]
+		else racore = split(args," ")[1]
 	}
 
 	if (artworktable.rawin ("snap") && artworktable.snap.find(";") != null){
@@ -3243,7 +3133,6 @@ function textrate (num,den,columns,ch1,ch0){
 	return out
 }
 
-
 local dispatcher = []
 local dispatchernum = 0
 
@@ -3267,7 +3156,7 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 	}
 
 
-	system (execss)
+	system(execss)
 	dispatcher[scrapeid].pollstatusA = true
 	suspend()
 
@@ -3327,8 +3216,6 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 	foreach (i,item in urlencoder1){
 		romfilename = subst_replace (romfilename, urlencoder1[i],urlencoder2[i])
 	}
-	romfilename = subst_replace (romfilename, ".","")
-	romfilename = subst_replace (romfilename, " ","")
 
 	local execss = ""
 	if (OS == "Windows"){
@@ -3354,7 +3241,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
 
-	system (execss)
+	system(execss)
 
 	dispatcher[scrapeid].pollstatus = true
 	scraprt("ID"+scrapeid+"-createjson suspend\n")
@@ -3446,65 +3333,44 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 	//TEST120 Should we add the retry check to the arcade scrape portion or not???
-	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
-		// If stripped rom fails, try with non-stripped rom
-      if ((dispatcher[scrapeid].jsonstatus == "ERROR")){
+	if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
+
+      local getcrc = matchrom(scrapeid,romname) //This is the CRC of a rom with matched name
+      // Scraped rom has correct CRC, no more scraping needed
+      if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+			dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
+         dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+      }
+      else {
+         if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
+         else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
+
+         echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
+         // Once the name is perfectly matched, a new scrape is done to get proper rom status
          dispatcher[scrapeid].jsonstatus = null
-		   scraprt("ID"+scrapeid+"-getromdata call createjson ERR\n")
-			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
-		   scraprt("ID"+scrapeid+"-getromdata suspend ERR\n")
+		   scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
+			//TEST132 changed to stripped romname (was just romname)
+			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
+		   scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
 			suspend()
 		   scraprt("ID"+scrapeid+"-getromdata resumed\n")
-		}
 
-		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
+			if (dispatcher[scrapeid].jsonstatus != "ERROR"){
+            dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+            echoprint ("Matched NAME "+dispatcher[scrapeid].gamedata.filename+" with " +dispatcher[scrapeid].gamedata.matchedrom+"\n")
+         }
+      }
 
-
-			local getcrc = matchrom(scrapeid,romname) //This is the CRC of a rom with matched name
-			// Scraped rom has correct CRC, no more scraping needed
-			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
-				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
-				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-			}
-			else {
-				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
-				// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
-				if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
-				else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
-
-				echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
-				// Once the name is perfectly matched, a new scrape is done to get proper rom status
-				dispatcher[scrapeid].jsonstatus = null
-				scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
-				//TEST132 changed to stripped romname (was just romname)
-				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
-				scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
-				suspend()
-				scraprt("ID"+scrapeid+"-getromdata resumed\n")
-
-				if (dispatcher[scrapeid].jsonstatus != "ERROR"){
-					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-					echoprint ("Matched NAME "+dispatcher[scrapeid].gamedata.filename+" with " +dispatcher[scrapeid].gamedata.matchedrom+"\n")
-				}
-			}
-
-			if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
-		}
-		else {
-			echoprint ("ERROR\n")
-			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
-		}
+      if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
    }
    else if(dispatcher[scrapeid].jsonstatus == "RETRY"){
       echoprint ("RETRY\n")
       dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
    }
-   /*
-	else if(dispatcher[scrapeid].jsonstatus == "ERROR"){
-		echoprint ("ERROR\n")
+   else if(dispatcher[scrapeid].jsonstatus == "ERROR"){
+      echoprint ("ERROR\n")
       dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
    }
-	*/
    //dispatcher[scrapeid].gamedata = gamedata
    dispatcher[scrapeid].done = true
 
@@ -3705,20 +3571,20 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			if (tempdataA != null) {
 				if ( !(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext)))) {
 					if (OS == "Windows"){
-						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
+						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
 					}
 					else {
-						system ("curl -f --create-dirs -s " + ap + tempdataA.url + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap+ (emuartcat == "wheel" ? "": " &"))
+						system("curl -f --create-dirs -s " + ap + tempdataA.url + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap+ (emuartcat == "wheel" ? "": " &"))
 					}
 				}
 
 				if ((tempdata.len()>0) && (emuartcat == "wheel") && (  !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext))) ){
 
 					if (OS == "Windows"){
-						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
 					else {
-						system ("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
+						system("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
 					}
 				}
 
@@ -3726,10 +3592,10 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			else if(tempdata.len()>0){
 				if ( !(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension)))) {
 					if (OS == "Windows"){
-						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system(char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
 					else {
-						system ("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
+						system("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap+" &")
 					}
 				}
 			}
@@ -4209,15 +4075,6 @@ function resetselectedromlists(tempprf){
 	updateallgamescollections(tempprf)
 }
 
-function eraseselecteddatabase(tempprf){
-	foreach (item, val in z_list.allromlists) {
-		local listpath1 = AF.romlistfolder + item + ".db1"
-		local listpath2 = AF.romlistfolder + item + ".db2"
-		try {remove (listpath1)}catch(err){print("ERROR1\n")}
-		try {remove (listpath2)}catch(err){print("ERROR2\n")}
-	}
-}
-
 function resetlastplayed(){
 	foreach (i, item in z_list.boot2){
 		item.z_rundate = "00000000000000"
@@ -4549,65 +4406,6 @@ function resetromlist(){
 	fe.set_display(fe.list.display_index)
 }
 
-function cleandatabase(temppref){
-
-	if (temppref.MASTERLIST) {
-		z_edit_dialog("Not possible when master romlist is enabled")
-		return
-	}
-
-	z_splash_message("Cleanup...")
-
-	local has_emulator = false
-	local has_romlist = false
-	local filepresent = false
-	local todolist = []
-	foreach(item, val in z_list.db1){
-		z_splash_message(item+"\nCleaning Database")
-
-		// Check if each db entry has an emulator and a romlist
-		has_emulator = file_exist(FeConfigDirectory+"emulators/"+item+".cfg")
-		has_romlist = file_exist(AF.romlistfolder+item+".txt")
-
-		// If not delete this db main entry
-		if (!(has_emulator && has_romlist)) {
-			z_list.db1.rawdelete(item)
-			z_list.db2.rawdelete(item)
-			// Dovrei cancellare il file effettivo
-		} else {
-			// The entry has emulator and romlist, let's scan games
-			foreach (item2, val2 in val){
-				filepresent = false
-				foreach (i3, item3 in AF.emulatordata[item].romextarray){
-					if (file_exist (AF.emulatordata[item].rompath+item2+item3)) {
-						filepresent = true
-						break
-					}
-				}
-				if (!filepresent) {
-					z_list.db1[item].rawdelete(item2)
-					z_list.db2[item].rawdelete(item2)
-				}
-			}
-		}
-	}
-
-	// Now save the updated db files
-	foreach(item, val in z_list.db1){
-		z_splash_message(item+"\nRefresh Romlist [ ]\nUpdate Database [ ]")
-		refreshromlist(item,false)
-		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [ ]")
-		saveromdb(item, z_list.db1[item], "db1")
-		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [*]")
-		saveromdb(item, z_list.db2[item], "db2")
-	}
-	if (temppref.ALLGAMES) {
-		buildconfig(temppref.ALLGAMES, temppref)
-		update_allgames_collections(true,temppref)
-	}
-	z_splash_message("All Done")
-	//restartAM()
-}
 
 
 // Routine that returns an emty copy of the game data table
@@ -4671,9 +4469,9 @@ local metadata = {
 				yearnames,
 				"string",
 				catnames,
-				["1","2","3","4","5","6","7","8"],
+				["1","2","3","4","5","6"],
 				["Horizontal","Vertical","0","90","270","180"],
-				["1","2","3","4","5","6","7","8"],
+				["1","2","3","4","5","6"],
 				"string",
 				["10.0","9.5","9.0","8.5","8.0","7.5","7.1","6.5","6.0","5.5","5.0","4.5","4.0","3.5","3.0","2.5","2.0","1.5","1.0","0.5","0.0"],
 				"string",
@@ -4997,10 +4795,8 @@ z_list.allromlists = allromlists()
 // listcreate is run
 
 function z_updatetagstable(){
-	timestart("    z_updatetagstable")
 	// Clear the tags table
 	z_list.tagstable = {}
-	z_list.tagstableglobal = {}
 
 	foreach (id, item in z_list.boot2){
 		foreach (id2, item2 in item.z_tags){
@@ -5008,13 +4804,6 @@ function z_updatetagstable(){
 		}
 	}
 
-	foreach (itemname, value in z_list.db2){
-		foreach (id, item in z_list.db2[itemname]){
-			foreach (id2, item2 in item.z_tags){
-				z_list.tagstableglobal.rawset(item2,0)
-			}
-		}
-	}
 	/*
 	foreach (romlistid, val in z_list.allromlists){
 		local tagsarray = []
@@ -5054,7 +4843,6 @@ function z_updatetagstable(){
 
 	}
 	*/
-	timestop ("    z_updatetagstable")
 }
 
 function z_initfavsfromfiles(){
@@ -5492,7 +5280,7 @@ multifilterz.l0["Manufacturer"] <- {
 		levcheck = function(index){
 			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 
-			local v = z_list.boot[index+fe.list.index].z_manufacturer.tolower()
+			local v = z_list.boot[index+fe.list.index].z_manufacturer
 
 			// Return data when no category is selected
 			if ((v=="") || (v=="<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
@@ -5846,7 +5634,6 @@ function mfz_build (reset){
 
 	// Scan the whole romlist
 	for (local i = 0 ; i < fe.list.size ; i++) {
-		//testpr(0xeafb+floor(i*10.0/(fe.list.size-1))+"\n")
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 		foreach (id0, table0 in multifilterz.l0){
 			local vals = table0.levcheck(i-fe.list.index)
@@ -6205,8 +5992,6 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
-		bar_update(i,0,z_list.boot.len())
-
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
 			local vals = table0.levcheck(i - fe.list.index)
@@ -6473,7 +6258,7 @@ function z_list_updategamedata(index){
 
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
-	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer,z_list.boot[index].z_year)
+	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer)
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (z_list.boot[index].z_category)
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 	dat.but_array[dat.stacksize - 1].file_name = (AF.folder+"metapics/buttons/" + z_list.boot[index].z_buttons+"button.png")
@@ -6490,7 +6275,7 @@ function z_list_updategamedata(index){
 
 // Applies the multifilter to the romlist updating all the tiles
 function mfz_apply(startlist){
-	timestart("mfz_apply")
+	timestart ("mfz_apply")
 	local bootlist_index_remap = 0
 	local bootlist_index_old = 0
 	try {bootlist_index_old = z_list.gametable[z_list.index].z_felistindex}catch(err){}
@@ -6765,11 +6550,14 @@ function getallgamesdb(logopic){
 
 // create a proxy list, takes a while but should make faster filtering and sorting changes
 function z_listboot(){
-	timestart("z_listboot")
+	timestart ("z_listboot")
 	debugpr("z_listboot\n")
 	z_list.allromlists = allromlists()
 
+
+	timestart("z_updatetagstable")
 	z_updatetagstable()
+	timestop("z_updatetagstable")
 	//z_initfavsfromfiles()
 	//z_initrundatefromfiles()
 	//z_initfavdatefromfiles()
@@ -6831,7 +6619,9 @@ timestart("boot")
 
 timestop("boot")
 
+timestart("updatetags")
 	z_updatetagstable()
+timestop("updatetags")
 
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
@@ -6856,8 +6646,9 @@ local nolist_blanker = null
 local data_surface = null
 // Create the new list from current fe.list
 function z_listcreate(){
-	timestart("    z_listcreate")
+
 	debugpr("LIST: Create\n")
+
 	z_list.gametable.clear()
 	z_list.gametable2.clear()
 	z_list.jumptable.clear()
@@ -6870,8 +6661,6 @@ function z_listcreate(){
 	local felist = array(fe.list.size)
 
 	foreach (i, item in z_list.boot){
-
-		//bar_update(i,0,z_list.boot.len())
 
 		local ifeindex = i - fe.list.index
 		local checkfilter = true
@@ -6916,7 +6705,6 @@ function z_listcreate(){
 	multifilterglyph.visible = mfz_on()
 
 	nolist_blanker.visible = (z_list.size == 0)
-	timestop("    z_listcreate")
 }
 
 // scrap articles from names
@@ -6942,7 +6730,7 @@ function aggregatedisplayfilter(){
 
 // Function to sort the list
 function z_listsort(orderby,reverse){
-	timestart("    z_listsort")
+
 	local blanker = "                                                            "
 	if (z_list.size == 0) return
 
@@ -7027,13 +6815,11 @@ function z_listsort(orderby,reverse){
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby,reverse]
 		savetabletofile(SORTTABLE,"pref_sortorder.txt")
 	}
-	timestop("    z_listsort")
 
 }
 
 // Creates an array for prev-next jump
 function z_liststops(){
-	timestart("    z_liststops")
 	local temp = []
 
 	for (local i = 0 ; i < z_list.size ; i++){
@@ -7136,7 +6922,6 @@ function z_liststops(){
 		}
 		//z_list.jumptable[i].prev = modwrap (z_list.jumptable[i].stop - 1 , z_list.size)
 	}
-	timestop("    z_liststops")
 }
 
 // Function to re-sync the index when a list has been ordered
@@ -7150,7 +6935,6 @@ function z_liststupdateindex(){
 }
 
 function z_filteredlistupdateindex(reindex){
-	timestart("    z_filteredlistupdateindex")
 	if (reindex != null) {
 		z_list.newindex = z_list.index = reindex
 		fe.list.index = z_list.gametable[reindex].z_felistindex
@@ -7167,7 +6951,6 @@ function z_filteredlistupdateindex(reindex){
 		z_liststupdateindex()
 		z_list.newindex = z_list.index
 	}
-	timestop("    z_filteredlistupdateindex")
 }
 
 // Function to apply a change to the z_list
@@ -11180,11 +10963,6 @@ foreach (item in hist_text){
 	}
 }
 
-hist_text.descr.line_spacing = 1.15
-pixelizefont(hist_text.descr, floor(hist_textT.charsize),0.5*floor(hist_textT.charsize),0.7*1.15)
-hist_text.descr.y = hist_text.descr.y + 0.25*hist_textT.linesize
-hist_text.descr.height = hist_text.descr.height - 0.25*hist_textT.linesize
-
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
 	hist_text.title.margin = 0
@@ -11980,7 +11758,7 @@ function update_allgames_collections(verbose, tempprf){
 						strline+= " "+ap+AF.romlistfolder +  val2.romlist + ".txt" + ap
 					}
 				}
-				system ((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
+				system((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
 			}
 		}
 	}
@@ -12023,9 +11801,9 @@ function update_allgames_collections(verbose, tempprf){
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
 	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
-	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
-	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
-	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
+	system((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
 
 	//fe.set_display(fe.list.display_index)
 }
@@ -12842,15 +12620,15 @@ function checkforupdates(force){
 				system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
 				// Create target directory
 				z_splash_message( "Installing...")
-				system ("mkdir "+ ap + newaffolderTEMP + ap)
-				system ("mkdir "+ ap + newaffolder + ap)
+				system("mkdir "+ ap + newaffolderTEMP + ap)
+				system("mkdir "+ ap + newaffolder + ap)
 				// Unpack layout
 				unzipfile (AF.folder + newafname +".zip", newaffolderTEMP)
 				local ghfolder = DirectoryListing(newaffolderTEMP)
 				foreach (item in ghfolder.results){
 					local ghfolder2 = DirectoryListing(item)
 					foreach (item2 in ghfolder2.results){
-						system (OS == "Windows" ?
+						system(OS == "Windows" ?
 							"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
 							"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
 					}
@@ -12863,7 +12641,7 @@ function checkforupdates(force){
 				foreach (item in dir.results){
 					if (item.find("pref_")) {
 						local basename = item.slice(item.find("pref_"),item.len())
-						system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
+						system((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
 					}
 				}
 				// Remove downloaded file
@@ -13844,23 +13622,7 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
 }
 
-/// PROGRESS BAR ///
-
-AF.bar.picbg = fe.add_text("",floor(0.5*(fl.w_os - AF.bar.size*UI.scalerate)) , floor(0.5*(fl.h_os - AF.bar.size*UI.scalerate)), floor(AF.bar.size*UI.scalerate), floor(AF.bar.size*UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
-AF.bar.pic = fe.add_text("",AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height) //TEST149 CHECK CENTERING WITH OD
-AF.bar.pic.font = AF.bar.picbg.font = "fonts/font_glyphs.ttf"
-AF.bar.pic.margin = AF.bar.picbg.margin = 0
-AF.bar.pic.align = AF.bar.picbg.align = Align.MiddleCentre
-AF.bar.pic.charsize = AF.bar.size*UI.scalerate
-AF.bar.picbg.charsize = AF.bar.size*UI.scalerate
-AF.bar.picbg.zorder = 100000
-AF.bar.pic.zorder = 100001
-AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = true
-AF.bar.pic.visible = AF.bar.picbg.visible = false
-AF.bar.pic.set_rgb(255,255,255)
-AF.bar.picbg.set_rgb(AF.bar.dark,AF.bar.dark,AF.bar.dark)
-
-//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
+	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
 
 local fps = {
@@ -14094,9 +13856,6 @@ function clampaspect (aspect){
 
 // Function that updates snap position, size and internal crop
 function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
-	local w0 = 0
-	local h0 = 0
-
 	if (cropaspect == 0){ //INITIALIZE NEW ARTWORK ASPECT
 		cropaspect = clampaspect (aspect)
 		if (prf.CROPSNAPS && !prf.BOXARTMODE) cropaspect = 1.0
@@ -14158,50 +13917,34 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
 
-	// Select cases where the snap itself needs to be recropped
-	if (prf.MORPHASPECT || (!prf.BOXARTMODE && prf.CROPSNAPS)){
-		if (aspect > cropaspect){ // Cut sides
-			tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width * (cropaspect/aspect)
-			tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height
-			tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.5*(tilez[i].snapz.texture_width - tilez[i].snapz.subimg_width)
-			tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.0
-		}
-		else { // Cut top and bottom
-			tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width
-			tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height * (aspect/cropaspect)
-			tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.0
-			tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.5*(tilez[i].snapz.texture_height - tilez[i].snapz.subimg_height)
-		}
+	if (aspect > cropaspect){ // Cut sides
+		tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width * (cropaspect/aspect)
+		tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height
+		tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.5*(tilez[i].snapz.texture_width - tilez[i].snapz.subimg_width)
+		tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.0
+	}
+	else { // Cut top and bottom
+		tilez[i].gr_snapz.subimg_width = tilez[i].snapz.subimg_width = tilez[i].snapz.texture_width
+		tilez[i].gr_snapz.subimg_height = tilez[i].snapz.subimg_height = tilez[i].snapz.texture_height * (aspect/cropaspect)
+		tilez[i].gr_snapz.subimg_x = tilez[i].snapz.subimg_x = 0.0
+		tilez[i].gr_snapz.subimg_y = tilez[i].snapz.subimg_y = 0.5*(tilez[i].snapz.texture_height - tilez[i].snapz.subimg_height)
 	}
 
 	// VIDEO SNAPS CROPPER
 	if (prf.THUMBVIDEO){
 		tilez[i].vidsz.set_pos(tilez[i].snapz.x,tilez[i].snapz.y,tilez[i].snapz.width,tilez[i].snapz.height)
 
-		if (!prf.VID169){
-			if (vidAR > cropaspect){ // Cut sides
-				tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width * (cropaspect/vidAR)
-				tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height
-				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.5*(tilez[i].vidsz.texture_width - tilez[i].vidsz.subimg_width)
-				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.0
-			}
-			else { // Cut top and bottom
-				tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width
-				tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height * (vidAR/cropaspect)
-				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
-				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
-			}
-		} else {
-			// Rotate video
-
-			w0 = tilez[i].vidsz.width
-			h0 = tilez[i].vidsz.height
-
-			tilez[i].vidsz.rotation = 90
-			tilez[i].vidsz.x = tilez[i].vidsz.x + w0
-			tilez[i].vidsz.width = h0
-			tilez[i].vidsz.height = w0
-
+		if (vidAR > cropaspect){ // Cut sides
+			tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width * (cropaspect/vidAR)
+			tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height
+			tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.5*(tilez[i].vidsz.texture_width - tilez[i].vidsz.subimg_width)
+			tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.0
+		}
+		else { // Cut top and bottom
+			tilez[i].gr_vidsz.subimg_width = tilez[i].vidsz.subimg_width = tilez[i].vidsz.texture_width
+			tilez[i].gr_vidsz.subimg_height = tilez[i].vidsz.subimg_height = tilez[i].vidsz.texture_height * (vidAR/cropaspect)
+			tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
+			tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
 		}
 	}
 
@@ -15097,7 +14840,6 @@ function finaltileupdate(){
 }
 
 function z_listrefreshtiles(){
-	timestart ("    z_listrefreshtiles")
 	logotitle = null
 	boxtitle = null
 
@@ -15119,18 +14861,15 @@ function z_listrefreshtiles(){
 		}
 
 		finaltileupdate()
-	timestop("    z_listrefreshtiles")
+
 	//}
 }
 
 function z_updatefilternumbers(idx){
-	timestart ("    z_updatefilternumbers")
 	filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
-	timestop ("    z_updatefilternumbers")
 }
 
 function z_listrefreshlabels(){
-	timestart("    z_listrefreshlabels")
 	// Clean old ticks and labels
 	filterdata.msg = (prf.CLEANLAYOUT ? "" : ( ( (fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name+ "\n")  + gamelistorder(0)))
 
@@ -15286,7 +15025,6 @@ function z_listrefreshlabels(){
 
 		if (labelorder.len() != 0) sortticks[labelorder[0]].visible = false
 	}
-	timestop("    z_listrefreshlabels")
 }
 
 
@@ -15779,9 +15517,8 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
-	//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
-	//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-
+//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
+//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
@@ -15984,7 +15721,6 @@ function tick( tick_time ) {
 		if (timescale.values == timescale.limits) {
 			timescale.delay = -1
 			if (prf.ADAPTSPEED) AF.tsc = 60.0 / (1000.0/(timescale.sum/timescale.values))
-			else AF.tsc = 60.0/ScreenRefreshRate
 			foreach (item,value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
 			}
@@ -16435,7 +16171,7 @@ function tick( tick_time ) {
 					tilez[i].gr_vidsz.file_name = fe.get_art("snap",vidindex[i])
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
-					tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+					tilez[i].AR.vids = getAR(tilez[i].offset,tilez[i].vidsz,0,false)
 
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
 					if (!prf.MORPHASPECT) update_snapcrop (i,0,0,z_list.index,tilez[i].AR.vids,tilez[i].AR.crop)
@@ -16995,7 +16731,7 @@ function deletecurrentrom(){
 	foreach (i, item in AF.emulatordata[emulatorname].romextarray){
 		print ("Deleting " + gamepath + item + "\n")
 		try {
-			system ("mkdir " + ap + rompath + "deleted" + ap)
+			system("mkdir " + ap + rompath + "deleted" + ap)
 		} catch(err){}
 
 		if (item == ".m3u"){
@@ -17005,7 +16741,7 @@ function deletecurrentrom(){
 				local frompath = ap + rompath + inm3uline + ap
 				local topath = ap + rompath + "deleted/" + inm3uline + ap
 				try {
-					system (OS == "Windows" ?
+					system(OS == "Windows" ?
 						"move " + char_replace(frompath,"/","\\") + " " + char_replace(topath,"/","\\") :
 						"mv " + frompath + " " + topath )
 				}catch(err){}
@@ -17013,7 +16749,7 @@ function deletecurrentrom(){
 		}
 
 		try{
-			system (OS == "Windows" ?
+			system(OS == "Windows" ?
 			"move "+ ap + char_replace(rompath,"/","\\") + "\\"+gamepath + item + ap + " " + ap + char_replace(rompath,"/","\\") + "\\deleted\\" +gamepath + item + ap :
 			"mv " + ap + rompath + gamepath + item + ap + " " + ap + rompath + "deleted/" +gamepath + item + ap )
 		} catch (err) {print ("skipped\n")}
@@ -17101,35 +16837,20 @@ function ra_init(){
 
 	ra.todolist <- {}
 
-	if (OS == "Windows"){
-		if (file_exist(fe.path_expand("C:\\RetroArch-Win64\\retroarch.exe"))) {
-			ra.basepath <- fe.path_expand("C:\\RetroArch-Win64\\")
-		}
-		else if (file_exist(fe.path_expand("C:\\RetroArch-Win32\\retroarch.exe"))) {
-			ra.basepath <- fe.path_expand("C:\\RetroArch-Win32\\")
-		}
-		else ra.basepath <- ""
+	ra.binpath <- 	(prf.RAEXEPATH != "") ? fe.path_expand(prf.RAEXEPATH) :
+						(OS == "OSX") ? fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch") :
+						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\retroarch.exe") :
+						fe.path_expand("retroarch")
 
-		ra.binpath <- fe.path_expand(ra.basepath+"retroarch.exe")
-		ra.corepath <- fe.path_expand(ra.basepath+"cores\\")
-		ra.infopath <- fe.path_expand(ra.basepath+"info\\")
-	}
-	else if (OS == "OSX"){
-		ra.binpath <- fe.path_expand("/Applications/RetroArch.app/Contents/MacOS/RetroArch")
-		ra.basepath <- fe.path_expand("$HOME/Library/Application Support/RetroArch/")
-		ra.corepath <- fe.path_expand(ra.basepath+"cores/")
-		ra.infopath <- fe.path_expand(ra.basepath+"info/")
-	}
-	else {
-		ra.binpath <- fe.path_expand("retroarch")
-		ra.basepath <- fe.path_expand("$HOME/.config/retroarch/")
-		ra.corepath <- fe.path_expand(ra.basepath+"cores/")
-		ra.infopath <- fe.path_expand(ra.basepath+"cores/")
-	}
+	ra.basepath <- (OS == "OSX") ? fe.path_expand("$HOME/Library/Application Support/RetroArch/") :
+						(OS == "Windows") ? fe.path_expand("C:\\RetroArch-Win64\\") :
+						fe.path_expand("$HOME/.config/retroarch/")
 
-	if (prf.RAEXEPATH != "") ra.binpath = fe.path_expand(prf.RAEXEPATH)
-	if (prf.RACOREPATH != "") ra.corepath = fe.path_expand(prf.RACOREPATH)
-	if (prf.RAINFOPATH != "") ra.infopath = fe.path_expand(prf.RAINFOPATH)
+	ra.corepath <- prf.RACOREPATH == "" ? fe.path_expand(ra.basepath+"cores/") : prf.RACOREPATH
+
+	ra.infopath <- (OS == "OSX") ? fe.path_expand(ra.basepath+"info/") :
+						(OS == "Windows") ? fe.path_expand(ra.basepath+"info\\") :
+						ra.corepath
 
 	ra.corelist <- []
 	ra.coretable <- {}
@@ -17518,8 +17239,8 @@ function on_signal( sig ){
 			function(out){
 				if (out != -1){
 					AF.soundvolume = 10 - out
-					if (OS == "OSX") system ("osascript -e "+ap+"Set Volume "+(0.7*AF.soundvolume)+ap)
-					else if (OS == "Windows") system (ap+char_replace(AF.folder,"/","\\") + "\\SetVol.exe"+ap+" "+AF.soundvolume*10+" unmute")
+					if (OS == "OSX") system("osascript -e "+ap+"Set Volume "+(0.7*AF.soundvolume)+ap)
+					else if (OS == "Windows") system(ap+char_replace(AF.folder,"/","\\") + "\\SetVol.exe"+ap+" "+AF.soundvolume*10+" unmute")
 					else system ("amixer set Master "+AF.soundvolume*10+"%")
 				}
 				zmenuhide()
