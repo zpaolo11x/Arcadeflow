@@ -15331,7 +15331,6 @@ fe.layout.font = uifonts.general
 if(prf.BACKGROUNDTUNE != "") {
 	snd.bgtune.playing = true
 	snd.bgtune.volume = 0
-	testpr("A\n")
 }
 
 function checkit2(){
