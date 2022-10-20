@@ -6660,8 +6660,6 @@ function z_checkhidden(i){
 	return false
 }
 
-local aflogo = null
-
 function getallgamesdb(logopic){
 	timestart("GamesDB")
 	/*XXXXXX
@@ -6699,14 +6697,8 @@ function getallgamesdb(logopic){
 	local emulatordir = DirectoryListing(emulatorpath,false).results
 	local file = ""
 	local itemname = ""
-	local time0 = clock()
-	local time1 = clock()
 
-	for (local i = 0; i<=255; i+=25){
-		aflogo.alpha = i
-		fe.layout.redraw()
-	}
-	aflogo.alpha = 255
+
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3)=="cfg") && (item.slice(0,2) != "._")){
@@ -6728,12 +6720,9 @@ function getallgamesdb(logopic){
 
 			// The emulator has a self named romlist
 			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) { //TEST139 If we are in masterlist keep scanning for db
-				time1 = clock()
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
-				//TEST149 z_splash_message("")//("\n\n\n\n\n\n\n"+"NOW LOADING\n"+textrate (i,(emulatordir.len()-1),numchars)+"\n")//(i*100/(emulatordir.len()-1))+"%")
+				z_splash_message("")//("\n\n\n\n\n\n\n"+"NOW LOADING\n"+textrate (i,(emulatordir.len()-1),numchars)+"\n")//(i*100/(emulatordir.len()-1))+"%")
 				//XXXXXX textobj.msg = textrate (i,(emulatordir.len()-1),numchars)
-
-				fe.layout.redraw()
 
 				if (prf.SPLASHON) {
 					textobj.x = fl.x+fl.w*i*1.0/(emulatordir.len()-1)
@@ -13589,7 +13578,7 @@ if (prf.AMENABLE){
 
 /// Splash Screen ///
 
-aflogo = fe.add_image(prf.SPLASHLOGOFILE,fl.x,fl.y,fl.w,fl.h)
+local aflogo = fe.add_image(prf.SPLASHLOGOFILE,fl.x,fl.y,fl.w,fl.h)
 aflogo.visible = false
 
 local aflogoT = {
@@ -13623,7 +13612,7 @@ if (!prf.CUSTOMLOGO) {
 }
 
 aflogo.visible = prf.SPLASHON
-aflogo.alpha = 0 //TEST149
+
 
 /// Layout fade from black ///
 
@@ -13920,8 +13909,6 @@ function monitortick(tick_time){
 	}
 
 }
-
-z_splash_message("")//TEST149
 
 /// Pre-Transition functions for labels jumps ///
 
@@ -16708,7 +16695,7 @@ function tick( tick_time ) {
 					flowT.logo = [0.0,1.0,0.0,-0.02,3.0]
 				}
 				else {
-					//TEST149 flowT.logo = [0.0,1.0,0.0,-0.02,3.0]
+					flowT.logo = [0.0,1.0,0.0,-0.02,3.0]
 				}
 			}
 
