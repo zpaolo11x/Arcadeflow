@@ -16708,7 +16708,7 @@ function tick( tick_time ) {
 					flowT.logo = [0.0,1.0,0.0,-0.02,3.0]
 				}
 				else {
-					flowT.logo = [0.0,1.0,0.0,-0.02,3.0]
+					//TEST149 flowT.logo = [0.0,1.0,0.0,-0.02,3.0]
 				}
 			}
 
