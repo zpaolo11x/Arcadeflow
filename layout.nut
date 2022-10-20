@@ -6660,6 +6660,8 @@ function z_checkhidden(i){
 	return false
 }
 
+local aflogo = null
+
 function getallgamesdb(logopic){
 	timestart("GamesDB")
 	/*XXXXXX
@@ -6699,7 +6701,12 @@ function getallgamesdb(logopic){
 	local itemname = ""
 	local time0 = clock()
 	local time1 = clock()
-	z_splash_message("")//TEST149
+
+	for (local i = 0; i<=255; i+=25){
+		aflogo.alpha = i
+		fe.layout.redraw()
+	}
+	aflogo.alpha = 255
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3)=="cfg") && (item.slice(0,2) != "._")){
@@ -13582,7 +13589,7 @@ if (prf.AMENABLE){
 
 /// Splash Screen ///
 
-local aflogo = fe.add_image(prf.SPLASHLOGOFILE,fl.x,fl.y,fl.w,fl.h)
+aflogo = fe.add_image(prf.SPLASHLOGOFILE,fl.x,fl.y,fl.w,fl.h)
 aflogo.visible = false
 
 local aflogoT = {
@@ -13616,12 +13623,11 @@ if (!prf.CUSTOMLOGO) {
 }
 
 aflogo.visible = prf.SPLASHON
-
+aflogo.alpha = 0 //TEST149
 
 /// Layout fade from black ///
 
 flowT.blacker = [0.0,0.0,0.0,0.09,1.0]
-
 
 /// Similar Games UI ///
 
@@ -13914,6 +13920,8 @@ function monitortick(tick_time){
 	}
 
 }
+
+z_splash_message("")//TEST149
 
 /// Pre-Transition functions for labels jumps ///
 
