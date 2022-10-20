@@ -6699,7 +6699,7 @@ function getallgamesdb(logopic){
 	local itemname = ""
 	local time0 = clock()
 	local time1 = clock()
-
+	z_splash_message("")//TEST149
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3)=="cfg") && (item.slice(0,2) != "._")){
