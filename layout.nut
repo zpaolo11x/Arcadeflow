@@ -6697,7 +6697,8 @@ function getallgamesdb(logopic){
 	local emulatordir = DirectoryListing(emulatorpath,false).results
 	local file = ""
 	local itemname = ""
-
+	local time0 = clock()
+	local time1 = clock()
 
 	foreach(i, item in emulatordir) {
 
@@ -6720,9 +6721,12 @@ function getallgamesdb(logopic){
 
 			// The emulator has a self named romlist
 			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) { //TEST139 If we are in masterlist keep scanning for db
+				time1 = clock()
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
-				z_splash_message("")//("\n\n\n\n\n\n\n"+"NOW LOADING\n"+textrate (i,(emulatordir.len()-1),numchars)+"\n")//(i*100/(emulatordir.len()-1))+"%")
+				//TEST149 z_splash_message("")//("\n\n\n\n\n\n\n"+"NOW LOADING\n"+textrate (i,(emulatordir.len()-1),numchars)+"\n")//(i*100/(emulatordir.len()-1))+"%")
 				//XXXXXX textobj.msg = textrate (i,(emulatordir.len()-1),numchars)
+
+				fe.layout.redraw()
 
 				if (prf.SPLASHON) {
 					textobj.x = fl.x+fl.w*i*1.0/(emulatordir.len()-1)
