@@ -372,7 +372,7 @@ nec pc engine gt,256,224,PCE-GT,LCD,NONE,0,0,HANDHELD,NEC,1990,PC Engine GT,31,r
 pc engine gt
 
 nec pc engine lt,256,224,PCE-LT,LCD,NONE,0,0,HANDHELD,NEC,1991,PC Engine LT,31,rom,joystick (8-way),2
-pc engine gt
+pc engine lt
 
 nec pc engine,256,224,PCE,CRT,NONE,4,3,CONSOLE,NEC,1987,PC Engine,31,rom,joystick (8-way),2
 pc engine
