@@ -71,37 +71,40 @@ function matchrom(scrapeid, filename){
 
    local jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")
    local crc_from_romlist = ""
+   local crc_from_romid = ""
 
    // Scan all roms from this game
-   foreach (i,item in jstab.response.jeu.roms){
+   try{
+      foreach (i,item in jstab.response.jeu.roms){
 
-      local romext = split(item.romfilename,".")
-      local romcleanname = ""
-      if (romext.len() == 1)
-         romcleanname = item.romfilename
-      else {
-         romext = romext[romext.len()-1]
-         romcleanname = item.romfilename.slice(0,-1*(1+romext.len()))
-      }
+         local romext = split(item.romfilename,".")
+         local romcleanname = ""
+         if (romext.len() == 1)
+            romcleanname = item.romfilename
+         else {
+            romext = romext[romext.len()-1]
+            romcleanname = item.romfilename.slice(0,-1*(1+romext.len()))
+         }
 
-      // If the name of the current rom matches the name of the rom in the list, sets crc_from_romlist the crc associated
-      if (romcleanname == filename) {
-         crc_from_romlist = item.romcrc
-         break
-      }
-      // Add here custom check for Amiga WHDLoad filename without version, that is:
-      // if a rom in the list has the same name except for version, the crc is used
-      else if (romcleanname.find("_v") != null){
-         if (cleanWHDL(romcleanname) == cleanWHDL(filename)){
+         // If the name of the current rom matches the name of the rom in the list, sets crc_from_romlist the crc associated
+         if (romcleanname == filename) {
             crc_from_romlist = item.romcrc
             break
          }
+         // Add here custom check for Amiga WHDLoad filename without version, that is:
+         // if a rom in the list has the same name except for version, the crc is used
+         else if (romcleanname.find("_v") != null){
+            if (cleanWHDL(romcleanname) == cleanWHDL(filename)){
+               crc_from_romlist = item.romcrc
+               break
+            }
+         }
       }
-   }
+   }catch(err){print("\nROMERROR\n")}
 
    // Now find the crc from the rom associated with this search
-   local crc_from_romid = ""
    try{crc_from_romid = jstab.response.jeu.rom.romcrc}catch(err){print("\nCRCERROR\n")}
+
    return ({
       name_crc = crc_from_romlist,
       rom_crc = crc_from_romid
@@ -451,8 +454,10 @@ function parsejson(scrapeid, gamedata){
       }
    }
 
-   foreach (id, item in jstab.response.jeu.roms){
-      try{if (item.id == jstab.response.jeu.romid) gamedata.matchedrom = item.romfilename}catch(err){}
+   if (jstab.response.jeu.rawin("roms")){
+      foreach (id, item in jstab.response.jeu.roms){
+         try{if (item.id == jstab.response.jeu.romid) gamedata.matchedrom = item.romfilename}catch(err){}
+      }
    }
 
    return gamedata
