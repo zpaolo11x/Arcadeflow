@@ -3488,7 +3488,9 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				}
 			}
 
-			if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+			if (dispatcher[scrapeid].gamedata.notgame) {
+				dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+			}
 		}
 		else {
 			echoprint ("ERROR\n")
@@ -3656,6 +3658,9 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			}
 			AF.scrape.scrapelist_lines.push (inputitem+"|"+dispatcher[scrapeid].gamedata.scrapestatus+"|"+listline)
 			*/
+		} 
+		else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
+			inputitem.z_scrapestatus = "NOGAME"
 		}
 	}
 	else {
