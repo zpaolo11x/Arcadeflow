@@ -318,7 +318,7 @@ function parsejson(scrapeid, gamedata){
       gamedata.notgame = false
    }
    //TEST111
-   print ("NOTGAME:"+jstab.response.jeu.notgame+"\n")
+   //print ("NOTGAME:"+jstab.response.jeu.notgame+"\n")
    /*
    foreach (id,value in gamedata){
      echoprint (id+":"+value+"\n")

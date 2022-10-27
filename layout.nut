@@ -122,7 +122,26 @@ local AF = {
 	messageoverlay = null
 	tsc = 1.0 // Scaling of timer for different parameters
 
-	scrape = {
+	scrape = null
+
+	emulatordata = {}
+
+	LNG = ""
+
+	bar = {
+		time0 = 0
+		time1 = 0
+		progress = 0
+		pic = null
+		picbg = null
+		size = 300
+		dark = 60
+		darkalpha = 90
+	}
+}
+
+function AFscrapeclear(){
+	AF.scrape = {
 		stack = []
 		regiontable = ["wor","us","eu","ss","jp"]
 		regionprefs = [] //This will be populated by options table
@@ -149,23 +168,8 @@ local AF = {
 		report = {}
 		threads = 0
 	}
-
-	emulatordata = {}
-
-	LNG = ""
-
-	bar = {
-		time0 = 0
-		time1 = 0
-		progress = 0
-		pic = null
-		picbg = null
-		size = 300
-		dark = 60
-		darkalpha = 90
-	}
 }
-
+AFscrapeclear()
 AF.vernum = AF.version.tofloat()*10
 
 // GitHub versioning data table
@@ -3248,7 +3252,7 @@ local dispatcher = []
 local dispatchernum = 0
 
 function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,romtype){
-   scraprt("ID"+scrapeid+"-createjsonA"+"\n")
+   scraprt("ID"+scrapeid+"-            createjsonA START"+"\n")
 	local unicorrect = unicorrect()
 
 	try {remove (AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err){}
@@ -3269,7 +3273,9 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
+	scraprt("ID"+scrapeid+"-            createjsonA suspend\n")
 	suspend()
+	scraprt("ID"+scrapeid+"-            createjsonA resumed\n")
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
@@ -3308,14 +3314,14 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
       jsfileout.write_line(item_clean+"\n")
    }
 	jsfileout.close_file()
-	scraprt("ID"+scrapeid+"-createjsonA scraped\n")
+	scraprt("ID"+scrapeid+"-            createjsonA SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
    return
 
 }
 
 function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,romtype){
-   scraprt("ID"+scrapeid+"-createjson"+"\n")
+   scraprt("ID"+scrapeid+"-            createjson START"+"\n")
 	local unicorrect = unicorrect()
 
 	try {remove (AF.folder + "json/" + scrapeid + "json.nut")} catch(err){}
@@ -3357,9 +3363,9 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
-	scraprt("ID"+scrapeid+"-createjson suspend\n")
+	scraprt("ID"+scrapeid+"-            createjson suspend\n")
 	suspend()
-	scraprt("ID"+scrapeid+"-createjson resumed\n")
+	scraprt("ID"+scrapeid+"-            createjson resumed\n")
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json.nut"))
@@ -3402,19 +3408,20 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
       jsfileout.write_line(item_clean+"\n")
    }
 	jsfileout.close_file()
-	 scraprt("ID"+scrapeid+"-createjson scraped\n")
+	 scraprt("ID"+scrapeid+"-            createjson SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
    return
 }
 
 
 function getromdata(scrapeid, ss_username, ss_password, romname, systemid, systemmedia, isarcade, regionprefs, rompath){
-	scraprt("ID"+scrapeid+"-getromdata "+rompath+"\n")
+	scraprt("ID"+scrapeid+"-        getromdata START "+rompath+"\n")
 
 	// This is the function that actually starts the scraping dispatching createjsons commands
 
 	// Start arcade scraping if the isarcade flag is true
    if (isarcade){
+		scraprt("ID"+scrapeid+"-        getromdata CALL createjsonA\n")
 		// Runs the creation of arcade json and susbends until it has finished
 		dispatcher[scrapeid].createjsonA.call(scrapeid,ss_username,ss_password,strip(split(romname,"(")[0]),null,null,systemid,systemmedia)
 		suspend()
@@ -3438,25 +3445,29 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
    // CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-    scraprt("ID"+scrapeid+"-getromdata call createjson 1\n")
+    scraprt("ID"+scrapeid+"-        getromdata CALL createjson 1\n")
 	 //TEST132 changed splitting to take only part before "_"
-   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+	 local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
+	 local stripmatch = true
+   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
-	 scraprt("ID"+scrapeid+"-getromdata suspend 1\n")
+	 scraprt("ID"+scrapeid+"-        getromdata suspend 1\n")
 	suspend() // Wait for the json to be read
-	 scraprt("ID"+scrapeid+"-getromdata resumed\n")
+	 scraprt("ID"+scrapeid+"-        getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 	//TEST120 Should we add the retry check to the arcade scrape portion or not???
 	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
 		// If stripped rom fails, try with non-stripped rom
-      if ((dispatcher[scrapeid].jsonstatus == "ERROR")){
+      if ((dispatcher[scrapeid].jsonstatus == "ERROR")&&(strippedrom != romname)){
+			stripmatch = false
+			testpr("     ERROR RETRY\n")
          dispatcher[scrapeid].jsonstatus = null
-		   scraprt("ID"+scrapeid+"-getromdata call createjson ERR\n")
+		   scraprt("ID"+scrapeid+"-        getromdata CALL createjson ERR\n")
 			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
-		   scraprt("ID"+scrapeid+"-getromdata suspend ERR\n")
+		   scraprt("ID"+scrapeid+"-        getromdata suspend ERR\n")
 			suspend()
-		   scraprt("ID"+scrapeid+"-getromdata resumed\n")
+		   scraprt("ID"+scrapeid+"-        getromdata resumed\n")
 		}
 
 		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
@@ -3477,12 +3488,12 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
 				// Once the name is perfectly matched, a new scrape is done to get proper rom status
 				dispatcher[scrapeid].jsonstatus = null
-				scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
+				scraprt("ID"+scrapeid+"-        getromdata CALL createjson 2\n")
 				//TEST132 changed to stripped romname (was just romname)
-				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
-				scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
+				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,stripmatch ? strippedrom : romname,getcrc.name_crc,null,systemid,systemmedia)
+				scraprt("ID"+scrapeid+"-        getromdata suspend 2\n")
 				suspend()
-				scraprt("ID"+scrapeid+"-getromdata resumed\n")
+				scraprt("ID"+scrapeid+"-        getromdata resumed 2\n")
 
 				if (dispatcher[scrapeid].jsonstatus != "ERROR"){
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
@@ -3515,7 +3526,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	try {remove (AF.folder + "json/" + scrapeid + "json.txt")} catch(err){}
 	try {remove (AF.folder + "json/" + scrapeid + "json.nut")}catch(err){}
 	try {remove (AF.folder + "json/" + scrapeid + "json_out.nut")}catch(err){}
-	 scraprt("ID"+scrapeid+"-getromdata return\n")
+	 scraprt("ID"+scrapeid+"-        getromdata RETURN\n")
 	return //gamedata
 }
 
@@ -3606,10 +3617,12 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 	// to actually scrape this game or not
 
 	if (scrapethis && !forceskip) {
+		scraprt("ID"+scrapeid+"-    scrapegame2 CALL getromdata\n")
+
 		dispatcher[scrapeid].getromdata.call(scrapeid,AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname,gd[0],gd[1],garcade,AF.scrape.regionprefs,AF.emulatordata[inputitem.z_emulator].rompath+gnamewext)
-	   scraprt("ID"+scrapeid+"-scrapegame2 suspend\n")
+	   scraprt("ID"+scrapeid+"-    scrapegame2 suspend\n")
 		suspend()
-	   scraprt("ID"+scrapeid+"-scrapegame2 resume\n")
+	   scraprt("ID"+scrapeid+"-    scrapegame2 resume\n")
 
 		// Now the results from the scrape are back, let's analyse and put them in the
 		// scrapelist fields (in this case no need to use listline!)
@@ -3660,7 +3673,7 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			}
 			AF.scrape.scrapelist_lines.push (inputitem+"|"+dispatcher[scrapeid].gamedata.scrapestatus+"|"+listline)
 			*/
-		} 
+		}
 		else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
 			inputitem.z_scrapestatus = "NOGAME"
 		}
@@ -15873,14 +15886,16 @@ function tick( tick_time ) {
 			z_write_line(outfile,endreport)
 			outfile.close()
 
+
+
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
 
-
+			AFscrapeclear()
 
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 100)){
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)){
 			// Increase the number of thread counts
 			AF.scrape.threads ++
 			// Add a new data structure to the scrape dispatcher
@@ -15902,7 +15917,7 @@ function tick( tick_time ) {
 
 			local t0 = fe.layout.time
 
-			scraprt("ID:"+AF.scrape.dispatchid+" DISPATCH "+AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len()-1]+"\n")
+			scraprt("ID"+AF.scrape.dispatchid+" DISPATCH "+AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len()-1]+"\n")
 
 
 
@@ -15916,6 +15931,7 @@ function tick( tick_time ) {
 			else {
 				// Increase number of dispatch count
 				dispatchernum ++
+				scraprt("ID"+AF.scrape.dispatchid+"-main CALL scrapegame2\n")
 				dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid,AF.scrape.purgedromdirlist.pop(),AF.scrape.quit)
 			}
 			// Increase the number of the id for the next scrape
@@ -15930,13 +15946,13 @@ function tick( tick_time ) {
 				try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 				try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
 				try {remove (AF.folder + "json/" + i + "json_out.nut")} catch(err){}
-				scraprt("COMPLETED "+item.gamedata.filename+"\n")
+				scraprt("ID"+i+" COMPLETED "+item.gamedata.filename+"\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
 				AF.boxmessage = messageboxer (patchtext (AF.scrape.romlist+" "+(AF.scrape.totalroms-AF.scrape.purgedromdirlist.len())+"/"+AF.scrape.totalroms, AF.scrape.requests,11,AF.scrape.columns)+"\n"+textrate(AF.scrape.doneroms,AF.scrape.totalroms,AF.scrape.columns,"|","\\"), patchtext(item.gamedata.filename,item.gamedata.scrapestatus,11,AF.scrape.columns)+"\n",true,AF.boxmessage)
 
 				AF.scrape.threads --
 				dispatchernum --
-				scraprt("ID"+i+"-main scrapegame2 wakeup\n")
+				scraprt("ID"+i+"-main WAKEUP scrapegame2\n")
 				if ((!item.quit) && (!item.skip)) item.scrapegame2.wakeup()
 				//scraprt("ID"+i+"-main continue second check\n")
 				item.gamedata = null
@@ -15945,18 +15961,18 @@ function tick( tick_time ) {
 			else if (!item.done && item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")){
 				try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 				item.pollstatus = false
-	   		scraprt("ID"+i+"-main createjson wakeup\n")
+	   		scraprt("ID"+i+"-main WAKEUP createjson\n")
 				item.createjson.wakeup()
-	   		scraprt("ID"+i+"-main getromdata wakeup\n")
+	   		scraprt("ID"+i+"-main WAKEUP getromdata\n")
 				item.getromdata.wakeup()
 				scraprt("ID"+i+"-main end first check\n")
 			}
 			else if (!item.done && item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")){
 				try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
 				item.pollstatusA = false
-	   		scraprt("ID"+i+"-main createjson wakeup\n")
+	   		scraprt("ID"+i+"-main WAKEUP createjsonA\n")
 				item.createjsonA.wakeup()
-	   		scraprt("ID"+i+"-main getromdata wakeup\n")
+	   		scraprt("ID"+i+"-main WAKEUP getromdata\n")
 				item.getromdata.wakeup()
 				scraprt("ID"+i+"-main end first check\n")
 			}
