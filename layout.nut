@@ -3431,6 +3431,8 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		try {remove (AF.folder + "json/" + scrapeid + "jsonA_out.nut")}catch(err){}
 	}
 
+	//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
+
 	// Finished DBA scraping, go on with SS scraping to complete missing fields
 	// or to generate a full scraping for non-arcade games
    // CRC check is never enabled for arcade games, so it's run here
