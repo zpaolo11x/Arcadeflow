@@ -15858,6 +15858,7 @@ function tick( tick_time ) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
 		// to close the romlist and save the results
 		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0)){
+			testpr("**** 1\n")
 			// Save current data on respective romlists databases
 			foreach (item, val in z_list.allromlists){
 				saveromdb (item, z_list.db1[item], "db1")
@@ -15876,22 +15877,27 @@ function tick( tick_time ) {
 					endreport += ("- "+item2+"\n"+" ["+content.matches[i2]+"]\n")
 				}
 			}
+			testpr("**** 2\n")
 
 			local outreport = AF.folder+"scrapelog.txt"
 			local outfile = file(outreport,"w")
 			z_write_line(outfile,endreport)
 			outfile.close()
 
+			testpr("**** 3\n")
 
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
+			testpr("**** 4\n")
 
 			AFscrapeclear()
+			testpr("**** 5\n")
 
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
 		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)){
+			testpr("**** b1\n")
 			// Increase the number of thread counts
 			AF.scrape.threads ++
 			// Add a new data structure to the scrape dispatcher
@@ -15926,6 +15932,7 @@ function tick( tick_time ) {
 			}
 			else {
 				// Increase number of dispatch count
+				testpr("**** b2\n")
 				dispatchernum ++
 				scraprt("ID"+AF.scrape.dispatchid+" main CALL scrapegame2\n")
 				dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid,AF.scrape.purgedromdirlist.pop(),AF.scrape.quit)
@@ -15954,23 +15961,25 @@ function tick( tick_time ) {
 				item.gamedata = null
 				item.done = false
 			}
-			else if (!item.done && item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")){
-				try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
-				item.pollstatus = false
-	   		scraprt("ID"+i+" main WAKEUP createjson\n")
-				item.createjson.wakeup()
-	   		scraprt("ID"+i+" main WAKEUP getromdata\n")
-				item.getromdata.wakeup()
-				scraprt("ID"+i+" main end first check\n")
-			}
-			else if (!item.done && item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")){
-				try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
-				item.pollstatusA = false
-	   		scraprt("ID"+i+" main WAKEUP createjsonA\n")
-				item.createjsonA.wakeup()
-	   		scraprt("ID"+i+" main WAKEUP getromdata\n")
-				item.getromdata.wakeup()
-				scraprt("ID"+i+" main end first check\n")
+			else {
+				if (item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")){
+					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
+					item.pollstatus = false
+					scraprt("ID"+i+" main WAKEUP createjson\n")
+					item.createjson.wakeup()
+					scraprt("ID"+i+" main WAKEUP getromdata\n")
+					item.getromdata.wakeup()
+					scraprt("ID"+i+" main end first check\n")
+				}
+			 	else if (item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")){
+					try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
+					item.pollstatusA = false
+					scraprt("ID"+i+" main WAKEUP createjsonA\n")
+					item.createjsonA.wakeup()
+					scraprt("ID"+i+" main WAKEUP getromdata\n")
+					item.getromdata.wakeup()
+					scraprt("ID"+i+" main end first check\n")
+				}
 			}
 		}
 	}
