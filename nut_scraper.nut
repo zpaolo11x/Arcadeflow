@@ -6,6 +6,7 @@ foreach (i, item in unichar){
 
 local echoon = true
 
+
 function echoprint (intext){
    if (echoon) print(intext)
 }
