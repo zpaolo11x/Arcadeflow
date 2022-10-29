@@ -15946,19 +15946,23 @@ function tick( tick_time ) {
 	if (dispatchernum != 0){
 		foreach (i, item in dispatcher){
 			if (item.done){
-				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 				try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
 				try {remove (AF.folder + "json/" + i + "json_out.nut")} catch(err){}
-				scraprt("ID"+i+" COMPLETED "+item.gamedata.filename+"\n")
-				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				AF.boxmessage = messageboxer (patchtext (AF.scrape.romlist+" "+(AF.scrape.totalroms-AF.scrape.purgedromdirlist.len())+"/"+AF.scrape.totalroms, AF.scrape.requests,11,AF.scrape.columns)+"\n"+textrate(AF.scrape.doneroms,AF.scrape.totalroms,AF.scrape.columns,"|","\\"), patchtext(item.gamedata.filename,item.gamedata.scrapestatus,11,AF.scrape.columns)+"\n",true,AF.boxmessage)
-
+				if (item.time0 != -1){
+					if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
+					scraprt("ID"+i+" COMPLETED "+item.gamedata.filename+"\n")
+					if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
+					AF.boxmessage = messageboxer (patchtext (AF.scrape.romlist+" "+(AF.scrape.totalroms-AF.scrape.purgedromdirlist.len())+"/"+AF.scrape.totalroms, AF.scrape.requests,11,AF.scrape.columns)+"\n"+textrate(AF.scrape.doneroms,AF.scrape.totalroms,AF.scrape.columns,"|","\\"), patchtext(item.gamedata.filename,item.gamedata.scrapestatus,11,AF.scrape.columns)+"\n",true,AF.boxmessage)
+				}
 				AF.scrape.threads --
 				dispatchernum --
-				scraprt("ID"+i+" main WAKEUP scrapegame2\n")
-				if ((!item.quit) && (!item.skip)) item.scrapegame2.wakeup()
-				//scraprt("ID"+i+" main continue second check\n")
+				if (item.time0 != -1){
+					scraprt("ID"+i+" main WAKEUP scrapegame2\n")
+					if ((!item.quit) && (!item.skip)) item.scrapegame2.wakeup()
+					//scraprt("ID"+i+" main continue second check\n")
+				}
+				item.time0 = -1
 				item.gamedata = null
 				item.done = false
 			}
@@ -15981,10 +15985,10 @@ function tick( tick_time ) {
 					item.getromdata.wakeup()
 					scraprt("ID"+i+" main end first check\n")
 				}
-				else if (fe.layout.time - item.time0 >= 10000){
+				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)){
 					scraprt("ID"+i+" ************************************ TIMEOUT\n")
 					item.done = true
-					item.gamedata.scrapestatus = "ERROR"
+					item.time0 = -1
 				}
 			}
 		}
