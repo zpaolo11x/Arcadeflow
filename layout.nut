@@ -15963,7 +15963,7 @@ function tick( tick_time ) {
 				item.done = false
 			}
 			else {
-				if (item.pollstatus && (file_exist(AF.folder + "json/" + i + "json.txt") || (fe.layout.time - item.time0 >= 10000))){
+				if (item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")){
 					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 					item.pollstatus = false
 					scraprt("ID"+i+" main WAKEUP createjson\n")
@@ -15972,7 +15972,7 @@ function tick( tick_time ) {
 					item.getromdata.wakeup()
 					scraprt("ID"+i+" main end first check\n")
 				}
-			 	else if (item.pollstatusA && (file_exist(AF.folder + "json/" + i + "jsonA.txt") || (fe.layout.time - item.time0 >= 10000))){
+			 	else if (item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt") ){
 					try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
 					item.pollstatusA = false
 					scraprt("ID"+i+" main WAKEUP createjsonA\n")
@@ -15980,6 +15980,11 @@ function tick( tick_time ) {
 					scraprt("ID"+i+" main WAKEUP getromdata\n")
 					item.getromdata.wakeup()
 					scraprt("ID"+i+" main end first check\n")
+				}
+				else if (fe.layout.time - item.time0 >= 10000){
+					scraprt("ID"+i+" ************************************ TIMEOUT\n")
+					item.done = true
+					item.gamedata.scrapestatus = "ERROR"
 				}
 			}
 		}
