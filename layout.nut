@@ -159,6 +159,7 @@ function AFscrapeclear(){
 		quit = false
 		totalroms = 0
 		doneroms = 0
+		timeoutroms = []
 		columns = 60
 		separator1 = ""
 		separator2 = ""
@@ -15865,12 +15866,23 @@ function tick( tick_time ) {
 			}
 			AF.scrape.purgedromdirlist = null
 
+
 			local endreport = ""
 			endreport += "SCRAPE STATUS REPORT\n"
+
+			if (AF.scrape.timeoutroms.len()>0){
+				endreport += ("TIMEOUT"+":"+AF.scrape.timeoutroms.len()+" ")
+			}
 			foreach (item,content in AF.scrape.report){
 				endreport += (item+":"+content.tot+" ")
 			}
+
 			endreport += ("\n")
+			if (AF.scrape.timeoutroms.len()>0) endreport += (AF.scrape.separator1+"\n"+"TIMEOUT"+"\n")
+			foreach(ix, itemx in AF.scrape.timeoutroms){
+				endreport += ("- "+itemx.z_name+"\n")
+			}
+
 			foreach (item,content in AF.scrape.report){
 				endreport += (AF.scrape.separator1+"\n"+item+"\n")
 				foreach (i2, item2 in content.names){
@@ -15985,21 +15997,8 @@ function tick( tick_time ) {
 					scraprt("ID"+i+" main end first check\n")
 				}
 				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)){
+					AF.scrape.timeoutroms.push(item.rominputitem) //pushes the timeout item in the list
 					scraprt("ID"+i+" ************************************ TIMEOUT\n")
-
-					try {
-						AF.scrape.report["TIMEOUT"].tot ++
-						AF.scrape.report["TIMEOUT"].names.push (item.rominputitem.z_name)
-						AF.scrape.report["TIMEOUT"].matches.push ("")
-					}
-					catch (err){
-						AF.scrape.report["TIMEOUT"] <- {
-							tot = 1
-							names = [item.rominputitem.z_name]
-							matches = [""]
-						}
-					}
-
 
 
 					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
