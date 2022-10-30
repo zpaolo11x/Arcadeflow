@@ -4,7 +4,7 @@ foreach (i, item in unichar){
    unival.push ("\\u"+(format("%04x",0x21+i)))
 }
 
-local echoon = true
+local echoon = false
 
 
 function echoprint (intext){

@@ -3464,7 +3464,6 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		// If stripped rom fails, try with non-stripped rom
       if ((dispatcher[scrapeid].jsonstatus == "ERROR")&&(strippedrom != romname)){
 			stripmatch = false
-			testpr("     ERROR RETRY\n")
          dispatcher[scrapeid].jsonstatus = null
 		   scraprt("ID"+scrapeid+"         getromdata CALL createjson ERR\n")
 			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
@@ -15859,7 +15858,6 @@ function tick( tick_time ) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
 		// to close the romlist and save the results
 		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0)){
-			testpr("**** 1\n")
 			// Save current data on respective romlists databases
 			foreach (item, val in z_list.allromlists){
 				saveromdb (item, z_list.db1[item], "db1")
@@ -15896,20 +15894,15 @@ function tick( tick_time ) {
 			z_write_line(outfile,endreport)
 			outfile.close()
 
-
-
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
-			testpr("**** 4\n")
 
 			AFscrapeclear()
 			dispatcher = []
-			testpr("**** 5\n")
 
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
 		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)){
-			testpr("**** b1\n")
 			// Increase the number of thread counts
 			AF.scrape.threads ++
 			// Add a new data structure to the scrape dispatcher
@@ -15945,7 +15938,6 @@ function tick( tick_time ) {
 			}
 			else {
 				// Increase number of dispatch count
-				testpr("**** b2\n")
 				dispatchernum ++
 				scraprt("ID"+AF.scrape.dispatchid+" main CALL scrapegame2\n")
 				dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid,AF.scrape.purgedromdirlist.pop(),AF.scrape.quit)
@@ -15998,8 +15990,7 @@ function tick( tick_time ) {
 				}
 				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)){
 					AF.scrape.timeoutroms.push(item.rominputitem) //pushes the timeout item in the list
-					scraprt("ID"+i+" ************************************ TIMEOUT\n")
-
+					scraprt("ID"+i+" TIMEOUT\n")
 
 					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 					try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
@@ -16011,7 +16002,7 @@ function tick( tick_time ) {
 					item.pollstatusA = item.pollstatus = false
 					AF.scrape.threads --
 					dispatchernum --
-					testpr("dispatchernum:"+dispatchernum+"\n")
+
 					item.gamedata = null
 					item.done = false
 					item.time0 = -1
