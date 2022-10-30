@@ -169,7 +169,12 @@ function AFscrapeclear(){
 		report = {}
 		threads = 0
 	}
+	for (local i = 0 ; i < AF.scrape.columns;i++){
+		AF.scrape.separator1 += "-"
+		AF.scrape.separator2 += "="
+	}
 }
+
 AFscrapeclear()
 AF.vernum = AF.version.tofloat()*10
 
@@ -185,10 +190,6 @@ function gly(index){
 }
 
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
-for (local i = 0 ; i < AF.scrape.columns;i++){
-	AF.scrape.separator1 += "-"
-	AF.scrape.separator2 += "="
-}
 
 local zmenu = null
 
