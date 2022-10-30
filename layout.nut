@@ -15877,14 +15877,13 @@ function tick( tick_time ) {
 					endreport += ("- "+item2+"\n"+" ["+content.matches[i2]+"]\n")
 				}
 			}
-			testpr("**** 2\n")
+
 
 			local outreport = AF.folder+"scrapelog.txt"
 			local outfile = file(outreport,"w")
 			z_write_line(outfile,endreport)
 			outfile.close()
 
-			testpr("**** 3\n")
 
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
@@ -15987,6 +15986,22 @@ function tick( tick_time ) {
 				}
 				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)){
 					scraprt("ID"+i+" ************************************ TIMEOUT\n")
+
+					try {
+						AF.scrape.report["TIMEOUT"].tot ++
+						AF.scrape.report["TIMEOUT"].names.push (item.rominputitem.z_name)
+						AF.scrape.report["TIMEOUT"].matches.push ("")
+					}
+					catch (err){
+						AF.scrape.report["TIMEOUT"] <- {
+							tot = 1
+							names = [item.rominputitem.z_name]
+							matches = [""]
+						}
+					}
+
+
+
 					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 					try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
 					try {remove (AF.folder + "json/" + i + "json_out.nut")} catch(err){}
