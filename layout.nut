@@ -16004,6 +16004,9 @@ function tick( tick_time ) {
 					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 					try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
 					try {remove (AF.folder + "json/" + i + "json_out.nut")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "jsonA.nut")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "jsonA_out.nut")} catch(err){}
 
 					item.pollstatusA = item.pollstatus = false
 					AF.scrape.threads --
