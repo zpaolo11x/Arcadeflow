@@ -16494,7 +16494,10 @@ function tick( tick_time ) {
 					tilez[i].gr_vidsz.file_name = fe.get_art("snap",vidindex[i])
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
-					tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+					if (tilez[i].gr_vidsz.texture_width != 0)
+						tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+					else
+					tilez[i].AR.vids = tilez[i].AR.snap
 
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
 					if (!prf.MORPHASPECT) update_snapcrop (i,0,0,z_list.index,tilez[i].AR.vids,tilez[i].AR.crop)
