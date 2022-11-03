@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.8 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 14.9 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,15 +10,12 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 14.8 #
+## What's new in v 14.9 #
 
-- Added new systems: PC Engine LT, SNES and NES new designs
-- Added option for Vertical Arcade video snaps
-- Increased line spacing in history page description
-- Manufacturer logos are now differentiated by year
-- Moved ScreenScraper login data to ss_login.txt file
-- Fixed manufacturer multifilter to be case-insensitive
-- Fixed SS issue when scraping games with dot in the name
+- Added progress bar for long filtering operations
+- Added timeout check to avoid hanging scraping operations
+- Fixed vertical arcade videos
+- Increased buttons and players number in metadta editor
 
 ## Emulator system identifier #
 
@@ -128,7 +125,7 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Enable sorting' : Enable custom realtime sorting, diable to keep romlist sort order
 - 'Save sort order' : Custom sort order is saved through Arcadeflow sessions
 
-#### ❗ THUMBNAILS ❗
+#### THUMBNAILS
 Chose the aspect ratio of thumbnails, video thumbnails and decorations
 
 - 'Aspect ratio' : Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation
@@ -148,7 +145,7 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Fade title on video' : Fades game title and decoration when the video is playing
 - 'Video delay multiplier' : Increase video load delay
 - 'Generate missing title art' : If no game title is present, the layout can generate it
-- '❗ Vertical arcade videos ❗' : Enable this option if you are using 9:16 videos from the Vertical Arcade project
+- 'Vertical arcade videos' : Enable this option if you are using 9:16 videos from the Vertical Arcade project
 - Decorations
 - 'Game not available indicator' : Games that are not available will be marked with a red cross overlay
 - 'New game indicator' : Games not played are marked with a glyph
@@ -385,6 +382,16 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v14.8*
+
+- Added new systems: PC Engine LT, SNES and NES new designs
+- Added option for Vertical Arcade video snaps
+- Increased line spacing in history page description
+- Manufacturer logos are now differentiated by year
+- Moved ScreenScraper login data to ss_login.txt file
+- Fixed manufacturer multifilter to be case-insensitive
+- Fixed SS issue when scraping games with dot in the name
 
 *v14.7*
 
