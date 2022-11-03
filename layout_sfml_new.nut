@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.8
+// Arcadeflow - v 14.9
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -57,7 +57,7 @@ function timestart(name){
 function timestop(name){
 	if (!elapse.timer) return
 	elapse.t2 = fe.layout.time
-	print("\n    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n\n")
+	print("    "+name+" STOP: "+(elapse.t2-elapse.timetable[name])+"\n")
 }
 
 local IDX = array(100000)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.8"
+	version = "14.9"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -122,7 +122,26 @@ local AF = {
 	messageoverlay = null
 	tsc = 1.0 // Scaling of timer for different parameters
 
-	scrape = {
+	scrape = null
+
+	emulatordata = {}
+
+	LNG = ""
+
+	bar = {
+		time0 = 0
+		time1 = 0
+		progress = 0
+		pic = null
+		picbg = null
+		size = 300
+		dark = 60
+		darkalpha = 90
+	}
+}
+
+function AFscrapeclear(){
+	AF.scrape = {
 		stack = []
 		regiontable = ["wor","us","eu","ss","jp"]
 		regionprefs = [] //This will be populated by options table
@@ -140,6 +159,7 @@ local AF = {
 		quit = false
 		totalroms = 0
 		doneroms = 0
+		timeoutroms = []
 		columns = 60
 		separator1 = ""
 		separator2 = ""
@@ -149,12 +169,13 @@ local AF = {
 		report = {}
 		threads = 0
 	}
-
-	emulatordata = {}
-
-	LNG = ""
+	for (local i = 0 ; i < AF.scrape.columns;i++){
+		AF.scrape.separator1 += "-"
+		AF.scrape.separator2 += "="
+	}
 }
 
+AFscrapeclear()
 AF.vernum = AF.version.tofloat()*10
 
 // GitHub versioning data table
@@ -169,10 +190,6 @@ function gly(index){
 }
 
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
-for (local i = 0 ; i < AF.scrape.columns;i++){
-	AF.scrape.separator1 += "-"
-	AF.scrape.separator2 += "="
-}
 
 local zmenu = null
 
@@ -207,6 +224,60 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.condensed
 	fe.overlay.edit_dialog(text1,text2)
 	fe.layout.font = uifonts.general
+}
+
+
+function bar_update(i,init,max){
+//	print ("i:"+i+" ")
+	local redraw = false
+	if (i == init){
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.pic.visible = true
+		AF.bar.picbg.visible = true
+		AF.bar.picbg.msg=gly(0xeafb+12)
+		AF.bar.pic.msg = gly(0xeafb)
+		return
+	}
+
+	if (i == max-1){
+		//print("CLOSE\n")
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		return
+	}
+
+	AF.bar.time1 = clock()
+
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		//print (" FRAME ")
+		if (i <= max*0.2) {
+			//print ("i<max*0.2")
+			redraw = true
+			AF.bar.pic.alpha = 255 * i/(max*0.2)
+			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
+		}
+		else if (i >= max*0.9){
+			//print ("i>max*0.8")
+			redraw = true
+			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
+			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
+		}
+
+		if (floor(11*i*1.0/max) != AF.bar.progress){
+			AF.bar.progress = floor(11*i*1.0/max)
+			AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
+			//print (" progress:"+AF.bar.progress+" ")
+			redraw = true
+		}
+		AF.bar.time0 = AF.bar.time1
+		if (redraw) fe.layout.redraw()
+		//print("\n")
+
+	}
+
 }
 
 /// Config management ///
@@ -510,9 +581,11 @@ try {DBGON = loaddebug()} catch (err) {}
 function debugpr (instring){
 	if (DBGON) print (instring)
 }
+local dispatcher = []
+local dispatchernum = 0
 
 function scraprt (instring){
-	print (instring)
+	print (dispatchernum+" "+instring)
 }
 
 function testpr (instring){
@@ -802,6 +875,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
 {v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 14.9, varname = "bgtunevolume", glyph = 0xe994, initvar = function(val,prf){prf.BGTUNEVOLUME <- val}, title = "Background volume", help = "Set the volume for background music", options = [0,100,100], values = 100, selection = AF.req.slideint},
 {v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
@@ -1664,6 +1738,9 @@ local flowT = {
 	zoomletter = [0.0,0.0,0.0,0.0,0.0]
 	alphadisplay = [0.0,0.0,0.0,0.0,0.0]
 	zoomdisplay = [0.0,0.0,0.0,0.0,0.0]
+
+	// BG Music
+	bgmusic = [0.0,0.0,0.0,0.0,0.0]
 }
 
 local noshader = fe.add_shader( Shader.Empty )
@@ -1829,7 +1906,7 @@ function integereven(n){
 	local n_round = integerp(n)
 	return (n_round + n_round%2.0)
 }
-
+/*
 function hsl2rgb (H,S,L){
 	local C = (1.0 - absf(2.0 * L - 1.0)) * S
 	local X = C * (1.0 - absf( ((H*1.0/60.0) % 2 ) - 1.0 ))
@@ -1849,6 +1926,20 @@ function hsl2rgb (H,S,L){
 		R = (R1 + m)
 		G = (G1 + m)
 		B = (B1 + m)
+	}
+	return (OUT)
+}
+*/
+function hsl2rgb( H,S,L )
+{
+	local RGB = [0.0,4.0,2.0]
+	RGB.apply(function(value){
+		return((L + S * ((min(max(absf(((H / 360.0 * 6.0 + value) % 6.0) - 3.0) - 1.0, 0.0), 1.0 )) - 0.5) * (1.0 - absf(2.0 * L - 1.0))))
+	})
+	local OUT ={
+		R = (RGB[0])
+		G = (RGB[1])
+		B = (RGB[2])
 	}
 	return (OUT)
 }
@@ -1884,7 +1975,7 @@ if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
 	}
 	local filelist = DirectoryListing (songdir).results
 	foreach (i,item in filelist){
-		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
+		if ((item.slice(-3).tolower() == "mp3") || (item.slice(-3).tolower() == "wav")) AF.bgsongs.push (item)
 	}
 }
 
@@ -1895,13 +1986,13 @@ local snd = {
 	mplinsound = fe.add_sound("sounds/pling2.wav")
 	wooshsound = fe.add_sound("sounds/woosh4.mp3")
 	mbacksound = fe.add_sound("sounds/woosh5.mp3")
-	attracttune = fe.add_sound(prf.AMTUNE)
-	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
-	attracttuneplay = false
-	bgtuneplay = false
+	attracttune = fe.add_music(prf.AMTUNE)
+	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_music(prf.BACKGROUNDTUNE) : fe.add_music(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
 }
 snd.plingsound.pitch = 2.0
 snd.mbacksound.pitch = 0.8
+snd.attracttune.loop = true
+snd.bgtune.loop = !prf.RANDOMTUNE
 
 // parameters for slowing down key repeat on left-right scrolling
 local count = {
@@ -3160,12 +3251,12 @@ function textrate (num,den,columns,ch1,ch0){
 	return out
 }
 
-
-local dispatcher = []
-local dispatchernum = 0
+//TEST149 put local here
+ dispatcher = []
+ dispatchernum = 0
 
 function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,romtype){
-   scraprt("ID"+scrapeid+"-createjsonA"+"\n")
+   scraprt("ID"+scrapeid+"             createjsonA START"+"\n")
 	local unicorrect = unicorrect()
 
 	try {remove (AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err){}
@@ -3186,7 +3277,9 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
+	scraprt("ID"+scrapeid+"             createjsonA suspend\n")
 	suspend()
+	scraprt("ID"+scrapeid+"             createjsonA resumed\n")
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
@@ -3225,14 +3318,14 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
       jsfileout.write_line(item_clean+"\n")
    }
 	jsfileout.close_file()
-	scraprt("ID"+scrapeid+"-createjsonA scraped\n")
+	scraprt("ID"+scrapeid+"             createjsonA SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
    return
 
 }
 
 function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,romtype){
-   scraprt("ID"+scrapeid+"-createjson"+"\n")
+   scraprt("ID"+scrapeid+"             createjson START"+"\n")
 	local unicorrect = unicorrect()
 
 	try {remove (AF.folder + "json/" + scrapeid + "json.nut")} catch(err){}
@@ -3274,9 +3367,9 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
-	scraprt("ID"+scrapeid+"-createjson suspend\n")
+	scraprt("ID"+scrapeid+"             createjson suspend\n")
 	suspend()
-	scraprt("ID"+scrapeid+"-createjson resumed\n")
+	scraprt("ID"+scrapeid+"             createjson resumed\n")
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json.nut"))
@@ -3319,19 +3412,20 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
       jsfileout.write_line(item_clean+"\n")
    }
 	jsfileout.close_file()
-	 scraprt("ID"+scrapeid+"-createjson scraped\n")
+	 scraprt("ID"+scrapeid+"             createjson SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
    return
 }
 
 
 function getromdata(scrapeid, ss_username, ss_password, romname, systemid, systemmedia, isarcade, regionprefs, rompath){
-	scraprt("ID"+scrapeid+"-getromdata "+rompath+"\n")
+	scraprt("ID"+scrapeid+"         getromdata START "+rompath+"\n")
 
 	// This is the function that actually starts the scraping dispatching createjsons commands
 
 	// Start arcade scraping if the isarcade flag is true
    if (isarcade){
+		scraprt("ID"+scrapeid+"         getromdata CALL createjsonA\n")
 		// Runs the creation of arcade json and susbends until it has finished
 		dispatcher[scrapeid].createjsonA.call(scrapeid,ss_username,ss_password,strip(split(romname,"(")[0]),null,null,systemid,systemmedia)
 		suspend()
@@ -3348,30 +3442,35 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		try {remove (AF.folder + "json/" + scrapeid + "jsonA_out.nut")}catch(err){}
 	}
 
+	//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
+
 	// Finished DBA scraping, go on with SS scraping to complete missing fields
 	// or to generate a full scraping for non-arcade games
    // CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-    scraprt("ID"+scrapeid+"-getromdata call createjson 1\n")
+    scraprt("ID"+scrapeid+"         getromdata CALL createjson 1\n")
 	 //TEST132 changed splitting to take only part before "_"
-   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+	 local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
+	 local stripmatch = true
+   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
-	 scraprt("ID"+scrapeid+"-getromdata suspend 1\n")
+	 scraprt("ID"+scrapeid+"         getromdata suspend 1\n")
 	suspend() // Wait for the json to be read
-	 scraprt("ID"+scrapeid+"-getromdata resumed\n")
+	 scraprt("ID"+scrapeid+"         getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 	//TEST120 Should we add the retry check to the arcade scrape portion or not???
 	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
 		// If stripped rom fails, try with non-stripped rom
-      if ((dispatcher[scrapeid].jsonstatus == "ERROR")){
+      if ((dispatcher[scrapeid].jsonstatus == "ERROR")&&(strippedrom != romname)){
+			stripmatch = false
          dispatcher[scrapeid].jsonstatus = null
-		   scraprt("ID"+scrapeid+"-getromdata call createjson ERR\n")
+		   scraprt("ID"+scrapeid+"         getromdata CALL createjson ERR\n")
 			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
-		   scraprt("ID"+scrapeid+"-getromdata suspend ERR\n")
+		   scraprt("ID"+scrapeid+"         getromdata suspend ERR\n")
 			suspend()
-		   scraprt("ID"+scrapeid+"-getromdata resumed\n")
+		   scraprt("ID"+scrapeid+"         getromdata resumed\n")
 		}
 
 		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
@@ -3392,12 +3491,12 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				echoprint ("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
 				// Once the name is perfectly matched, a new scrape is done to get proper rom status
 				dispatcher[scrapeid].jsonstatus = null
-				scraprt("ID"+scrapeid+"-getromdata call createjson 2\n")
+				scraprt("ID"+scrapeid+"         getromdata CALL createjson 2\n")
 				//TEST132 changed to stripped romname (was just romname)
-				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strip(split(strip(split(romname,"(")[0]),"_")[0]),getcrc.name_crc,null,systemid,systemmedia)
-				scraprt("ID"+scrapeid+"-getromdata suspend 2\n")
+				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,stripmatch ? strippedrom : romname,getcrc.name_crc,null,systemid,systemmedia)
+				scraprt("ID"+scrapeid+"         getromdata suspend 2\n")
 				suspend()
-				scraprt("ID"+scrapeid+"-getromdata resumed\n")
+				scraprt("ID"+scrapeid+"         getromdata resumed 2\n")
 
 				if (dispatcher[scrapeid].jsonstatus != "ERROR"){
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
@@ -3405,7 +3504,9 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				}
 			}
 
-			if (dispatcher[scrapeid].gamedata.notgame) dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+			if (dispatcher[scrapeid].gamedata.notgame) {
+				dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+			}
 		}
 		else {
 			echoprint ("ERROR\n")
@@ -3428,7 +3529,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	try {remove (AF.folder + "json/" + scrapeid + "json.txt")} catch(err){}
 	try {remove (AF.folder + "json/" + scrapeid + "json.nut")}catch(err){}
 	try {remove (AF.folder + "json/" + scrapeid + "json_out.nut")}catch(err){}
-	 scraprt("ID"+scrapeid+"-getromdata return\n")
+	 scraprt("ID"+scrapeid+"         getromdata RETURN\n")
 	return //gamedata
 }
 
@@ -3519,10 +3620,12 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 	// to actually scrape this game or not
 
 	if (scrapethis && !forceskip) {
+		scraprt("ID"+scrapeid+"     scrapegame2 CALL getromdata\n")
+
 		dispatcher[scrapeid].getromdata.call(scrapeid,AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname,gd[0],gd[1],garcade,AF.scrape.regionprefs,AF.emulatordata[inputitem.z_emulator].rompath+gnamewext)
-	   scraprt("ID"+scrapeid+"-scrapegame2 suspend\n")
+	   scraprt("ID"+scrapeid+"     scrapegame2 suspend\n")
 		suspend()
-	   scraprt("ID"+scrapeid+"-scrapegame2 resume\n")
+	   scraprt("ID"+scrapeid+"     scrapegame2 resume\n")
 
 		// Now the results from the scrape are back, let's analyse and put them in the
 		// scrapelist fields (in this case no need to use listline!)
@@ -3573,6 +3676,9 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 			}
 			AF.scrape.scrapelist_lines.push (inputitem+"|"+dispatcher[scrapeid].gamedata.scrapestatus+"|"+listline)
 			*/
+		}
+		else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
+			inputitem.z_scrapestatus = "NOGAME"
 		}
 	}
 	else {
@@ -3629,8 +3735,7 @@ function scrapegame2(scrapeid, inputitem, forceskip){
 					}
 				}
 
-				if ((tempdata.len()>0) && (emuartcat == "wheel") && (  !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext))) ){
-
+				if  (!(AF.scrape.forcemedia == "NO_MEDIA") && ((tempdata.len()>0) && (emuartcat == "wheel") && (  !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext))) )){
 					if (OS == "Windows"){
 						system (char_replace(AF.subfolder,"/","\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
 					}
@@ -4588,9 +4693,9 @@ local metadata = {
 				yearnames,
 				"string",
 				catnames,
-				["1","2","3","4","5","6"],
+				["1","2","3","4","5","6","7","8"],
 				["Horizontal","Vertical","0","90","270","180"],
-				["1","2","3","4","5","6"],
+				["1","2","3","4","5","6","7","8"],
 				"string",
 				["10.0","9.5","9.0","8.5","8.0","7.5","7.1","6.5","6.0","5.5","5.0","4.5","4.0","3.5","3.0","2.5","2.0","1.5","1.0","0.5","0.0"],
 				"string",
@@ -4914,6 +5019,7 @@ z_list.allromlists = allromlists()
 // listcreate is run
 
 function z_updatetagstable(){
+	timestart("    z_updatetagstable")
 	// Clear the tags table
 	z_list.tagstable = {}
 	z_list.tagstableglobal = {}
@@ -4970,6 +5076,7 @@ function z_updatetagstable(){
 
 	}
 	*/
+	timestop ("    z_updatetagstable")
 }
 
 function z_initfavsfromfiles(){
@@ -5761,6 +5868,7 @@ function mfz_build (reset){
 
 	// Scan the whole romlist
 	for (local i = 0 ; i < fe.list.size ; i++) {
+		//testpr(0xeafb+floor(i*10.0/(fe.list.size-1))+"\n")
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 		foreach (id0, table0 in multifilterz.l0){
 			local vals = table0.levcheck(i-fe.list.index)
@@ -6119,6 +6227,8 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
+		bar_update(i,0,z_list.boot.len())
+
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
 			local vals = table0.levcheck(i - fe.list.index)
@@ -6402,7 +6512,7 @@ function z_list_updategamedata(index){
 
 // Applies the multifilter to the romlist updating all the tiles
 function mfz_apply(startlist){
-	timestart ("mfz_apply")
+	timestart("mfz_apply")
 	local bootlist_index_remap = 0
 	local bootlist_index_old = 0
 	try {bootlist_index_old = z_list.gametable[z_list.index].z_felistindex}catch(err){}
@@ -6677,14 +6787,11 @@ function getallgamesdb(logopic){
 
 // create a proxy list, takes a while but should make faster filtering and sorting changes
 function z_listboot(){
-	timestart ("z_listboot")
+	timestart("z_listboot")
 	debugpr("z_listboot\n")
 	z_list.allromlists = allromlists()
 
-
-	timestart("z_updatetagstable")
 	z_updatetagstable()
-	timestop("z_updatetagstable")
 	//z_initfavsfromfiles()
 	//z_initrundatefromfiles()
 	//z_initfavdatefromfiles()
@@ -6746,9 +6853,7 @@ timestart("boot")
 
 timestop("boot")
 
-timestart("updatetags")
 	z_updatetagstable()
-timestop("updatetags")
 
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
@@ -6773,9 +6878,8 @@ local nolist_blanker = null
 local data_surface = null
 // Create the new list from current fe.list
 function z_listcreate(){
-
+	timestart("    z_listcreate")
 	debugpr("LIST: Create\n")
-
 	z_list.gametable.clear()
 	z_list.gametable2.clear()
 	z_list.jumptable.clear()
@@ -6788,6 +6892,8 @@ function z_listcreate(){
 	local felist = array(fe.list.size)
 
 	foreach (i, item in z_list.boot){
+
+		//bar_update(i,0,z_list.boot.len())
 
 		local ifeindex = i - fe.list.index
 		local checkfilter = true
@@ -6832,6 +6938,7 @@ function z_listcreate(){
 	multifilterglyph.visible = mfz_on()
 
 	nolist_blanker.visible = (z_list.size == 0)
+	timestop("    z_listcreate")
 }
 
 // scrap articles from names
@@ -6857,7 +6964,7 @@ function aggregatedisplayfilter(){
 
 // Function to sort the list
 function z_listsort(orderby,reverse){
-
+	timestart("    z_listsort")
 	local blanker = "                                                            "
 	if (z_list.size == 0) return
 
@@ -6942,11 +7049,13 @@ function z_listsort(orderby,reverse){
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby,reverse]
 		savetabletofile(SORTTABLE,"pref_sortorder.txt")
 	}
+	timestop("    z_listsort")
 
 }
 
 // Creates an array for prev-next jump
 function z_liststops(){
+	timestart("    z_liststops")
 	local temp = []
 
 	for (local i = 0 ; i < z_list.size ; i++){
@@ -7049,6 +7158,7 @@ function z_liststops(){
 		}
 		//z_list.jumptable[i].prev = modwrap (z_list.jumptable[i].stop - 1 , z_list.size)
 	}
+	timestop("    z_liststops")
 }
 
 // Function to re-sync the index when a list has been ordered
@@ -7062,6 +7172,7 @@ function z_liststupdateindex(){
 }
 
 function z_filteredlistupdateindex(reindex){
+	timestart("    z_filteredlistupdateindex")
 	if (reindex != null) {
 		z_list.newindex = z_list.index = reindex
 		fe.list.index = z_list.gametable[reindex].z_felistindex
@@ -7078,6 +7189,7 @@ function z_filteredlistupdateindex(reindex){
 		z_liststupdateindex()
 		z_list.newindex = z_list.index
 	}
+	timestop("    z_filteredlistupdateindex")
 }
 
 // Function to apply a change to the z_list
@@ -13468,34 +13580,21 @@ if (prf.AMENABLE){
 	attractitem.shader_2_lottes.set_param ("cornersmooth", 60);		// Reduce jagginess of corners
 	attractitem.shader_2_lottes.set_param ("vignettebase", 0.0,1.0,3.0);
 
-}
+	//NORMAL STARTUP, ALL HIDDEN
 
-if (prf.AMENABLE){
-	if (prf.AMSTART) {
-		attractitem.surface.alpha = 255
-		attractitem.text1.alpha = attract.textshadow
-		attractitem.text2.alpha = 255
-		attract.start = true
-		attractitem.snap.shader = attractitem.shader_2_lottes
-	}
-	else {
+	attractitem.snap.file_name = AF.folder+"pics/transparent.png"
+	attractitem.snap.shader = noshader
+	attractitem.surface.visible = attractitem.surface.redraw = false
+	attractitem.text1.visible = attractitem.text2.visible = false
+	attractitem.surface.alpha = 0
+	attractitem.text1.alpha = attractitem.text2.alpha = 0
 
-		attractitem.snap.file_name = AF.folder+"pics/transparent.png"
-		attractitem.snap.shader = noshader
-		attractitem.surface.visible = attractitem.surface.redraw = false
-		attractitem.text1.visible = attractitem.text2.visible = false
-		attractitem.surface.alpha = 0
-		attractitem.text1.alpha = attractitem.text2.alpha = 0
-		if(prf.AMTUNE != "") {
-			snd.attracttuneplay = false
-			if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
-		}
-		else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtuneplay = true
+	if (!prf.AMSTART){
 		attract.start = false
 		attract.timer = fe.layout.time
 		attract.starttimer = true
-
 	}
+	else attractkick()
 }
 
 
@@ -13540,11 +13639,6 @@ aflogo.visible = prf.SPLASHON
 /// Layout fade from black ///
 
 flowT.blacker = [0.0,0.0,0.0,0.09,1.0]
-
-
-/// BGM Start ///
-
-if(prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
 
 /// Similar Games UI ///
 
@@ -13771,7 +13865,23 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
 }
 
-	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
+/// PROGRESS BAR ///
+
+AF.bar.picbg = fe.add_text("",floor(0.5*(fl.w_os - AF.bar.size*UI.scalerate)) , floor(0.5*(fl.h_os - AF.bar.size*UI.scalerate)), floor(AF.bar.size*UI.scalerate), floor(AF.bar.size*UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
+AF.bar.pic = fe.add_text("",AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height) //TEST149 CHECK CENTERING WITH OD
+AF.bar.pic.font = AF.bar.picbg.font = "fonts/font_glyphs.ttf"
+AF.bar.pic.margin = AF.bar.picbg.margin = 0
+AF.bar.pic.align = AF.bar.picbg.align = Align.MiddleCentre
+AF.bar.pic.charsize = AF.bar.size*UI.scalerate
+AF.bar.picbg.charsize = AF.bar.size*UI.scalerate
+AF.bar.picbg.zorder = 100000
+AF.bar.pic.zorder = 100001
+AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = true
+AF.bar.pic.visible = AF.bar.picbg.visible = false
+AF.bar.pic.set_rgb(255,255,255)
+AF.bar.picbg.set_rgb(AF.bar.dark,AF.bar.dark,AF.bar.dark)
+
+//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
 
 local fps = {
@@ -14005,6 +14115,9 @@ function clampaspect (aspect){
 
 // Function that updates snap position, size and internal crop
 function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
+	local w0 = 0
+	local h0 = 0
+
 	if (cropaspect == 0){ //INITIALIZE NEW ARTWORK ASPECT
 		cropaspect = clampaspect (aspect)
 		if (prf.CROPSNAPS && !prf.BOXARTMODE) cropaspect = 1.0
@@ -14099,6 +14212,17 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 				tilez[i].gr_vidsz.subimg_x = tilez[i].vidsz.subimg_x = 0.0
 				tilez[i].gr_vidsz.subimg_y = tilez[i].vidsz.subimg_y = 0.5*(tilez[i].vidsz.texture_height - tilez[i].vidsz.subimg_height)
 			}
+		} else {
+			// Rotate video
+
+			w0 = tilez[i].vidsz.width
+			h0 = tilez[i].vidsz.height
+
+			tilez[i].vidsz.rotation = 90
+			tilez[i].vidsz.x = tilez[i].vidsz.x + w0
+			tilez[i].vidsz.width = h0
+			tilez[i].vidsz.height = w0
+
 		}
 	}
 
@@ -14994,6 +15118,7 @@ function finaltileupdate(){
 }
 
 function z_listrefreshtiles(){
+	timestart ("    z_listrefreshtiles")
 	logotitle = null
 	boxtitle = null
 
@@ -15015,15 +15140,18 @@ function z_listrefreshtiles(){
 		}
 
 		finaltileupdate()
-
+	timestop("    z_listrefreshtiles")
 	//}
 }
 
 function z_updatefilternumbers(idx){
+	timestart ("    z_updatefilternumbers")
 	filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
+	timestop ("    z_updatefilternumbers")
 }
 
 function z_listrefreshlabels(){
+	timestart("    z_listrefreshlabels")
 	// Clean old ticks and labels
 	filterdata.msg = (prf.CLEANLAYOUT ? "" : ( ( (fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name+ "\n")  + gamelistorder(0)))
 
@@ -15179,6 +15307,7 @@ function z_listrefreshlabels(){
 
 		if (labelorder.len() != 0) sortticks[labelorder[0]].visible = false
 	}
+	timestop("    z_listrefreshlabels")
 }
 
 
@@ -15219,6 +15348,12 @@ if (prf.ALLGAMES != AF.config.collections){
 fe.layout.font = uifonts.mono
 getallgamesdb(aflogo)
 fe.layout.font = uifonts.general
+
+/// ENABLE BG TUNE ///
+if(prf.BACKGROUNDTUNE != "") {
+	snd.bgtune.playing = true
+	snd.bgtune.volume = 0
+}
 
 function checkit2(){
 	foreach(item, val in z_af_collections.tab){
@@ -15664,8 +15799,9 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
-//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
-//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+	//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
+	//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
@@ -15713,14 +15849,9 @@ function tick( tick_time ) {
 		tilez[focusindex.new].bd_mx.set_rgb(255*huecycle.RGB.R,255*huecycle.RGB.G,255*huecycle.RGB.B)
 	}
 
-	if (snd.bgtuneplay != snd.bgtune.playing) {
-		if (snd.bgtuneplay && prf.RANDOMTUNE) 	snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
-
-		snd.bgtune.playing = snd.bgtuneplay
-	}
-
-	if (snd.attracttuneplay != snd.attracttune.playing) {
-		snd.attracttune.playing = snd.attracttuneplay
+	if ((prf.BACKGROUNDTUNE != "") && prf.RANDOMTUNE && !snd.bgtune.playing){
+		snd.bgtune.file_name = (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+		snd.bgtune.playing = true
 	}
 
 	// When the scrapelist is populated, scraper starts running through it
@@ -15734,18 +15865,30 @@ function tick( tick_time ) {
 			}
 			AF.scrape.purgedromdirlist = null
 
+
 			local endreport = ""
 			endreport += "SCRAPE STATUS REPORT\n"
+
+			if (AF.scrape.timeoutroms.len()>0){
+				endreport += ("TIMEOUT"+":"+AF.scrape.timeoutroms.len()+" ")
+			}
 			foreach (item,content in AF.scrape.report){
 				endreport += (item+":"+content.tot+" ")
 			}
+
 			endreport += ("\n")
+			if (AF.scrape.timeoutroms.len()>0) endreport += (AF.scrape.separator1+"\n"+"TIMEOUT"+"\n")
+			foreach(ix, itemx in AF.scrape.timeoutroms){
+				endreport += ("- "+itemx.z_name+"\n")
+			}
+
 			foreach (item,content in AF.scrape.report){
 				endreport += (AF.scrape.separator1+"\n"+item+"\n")
 				foreach (i2, item2 in content.names){
 					endreport += ("- "+item2+"\n"+" ["+content.matches[i2]+"]\n")
 				}
 			}
+
 
 			local outreport = AF.folder+"scrapelog.txt"
 			local outfile = file(outreport,"w")
@@ -15754,12 +15897,13 @@ function tick( tick_time ) {
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
 
-
+			AFscrapeclear()
+			dispatcher = []
 
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 100)){
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)){
 			// Increase the number of thread counts
 			AF.scrape.threads ++
 			// Add a new data structure to the scrape dispatcher
@@ -15776,12 +15920,13 @@ function tick( tick_time ) {
 				done = false
 				quit = AF.scrape.quit
 				skip = false
+				time0 = fe.layout.time
 			})
 
 
 			local t0 = fe.layout.time
 
-			scraprt("ID:"+AF.scrape.dispatchid+" DISPATCH "+AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len()-1]+"\n")
+			scraprt("ID"+AF.scrape.dispatchid+" DISPATCH "+AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len()-1]+"\n")
 
 
 
@@ -15795,6 +15940,7 @@ function tick( tick_time ) {
 			else {
 				// Increase number of dispatch count
 				dispatchernum ++
+				scraprt("ID"+AF.scrape.dispatchid+" main CALL scrapegame2\n")
 				dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid,AF.scrape.purgedromdirlist.pop(),AF.scrape.quit)
 			}
 			// Increase the number of the id for the next scrape
@@ -15805,39 +15951,63 @@ function tick( tick_time ) {
 	if (dispatchernum != 0){
 		foreach (i, item in dispatcher){
 			if (item.done){
-				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
 				try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
 				try {remove (AF.folder + "json/" + i + "json_out.nut")} catch(err){}
-				scraprt("COMPLETED "+item.gamedata.filename+"\n")
+
+				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
+				scraprt("ID"+i+" COMPLETED "+item.gamedata.filename+"\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
 				AF.boxmessage = messageboxer (patchtext (AF.scrape.romlist+" "+(AF.scrape.totalroms-AF.scrape.purgedromdirlist.len())+"/"+AF.scrape.totalroms, AF.scrape.requests,11,AF.scrape.columns)+"\n"+textrate(AF.scrape.doneroms,AF.scrape.totalroms,AF.scrape.columns,"|","\\"), patchtext(item.gamedata.filename,item.gamedata.scrapestatus,11,AF.scrape.columns)+"\n",true,AF.boxmessage)
 
 				AF.scrape.threads --
 				dispatchernum --
-				scraprt("ID"+i+"-main scrapegame2 wakeup\n")
+				scraprt("ID"+i+" main WAKEUP scrapegame2\n")
 				if ((!item.quit) && (!item.skip)) item.scrapegame2.wakeup()
-				//scraprt("ID"+i+"-main continue second check\n")
+				//scraprt("ID"+i+" main continue second check\n")
+
+				item.time0 = -1
 				item.gamedata = null
 				item.done = false
 			}
-			else if (!item.done && item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")){
-				try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
-				item.pollstatus = false
-	   		scraprt("ID"+i+"-main createjson wakeup\n")
-				item.createjson.wakeup()
-	   		scraprt("ID"+i+"-main getromdata wakeup\n")
-				item.getromdata.wakeup()
-				scraprt("ID"+i+"-main end first check\n")
-			}
-			else if (!item.done && item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")){
-				try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
-				item.pollstatusA = false
-	   		scraprt("ID"+i+"-main createjson wakeup\n")
-				item.createjsonA.wakeup()
-	   		scraprt("ID"+i+"-main getromdata wakeup\n")
-				item.getromdata.wakeup()
-				scraprt("ID"+i+"-main end first check\n")
+			else {
+				if (item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")){
+					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
+					item.pollstatus = false
+					scraprt("ID"+i+" main WAKEUP createjson\n")
+					item.createjson.wakeup()
+					scraprt("ID"+i+" main WAKEUP getromdata\n")
+					item.getromdata.wakeup()
+					scraprt("ID"+i+" main end first check\n")
+				}
+			 	else if (item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt") ){
+					try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
+					item.pollstatusA = false
+					scraprt("ID"+i+" main WAKEUP createjsonA\n")
+					item.createjsonA.wakeup()
+					scraprt("ID"+i+" main WAKEUP getromdata\n")
+					item.getromdata.wakeup()
+					scraprt("ID"+i+" main end first check\n")
+				}
+				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)){
+					AF.scrape.timeoutroms.push(item.rominputitem) //pushes the timeout item in the list
+					scraprt("ID"+i+" TIMEOUT\n")
+
+					try {remove (AF.folder + "json/" + i + "json.txt")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "json.nut")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "json_out.nut")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "jsonA.txt")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "jsonA.nut")} catch(err){}
+					try {remove (AF.folder + "json/" + i + "jsonA_out.nut")} catch(err){}
+
+					item.pollstatusA = item.pollstatus = false
+					AF.scrape.threads --
+					dispatchernum --
+
+					item.gamedata = null
+					item.done = false
+					item.time0 = -1
+				}
 			}
 		}
 	}
@@ -15969,10 +16139,10 @@ function tick( tick_time ) {
 			if (!attract.sound) attractitem.snap.video_flags = Vid.NoAudio
 
 			if(prf.AMTUNE != "") {
-				snd.attracttuneplay = true
-				if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = false
+				snd.attracttune.playing = true
+				if (prf.BACKGROUNDTUNE != "") snd.bgtune.playing = false
 			}
-			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtuneplay = false
+			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtune.playing = false
 
 			attract.start = false
 			attract.rolltext = true
@@ -16324,7 +16494,10 @@ function tick( tick_time ) {
 					tilez[i].gr_vidsz.file_name = fe.get_art("snap",vidindex[i])
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
-					tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+					if (tilez[i].gr_vidsz.texture_width != 0)
+						tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+					else
+					tilez[i].AR.vids = tilez[i].AR.snap
 
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
 					if (!prf.MORPHASPECT) update_snapcrop (i,0,0,z_list.index,tilez[i].AR.vids,tilez[i].AR.crop)
@@ -16421,6 +16594,7 @@ function tick( tick_time ) {
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
+		if (prf.BACKGROUNDTUNE != "") snd.bgtune.volume = (40 + 60 * (1.0 - flowT.zmenush[1]))*prf.BGTUNEVOLUME/100
 	}
 
 	if (checkfade (flowT.zmenutx)){
@@ -16540,10 +16714,10 @@ function tick( tick_time ) {
 			attractitem.text1.visible = attractitem.text2.visible = false
 			attract.starttimer = true
 			if(prf.AMTUNE != "") {
-				snd.attracttuneplay = false
-				if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
+				snd.attracttune.playing = false
+				if (prf.BACKGROUNDTUNE != "") snd.bgtune.playing = true
 			}
-			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtuneplay = true
+			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtune.playing = true
 
 		}
 
@@ -16594,6 +16768,8 @@ function tick( tick_time ) {
 		fl.surf.alpha = 255*flowT.blacker[1]
 		if (user_fg != null) user_fg.alpha = 255*flowT.blacker[1]
 		if (prf.SPLASHON) aflogo.alpha = 255*flowT.blacker[1]
+		if ((prf.BACKGROUNDTUNE != "")) snd.bgtune.volume = prf.BGTUNEVOLUME * flowT.blacker[1]
+
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
 	}
 
@@ -16619,7 +16795,7 @@ function tick( tick_time ) {
 			history_surface.visible = false
 			history_redraw(false)
 		}
-
+		if ((prf.BACKGROUNDTUNE != "") && (prf.AUDIOVIDHISTORY)) snd.bgtune.volume = prf.BGTUNEVOLUME * (1.0 - flowT.history[1])
 		history_surface.alpha = 255 * flowT.history[1]
 	}
 

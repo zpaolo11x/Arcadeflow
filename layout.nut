@@ -228,57 +228,57 @@ function z_edit_dialog(text1,text2){
 
 
 function bar_update(i,init,max){
-//	print ("i:"+i+" ")
-	local redraw = false
-	if (i == init){
-		//print("INIT\n")
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.pic.visible = true
-		AF.bar.picbg.visible = true
-		AF.bar.picbg.msg=gly(0xeafb+12)
-		AF.bar.pic.msg = gly(0xeafb)
-		return
-	}
-
-	if (i == max-1){
-		//print("CLOSE\n")
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		return
-	}
-
-	AF.bar.time1 = clock()
-
-	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
-		//print (" FRAME ")
-		if (i <= max*0.2) {
-			//print ("i<max*0.2")
-			redraw = true
-			AF.bar.pic.alpha = 255 * i/(max*0.2)
-			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
-		}
-		else if (i >= max*0.9){
-			//print ("i>max*0.8")
-			redraw = true
-			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
-			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
+	//	print ("i:"+i+" ")
+		local redraw = false
+		if (i == init){
+			//print("INIT\n")
+			AF.bar.time0 = 0
+			AF.bar.time1 = 0
+			AF.bar.progress = 0
+			AF.bar.pic.visible = true
+			AF.bar.picbg.visible = true
+			AF.bar.picbg.msg=gly(0xeafb+12)
+			AF.bar.pic.msg = gly(0xeafb)
+			return
 		}
 
-		if (floor(11*i*1.0/max) != AF.bar.progress){
-			AF.bar.progress = floor(11*i*1.0/max)
-			AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
-			//print (" progress:"+AF.bar.progress+" ")
-			redraw = true
+		if (i == max-1){
+			//print("CLOSE\n")
+			AF.bar.pic.visible = false
+			AF.bar.picbg.visible = false
+			return
 		}
-		AF.bar.time0 = AF.bar.time1
-		if (redraw) fe.layout.redraw()
-		//print("\n")
+
+		AF.bar.time1 = clock()
+
+		if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+			//print (" FRAME ")
+			if (i <= max*0.2) {
+				//print ("i<max*0.2")
+				redraw = true
+				AF.bar.pic.alpha = 255 * i/(max*0.2)
+				AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
+			}
+			else if (i >= max*0.9){
+				//print ("i>max*0.8")
+				redraw = true
+				AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
+				AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
+			}
+
+			if (floor(11*i*1.0/max) != AF.bar.progress){
+				AF.bar.progress = floor(11*i*1.0/max)
+				AF.bar.pic.msg = gly(0xeafb+AF.bar.progress)
+				//print (" progress:"+AF.bar.progress+" ")
+				redraw = true
+			}
+			AF.bar.time0 = AF.bar.time1
+			if (redraw) fe.layout.redraw()
+			//print("\n")
+
+		}
 
 	}
-
-}
 
 /// Config management ///
 
@@ -875,7 +875,6 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
 {v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 14.9, varname = "bgtunevolume", glyph = 0xe994, initvar = function(val,prf){prf.BGTUNEVOLUME <- val}, title = "Background volume", help = "Set the volume for background music", options = [0,100,100], values = 100, selection = AF.req.slideint},
 {v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
@@ -1738,9 +1737,6 @@ local flowT = {
 	zoomletter = [0.0,0.0,0.0,0.0,0.0]
 	alphadisplay = [0.0,0.0,0.0,0.0,0.0]
 	zoomdisplay = [0.0,0.0,0.0,0.0,0.0]
-
-	// BG Music
-	bgmusic = [0.0,0.0,0.0,0.0,0.0]
 }
 
 local noshader = fe.add_shader( Shader.Empty )
@@ -1975,7 +1971,7 @@ if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
 	}
 	local filelist = DirectoryListing (songdir).results
 	foreach (i,item in filelist){
-		if ((item.slice(-3).tolower() == "mp3") || (item.slice(-3).tolower() == "wav")) AF.bgsongs.push (item)
+		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
 	}
 }
 
@@ -1986,13 +1982,13 @@ local snd = {
 	mplinsound = fe.add_sound("sounds/pling2.wav")
 	wooshsound = fe.add_sound("sounds/woosh4.mp3")
 	mbacksound = fe.add_sound("sounds/woosh5.mp3")
-	attracttune = fe.add_music(prf.AMTUNE)
-	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_music(prf.BACKGROUNDTUNE) : fe.add_music(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	attracttune = fe.add_sound(prf.AMTUNE)
+	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	attracttuneplay = false
+	bgtuneplay = false
 }
 snd.plingsound.pitch = 2.0
 snd.mbacksound.pitch = 0.8
-snd.attracttune.loop = true
-snd.bgtune.loop = !prf.RANDOMTUNE
 
 // parameters for slowing down key repeat on left-right scrolling
 local count = {
@@ -3252,8 +3248,8 @@ function textrate (num,den,columns,ch1,ch0){
 }
 
 //TEST149 put local here
- dispatcher = []
- dispatchernum = 0
+dispatcher = []
+dispatchernum = 0
 
 function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,romtype){
    scraprt("ID"+scrapeid+"             createjsonA START"+"\n")
@@ -3412,7 +3408,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
       jsfileout.write_line(item_clean+"\n")
    }
 	jsfileout.close_file()
-	 scraprt("ID"+scrapeid+"             createjson SCRAPED\n")
+	scraprt("ID"+scrapeid+"             createjson SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
    return
 }
@@ -3449,7 +3445,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
    // CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-    scraprt("ID"+scrapeid+"         getromdata CALL createjson 1\n")
+   scraprt("ID"+scrapeid+"         getromdata CALL createjson 1\n")
 	 //TEST132 changed splitting to take only part before "_"
 	 local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
 	 local stripmatch = true
@@ -3529,7 +3525,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	try {remove (AF.folder + "json/" + scrapeid + "json.txt")} catch(err){}
 	try {remove (AF.folder + "json/" + scrapeid + "json.nut")}catch(err){}
 	try {remove (AF.folder + "json/" + scrapeid + "json_out.nut")}catch(err){}
-	 scraprt("ID"+scrapeid+"         getromdata RETURN\n")
+	scraprt("ID"+scrapeid+"         getromdata RETURN\n")
 	return //gamedata
 }
 
@@ -6851,7 +6847,7 @@ timestart("boot")
 			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
 
-timestop("boot")
+	timestop("boot")
 
 	z_updatetagstable()
 
@@ -7056,7 +7052,7 @@ function z_listsort(orderby,reverse){
 // Creates an array for prev-next jump
 function z_liststops(){
 	timestart("    z_liststops")
-	local temp = []
+		local temp = []
 
 	for (local i = 0 ; i < z_list.size ; i++){
 
@@ -13580,21 +13576,34 @@ if (prf.AMENABLE){
 	attractitem.shader_2_lottes.set_param ("cornersmooth", 60);		// Reduce jagginess of corners
 	attractitem.shader_2_lottes.set_param ("vignettebase", 0.0,1.0,3.0);
 
-	//NORMAL STARTUP, ALL HIDDEN
+}
 
-	attractitem.snap.file_name = AF.folder+"pics/transparent.png"
-	attractitem.snap.shader = noshader
-	attractitem.surface.visible = attractitem.surface.redraw = false
-	attractitem.text1.visible = attractitem.text2.visible = false
-	attractitem.surface.alpha = 0
-	attractitem.text1.alpha = attractitem.text2.alpha = 0
+if (prf.AMENABLE){
+	if (prf.AMSTART) {
+		attractitem.surface.alpha = 255
+		attractitem.text1.alpha = attract.textshadow
+		attractitem.text2.alpha = 255
+		attract.start = true
+		attractitem.snap.shader = attractitem.shader_2_lottes
+	}
+	else {
 
-	if (!prf.AMSTART){
+		attractitem.snap.file_name = AF.folder+"pics/transparent.png"
+		attractitem.snap.shader = noshader
+		attractitem.surface.visible = attractitem.surface.redraw = false
+		attractitem.text1.visible = attractitem.text2.visible = false
+		attractitem.surface.alpha = 0
+		attractitem.text1.alpha = attractitem.text2.alpha = 0
+		if(prf.AMTUNE != "") {
+			snd.attracttuneplay = false
+			if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
+		}
+		else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtuneplay = true
 		attract.start = false
 		attract.timer = fe.layout.time
 		attract.starttimer = true
+
 	}
-	else attractkick()
 }
 
 
@@ -13639,6 +13648,11 @@ aflogo.visible = prf.SPLASHON
 /// Layout fade from black ///
 
 flowT.blacker = [0.0,0.0,0.0,0.09,1.0]
+
+
+/// BGM Start ///
+
+if(prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
 
 /// Similar Games UI ///
 
@@ -13881,7 +13895,7 @@ AF.bar.pic.visible = AF.bar.picbg.visible = false
 AF.bar.pic.set_rgb(255,255,255)
 AF.bar.picbg.set_rgb(AF.bar.dark,AF.bar.dark,AF.bar.dark)
 
-//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
+	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
 
 local fps = {
@@ -15140,19 +15154,19 @@ function z_listrefreshtiles(){
 		}
 
 		finaltileupdate()
-	timestop("    z_listrefreshtiles")
-	//}
-}
+		timestop("    z_listrefreshtiles")
+		//}
+	}
 
-function z_updatefilternumbers(idx){
-	timestart ("    z_updatefilternumbers")
-	filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
-	timestop ("    z_updatefilternumbers")
-}
+	function z_updatefilternumbers(idx){
+		timestart ("    z_updatefilternumbers")
+		filternumbers.msg = (prf.CLEANLAYOUT ? "" : (idx+1)+"\n"+(z_list.size))
+		timestop ("    z_updatefilternumbers")
+	}
 
-function z_listrefreshlabels(){
-	timestart("    z_listrefreshlabels")
-	// Clean old ticks and labels
+	function z_listrefreshlabels(){
+		timestart("    z_listrefreshlabels")
+		// Clean old ticks and labels
 	filterdata.msg = (prf.CLEANLAYOUT ? "" : ( ( (fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name+ "\n")  + gamelistorder(0)))
 
 	try {
@@ -15348,12 +15362,6 @@ if (prf.ALLGAMES != AF.config.collections){
 fe.layout.font = uifonts.mono
 getallgamesdb(aflogo)
 fe.layout.font = uifonts.general
-
-/// ENABLE BG TUNE ///
-if(prf.BACKGROUNDTUNE != "") {
-	snd.bgtune.playing = true
-	snd.bgtune.volume = 0
-}
 
 function checkit2(){
 	foreach(item, val in z_af_collections.tab){
@@ -15799,8 +15807,8 @@ function tick( tick_time ) {
 	//print (tilez[focusindex.new].obj.x+" "+tilez[focusindex.new].obj.y+" "+tilez[focusindex.new].obj.width+" "+tilez[focusindex.new].obj.height+"\n")
 	//print (tilez[focusindex.new].snapz.x+" "+tilez[focusindex.new].snapz.y+" "+tilez[focusindex.new].snapz.width+" "+tilez[focusindex.new].snapz.height+"\n")
 
-	//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
-	//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+//	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
+//	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
 
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
@@ -15849,9 +15857,14 @@ function tick( tick_time ) {
 		tilez[focusindex.new].bd_mx.set_rgb(255*huecycle.RGB.R,255*huecycle.RGB.G,255*huecycle.RGB.B)
 	}
 
-	if ((prf.BACKGROUNDTUNE != "") && prf.RANDOMTUNE && !snd.bgtune.playing){
-		snd.bgtune.file_name = (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
-		snd.bgtune.playing = true
+	if (snd.bgtuneplay != snd.bgtune.playing) {
+		if (snd.bgtuneplay && prf.RANDOMTUNE) 	snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+
+		snd.bgtune.playing = snd.bgtuneplay
+	}
+
+	if (snd.attracttuneplay != snd.attracttune.playing) {
+		snd.attracttune.playing = snd.attracttuneplay
 	}
 
 	// When the scrapelist is populated, scraper starts running through it
@@ -15882,7 +15895,7 @@ function tick( tick_time ) {
 				endreport += ("- "+itemx.z_name+"\n")
 			}
 
-			foreach (item,content in AF.scrape.report){
+					foreach (item,content in AF.scrape.report){
 				endreport += (AF.scrape.separator1+"\n"+item+"\n")
 				foreach (i2, item2 in content.names){
 					endreport += ("- "+item2+"\n"+" ["+content.matches[i2]+"]\n")
@@ -16139,10 +16152,10 @@ function tick( tick_time ) {
 			if (!attract.sound) attractitem.snap.video_flags = Vid.NoAudio
 
 			if(prf.AMTUNE != "") {
-				snd.attracttune.playing = true
-				if (prf.BACKGROUNDTUNE != "") snd.bgtune.playing = false
+				snd.attracttuneplay = true
+				if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = false
 			}
-			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtune.playing = false
+			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtuneplay = false
 
 			attract.start = false
 			attract.rolltext = true
@@ -16594,7 +16607,6 @@ function tick( tick_time ) {
 		}
 		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
-		if (prf.BACKGROUNDTUNE != "") snd.bgtune.volume = (40 + 60 * (1.0 - flowT.zmenush[1]))*prf.BGTUNEVOLUME/100
 	}
 
 	if (checkfade (flowT.zmenutx)){
@@ -16714,10 +16726,10 @@ function tick( tick_time ) {
 			attractitem.text1.visible = attractitem.text2.visible = false
 			attract.starttimer = true
 			if(prf.AMTUNE != "") {
-				snd.attracttune.playing = false
-				if (prf.BACKGROUNDTUNE != "") snd.bgtune.playing = true
+				snd.attracttuneplay = false
+				if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
 			}
-			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtune.playing = true
+			else if ((prf.BACKGROUNDTUNE != "") && (prf.NOBGONATTRACT)) snd.bgtuneplay = true
 
 		}
 
@@ -16768,8 +16780,6 @@ function tick( tick_time ) {
 		fl.surf.alpha = 255*flowT.blacker[1]
 		if (user_fg != null) user_fg.alpha = 255*flowT.blacker[1]
 		if (prf.SPLASHON) aflogo.alpha = 255*flowT.blacker[1]
-		if ((prf.BACKGROUNDTUNE != "")) snd.bgtune.volume = prf.BGTUNEVOLUME * flowT.blacker[1]
-
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
 	}
 
@@ -16795,7 +16805,7 @@ function tick( tick_time ) {
 			history_surface.visible = false
 			history_redraw(false)
 		}
-		if ((prf.BACKGROUNDTUNE != "") && (prf.AUDIOVIDHISTORY)) snd.bgtune.volume = prf.BGTUNEVOLUME * (1.0 - flowT.history[1])
+
 		history_surface.alpha = 255 * flowT.history[1]
 	}
 
