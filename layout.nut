@@ -11540,6 +11540,7 @@ function history_updatesnap(){
 	shadowsurf_rt.shader = shadowshader.glow
 
 	local histAR = getAR(0,hist_screen,0,false)
+	if (!prf.BOXARTMODE && (histAR != tilez[focusindex.new].AR.snap)) histAR = tilez[focusindex.new].AR.snap
 	local ARdata = ARprocess(histAR)
 
 	local hist_screen_size = hist_screenT.w-2.0*historypadding
@@ -14192,6 +14193,9 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(tilez[i].snapz.x, tilez[i].snapz.y, tilez[i].snapz.width, tilez[i].snapz.height)
 
 	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
+	if (!prf.BOXARTMODE && (vidAR != tilez[i].AR.snap)) {
+		vidAR = tilez[i].AR.snap
+	}
 
 	// Select cases where the snap itself needs to be recropped
 	if (prf.MORPHASPECT || (!prf.BOXARTMODE && prf.CROPSNAPS)){
@@ -16507,8 +16511,10 @@ function tick( tick_time ) {
 					tilez[i].gr_vidsz.file_name = fe.get_art("snap",vidindex[i])
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
-					if (tilez[i].gr_vidsz.texture_width != 0)
+					if (tilez[i].gr_vidsz.texture_width != 0){
 						tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
+						if (!prf.BOXARTMODE && (tilez[i].AR.vids != tilez[i].AR.snap)) tilez[i].AR.vids = tilez[i].AR.snap
+					}
 					else
 					tilez[i].AR.vids = tilez[i].AR.snap
 
