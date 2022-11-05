@@ -8012,7 +8012,7 @@ function squarebg(){
 				bgs.bgpic_array[i].subimg_y = 0.5*(bgs.bgpic_array[i].texture_height - bgs.bgpic_array[i].subimg_height)
 			}
 			if (prf.LAYERSNAP){
-				local vidaspect = getAR(bgs.bg_index[i]-z_list.index,bgs.bgvid_array[i],0,false)
+				local vidaspect = getvidAR(bgs.bg_index[i]-z_list.index,bgs.bgvid_array[i],bgs.bgpic_array[i],0)
 				if (vidaspect > cropaspect){ // Cut sides
 					bgs.bgvid_array[i].subimg_width =  bgs.bgvid_array[i].texture_width * (cropaspect/vidaspect)
 					bgs.bgvid_array[i].subimg_height = bgs.bgvid_array[i].texture_height
