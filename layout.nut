@@ -8309,6 +8309,10 @@ for (local i = 0; i < tiles.total; i++ ) {
 
 	obj.zorder = -2
 
+	local refsnapz = obj.add_image(AF.folder+"pics/transparent.png",0,0,gradsizer,gradsizer)
+	refsnapz.visible = false
+	refsnapz.redraw = false
+
 	if (prf.SNAPGRADIENT){
 
 		gradsurf_rt = obj.add_surface (gradsizer, gradsizer)
@@ -8542,6 +8546,7 @@ for (local i = 0; i < tiles.total; i++ ) {
 
 	tilez.push({
 		obj = obj
+		refsnapz = refsnapz
 		snapz = snapz
 		logoz = logoz
 		loshz = loshz
@@ -11539,8 +11544,7 @@ function history_updatesnap(){
 	shadowsurf_2.shader = shadowshader.v
 	shadowsurf_rt.shader = shadowshader.glow
 
-	local histAR = getAR(0,hist_screen,0,false)
-	if (!prf.BOXARTMODE && (histAR != tilez[focusindex.new].AR.snap)) histAR = tilez[focusindex.new].AR.snap
+	local histAR = getvidAR(0,hist_screen,tilez[focusindex.new].refsnapz,0)
 	local ARdata = ARprocess(histAR)
 
 	local hist_screen_size = hist_screenT.w-2.0*historypadding
@@ -14073,6 +14077,34 @@ function ARprocess(aspect){
 	return (out)
 }
 
+function getvidAR(tileindex, tile, reftile, var){
+	// Nothing in the list, or no image at all: return 1.0
+	if (z_list.size == 0) return (1.0)
+	if ((tile.texture_height == 0) && (reftile.texture_height)) return 1.0
+
+	local txtAR = 1.0
+	if (tile.texture_height != 0) txtAR = (tile.texture_width * 1.0 / tile.texture_height)
+	local refAR = reftile.texture_height != 0 ? (reftile.texture_width * 1.0 / reftile.texture_height) : txtAR
+
+	if (txtAR != refAR) txtAR = refAR
+
+	// Get rotation attribute from selected game, this implies it's an arcade CRT game
+	local horizgame = z_list.gametable[ modwrap (z_list.index + tileindex + var, z_list.size) ].z_rotation
+
+	if (horizgame != "") {
+		horizgame = ((horizgame == "0") || (horizgame == "180") || (horizgame == "horizontal") || (horizgame == "Horizontal"))
+		return (horizgame ? 4.0/3.0 : 3.0/4.0)
+	}
+
+	// No definition of horizontal or vertical, no boxart mode
+	local sysAR = systemAR (tileindex, var)
+
+	if (sysAR < 0) return (txtAR > 1.0 ? -1.0 * sysAR : -1.0/sysAR)
+
+	return (sysAR != 0.0 ? sysAR : txtAR)
+
+}
+
 function getAR(tileindex, tile, var, boxart){
 	// Nothing in the list, or no image at all: return 1.0
 	if (z_list.size == 0) return (1.0)
@@ -14192,10 +14224,7 @@ function update_snapcrop (i,var,indexoffsetvar,indexvar,aspect,cropaspect){
 
 	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.set_pos(tilez[i].snapz.x, tilez[i].snapz.y, tilez[i].snapz.width, tilez[i].snapz.height)
 
-	local vidAR = getAR(tilez[i].offset,tilez[i].vidsz,var,false) //This is the AR of the game video if it was not on boxart mode
-	if (!prf.BOXARTMODE && (vidAR != tilez[i].AR.snap)) {
-		vidAR = tilez[i].AR.snap
-	}
+	local vidAR = getvidAR(tilez[i].offset,tilez[i].vidsz,tilez[i].refsnapz,var) //This is the AR of the game video if it was not on boxart mode
 
 	// Select cases where the snap itself needs to be recropped
 	if (prf.MORPHASPECT || (!prf.BOXARTMODE && prf.CROPSNAPS)){
@@ -15051,6 +15080,7 @@ function changetiledata(i,index,update){
 		// old style access: fe.get_art must reference old romlist
 		tilez[indexTemp].loshz.file_name = fe.get_art("wheel" , indexoffsetvar,0,Art.ImagesOnly)
 		tilez[indexTemp].gr_snapz.file_name = fe.get_art((prf.BOXARTMODE ? prf.BOXARTSOURCE : (prf.TITLEART ? "title" : "snap")) , indexoffsetvar,0,Art.ImagesOnly)
+		tilez[indexTemp].refsnapz.file_name = fe.get_art( (prf.TITLEART ? "title" : "snap") , indexoffsetvar,0,Art.ImagesOnly)
 
 		if (prf.THUMBVIDEO) z_resetthumbvideo(indexTemp)
 
@@ -16511,12 +16541,7 @@ function tick( tick_time ) {
 					tilez[i].gr_vidsz.file_name = fe.get_art("snap",vidindex[i])
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
-					if (tilez[i].gr_vidsz.texture_width != 0){
-						tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getAR(tilez[i].offset,tilez[i].vidsz,0,false)
-						if (!prf.BOXARTMODE && (tilez[i].AR.vids != tilez[i].AR.snap)) tilez[i].AR.vids = tilez[i].AR.snap
-					}
-					else
-					tilez[i].AR.vids = tilez[i].AR.snap
+					tilez[i].AR.vids = prf.VID169 ? 9.0/16.0 : getvidAR(tilez[i].offset,tilez[i].vidsz,tilez[i].refsnapz,0)
 
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
 					if (!prf.MORPHASPECT) update_snapcrop (i,0,0,z_list.index,tilez[i].AR.vids,tilez[i].AR.crop)
