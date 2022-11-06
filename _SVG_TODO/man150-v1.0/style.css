@@ -1,0 +1,95 @@
+@font-face {
+  font-family: 'man148';
+  src:
+    url('fonts/man148.ttf?dczaxs') format('truetype'),
+    url('fonts/man148.woff?dczaxs') format('woff'),
+    url('fonts/man148.svg?dczaxs#man148') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'man148' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-studios:before {
+  content: "\e900";
+}
+.icon-agetec:before {
+  content: "\e901";
+}
+.icon-crystaldynamics:before {
+  content: "\e902";
+}
+.icon-datampolystar:before {
+  content: "\e903";
+}
+.icon-fromsoftware:before {
+  content: "\e904";
+}
+.icon-gust:before {
+  content: "\e905";
+}
+.icon-imadio:before {
+  content: "\e906";
+}
+.icon-kadokawa:before {
+  content: "\e907";
+}
+.icon-mediaentertainment:before {
+  content: "\e908";
+}
+.icon-pioneer-1998:before {
+  content: "\e909";
+}
+.icon-pioneer:before {
+  content: "\e90a";
+}
+.icon-playlogic:before {
+  content: "\e90b";
+}
+.icon-polyphonydigital:before {
+  content: "\e90c";
+}
+.icon-prismarts:before {
+  content: "\e90d";
+}
+.icon-produce:before {
+  content: "\e90e";
+}
+.icon-rebellion:before {
+  content: "\e90f";
+}
+.icon-shoeisha:before {
+  content: "\e910";
+}
+.icon-southpeakgames:before {
+  content: "\e911";
+}
+.icon-southpeakinteractive:before {
+  content: "\e912";
+}
+.icon-warnerbros:before {
+  content: "\e913";
+}
+.icon-xing:before {
+  content: "\e914";
+}
+.icon-xseedgames:before {
+  content: "\e915";
+}
+.icon-yumedia:before {
+  content: "\e916";
+}
