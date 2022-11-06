@@ -12100,6 +12100,7 @@ zmenu = {
 	simbg = null
 	simpicbg = null
 	simpic = null
+	simvid = null
 	simpicshL = null
 	simpicshR = null
 	simpicshT = null
@@ -13692,9 +13693,19 @@ zmenu.simpic = zmenu_surface_container.add_image(AF.folder+"pics/transparent.png
 										zmenu.simpicbg.width,
 										zmenu.simpicbg.height)
 
+zmenu.simvid = zmenu_surface_container.add_image(AF.folder+"pics/transparent.png",
+										zmenu.simpicbg.x,
+										zmenu.simpicbg.y,
+										zmenu.simpicbg.width,
+										zmenu.simpicbg.height)
+
 zmenu.simpic.zorder = 10000
 zmenu.simpic.video_flags = Vid.NoAudio
 zmenu.simpic.preserve_aspect_ratio = false
+
+zmenu.simvid.zorder = 10001
+zmenu.simvid.video_flags = Vid.NoAudio
+zmenu.simvid.preserve_aspect_ratio = false
 
 zmenu.simsys = zmenu_surface_container.add_text("",
 										zmenu.simbg.x,
@@ -13723,7 +13734,7 @@ zmenu.simtxt.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.them
 
 function zmenusimvisible(visibility){
 	zmenu.simpicshT.visible = zmenu.simpicshB.visible = zmenu.simpicshL.visible = zmenu.simpicshR.visible = visibility
-	zmenu.simpic.visible = zmenu.simpicbg.visible = zmenu.simbg.visible = zmenu.simsys.visible =zmenu.simtxt.visible = visibility
+	zmenu.simvid.visible = zmenu.simpic.visible = zmenu.simpicbg.visible = zmenu.simbg.visible = zmenu.simsys.visible =zmenu.simtxt.visible = visibility
 }
 
 zmenusimvisible(false)
@@ -13747,15 +13758,16 @@ function simtitle(in1, in2){
 }
 
 function updatesimpic(index){
+	zmenu.simvid.file_name = AF.folder+"pics/transparent.png"
 	zmenu.simpic.file_name = fe.get_art ("snap",zmenu.similar[index].data.z_felistindex - fe.list.index,0,Art.ImagesOnly)
 
 	local gameAR = getAR(zmenu.similar[index].index-z_list.index,zmenu.simpic,0,false)
 	local ARdata = ARprocess(gameAR)
 
-	zmenu.simpic.width = zmenu.simpicbg.width * ARdata.w * 640.0/500.0
-	zmenu.simpic.height = zmenu.simpicbg.height * ARdata.h * 640.0/500.0
-	zmenu.simpic.x = zmenu.simpicbg.x + 0.5 * zmenu.simpicbg.width - 0.5 * zmenu.simpic.width
-	zmenu.simpic.y = zmenu.simpicbg.y + 0.5 * zmenu.simpicbg.height - 0.5 * zmenu.simpic.height
+	zmenu.simvid.width = zmenu.simpic.width = zmenu.simpicbg.width * ARdata.w * 640.0/500.0
+	zmenu.simvid.height = zmenu.simpic.height = zmenu.simpicbg.height * ARdata.h * 640.0/500.0
+	zmenu.simvid.x = zmenu.simpic.x = zmenu.simpicbg.x + 0.5 * zmenu.simpicbg.width - 0.5 * zmenu.simpic.width
+	zmenu.simvid.y = zmenu.simpic.y = zmenu.simpicbg.y + 0.5 * zmenu.simpicbg.height - 0.5 * zmenu.simpic.height
 
 	local shsize = zmenu.simpicbg.width*0.1
 
@@ -13763,7 +13775,7 @@ function updatesimpic(index){
 	zmenu.simpicshB.set_pos(zmenu.simpic.x, zmenu.simpic.y + zmenu.simpic.height - 0.5*shsize, zmenu.simpic.width, 2*shsize)
 	zmenu.simpicshL.set_pos(zmenu.simpic.x - shsize, zmenu.simpic.y, 2*shsize, zmenu.simpic.height)
 	zmenu.simpicshR.set_pos(zmenu.simpic.x + zmenu.simpic.width - shsize, zmenu.simpic.y, 2*shsize, zmenu.simpic.height)
-
+	zmenu.simvid.shader = noshader
 	zmenu.simpic.shader = colormapper[recolorise (zmenu.similar[index].index-z_list.index , 0)].shad
 
 }
@@ -13840,7 +13852,7 @@ function similarmenu(){
 
 				zmenu.sim = false
 				zmenusimvisible(false)
-				zmenu.simpic.file_name = AF.folder+"pics/transparent.png"
+				zmenu.simpic.file_name = zmenu.simvid.file_name = AF.folder+"pics/transparent.png"
 				/*
 				prfmenu.bg.visible = prfmenu.description.visible = prfmenu.helppic.visible = false
 				prfmenu.description.msg = ""
@@ -13848,12 +13860,13 @@ function similarmenu(){
 				*/
 				zmenuhide()
 				frosthide()
-				zmenu.simpic.shader = noshader
+				zmenu.simpic.shader = zmenu.simvid.shader = noshader
 				return
 			},
 			null,
 			function(){
-				zmenu.simpic.file_name = fe.get_art ("snap",zmenu.similar[zmenu.selected].data.z_felistindex - fe.list.index,0,Vid.NoAudio)
+				zmenu.simvid.file_name = fe.get_art ("snap",zmenu.similar[zmenu.selected].data.z_felistindex - fe.list.index,0,Vid.NoAudio)
+				zmenu.simvid.shader = colormapper[recolorise (zmenu.similar[zmenu.selected].index-z_list.index , 0)].shad
 			}
 
 		)
