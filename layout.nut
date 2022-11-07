@@ -16195,7 +16195,7 @@ function tick( tick_time ) {
 
 		if (attract.start){
 			// block theme videos and set snap audio
-			if (prf.LAYERVIDEO) bgs.bgvid_array[bgs.stacksize - 1].video_playing = false
+			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
 			if (prf.THUMBVIDEO) tilez[focusindex.new].gr_vidsz.video_playing = false
 			if (prf.THUMBVIDEO) videosnap_hide()
 			if (!attract.sound) attractitem.snap.video_flags = Vid.NoAudio
