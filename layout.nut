@@ -1757,6 +1757,7 @@ local column ={
 }
 
 local squarizer = true
+local squarizertop = false
 
 // Apply color theme
 local themeT = {
@@ -7987,6 +7988,33 @@ bglay.surf_rt.set_pos(bgT.x,bgT.y,bgT.w,bgT.w)
 bglay.pixelgrid = null
 bglay.bgvidsize = 90.0
 
+function squarebgtop(){
+
+	local ilast = bgs.stacksize - 1
+	local remapcolor = bgs.bg_mono[ilast]
+	//bgs.bgpic_top.shader = colormapper[remapcolor].shad
+	//bgs.bgpic_top.set_rgb (255,255,255)
+
+	local aspect = bgs.bg_aspect[ilast]
+	local cropaspect = 1.0
+
+	local vidaspect = getvidAR(bgs.bg_index[ilast]-z_list.index,bgs.bgvid_array[ilast],bgs.bgpic_array[ilast],0)
+	testpr("aspect:"+vidaspect+" "+bgs.bgvid_top.texture_width+" "+bgs.bgvid_top.texture_height+"\n")
+	testpr("aspect:"+vidaspect+" "+bgs.bgvid_array[ilast].texture_width+" "+bgs.bgvid_array[ilast].texture_height+"\n")
+	testpr("\n")
+	if (vidaspect > cropaspect){ // Cut sides
+		bgs.bgvid_top.subimg_width =  bgs.bgvid_top.texture_width * (cropaspect/vidaspect)
+		bgs.bgvid_top.subimg_height = bgs.bgvid_top.texture_height
+		bgs.bgvid_top.subimg_x = 0.5 * (bgs.bgvid_top.texture_width - bgs.bgvid_top.subimg_width)
+		bgs.bgvid_top.subimg_y =  0.0
+	}
+	else { // Cut top and bottom
+		bgs.bgvid_top.subimg_width = bgs.bgvid_top.texture_width
+		bgs.bgvid_top.subimg_height = bgs.bgvid_top.texture_height * (vidaspect/cropaspect)
+		bgs.bgvid_top.subimg_x = 0.0
+		bgs.bgvid_top.subimg_y = 0.5*(bgs.bgvid_top.texture_height - bgs.bgvid_top.subimg_height)
+	}
+}
 
 function squarebg(){
 
@@ -8066,7 +8094,7 @@ if (prf.LAYERSNAP){
 				bgvid.video_flags = Vid.NoAudio
 			}
 		}
-*/
+		*/
 
 		bgvid.set_pos(0,0,bglay.bgvidsize,bglay.bgvidsize)
 		bgvid.preserve_aspect_ratio = false
@@ -16238,6 +16266,11 @@ function tick( tick_time ) {
 		squarebg()
 	}
 
+	if (squarizertop){
+		squarizertop = false
+		squarebgtop()
+	}
+
 	if (count.right != 0) count.right = repeatsignal("right",count.right)
 	if (count.left != 0) count.left = repeatsignal("left",count.left)
 	if (count.up != 0) count.up = repeatsignal("up",count.up)
@@ -16527,6 +16560,7 @@ function tick( tick_time ) {
 				if (vidposbg == delayvid){
 					bgs.bgvid_top.alpha = 0
 					bgs.bgvid_top.file_name = fe.get_art("snap",0)
+					squarizertop = true
 				}
 				if (vidposbg == fadevid){
 					vidbgfade = startfade (vidbgfade,0.03,1.0)
@@ -16537,6 +16571,7 @@ function tick( tick_time ) {
 				if (vidposbg == 10000 - 10){
 					bgs.bgvid_top.alpha = 0
 					bgs.bgvid_top.file_name = fe.get_art("snap",0)
+					squarizertop = true
 				}
 				if (vidposbg == 10000 - 10 - 10){
 					vidbgfade = startfade (vidbgfade,0.03,1.0)
