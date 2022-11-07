@@ -1674,6 +1674,7 @@ local bgs = {
 	bg_box = []
 	bg_index = []
 	bg_aspect = []
+	bgvid_top = null
 }
 
 local dat = {
@@ -8052,11 +8053,9 @@ if (prf.LAYERSNAP){
 	for (local i = 0; i < bgs.stacksize; i++){
 		local bgvid = null
 
-		if (!prf.LAYERVIDEO) {
-			bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
-			//bgvid.video_flags = Vid.ImagesOnly
-		}
-		else if (i == bgs.stacksize - 1 ){
+		bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
+		/*
+		 if (i == bgs.stacksize - 1 ){
 			if (prf.LAYERVIDELAY){
 				bgvid = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
 				bgvid.video_flags = Vid.NoAudio
@@ -8067,10 +8066,7 @@ if (prf.LAYERSNAP){
 				bgvid.video_flags = Vid.NoAudio
 			}
 		}
-		else{
-			bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
-			bgvid.visible = false
-		}
+*/
 
 		bgvid.set_pos(0,0,bglay.bgvidsize,bglay.bgvidsize)
 		bgvid.preserve_aspect_ratio = false
@@ -8078,6 +8074,10 @@ if (prf.LAYERSNAP){
 		bgvid.smooth = true
 		bgs.bgvid_array.push(bgvid)
 	}
+
+	bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
+	bgs.bgvid_top.video_flags = Vid.NoAudio
+	bgs.bgvid_top.alpha = 0
 
 	bgvidsurf.smooth = false
 
@@ -15525,14 +15525,16 @@ function on_transition( ttype, var0, ttime ) {
 
 	if ((ttype == Transition.ShowOverlay) && (prf.THEMEAUDIO) ) snd.wooshsound.playing = true
 
-	if ((prf.LAYERVIDELAY) && (prf.LAYERVIDEO) && (prf.LAYERSNAP)) {
+	if ((prf.LAYERVIDEO) && (prf.LAYERSNAP)) {
 		 if (((ttype == Transition.ToNewSelection) || (ttype == Transition.ToNewList) ) && (prf.LAYERVIDEO)) {
 
 		//background video delay load
 			vidposbg = vidstarter
-			bgs.bgvid_array[bgs.stacksize - 1].alpha = 0
-			vidbgfade=[0.0,0.0,0.0,0.0,0.0]
-			bgs.bgvid_array[bgs.stacksize - 1].file_name =AF.folder+"pics/transparent.png"
+			//TEST150 bgs.bgvid_top.alpha = 0
+			//TEST150 vidbgfade=[0.0,0.0,0.0,0.0,0.0]
+			vidbgfade = startfade (vidbgfade,-0.1,1.0)
+
+			//TEST150 bgs.bgvid_top.file_name = AF.folder+"pics/transparent.png"
 		 }
 	}
 
@@ -16518,17 +16520,28 @@ function tick( tick_time ) {
 
 	}
 	// fade of bg video
-	if ((prf.LAYERVIDELAY) && (prf.LAYERVIDEO) && (prf.LAYERSNAP) ){
+	if ((prf.LAYERVIDEO) && (prf.LAYERSNAP) ){
 		if (vidposbg !=0){
 			vidposbg = vidposbg - 1
-
-			if (vidposbg == delayvid){
-				bgs.bgvid_array[bgs.stacksize - 1].file_name = fe.get_art("snap",0)
-				bgs.bgvid_array[bgs.stacksize - 1].alpha = 0
+			if (prf.LAYERVIDELAY) {
+				if (vidposbg == delayvid){
+					bgs.bgvid_top.alpha = 0
+					bgs.bgvid_top.file_name = fe.get_art("snap",0)
+				}
+				if (vidposbg == fadevid){
+					vidbgfade = startfade (vidbgfade,0.03,1.0)
+					vidposbg = 0
+				}
 			}
-			if (vidposbg == fadevid){
-				vidbgfade = startfade (vidbgfade,0.03,1.0)
-				vidposbg = 0
+			else {
+				if (vidposbg == 10000 - 10){
+					bgs.bgvid_top.alpha = 0
+					bgs.bgvid_top.file_name = fe.get_art("snap",0)
+				}
+				if (vidposbg == 10000 - 10 - 10){
+					vidbgfade = startfade (vidbgfade,0.03,1.0)
+					vidposbg = 0
+				}
 			}
 		}
 
@@ -16536,7 +16549,7 @@ function tick( tick_time ) {
 			vidbgfade = fadeupdate(vidbgfade)
 			local fadetemp = vidbgfade
 			// update size and glow alpha
-			bgs.bgvid_array[bgs.stacksize - 1].alpha = 255*(fadetemp[1])
+			bgs.bgvid_top.alpha = 255*(fadetemp[1])
 		}
 	}
 
