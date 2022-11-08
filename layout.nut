@@ -8102,7 +8102,7 @@ if (prf.LAYERSNAP){
 	}
 
 	bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-	bgs.bgvid_top.video_flags = Vid.NoAudio
+	bgs.bgvid_top.video_flags = Vid.Default //TEST150 mettere NoAudio
 	bgs.bgvid_top.alpha = 0
 
 	bgvidsurf.smooth = false
@@ -9270,6 +9270,7 @@ function frostshaders (turnon){
 }
 
 function videosnap_hide(){
+
 	for (local i = 0 ; i < tiles.total ; i++){
 		gr_vidszTableFade[i] = startfade (gr_vidszTableFade[i],-0.1,1.0)
 		aspectratioMorph[i] = startfade (aspectratioMorph[i],-0.1,1.0)
@@ -9278,6 +9279,7 @@ function videosnap_hide(){
 }
 
 function videosnap_restore(){
+
 	if (tilez[focusindex.new].gr_vidsz.alpha == 0) {
 		vidpos[focusindex.new] = vidstarter
 		vidindex[focusindex.new] = tilez[focusindex.new].offset
@@ -9299,6 +9301,7 @@ function overlay_show(var0){
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 
 	if (prf.THUMBVIDEO) videosnap_hide()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	if (!prf.DMPENABLED) frostshow()
 
@@ -9314,6 +9317,7 @@ function overlay_hide(){
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 
 	if (prf.THUMBVIDEO) videosnap_restore()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	frosthide()
 
@@ -11752,6 +11756,7 @@ function history_show(h_startup)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	if (prf.THUMBVIDEO) videosnap_hide()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	history_updatesnap()
 	history_updatetext()
@@ -11777,6 +11782,7 @@ function history_hide() {
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	flowT.history = startfade (flowT.history,-0.05,-3.0)
 	flowT.histtext = startfade (flowT.histtext,-0.5,0.0)
@@ -12285,6 +12291,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 	// Stops video thumb playback
 	if (prf.THUMBVIDEO) videosnap_hide()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	// Initialize menu
 	zmenu.blanker.visible = false
@@ -12713,6 +12720,7 @@ function zmenuhide(){
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	// Fade out zmenu text objects and zmenu shadow objects
 	flowT.zmenutx = startfade(flowT.zmenutx,-0.15,0.0)
@@ -13479,6 +13487,7 @@ function attractkick(){
 	}
 
 	if (prf.THUMBVIDEO) videosnap_hide()
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	attract.start = true
 	attract.starttimer = false
@@ -16148,6 +16157,8 @@ function tick( tick_time ) {
 			timescale.values = timescale.limits + 1
 
 			if (prf.THUMBVIDEO) videosnap_restore()
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
+
 		}
 	}
 
@@ -16221,9 +16232,9 @@ function tick( tick_time ) {
 
 		if (attract.start){
 			// block theme videos and set snap audio
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
 			if (prf.THUMBVIDEO) tilez[focusindex.new].gr_vidsz.video_playing = false
 			if (prf.THUMBVIDEO) videosnap_hide()
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 			if (!attract.sound) attractitem.snap.video_flags = Vid.NoAudio
 
 			if(prf.AMTUNE != "") {
@@ -16809,7 +16820,7 @@ function tick( tick_time ) {
 
 		if (endfade(flowT.attract) == 0) {
 			if (prf.THUMBVIDEO) videosnap_restore()
-
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 			attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 			attractitem.snap.shader = noshader
 			attractitem.surface.visible = attractitem.surface.redraw = false
