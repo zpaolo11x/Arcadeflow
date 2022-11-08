@@ -16558,7 +16558,7 @@ function tick( tick_time ) {
 				if (vidposbg == delayvid){
 					bgs.bgvid_top.alpha = 0
 					bgs.bgvid_top.file_name = fe.get_art("snap",0)
-					squarizertop = true
+					squarebgtop()//squarizertop = true
 				}
 				if (vidposbg == fadevid){
 					vidbgfade = startfade (vidbgfade,0.03,1.0)
@@ -16569,7 +16569,7 @@ function tick( tick_time ) {
 				if (vidposbg == 10000 - 10){
 					bgs.bgvid_top.alpha = 0
 					bgs.bgvid_top.file_name = fe.get_art("snap",0)
-					squarizertop = true
+					squarebgtop()//squarizertop = true
 				}
 				if (vidposbg == 10000 - 10 - 10){
 					vidbgfade = startfade (vidbgfade,0.03,1.0)
