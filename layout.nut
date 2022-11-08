@@ -8102,7 +8102,7 @@ if (prf.LAYERSNAP){
 	}
 
 	bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-	bgs.bgvid_top.video_flags = Vid.Default //TEST150 mettere NoAudio
+	bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
 	bgs.bgvid_top.alpha = 0
 
 	bgvidsurf.smooth = false
@@ -9270,7 +9270,6 @@ function frostshaders (turnon){
 }
 
 function videosnap_hide(){
-
 	for (local i = 0 ; i < tiles.total ; i++){
 		gr_vidszTableFade[i] = startfade (gr_vidszTableFade[i],-0.1,1.0)
 		aspectratioMorph[i] = startfade (aspectratioMorph[i],-0.1,1.0)
@@ -9279,7 +9278,6 @@ function videosnap_hide(){
 }
 
 function videosnap_restore(){
-
 	if (tilez[focusindex.new].gr_vidsz.alpha == 0) {
 		vidpos[focusindex.new] = vidstarter
 		vidindex[focusindex.new] = tilez[focusindex.new].offset
