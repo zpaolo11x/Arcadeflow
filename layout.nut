@@ -7999,9 +7999,7 @@ function squarebgtop(){
 	local cropaspect = 1.0
 
 	local vidaspect = getvidAR(bgs.bg_index[ilast]-z_list.index,bgs.bgvid_array[ilast],bgs.bgpic_array[ilast],0)
-	testpr("aspect:"+vidaspect+" "+bgs.bgvid_top.texture_width+" "+bgs.bgvid_top.texture_height+"\n")
-	testpr("aspect:"+vidaspect+" "+bgs.bgvid_array[ilast].texture_width+" "+bgs.bgvid_array[ilast].texture_height+"\n")
-	testpr("\n")
+
 	if (vidaspect > cropaspect){ // Cut sides
 		bgs.bgvid_top.subimg_width =  bgs.bgvid_top.texture_width * (cropaspect/vidaspect)
 		bgs.bgvid_top.subimg_height = bgs.bgvid_top.texture_height
