@@ -7728,8 +7728,6 @@ function categorycolor(offset,index){
 
 /// Main layout surface ///
 
-local tilez = []
-
 fl.surf = fe.add_surface(fl.w_os,fl.h_os)
 fl.surf.redraw = true
 
@@ -7994,7 +7992,7 @@ function squarebgtop(){
 	local aspect = bgs.bg_aspect[ilast]
 	local cropaspect = 1.0
 
-	local vidaspect = getvidAR(0,bgs.bgvid_top,tilez[focusindex.new].refsnapz,0) //getvidAR(bgs.bg_index[ilast]-z_list.index,bgs.bgvid_array[ilast],bgs.bgpic_array[ilast],0)
+	local vidaspect = getvidAR(bgs.bg_index[ilast]-z_list.index,bgs.bgvid_array[ilast],bgs.bgpic_array[ilast],0)
 
 	if (vidaspect > cropaspect){ // Cut sides
 		bgs.bgvid_top.subimg_width =  bgs.bgvid_top.texture_width * (cropaspect/vidaspect)
@@ -8069,41 +8067,37 @@ function squarebg(){
 	}
 }
 
-if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)){
+if (prf.LAYERSNAP){
 	bgvidsurf = fl.surf.add_surface(bglay.bgvidsize,bglay.bgvidsize)
 
-	if (prf.LAYERSNAP){
-		for (local i = 0; i < bgs.stacksize; i++){
-			local bgvid = null
+	for (local i = 0; i < bgs.stacksize; i++){
+		local bgvid = null
 
-			bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
-			/*
-			if (i == bgs.stacksize - 1 ){
-				if (prf.LAYERVIDELAY){
-					bgvid = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-					bgvid.video_flags = Vid.NoAudio
-					bgvid.alpha = 0
-				}
-				else {
-					bgvid = bgvidsurf.add_artwork("snap",0,0,bglay.bgvidsize,bglay.bgvidsize)
-					bgvid.video_flags = Vid.NoAudio
-				}
+		bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
+		/*
+		 if (i == bgs.stacksize - 1 ){
+			if (prf.LAYERVIDELAY){
+				bgvid = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
+				bgvid.video_flags = Vid.NoAudio
+				bgvid.alpha = 0
 			}
-			*/
-
-			bgvid.set_pos(0,0,bglay.bgvidsize,bglay.bgvidsize)
-			bgvid.preserve_aspect_ratio = false
-			bgvid.trigger = Transition.EndNavigation
-			bgvid.smooth = true
-			bgs.bgvid_array.push(bgvid)
+			else {
+				bgvid = bgvidsurf.add_artwork("snap",0,0,bglay.bgvidsize,bglay.bgvidsize)
+				bgvid.video_flags = Vid.NoAudio
+			}
 		}
+		*/
+
+		bgvid.set_pos(0,0,bglay.bgvidsize,bglay.bgvidsize)
+		bgvid.preserve_aspect_ratio = false
+		bgvid.trigger = Transition.EndNavigation
+		bgvid.smooth = true
+		bgs.bgvid_array.push(bgvid)
 	}
 
-	if (prf.LAYERVIDEO){
-		bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-		bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
-		bgs.bgvid_top.alpha = 0
-	}
+	bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
+	bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
+	bgs.bgvid_top.alpha = 0
 
 	bgvidsurf.smooth = false
 
@@ -8116,7 +8110,6 @@ if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)){
 
 	bgvidsurf.zorder = bglay.pixelgrid.zorder = -2
 }
-
 
 local picture = {
 	bg = null
@@ -8215,6 +8208,7 @@ update_z_disp()
 
 /// Carrier - variables definition ///
 
+local tilez = []
 
 local tilesTablePos = {
 	X = []
@@ -9299,7 +9293,7 @@ function overlay_show(var0){
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	if (!prf.DMPENABLED) frostshow()
 
@@ -9315,7 +9309,7 @@ function overlay_hide(){
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 
 	if (prf.THUMBVIDEO) videosnap_restore()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	frosthide()
 
@@ -11754,7 +11748,7 @@ function history_show(h_startup)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	history_updatesnap()
 	history_updatetext()
@@ -11780,7 +11774,7 @@ function history_hide() {
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	flowT.history = startfade (flowT.history,-0.05,-3.0)
 	flowT.histtext = startfade (flowT.histtext,-0.5,0.0)
@@ -12289,7 +12283,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 	// Stops video thumb playback
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	// Initialize menu
 	zmenu.blanker.visible = false
@@ -12718,7 +12712,7 @@ function zmenuhide(){
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	// Fade out zmenu text objects and zmenu shadow objects
 	flowT.zmenutx = startfade(flowT.zmenutx,-0.15,0.0)
@@ -13485,7 +13479,7 @@ function attractkick(){
 	}
 
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	attract.start = true
 	attract.starttimer = false
@@ -15558,7 +15552,7 @@ function on_transition( ttype, var0, ttime ) {
 
 	if ((ttype == Transition.ShowOverlay) && (prf.THEMEAUDIO) ) snd.wooshsound.playing = true
 
-	if (prf.LAYERVIDEO) {
+	if ((prf.LAYERVIDEO) && (prf.LAYERSNAP)) {
 		 if (((ttype == Transition.ToNewSelection) || (ttype == Transition.ToNewList) ) && (prf.LAYERVIDEO)) {
 
 		//background video delay load
@@ -16155,7 +16149,7 @@ function tick( tick_time ) {
 			timescale.values = timescale.limits + 1
 
 			if (prf.THUMBVIDEO) videosnap_restore()
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 		}
 	}
@@ -16232,7 +16226,7 @@ function tick( tick_time ) {
 			// block theme videos and set snap audio
 			if (prf.THUMBVIDEO) tilez[focusindex.new].gr_vidsz.video_playing = false
 			if (prf.THUMBVIDEO) videosnap_hide()
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 			if (!attract.sound) attractitem.snap.video_flags = Vid.NoAudio
 
 			if(prf.AMTUNE != "") {
@@ -16560,7 +16554,7 @@ function tick( tick_time ) {
 
 	}
 	// fade of bg video
-	if ((prf.LAYERVIDEO) ){
+	if ((prf.LAYERVIDEO) && (prf.LAYERSNAP) ){
 		if (vidposbg !=0){
 			vidposbg = vidposbg - 1
 			if (prf.LAYERVIDELAY) {
@@ -16818,7 +16812,7 @@ function tick( tick_time ) {
 
 		if (endfade(flowT.attract) == 0) {
 			if (prf.THUMBVIDEO) videosnap_restore()
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 			attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 			attractitem.snap.shader = noshader
 			attractitem.surface.visible = attractitem.surface.redraw = false
