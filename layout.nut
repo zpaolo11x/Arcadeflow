@@ -785,7 +785,6 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "verticalrows", glyph = 0xea71, initvar = function(val,prf){prf.VERTICALROWS <- val}, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1", "2", "3"], values = [1,2,3], selection = 2, picsel = ["rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
 {v = 7.2, varname = "cleanlayout", glyph = 0xe997, initvar = function(val,prf){prf.CLEANLAYOUT <- val}, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
 {v = 7.2, varname = "lowres", glyph = 0xe997, initvar = function(val,prf){prf.LOWRES <- val}, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
-{v = 7.2, varname = "baserotation", glyph = 0xea2e, initvar = function(val,prf){prf.BASEROTATION <- val}, title = "Screen rotation", help = "Rotate screen" , options = ["None", "Left", "Right", "Flip"], values =["none", "left", "right", "flip"], selection =0,picsel=["rotnone"+AF.prefs.imgext,"rotleft"+AF.prefs.imgext,"rotright"+AF.prefs.imgext,"rotflip"+AF.prefs.imgext],pic = "rotright"+AF.prefs.imgext},
 {v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "showsubname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSUBNAME <- val}, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosubname"+AF.prefs.imgext]},
@@ -1487,11 +1486,6 @@ catch (err) {prf.AMTIMER = 120}
 
 try {prf.AMCHANGETIMER = prf.AMCHANGETIMER.tointeger()}
 catch (err) {prf.AMCHANGETIMER = 10}
-
-if (prf.BASEROTATION == "none") fe.layout.base_rotation = RotateScreen.None
-else if (prf.BASEROTATION == "left") fe.layout.base_rotation = RotateScreen.Left
-else if (prf.BASEROTATION == "right") fe.layout.base_rotation = RotateScreen.Right
-else if (prf.BASEROTATION == "flip") fe.layout.base_rotation = RotateScreen.Flip
 
 local DISPLAYTABLE = {}
 try { DISPLAYTABLE = loadtablefromfile("pref_thumbtype.txt",false) } catch (err) {}

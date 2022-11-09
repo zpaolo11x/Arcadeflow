@@ -1,3 +1,4 @@
 15.0
+Removed option to rotate screen, it's in AM options
 Improved aspect ratio correction for vertical handhelds
 Improved smoothness of video transition for background
