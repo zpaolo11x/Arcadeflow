@@ -4408,14 +4408,15 @@ function refreshromlist(romlist, fulllist){
 
 			z_list.db1[romlist][gamename].z_name = listfields[0]
 			//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
+		}
 
-
+		if (fulllist || !z_list.db2[romlist].rawin(gamename)){
 			z_list.db2[romlist].rawset(gamename,{})
 			z_list.db2[romlist][gamename] = clone (z_fields2)
 			z_list.db2[romlist][gamename].z_name = listfields[0]
 			//cleanromlist2[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
-
 		}
+
 		// Some fields are ALWAYS updated, even if the file is already there
 		z_list.db1[romlist][gamename].z_system = AF.emulatordata[romlist].mainsysname
 		z_list.db1[romlist][gamename].z_emulator = romlist
