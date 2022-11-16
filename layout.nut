@@ -12920,7 +12920,7 @@ function afinstall(zipball,afname){
 }
 
 function gh_menu(presel){
-	frostshow()
+	//frostshow()
 	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),[0xe9bc,0xe94e],null,"Install from GitHub",0xe9c2,presel,false,false,false,false,false,
 	function(out){
 		if (out == 0) {
@@ -12942,8 +12942,7 @@ function gh_menu(presel){
 			})
 		}
 		else if (out == -1){
-			frosthide()
-			zmenuhide()
+			utilitymenu (umpresel)
 		}
 		return
 	})
@@ -17623,14 +17622,6 @@ function ra_selectemu(startemu){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
-
-	//TEST150
-	if (sig == "custom1"){
-		//afinstall("14.6","Arcadeflow_TEST")
-		//fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
-		//fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
-		gh_menu(0)
-	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
