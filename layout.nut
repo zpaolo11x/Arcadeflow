@@ -12838,6 +12838,15 @@ function gh_latestdata(op){
 function afinstall(zipball,afname){
 	// zipball is the git tag to download (e.g. gh.latest_version)
 	// afname is the name for the new AF folder and cfg entry (e.g. newafname)
+	local i = 0
+	local nameiteration = ""
+	testpr ("START:"+fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/"+"\n")
+	while (file_exist(fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/")){
+		nameiteration = i
+		i++
+		testpr ("NEWNAME:"+fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/"+"\n")
+	}
+	afname = afname + nameiteration
 
 	local newaffolder = fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + "/"
 	local newaffolderTEMP = fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + "TEMP/"
