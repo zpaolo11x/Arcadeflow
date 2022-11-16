@@ -15038,7 +15038,7 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Install from repo",AF.LNG)
+		label = ltxt ("Install from repository",AF.LNG)
 		glyph = 0xe9c2
 		visible = true
 		id = 0
@@ -15047,7 +15047,7 @@ function buildutilitymenu(){
 			return "☰"
 		}
 		command = function(){
-			umvisible = false
+			//umvisible = false
 			gh_menu(0)
 		}
 	})
@@ -16041,7 +16041,7 @@ function tick( tick_time ) {
 
 //	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 //	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-
+testpr(umvisible+"\n")
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
