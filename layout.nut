@@ -12921,7 +12921,7 @@ function afinstall(zipball,afname){
 
 function gh_menu(presel){
 	//frostshow()
-	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),[0xe9bc,0xe94e],null,"Install from GitHub",0xe9c2,presel,false,false,false,false,false,
+	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),[0xe9bc,0xe94e],null,"Install from repository",0xe9c2,presel,false,false,false,false,false,
 	function(out){
 		if (out == 0) {
 			gh.branchlist = []
