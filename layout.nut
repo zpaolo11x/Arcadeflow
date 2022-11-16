@@ -12914,7 +12914,34 @@ function afinstall(zipball,afname){
 	})
 }
 
-function gh_menu(){
+function gh_menu(presel){
+	frostshow()
+	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),null,null,"Install from GitHub",null,presel,false,false,false,false,false,
+	function(out){
+		if (out == 0) {
+			gh.branchlist = []
+			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
+			zmenudraw(gh.branchlist,null,null,"Install Branch",null,0,false,false,false,false,false,
+			function(out0){
+				if (out0 == -1) gh_menu(0)
+				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0])
+			})
+		}
+		else if (out == 1) {
+			gh.taglist = []
+			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
+			zmenudraw(gh.taglist,null,null,"Install Release",null,0,false,false,false,false,false,
+			function(out1){
+				if (out1 == -1) gh_menu(1)
+				else afinstall(gh.taglist[out1],"Arcadeflow_"+(gh.taglist[out1].tofloat()*10).tointeger())
+			})
+		}
+		else if (out == -1){
+			frosthide()
+			zmenuhide()
+		}
+		return
+	})
 }
 
 function checkforupdates(force){
@@ -17579,9 +17606,9 @@ function on_signal( sig ){
 	//TEST150
 	if (sig == "custom1"){
 		//afinstall("14.6","Arcadeflow_TEST")
-		fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
-		fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
-
+		//fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
+		//fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
+		gh_menu(0)
 	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
