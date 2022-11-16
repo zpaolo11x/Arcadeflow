@@ -1,4 +1,4 @@
-// Arcadeflow - v 14.9
+// Arcadeflow - v 15.0
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "14.9"
+	version = "15.0"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -906,8 +906,8 @@ menucounter ++
 sorter.rawset("um", menucounter)
 AF.prefs.l0.push({label = "UTILITY MENU", glyph = 0xe9bd, description = "Customize the utility menu entries that you want to see in the menu"})
 AF.prefs.l1.push([
-{v = 14.6, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(20), selection = AF.req.menusort},
-{v = 14.6, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(20)}, selection = AF.req.executef},
+{v = 15.0, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(21), selection = AF.req.menusort},
+{v = 15.0, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(21)}, selection = AF.req.executef},
 ])
 
 menucounter ++
@@ -1009,7 +1009,7 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "errorscrape", glyph = 0xe9c4, initvar = function(val,prf){prf.ERRORSCRAPE <- val}, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping" , options = ["Yes","No"], values= [true,false],selection = 1},
 {v = 10.0, varname = "mediascrape", glyph = 0xe90d, initvar = function(val,prf){prf.MEDIASCRAPE <- val}, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping" , options = ["Overwrite media", "Only missing","No media scrape"], values= ["ALL_MEDIA","MISSING_MEDIA","NO_MEDIA"],selection = 1},
 {v = 10.0, varname = "regionprefs", glyph = 0xe9ca, initvar = function(val,prf){prf.REGIONPREFS <- val}, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference" , options = function(){return(AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
-{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(6)}, selection = AF.req.executef},
+{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = AF.req.liner},
 {v = 10.0, varname = "ss_username", glyph = 0xe971, initvar = function(val,prf){prf.SS_USERNAME <- val}, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "ss_password", glyph = 0xe98d, initvar = function(val,prf){prf.SS_PASSWORD <- val}, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
@@ -12256,6 +12256,7 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrink,dmpart,center,midscroll,singleline,response,left = null,right = null){
+	testpr("U"+title+"\n")
 	zmenu.singleline = singleline
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
@@ -12922,8 +12923,12 @@ function afinstall(zipball,afname){
 }
 
 function gh_menu(presel){
+	print("YYYY\n")
+	//frostshow()
+	frosthide()
+	zmenuhide()
 	frostshow()
-	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),null,null,"Install from GitHub",null,presel,false,false,false,false,false,
+	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),[0xe9bc,0xe94e],null,"Install from GitHub",0xe9c2,presel,false,false,false,false,false,
 	function(out){
 		if (out == 0) {
 			gh.branchlist = []
@@ -15041,6 +15046,21 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
+		label = ltxt ("Install from repo",AF.LNG)
+		glyph = 0xe9c2
+		visible = true
+		id = 0
+		order = 0
+		sidenote = function(){
+			return "☰"
+		}
+		command = function(){
+			umvisible = false
+			gh_menu(0)
+		}
+	})
+
+	umtable.push ({
 		label = ltxt ("About Arcadeflow",AF.LNG)
 		glyph = 0xea09
 		visible = true
@@ -15076,14 +15096,15 @@ function buildutilitymenu(){
 	})
 
 	local v0 = split(prf.UMVECTOR,",")
+	if (v0.len() == umtable.len()){
+		for (local i = 0 ; i < v0.len() ; i++){
+			umtable[i].id = i
+			umtable[abs(v0[i].tointeger()) - 1].visible = v0[i].tointeger() > 0
+			umtable[abs(v0[i].tointeger()) - 1].order = i
+		}
 
-	for (local i = 0 ; i < v0.len() ; i++){
-		umtable[i].id = i
-		umtable[abs(v0[i].tointeger()) - 1].visible = v0[i].tointeger() > 0
-		umtable[abs(v0[i].tointeger()) - 1].order = i
+		umtable.sort(@(a,b) a.order <=> b.order)
 	}
-
-	umtable.sort(@(a,b) a.order <=> b.order)
 }
 
 buildutilitymenu()
