@@ -12818,6 +12818,84 @@ function gh_latestdata(op){
 	}
 }
 
+function afinstall(zipball,afname){
+	// zipball is the git tag to download (e.g. gh.latest_version)
+	// afname is the name for the new AF folder and cfg entry (e.g. newafname)
+
+	local newaffolder = fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + "/"
+	local newaffolderTEMP = fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + "TEMP/"
+
+	// Download zip of new layout version
+	AF.updatechecking = true
+	z_splash_message( "Downloading...")
+	system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap)
+	// Create target directory
+	z_splash_message( "Installing...")
+	system ("mkdir "+ ap + newaffolderTEMP + ap)
+	system ("mkdir "+ ap + newaffolder + ap)
+	// Unpack layout
+	unzipfile (AF.folder + afname +".zip", newaffolderTEMP)
+	local ghfolder = DirectoryListing(newaffolderTEMP)
+	foreach (item in ghfolder.results){
+		local ghfolder2 = DirectoryListing(item)
+		foreach (item2 in ghfolder2.results){
+			system (OS == "Windows" ?
+				"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
+				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
+		}
+	}
+
+	system (OS == "Windows" ? "rmdir /q /s " + char_replace(ap + newaffolderTEMP + ap,"/","\\")  : "rm -R " + ap + newaffolderTEMP + ap)
+
+	// Transfer preferences
+	local dir = DirectoryListing( AF.folder )
+	foreach (item in dir.results){
+		if (item.find("pref_")) {
+			local basename = item.slice(item.find("pref_"),item.len())
+			system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
+		}
+	}
+	// Remove downloaded file
+	local rem0 = 0
+	while (rem0 == 0) {
+		try {remove (AF.folder + afname +".zip");rem0 = 1} catch(err){rem0 = 0}
+	}
+	// Update config file
+	local currentlayout = split (AF.folder, "\\/").top()
+
+	local cfgfile = file(fe.path_expand( FeConfigDirectory + "attract.cfg" ),"rb")
+	local outarray = []
+	local char = 0
+	local templine = ""
+	local index0 = null
+	while (!cfgfile.eos()){
+		char = 0
+		templine = ""
+		while (char != 10) {
+			char = cfgfile.readn('b')
+			if ((char != 10) && (char != 13)) templine = templine + char.tochar()
+		}
+		index0 = templine.find(currentlayout)
+		if (index0 != null) {
+			templine = templine.slice(0,index0) + afname + templine.slice(index0 + currentlayout.len(),templine.len())
+		}
+		outarray.push(templine)
+	}
+
+	local outfile = WriteTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
+	for (local i = 0 ; i < outarray.len() ; i++){
+		outfile.write_line(outarray[i]+"\n")
+	}
+	outfile.close_file()
+	AF.updatechecking = false
+	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
+	function(out){
+		zmenuhide()
+		frosthide()
+		restartAM()
+	})
+}
+
 function checkforupdates(force){
 
 	if (!force && (currentdate().tointeger() <= loaddate().tointeger())) return
@@ -12893,6 +12971,8 @@ function checkforupdates(force){
 				})
 			}
 			else {
+				afinstall (gh.latest_version,newafname)
+				/*
 				// Download zip of new layout version
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")
@@ -12962,6 +13042,7 @@ function checkforupdates(force){
 					frosthide()
 					restartAM()
 				})
+				*/
 			}
 		}
 
