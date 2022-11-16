@@ -12888,6 +12888,7 @@ function afinstall(zipball,afname){
 	}
 	outfile.close_file()
 	AF.updatechecking = false
+	frostshow()
 	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
 	function(out){
 		zmenuhide()
@@ -17557,7 +17558,7 @@ function on_signal( sig ){
 
 	//TEST150
 	if (sig == "custom1"){
-		afinstall("13.1",Arcadeflow_TEST)
+		afinstall("14.6","Arcadeflow_TEST")
 	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
