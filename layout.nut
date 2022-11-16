@@ -182,6 +182,8 @@ AF.vernum = AF.version.tofloat()*10
 local gh = {
 	latest_version = 0
 	release_notes = 0
+	taglist = []
+	branchlist = []
 }
 
 function gly(index){
@@ -12807,6 +12809,20 @@ zmenu.xstop = 0
 zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
+function gh_branchlist(op){
+	if (op.find(ap+"name"+ap) != null) {
+		gh.branchlist.push (split(op,ap)[3])
+		testpr(split(op,ap)[3]+"\n")
+	}
+}
+
+function gh_taglist(op){
+	if (op.find(ap+"name"+ap) != null) {
+		gh.taglist.push (split(op,ap)[3])
+		testpr(split(op,ap)[3]+"\n")
+	}
+}
+
 function gh_latestdata(op){
 
 	if (op.find(ap+"tag_name"+ap) != null) {
@@ -12817,6 +12833,7 @@ function gh_latestdata(op){
 		gh.release_notes = split_complete (gh.release_notes,"\\r\\n")
 	}
 }
+
 
 function afinstall(zipball,afname){
 	// zipball is the git tag to download (e.g. gh.latest_version)
@@ -12895,6 +12912,9 @@ function afinstall(zipball,afname){
 		frosthide()
 		restartAM()
 	})
+}
+
+function gh_menu(){
 }
 
 function checkforupdates(force){
@@ -17558,7 +17578,10 @@ function on_signal( sig ){
 
 	//TEST150
 	if (sig == "custom1"){
-		afinstall("14.6","Arcadeflow_TEST")
+		//afinstall("14.6","Arcadeflow_TEST")
+		fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
+		fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
+
 	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
