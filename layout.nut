@@ -12840,11 +12840,9 @@ function afinstall(zipball,afname){
 	// afname is the name for the new AF folder and cfg entry (e.g. newafname)
 	local i = 0
 	local nameiteration = ""
-	testpr ("START:"+fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/"+"\n")
 	while (file_exist(fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/")){
-		nameiteration = i
+		nameiteration = "_"+i
 		i++
-		testpr ("NEWNAME:"+fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/"+"\n")
 	}
 	afname = afname + nameiteration
 
