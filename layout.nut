@@ -17555,6 +17555,11 @@ function ra_selectemu(startemu){
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
+	//TEST150
+	if (sig == "custom1"){
+		afinstall("13.1",Arcadeflow_TEST)
+	}
+
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
 
