@@ -12256,7 +12256,6 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrink,dmpart,center,midscroll,singleline,response,left = null,right = null){
-	testpr("U"+title+"\n")
 	zmenu.singleline = singleline
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
@@ -12813,14 +12812,12 @@ zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 function gh_branchlist(op){
 	if (op.find(ap+"name"+ap) != null) {
 		gh.branchlist.push (split(op,ap)[3])
-		testpr(split(op,ap)[3]+"\n")
 	}
 }
 
 function gh_taglist(op){
 	if (op.find(ap+"name"+ap) != null) {
 		gh.taglist.push (split(op,ap)[3])
-		testpr(split(op,ap)[3]+"\n")
 	}
 }
 
@@ -12923,17 +12920,13 @@ function afinstall(zipball,afname){
 }
 
 function gh_menu(presel){
-	print("YYYY\n")
-	//frostshow()
-	frosthide()
-	zmenuhide()
 	frostshow()
 	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),[0xe9bc,0xe94e],null,"Install from GitHub",0xe9c2,presel,false,false,false,false,false,
 	function(out){
 		if (out == 0) {
 			gh.branchlist = []
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
-			zmenudraw(gh.branchlist,null,null,"Install Branch",null,0,false,false,false,false,false,
+			zmenudraw(gh.branchlist,null,null,"Install Branch",0xe9bc,0,false,false,false,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
 				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0])
@@ -12942,7 +12935,7 @@ function gh_menu(presel){
 		else if (out == 1) {
 			gh.taglist = []
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
-			zmenudraw(gh.taglist,null,null,"Install Release",null,0,false,false,false,false,false,
+			zmenudraw(gh.taglist,null,null,"Install Release",0xe94e,0,false,false,false,false,false,
 			function(out1){
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1],"Arcadeflow_"+(gh.taglist[out1].tofloat()*10).tointeger())
