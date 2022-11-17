@@ -184,6 +184,7 @@ local gh = {
 	release_notes = 0
 	taglist = []
 	branchlist = []
+	releasedatelist = []
 }
 
 function gly(index){
@@ -12821,6 +12822,17 @@ function gh_taglist(op){
 	}
 }
 
+function gh_releaselist(op){
+	if (op.find(ap+"tag_name"+ap) != null) {
+		testpr(split(op,ap)[3]+"\n")
+		gh.taglist.push (split(op,ap)[3])
+	}
+	if (op.find(ap+"published_at"+ap) != null) {
+		testpr(split(op,ap)[3]+"\n")
+		gh.releasedatelist.push (split(op,ap+"T")[3]+" ")
+	}
+}
+
 function gh_latestdata(op){
 
 	if (op.find(ap+"tag_name"+ap) != null) {
@@ -12934,8 +12946,10 @@ function gh_menu(presel){
 		}
 		else if (out == 1) {
 			gh.taglist = []
-			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
-			zmenudraw(gh.taglist,null,null,"Install Release",0xe94e,0,false,false,false,false,false,
+			gh.releasedatelist = []
+			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
+//			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
+			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,false,false,false,
 			function(out1){
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1],"Arcadeflow_"+(gh.taglist[out1].tofloat()*10).tointeger())
