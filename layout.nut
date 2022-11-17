@@ -12828,11 +12828,9 @@ function gh_taglist(op){
 
 function gh_releaselist(op){
 	if (op.find(ap+"tag_name"+ap) != null) {
-		testpr(split(op,ap)[3]+"\n")
 		gh.taglist.push (split(op,ap)[3])
 	}
 	if (op.find(ap+"published_at"+ap) != null) {
-		testpr(split(op,ap)[3]+"\n")
 		gh.releasedatelist.push (split(op,ap+"T")[3]+" ")
 	}
 }
