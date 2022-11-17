@@ -12943,10 +12943,10 @@ function gh_menu(presel){
 			gh.branchlist = []
 			gh.commitlist = []
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
-			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,false,false,false,
+			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,true,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
-				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0])
+				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0]+"_"+gh.commitlist[out0])
 			})
 		}
 		else if (out == 1) {
@@ -12954,7 +12954,7 @@ function gh_menu(presel){
 			gh.releasedatelist = []
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
 //			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
-			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,false,false,false,
+			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,true,false,false,
 			function(out1){
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1],"Arcadeflow_"+(gh.taglist[out1].tofloat()*10).tointeger())
@@ -16060,7 +16060,7 @@ function tick( tick_time ) {
 
 //	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 //	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-testpr(umvisible+"\n")
+
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
