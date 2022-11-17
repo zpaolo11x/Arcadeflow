@@ -12816,7 +12816,7 @@ function gh_branchlist(op){
 		gh.branchlist.push (split(op,ap)[3])
 	}
 	if (op.find(ap+"sha"+ap) != null) {
-		gh.commitlist.push (split(op,ap)[3])
+		gh.commitlist.push (split(op,ap)[3].slice(0,7)+" ")
 	}
 }
 
