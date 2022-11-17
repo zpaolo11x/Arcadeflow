@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.0
+// Arcadeflow - v 14.9
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.0"
+	version = "14.9"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -182,10 +182,6 @@ AF.vernum = AF.version.tofloat()*10
 local gh = {
 	latest_version = 0
 	release_notes = 0
-	taglist = []
-	branchlist = []
-	releasedatelist = []
-	commitlist = []
 }
 
 function gly(index){
@@ -908,8 +904,8 @@ menucounter ++
 sorter.rawset("um", menucounter)
 AF.prefs.l0.push({label = "UTILITY MENU", glyph = 0xe9bd, description = "Customize the utility menu entries that you want to see in the menu"})
 AF.prefs.l1.push([
-{v = 15.0, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(21), selection = AF.req.menusort},
-{v = 15.0, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(21)}, selection = AF.req.executef},
+{v = 14.6, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(20), selection = AF.req.menusort},
+{v = 14.6, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(20)}, selection = AF.req.executef},
 ])
 
 menucounter ++
@@ -1011,7 +1007,7 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "errorscrape", glyph = 0xe9c4, initvar = function(val,prf){prf.ERRORSCRAPE <- val}, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping" , options = ["Yes","No"], values= [true,false],selection = 1},
 {v = 10.0, varname = "mediascrape", glyph = 0xe90d, initvar = function(val,prf){prf.MEDIASCRAPE <- val}, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping" , options = ["Overwrite media", "Only missing","No media scrape"], values= ["ALL_MEDIA","MISSING_MEDIA","NO_MEDIA"],selection = 1},
 {v = 10.0, varname = "regionprefs", glyph = 0xe9ca, initvar = function(val,prf){prf.REGIONPREFS <- val}, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference" , options = function(){return(AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
-{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
+{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(6)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = AF.req.liner},
 {v = 10.0, varname = "ss_username", glyph = 0xe971, initvar = function(val,prf){prf.SS_USERNAME <- val}, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "ss_password", glyph = 0xe98d, initvar = function(val,prf){prf.SS_PASSWORD <- val}, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
@@ -4412,15 +4408,14 @@ function refreshromlist(romlist, fulllist){
 
 			z_list.db1[romlist][gamename].z_name = listfields[0]
 			//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
-		}
 
-		if (fulllist || !z_list.db2[romlist].rawin(gamename)){
+
 			z_list.db2[romlist].rawset(gamename,{})
 			z_list.db2[romlist][gamename] = clone (z_fields2)
 			z_list.db2[romlist][gamename].z_name = listfields[0]
 			//cleanromlist2[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
-		}
 
+		}
 		// Some fields are ALWAYS updated, even if the file is already there
 		z_list.db1[romlist][gamename].z_system = AF.emulatordata[romlist].mainsysname
 		z_list.db1[romlist][gamename].z_emulator = romlist
@@ -7733,8 +7728,6 @@ function categorycolor(offset,index){
 
 /// Main layout surface ///
 
-local tilez = []
-
 fl.surf = fe.add_surface(fl.w_os,fl.h_os)
 fl.surf.redraw = true
 
@@ -7999,7 +7992,7 @@ function squarebgtop(){
 	local aspect = bgs.bg_aspect[ilast]
 	local cropaspect = 1.0
 
-	local vidaspect = getvidAR(0,bgs.bgvid_top,tilez[focusindex.new].refsnapz,0) //getvidAR(bgs.bg_index[ilast]-z_list.index,bgs.bgvid_array[ilast],bgs.bgpic_array[ilast],0)
+	local vidaspect = getvidAR(bgs.bg_index[ilast]-z_list.index,bgs.bgvid_array[ilast],bgs.bgpic_array[ilast],0)
 
 	if (vidaspect > cropaspect){ // Cut sides
 		bgs.bgvid_top.subimg_width =  bgs.bgvid_top.texture_width * (cropaspect/vidaspect)
@@ -8074,41 +8067,37 @@ function squarebg(){
 	}
 }
 
-if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)){
+if (prf.LAYERSNAP){
 	bgvidsurf = fl.surf.add_surface(bglay.bgvidsize,bglay.bgvidsize)
 
-	if (prf.LAYERSNAP){
-		for (local i = 0; i < bgs.stacksize; i++){
-			local bgvid = null
+	for (local i = 0; i < bgs.stacksize; i++){
+		local bgvid = null
 
-			bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
-			/*
-			if (i == bgs.stacksize - 1 ){
-				if (prf.LAYERVIDELAY){
-					bgvid = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-					bgvid.video_flags = Vid.NoAudio
-					bgvid.alpha = 0
-				}
-				else {
-					bgvid = bgvidsurf.add_artwork("snap",0,0,bglay.bgvidsize,bglay.bgvidsize)
-					bgvid.video_flags = Vid.NoAudio
-				}
+		bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
+		/*
+		 if (i == bgs.stacksize - 1 ){
+			if (prf.LAYERVIDELAY){
+				bgvid = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
+				bgvid.video_flags = Vid.NoAudio
+				bgvid.alpha = 0
 			}
-			*/
-
-			bgvid.set_pos(0,0,bglay.bgvidsize,bglay.bgvidsize)
-			bgvid.preserve_aspect_ratio = false
-			bgvid.trigger = Transition.EndNavigation
-			bgvid.smooth = true
-			bgs.bgvid_array.push(bgvid)
+			else {
+				bgvid = bgvidsurf.add_artwork("snap",0,0,bglay.bgvidsize,bglay.bgvidsize)
+				bgvid.video_flags = Vid.NoAudio
+			}
 		}
+		*/
+
+		bgvid.set_pos(0,0,bglay.bgvidsize,bglay.bgvidsize)
+		bgvid.preserve_aspect_ratio = false
+		bgvid.trigger = Transition.EndNavigation
+		bgvid.smooth = true
+		bgs.bgvid_array.push(bgvid)
 	}
 
-	if (prf.LAYERVIDEO){
-		bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-		bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
-		bgs.bgvid_top.alpha = 0
-	}
+	bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
+	bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
+	bgs.bgvid_top.alpha = 0
 
 	bgvidsurf.smooth = false
 
@@ -8121,7 +8110,6 @@ if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)){
 
 	bgvidsurf.zorder = bglay.pixelgrid.zorder = -2
 }
-
 
 local picture = {
 	bg = null
@@ -8220,6 +8208,7 @@ update_z_disp()
 
 /// Carrier - variables definition ///
 
+local tilez = []
 
 local tilesTablePos = {
 	X = []
@@ -9304,7 +9293,7 @@ function overlay_show(var0){
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	if (!prf.DMPENABLED) frostshow()
 
@@ -9320,7 +9309,7 @@ function overlay_hide(){
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 
 	if (prf.THUMBVIDEO) videosnap_restore()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	frosthide()
 
@@ -11759,7 +11748,7 @@ function history_show(h_startup)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	history_updatesnap()
 	history_updatetext()
@@ -11785,7 +11774,7 @@ function history_hide() {
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	flowT.history = startfade (flowT.history,-0.05,-3.0)
 	flowT.histtext = startfade (flowT.histtext,-0.5,0.0)
@@ -12294,7 +12283,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 	// Stops video thumb playback
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	// Initialize menu
 	zmenu.blanker.visible = false
@@ -12723,7 +12712,7 @@ function zmenuhide(){
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 	// Fade out zmenu text objects and zmenu shadow objects
 	flowT.zmenutx = startfade(flowT.zmenutx,-0.15,0.0)
@@ -12811,30 +12800,6 @@ zmenu.xstop = 0
 zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
-function gh_branchlist(op){
-	if (op.find(ap+"name"+ap) != null) {
-		gh.branchlist.push (split(op,ap)[3])
-	}
-	if (op.find(ap+"sha"+ap) != null) {
-		gh.commitlist.push (split(op,ap)[3].slice(0,7)+" ")
-	}
-}
-
-function gh_taglist(op){
-	if (op.find(ap+"name"+ap) != null) {
-		gh.taglist.push (split(op,ap)[3])
-	}
-}
-
-function gh_releaselist(op){
-	if (op.find(ap+"tag_name"+ap) != null) {
-		gh.taglist.push (split(op,ap)[3])
-	}
-	if (op.find(ap+"published_at"+ap) != null) {
-		gh.releasedatelist.push (split(op,ap+"T")[3]+" ")
-	}
-}
-
 function gh_latestdata(op){
 
 	if (op.find(ap+"tag_name"+ap) != null) {
@@ -12844,125 +12809,6 @@ function gh_latestdata(op){
 		gh.release_notes = split(op,ap)[3]
 		gh.release_notes = split_complete (gh.release_notes,"\\r\\n")
 	}
-}
-
-
-function afinstall(zipball,afname){
-	// zipball is the git tag to download (e.g. gh.latest_version)
-	// afname is the name for the new AF folder and cfg entry (e.g. newafname)
-	local i = 0
-	local nameiteration = ""
-	while (file_exist(fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + nameiteration + "/")){
-		nameiteration = "_"+i
-		i++
-	}
-	afname = afname + nameiteration
-
-	local newaffolder = fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + "/"
-	local newaffolderTEMP = fe.path_expand( FeConfigDirectory) + "layouts/"+ afname + "TEMP/"
-
-	// Download zip of new layout version
-	AF.updatechecking = true
-	z_splash_message( "Downloading...")
-	system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap)
-	// Create target directory
-	z_splash_message( "Installing...")
-	system ("mkdir "+ ap + newaffolderTEMP + ap)
-	system ("mkdir "+ ap + newaffolder + ap)
-	// Unpack layout
-	unzipfile (AF.folder + afname +".zip", newaffolderTEMP)
-	local ghfolder = DirectoryListing(newaffolderTEMP)
-	foreach (item in ghfolder.results){
-		local ghfolder2 = DirectoryListing(item)
-		foreach (item2 in ghfolder2.results){
-			system (OS == "Windows" ?
-				"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
-				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
-		}
-	}
-
-	system (OS == "Windows" ? "rmdir /q /s " + char_replace(ap + newaffolderTEMP + ap,"/","\\")  : "rm -R " + ap + newaffolderTEMP + ap)
-
-	// Transfer preferences
-	local dir = DirectoryListing( AF.folder )
-	foreach (item in dir.results){
-		if (item.find("pref_")) {
-			local basename = item.slice(item.find("pref_"),item.len())
-			system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
-		}
-	}
-	// Remove downloaded file
-	local rem0 = 0
-	while (rem0 == 0) {
-		try {remove (AF.folder + afname +".zip");rem0 = 1} catch(err){rem0 = 0}
-	}
-	// Update config file
-	local currentlayout = split (AF.folder, "\\/").top()
-
-	local cfgfile = file(fe.path_expand( FeConfigDirectory + "attract.cfg" ),"rb")
-	local outarray = []
-	local char = 0
-	local templine = ""
-	local index0 = null
-	while (!cfgfile.eos()){
-		char = 0
-		templine = ""
-		while (char != 10) {
-			char = cfgfile.readn('b')
-			if ((char != 10) && (char != 13)) templine = templine + char.tochar()
-		}
-		index0 = templine.find(currentlayout)
-		if (index0 != null) {
-			templine = templine.slice(0,index0) + afname + templine.slice(index0 + currentlayout.len(),templine.len())
-		}
-		outarray.push(templine)
-	}
-
-	local outfile = WriteTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
-	for (local i = 0 ; i < outarray.len() ; i++){
-		outfile.write_line(outarray[i]+"\n")
-	}
-	outfile.close_file()
-	AF.updatechecking = false
-	frostshow()
-	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
-	function(out){
-		zmenuhide()
-		frosthide()
-		restartAM()
-	})
-}
-
-function gh_menu(presel){
-	//frostshow()
-	zmenudraw(ltxtarray(["Install branch","Install release"],AF.LNG),[0xe9bc,0xe94e],null,"Install from repository",0xe9c2,presel,false,false,false,false,false,
-	function(out){
-		if (out == 0) {
-			gh.branchlist = []
-			gh.commitlist = []
-			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
-			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,true,false,false,
-			function(out0){
-				if (out0 == -1) gh_menu(0)
-				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0]+"_"+gh.commitlist[out0])
-			})
-		}
-		else if (out == 1) {
-			gh.taglist = []
-			gh.releasedatelist = []
-			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
-//			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
-			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,true,false,false,
-			function(out1){
-				if (out1 == -1) gh_menu(1)
-				else afinstall(gh.taglist[out1],"Arcadeflow_"+(gh.taglist[out1].tofloat()*10).tointeger())
-			})
-		}
-		else if (out == -1){
-			utilitymenu (umpresel)
-		}
-		return
-	})
 }
 
 function checkforupdates(force){
@@ -13040,8 +12886,6 @@ function checkforupdates(force){
 				})
 			}
 			else {
-				afinstall (gh.latest_version,newafname)
-				/*
 				// Download zip of new layout version
 				AF.updatechecking = true
 				z_splash_message( "Downloading...")
@@ -13111,7 +12955,6 @@ function checkforupdates(force){
 					frosthide()
 					restartAM()
 				})
-				*/
 			}
 		}
 
@@ -13636,7 +13479,7 @@ function attractkick(){
 	}
 
 	if (prf.THUMBVIDEO) videosnap_hide()
-	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+	if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 
 	attract.start = true
 	attract.starttimer = false
@@ -15055,21 +14898,6 @@ function buildutilitymenu(){
 	})
 
 	umtable.push ({
-		label = ltxt ("Install from repository",AF.LNG)
-		glyph = 0xe9c2
-		visible = true
-		id = 0
-		order = 0
-		sidenote = function(){
-			return "☰"
-		}
-		command = function(){
-			//umvisible = false
-			gh_menu(0)
-		}
-	})
-
-	umtable.push ({
 		label = ltxt ("About Arcadeflow",AF.LNG)
 		glyph = 0xea09
 		visible = true
@@ -15105,15 +14933,14 @@ function buildutilitymenu(){
 	})
 
 	local v0 = split(prf.UMVECTOR,",")
-	if (v0.len() == umtable.len()){
-		for (local i = 0 ; i < v0.len() ; i++){
-			umtable[i].id = i
-			umtable[abs(v0[i].tointeger()) - 1].visible = v0[i].tointeger() > 0
-			umtable[abs(v0[i].tointeger()) - 1].order = i
-		}
 
-		umtable.sort(@(a,b) a.order <=> b.order)
+	for (local i = 0 ; i < v0.len() ; i++){
+		umtable[i].id = i
+		umtable[abs(v0[i].tointeger()) - 1].visible = v0[i].tointeger() > 0
+		umtable[abs(v0[i].tointeger()) - 1].order = i
 	}
+
+	umtable.sort(@(a,b) a.order <=> b.order)
 }
 
 buildutilitymenu()
@@ -15725,7 +15552,7 @@ function on_transition( ttype, var0, ttime ) {
 
 	if ((ttype == Transition.ShowOverlay) && (prf.THEMEAUDIO) ) snd.wooshsound.playing = true
 
-	if (prf.LAYERVIDEO) {
+	if ((prf.LAYERVIDEO) && (prf.LAYERSNAP)) {
 		 if (((ttype == Transition.ToNewSelection) || (ttype == Transition.ToNewList) ) && (prf.LAYERVIDEO)) {
 
 		//background video delay load
@@ -16322,7 +16149,7 @@ function tick( tick_time ) {
 			timescale.values = timescale.limits + 1
 
 			if (prf.THUMBVIDEO) videosnap_restore()
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 
 		}
 	}
@@ -16399,7 +16226,7 @@ function tick( tick_time ) {
 			// block theme videos and set snap audio
 			if (prf.THUMBVIDEO) tilez[focusindex.new].gr_vidsz.video_playing = false
 			if (prf.THUMBVIDEO) videosnap_hide()
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = false
 			if (!attract.sound) attractitem.snap.video_flags = Vid.NoAudio
 
 			if(prf.AMTUNE != "") {
@@ -16727,7 +16554,7 @@ function tick( tick_time ) {
 
 	}
 	// fade of bg video
-	if ((prf.LAYERVIDEO) ){
+	if ((prf.LAYERVIDEO) && (prf.LAYERSNAP) ){
 		if (vidposbg !=0){
 			vidposbg = vidposbg - 1
 			if (prf.LAYERVIDELAY) {
@@ -16985,7 +16812,7 @@ function tick( tick_time ) {
 
 		if (endfade(flowT.attract) == 0) {
 			if (prf.THUMBVIDEO) videosnap_restore()
-			if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
+			if (prf.LAYERVIDEO && prf.LAYERSNAP) bgs.bgvid_top.video_playing = true
 			attractitem.snap.file_name = AF.folder+"pics/transparent.png"
 			attractitem.snap.shader = noshader
 			attractitem.surface.visible = attractitem.surface.redraw = false

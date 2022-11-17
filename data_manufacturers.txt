@@ -3,6 +3,7 @@
 21stcentury 21stcenturyentertainment 21stcenturyentertainmentltd
 3do 3docompanythe
 4thdimension fourthdimension
+989studios
 aackosoft
 able ablecorpltd
 abrasco
@@ -28,6 +29,7 @@ adventuresoft adventuresoftltd adventuresoftuk
 afega afegaapplesindustries
 afsoftware
 againagain
+agetec
 agmix
 agumix
 aia
@@ -248,6 +250,7 @@ cronosoft
 crux
 cryointeractiveentertainment cryointeractive
 crystalcomputing
+crystaldynamics
 crystalware crystalcomputer
 csware
 cult cultgames
@@ -264,6 +267,7 @@ databyte
 dataeast dataeastcorporation
 dataeastusa
 datamost
+datampolystar
 datasoft
 datawest
 davenuttingassociatesballymidway
@@ -395,6 +399,7 @@ forest
 foster
 fournine
 foxinteractive
+fromsoftware
 ftl ftlgames ftlfasterthanlight
 fugasystem fugasystems fugasystemcorp
 funcom
@@ -442,6 +447,7 @@ grev
 gtinteractive gtinteractivesoftware gtinteractivesoftwarecorp
 gtisoftware
 guildhall guildhallleisureservice guildhallleisureservicesltd
+gust
 hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|0,1988
 hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1989,1993
 hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1994,10000
@@ -485,6 +491,7 @@ igssammy
 iguanaentertainment iguanaentertainmentinc iguanauk
 ijksoftware ijk
 illusion
+imadio
 imageworks
 imagic
 imagine imaginesoftware
@@ -525,6 +532,7 @@ jpm
 jupitermultimedia
 jvc jvcdigitalstudios jvcmusicalindustriesinc
 jwing
+kadokawa kadokawashoten kadokawagames
 kamusementleasingco
 kaneko
 kanekonamco
@@ -604,6 +612,7 @@ mcmsoftware
 meadowsgames meadowsgamesinc
 mebiosoftware
 mecc
+mediaentertainment
 mediaringscorporation mediarings
 megami
 megaplaymore
@@ -751,6 +760,8 @@ philkocorporationpoaraenterprises philkopoaraenterprises
 philkosharpimage
 phoenix phoenixsoftware
 pil
+pioneer pioneerldc|0,1997
+pioneer pioneerldc|1998,10000
 piranha
 piratesoftware
 pixel
@@ -758,11 +769,14 @@ playaround
 playbyte
 players playerssoftware
 playerspremier playerspremiersoftware
+playlogic
 playmark
 playmates playmatesinteractive
 playmorecapcom
 pocketmoneysoftware
 polarware
+polygram
+polyphonydigital
 ponycanyon ponyaca|0,1986
 ponycanyon ponyaca|1987,2012
 ponycanyon ponyaca|2013,2017
@@ -772,9 +786,11 @@ poppo poppocoltd
 postern
 pow
 primetekinvestments
+prismarts
 prismleisure prismleisurecorporationplc
 probe probesoftware probesoftwareltd
 probeentertainment probeentertainmentlimited probeentertainmentltd
+produce
 programmasoftware programmainternational
 promat
 psikyo
@@ -812,6 +828,7 @@ razorsoft
 readysoft readysoftincorporated
 reaktor
 realtec
+rebellion
 redratsoftware redratsoftwareltd
 redshift redshiftltd
 redspotgames
@@ -827,6 +844,8 @@ robico robicosoftware
 rockola
 rockstr rockstargames
 roklan roklancorp roklancorporation
+romhack hack
+romhackingnet romhaking
 romik romiksoftware
 romox
 romstar romstarincorporated
@@ -883,6 +902,7 @@ sharpimage
 sharpsps
 shinen shinenmultimedia
 shiny shinyentertainment
+shoeisha shoeishaentertainment
 shoesoft
 shuwasystemtrading
 sierra sierraentertainment sierraonline sierraonlineinc sierraonlinejapan|0,1992
@@ -930,6 +950,8 @@ solarsoftware
 sonicteam
 sony sonyspain sonyelectronicpublishing sonycomputerentertainment sonycomputerentertaiment
 sonyimagesoft
+southpeakgames southpeak
+southpeakinteractive
 spacyindustrialltd
 sparklers
 spectravideo spectravideovideogamesindustriescorporation spectravisionspectravideo spectravision
@@ -1104,7 +1126,7 @@ ultra ultrasoft ultragames
 umi
 unico
 universal
-universalinteractive
+universalinteractive universalinteractivestudios
 upl
 uplsammy uplamericansammy
 upltaito
@@ -1135,6 +1157,7 @@ vividimage
 vortexsoftware
 vugames
 warashi
+warnerbros warnerbrosinteractive warnerbrosinteractiveentertainment
 watermelon watermelondevelopment watermeloncompany watermelonco
 webfoot
 westone
@@ -1157,7 +1180,9 @@ workingdesigns
 wowsoftware
 xain xainsoft
 xicat xicatinteractive
+xing xingentertainment
 xonox xonoxktelsoftware
+xseed xseedgames
 xsgames
 xtal xtalsoft
 xyz
@@ -1171,6 +1196,7 @@ yonatech
 yonezawa yonezawapr21
 yukienterprise
 yukienterprisesnkplaymore yukienterprisessnkplaymore
+yumedia
 yumekobo
 yunsung
 yutaka
