@@ -185,6 +185,7 @@ local gh = {
 	taglist = []
 	branchlist = []
 	releasedatelist = []
+	commitlist = []
 }
 
 function gly(index){
@@ -12814,6 +12815,9 @@ function gh_branchlist(op){
 	if (op.find(ap+"name"+ap) != null) {
 		gh.branchlist.push (split(op,ap)[3])
 	}
+	if (op.find(ap+"sha"+ap) != null) {
+		gh.commitlist.push (split(op,ap)[3])
+	}
 }
 
 function gh_taglist(op){
@@ -12937,8 +12941,9 @@ function gh_menu(presel){
 	function(out){
 		if (out == 0) {
 			gh.branchlist = []
+			gh.commitlist = []
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
-			zmenudraw(gh.branchlist,null,null,"Install Branch",0xe9bc,0,false,false,false,false,false,
+			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,false,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
 				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0])
