@@ -17,6 +17,7 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 - Removed option to rotate screen, it's in AM options
 - Improved aspect ratio correction for vertical handhelds
 - Improved smoothness of video transition for background
+- Video background can be enabled even without background snaps
 
 ## Emulator system identifier #
 
