@@ -3,6 +3,7 @@
 21stcentury 21stcenturyentertainment 21stcenturyentertainmentltd
 3do 3docompanythe
 4thdimension fourthdimension
+505games
 989studios
 aackosoft
 able ablecorpltd
@@ -77,6 +78,7 @@ applepie applepiecoffeebreak
 appliedsystemknowledge
 aprinet
 apx
+aquiris aquirisgamestudio
 arc arcdevelopments
 arcadia arcadiacorporation
 arcadiasystemsinc arcadiasystems
@@ -196,6 +198,7 @@ cbssoftware cbs
 cbssonygroup
 cce
 ccs casescomputersimulators
+cdprojekt cdprojektred
 cds cdssoftware cdssoftwareltd
 cdsmicrosystems
 centuri
@@ -206,6 +209,7 @@ champion championsoft
 channel8software
 charactersoft
 chip
+chucklefish
 chunsoft
 cinematronics
 cinemaware cinemawarecorporation
@@ -219,6 +223,7 @@ coconutsjapan
 codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|0,1993
 codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|1994,2017
 codemasters codemasterssoftwarecompanylimitedthe codemasterssoftware|2018,10000
+coffeestain coffeestainstudios
 coleco colecoindustriesinc
 comad
 commavid commavidinc
@@ -247,6 +252,7 @@ creativecomputing
 creativesparks
 crlgroup crl crlgroupplc
 cronosoft
+crtgames
 crux
 cryointeractiveentertainment cryointeractive
 crystalcomputing
@@ -306,8 +312,10 @@ doctorsoft
 domark domarkgroupltd domarksoftwareinc
 dooyong
 dooyongntc
+dotemu
 dottplan
 dreamworks
+drinkbox drinkboxstudios
 drosoft
 dsigames destinationsoftware destinationsoftwareinc
 dtmc
@@ -388,12 +396,15 @@ fairytale fairytalehardcover fairytaleredzone
 falcom nihonfalcom nihonfalcomcorp
 familysoft
 fciinc fci
+fdg fdgentertainment
 firebird firebirdsoftware firebirdsoftwareltd
 firststarsoftware firststarsoftwareinc firststar
 fisherprice
 flair flairsoftware flairsoftwareltd
 flopmagazine
 flyingedge flyingedgeinc
+focusentertainment
+focushomeinteractive
 foresight
 forest
 foster
@@ -422,6 +433,8 @@ gargoylegames
 gavaking
 gazellebanpresto
 gce
+gearboxpublishing
+gearboxsoftware
 gebellisoftware gebelli gebellisoftwareinc
 genie
 genki
@@ -447,6 +460,7 @@ grev
 gtinteractive gtinteractivesoftware gtinteractivesoftwarecorp
 gtisoftware
 guildhall guildhallleisureservice guildhallleisureservicesltd
+gungho gunghoonlineentertainment
 gust
 hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|0,1988
 hal halkenkyuujo hallabs hallaboratory hallaboratoryinc halkenkyujo|1989,1993
@@ -511,6 +525,7 @@ infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa i
 infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|1997,2000
 infogrames infogrameseuropesa infogramesmultimediasa infogramesentertainmentsa infogramesfrancesas|2001,10000
 informationglobalservice
+inin iningames
 intecinc intec
 interceptorsoftware interceptor
 interplay interplayproductions interplayproductionsinc interplayentertainmentcorp
@@ -569,8 +584,10 @@ leisuregenius
 lelandcorporation lelandcorp lelandinteractivemedia
 level9computing level9computingltd
 limenko
+limitedrun limitedrungames
 linel linelsoftware
 livewiresoftware livewire
+lizardcube
 ljn ljnltd
 lkavalon
 llamasoft llamasoftltd
@@ -659,6 +676,7 @@ mitchellatlus
 mitchellcapcom
 mnetwork mnetworkintv
 mnmsoftware
+modus modusgame
 mogul mogulcommunications
 mojobones
 moraffware
@@ -685,6 +703,7 @@ nec nechomeelectronics|1993,10000
 necavenue
 necinterchannel
 neo
+netherrealm netherrealmstudios
 newdealproductions newdealproductionssa
 newgenerationsoftware
 newkidco
@@ -696,6 +715,7 @@ nichibutsu nichibutsuusa
 nichibutsualice
 nichibutsufujitek
 nidecom
+nightdive nightdivestudios
 nihonbussan
 nihoncolumbia nipponcolumbia
 nihoncreate
@@ -717,6 +737,7 @@ ntc
 nufekop
 nufx
 ocean oceansoftware oceansoftwareltd oceansoftwarelimited
+oddworldinhabitants
 omegasoftware omega
 omksoftware omk omksoftwaresl
 omnitrendsoftware omnitrendsoftwareinc omnitrend
@@ -773,6 +794,7 @@ playlogic
 playmark
 playmates playmatesinteractive
 playmorecapcom
+playtonic playtonicgames
 pocketmoneysoftware
 polarware
 polygram
@@ -842,7 +864,8 @@ riot
 riverhill riverhillsoft riverhillsoftware riverhillsoftwareinc
 robico robicosoftware
 rockola
-rockstr rockstargames
+rockstar rockstargames
+rocksteady rocksteadystudios
 roklan roklancorp roklancorporation
 romhack hack
 romhackingnet romhaking
@@ -851,6 +874,7 @@ romox
 romstar romstarincorporated
 rowansoftwareltd rowansoftware
 ryokusui
+saber saberinteractive
 sachen
 saffire
 sagescreation
@@ -983,6 +1007,7 @@ stormfrontstudios
 strata
 strataincredibletechnologies
 striker
+studiomdhr mdhr
 studiooffside
 studiotwinkle
 sublogic
@@ -1031,6 +1056,7 @@ tch
 tdk
 tdkmediactive
 team17 team17softwarelimited
+teamcherry
 tecfri
 technopolis technopolissoft
 technos technosjapan technosjapancorp
@@ -1179,6 +1205,7 @@ workforce
 workingdesigns
 wowsoftware
 xain xainsoft
+xboxgamesstudios xboxgamestudios
 xicat xicatinteractive
 xing xingentertainment
 xonox xonoxktelsoftware
