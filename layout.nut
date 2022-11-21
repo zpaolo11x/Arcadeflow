@@ -132,11 +132,16 @@ local AF = {
 		time0 = 0
 		time1 = 0
 		progress = 0
+
 		pic = null
 		picbg = null
 		size = 300
 		dark = 60
 		darkalpha = 90
+
+		count = 0
+		start = "start"
+		stop = "stop"
 	}
 }
 
@@ -230,8 +235,80 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.general
 }
 
+// command = bar.start to start cycle
+// command = bar.stop to stop cycle
 
-function bar_update(i,init,max){
+function bar_cycle_update(command){
+	//	print ("i:"+i+" ")
+	local redraw = false
+	if (command == AF.bar.start){
+		print (clock()+"\n")
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.pic.visible = true
+		AF.bar.picbg.visible = true
+		AF.bar.picbg.msg=gly(0xeafb+12)
+		AF.bar.pic.msg = gly(0xeafb)
+		AF.bar.count=0
+		return
+	}
+	if (command == AF.bar.stop){
+		print (clock()+"\n")
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		AF.bar.count=0
+		return
+	}
+	/*
+	if (i == max-1){
+		//print("CLOSE\n")
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		return
+	}
+*/
+	AF.bar.time1 = clock()
+	print (AF.bar.time0+" "+AF.bar.time1+" "+(AF.bar.time1-AF.bar.time0)+"\n")
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		print("X\n")
+		//print (" FRAME ")
+		/*
+		if (i <= max*0.2) {
+			//print ("i<max*0.2")
+			redraw = true
+			AF.bar.pic.alpha = 255 * i/(max*0.2)
+			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
+		}
+		else if (i >= max*0.9){
+			//print ("i>max*0.8")
+			redraw = true
+			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
+			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
+		}
+		*/
+		//if (floor(11*i*1.0/max) != AF.bar.progress){
+			AF.bar.count = AF.bar.count + 1
+			if (AF.bar.count == 10) AF.bar.count = 0
+
+			AF.bar.pic.msg = gly(0xeb08+AF.bar.count)
+			//print (" progress:"+AF.bar.progress+" ")
+			redraw = true
+		//}
+		AF.bar.time0 = AF.bar.time1
+		if (redraw) fe.layout.redraw()
+		//print("\n")
+
+	}
+
+}
+
+function bar_progress_update(i,init,max){
 	//	print ("i:"+i+" ")
 		local redraw = false
 		if (i == init){
@@ -6224,7 +6301,7 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
-		bar_update(i,0,z_list.boot.len())
+		bar_progress_update(i,0,z_list.boot.len())
 
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
@@ -12821,12 +12898,14 @@ function gh_branchlist(op){
 }
 
 function gh_taglist(op){
+	bar_cycle_update(null)
 	if (op.find(ap+"name"+ap) != null) {
 		gh.taglist.push (split(op,ap)[3])
 	}
 }
 
 function gh_releaselist(op){
+	bar_cycle_update(null)
 	if (op.find(ap+"tag_name"+ap) != null) {
 		gh.taglist.push (split(op,ap)[3])
 	}
@@ -12940,7 +13019,9 @@ function gh_menu(presel){
 		if (out == 0) {
 			gh.branchlist = []
 			gh.commitlist = []
+			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
+			bar_cycle_update(AF.bar.stop)
 			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,true,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
@@ -12950,8 +13031,10 @@ function gh_menu(presel){
 		else if (out == 1) {
 			gh.taglist = []
 			gh.releasedatelist = []
+			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
 //			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
+			bar_cycle_update(AF.bar.stop)
 			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,true,false,false,
 			function(out1){
 				if (out1 == -1) gh_menu(1)
