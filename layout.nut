@@ -4334,6 +4334,7 @@ function resetlastplayed(){
 // that are in the current one
 // If the ALLGAMES (that is the collections) is enabled config is rebuild
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
+//TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf){
 	foreach (item, val in z_list.allromlists) {
 		refreshromlist(item, false)
