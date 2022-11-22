@@ -4442,6 +4442,23 @@ function splitlistline(str_in){
 
 }
 
+function listfields_to_db1(listfields){
+	local target = clone (z_fields1)
+	target.z_title = subst_replace(listfields[1],ap,"'")
+	target.z_year = listfields[4]
+	target.z_manufacturer = subst_replace(listfields[5],ap,"'")
+	target.z_category = listfields[6]
+	target.z_players = listfields[7]
+	target.z_rotation = listfields[8]
+	target.z_control = listfields[9]
+	target.z_buttons = subst_replace(listfields[16],ap,"'")
+	try{target.z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
+	try{target.z_region = listfields[19]}catch(err){}
+	try{target.z_rating = listfields[20]}catch(err){}
+	target.z_name = listfields[0]
+	return target
+}
+
 // This function updates the AM romlist using attract command line options
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
@@ -4468,24 +4485,7 @@ function refreshromlist(romlist, fulllist){
 
 		if (fulllist || !z_list.db1[romlist].rawin(gamename)){
 			z_list.db1[romlist].rawset(gamename,{})
-
-			z_list.db1[romlist][gamename] = clone (z_fields1)
-			z_list.db1[romlist][gamename].z_title = subst_replace(listfields[1],ap,"'")
-			z_list.db1[romlist][gamename].z_year = listfields[4]
-			z_list.db1[romlist][gamename].z_manufacturer = subst_replace(listfields[5],ap,"'")
-			z_list.db1[romlist][gamename].z_category = listfields[6]
-			z_list.db1[romlist][gamename].z_players = listfields[7]
-			z_list.db1[romlist][gamename].z_rotation = listfields[8]
-			z_list.db1[romlist][gamename].z_control = listfields[9]
-			z_list.db1[romlist][gamename].z_buttons = subst_replace(listfields[16],ap,"'")
-			try{z_list.db1[romlist][gamename].z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
-			try{z_list.db1[romlist][gamename].z_region = listfields[19]}catch(err){}
-			//if (z_list.db1[romlist][gamename].z_region == "") z_list.db1[romlist][gamename].z_region = regionsfromfile(gamename)
-
-			try{z_list.db1[romlist][gamename].z_rating = listfields[20]}catch(err){}
-
-			z_list.db1[romlist][gamename].z_name = listfields[0]
-			//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
+			z_list.db1[romlist][gamename] = listfields_to_db1(listfields)
 		}
 
 		if (fulllist || !z_list.db2[romlist].rawin(gamename)){
@@ -4574,20 +4574,8 @@ function portromlist(romlist){
 		if(listfields[2] != romlist) continue
 		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
 		cleanromlist[listfields[0]] <- {}
-		cleanromlist[listfields[0]] = clone (z_fields1)
-		cleanromlist[listfields[0]].z_title = strip(subst_replace(listfields[1],ap,"'"))
-		cleanromlist[listfields[0]].z_year = listfields[4]
-		cleanromlist[listfields[0]].z_manufacturer = subst_replace(listfields[5],ap,"'")
-		cleanromlist[listfields[0]].z_category = listfields[6]
-		cleanromlist[listfields[0]].z_players = listfields[7]
-		cleanromlist[listfields[0]].z_rotation = listfields[8]
-		cleanromlist[listfields[0]].z_control = listfields[9]
-		cleanromlist[listfields[0]].z_buttons = subst_replace(listfields[16],ap,"'")
-		try{cleanromlist[listfields[0]].z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
-		try{cleanromlist[listfields[0]].z_region = listfields[19]}catch(err){}
-		try{cleanromlist[listfields[0]].z_rating = listfields[20]}catch(err){}
+		cleanromlist[listfields[0]] = listfields_to_db1(listfields)
 
-		cleanromlist[listfields[0]].z_name = listfields[0]
 		//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
 		cleanromlist[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
 		cleanromlist[listfields[0]].z_emulator = romlist
