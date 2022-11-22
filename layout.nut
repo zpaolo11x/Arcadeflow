@@ -242,7 +242,6 @@ function bar_cycle_update(command){
 	//	print ("i:"+i+" ")
 	local redraw = false
 	if (command == AF.bar.start){
-		print (clock()+"\n")
 		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
@@ -255,7 +254,6 @@ function bar_cycle_update(command){
 		return
 	}
 	if (command == AF.bar.stop){
-		print (clock()+"\n")
 		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
@@ -274,9 +272,7 @@ function bar_cycle_update(command){
 	}
 */
 	AF.bar.time1 = clock()
-	print (AF.bar.time0+" "+AF.bar.time1+" "+(AF.bar.time1-AF.bar.time0)+"\n")
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
-		print("X\n")
 		//print (" FRAME ")
 		/*
 		if (i <= max*0.2) {
@@ -17722,6 +17718,19 @@ function ra_selectemu(startemu){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
+
+	//TEST151
+	if (sig == "custom1"){
+		local zipball = "14.3"
+		local afname = "testzip"
+		//z_splash_message( "Downloading...")
+		bar_cycle_update(AF.bar.start)
+		//fe.plugin_command ("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap,"timewheel")
+		//fe.plugin_command ("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball,"downloadwheel")
+		fe.plugin_command ("curl","-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap),"bar_cycle_update")
+		//fe.plugin_command ("ls","-la","timewheel")
+		bar_cycle_update(AF.bar.stop)
+	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
