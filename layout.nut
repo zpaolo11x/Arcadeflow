@@ -4463,11 +4463,13 @@ function listfields_to_db1(listfields){
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
 // If AF collections are enabled it then updates all the collections
-function refreshromlist(romlist, fulllist){
+function refreshromlist(romlist, fulllist, rescan = true){
 	// Update romlist using AM
-	if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
-	else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
-	else system ("attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+	if (rescan){
+		if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+		else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+		else system ("attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+	}
 
 	local listpath = AF.romlistfolder + romlist + ".txt"
 	local listfile = ReadTextFile(listpath)
@@ -6893,6 +6895,10 @@ timestart("boot")
 	local currentsystem = ""
 	for (local i = 0 ; i < fe.list.size; i++){
 		ifeindex = i - fe.list.index
+
+		if (!z_list.db1[fe.game_info(Info.Emulator,ifeindex)].rawin(fe.game_info(Info.Name,ifeindex)))
+			refreshromlist(fe.game_info(Info.Emulator,ifeindex), false, false)
+
 		z_list.boot.push (z_list.db1[fe.game_info(Info.Emulator,ifeindex)][fe.game_info(Info.Name,ifeindex)])
 		z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator,ifeindex)][fe.game_info(Info.Name,ifeindex)])
 		z_list.boot[i].z_felistindex = i
