@@ -4576,7 +4576,6 @@ function portromlist(romlist){
 		cleanromlist[listfields[0]] <- {}
 		cleanromlist[listfields[0]] = listfields_to_db1(listfields)
 
-		//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
 		cleanromlist[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
 		cleanromlist[listfields[0]].z_emulator = romlist
 
@@ -4589,7 +4588,6 @@ function portromlist(romlist){
 		if (tagtable.rawin(listfields[0])) cleanromlist2[listfields[0]].z_tags = tagtable[listfields[0]]
 
 		cleanromlist2[listfields[0]].z_name = listfields[0]
-		//cleanromlist2[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
 		cleanromlist2[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
 		cleanromlist2[listfields[0]].z_emulator = romlist
 
