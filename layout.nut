@@ -747,39 +747,6 @@ fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
 dofile( AF.folder + "nut_fileutil.nut" )
 
-// CRC BANCHMARK
-/*
-local crr = {
-	tttt0 = 0
-	tttt1 = 0
-	fil = "/Volumes/Ext256/ROMS/snes/Star Ocean (Japan).zip"
-}
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_old(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_halfbyte(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_lookup(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_lookup4(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-*/
-
 /// Preferences functions and table ///
 function letterdrives(){
 	local letters = "CDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -787,8 +754,6 @@ function letterdrives(){
 	foreach (i, item in letters){
 		if (fe.path_test ( item.tochar() + ":" , PathTest.IsDirectory) ) drives.push (item.tochar()+":\\")
 	}
-
-	//	return (drives.len() > 0 ? drives : ["/"])
 	return drives
 }
 
@@ -1975,30 +1940,7 @@ function integereven(n){
 	local n_round = integerp(n)
 	return (n_round + n_round%2.0)
 }
-/*
-function hsl2rgb (H,S,L){
-	local C = (1.0 - absf(2.0 * L - 1.0)) * S
-	local X = C * (1.0 - absf( ((H*1.0/60.0) % 2 ) - 1.0 ))
-	local m = L - C/2.0
-	local R1 = null
-	local G1 = null
-	local B1 = null
 
-	if			((H >= 0)	&& (H < 60))	{R1 = C ; G1 = X ; B1 = 0}
-	else if	((H >= 60)	&& (H < 120))	{R1 = X ; G1 = C ; B1 = 0}
-	else if	((H >= 120) && (H < 180))	{R1 = 0 ; G1 = C ; B1 = X}
-	else if	((H >= 180) && (H < 240))	{R1 = 0 ; G1 = X ; B1 = C}
-	else if	((H >= 240) && (H < 300))	{R1 = X ; G1 = 0 ; B1 = C}
-	else if	((H >= 300) && (H < 360))	{R1 = C ; G1 = 0 ; B1 = X}
-
-	local OUT ={
-		R = (R1 + m)
-		G = (G1 + m)
-		B = (B1 + m)
-	}
-	return (OUT)
-}
-*/
 function hsl2rgb( H,S,L )
 {
 	local RGB = [0.0,4.0,2.0]
@@ -5170,46 +5112,6 @@ z_updatetagstable()
 
 z_list.ratingtable = prf.INI_BESTGAMES_PATH == "" ? {} : extradatatable(prf.INI_BESTGAMES_PATH)
 
-
-// returns an array of tags for the game at "offset" reading from the list table (faster)
-/*
-function z_gettags(offset,checkzero){
-	if ((checkzero) && (z_list.size == 0)) return []
-	local romname = z_list.boot[offset + fe.list.index].z_name
-	local emulatorname = z_list.boot[offset + fe.list.index].z_emulator
-	local out = []
-	// Now check in the whole tags structure
-	foreach(item, tagsarray in z_list.tagstable){
-		if (tagsarray.find(emulatorname + " " + romname) != null) out.push(item)
-	}
-
-	return out
-}
-*/
-// returns favourite state for the game at "offset" reading from the list table (faster)
-/*
-function z_getfavs(offset){
-	local romname = z_list.boot[offset + fe.list.index].z_name
-	local emulatorname = z_list.boot[offset + fe.list.index].z_emulator
-	// Now check in the whole favs structure
-	return ((z_list.favsarray.find(emulatorname + " " + romname) != null) ? "1" : "0")
-}
-*/
-/*
-function z_getrundate(offset){
-	local out = "00000000000000"
-
-	try {out = z_list.rundatetable[fe.game_info(Info.Emulator,offset)][fe.game_info(Info.Name,offset)]}catch(err){}
-	return out
-}
-
-function z_getfavdate(offset){
-	local out = "00000000000000"
-	try {out = z_list.favdatetable[fe.game_info(Info.Emulator,offset)][fe.game_info(Info.Name,offset)]}catch(err){}
-	return out
-}
-*/
-
 function z_getmamerating(gamename){
 	local out = ""
 	if (z_list.ratingtable.rawin(gamename)){
@@ -5461,8 +5363,6 @@ multifilterz.l0["Tags"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot2[index+fe.list.index].z_tags // z_gettags(index,false)
 			// Return data when no category is selected
 			if (v.len()==0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
@@ -5487,8 +5387,6 @@ multifilterz.l0["Category"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false,  l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_category
 
 			// Return data when no category is selected
@@ -5543,8 +5441,6 @@ multifilterz.l0["Year"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_year
 
 			// Return data when no category is selected
@@ -5572,8 +5468,6 @@ multifilterz.l0["Manufacturer"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_manufacturer.tolower()
 
 			// Return data when no category is selected
@@ -5604,8 +5498,6 @@ multifilterz.l0["Favourite"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot2[index+fe.list.index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite,index)
 
 			return ({
@@ -5628,7 +5520,6 @@ multifilterz.l0["Buttons"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 
 			local v = z_list.boot[index+fe.list.index].z_buttons
 
@@ -5655,8 +5546,6 @@ multifilterz.l0["Players"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_players
 			if (v == "") v = " ?"
 			if (v.len() == 1) v = " " + v
@@ -5681,8 +5570,6 @@ multifilterz.l0["Played"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot2[index+fe.list.index].z_playedcount
 			return ({
 				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
@@ -5704,8 +5591,6 @@ multifilterz.l0["Orientation"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_rotation
 			local vcheck = ((v == "0") || (v == "180") || (v == "Horizontal") || (v == "horizontal") || (v == ""))
 
@@ -5729,8 +5614,6 @@ multifilterz.l0["Controls"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_control
 
 			if (v == "") return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
@@ -5772,7 +5655,6 @@ multifilterz.l0["Rating"] <- {
 		translate = false
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 			local v = z_list.boot[index+fe.list.index].z_rating
 			local v2 = "??"
 			if (v == "") {
@@ -5804,8 +5686,6 @@ multifilterz.l0["Series"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_series
 			if (v == "") v = " ?? "
 
@@ -5829,8 +5709,6 @@ multifilterz.l0["Scraped"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_scrapestatus
 			if (v == "") v = "?"
 
@@ -5855,8 +5733,6 @@ multifilterz.l0["Region"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_region
 			// ALTERNATIVE MODE: splits all and adds the complete, ATTENTION: turn l1array to true
 			/*
@@ -6744,22 +6620,11 @@ function z_checkhidden(i){
 
 function getallgamesdb(logopic){
 	timestart("GamesDB")
-	/*XXXXXX
-	local numchars = 15
-	local text_ratio = 0.6
-	local text_charsize = text_ratio*logopic.width*1.45/numchars
-	local textobj = fe.add_text("",logopic.x+logopic.width*(1.0-text_ratio)*0.5,logopic.y+logopic.height-text_charsize*0.5,logopic.width*text_ratio,text_charsize*1.2)
-	textobj.char_size = text_charsize
-	textobj.font = uifonts.mono
-	textobj.word_wrap = false
-	//textobj.set_bg_rgb(200,0,0)
-*/
 
 	local textobj = null
-
-		local numchars = 12
-		local text_ratio = 0.6
-		local text_charsize = text_ratio*fl.w*1.45/numchars
+	local numchars = 12
+	local text_ratio = 0.6
+	local text_charsize = text_ratio*fl.w*1.45/numchars
 
 	if (prf.SPLASHON) {
 		textobj = fe.add_rectangle(fl.x,fl.y,fl.w,fl.h)
@@ -6787,19 +6652,6 @@ function getallgamesdb(logopic){
 			itemname = item.slice(0,-4)
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
-			// The originating romlist doesn't exist, it must be created
-			/*
-			if (!file_exist(AF.romlistfolder + itemname + ".txt")){
-				refreshromlist(itemname, true)
-			}
-			if (!file_exist(AF.romlistfolder + itemname + ".db1")) {
-				portromlist(itemname)
-			}
-			fe.overlay.splash_message("Initialising... "+(i*100/(emulatordir.len()-1))+"%")
-			z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
-			z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
-			*/
-
 			// The emulator has a self named romlist
 			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) { //TEST139 If we are in masterlist keep scanning for db
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
@@ -6825,22 +6677,6 @@ function getallgamesdb(logopic){
 		}
 	}
 
-	/*
-	TEST TO CHECK MULTIEMU ROMLISTS
-	local romlistarray = []
-	local romlistpath = fe.path_expand(FeConfigDirectory + "romlists/")
-	local romlistdir = DirectoryListing(romlistpath,false).results
-	local rlfile = ""
-	local rlitemname = ""
-	foreach(i, item in romlistdir) {
-		if ((item.slice(0,3) != "AF ") && (item.slice(-3)=="txt") && (item.slice(0,2) != "._")){
-			rlitemname = item.slice(0,-4)
-			if (!AF.emulatordata.rawin(rlitemname)) {
-				testpr("RLX:"+rlitemname+"\n")
-			}
-		}
-	}
-	*/
 	textobj.visible = false
 	timestop("GamesDB")
 }
@@ -6852,10 +6688,6 @@ function z_listboot(){
 	z_list.allromlists = allromlists()
 
 	z_updatetagstable()
-	//z_initfavsfromfiles()
-	//z_initrundatefromfiles()
-	//z_initfavdatefromfiles()
-
 
 	//Reset meta_edited and meta_original
 	meta_edited = {}
