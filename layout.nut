@@ -2427,7 +2427,6 @@ UI.whiteborder = 0.15
 
 if (prf.PIXELACCURATE){
 	UI.zoomedblock = round(UI.zoomscale * UI.blocksize,1)
-	//TEST138
 	// this was a line used to have an even block size, but it's
 	// not needed because we can round the centercorr.zero
 	// UI.zoomedblock = UI.zoomedblock - UI.zoomedblock%2.0
@@ -3262,7 +3261,6 @@ function textrate (num,den,columns,ch1,ch0){
 	return out
 }
 
-//TEST149 put local here
 dispatcher = []
 dispatchernum = 0
 
@@ -3461,9 +3459,9 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
    scraprt("ID"+scrapeid+"         getromdata CALL createjson 1\n")
-	 //TEST132 changed splitting to take only part before "_"
-	 local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
-	 local stripmatch = true
+
+	local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
+	local stripmatch = true
    dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
 	 scraprt("ID"+scrapeid+"         getromdata suspend 1\n")
@@ -3503,7 +3501,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				// Once the name is perfectly matched, a new scrape is done to get proper rom status
 				dispatcher[scrapeid].jsonstatus = null
 				scraprt("ID"+scrapeid+"         getromdata CALL createjson 2\n")
-				//TEST132 changed to stripped romname (was just romname)
+
 				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,stripmatch ? strippedrom : romname,getcrc.name_crc,null,systemid,systemmedia)
 				scraprt("ID"+scrapeid+"         getromdata suspend 2\n")
 				suspend()
@@ -4185,7 +4183,7 @@ function buildcleanromlist(romlist, fields){
 	foreach (id, item in roms[0]){
 		romtable.rawset(item, clone(fields))
 		romtable[item].z_name = item
-		try{romtable[item].z_title = item}catch(err){} //TEST120 DEBUG ONLY
+		try{romtable[item].z_title = item}catch(err){}
 		romtable[item].z_filename = roms[0][id]+"."+roms[1][id]
 		romtable[item].z_system = AF.emulatordata[romlist].mainsysname
 		romtable[item].z_emulator = romlist
@@ -4499,8 +4497,7 @@ function portromlist(romlist){
 	local cleanromlist2 = {}
 	local listpath = AF.romlistfolder + romlist + ".txt"
 
-	if (prf.MASTERLIST) listpath = prf.MASTERPATH //TEST139
-
+	if (prf.MASTERLIST) listpath = prf.MASTERPATH
 
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
@@ -5116,7 +5113,7 @@ function z_getmamerating(gamename){
 	local out = ""
 	if (z_list.ratingtable.rawin(gamename)){
 		out = ratetonumber[z_list.ratingtable[gamename]]
-		if ((out.find(".")==null) && (out.len()>0)) out=out+".0" //TEST126 is adding .0 needed?
+		if ((out.find(".")==null) && (out.len()>0)) out=out+".0"
 	}
 	return out
 }
@@ -5804,7 +5801,6 @@ function mfz_build (reset){
 
 	// Scan the whole romlist
 	for (local i = 0 ; i < fe.list.size ; i++) {
-		//testpr(0xeafb+floor(i*10.0/(fe.list.size-1))+"\n")
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 		foreach (id0, table0 in multifilterz.l0){
 			local vals = table0.levcheck(i-fe.list.index)
@@ -6484,7 +6480,8 @@ function mfz_apply(startlist){
 			reindex = z_list_index_old // ... then we assign reindex the old z_list index value
 		}
 		else {
-			//TEST109 Serve davvero questo sotto? Dovrebbe servire perché se filtro e
+			//TEST109
+			// Serve davvero questo sotto? Dovrebbe servire perché se filtro e
 			// il gioco attuale non è nel filtro, ma lo è quello a fianco,
 			// allora seleziona il gioco a fianco....
 			for (local i = 0 ; i < z_list.size ; i++){
@@ -6508,14 +6505,13 @@ function mfz_apply(startlist){
 
 	z_listrefreshlabels()
 
-
-	if (!startlist) z_listrefreshtiles() //TEST100
+	if (!startlist) z_listrefreshtiles()
 
 	if(z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
 
 	z_updatefilternumbers(z_list.index)
 
-	data_freeze(false) //TEST142
+	data_freeze(false)
 	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
 	/*
 			z_listrefreshtiles()
@@ -6595,10 +6591,9 @@ function z_favfilter(index){
 
 function z_mots2filter(index){
 
-	if (search.mots[0] == "") return true //TEST92 DA VERIFICARE
+	if (search.mots[0] == "") return true
 	local currentval = ""
 
-	//TEST110 maybe this can be controlled with a parameter in search.mots
 	try{
 		currentval = z_list.boot[index + fe.list.index][search.mots[0]]
 	} catch (err){
@@ -6743,8 +6738,8 @@ timestart("boot")
 			if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
 			if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
 		}
-		//TEST126, check if it slows down the boot
-			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
+
+		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
 
 	timestop("boot")
@@ -8005,7 +8000,7 @@ if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)){
 
 	if (prf.LAYERVIDEO){
 		bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-		bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
+		bgs.bgvid_top.video_flags = Vid.NoAudio
 		bgs.bgvid_top.alpha = 0
 	}
 
@@ -9463,7 +9458,7 @@ function optionsmenu_lev3(){
 function optionsmenu_lev2(){
 
 	prfmenu.level = 2
-	zmenu.selected = prfmenu.outres1 //TEST143
+	zmenu.selected = prfmenu.outres1
 
 	updatemenu(prfmenu.level,prfmenu.outres1)
 
@@ -11190,15 +11185,6 @@ if (!prf.LOWRES){
 		}
 	}
 }
-
-/*
-hist_text.char_size = (prf.LOWRES ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
-hist_text.align = Align.TopCentre
-hist_text.first_line_hint = 1
-*/
-//TEST126
-//hist_text.char_size = 42 * UI.scalerate
-//hist_text.font = uifonts.monodata
 
 if (prf.HISTORYPANEL) {
 	hist_text_rgb(themeT.themehistorytextcolor,themeT.themehistorytextcolor,themeT.themehistorytextcolor)
@@ -14443,8 +14429,6 @@ function update_thumbdecor(i,var,aspect){
 	local z_list_target = modwrap(z_list.index + tilez[i].offset + var,z_list.size)
 	local fe_list_target = z_list.gametable[ z_list_target ].z_felistindex
 
-	//TEST120z_list.gametable2[ z_list_target ].z_playedcount = fe.game_info(Info.PlayedCount, fe_list_target - fe.list.index)
-
 	tilez[i].donez.visible = z_list.gametable2[z_list_target].z_completed
 
 	tilez[i].availz.visible = prf.REDCROSS && ((z_list.gametable[z_list_target].z_system != "") && (!z_list.gametable[z_list_target].z_fileisavailable))
@@ -15635,11 +15619,7 @@ function on_transition( ttype, var0, ttime ) {
 
 		//background video delay load
 			vidposbg = vidstarter
-			//TEST150 bgs.bgvid_top.alpha = 0
-			//TEST150 vidbgfade=[0.0,0.0,0.0,0.0,0.0]
 			vidbgfade = startfade (vidbgfade,-0.1,1.0)
-
-			//TEST150 bgs.bgvid_top.file_name = AF.folder+"pics/transparent.png"
 		 }
 	}
 
@@ -15922,7 +15902,7 @@ function on_transition( ttype, var0, ttime ) {
 		//bgs.flowalpha [bgs.stacksize - 1] = 255
 
 		bgs.flowalpha[bgs.stacksize - 1] = [0,0,0.0,0.0,0.0,0.0]
-		bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1],0.015,-4.0) //TEST105 speed was 0.02
+		bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1],0.015,-4.0)
 
 
 		// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
@@ -16490,7 +16470,7 @@ function tick( tick_time ) {
 				}
 				if (tilez[i].bd_mx_alpha == 0) {
 					tilez[i].freezecount = 2
-				}//TEST142
+				}
 			}
 
 			if (prf.LOGOSONLY) {
@@ -17574,15 +17554,13 @@ function on_signal( sig ){
 			//TEST120 THIS MUST BE 1 OR 2 DEPENDING ON THE MENU SHOWN!
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
-			//fe.signal("back")
-			//fe.signal("back")
 
 			// This reloads the romlist without reloading the layout, but if the other display is not AF it can cause issues
 			local ifplus = modwrap(fe.list.display_index + 1, fe.displays.len())
 			local ifminus = modwrap(fe.list.display_index - 1, fe.displays.len())
 
 			try{
-				fe.set_display(fe.list.display_index,false,false) //TEST139
+				fe.set_display(fe.list.display_index,false,false)
 			}catch(err){
 
 			//OLD METHOD BEFORE THE NEW SET_DISPLAY
