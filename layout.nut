@@ -4463,14 +4463,15 @@ function listfields_to_db1(listfields){
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
 // If AF collections are enabled it then updates all the collections
-function refreshromlist(romlist, fulllist, rescan = true){
+function refreshromlist(romlist, fulllist, updateromlist = true){
 	// Update romlist using AM
-	if (rescan){
+	if (updateromlist){
 		if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
 		else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
 		else system ("attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
 	}
 
+	// Rescan romlist file to complete database entries
 	local listpath = AF.romlistfolder + romlist + ".txt"
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
