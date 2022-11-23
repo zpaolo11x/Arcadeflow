@@ -11927,7 +11927,7 @@ function update_allgames_collections(verbose, tempprf){
 			}
 		}
 	}
-	else { //TEST139 READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
+	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
 		local listfields = []
@@ -11965,7 +11965,7 @@ function update_allgames_collections(verbose, tempprf){
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
-	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //if master romlist is used, just copy that as all games romlist
 	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
 	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
 	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
@@ -15242,7 +15242,7 @@ function finaltileupdate(){
 
 		//activate video load counter
 		if ((prf.THUMBVIDEO)){
-			if(focusindex.old != focusindex.new){ //TEST142
+			if(focusindex.old != focusindex.new){
 				gr_vidszTableFade[focusindex.old] = startfade (gr_vidszTableFade[focusindex.old],prf.LOGOSONLY ? -0.04 : -0.01,1.0)
 				aspectratioMorph[focusindex.old] = startfade (aspectratioMorph[focusindex.old],-0.08,1.0)
 			}
@@ -17551,7 +17551,7 @@ function on_signal( sig ){
 	if ((AF.scrape.purgedromdirlist == null) && (AF.messageoverlay.visible == true)) {
 		if (sig == "back") {
 			AF.messageoverlay.visible = false
-			//TEST120 THIS MUST BE 1 OR 2 DEPENDING ON THE MENU SHOWN!
+
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
 
