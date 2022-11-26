@@ -138,6 +138,7 @@ local AF = {
 		size = 300
 		dark = 60
 		darkalpha = 90
+		splashmessage = ""
 
 		count = 0
 		start = "start"
@@ -237,6 +238,33 @@ function z_edit_dialog(text1,text2){
 
 // command = bar.start to start cycle
 // command = bar.stop to stop cycle
+
+function splash_update(command){
+	if (command == AF.bar.start){
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.count = 0
+		return
+	}
+	if (command == AF.bar.stop){
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.count = 0
+		AF.bar.splashmessage = ""
+		return
+	}
+	AF.bar.time1 = clock()
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		AF.bar.count = AF.bar.count + 1
+		if (AF.bar.count == 10) AF.bar.count = 0
+		z_splash_message(AF.bar.splashmessage+"\n"+gly(0xeb08+AF.bar.count)+"\n")
+		AF.bar.time0 = AF.bar.time1
+
+	}
+}
 
 function bar_cycle_update(command){
 	//	print ("i:"+i+" ")
@@ -17513,15 +17541,14 @@ function on_signal( sig ){
 		local zipball = "14.3"
 		local afname = "testzip"
 		//z_splash_message( "Downloading...")
-		bar_cycle_update(AF.bar.start)
-		z_splash_message( "Downloading...")
-
+		AF.bar.splashmessage = "Scraping..."
+		splash_update(AF.bar.start)
 		//fe.plugin_command ("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap,"timewheel")
 		//fe.plugin_command ("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball,"downloadwheel")
 		//fe.plugin_command ("curl","-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap),"bar_cycle_update")
-		fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -" ,"bar_cycle_update")
+		fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -" ,"splash_update")
 		//fe.plugin_command ("ls","-la","timewheel")
-		bar_cycle_update(AF.bar.stop)
+		splash_update(AF.bar.stop)
 	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
