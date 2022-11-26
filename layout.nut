@@ -17514,9 +17514,12 @@ function on_signal( sig ){
 		local afname = "testzip"
 		//z_splash_message( "Downloading...")
 		bar_cycle_update(AF.bar.start)
+		z_splash_message( "Downloading...")
+
 		//fe.plugin_command ("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap,"timewheel")
 		//fe.plugin_command ("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball,"downloadwheel")
-		fe.plugin_command ("curl","-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap),"bar_cycle_update")
+		//fe.plugin_command ("curl","-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap),"bar_cycle_update")
+		fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -" ,"bar_cycle_update")
 		//fe.plugin_command ("ls","-la","timewheel")
 		bar_cycle_update(AF.bar.stop)
 	}
