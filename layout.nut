@@ -12830,6 +12830,10 @@ function gh_menu(presel){
 			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
 			bar_cycle_update(AF.bar.stop)
+			if (gh.branchlist.len() == 0) {
+				gh_menu(0)
+				return
+			}
 			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,true,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
@@ -12843,6 +12847,10 @@ function gh_menu(presel){
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
 //			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
 			bar_cycle_update(AF.bar.stop)
+			if (gh.taglist.len() == 0) {
+				gh_menu(1)
+				return
+			}
 			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,true,false,false,
 			function(out1){
 				if (out1 == -1) gh_menu(1)
