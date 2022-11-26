@@ -253,6 +253,7 @@ function bar_cycle_update(command){
 		AF.bar.count=0
 		return
 	}
+
 	if (command == AF.bar.stop){
 		//print("INIT\n")
 		AF.bar.time0 = 0
@@ -263,39 +264,13 @@ function bar_cycle_update(command){
 		AF.bar.count=0
 		return
 	}
-	/*
-	if (i == max-1){
-		//print("CLOSE\n")
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		return
-	}
-*/
+
 	AF.bar.time1 = clock()
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
-		//print (" FRAME ")
-		/*
-		if (i <= max*0.2) {
-			//print ("i<max*0.2")
-			redraw = true
-			AF.bar.pic.alpha = 255 * i/(max*0.2)
-			AF.bar.picbg.alpha = AF.bar.darkalpha * i/(max*0.2)
-		}
-		else if (i >= max*0.9){
-			//print ("i>max*0.8")
-			redraw = true
-			AF.bar.pic.alpha = 255 * (1.0-(i-max*0.9)/(max*0.1))
-			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0-(i-max*0.8)/(max*0.2))
-		}
-		*/
-		//if (floor(11*i*1.0/max) != AF.bar.progress){
-			AF.bar.count = AF.bar.count + 1
-			if (AF.bar.count == 10) AF.bar.count = 0
-
-			AF.bar.pic.msg = gly(0xeb08+AF.bar.count)
-			//print (" progress:"+AF.bar.progress+" ")
-			redraw = true
-		//}
+		AF.bar.count = AF.bar.count + 1
+		if (AF.bar.count == 10) AF.bar.count = 0
+		AF.bar.pic.msg = gly(0xeb08+AF.bar.count)
+		redraw = true
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
 		//print("\n")
@@ -12845,7 +12820,6 @@ function gh_menu(presel){
 			gh.releasedatelist = []
 			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
-//			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
 			bar_cycle_update(AF.bar.stop)
 			if (gh.taglist.len() == 0) {
 				gh_menu(1)
@@ -15951,6 +15925,7 @@ function tick( tick_time ) {
 
 //	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 //	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
+testpr(clock()+"\n") //TEST151
 
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
