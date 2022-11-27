@@ -12756,9 +12756,7 @@ function afinstall(zipball,afname){
 
 	AF.bar.splashmessage = "Downloading..."
 	splash_update(AF.bar.start)
-	testpr("START\n")
 	fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap+" --trace-ascii -" ,"splash_update")
-	testpr("FINE\n")
 	splash_update(AF.bar.stop)
 
 	// Create target directory
@@ -12766,15 +12764,12 @@ function afinstall(zipball,afname){
 	splash_update(AF.bar.start)
 	splash_update(null)
 	system ("mkdir "+ ap + newaffolderTEMP + ap)
-	testpr("A\n")
 	splash_update(null)
 	system ("mkdir "+ ap + newaffolder + ap)
-	testpr("B\n")
+
 	// Unpack layout
 	unzipfile (AF.folder + afname +".zip", newaffolderTEMP,true)
-	testpr("C\n")
 	local ghfolder = DirectoryListing(newaffolderTEMP)
-	testpr("D\n")
 
 	foreach (item in ghfolder.results){
 		local ghfolder2 = DirectoryListing(item)
@@ -12785,10 +12780,8 @@ function afinstall(zipball,afname){
 				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
 		}
 	}
-	testpr("E\n")
 
 	system (OS == "Windows" ? "rmdir /q /s " + char_replace(ap + newaffolderTEMP + ap,"/","\\")  : "rm -R " + ap + newaffolderTEMP + ap)
-	testpr("F\n")
 
 	// Transfer preferences
 	local dir = DirectoryListing( AF.folder )
