@@ -1,3 +1,4 @@
 15.1
 Added new manufacturers logos
+Added animation for download and install
 Fixed issue when a romlist entry is not in the db
