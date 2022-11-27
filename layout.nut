@@ -12760,7 +12760,8 @@ function afinstall(zipball,afname){
 	splash_update(AF.bar.stop)
 
 	// Create target directory
-	z_splash_message( "Installing...")
+	AF.bar.splashmessage = "Installing..."
+	splash_update(AF.bar.start)
 	system ("mkdir "+ ap + newaffolderTEMP + ap)
 	system ("mkdir "+ ap + newaffolder + ap)
 	// Unpack layout
@@ -12769,6 +12770,7 @@ function afinstall(zipball,afname){
 	foreach (item in ghfolder.results){
 		local ghfolder2 = DirectoryListing(item)
 		foreach (item2 in ghfolder2.results){
+			splash_update(null)
 			system (OS == "Windows" ?
 				"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
 				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
@@ -12780,6 +12782,7 @@ function afinstall(zipball,afname){
 	// Transfer preferences
 	local dir = DirectoryListing( AF.folder )
 	foreach (item in dir.results){
+		splash_update(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"),item.len())
 			system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
@@ -12788,6 +12791,7 @@ function afinstall(zipball,afname){
 	// Remove downloaded file
 	local rem0 = 0
 	while (rem0 == 0) {
+		splash_update(null)
 		try {remove (AF.folder + afname +".zip");rem0 = 1} catch(err){rem0 = 0}
 	}
 	// Update config file
@@ -12799,6 +12803,7 @@ function afinstall(zipball,afname){
 	local templine = ""
 	local index0 = null
 	while (!cfgfile.eos()){
+		splash_update(null)
 		char = 0
 		templine = ""
 		while (char != 10) {
@@ -12814,10 +12819,12 @@ function afinstall(zipball,afname){
 
 	local outfile = WriteTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
 	for (local i = 0 ; i < outarray.len() ; i++){
+		splash_update(null)
 		outfile.write_line(outarray[i]+"\n")
 	}
 	outfile.close_file()
 	AF.updatechecking = false
+	splash_update(AF.bar.stop)
 	frostshow()
 	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
 	function(out){
