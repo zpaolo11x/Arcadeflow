@@ -12753,8 +12753,12 @@ function afinstall(zipball,afname){
 
 	// Download zip of new layout version
 	AF.updatechecking = true
-	z_splash_message( "Downloading...")
-	system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap)
+
+	AF.bar.splashmessage = "Downloading..."
+	splash_update(AF.bar.start)
+	fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap+" --trace-ascii -" ,"splash_update")
+	splash_update(AF.bar.stop)
+
 	// Create target directory
 	z_splash_message( "Installing...")
 	system ("mkdir "+ ap + newaffolderTEMP + ap)
