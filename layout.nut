@@ -12756,13 +12756,17 @@ function afinstall(zipball,afname){
 
 	AF.bar.splashmessage = "Downloading..."
 	splash_update(AF.bar.start)
+	testpr("START\n")
 	fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap+" --trace-ascii -" ,"splash_update")
+	testpr("FINE\n")
 	splash_update(AF.bar.stop)
 
 	// Create target directory
 	AF.bar.splashmessage = "Installing..."
 	splash_update(AF.bar.start)
+	splash_update(null)
 	system ("mkdir "+ ap + newaffolderTEMP + ap)
+	splash_update(null)
 	system ("mkdir "+ ap + newaffolder + ap)
 	// Unpack layout
 	unzipfile (AF.folder + afname +".zip", newaffolderTEMP)
@@ -15964,7 +15968,6 @@ function tick( tick_time ) {
 
 //	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 //	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-testpr(clock()+"\n") //TEST151
 
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
