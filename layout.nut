@@ -12851,7 +12851,7 @@ function gh_menu(presel){
 			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,true,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
-				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0]+"_"+gh.commitlist[out0])
+				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0]+"_"+strip(gh.commitlist[out0]))
 			})
 		}
 		else if (out == 1) {
