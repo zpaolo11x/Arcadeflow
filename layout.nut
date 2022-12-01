@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.0
+// Arcadeflow - v 15.1
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.0"
+	version = "15.1"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -132,11 +132,34 @@ local AF = {
 		time0 = 0
 		time1 = 0
 		progress = 0
+
+		text = null
+		bg = null
 		pic = null
 		picbg = null
 		size = 300
 		dark = 60
 		darkalpha = 90
+		splashmessage = ""
+
+		count = 0
+		start = "start"
+		stop = "stop"
+
+		scroller = ["O-------",
+						"-O------",
+						"--O-----",
+						"---O----",
+						"----O---",
+						"-----O--",
+						"------O-",
+						"-------O",
+						"------O-",
+						"-----O--",
+						"----O---",
+						"---O----",
+						"--O-----",
+						"-O------"]
 	}
 }
 
@@ -230,8 +253,88 @@ function z_edit_dialog(text1,text2){
 	fe.layout.font = uifonts.general
 }
 
+// command = bar.start to start cycle
+// command = bar.stop to stop cycle
 
-function bar_update(i,init,max){
+function splash_update(command){
+	if (command == AF.bar.start){
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.count = 0
+		return
+	}
+	if (command == AF.bar.stop){
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.count = 0
+		AF.bar.splashmessage = ""
+		return
+	}
+	AF.bar.time1 = clock()
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		AF.bar.count = AF.bar.count + 1
+		//if (AF.bar.count == AF.bar.scroller.len()) AF.bar.count = 0
+		//z_splash_message(AF.bar.splashmessage+"\n"+AF.bar.scroller[AF.bar.count]+"\n")
+		if (AF.bar.count == 10) AF.bar.count = 0
+		z_splash_message(AF.bar.splashmessage+"\n"+gly(0xeb08+AF.bar.count)+"\n")
+
+		AF.bar.time0 = AF.bar.time1
+
+	}
+}
+
+function bar_cycle_update(command){
+	//	print ("i:"+i+" ")
+	local redraw = false
+	if (command == AF.bar.start){
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.pic.visible = true
+		AF.bar.picbg.visible = true
+		AF.bar.picbg.msg = gly(0xeafb+12)
+		AF.bar.pic.msg = gly(0xeafb)
+		AF.bar.count=0
+		if (AF.bar.splashmessage != "") {
+			AF.bar.text.msg = AF.bar.splashmessage+"\n\n\n\n"
+			AF.bar.text.visible = true
+		}
+		return
+	}
+
+	if (command == AF.bar.stop){
+		//print("INIT\n")
+		AF.bar.time0 = 0
+		AF.bar.time1 = 0
+		AF.bar.progress = 0
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		AF.bar.count=0
+		AF.bar.splashmessage = ""
+		AF.bar.text.msg = ""
+		AF.bar.text.visible = false
+		return
+	}
+
+	AF.bar.time1 = clock()
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
+		AF.bar.count = AF.bar.count + 1
+		if (AF.bar.count == 10) AF.bar.count = 0
+		AF.bar.pic.msg = gly(0xeb08+AF.bar.count)
+		redraw = true
+		AF.bar.time0 = AF.bar.time1
+		if (redraw) fe.layout.redraw()
+		//print("\n")
+
+	}
+
+}
+
+function bar_progress_update(i,init,max){
 	//	print ("i:"+i+" ")
 		local redraw = false
 		if (i == init){
@@ -604,7 +707,7 @@ function testprln2 (instring){
 	print ("\n"+instring+"\n\n")
 }
 
-function unzipfile (zipfilepath, outputpath){
+function unzipfile (zipfilepath, outputpath, updatecycle = false){
    local ap = '"'.tochar()
    local zipdir = zip_get_dir (zipfilepath)
    local blb = null
@@ -614,7 +717,7 @@ function unzipfile (zipfilepath, outputpath){
    system ("mkdir " + ap + outputpath + ap)
 
    foreach (id, item in zipdir){
-
+		if (updatecycle) bar_cycle_update(null)
       // Item is a folder, create it
       if ((item.slice(-1)=="/") && (!(split(item,"/")[split(item,"/").len()-1].slice(0,1)=="."))) {
          system ("mkdir " + ap + outputpath + item + ap)
@@ -674,39 +777,6 @@ fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
 dofile( AF.folder + "nut_fileutil.nut" )
 
-// CRC BANCHMARK
-/*
-local crr = {
-	tttt0 = 0
-	tttt1 = 0
-	fil = "/Volumes/Ext256/ROMS/snes/Star Ocean (Japan).zip"
-}
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_old(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_halfbyte(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_lookup(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-
-crr.tttt0 = fe.layout.time
-print ("CRC:" + (getromcrc_lookup4(crr.fil))[0] + " ")
-crr.tttt1 = fe.layout.time
-print(crr.tttt1-crr.tttt0+"msec\n")
-*/
-
 /// Preferences functions and table ///
 function letterdrives(){
 	local letters = "CDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -714,8 +784,6 @@ function letterdrives(){
 	foreach (i, item in letters){
 		if (fe.path_test ( item.tochar() + ":" , PathTest.IsDirectory) ) drives.push (item.tochar()+":\\")
 	}
-
-	//	return (drives.len() > 0 ? drives : ["/"])
 	return drives
 }
 
@@ -1902,30 +1970,7 @@ function integereven(n){
 	local n_round = integerp(n)
 	return (n_round + n_round%2.0)
 }
-/*
-function hsl2rgb (H,S,L){
-	local C = (1.0 - absf(2.0 * L - 1.0)) * S
-	local X = C * (1.0 - absf( ((H*1.0/60.0) % 2 ) - 1.0 ))
-	local m = L - C/2.0
-	local R1 = null
-	local G1 = null
-	local B1 = null
 
-	if			((H >= 0)	&& (H < 60))	{R1 = C ; G1 = X ; B1 = 0}
-	else if	((H >= 60)	&& (H < 120))	{R1 = X ; G1 = C ; B1 = 0}
-	else if	((H >= 120) && (H < 180))	{R1 = 0 ; G1 = C ; B1 = X}
-	else if	((H >= 180) && (H < 240))	{R1 = 0 ; G1 = X ; B1 = C}
-	else if	((H >= 240) && (H < 300))	{R1 = X ; G1 = 0 ; B1 = C}
-	else if	((H >= 300) && (H < 360))	{R1 = C ; G1 = 0 ; B1 = X}
-
-	local OUT ={
-		R = (R1 + m)
-		G = (G1 + m)
-		B = (B1 + m)
-	}
-	return (OUT)
-}
-*/
 function hsl2rgb( H,S,L )
 {
 	local RGB = [0.0,4.0,2.0]
@@ -2412,7 +2457,6 @@ UI.whiteborder = 0.15
 
 if (prf.PIXELACCURATE){
 	UI.zoomedblock = round(UI.zoomscale * UI.blocksize,1)
-	//TEST138
 	// this was a line used to have an even block size, but it's
 	// not needed because we can round the centercorr.zero
 	// UI.zoomedblock = UI.zoomedblock - UI.zoomedblock%2.0
@@ -3247,7 +3291,6 @@ function textrate (num,den,columns,ch1,ch0){
 	return out
 }
 
-//TEST149 put local here
 dispatcher = []
 dispatchernum = 0
 
@@ -3446,9 +3489,9 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
    scraprt("ID"+scrapeid+"         getromdata CALL createjson 1\n")
-	 //TEST132 changed splitting to take only part before "_"
-	 local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
-	 local stripmatch = true
+
+	local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
+	local stripmatch = true
    dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
 	 scraprt("ID"+scrapeid+"         getromdata suspend 1\n")
@@ -3488,7 +3531,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				// Once the name is perfectly matched, a new scrape is done to get proper rom status
 				dispatcher[scrapeid].jsonstatus = null
 				scraprt("ID"+scrapeid+"         getromdata CALL createjson 2\n")
-				//TEST132 changed to stripped romname (was just romname)
+
 				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,stripmatch ? strippedrom : romname,getcrc.name_crc,null,systemid,systemmedia)
 				scraprt("ID"+scrapeid+"         getromdata suspend 2\n")
 				suspend()
@@ -4170,7 +4213,7 @@ function buildcleanromlist(romlist, fields){
 	foreach (id, item in roms[0]){
 		romtable.rawset(item, clone(fields))
 		romtable[item].z_name = item
-		try{romtable[item].z_title = item}catch(err){} //TEST120 DEBUG ONLY
+		try{romtable[item].z_title = item}catch(err){}
 		romtable[item].z_filename = roms[0][id]+"."+roms[1][id]
 		romtable[item].z_system = AF.emulatordata[romlist].mainsysname
 		romtable[item].z_emulator = romlist
@@ -4261,6 +4304,7 @@ function resetlastplayed(){
 // that are in the current one
 // If the ALLGAMES (that is the collections) is enabled config is rebuild
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
+//TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf){
 	foreach (item, val in z_list.allromlists) {
 		refreshromlist(item, false)
@@ -4368,16 +4412,36 @@ function splitlistline(str_in){
 
 }
 
+function listfields_to_db1(listfields){
+	local target = clone (z_fields1)
+	target.z_title = subst_replace(listfields[1],ap,"'")
+	target.z_year = listfields[4]
+	target.z_manufacturer = subst_replace(listfields[5],ap,"'")
+	target.z_category = listfields[6]
+	target.z_players = listfields[7]
+	target.z_rotation = listfields[8]
+	target.z_control = listfields[9]
+	target.z_buttons = subst_replace(listfields[16],ap,"'")
+	try{target.z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
+	try{target.z_region = listfields[19]}catch(err){}
+	try{target.z_rating = listfields[20]}catch(err){}
+	target.z_name = listfields[0]
+	return target
+}
+
 // This function updates the AM romlist using attract command line options
 // then uses the data from the repopulated romlist to add the new metadata
 // It doesn't wipe the existing metadata and is used when adding/removing roms
 // If AF collections are enabled it then updates all the collections
-function refreshromlist(romlist, fulllist){
+function refreshromlist(romlist, fulllist, updateromlist = true){
 	// Update romlist using AM
-	if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
-	else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
-	else system ("attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+	if (updateromlist){
+		if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+		else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+		else system ("attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+	}
 
+	// Rescan romlist file to complete database entries
 	local listpath = AF.romlistfolder + romlist + ".txt"
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
@@ -4394,24 +4458,7 @@ function refreshromlist(romlist, fulllist){
 
 		if (fulllist || !z_list.db1[romlist].rawin(gamename)){
 			z_list.db1[romlist].rawset(gamename,{})
-
-			z_list.db1[romlist][gamename] = clone (z_fields1)
-			z_list.db1[romlist][gamename].z_title = subst_replace(listfields[1],ap,"'")
-			z_list.db1[romlist][gamename].z_year = listfields[4]
-			z_list.db1[romlist][gamename].z_manufacturer = subst_replace(listfields[5],ap,"'")
-			z_list.db1[romlist][gamename].z_category = listfields[6]
-			z_list.db1[romlist][gamename].z_players = listfields[7]
-			z_list.db1[romlist][gamename].z_rotation = listfields[8]
-			z_list.db1[romlist][gamename].z_control = listfields[9]
-			z_list.db1[romlist][gamename].z_buttons = subst_replace(listfields[16],ap,"'")
-			try{z_list.db1[romlist][gamename].z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
-			try{z_list.db1[romlist][gamename].z_region = listfields[19]}catch(err){}
-			//if (z_list.db1[romlist][gamename].z_region == "") z_list.db1[romlist][gamename].z_region = regionsfromfile(gamename)
-
-			try{z_list.db1[romlist][gamename].z_rating = listfields[20]}catch(err){}
-
-			z_list.db1[romlist][gamename].z_name = listfields[0]
-			//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
+			z_list.db1[romlist][gamename] = listfields_to_db1(listfields)
 		}
 
 		if (fulllist || !z_list.db2[romlist].rawin(gamename)){
@@ -4480,8 +4527,7 @@ function portromlist(romlist){
 	local cleanromlist2 = {}
 	local listpath = AF.romlistfolder + romlist + ".txt"
 
-	if (prf.MASTERLIST) listpath = prf.MASTERPATH //TEST139
-
+	if (prf.MASTERLIST) listpath = prf.MASTERPATH
 
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
@@ -4500,21 +4546,8 @@ function portromlist(romlist){
 		if(listfields[2] != romlist) continue
 		//if ((listfields.len() == 1 )|| (listfields[2] != romlist)) continue
 		cleanromlist[listfields[0]] <- {}
-		cleanromlist[listfields[0]] = clone (z_fields1)
-		cleanromlist[listfields[0]].z_title = strip(subst_replace(listfields[1],ap,"'"))
-		cleanromlist[listfields[0]].z_year = listfields[4]
-		cleanromlist[listfields[0]].z_manufacturer = subst_replace(listfields[5],ap,"'")
-		cleanromlist[listfields[0]].z_category = listfields[6]
-		cleanromlist[listfields[0]].z_players = listfields[7]
-		cleanromlist[listfields[0]].z_rotation = listfields[8]
-		cleanromlist[listfields[0]].z_control = listfields[9]
-		cleanromlist[listfields[0]].z_buttons = subst_replace(listfields[16],ap,"'")
-		try{cleanromlist[listfields[0]].z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
-		try{cleanromlist[listfields[0]].z_region = listfields[19]}catch(err){}
-		try{cleanromlist[listfields[0]].z_rating = listfields[20]}catch(err){}
+		cleanromlist[listfields[0]] = listfields_to_db1(listfields)
 
-		cleanromlist[listfields[0]].z_name = listfields[0]
-		//cleanromlist[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
 		cleanromlist[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
 		cleanromlist[listfields[0]].z_emulator = romlist
 
@@ -4527,7 +4560,6 @@ function portromlist(romlist){
 		if (tagtable.rawin(listfields[0])) cleanromlist2[listfields[0]].z_tags = tagtable[listfields[0]]
 
 		cleanromlist2[listfields[0]].z_name = listfields[0]
-		//cleanromlist2[listfields[0]].z_filename = roms[0][id]+"."+roms[1][id]
 		cleanromlist2[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
 		cleanromlist2[listfields[0]].z_emulator = romlist
 
@@ -5107,51 +5139,11 @@ z_updatetagstable()
 
 z_list.ratingtable = prf.INI_BESTGAMES_PATH == "" ? {} : extradatatable(prf.INI_BESTGAMES_PATH)
 
-
-// returns an array of tags for the game at "offset" reading from the list table (faster)
-/*
-function z_gettags(offset,checkzero){
-	if ((checkzero) && (z_list.size == 0)) return []
-	local romname = z_list.boot[offset + fe.list.index].z_name
-	local emulatorname = z_list.boot[offset + fe.list.index].z_emulator
-	local out = []
-	// Now check in the whole tags structure
-	foreach(item, tagsarray in z_list.tagstable){
-		if (tagsarray.find(emulatorname + " " + romname) != null) out.push(item)
-	}
-
-	return out
-}
-*/
-// returns favourite state for the game at "offset" reading from the list table (faster)
-/*
-function z_getfavs(offset){
-	local romname = z_list.boot[offset + fe.list.index].z_name
-	local emulatorname = z_list.boot[offset + fe.list.index].z_emulator
-	// Now check in the whole favs structure
-	return ((z_list.favsarray.find(emulatorname + " " + romname) != null) ? "1" : "0")
-}
-*/
-/*
-function z_getrundate(offset){
-	local out = "00000000000000"
-
-	try {out = z_list.rundatetable[fe.game_info(Info.Emulator,offset)][fe.game_info(Info.Name,offset)]}catch(err){}
-	return out
-}
-
-function z_getfavdate(offset){
-	local out = "00000000000000"
-	try {out = z_list.favdatetable[fe.game_info(Info.Emulator,offset)][fe.game_info(Info.Name,offset)]}catch(err){}
-	return out
-}
-*/
-
 function z_getmamerating(gamename){
 	local out = ""
 	if (z_list.ratingtable.rawin(gamename)){
 		out = ratetonumber[z_list.ratingtable[gamename]]
-		if ((out.find(".")==null) && (out.len()>0)) out=out+".0" //TEST126 is adding .0 needed?
+		if ((out.find(".")==null) && (out.len()>0)) out=out+".0"
 	}
 	return out
 }
@@ -5398,8 +5390,6 @@ multifilterz.l0["Tags"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot2[index+fe.list.index].z_tags // z_gettags(index,false)
 			// Return data when no category is selected
 			if (v.len()==0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
@@ -5424,8 +5414,6 @@ multifilterz.l0["Category"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false,  l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_category
 
 			// Return data when no category is selected
@@ -5480,8 +5468,6 @@ multifilterz.l0["Year"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_year
 
 			// Return data when no category is selected
@@ -5509,8 +5495,6 @@ multifilterz.l0["Manufacturer"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_manufacturer.tolower()
 
 			// Return data when no category is selected
@@ -5541,8 +5525,6 @@ multifilterz.l0["Favourite"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot2[index+fe.list.index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite,index)
 
 			return ({
@@ -5565,7 +5547,6 @@ multifilterz.l0["Buttons"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 
 			local v = z_list.boot[index+fe.list.index].z_buttons
 
@@ -5592,8 +5573,6 @@ multifilterz.l0["Players"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_players
 			if (v == "") v = " ?"
 			if (v.len() == 1) v = " " + v
@@ -5618,8 +5597,6 @@ multifilterz.l0["Played"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot2[index+fe.list.index].z_playedcount
 			return ({
 				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
@@ -5641,8 +5618,6 @@ multifilterz.l0["Orientation"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_rotation
 			local vcheck = ((v == "0") || (v == "180") || (v == "Horizontal") || (v == "horizontal") || (v == ""))
 
@@ -5666,8 +5641,6 @@ multifilterz.l0["Controls"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_control
 
 			if (v == "") return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
@@ -5709,7 +5682,6 @@ multifilterz.l0["Rating"] <- {
 		translate = false
 		sort = false
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
 			local v = z_list.boot[index+fe.list.index].z_rating
 			local v2 = "??"
 			if (v == "") {
@@ -5741,8 +5713,6 @@ multifilterz.l0["Series"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_series
 			if (v == "") v = " ?? "
 
@@ -5766,8 +5736,6 @@ multifilterz.l0["Scraped"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_scrapestatus
 			if (v == "") v = "?"
 
@@ -5792,8 +5760,6 @@ multifilterz.l0["Region"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index){
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index+fe.list.index].z_region
 			// ALTERNATIVE MODE: splits all and adds the complete, ATTENTION: turn l1array to true
 			/*
@@ -5865,7 +5831,6 @@ function mfz_build (reset){
 
 	// Scan the whole romlist
 	for (local i = 0 ; i < fe.list.size ; i++) {
-		//testpr(0xeafb+floor(i*10.0/(fe.list.size-1))+"\n")
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 		foreach (id0, table0 in multifilterz.l0){
 			local vals = table0.levcheck(i-fe.list.index)
@@ -6224,7 +6189,7 @@ function mfz_refreshnum(catin){
 	//for (local i = 0 ; i < fe.list.size ; i++) {
 
 	foreach (i, item in z_list.boot){
-		bar_update(i,0,z_list.boot.len())
+		bar_progress_update(i,0,z_list.boot.len())
 
 		foreach (id0, table0 in multifilterz.l0){
 			// Call the function that return the menu entry for the current game
@@ -6545,7 +6510,8 @@ function mfz_apply(startlist){
 			reindex = z_list_index_old // ... then we assign reindex the old z_list index value
 		}
 		else {
-			//TEST109 Serve davvero questo sotto? Dovrebbe servire perché se filtro e
+			//TEST109
+			// Serve davvero questo sotto? Dovrebbe servire perché se filtro e
 			// il gioco attuale non è nel filtro, ma lo è quello a fianco,
 			// allora seleziona il gioco a fianco....
 			for (local i = 0 ; i < z_list.size ; i++){
@@ -6569,14 +6535,13 @@ function mfz_apply(startlist){
 
 	z_listrefreshlabels()
 
-
-	if (!startlist) z_listrefreshtiles() //TEST100
+	if (!startlist) z_listrefreshtiles()
 
 	if(z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
 
 	z_updatefilternumbers(z_list.index)
 
-	data_freeze(false) //TEST142
+	data_freeze(false)
 	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
 	/*
 			z_listrefreshtiles()
@@ -6656,10 +6621,9 @@ function z_favfilter(index){
 
 function z_mots2filter(index){
 
-	if (search.mots[0] == "") return true //TEST92 DA VERIFICARE
+	if (search.mots[0] == "") return true
 	local currentval = ""
 
-	//TEST110 maybe this can be controlled with a parameter in search.mots
 	try{
 		currentval = z_list.boot[index + fe.list.index][search.mots[0]]
 	} catch (err){
@@ -6681,22 +6645,11 @@ function z_checkhidden(i){
 
 function getallgamesdb(logopic){
 	timestart("GamesDB")
-	/*XXXXXX
-	local numchars = 15
-	local text_ratio = 0.6
-	local text_charsize = text_ratio*logopic.width*1.45/numchars
-	local textobj = fe.add_text("",logopic.x+logopic.width*(1.0-text_ratio)*0.5,logopic.y+logopic.height-text_charsize*0.5,logopic.width*text_ratio,text_charsize*1.2)
-	textobj.char_size = text_charsize
-	textobj.font = uifonts.mono
-	textobj.word_wrap = false
-	//textobj.set_bg_rgb(200,0,0)
-*/
 
 	local textobj = null
-
-		local numchars = 12
-		local text_ratio = 0.6
-		local text_charsize = text_ratio*fl.w*1.45/numchars
+	local numchars = 12
+	local text_ratio = 0.6
+	local text_charsize = text_ratio*fl.w*1.45/numchars
 
 	if (prf.SPLASHON) {
 		textobj = fe.add_rectangle(fl.x,fl.y,fl.w,fl.h)
@@ -6724,19 +6677,6 @@ function getallgamesdb(logopic){
 			itemname = item.slice(0,-4)
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
-			// The originating romlist doesn't exist, it must be created
-			/*
-			if (!file_exist(AF.romlistfolder + itemname + ".txt")){
-				refreshromlist(itemname, true)
-			}
-			if (!file_exist(AF.romlistfolder + itemname + ".db1")) {
-				portromlist(itemname)
-			}
-			fe.overlay.splash_message("Initialising... "+(i*100/(emulatordir.len()-1))+"%")
-			z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
-			z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
-			*/
-
 			// The emulator has a self named romlist
 			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) { //TEST139 If we are in masterlist keep scanning for db
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
@@ -6762,22 +6702,6 @@ function getallgamesdb(logopic){
 		}
 	}
 
-	/*
-	TEST TO CHECK MULTIEMU ROMLISTS
-	local romlistarray = []
-	local romlistpath = fe.path_expand(FeConfigDirectory + "romlists/")
-	local romlistdir = DirectoryListing(romlistpath,false).results
-	local rlfile = ""
-	local rlitemname = ""
-	foreach(i, item in romlistdir) {
-		if ((item.slice(0,3) != "AF ") && (item.slice(-3)=="txt") && (item.slice(0,2) != "._")){
-			rlitemname = item.slice(0,-4)
-			if (!AF.emulatordata.rawin(rlitemname)) {
-				testpr("RLX:"+rlitemname+"\n")
-			}
-		}
-	}
-	*/
 	textobj.visible = false
 	timestop("GamesDB")
 }
@@ -6789,10 +6713,6 @@ function z_listboot(){
 	z_list.allromlists = allromlists()
 
 	z_updatetagstable()
-	//z_initfavsfromfiles()
-	//z_initrundatefromfiles()
-	//z_initfavdatefromfiles()
-
 
 	//Reset meta_edited and meta_original
 	meta_edited = {}
@@ -6833,6 +6753,10 @@ timestart("boot")
 	local currentsystem = ""
 	for (local i = 0 ; i < fe.list.size; i++){
 		ifeindex = i - fe.list.index
+
+		if (!z_list.db1[fe.game_info(Info.Emulator,ifeindex)].rawin(fe.game_info(Info.Name,ifeindex)))
+			refreshromlist(fe.game_info(Info.Emulator,ifeindex), false, false)
+
 		z_list.boot.push (z_list.db1[fe.game_info(Info.Emulator,ifeindex)][fe.game_info(Info.Name,ifeindex)])
 		z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator,ifeindex)][fe.game_info(Info.Name,ifeindex)])
 		z_list.boot[i].z_felistindex = i
@@ -6844,8 +6768,8 @@ timestart("boot")
 			if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
 			if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
 		}
-		//TEST126, check if it slows down the boot
-			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
+
+		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
 
 	timestop("boot")
@@ -8106,7 +8030,7 @@ if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)){
 
 	if (prf.LAYERVIDEO){
 		bgs.bgvid_top = bgvidsurf.add_image("white",0,0,bglay.bgvidsize,bglay.bgvidsize)
-		bgs.bgvid_top.video_flags = Vid.NoAudio //TEST150 mettere NoAudio
+		bgs.bgvid_top.video_flags = Vid.NoAudio
 		bgs.bgvid_top.alpha = 0
 	}
 
@@ -9564,7 +9488,7 @@ function optionsmenu_lev3(){
 function optionsmenu_lev2(){
 
 	prfmenu.level = 2
-	zmenu.selected = prfmenu.outres1 //TEST143
+	zmenu.selected = prfmenu.outres1
 
 	updatemenu(prfmenu.level,prfmenu.outres1)
 
@@ -11292,15 +11216,6 @@ if (!prf.LOWRES){
 	}
 }
 
-/*
-hist_text.char_size = (prf.LOWRES ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
-hist_text.align = Align.TopCentre
-hist_text.first_line_hint = 1
-*/
-//TEST126
-//hist_text.char_size = 42 * UI.scalerate
-//hist_text.font = uifonts.monodata
-
 if (prf.HISTORYPANEL) {
 	hist_text_rgb(themeT.themehistorytextcolor,themeT.themehistorytextcolor,themeT.themehistorytextcolor)
 	hist_text_surf.set_rgb(themeT.themehistorytextcolor,themeT.themehistorytextcolor,themeT.themehistorytextcolor)
@@ -12042,7 +11957,7 @@ function update_allgames_collections(verbose, tempprf){
 			}
 		}
 	}
-	else { //TEST139 READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
+	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
 		local listfields = []
@@ -12080,7 +11995,7 @@ function update_allgames_collections(verbose, tempprf){
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
-	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //TEST139 if master romlist is used, just copy that as all games romlist
+	if (tempprf.MASTERLIST) allgamesromlist = " "+ap+fe.path_expand(tempprf.MASTERPATH)+ap //if master romlist is used, just copy that as all games romlist
 	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
 	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
 	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
@@ -12821,12 +12736,14 @@ function gh_branchlist(op){
 }
 
 function gh_taglist(op){
+	bar_cycle_update(null)
 	if (op.find(ap+"name"+ap) != null) {
 		gh.taglist.push (split(op,ap)[3])
 	}
 }
 
 function gh_releaselist(op){
+	bar_cycle_update(null)
 	if (op.find(ap+"tag_name"+ap) != null) {
 		gh.taglist.push (split(op,ap)[3])
 	}
@@ -12863,18 +12780,28 @@ function afinstall(zipball,afname){
 
 	// Download zip of new layout version
 	AF.updatechecking = true
-	z_splash_message( "Downloading...")
-	system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap)
+
+	AF.bar.splashmessage = "Downloading"
+	bar_cycle_update(AF.bar.start)
+	fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap+" --trace-ascii -" ,"bar_cycle_update")
+	bar_cycle_update(AF.bar.stop)
+
 	// Create target directory
-	z_splash_message( "Installing...")
+	AF.bar.splashmessage = "Installing"
+	bar_cycle_update(AF.bar.start)
+	bar_cycle_update(null)
 	system ("mkdir "+ ap + newaffolderTEMP + ap)
+	bar_cycle_update(null)
 	system ("mkdir "+ ap + newaffolder + ap)
+
 	// Unpack layout
-	unzipfile (AF.folder + afname +".zip", newaffolderTEMP)
+	unzipfile (AF.folder + afname +".zip", newaffolderTEMP,true)
 	local ghfolder = DirectoryListing(newaffolderTEMP)
+
 	foreach (item in ghfolder.results){
 		local ghfolder2 = DirectoryListing(item)
 		foreach (item2 in ghfolder2.results){
+			bar_cycle_update(null)
 			system (OS == "Windows" ?
 				"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
 				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
@@ -12886,6 +12813,7 @@ function afinstall(zipball,afname){
 	// Transfer preferences
 	local dir = DirectoryListing( AF.folder )
 	foreach (item in dir.results){
+		bar_cycle_update(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"),item.len())
 			system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
@@ -12894,6 +12822,7 @@ function afinstall(zipball,afname){
 	// Remove downloaded file
 	local rem0 = 0
 	while (rem0 == 0) {
+		bar_cycle_update(null)
 		try {remove (AF.folder + afname +".zip");rem0 = 1} catch(err){rem0 = 0}
 	}
 	// Update config file
@@ -12905,6 +12834,7 @@ function afinstall(zipball,afname){
 	local templine = ""
 	local index0 = null
 	while (!cfgfile.eos()){
+		bar_cycle_update(null)
 		char = 0
 		templine = ""
 		while (char != 10) {
@@ -12920,10 +12850,12 @@ function afinstall(zipball,afname){
 
 	local outfile = WriteTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
 	for (local i = 0 ; i < outarray.len() ; i++){
+		bar_cycle_update(null)
 		outfile.write_line(outarray[i]+"\n")
 	}
 	outfile.close_file()
 	AF.updatechecking = false
+	bar_cycle_update(AF.bar.stop)
 	frostshow()
 	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
 	function(out){
@@ -12940,18 +12872,29 @@ function gh_menu(presel){
 		if (out == 0) {
 			gh.branchlist = []
 			gh.commitlist = []
+			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches","gh_branchlist")
+			bar_cycle_update(AF.bar.stop)
+			if (gh.branchlist.len() == 0) {
+				gh_menu(0)
+				return
+			}
 			zmenudraw(gh.branchlist,null,gh.commitlist,"Install Branch",0xe9bc,0,false,false,true,false,false,
 			function(out0){
 				if (out0 == -1) gh_menu(0)
-				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0]+"_"+gh.commitlist[out0])
+				else afinstall(gh.branchlist[out0],"Arcadeflow_"+gh.branchlist[out0]+"_"+strip(gh.commitlist[out0]))
 			})
 		}
 		else if (out == 1) {
 			gh.taglist = []
 			gh.releasedatelist = []
+			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases","gh_releaselist")
-//			fe.plugin_command("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/tags","gh_taglist")
+			bar_cycle_update(AF.bar.stop)
+			if (gh.taglist.len() == 0) {
+				gh_menu(1)
+				return
+			}
 			zmenudraw(gh.taglist,null,gh.releasedatelist,"Install Release",0xe94e,0,false,false,true,false,false,
 			function(out1){
 				if (out1 == -1) gh_menu(1)
@@ -13029,8 +12972,10 @@ function checkforupdates(force){
 			if (!prf.AUTOINSTALL){
 				// Simply download in your home folder
 				AF.updatechecking = true
-				z_splash_message( "Downloading...")
-				system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
+				AF.bar.splashmessage = "Downloading"
+				bar_cycle_update(AF.bar.start)
+				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap+" --trace-ascii -" ,"bar_cycle_update")
+				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw (["Ok"],null, null,newafname+".zip downloaded",0xe91c,0,false,false,true,false,false,
@@ -13041,77 +12986,6 @@ function checkforupdates(force){
 			}
 			else {
 				afinstall (gh.latest_version,newafname)
-				/*
-				// Download zip of new layout version
-				AF.updatechecking = true
-				z_splash_message( "Downloading...")
-				system ("curl -L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap)
-				// Create target directory
-				z_splash_message( "Installing...")
-				system ("mkdir "+ ap + newaffolderTEMP + ap)
-				system ("mkdir "+ ap + newaffolder + ap)
-				// Unpack layout
-				unzipfile (AF.folder + newafname +".zip", newaffolderTEMP)
-				local ghfolder = DirectoryListing(newaffolderTEMP)
-				foreach (item in ghfolder.results){
-					local ghfolder2 = DirectoryListing(item)
-					foreach (item2 in ghfolder2.results){
-						system (OS == "Windows" ?
-							"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
-							"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
-					}
-				}
-
-				system (OS == "Windows" ? "rmdir /q /s " + char_replace(ap + newaffolderTEMP + ap,"/","\\")  : "rm -R " + ap + newaffolderTEMP + ap)
-
-				// Transfer preferences
-				local dir = DirectoryListing( AF.folder )
-				foreach (item in dir.results){
-					if (item.find("pref_")) {
-						local basename = item.slice(item.find("pref_"),item.len())
-						system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
-					}
-				}
-				// Remove downloaded file
-				local rem0 = 0
-				while (rem0 == 0) {
-					try {remove (AF.folder + newafname +".zip");rem0 = 1} catch(err){rem0 = 0}
-				}
-				// Update config file
-				local currentlayout = split (AF.folder, "\\/").top()
-
-				local cfgfile = file(fe.path_expand( FeConfigDirectory + "attract.cfg" ),"rb")
-				local outarray = []
-				local char = 0
-				local templine = ""
-				local index0 = null
-				while (!cfgfile.eos()){
-					char = 0
-					templine = ""
-					while (char != 10) {
-						char = cfgfile.readn('b')
-						if ((char != 10) && (char != 13)) templine = templine + char.tochar()
-					}
-					index0 = templine.find(currentlayout)
-					if (index0 != null) {
-						templine = templine.slice(0,index0) + newafname + templine.slice(index0 + currentlayout.len(),templine.len())
-					}
-					outarray.push(templine)
-				}
-
-				local outfile = WriteTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
-				for (local i = 0 ; i < outarray.len() ; i++){
-					outfile.write_line(outarray[i]+"\n")
-				}
-				outfile.close_file()
-				AF.updatechecking = false
-				zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ ver_in ,0xe91c,0,false,false,true,false,false,
-				function(out){
-					zmenuhide()
-					frosthide()
-					restartAM()
-				})
-				*/
 			}
 		}
 
@@ -14083,19 +13957,32 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 
 /// PROGRESS BAR ///
 
+AF.bar.text = fe.add_text("",0,0,fl.w_os,fl.h_os) //TEST151 check with OSCAN
 AF.bar.picbg = fe.add_text("",floor(0.5*(fl.w_os - AF.bar.size*UI.scalerate)) , floor(0.5*(fl.h_os - AF.bar.size*UI.scalerate)), floor(AF.bar.size*UI.scalerate), floor(AF.bar.size*UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
 AF.bar.pic = fe.add_text("",AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height) //TEST149 CHECK CENTERING WITH OD
-AF.bar.pic.font = AF.bar.picbg.font = "fonts/font_glyphs.ttf"
-AF.bar.pic.margin = AF.bar.picbg.margin = 0
-AF.bar.pic.align = AF.bar.picbg.align = Align.MiddleCentre
+
+AF.bar.pic.font = AF.bar.picbg.font = uifonts.glyphs
+AF.bar.text.font = uifonts.gui
+
+AF.bar.pic.margin = AF.bar.picbg.margin = AF.bar.text.margin = 0
+AF.bar.pic.align = AF.bar.picbg.align = AF.bar.text.align = Align.MiddleCentre
+
 AF.bar.pic.charsize = AF.bar.size*UI.scalerate
 AF.bar.picbg.charsize = AF.bar.size*UI.scalerate
-AF.bar.picbg.zorder = 100000
-AF.bar.pic.zorder = 100001
-AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = true
-AF.bar.pic.visible = AF.bar.picbg.visible = false
+AF.bar.text.charsize = 0.35*AF.bar.pic.height
+
+AF.bar.text.zorder = 100000
+AF.bar.picbg.zorder = 100001
+AF.bar.pic.zorder = 100002
+
+AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = AF.bar.text.word_wrap = true
+AF.bar.pic.visible = AF.bar.picbg.visible = AF.bar.text.visible = false
+
 AF.bar.pic.set_rgb(255,255,255)
 AF.bar.picbg.set_rgb(AF.bar.dark,AF.bar.dark,AF.bar.dark)
+AF.bar.text.set_rgb(255,255,255)
+AF.bar.text.set_bg_rgb(30,30,30)
+AF.bar.text.bg_alpha = 190
 
 	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
@@ -14537,8 +14424,6 @@ function update_thumbdecor(i,var,aspect){
 
 	local z_list_target = modwrap(z_list.index + tilez[i].offset + var,z_list.size)
 	local fe_list_target = z_list.gametable[ z_list_target ].z_felistindex
-
-	//TEST120z_list.gametable2[ z_list_target ].z_playedcount = fe.game_info(Info.PlayedCount, fe_list_target - fe.list.index)
 
 	tilez[i].donez.visible = z_list.gametable2[z_list_target].z_completed
 
@@ -15353,7 +15238,7 @@ function finaltileupdate(){
 
 		//activate video load counter
 		if ((prf.THUMBVIDEO)){
-			if(focusindex.old != focusindex.new){ //TEST142
+			if(focusindex.old != focusindex.new){
 				gr_vidszTableFade[focusindex.old] = startfade (gr_vidszTableFade[focusindex.old],prf.LOGOSONLY ? -0.04 : -0.01,1.0)
 				aspectratioMorph[focusindex.old] = startfade (aspectratioMorph[focusindex.old],-0.08,1.0)
 			}
@@ -15730,11 +15615,7 @@ function on_transition( ttype, var0, ttime ) {
 
 		//background video delay load
 			vidposbg = vidstarter
-			//TEST150 bgs.bgvid_top.alpha = 0
-			//TEST150 vidbgfade=[0.0,0.0,0.0,0.0,0.0]
 			vidbgfade = startfade (vidbgfade,-0.1,1.0)
-
-			//TEST150 bgs.bgvid_top.file_name = AF.folder+"pics/transparent.png"
 		 }
 	}
 
@@ -16017,7 +15898,7 @@ function on_transition( ttype, var0, ttime ) {
 		//bgs.flowalpha [bgs.stacksize - 1] = 255
 
 		bgs.flowalpha[bgs.stacksize - 1] = [0,0,0.0,0.0,0.0,0.0]
-		bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1],0.015,-4.0) //TEST105 speed was 0.02
+		bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1],0.015,-4.0)
 
 
 		// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
@@ -16585,7 +16466,7 @@ function tick( tick_time ) {
 				}
 				if (tilez[i].bd_mx_alpha == 0) {
 					tilez[i].freezecount = 2
-				}//TEST142
+				}
 			}
 
 			if (prf.LOGOSONLY) {
@@ -17640,6 +17521,21 @@ function ra_selectemu(startemu){
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
+	//TEST151
+/*	if (sig == "custom1"){
+		local zipball = "14.3"
+		local afname = "testzip"
+		//z_splash_message( "Downloading...")
+		AF.bar.splashmessage = "Downloading"
+		bar_cycle_update(AF.bar.start)
+		//fe.plugin_command ("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap,"timewheel")
+		//fe.plugin_command ("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball,"downloadwheel")
+		//fe.plugin_command ("curl","-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap),"bar_cycle_update")
+		fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -" ,"bar_cycle_update")
+		//fe.plugin_command ("ls","-la","timewheel")
+		bar_cycle_update(AF.bar.stop)
+	}
+*/
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 	if ((((sig == "up") && checkrepeat(count.up))|| ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
 
@@ -17653,18 +17549,16 @@ function on_signal( sig ){
 	if ((AF.scrape.purgedromdirlist == null) && (AF.messageoverlay.visible == true)) {
 		if (sig == "back") {
 			AF.messageoverlay.visible = false
-			//TEST120 THIS MUST BE 1 OR 2 DEPENDING ON THE MENU SHOWN!
+
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
-			//fe.signal("back")
-			//fe.signal("back")
 
 			// This reloads the romlist without reloading the layout, but if the other display is not AF it can cause issues
 			local ifplus = modwrap(fe.list.display_index + 1, fe.displays.len())
 			local ifminus = modwrap(fe.list.display_index - 1, fe.displays.len())
 
 			try{
-				fe.set_display(fe.list.display_index,false,false) //TEST139
+				fe.set_display(fe.list.display_index,false,false)
 			}catch(err){
 
 			//OLD METHOD BEFORE THE NEW SET_DISPLAY
