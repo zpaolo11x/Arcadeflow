@@ -143,6 +143,21 @@ local AF = {
 		count = 0
 		start = "start"
 		stop = "stop"
+
+		scroller = ["O-------",
+						"-O------",
+						"--O-----",
+						"---O----",
+						"----O---",
+						"-----O--",
+						"------O-",
+						"-------O",
+						"------O-",
+						"-----O--",
+						"----O---",
+						"---O----",
+						"--O-----",
+						"-O------"]
 	}
 }
 
@@ -259,8 +274,11 @@ function splash_update(command){
 	AF.bar.time1 = clock()
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0/ScreenRefreshRate) {
 		AF.bar.count = AF.bar.count + 1
+		//if (AF.bar.count == AF.bar.scroller.len()) AF.bar.count = 0
+		//z_splash_message(AF.bar.splashmessage+"\n"+AF.bar.scroller[AF.bar.count]+"\n")
 		if (AF.bar.count == 10) AF.bar.count = 0
 		z_splash_message(AF.bar.splashmessage+"\n"+gly(0xeb08+AF.bar.count)+"\n")
+
 		AF.bar.time0 = AF.bar.time1
 
 	}
