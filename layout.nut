@@ -133,6 +133,8 @@ local AF = {
 		time1 = 0
 		progress = 0
 
+		text = null
+		bg = null
 		pic = null
 		picbg = null
 		size = 300
@@ -294,9 +296,13 @@ function bar_cycle_update(command){
 		AF.bar.progress = 0
 		AF.bar.pic.visible = true
 		AF.bar.picbg.visible = true
-		AF.bar.picbg.msg=gly(0xeafb+12)
+		AF.bar.picbg.msg = gly(0xeafb+12)
 		AF.bar.pic.msg = gly(0xeafb)
 		AF.bar.count=0
+		if (AF.bar.splashmessage != "") {
+			AF.bar.text.msg = AF.bar.splashmessage+"\n\n\n\n"
+			AF.bar.text.visible = true
+		}
 		return
 	}
 
@@ -308,6 +314,9 @@ function bar_cycle_update(command){
 		AF.bar.pic.visible = false
 		AF.bar.picbg.visible = false
 		AF.bar.count=0
+		AF.bar.splashmessage = ""
+		AF.bar.text.msg = ""
+		AF.bar.text.visible = false
 		return
 	}
 
@@ -708,7 +717,7 @@ function unzipfile (zipfilepath, outputpath, updatecycle = false){
    system ("mkdir " + ap + outputpath + ap)
 
    foreach (id, item in zipdir){
-		if (updatecycle) splash_update(null)
+		if (updatecycle) bar_cycle_update(null)
       // Item is a folder, create it
       if ((item.slice(-1)=="/") && (!(split(item,"/")[split(item,"/").len()-1].slice(0,1)=="."))) {
          system ("mkdir " + ap + outputpath + item + ap)
@@ -12772,17 +12781,17 @@ function afinstall(zipball,afname){
 	// Download zip of new layout version
 	AF.updatechecking = true
 
-	AF.bar.splashmessage = "Downloading..."
-	splash_update(AF.bar.start)
-	fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap+" --trace-ascii -" ,"splash_update")
-	splash_update(AF.bar.stop)
+	AF.bar.splashmessage = "Downloading"
+	bar_cycle_update(AF.bar.start)
+	fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap+" --trace-ascii -" ,"bar_cycle_update")
+	bar_cycle_update(AF.bar.stop)
 
 	// Create target directory
-	AF.bar.splashmessage = "Installing..."
-	splash_update(AF.bar.start)
-	splash_update(null)
+	AF.bar.splashmessage = "Installing"
+	bar_cycle_update(AF.bar.start)
+	bar_cycle_update(null)
 	system ("mkdir "+ ap + newaffolderTEMP + ap)
-	splash_update(null)
+	bar_cycle_update(null)
 	system ("mkdir "+ ap + newaffolder + ap)
 
 	// Unpack layout
@@ -12792,7 +12801,7 @@ function afinstall(zipball,afname){
 	foreach (item in ghfolder.results){
 		local ghfolder2 = DirectoryListing(item)
 		foreach (item2 in ghfolder2.results){
-			splash_update(null)
+			bar_cycle_update(null)
 			system (OS == "Windows" ?
 				"move " + char_replace(ap + item2 + ap,"/","\\") + " " + char_replace(ap + newaffolder + ap,"/","\\") :
 				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap )
@@ -12804,7 +12813,7 @@ function afinstall(zipball,afname){
 	// Transfer preferences
 	local dir = DirectoryListing( AF.folder )
 	foreach (item in dir.results){
-		splash_update(null)
+		bar_cycle_update(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"),item.len())
 			system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
@@ -12813,7 +12822,7 @@ function afinstall(zipball,afname){
 	// Remove downloaded file
 	local rem0 = 0
 	while (rem0 == 0) {
-		splash_update(null)
+		bar_cycle_update(null)
 		try {remove (AF.folder + afname +".zip");rem0 = 1} catch(err){rem0 = 0}
 	}
 	// Update config file
@@ -12825,7 +12834,7 @@ function afinstall(zipball,afname){
 	local templine = ""
 	local index0 = null
 	while (!cfgfile.eos()){
-		splash_update(null)
+		bar_cycle_update(null)
 		char = 0
 		templine = ""
 		while (char != 10) {
@@ -12841,12 +12850,12 @@ function afinstall(zipball,afname){
 
 	local outfile = WriteTextFile ( fe.path_expand( FeConfigDirectory + "attract.cfg" ) )
 	for (local i = 0 ; i < outarray.len() ; i++){
-		splash_update(null)
+		bar_cycle_update(null)
 		outfile.write_line(outarray[i]+"\n")
 	}
 	outfile.close_file()
 	AF.updatechecking = false
-	splash_update(AF.bar.stop)
+	bar_cycle_update(AF.bar.stop)
 	frostshow()
 	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
 	function(out){
@@ -12963,10 +12972,10 @@ function checkforupdates(force){
 			if (!prf.AUTOINSTALL){
 				// Simply download in your home folder
 				AF.updatechecking = true
-				AF.bar.splashmessage = "Downloading..."
-				splash_update(AF.bar.start)
-				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap+" --trace-ascii -" ,"splash_update")
-				splash_update(AF.bar.stop)
+				AF.bar.splashmessage = "Downloading"
+				bar_cycle_update(AF.bar.start)
+				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname+".zip" + ap+" --trace-ascii -" ,"bar_cycle_update")
+				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw (["Ok"],null, null,newafname+".zip downloaded",0xe91c,0,false,false,true,false,false,
@@ -13948,19 +13957,32 @@ if (floor(floor((fl.w-2.0*50 * UI.scalerate)*1.65/AF.scrape.columns) + 0.5) == 8
 
 /// PROGRESS BAR ///
 
+AF.bar.text = fe.add_text("",0,0,fl.w_os,fl.h_os) //TEST151 check with OSCAN
 AF.bar.picbg = fe.add_text("",floor(0.5*(fl.w_os - AF.bar.size*UI.scalerate)) , floor(0.5*(fl.h_os - AF.bar.size*UI.scalerate)), floor(AF.bar.size*UI.scalerate), floor(AF.bar.size*UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
 AF.bar.pic = fe.add_text("",AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height) //TEST149 CHECK CENTERING WITH OD
-AF.bar.pic.font = AF.bar.picbg.font = "fonts/font_glyphs.ttf"
-AF.bar.pic.margin = AF.bar.picbg.margin = 0
-AF.bar.pic.align = AF.bar.picbg.align = Align.MiddleCentre
+
+AF.bar.pic.font = AF.bar.picbg.font = uifonts.glyphs
+AF.bar.text.font = uifonts.gui
+
+AF.bar.pic.margin = AF.bar.picbg.margin = AF.bar.text.margin = 0
+AF.bar.pic.align = AF.bar.picbg.align = AF.bar.text.align = Align.MiddleCentre
+
 AF.bar.pic.charsize = AF.bar.size*UI.scalerate
 AF.bar.picbg.charsize = AF.bar.size*UI.scalerate
-AF.bar.picbg.zorder = 100000
-AF.bar.pic.zorder = 100001
-AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = true
-AF.bar.pic.visible = AF.bar.picbg.visible = false
+AF.bar.text.charsize = 0.35*AF.bar.pic.height
+
+AF.bar.text.zorder = 100000
+AF.bar.picbg.zorder = 100001
+AF.bar.pic.zorder = 100002
+
+AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = AF.bar.text.word_wrap = true
+AF.bar.pic.visible = AF.bar.picbg.visible = AF.bar.text.visible = false
+
 AF.bar.pic.set_rgb(255,255,255)
 AF.bar.picbg.set_rgb(AF.bar.dark,AF.bar.dark,AF.bar.dark)
+AF.bar.text.set_rgb(255,255,255)
+AF.bar.text.set_bg_rgb(30,30,30)
+AF.bar.text.bg_alpha = 190
 
 	//Number of rows is 0.78*(fl.h_os-2.0*AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
@@ -17498,20 +17520,20 @@ function ra_selectemu(startemu){
 /// On Signal ///
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
-/*
+
 	//TEST151
-	if (sig == "custom1"){
+/*	if (sig == "custom1"){
 		local zipball = "14.3"
 		local afname = "testzip"
 		//z_splash_message( "Downloading...")
-		AF.bar.splashmessage = "Scraping..."
-		splash_update(AF.bar.start)
+		AF.bar.splashmessage = "Downloading"
+		bar_cycle_update(AF.bar.start)
 		//fe.plugin_command ("curl","-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap,"timewheel")
 		//fe.plugin_command ("curl","-L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball,"downloadwheel")
 		//fe.plugin_command ("curl","-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap),"bar_cycle_update")
-		fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -" ,"splash_update")
+		fe.plugin_command ("curl","-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -" ,"bar_cycle_update")
 		//fe.plugin_command ("ls","-la","timewheel")
-		splash_update(AF.bar.stop)
+		bar_cycle_update(AF.bar.stop)
 	}
 */
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
