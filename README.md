@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.0 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.1 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,14 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.0 #
+## What's new in v 15.1 #
 
-- Added menu entry to install specific versions or branches
 - Added new manufacturers logos
-- Removed option to rotate screen, it's in AM options
-- Improved aspect ratio correction for vertical handhelds
-- Improved smoothness of video transition for background
-- Video background can be enabled even without background snaps
+- Added animation for download and install
+- Fixed issue when a romlist entry is not in the db
 
 ## Emulator system identifier #
 
@@ -216,11 +213,11 @@ Define custom control buttons for different features of Arcadeflow
 - ROM Management
 - 'Delete ROM button' : Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
 
-#### ❗ UTILITY MENU ❗
+#### UTILITY MENU
 Customize the utility menu entries that you want to see in the menu
 
-- '❗ Customize Utility Menu ❗' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
-- '❗ Reset Utility Menu ❗' : Reset sorting and selection of Utility Menu entries
+- 'Customize Utility Menu' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
+- 'Reset Utility Menu' : Reset sorting and selection of Utility Menu entries
 
 #### DISPLAYS MENU PAGE
 Arcadeflow has its own Displays Menu page that can be configured here
@@ -383,6 +380,15 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.0*
+
+- Added menu entry to install specific versions or branches
+- Added new manufacturers logos
+- Removed option to rotate screen, it's in AM options
+- Improved aspect ratio correction for vertical handhelds
+- Improved smoothness of video transition for background
+- Video background can be enabled even without background snaps
 
 *v14.9*
 
