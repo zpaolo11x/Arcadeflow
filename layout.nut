@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
+	timer = true
 	timetable = {}
 }
 
@@ -6657,6 +6657,7 @@ function z_checkhidden(i){
 	return false
 }
 
+//TEST152 AGGIUNGERE QUI CODICE PER METADATI?
 function getallgamesdb(logopic){
 	timestart("GamesDB")
 
@@ -6749,7 +6750,7 @@ function z_listboot(){
 	timestart("z_rawset")
 	testpr("DD"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
-/*
+/* THIS PART IS NOT NEEDED ANYMORE BECAUSE ALL THE CHECKS ARE DONE AT BOOT
 	foreach (item, val in z_list.allromlists){
 		if (!file_exist(AF.romlistfolder + item + ".db1")) {
 			portromlist(item)
@@ -6757,11 +6758,13 @@ function z_listboot(){
 		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
 		z_list.db2.rawset (item, dofile(AF.romlistfolder + item + ".db2"))
 	}
+	BUT THE LAST PART IS STILL NEEDED TO REMOVE METADATA EDITED FROM THE DB
 */
-	timestop("z_rawset")
+	timestart("z_rawset")
 	foreach (item, val in z_list.allromlists){
 		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
 	}
+	timestop("z_rawset")
 
 	z_list.boot = []
 	z_list.boot2 = []
