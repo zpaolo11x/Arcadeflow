@@ -21,15 +21,21 @@ local datemin = 0
 local datemax = 0
 local namestr = ""
 
+local multilogo = 0
+local logoserie = ""
+
 while ( !manufile.eos() ) {
    datemin = 0
    datemax = 10000
    instr = manufile.read_line()
    datasplit = split(instr,"|")
+
    if (datasplit.len()>1){
+      multilogo = multilogo + 1
       datemin = split(datasplit[1],",")[0].tointeger()
       datemax = split(datasplit[1],",")[1].tointeger()
-   }
+   } else multilogo = 0
+
    vector = split(datasplit[0]," ")
    foreach (i, item in vector){
       if(!manufdata.rawin(item)) manufdata.rawset(item,[])
@@ -39,6 +45,17 @@ while ( !manufile.eos() ) {
          dmin = datemin
          dmax = datemax
       })
+
+      if (multilogo>0){
+         logoserie = item + "_" + multilogo
+         testpr(logoserie+"\n")
+         if(!manufdata.rawin(logoserie)) manufdata.rawset(logoserie,[])
+         manufdata[logoserie].push({
+            logo = manufinc
+            dmin = 0
+            dmax = 10000
+         })
+      }
    }
    manufinc++
 }
@@ -76,7 +93,7 @@ while ( !manufile.eos() ) {
 
 function manufacturer_parser(inputstring){
    local s = inputstring
-   local s2 = split( s, "*%_/: .()-,<>?&'+’!・~·" )
+   local s2 = split( s, "*%/: .()-,<>?&'+’!・~·" )
 	local sout = ""
 
 	if ( s2.len() > 1 ) {
@@ -109,6 +126,7 @@ function manufacturer_vec(s){
 
 // USED ONE
 function manufacturer_vec_name(name,year){
+
    local s = name
    if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
 //	local t = fe.game_info( Info.Title, offset )
