@@ -837,13 +837,14 @@ rainbowarts rainbowartssoftwaregmbh rainbowartssoftgold
 raizing
 raizingeighting
 randomhouse
-rare rareware rareltd|0,1993
-rare rareware rareltd|1994,2003
-rare rareware rareltd|2004,2010
-rare rareware rareltd|2011,2015
-rare rareware rareltd|1016,10000
+rare rareltd|0,1993
+rare rareltd|1994,2003
+rare rareltd|2004,2010
+rare rareltd|2011,2015
+rare rareltd|1016,10000
 rareelectronicarts
 rarenintendoofamerica
+rareware
 ravensoftwarecorporation
 rayasystems
 razorsoft
