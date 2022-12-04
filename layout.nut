@@ -3804,6 +3804,8 @@ local z_list = {
 	boot2 = []
 	db1 = {}
 	db2 = {}
+	dbmeta = {}
+	dboriginal = {}
 	index = 0
 	newindex = 0
 	gametable = []
@@ -6684,7 +6686,8 @@ function getallgamesdb(logopic){
 	local emulatordir = DirectoryListing(emulatorpath,false).results
 	local file = ""
 	local itemname = ""
-
+	local metadatapath = ""
+	local meta_edited = {}
 
 	foreach(i, item in emulatordir) {
 
@@ -6707,6 +6710,24 @@ function getallgamesdb(logopic){
 				z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
 				z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
 
+				//TEST152 POPULATE META TABLES
+				metadata.path = AF.romlistfolder + itemname + ".meta"
+				try {meta_edited = dofile(metadata.path)}catch(err){}
+				if (meta_edited.len() > 0){
+					z_list.dbmeta[itemname] <- meta_edited // Adds a table for edited metadata
+					z_list.dboriginal[itemname] <- {}
+					foreach (gametable, gamemetas in meta_edited){
+						z_list.dboriginal[itemname].rawset(gametable,{})
+						foreach (item, val in gamemetas){
+							testpr ("XXXX:"+item+" "+val+"\n")
+							z_list.dboriginal[itemname][gametable].rawset(item, z_list.db1[itemname][gametable][item])
+						}
+					}
+					//all_meta_original[item] <- {} // Create an empty table that will be populated afterwards
+				}
+				meta_edited = {}
+
+
 				// Build global tags table
 				foreach (id, item in z_list.db2[itemname]){
 					foreach (id2, item2 in item.z_tags){
@@ -6716,6 +6737,9 @@ function getallgamesdb(logopic){
 			}
 		}
 	}
+
+	print_variable(z_list.dbmeta,"","dbmeta")
+	print_variable(z_list.dboriginal,"","dborigin")
 
 	textobj.visible = false
 	timestop("GamesDB")
