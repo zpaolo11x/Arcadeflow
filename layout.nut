@@ -3856,6 +3856,9 @@ function scraperomlist2(inprf, forcemedia, onegame){
 	// io ho già i vari db, la z_list.boot ecc... posso creare una fake list
 	// in cui caricare i giochi da scrapare
 
+	//TEST152 remove custom metadata
+	z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+
 	if (onegame){
 		AF.scrape.totalroms = 1
 		AF.scrape.purgedromdirlist = []
@@ -4434,6 +4437,10 @@ function listfields_to_db1(listfields){
 // It doesn't wipe the existing metadata and is used when adding/removing roms
 // If AF collections are enabled it then updates all the collections
 function refreshromlist(romlist, fulllist, updateromlist = true){
+	//TEST152 add code to remove metadata editing
+	// Clean custom edited metadata
+	z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+
 	// Update romlist using AM
 	if (updateromlist){
 		if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
@@ -4812,12 +4819,16 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 	}
 	if (meta_new == ""){
 		try{
+			//TEST152
+			testpr("XXXXXXXXXX\n")
 			z_list.db1[romlist][gamename].rawset(metadata.ids[result],all_meta_original[romlist][gamename][metadata.ids[result]])
 			all_meta_edited[romlist][gamename].rawdelete(metadata.ids[result])
 			if (all_meta_edited[romlist][gamename].len() == 0){
 				all_meta_edited[romlist].rawdelete(gamename)
 			}
-		} catch(err){}
+		} catch(err){
+			testpr("YYYYYYYYYY\n")
+		}
 		metamenu(result)
 	}
 }
@@ -4969,6 +4980,7 @@ function metamenu(starter){
 			}
 		}
 		else {
+
 			frosthide()
 			zmenuhide()
 
@@ -4988,8 +5000,10 @@ function metamenu(starter){
 			outfile.write_line("})\n")
 			outfile.write_line("\n")
 			outfile.close_file()
-
+			testpr("AA"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 			z_listboot()
+			testpr("BB"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
+
 			buildcategorytable()
 			mfz_build(true)
 			try {
@@ -6714,6 +6728,7 @@ function z_listboot(){
 
 	z_updatetagstable()
 
+	testpr("CC"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 	//Reset meta_edited and meta_original
 	meta_edited = {}
 	meta_original = {}
@@ -6732,6 +6747,7 @@ function z_listboot(){
 		meta_edited = {}
 	}
 	timestart("z_rawset")
+	testpr("DD"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 /*
 	foreach (item, val in z_list.allromlists){
@@ -6743,6 +6759,9 @@ function z_listboot(){
 	}
 */
 	timestop("z_rawset")
+	foreach (item, val in z_list.allromlists){
+		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
+	}
 
 	z_list.boot = []
 	z_list.boot2 = []
@@ -6771,15 +6790,19 @@ timestart("boot")
 
 		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
+	testpr(z_list.boot[325].z_manufacturer+"\n")
+	testpr("EE"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	timestop("boot")
 
 	z_updatetagstable()
+	testpr(z_list.boot[325].z_manufacturer+"\n")
+	testpr("FF"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
 		local game_edited = false
-		try {game_edited = all_meta_edited[z_list.boot[i].z_emulator][z_list.boot[i].z_name]!=null}catch(err){}
+		try {game_edited = all_meta_edited[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null}catch(err){}
 
 		if (game_edited) {
 			all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name] <- {}
@@ -6789,6 +6812,9 @@ timestart("boot")
 			}
 		}
 	}
+	testpr(z_list.boot[325].z_manufacturer+"\n")
+	testpr("GG"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
+
 	timestop("z_listboot")
 
 	//missing_manufacturer_list_vector(z_list)
@@ -17521,6 +17547,11 @@ function ra_selectemu(startemu){
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
+	//TEST152
+	if (sig == "custom1"){
+		testpr(z_list.boot[325].z_manufacturer+"\n")
+
+	}
 	//TEST151
 /*	if (sig == "custom1"){
 		local zipball = "14.3"
