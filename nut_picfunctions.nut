@@ -48,7 +48,6 @@ while ( !manufile.eos() ) {
 
       if (multilogo>0){
          logoserie = item + "_" + multilogo
-         testpr(logoserie+"\n")
          if(!manufdata.rawin(logoserie)) manufdata.rawset(logoserie,[])
          manufdata[logoserie].push({
             logo = manufinc
