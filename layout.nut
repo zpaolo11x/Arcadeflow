@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -4788,6 +4788,8 @@ This is the strategy:
 		mfz_apply(true)
 */
 
+// This function reverts all changes to the db1 and bootlist stored in memory before scraping or
+// romlist refreshing, to avoid baking metadata edits into the disk database
 function metarevert(romlist){
 	// No metadata edited for this romlist
 	if (!z_list.dboriginal.rawin(romlist)) return
