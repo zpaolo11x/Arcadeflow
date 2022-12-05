@@ -4839,14 +4839,12 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 	if (meta_new == ""){
 		try{
 			//TEST152
-			testpr("XXXXXXXXXX\n")
 			z_list.db1[romlist][gamename].rawset(metadata.ids[result],z_list.dboriginal[romlist][gamename][metadata.ids[result]])
 			z_list.dbmeta[romlist][gamename].rawdelete(metadata.ids[result])
 			if (z_list.dbmeta[romlist][gamename].len() == 0){
 				z_list.dbmeta[romlist].rawdelete(gamename)
 			}
 		} catch(err){
-			testpr("YYYYYYYYYY\n")
 		}
 		metamenu(result)
 	}
@@ -5019,9 +5017,8 @@ function metamenu(starter){
 			outfile.write_line("})\n")
 			outfile.write_line("\n")
 			outfile.close_file()
-			testpr("AA"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
+
 			z_listboot()
-			testpr("BB"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 			buildcategorytable()
 			mfz_build(true)
@@ -6736,7 +6733,6 @@ function getallgamesdb(logopic){
 					foreach (gametable, gamemetas in meta_edited){
 						z_list.dboriginal[itemname].rawset(gametable,{})
 						foreach (item, val in gamemetas){
-							testpr ("XXXX:"+item+" "+val+"\n")
 							z_list.dboriginal[itemname][gametable].rawset(item, z_list.db1[itemname][gametable][item])
 						}
 					}
@@ -6770,7 +6766,6 @@ function z_listboot(){
 
 	z_updatetagstable()
 
-	testpr("CC"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 	//Reset meta_edited and meta_original
 	/*
 	meta_edited = {}
@@ -6792,7 +6787,6 @@ function z_listboot(){
 	}
 	*/
 	timestart("z_rawset")
-	testpr("DD"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	// TEST152 NON FACCIO PIU' NESSUN CONTROLLO SUI
 	// METADATI DA RESETTARE? VA BENE?
@@ -6843,14 +6837,10 @@ timestart("boot")
 
 		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
-	testpr(z_list.boot[325].z_manufacturer+"\n")
-	testpr("EE"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	timestop("boot")
 
 	z_updatetagstable()
-	testpr(z_list.boot[325].z_manufacturer+"\n")
-	testpr("FF"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
@@ -6865,8 +6855,6 @@ timestart("boot")
 			}
 		}
 	}
-	testpr(z_list.boot[325].z_manufacturer+"\n")
-	testpr("GG"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	timestop("z_listboot")
 
@@ -8742,13 +8730,6 @@ filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
 pixelizefont(filterdata,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
-/*
-testpr(filterdata.font+"\n")
-filterdata.font = "fonts/font_5x4pixel.ttf"
-filterdata.line_spacing = 0.5
-filterdata.align = Align.MiddleCentre
-filterdata.margin = 0
-*/
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.MiddleCentre
@@ -8760,12 +8741,6 @@ filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 pixelizefont(filternumbers,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
-/*
-filternumbers.font = "fonts/font_5x4pixel.ttf"
-filternumbers.line_spacing = 0.7
-filternumbers.align = Align.MiddleCentre
-filternumbers.margin = 0
-*/
 
 local separatorline = data_surface.add_rectangle(fl.x+fl.w-UI.footermargin+UI.footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,UI.footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -17601,10 +17576,12 @@ function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
 	//TEST152
+	/*
 	if (sig == "custom1"){
 		testpr(z_list.boot[325].z_manufacturer+"\n")
 
 	}
+	*/
 	//TEST151
 /*	if (sig == "custom1"){
 		local zipball = "14.3"
