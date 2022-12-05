@@ -3859,7 +3859,8 @@ function scraperomlist2(inprf, forcemedia, onegame){
 	// in cui caricare i giochi da scrapare
 
 	//TEST152 remove custom metadata
-	z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+	//z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+	metarevert(romlist)
 
 	if (onegame){
 		AF.scrape.totalroms = 1
@@ -4441,7 +4442,8 @@ function listfields_to_db1(listfields){
 function refreshromlist(romlist, fulllist, updateromlist = true){
 	//TEST152 add code to remove metadata editing
 	// Clean custom edited metadata
-	z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+	metarevert(romlist)
+	//z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
 
 	// Update romlist using AM
 	if (updateromlist){
@@ -4786,6 +4788,19 @@ This is the strategy:
 		mfz_apply(true)
 */
 
+function metarevert(romlist){
+	// No metadata edited for this romlist
+	if (!z_list.dboriginal.rawin(romlist)) return
+	// Scan edited games
+	foreach (game, metas in z_list.dboriginal[romlist]){
+		// Sanity check: the game is not in the romlist
+		if (!z_list.db1[romlist].rawin(game)) return
+		// Scan list of original metadata
+		foreach (metaentry, metaval in metas){
+			z_list.db1[romlist][game][metaentry] = metaval
+		}
+	}
+}
 
 function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 	local meta_changed = (meta_new != metavals[result])
@@ -6776,6 +6791,9 @@ function z_listboot(){
 	*/
 	timestart("z_rawset")
 	testpr("DD"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
+
+	// TEST152 NON FACCIO PIU' NESSUN CONTROLLO SUI
+	// METADATI DA RESETTARE? VA BENE?
 
 /* THIS PART IS NOT NEEDED ANYMORE BECAUSE ALL THE CHECKS ARE DONE AT BOOT
 	foreach (item, val in z_list.allromlists){
