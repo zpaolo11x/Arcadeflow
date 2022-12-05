@@ -4258,6 +4258,14 @@ function saveromdb(romlist,zdb,dbext){
 	dbfile.close()
 }
 
+function saveromdb1(romlist,zdb){
+	saveromdb(romlist,zdb,"db1")
+}
+
+function saveromdb2(romlist,zdb){
+	saveromdb(romlist,zdb,"db2")
+}
+
 function updateallgamescollections(tempprf){
 	if (tempprf.ALLGAMES) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
@@ -4292,7 +4300,7 @@ function resetlastplayed(){
 	}
 
 	foreach (item, val in z_list.allromlists) {
-		saveromdb (item,z_list.db2[item],"db2")
+		saveromdb2 (item,z_list.db2[item])
 	}
 
 	//update_thumbdecor (focusindex.new,0,tilez[focusindex.new].AR.current)
@@ -4486,8 +4494,8 @@ function refreshromlist(romlist, fulllist, updateromlist = true){
 		z_list.db2[romlist][gamename].z_emulator = romlist
 
 	}
-	saveromdb (romlist,z_list.db1[romlist],"db1")
-	saveromdb (romlist,z_list.db2[romlist],"db2")
+	saveromdb1 (romlist,z_list.db1[romlist])
+	saveromdb2 (romlist,z_list.db2[romlist])
 
 }
 
@@ -4576,8 +4584,8 @@ function portromlist(romlist){
 
 	}
 
-	saveromdb (romlist,cleanromlist,"db1")
-	saveromdb (romlist,cleanromlist2,"db2")
+	saveromdb1 (romlist,cleanromlist)
+	saveromdb2 (romlist,cleanromlist2)
 }
 
 // Creates an empty romlist from current romlist
@@ -4659,9 +4667,9 @@ function cleandatabase(temppref){
 		z_splash_message(item+"\nRefresh Romlist [ ]\nUpdate Database [ ]")
 		refreshromlist(item,false)
 		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [ ]")
-		saveromdb(item, z_list.db1[item], "db1")
+		saveromdb1(item, z_list.db1[item])
 		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [*]")
-		saveromdb(item, z_list.db2[item], "db2")
+		saveromdb2(item, z_list.db2[item])
 	}
 	if (temppref.ALLGAMES) {
 		buildconfig(temppref.ALLGAMES, temppref)
@@ -6673,7 +6681,7 @@ function z_checkhidden(i){
 	return false
 }
 
-//TEST152 AGGIUNGERE QUI CODICE PER METADATI?
+
 function getallgamesdb(logopic){
 	timestart("GamesDB")
 
@@ -6785,7 +6793,8 @@ function z_listboot(){
 	*/
 	timestart("z_rawset")
 
-	// TEST152 NON FACCIO PIU' NESSUN CONTROLLO SUI
+	// TEST152
+	// NON FACCIO PIU' NESSUN CONTROLLO SUI
 	// METADATI DA RESETTARE? VA BENE?
 
 /* THIS PART IS NOT NEEDED ANYMORE BECAUSE ALL THE CHECKS ARE DONE AT BOOT
@@ -10538,7 +10547,7 @@ function tags_menu(){
 				}
 			}
 			z_updatetagstable() //TEST141 sposta sopra e fallo solo se il tag non era nella tagstable :O
-			saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+			saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 			mfz_build(true)
 			try {
@@ -10567,7 +10576,7 @@ function add_new_tag(){
 	function(){ //DONE
 		frosthide()
 		z_list.boot2[fe.list.index].z_tags.push (keyboard_entrytext)
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		z_list.tagstableglobal.rawset(keyboard_entrytext,0)
 		z_updatetagstable()
@@ -15617,7 +15626,7 @@ function on_transition( ttype, var0, ttime ) {
 		if (prf.RPI) fe.set_display(fe.list.display_index)
 
 		z_list.gametable2[z_list.index].z_playedcount ++
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		update_thumbdecor (focusindex.new,0,tilez[focusindex.new].AR.current)
 
@@ -15642,7 +15651,7 @@ function on_transition( ttype, var0, ttime ) {
 		local emulatorname = z_list.gametable[z_list.index].z_emulator
 
 		z_list.gametable2[z_list.index].z_rundate = datestr
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 
 //		z_list.rundatetable[emulatorname][gamename] <- datestr
@@ -16055,7 +16064,7 @@ function tick( tick_time ) {
 		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0)){
 			// Save current data on respective romlists databases
 			foreach (item, val in z_list.allromlists){
-				saveromdb (item, z_list.db1[item], "db1")
+				saveromdb1 (item, z_list.db1[item])
 			}
 			AF.scrape.purgedromdirlist = null
 
@@ -17290,7 +17299,6 @@ function deletecurrentrom(){
 	}
 
 	z_list.gametable[z_list.index].z_fileisavailable = 0
-	//saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db1[z_list.gametable[z_list.index].z_emulator],"db1")
 	z_listrefreshtiles()
 
 }
@@ -18063,7 +18071,7 @@ function on_signal( sig ){
 		}
 
 		// Save rhe rom database with new data
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		// Upgrade the mfz_fields and refresh the mfz filter results
 		mfz_build(true)
