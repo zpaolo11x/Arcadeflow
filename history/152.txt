@@ -1,2 +1,4 @@
 15.2
 Show specific manufacturer year logo by adding _number to the name
+Fixed case sensitive manufacturer name match
+Fixed issue with metadata saved to game database

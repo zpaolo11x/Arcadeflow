@@ -5537,6 +5537,7 @@ multifilterz.l0["Manufacturer"] <- {
 
 			// Return data when no category is selected
 			if ((v=="") || (v=="<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
+			v = split(v,"_")[0]
 
 			if (v.len() >= 7) {
 				if ((v.slice(0,7)=="bootleg") ) return {l1val = "? bootleg", l1array = false, l1name = "? bootleg", sub = false, l2val = null, l2name = null}
@@ -6670,7 +6671,7 @@ function z_mots2filter(index){
 	}
 
 	if (search.mots[0] == "z_tags") return (currentval.find(search.mots[1]) != null)
-	else return (currentval.find(search.mots[1]) == 0)
+	else return (currentval.tolower().find(search.mots[1].tolower()) == 0) //TEST152
 
 	return false
 
@@ -18236,7 +18237,8 @@ function on_signal( sig ){
 
 						if (result == 2) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
-							search.mots2string = ltxt("Manufacturer",AF.LNG)+":"+search.mots[1]
+							if (search.mots[1] != "") search.mots[1] = split(search.mots[1],"_")[0]
+ 							search.mots2string = ltxt("Manufacturer",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 3) {
