@@ -6751,9 +6751,6 @@ function getallgamesdb(logopic){
 		}
 	}
 
-	print_variable(z_list.dbmeta,"","dbmeta")
-	print_variable(z_list.dboriginal,"","dborigin")
-
 	textobj.visible = false
 	timestop("GamesDB")
 }
