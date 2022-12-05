@@ -4793,28 +4793,28 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 
 		if ( metaflag[result]) {
 			// Caso 1: il metadato era già stato editato in precedenza
-			all_meta_edited[romlist][gamename][metadata.ids[result]] <- meta_new
+			z_list.dbmeta[romlist][gamename][metadata.ids[result]] <- meta_new
 		}
 		else {
 			// Caso 2: il metadato era in stato "original" e viene editato per la prima volta
 
 			// Aggiungi dato all'original:
-			if (!all_meta_original.rawin(romlist)){
-				all_meta_original[romlist] <- {}
+			if (!z_list.dboriginal.rawin(romlist)){
+				z_list.dboriginal[romlist] <- {}
 			}
-			if (!all_meta_original[romlist].rawin(gamename)){
-				all_meta_original[romlist][gamename] <- {}
+			if (!z_list.dboriginal[romlist].rawin(gamename)){
+				z_list.dboriginal[romlist][gamename] <- {}
 			}
-			all_meta_original[romlist][gamename][metadata.ids[result]] <- metavals[result]
+			z_list.dboriginal[romlist][gamename][metadata.ids[result]] <- metavals[result]
 
 			// Aggiungi dato all'edited:
-			if (!all_meta_edited.rawin(romlist)){
-				all_meta_edited[romlist] <- {}
+			if (!z_list.dbmeta.rawin(romlist)){
+				z_list.dbmeta[romlist] <- {}
 			}
-			if (!all_meta_edited[romlist].rawin(gamename)){
-				all_meta_edited[romlist][gamename] <- {}
+			if (!z_list.dbmeta[romlist].rawin(gamename)){
+				z_list.dbmeta[romlist][gamename] <- {}
 			}
-			all_meta_edited[romlist][gamename][metadata.ids[result]] <- meta_new
+			z_list.dbmeta[romlist][gamename][metadata.ids[result]] <- meta_new
 
 		}
 		metamenu(result)
@@ -4823,10 +4823,10 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 		try{
 			//TEST152
 			testpr("XXXXXXXXXX\n")
-			z_list.db1[romlist][gamename].rawset(metadata.ids[result],all_meta_original[romlist][gamename][metadata.ids[result]])
-			all_meta_edited[romlist][gamename].rawdelete(metadata.ids[result])
-			if (all_meta_edited[romlist][gamename].len() == 0){
-				all_meta_edited[romlist].rawdelete(gamename)
+			z_list.db1[romlist][gamename].rawset(metadata.ids[result],z_list.dboriginal[romlist][gamename][metadata.ids[result]])
+			z_list.dbmeta[romlist][gamename].rawdelete(metadata.ids[result])
+			if (z_list.dbmeta[romlist][gamename].len() == 0){
+				z_list.dbmeta[romlist].rawdelete(gamename)
 			}
 		} catch(err){
 			testpr("YYYYYYYYYY\n")
@@ -4850,13 +4850,13 @@ function metamenu(starter){
 
 	foreach (id, item in metadata.ids){
 		metavals.push (z_list.gametable[z_list.index][item])
-		try {metavals[id] = all_meta_original[romlist][gamename][item]}catch(err){}
-		try {metavals[id] = all_meta_edited[romlist][gamename][item]}catch(err){}
+		try {metavals[id] = z_list.dboriginal[romlist][gamename][item]}catch(err){}
+		try {metavals[id] = z_list.dbmeta[romlist][gamename][item]}catch(err){}
 		metaglyphs.push(0)
 
 		metaflag.push(false)
 		try {
-			if (all_meta_edited[romlist][gamename][item] != "") {
+			if (z_list.dbmeta[romlist][gamename][item] != "") {
 				metaglyphs[id] = 0xe905
 				metaflag[id] = true
 			}
@@ -4870,7 +4870,7 @@ function metamenu(starter){
 
 		if (result != -1) {
 			local meta_unedited = ""
-			try {meta_unedited = all_meta_original[romlist][gamename][metadata.ids[result]] }catch(err){
+			try {meta_unedited = z_list.dboriginal[romlist][gamename][metadata.ids[result]] }catch(err){
 				meta_unedited = metavals[result]
 			}
 			local meta_new = ""
@@ -4990,8 +4990,8 @@ function metamenu(starter){
 
 			outfile.write_line("return({\n")
 
-			if (all_meta_edited.rawin(romlist)){
-				foreach (item, val in all_meta_edited[romlist]){
+			if (z_list.dbmeta.rawin(romlist)){
+				foreach (item, val in z_list.dbmeta[romlist]){
 					outfile.write_line("   " + ap + item + ap + " : {\n")
 					foreach (item2, val2 in val){
 						outfile.write_line ("      "+item2+" = "+ap+val2+ap+"\n")
@@ -6755,13 +6755,15 @@ function z_listboot(){
 
 	testpr("CC"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 	//Reset meta_edited and meta_original
+	/*
 	meta_edited = {}
 	meta_original = {}
 	all_meta_edited = {}
 	all_meta_original = {}
 	metadata.path = ""
-
+*/
 	//Update metadata editing structures
+	/*
 	foreach(item, val in z_list.allromlists){
 		metadata.path = AF.romlistfolder + item + ".meta"
 		try {meta_edited = dofile(metadata.path)}catch(err){}
@@ -6771,6 +6773,7 @@ function z_listboot(){
 		}
 		meta_edited = {}
 	}
+	*/
 	timestart("z_rawset")
 	testpr("DD"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
@@ -6784,11 +6787,14 @@ function z_listboot(){
 	}
 	BUT THE LAST PART IS STILL NEEDED TO REMOVE METADATA EDITED FROM THE DB
 */
+
+	/*
 	timestart("z_rawset")
 	foreach (item, val in z_list.allromlists){
 		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
 	}
 	timestop("z_rawset")
+	*/
 
 	z_list.boot = []
 	z_list.boot2 = []
@@ -6829,12 +6835,12 @@ timestart("boot")
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
 		local game_edited = false
-		try {game_edited = all_meta_edited[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null}catch(err){}
+		try {game_edited = z_list.dbmeta[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null}catch(err){}
 
 		if (game_edited) {
-			all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name] <- {}
-			foreach (item, val in all_meta_edited[z_list.boot[i].z_emulator][z_list.boot[i].z_name]){
-				all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name][item] <- z_list.boot[i][item]
+			//all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name] <- {}
+			foreach (item, val in z_list.dbmeta[z_list.boot[i].z_emulator][z_list.boot[i].z_name]){
+				//all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name][item] <- z_list.boot[i][item]
 				z_list.boot[i][item] = val
 			}
 		}
