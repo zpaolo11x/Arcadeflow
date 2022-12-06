@@ -112,7 +112,7 @@ local kb = {
 
 	secondary = false
 
-	rt_stringkeys = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ- <^"
+	rt_stringkeys = ["RShift","LShift","1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
 	rt_keys = {}
 
 	text_base = "" // This is the pre-text to show
@@ -122,47 +122,22 @@ local kb = {
 }
 
 // Populate the rt_keys structure that is polled to check realtime typing
-foreach(letter in kb.rt_stringkeys){
-   local letterchar = letter.tochar()
+foreach(i, letter in kb.rt_stringkeys){
 
-   if (letterchar == "<"){
-      kb.rt_keys["Backspace"] <- {
-         val = letterchar
-         prs = false
-      }
-   }
-	else if (letterchar == " "){
-      kb.rt_keys["Space"] <- {
-         val = letterchar
-         prs = false
-      }
-   }
-	else if (letterchar == "^"){
-      kb.rt_keys["LShift"] <- {
-         val = letterchar
-         prs = false
-      }
-      kb.rt_keys["RShift"] <- {
-         val = letterchar
-         prs = false
-      }
-   }
-  else {
-      try {
-         letter = letterchar.tointeger()
-         kb.rt_keys["Num"+letter] <- {
-				val = letter
-				prs = false
-			}
-      }
-      catch(err){
-			testpr("LC"+letterchar+"\n")
-         kb.rt_keys[letterchar] <- {
-				val = letterchar
-				prs = false
-			}
-      }
-   }
+	try {
+		letter = letter.tointeger()
+		kb.rt_keys["Num"+letter] <- {
+			val = letter
+			prs = false
+		}
+	}
+	catch(err){
+		kb.rt_keys[letter] <- {
+			val = letter
+			prs = false
+		}
+	}
+
 }
 
 local keyboard_text = null
@@ -212,6 +187,9 @@ function keyboard_select (col, row){
 
 function keyboard_type(c, direct){
 	if (direct){
+		if ((c == "RShift") || (c == "LShift")){
+			testpr("CAPS")
+		}
 		testpr(c+"\n")
 	}
 	else {
