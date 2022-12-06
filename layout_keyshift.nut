@@ -112,7 +112,7 @@ local kb = {
 
 	secondary = false
 
-	rt_stringkeys = ["RShift","LShift","1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
+	rt_stringkeys = ["Semicolon","Comma","Period","Dash","Equal","RShift","LShift","1","2","3","4","5","6","7","8","9","0","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","LBracket","RBracket"]
 	rt_keys = {}
 
 	text_base = "" // This is the pre-text to show
@@ -343,23 +343,31 @@ function on_transition( ttype, var0, ttime ) {
 
 }
 
-
+local i = 0
 
 /// On Tick ///
 function tick( tick_time ) {
 
+	testpr(fe.get_input_state("LBracket")+" "+fe.get_input_state("Num8")+"\n")
+	/*
+
 	if (keyboard_visible()){
+		i++
 		foreach (key, item in kb.rt_keys) {
 			local pressedkey = fe.get_input_state(key)
 			if (!item.prs && pressedkey) {
 				//displaybutton.msg = displaybutton.msg + item.val
 				keyboard_select (0,4)
+				testpr("in\n")
 				keyboard_type(key,true)
+				testpr("out\n")
+				item.prs = pressedkey
+				break
 			}
 			item.prs = pressedkey
 		}
 	}
-
+*/
 	if (count.right != 0) count.right = repeatsignal("right",count.right)
 	if (count.left != 0) count.left = repeatsignal("left",count.left)
 	if (count.up != 0) count.up = repeatsignal("up",count.up)
