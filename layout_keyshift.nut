@@ -210,25 +210,29 @@ function keyboard_select (col, row){
 	key_selected = [ col, row ]
 }
 
-function keyboard_type(c){
-	if (c == "^"){ //CAPS LOCK
-		kb.secondary = !kb.secondary
-		foreach (item, val in kb.keys){
-			kb.keys[item].msg = kb.secondary ? key_names_secondary[item] : key_names[item]
-			testpr(item+"\n")
+function keyboard_type(c, direct){
+	if (direct){
+		testpr(c+"\n")
+	}
+	else {
+		if (c == "^"){ //CAPS LOCK
+			kb.secondary = !kb.secondary
+			foreach (item, val in kb.keys){
+				kb.keys[item].msg = kb.secondary ? key_names_secondary[item] : key_names[item]
+				testpr(item+"\n")
+			}
 		}
+		else if ( c == "<" ) //BACKSPACE
+			keyboard_entrytext = ( keyboard_entrytext.len() > 0 ) ? keyboard_entrytext.slice( 0, keyboard_entrytext.len() - 1 ) : ""
+		else if ( c == "|" ) //CLEAR ALL
+			keyboard_entrytext = ""
+			//keyboard_clear()
+		else if ( c == "~" ){ //DONE applica la ricerca e chiude la sessione.
+			kb.f_done()
+			keyboard_hide()
+		}
+		else keyboard_entrytext = keyboard_entrytext + (kb.secondary ? key_names_secondary[c] : c)
 	}
-	else if ( c == "<" ) //BACKSPACE
-		keyboard_entrytext = ( keyboard_entrytext.len() > 0 ) ? keyboard_entrytext.slice( 0, keyboard_entrytext.len() - 1 ) : ""
-	else if ( c == "|" ) //CLEAR ALL
-		keyboard_entrytext = ""
-		//keyboard_clear()
-	else if ( c == "~" ){ //DONE applica la ricerca e chiude la sessione.
-		kb.f_done()
-		keyboard_hide()
-	}
-	else keyboard_entrytext = keyboard_entrytext + (kb.secondary ? key_names_secondary[c] : c)
-
 	// GENERAL UPDATE
 	keyboard_text.msg = kb.text_base + ": " + keyboard_entrytext
 	// Custom update
@@ -370,10 +374,9 @@ function tick( tick_time ) {
 		foreach (key, item in kb.rt_keys) {
 			local pressedkey = fe.get_input_state(key)
 			if (!item.prs && pressedkey) {
-				testpr(key+"\n")
 				//displaybutton.msg = displaybutton.msg + item.val
 				keyboard_select (0,4)
-				keyboard_type(item.val)
+				keyboard_type(key,true)
 			}
 			item.prs = pressedkey
 		}
@@ -440,7 +443,7 @@ function on_signal( sig ){
 			}
 		}
 
-		else if ( sig == "select" ) keyboard_type( key_rows[key_selected[1]][key_selected[0]].tochar() )
+		else if ( sig == "select" ) keyboard_type( key_rows[key_selected[1]][key_selected[0]].tochar(),false )
 
 		else if ( sig == "back" ) {
 			kb.f_back()
