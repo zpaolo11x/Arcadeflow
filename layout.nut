@@ -86,6 +86,8 @@ local AF = {
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
 	emulatorsfolder = fe.path_expand(FeConfigDirectory + "emulators/")
+
+	songdir = ""
 	bgsongs = []
 
 	config = null
@@ -946,7 +948,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
 {v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 15.2, varname = "perdisplaytune", glyph = 0xe911, initvar = function(val,prf){prf.PERDISPLAYTUNE <- val}, title = "Per-dispaly background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 15.2, varname = "perdisplaytune", glyph = 0xe911, initvar = function(val,prf){prf.PERDISPLAYTUNE <- val}, title = "Per display background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display" ,  options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
@@ -2008,14 +2010,17 @@ function applycustomcolor(){
 
 if (prf.CUSTOMCOLOR != "") applycustomcolor()
 
+if (prf.BACKGROUNDTUNE != ""){
+	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
+	AF.songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
+	for (local i = 0; i < songdirarray.len()-1; i++){
+		AF.songdir += songdirarray[i]+"/"
+	}
+}
+
 // Music
 if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
-	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
-	local songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
-	for (local i = 0; i < songdirarray.len()-1; i++){
-		songdir += songdirarray[i]+"/"
-	}
-	local filelist = DirectoryListing (songdir).results
+	local filelist = DirectoryListing (AF.songdir).results
 	foreach (i,item in filelist){
 		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
 	}
@@ -15789,6 +15794,13 @@ function on_transition( ttype, var0, ttime ) {
 
 		//Update background image
 		updatecustombg()
+
+		//TEST152 per display background music
+		if (snd.bgtuneplay && prf.PERDISPLAYTUNE){
+			try {
+				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
+			} catch(err){}
+		}
 
 		try {
 			prf.BOXARTMODE = ( (DISPLAYTABLE[fe.displays[fe.list.display_index].name][0] == "BOXES") ? true : false )
