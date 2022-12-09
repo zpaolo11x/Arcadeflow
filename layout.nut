@@ -2034,10 +2034,28 @@ local snd = {
 	wooshsound = fe.add_sound("sounds/woosh4.mp3")
 	mbacksound = fe.add_sound("sounds/woosh5.mp3")
 	attracttune = fe.add_sound(prf.AMTUNE)
-	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	bgtune = null
+	!(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
 	attracttuneplay = false
 	bgtuneplay = false
 }
+
+//TEST152
+if (prf.BACKGROUNDTUNE != ""){
+	if (prf.PERDISPLAYTUNE) {
+		try {
+			snd.bgtune = fe.add_sound(AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")
+		} catch(err){
+			if (prf.RANDOMTUNE) snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+			else snd.bgtune = fe.add_sound(prf.BACKGROUNDTUNE)
+		}
+	}
+	else if (prf.RANDOMTUNE){
+		snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	}
+	else snd.bgtune = fe.add_sound(prf.BACKGROUNDTUNE)
+}
+
 snd.plingsound.pitch = 2.0
 snd.mbacksound.pitch = 0.8
 
@@ -15624,6 +15642,19 @@ print("\n")
 // regenerate the config file, and in case we have ALLGAMES enabled
 // update the colelctions. At the end AF is rebooted
 
+function bgtuneplay(){
+	if (prf.PERDISPLAYTUNE){
+		try {
+			snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
+		} catch(err){
+			if (prf.RANDOMTUNE) snd.bgtune.file_name = AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX]
+			else snd.bgtune.file_name = prf.BACKGROUNDTUNE
+		}
+	}
+	else if (prf.RANDOMTUNE) snd.bgtune.file_name = AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX]
+	else snd.bgtune.file_name = prf.BACKGROUNDTUNE
+//	snd.bgtune.playing = snd.bgtuneplay
+}
 
 /// On Transition ///
 
@@ -16062,7 +16093,7 @@ function tick( tick_time ) {
 	}
 
 	if (snd.bgtuneplay != snd.bgtune.playing) {
-		if (snd.bgtuneplay && prf.RANDOMTUNE) 	snd.bgtune.file_name = AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX]
+		if (snd.bgtuneplay) bgtuneplay()
 
 		snd.bgtune.playing = snd.bgtuneplay
 	}
