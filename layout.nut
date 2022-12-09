@@ -15642,7 +15642,7 @@ print("\n")
 // regenerate the config file, and in case we have ALLGAMES enabled
 // update the colelctions. At the end AF is rebooted
 
-function bgtuneplay(){
+function bgtuneupdate(){
 	if (prf.PERDISPLAYTUNE){
 		try {
 			snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
@@ -16093,7 +16093,7 @@ function tick( tick_time ) {
 	}
 
 	if (snd.bgtuneplay != snd.bgtune.playing) {
-		if (snd.bgtuneplay) bgtuneplay()
+		if (snd.bgtuneplay) bgtuneupdate()
 
 		snd.bgtune.playing = snd.bgtuneplay
 	}
