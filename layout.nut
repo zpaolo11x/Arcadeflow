@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.1
+// Arcadeflow - v 15.2
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.1"
+	version = "15.2"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -946,6 +946,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
 {v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 15.2, varname = "perdisplaytune", glyph = 0xe911, initvar = function(val,prf){prf.PERDISPLAYTUNE <- val}, title = "Per-dispaly background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display" ,  options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
@@ -16049,7 +16050,7 @@ function tick( tick_time ) {
 	}
 
 	if (snd.bgtuneplay != snd.bgtune.playing) {
-		if (snd.bgtuneplay && prf.RANDOMTUNE) 	snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+		if (snd.bgtuneplay && prf.RANDOMTUNE) 	snd.bgtune.file_name = AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX]
 
 		snd.bgtune.playing = snd.bgtuneplay
 	}
