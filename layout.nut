@@ -2035,25 +2035,25 @@ local snd = {
 	mbacksound = fe.add_sound("sounds/woosh5.mp3")
 	attracttune = fe.add_sound(prf.AMTUNE)
 	bgtune = null
-	!(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
 	attracttuneplay = false
 	bgtuneplay = false
 }
 
-//TEST152
-if (prf.BACKGROUNDTUNE != ""){
-	if (prf.PERDISPLAYTUNE) {
-		try {
-			snd.bgtune = fe.add_sound(AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")
-		} catch(err){
-			if (prf.RANDOMTUNE) snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
-			else snd.bgtune = fe.add_sound(prf.BACKGROUNDTUNE)
+function bgtunefilename(){
+	if (prf.PERDISPLAYTUNE){
+		if (file_exist(AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")) {
+			return (AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")
 		}
 	}
-	else if (prf.RANDOMTUNE){
-		snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
-	}
-	else snd.bgtune = fe.add_sound(prf.BACKGROUNDTUNE)
+
+	if (prf.RANDOMTUNE) return (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+
+	return (prf.BACKGROUNDTUNE)
+}
+
+//TEST152
+if (prf.BACKGROUNDTUNE != ""){
+	snd.bgtune = fe.add_sound(bgtunefilename())
 }
 
 snd.plingsound.pitch = 2.0
@@ -15642,19 +15642,6 @@ print("\n")
 // regenerate the config file, and in case we have ALLGAMES enabled
 // update the colelctions. At the end AF is rebooted
 
-function bgtuneupdate(){
-	if (prf.PERDISPLAYTUNE){
-		try {
-			snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
-		} catch(err){
-			if (prf.RANDOMTUNE) snd.bgtune.file_name = AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX]
-			else snd.bgtune.file_name = prf.BACKGROUNDTUNE
-		}
-	}
-	else if (prf.RANDOMTUNE) snd.bgtune.file_name = AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX]
-	else snd.bgtune.file_name = prf.BACKGROUNDTUNE
-//	snd.bgtune.playing = snd.bgtuneplay
-}
 
 /// On Transition ///
 
@@ -16093,7 +16080,7 @@ function tick( tick_time ) {
 	}
 
 	if (snd.bgtuneplay != snd.bgtune.playing) {
-		if (snd.bgtuneplay) bgtuneupdate()
+		if (snd.bgtuneplay) snd.bgtune.file_name = bgtunefilename()
 
 		snd.bgtune.playing = snd.bgtuneplay
 	}
