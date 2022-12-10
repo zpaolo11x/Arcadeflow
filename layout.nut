@@ -2022,7 +2022,8 @@ if (prf.BACKGROUNDTUNE != ""){
 if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
 	local filelist = DirectoryListing (AF.songdir).results
 	foreach (i,item in filelist){
-		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
+		testpr(i+" "+item+"\n")
+		if ((item.slice(-3).tolower() == "mp3") || (item.slice(-3).tolower() == "wav")) AF.bgsongs.push (item)
 	}
 }
 
@@ -2046,7 +2047,7 @@ function bgtunefilename(){
 		}
 	}
 
-	if (prf.RANDOMTUNE) return (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	if ((prf.RANDOMTUNE) && (AF.bgsongs.len()>0)) return (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
 
 	return (prf.BACKGROUNDTUNE)
 }
