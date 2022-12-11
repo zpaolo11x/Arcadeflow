@@ -2045,6 +2045,9 @@ function bgtunefilename(){
 		if (file_exist(AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")) {
 			return (AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")
 		}
+		if (file_exist(AF.songdir + fe.displays[fe.list.display_index].name + ".wav")) {
+			return (AF.songdir + fe.displays[fe.list.display_index].name + ".wav")
+		}
 	}
 
 	if ((prf.RANDOMTUNE) && (AF.bgsongs.len()>0)) return (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
@@ -15818,6 +15821,9 @@ function on_transition( ttype, var0, ttime ) {
 		if (snd.bgtuneplay && prf.PERDISPLAYTUNE){
 			try {
 				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
+			} catch(err){}
+			try {
+				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
 			} catch(err){}
 		}
 
