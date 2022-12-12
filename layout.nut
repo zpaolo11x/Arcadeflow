@@ -15818,7 +15818,7 @@ function on_transition( ttype, var0, ttime ) {
 		updatecustombg()
 
 		//TEST152 per display background music
-		if (snd.bgtuneplay && prf.PERDISPLAYTUNE){
+		if ((prf.BACKGROUNDTUNE != "") && snd.bgtuneplay && prf.PERDISPLAYTUNE){
 			try {
 				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
 			} catch(err){}
@@ -16086,7 +16086,7 @@ function tick( tick_time ) {
 		tilez[focusindex.new].bd_mx.set_rgb(255*huecycle.RGB.R,255*huecycle.RGB.G,255*huecycle.RGB.B)
 	}
 
-	if (snd.bgtuneplay != snd.bgtune.playing) {
+	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != snd.bgtune.playing)) {
 		if (snd.bgtuneplay) snd.bgtune.file_name = bgtunefilename()
 
 		snd.bgtune.playing = snd.bgtuneplay
