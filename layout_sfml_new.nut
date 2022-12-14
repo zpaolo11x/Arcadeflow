@@ -1489,11 +1489,6 @@ catch (err) {prf.AMTIMER = 120}
 try {prf.AMCHANGETIMER = prf.AMCHANGETIMER.tointeger()}
 catch (err) {prf.AMCHANGETIMER = 10}
 
-if (prf.BASEROTATION == "none") fe.layout.base_rotation = RotateScreen.None
-else if (prf.BASEROTATION == "left") fe.layout.base_rotation = RotateScreen.Left
-else if (prf.BASEROTATION == "right") fe.layout.base_rotation = RotateScreen.Right
-else if (prf.BASEROTATION == "flip") fe.layout.base_rotation = RotateScreen.Flip
-
 local DISPLAYTABLE = {}
 try { DISPLAYTABLE = loadtablefromfile("pref_thumbtype.txt",false) } catch (err) {}
 if (DISPLAYTABLE == null) DISPLAYTABLE = {}

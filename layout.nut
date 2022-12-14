@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.1
+// Arcadeflow - v 15.2
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -42,7 +42,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -80,12 +80,14 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.1"
+	version = "15.2"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
 	emulatorsfolder = fe.path_expand(FeConfigDirectory + "emulators/")
+
+	songdir = ""
 	bgsongs = []
 
 	config = null
@@ -946,6 +948,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
 {v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 15.2, varname = "perdisplaytune", glyph = 0xe911, initvar = function(val,prf){prf.PERDISPLAYTUNE <- val}, title = "Per display background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display" ,  options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
@@ -2007,16 +2010,19 @@ function applycustomcolor(){
 
 if (prf.CUSTOMCOLOR != "") applycustomcolor()
 
+if (prf.BACKGROUNDTUNE != ""){
+	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
+	AF.songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
+	for (local i = 0; i < songdirarray.len()-1; i++){
+		AF.songdir += songdirarray[i]+"/"
+	}
+}
+
 // Music
 if (prf.RANDOMTUNE && (prf.BACKGROUNDTUNE != "")){
-	local songdirarray = split (prf.BACKGROUNDTUNE,"/")
-	local songdir = prf.BACKGROUNDTUNE[0].tochar() == "/" ? "/" : ""
-	for (local i = 0; i < songdirarray.len()-1; i++){
-		songdir += songdirarray[i]+"/"
-	}
-	local filelist = DirectoryListing (songdir).results
+	local filelist = DirectoryListing (AF.songdir).results
 	foreach (i,item in filelist){
-		if (item.slice(-3).tolower() == "mp3") AF.bgsongs.push (item)
+		if ((item.slice(-3).tolower() == "mp3") || (item.slice(-3).tolower() == "wav")) AF.bgsongs.push (item)
 	}
 }
 
@@ -2028,10 +2034,31 @@ local snd = {
 	wooshsound = fe.add_sound("sounds/woosh4.mp3")
 	mbacksound = fe.add_sound("sounds/woosh5.mp3")
 	attracttune = fe.add_sound(prf.AMTUNE)
-	bgtune = !(prf.RANDOMTUNE && prf.BACKGROUNDTUNE != "") ? fe.add_sound(prf.BACKGROUNDTUNE) : fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	bgtune = null
 	attracttuneplay = false
 	bgtuneplay = false
 }
+
+function bgtunefilename(){
+	if (prf.PERDISPLAYTUNE){
+		if (file_exist(AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")) {
+			return (AF.songdir + fe.displays[fe.list.display_index].name + ".mp3")
+		}
+		if (file_exist(AF.songdir + fe.displays[fe.list.display_index].name + ".wav")) {
+			return (AF.songdir + fe.displays[fe.list.display_index].name + ".wav")
+		}
+	}
+
+	if ((prf.RANDOMTUNE) && (AF.bgsongs.len()>0)) return (AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+
+	return (prf.BACKGROUNDTUNE)
+}
+
+//TEST152
+if (prf.BACKGROUNDTUNE != ""){
+	snd.bgtune = fe.add_sound(bgtunefilename())
+}
+
 snd.plingsound.pitch = 2.0
 snd.mbacksound.pitch = 0.8
 
@@ -3804,6 +3831,8 @@ local z_list = {
 	boot2 = []
 	db1 = {}
 	db2 = {}
+	dbmeta = {}
+	dboriginal = {}
 	index = 0
 	newindex = 0
 	gametable = []
@@ -3857,7 +3886,8 @@ function scraperomlist2(inprf, forcemedia, onegame){
 	// in cui caricare i giochi da scrapare
 
 	//TEST152 remove custom metadata
-	z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+	//z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+	metarevert(romlist)
 
 	if (onegame){
 		AF.scrape.totalroms = 1
@@ -4255,6 +4285,14 @@ function saveromdb(romlist,zdb,dbext){
 	dbfile.close()
 }
 
+function saveromdb1(romlist,zdb){
+	saveromdb(romlist,zdb,"db1")
+}
+
+function saveromdb2(romlist,zdb){
+	saveromdb(romlist,zdb,"db2")
+}
+
 function updateallgamescollections(tempprf){
 	if (tempprf.ALLGAMES) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
@@ -4289,7 +4327,7 @@ function resetlastplayed(){
 	}
 
 	foreach (item, val in z_list.allromlists) {
-		saveromdb (item,z_list.db2[item],"db2")
+		saveromdb2 (item,z_list.db2[item])
 	}
 
 	//update_thumbdecor (focusindex.new,0,tilez[focusindex.new].AR.current)
@@ -4439,7 +4477,8 @@ function listfields_to_db1(listfields){
 function refreshromlist(romlist, fulllist, updateromlist = true){
 	//TEST152 add code to remove metadata editing
 	// Clean custom edited metadata
-	z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
+	metarevert(romlist)
+	//z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
 
 	// Update romlist using AM
 	if (updateromlist){
@@ -4482,8 +4521,8 @@ function refreshromlist(romlist, fulllist, updateromlist = true){
 		z_list.db2[romlist][gamename].z_emulator = romlist
 
 	}
-	saveromdb (romlist,z_list.db1[romlist],"db1")
-	saveromdb (romlist,z_list.db2[romlist],"db2")
+	saveromdb1 (romlist,z_list.db1[romlist])
+	saveromdb2 (romlist,z_list.db2[romlist])
 
 }
 
@@ -4572,8 +4611,8 @@ function portromlist(romlist){
 
 	}
 
-	saveromdb (romlist,cleanromlist,"db1")
-	saveromdb (romlist,cleanromlist2,"db2")
+	saveromdb1 (romlist,cleanromlist)
+	saveromdb2 (romlist,cleanromlist2)
 }
 
 // Creates an empty romlist from current romlist
@@ -4655,9 +4694,9 @@ function cleandatabase(temppref){
 		z_splash_message(item+"\nRefresh Romlist [ ]\nUpdate Database [ ]")
 		refreshromlist(item,false)
 		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [ ]")
-		saveromdb(item, z_list.db1[item], "db1")
+		saveromdb1(item, z_list.db1[item])
 		z_splash_message(item+"\nRefresh Romlist [*]\nUpdate Database [*]")
-		saveromdb(item, z_list.db2[item], "db2")
+		saveromdb2(item, z_list.db2[item])
 	}
 	if (temppref.ALLGAMES) {
 		buildconfig(temppref.ALLGAMES, temppref)
@@ -4784,6 +4823,21 @@ This is the strategy:
 		mfz_apply(true)
 */
 
+// This function reverts all changes to the db1 and bootlist stored in memory before scraping or
+// romlist refreshing, to avoid baking metadata edits into the disk database
+function metarevert(romlist){
+	// No metadata edited for this romlist
+	if (!z_list.dboriginal.rawin(romlist)) return
+	// Scan edited games
+	foreach (game, metas in z_list.dboriginal[romlist]){
+		// Sanity check: the game is not in the romlist
+		if (!z_list.db1[romlist].rawin(game)) return
+		// Scan list of original metadata
+		foreach (metaentry, metaval in metas){
+			z_list.db1[romlist][game][metaentry] = metaval
+		}
+	}
+}
 
 function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 	local meta_changed = (meta_new != metavals[result])
@@ -4791,28 +4845,28 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 
 		if ( metaflag[result]) {
 			// Caso 1: il metadato era già stato editato in precedenza
-			all_meta_edited[romlist][gamename][metadata.ids[result]] <- meta_new
+			z_list.dbmeta[romlist][gamename][metadata.ids[result]] <- meta_new
 		}
 		else {
 			// Caso 2: il metadato era in stato "original" e viene editato per la prima volta
 
 			// Aggiungi dato all'original:
-			if (!all_meta_original.rawin(romlist)){
-				all_meta_original[romlist] <- {}
+			if (!z_list.dboriginal.rawin(romlist)){
+				z_list.dboriginal[romlist] <- {}
 			}
-			if (!all_meta_original[romlist].rawin(gamename)){
-				all_meta_original[romlist][gamename] <- {}
+			if (!z_list.dboriginal[romlist].rawin(gamename)){
+				z_list.dboriginal[romlist][gamename] <- {}
 			}
-			all_meta_original[romlist][gamename][metadata.ids[result]] <- metavals[result]
+			z_list.dboriginal[romlist][gamename][metadata.ids[result]] <- metavals[result]
 
 			// Aggiungi dato all'edited:
-			if (!all_meta_edited.rawin(romlist)){
-				all_meta_edited[romlist] <- {}
+			if (!z_list.dbmeta.rawin(romlist)){
+				z_list.dbmeta[romlist] <- {}
 			}
-			if (!all_meta_edited[romlist].rawin(gamename)){
-				all_meta_edited[romlist][gamename] <- {}
+			if (!z_list.dbmeta[romlist].rawin(gamename)){
+				z_list.dbmeta[romlist][gamename] <- {}
 			}
-			all_meta_edited[romlist][gamename][metadata.ids[result]] <- meta_new
+			z_list.dbmeta[romlist][gamename][metadata.ids[result]] <- meta_new
 
 		}
 		metamenu(result)
@@ -4820,14 +4874,12 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result){
 	if (meta_new == ""){
 		try{
 			//TEST152
-			testpr("XXXXXXXXXX\n")
-			z_list.db1[romlist][gamename].rawset(metadata.ids[result],all_meta_original[romlist][gamename][metadata.ids[result]])
-			all_meta_edited[romlist][gamename].rawdelete(metadata.ids[result])
-			if (all_meta_edited[romlist][gamename].len() == 0){
-				all_meta_edited[romlist].rawdelete(gamename)
+			z_list.db1[romlist][gamename].rawset(metadata.ids[result],z_list.dboriginal[romlist][gamename][metadata.ids[result]])
+			z_list.dbmeta[romlist][gamename].rawdelete(metadata.ids[result])
+			if (z_list.dbmeta[romlist][gamename].len() == 0){
+				z_list.dbmeta[romlist].rawdelete(gamename)
 			}
 		} catch(err){
-			testpr("YYYYYYYYYY\n")
 		}
 		metamenu(result)
 	}
@@ -4848,13 +4900,13 @@ function metamenu(starter){
 
 	foreach (id, item in metadata.ids){
 		metavals.push (z_list.gametable[z_list.index][item])
-		try {metavals[id] = all_meta_original[romlist][gamename][item]}catch(err){}
-		try {metavals[id] = all_meta_edited[romlist][gamename][item]}catch(err){}
+		try {metavals[id] = z_list.dboriginal[romlist][gamename][item]}catch(err){}
+		try {metavals[id] = z_list.dbmeta[romlist][gamename][item]}catch(err){}
 		metaglyphs.push(0)
 
 		metaflag.push(false)
 		try {
-			if (all_meta_edited[romlist][gamename][item] != "") {
+			if (z_list.dbmeta[romlist][gamename][item] != "") {
 				metaglyphs[id] = 0xe905
 				metaflag[id] = true
 			}
@@ -4868,7 +4920,7 @@ function metamenu(starter){
 
 		if (result != -1) {
 			local meta_unedited = ""
-			try {meta_unedited = all_meta_original[romlist][gamename][metadata.ids[result]] }catch(err){
+			try {meta_unedited = z_list.dboriginal[romlist][gamename][metadata.ids[result]] }catch(err){
 				meta_unedited = metavals[result]
 			}
 			local meta_new = ""
@@ -4988,8 +5040,8 @@ function metamenu(starter){
 
 			outfile.write_line("return({\n")
 
-			if (all_meta_edited.rawin(romlist)){
-				foreach (item, val in all_meta_edited[romlist]){
+			if (z_list.dbmeta.rawin(romlist)){
+				foreach (item, val in z_list.dbmeta[romlist]){
 					outfile.write_line("   " + ap + item + ap + " : {\n")
 					foreach (item2, val2 in val){
 						outfile.write_line ("      "+item2+" = "+ap+val2+ap+"\n")
@@ -5000,9 +5052,8 @@ function metamenu(starter){
 			outfile.write_line("})\n")
 			outfile.write_line("\n")
 			outfile.close_file()
-			testpr("AA"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
+
 			z_listboot()
-			testpr("BB"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 			buildcategorytable()
 			mfz_build(true)
@@ -5513,6 +5564,7 @@ multifilterz.l0["Manufacturer"] <- {
 
 			// Return data when no category is selected
 			if ((v=="") || (v=="<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
+			v = split(v,"_")[0]
 
 			if (v.len() >= 7) {
 				if ((v.slice(0,7)=="bootleg") ) return {l1val = "? bootleg", l1array = false, l1name = "? bootleg", sub = false, l2val = null, l2name = null}
@@ -6646,7 +6698,7 @@ function z_mots2filter(index){
 	}
 
 	if (search.mots[0] == "z_tags") return (currentval.find(search.mots[1]) != null)
-	else return (currentval.find(search.mots[1]) == 0)
+	else return (currentval.tolower().find(search.mots[1].tolower()) == 0) //TEST152
 
 	return false
 
@@ -6657,7 +6709,7 @@ function z_checkhidden(i){
 	return false
 }
 
-//TEST152 AGGIUNGERE QUI CODICE PER METADATI?
+
 function getallgamesdb(logopic){
 	timestart("GamesDB")
 
@@ -6684,7 +6736,8 @@ function getallgamesdb(logopic){
 	local emulatordir = DirectoryListing(emulatorpath,false).results
 	local file = ""
 	local itemname = ""
-
+	local metadatapath = ""
+	local meta_edited = {}
 
 	foreach(i, item in emulatordir) {
 
@@ -6706,6 +6759,23 @@ function getallgamesdb(logopic){
 				}
 				z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
 				z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
+
+				//TEST152 POPULATE META TABLES
+				metadata.path = AF.romlistfolder + itemname + ".meta"
+				try {meta_edited = dofile(metadata.path)}catch(err){}
+				if (meta_edited.len() > 0){
+					z_list.dbmeta[itemname] <- meta_edited // Adds a table for edited metadata
+					z_list.dboriginal[itemname] <- {}
+					foreach (gametable, gamemetas in meta_edited){
+						z_list.dboriginal[itemname].rawset(gametable,{})
+						foreach (item, val in gamemetas){
+							z_list.dboriginal[itemname][gametable].rawset(item, z_list.db1[itemname][gametable][item])
+						}
+					}
+					//all_meta_original[item] <- {} // Create an empty table that will be populated afterwards
+				}
+				meta_edited = {}
+
 
 				// Build global tags table
 				foreach (id, item in z_list.db2[itemname]){
@@ -6729,15 +6799,16 @@ function z_listboot(){
 
 	z_updatetagstable()
 
-	testpr("CC"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 	//Reset meta_edited and meta_original
+	/*
 	meta_edited = {}
 	meta_original = {}
 	all_meta_edited = {}
 	all_meta_original = {}
 	metadata.path = ""
-
+*/
 	//Update metadata editing structures
+	/*
 	foreach(item, val in z_list.allromlists){
 		metadata.path = AF.romlistfolder + item + ".meta"
 		try {meta_edited = dofile(metadata.path)}catch(err){}
@@ -6747,8 +6818,12 @@ function z_listboot(){
 		}
 		meta_edited = {}
 	}
+	*/
 	timestart("z_rawset")
-	testpr("DD"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
+
+	// TEST152
+	// NON FACCIO PIU' NESSUN CONTROLLO SUI
+	// METADATI DA RESETTARE? VA BENE?
 
 /* THIS PART IS NOT NEEDED ANYMORE BECAUSE ALL THE CHECKS ARE DONE AT BOOT
 	foreach (item, val in z_list.allromlists){
@@ -6760,11 +6835,14 @@ function z_listboot(){
 	}
 	BUT THE LAST PART IS STILL NEEDED TO REMOVE METADATA EDITED FROM THE DB
 */
+
+	/*
 	timestart("z_rawset")
 	foreach (item, val in z_list.allromlists){
 		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
 	}
 	timestop("z_rawset")
+	*/
 
 	z_list.boot = []
 	z_list.boot2 = []
@@ -6793,30 +6871,24 @@ timestart("boot")
 
 		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
-	testpr(z_list.boot[325].z_manufacturer+"\n")
-	testpr("EE"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	timestop("boot")
 
 	z_updatetagstable()
-	testpr(z_list.boot[325].z_manufacturer+"\n")
-	testpr("FF"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	//apply metadata customisation
 	for (local i = 0 ; i < fe.list.size; i++){
 		local game_edited = false
-		try {game_edited = all_meta_edited[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null}catch(err){}
+		try {game_edited = z_list.dbmeta[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null}catch(err){}
 
 		if (game_edited) {
-			all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name] <- {}
-			foreach (item, val in all_meta_edited[z_list.boot[i].z_emulator][z_list.boot[i].z_name]){
-				all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name][item] <- z_list.boot[i][item]
+			//all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name] <- {}
+			foreach (item, val in z_list.dbmeta[z_list.boot[i].z_emulator][z_list.boot[i].z_name]){
+				//all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name][item] <- z_list.boot[i][item]
 				z_list.boot[i][item] = val
 			}
 		}
 	}
-	testpr(z_list.boot[325].z_manufacturer+"\n")
-	testpr("GG"+z_list.db1["Super Nintendo Entertainment System"]["Donkey Kong Country (USA)"].z_manufacturer+"\n")
 
 	timestop("z_listboot")
 
@@ -8692,13 +8764,6 @@ filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 //filterdata.set_bg_rgb (200,10,10)
 pixelizefont(filterdata,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
-/*
-testpr(filterdata.font+"\n")
-filterdata.font = "fonts/font_5x4pixel.ttf"
-filterdata.line_spacing = 0.5
-filterdata.align = Align.MiddleCentre
-filterdata.margin = 0
-*/
 
 local filternumbers = data_surface.add_text( (prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"),fl.x+fl.w-UI.footermargin,fl.y+fl.h-UI.footer.h,UI.footermargin,UI.footer.h)
 filternumbers.align = Align.MiddleCentre
@@ -8710,12 +8775,6 @@ filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
 pixelizefont(filternumbers,(prf.LOWRES ? 35 * UI.scalerate/uifonts.pixel : 25 * UI.scalerate/uifonts.pixel))
-/*
-filternumbers.font = "fonts/font_5x4pixel.ttf"
-filternumbers.line_spacing = 0.7
-filternumbers.align = Align.MiddleCentre
-filternumbers.margin = 0
-*/
 
 local separatorline = data_surface.add_rectangle(fl.x+fl.w-UI.footermargin+UI.footermargin*0.3, fl.y+fl.h-UI.footer.h + UI.footer.h*0.5,UI.footermargin*0.4,1)
 separatorline.set_rgb(themeT.themetextcolor.r,themeT.themetextcolor.g,themeT.themetextcolor.b)
@@ -10516,7 +10575,7 @@ function tags_menu(){
 				}
 			}
 			z_updatetagstable() //TEST141 sposta sopra e fallo solo se il tag non era nella tagstable :O
-			saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+			saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 			mfz_build(true)
 			try {
@@ -10545,7 +10604,7 @@ function add_new_tag(){
 	function(){ //DONE
 		frosthide()
 		z_list.boot2[fe.list.index].z_tags.push (keyboard_entrytext)
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		z_list.tagstableglobal.rawset(keyboard_entrytext,0)
 		z_updatetagstable()
@@ -15595,7 +15654,7 @@ function on_transition( ttype, var0, ttime ) {
 		if (prf.RPI) fe.set_display(fe.list.display_index)
 
 		z_list.gametable2[z_list.index].z_playedcount ++
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		update_thumbdecor (focusindex.new,0,tilez[focusindex.new].AR.current)
 
@@ -15620,7 +15679,7 @@ function on_transition( ttype, var0, ttime ) {
 		local emulatorname = z_list.gametable[z_list.index].z_emulator
 
 		z_list.gametable2[z_list.index].z_rundate = datestr
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 
 //		z_list.rundatetable[emulatorname][gamename] <- datestr
@@ -15756,6 +15815,16 @@ function on_transition( ttype, var0, ttime ) {
 
 		//Update background image
 		updatecustombg()
+
+		//TEST152 per display background music
+		if ((prf.BACKGROUNDTUNE != "") && snd.bgtuneplay && prf.PERDISPLAYTUNE){
+			try {
+				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
+			} catch(err){}
+			try {
+				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
+			} catch(err){}
+		}
 
 		try {
 			prf.BOXARTMODE = ( (DISPLAYTABLE[fe.displays[fe.list.display_index].name][0] == "BOXES") ? true : false )
@@ -16016,8 +16085,8 @@ function tick( tick_time ) {
 		tilez[focusindex.new].bd_mx.set_rgb(255*huecycle.RGB.R,255*huecycle.RGB.G,255*huecycle.RGB.B)
 	}
 
-	if (snd.bgtuneplay != snd.bgtune.playing) {
-		if (snd.bgtuneplay && prf.RANDOMTUNE) 	snd.bgtune = fe.add_sound(AF.bgsongs[AF.bgsongs.len()*rand()/RAND_MAX])
+	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != snd.bgtune.playing)) {
+		if (snd.bgtuneplay) snd.bgtune.file_name = bgtunefilename()
 
 		snd.bgtune.playing = snd.bgtuneplay
 	}
@@ -16033,7 +16102,7 @@ function tick( tick_time ) {
 		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0)){
 			// Save current data on respective romlists databases
 			foreach (item, val in z_list.allromlists){
-				saveromdb (item, z_list.db1[item], "db1")
+				saveromdb1 (item, z_list.db1[item])
 			}
 			AF.scrape.purgedromdirlist = null
 
@@ -17268,7 +17337,6 @@ function deletecurrentrom(){
 	}
 
 	z_list.gametable[z_list.index].z_fileisavailable = 0
-	//saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db1[z_list.gametable[z_list.index].z_emulator],"db1")
 	z_listrefreshtiles()
 
 }
@@ -17551,10 +17619,12 @@ function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
 	//TEST152
+	/*
 	if (sig == "custom1"){
 		testpr(z_list.boot[325].z_manufacturer+"\n")
 
 	}
+	*/
 	//TEST151
 /*	if (sig == "custom1"){
 		local zipball = "14.3"
@@ -18039,7 +18109,7 @@ function on_signal( sig ){
 		}
 
 		// Save rhe rom database with new data
-		saveromdb (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator],"db2")
+		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		// Upgrade the mfz_fields and refresh the mfz filter results
 		mfz_build(true)
@@ -18204,7 +18274,8 @@ function on_signal( sig ){
 
 						if (result == 2) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
-							search.mots2string = ltxt("Manufacturer",AF.LNG)+":"+search.mots[1]
+							if (search.mots[1] != "") search.mots[1] = split(search.mots[1],"_")[0]
+ 							search.mots2string = ltxt("Manufacturer",AF.LNG)+":"+search.mots[1]
 						}
 
 						if (result == 3) {
