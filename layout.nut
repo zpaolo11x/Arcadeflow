@@ -6767,9 +6767,11 @@ function getallgamesdb(logopic){
 					z_list.dbmeta[itemname] <- meta_edited // Adds a table for edited metadata
 					z_list.dboriginal[itemname] <- {}
 					foreach (gametable, gamemetas in meta_edited){
-						z_list.dboriginal[itemname].rawset(gametable,{})
-						foreach (item, val in gamemetas){
-							z_list.dboriginal[itemname][gametable].rawset(item, z_list.db1[itemname][gametable][item])
+						if (z_list.db1[itemname].rawin(gametable)){
+							z_list.dboriginal[itemname].rawset(gametable,{})
+							foreach (item, val in gamemetas){
+								z_list.dboriginal[itemname][gametable].rawset(item, z_list.db1[itemname][gametable][item])
+							}
 						}
 					}
 					//all_meta_original[item] <- {} // Create an empty table that will be populated afterwards
