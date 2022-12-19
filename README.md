@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.2 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.3 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,13 +10,9 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.2 #
+## What's new in v 15.3 #
 
-- Added per display background music
-- Show specific manufacturer year logo by adding _number to the name
-- Fixed case sensitive manufacturer name match
-- Fixed issue with metadata saved to game database
-- Fixed memory leak when playing random bgm
+- Fixed bug with metadata that crashed AF
 
 ## Emulator system identifier #
 
@@ -188,7 +184,7 @@ Enable and edit color cycling animation of tile highlight border
 - 'Start hue' : Define the start value of the hue cycle (0 - 359)
 - 'Stop hue' : Define the stop value of the hue cycle (0 - 359)
 
-#### ❗ AUDIO ❗
+#### AUDIO
 Configure layout sounds and audio options for videos
 
 - 'Enable theme sounds' : Enable audio sounds when browsing and moving around the theme
@@ -196,7 +192,7 @@ Configure layout sounds and audio options for videos
 - 'Audio in videos (history)' : Select wether you want to play audio in videos on history detail page
 - 'Layout background music' : Chose a background music file to play while using Arcadeflow
 - 'Randomize background music' : If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music
-- '❗ Per display background music ❗' : If this is enabled, Arcadeflow will play the music file that has the same name as the current display
+- 'Per display background music' : If this is enabled, Arcadeflow will play the music file that has the same name as the current display
 - 'Stop bg music in attract mode' : Stops playing the layout background music during attract mode
 
 #### BUTTONS
@@ -383,6 +379,14 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.2*
+
+- Added per display background music
+- Show specific manufacturer year logo by adding _number to the name
+- Fixed case sensitive manufacturer name match
+- Fixed issue with metadata saved to game database
+- Fixed memory leak when playing random bgm
 
 *v15.1*
 
