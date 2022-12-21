@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.3
+// Arcadeflow - v 15.4
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.3"
+	version = "15.4"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -1049,6 +1049,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "lowspecmode", glyph = 0xe994, initvar = function(val,prf){prf.LOWSPECMODE <- val}, title = "Low Spec mode", help = "Reduce most visual effects to boost speed on lower spec systems" , options = ["Yes","No"], values = [true,false], selection = 1, picsel=["lslowspec"+AF.prefs.imgext,"lsdefault"+AF.prefs.imgext], pic = "lslowspec1"+AF.prefs.imgext},
 {v = 7.2, varname = "datashadowsmooth", glyph = 0xe994, initvar = function(val,prf){prf.DATASHADOWSMOOTH <- val}, title = "Smooth shadow", help = "Enable smooth shadow under game title and data in the GUI" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnodrop"+AF.prefs.imgext], pic = "lsdrop"+AF.prefs.imgext},
 {v = 7.2, varname = "snapglow", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGLOW <- val}, title = "Glow effect", help = "Add a glowing halo around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnoglow"+AF.prefs.imgext],pic = "lsglow"+AF.prefs.imgext},
+{v = 15.4, varname = "snapborder", glyph = 0xe994, initvar = function(val,prf){prf.SNAPBORDER <- val}, title = "Snap border", help = "Add a white border around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 7.2, varname = "snapgradient", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGRADIENT <- val}, title = "Thumb gradient", help = "Blurs the artwork behind the game logo so it's more readable" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsgradient"+AF.prefs.imgext],pic = "lsgradient1"+AF.prefs.imgext},
 ])
 
@@ -1589,6 +1590,7 @@ if (prf.LOWSPECMODE){
 	prf.SNAPGRADIENT = false
 	prf.SNAPGLOW = false
 }
+
 
 /// HUECYCLE ///
 local huecycle = {
@@ -14467,7 +14469,7 @@ function update_borderglow(i,var,aspect){
 
 	local bd_margin = round(UI.zoomedpadding * UI.whiteborder,1)
 	local bd_margin2 = UI.padding * (1.0 - UI.whiteborder)
-	tilez[i].bd_mx.visible = true
+	tilez[i].bd_mx.visible = prf.SNAPBORDER
 	tilez[i].glomx.visible = prf.SNAPGLOW
 
 	if (prf.SNAPGLOW) {
