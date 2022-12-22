@@ -2058,7 +2058,8 @@ function bgtunefilename(){
 
 //TEST152
 if (prf.BACKGROUNDTUNE != ""){
-	snd.bgtune = fe.add_sound(bgtunefilename())
+	//TEST154AMBIENT snd.bgtune = fe.add_sound(bgtunefilename())
+	fe.ambient_sound.file_name = prf.BACKGROUNDTUNE
 }
 
 snd.plingsound.pitch = 2.0
@@ -15823,10 +15824,12 @@ function on_transition( ttype, var0, ttime ) {
 		//TEST152 per display background music
 		if ((prf.BACKGROUNDTUNE != "") && snd.bgtuneplay && prf.PERDISPLAYTUNE){
 			try {
-				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
+				//TEST154AMBIENT snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
+				fe.ambient_sound.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
 			} catch(err){}
 			try {
-				snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
+				//TEST154AMBIENT snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
+				fe.ambient_sound.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
 			} catch(err){}
 		}
 
@@ -16089,10 +16092,10 @@ function tick( tick_time ) {
 		tilez[focusindex.new].bd_mx.set_rgb(255*huecycle.RGB.R,255*huecycle.RGB.G,255*huecycle.RGB.B)
 	}
 
-	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != snd.bgtune.playing)) {
-		if (snd.bgtuneplay) snd.bgtune.file_name = bgtunefilename()
+	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != fe.ambient_sound.playing)) {//TEST154AMBIENT snd.bgtune.playing)) {
+		if (snd.bgtuneplay) fe.ambient_sound.file_name = bgtunefilename() //TEST154AMBIENT snd.bgtune.file_name = bgtunefilename()
 
-		snd.bgtune.playing = snd.bgtuneplay
+		fe.ambient_sound.playing = snd.bgtuneplay //TEST154AMBIENT  snd.bgtune.playing = snd.bgtuneplay
 	}
 
 	if (snd.attracttuneplay != snd.attracttune.playing) {
