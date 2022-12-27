@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.3 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.4 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,9 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.3 #
+## What's new in v 15.4 #
 
-- Fixed bug with metadata that crashed AF
+- Added transparent background to boxart mode
+- Added option to enable/disable white border around thumbnails
+- Ambient volume set in AM option affects AF background music volume
 
 ## Emulator system identifier #
 
@@ -264,7 +266,7 @@ Arcadeflow has its own attract mode screensaver that kicks in after some inactiv
 - 'Background music' : Path to a music file to play in background
 - 'Enable game sound' : Enable game sounds during attract mode
 
-#### PERFORMANCE & FX
+#### ❗ PERFORMANCE & FX ❗
 Turn on or off special effects that might impact on Arcadeflow performance
 
 - 'Adjust performance' : Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
@@ -279,6 +281,7 @@ Turn on or off special effects that might impact on Arcadeflow performance
 - 'Low Spec mode' : Reduce most visual effects to boost speed on lower spec systems
 - 'Smooth shadow' : Enable smooth shadow under game title and data in the GUI
 - 'Glow effect' : Add a glowing halo around the selected game thumbnail
+- '❗ Snap border ❗' : Add a white border around the selected game thumbnail
 - 'Thumb gradient' : Blurs the artwork behind the game logo so it's more readable
 
 #### MULTIPLE MONITOR
@@ -379,6 +382,10 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.3*
+
+- Fixed bug with metadata that crashed AF
 
 *v15.2*
 
