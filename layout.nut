@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.4
+// Arcadeflow - v 15.5
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.4"
+	version = "15.5"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -856,7 +856,7 @@ AF.prefs.l1.push([
 {v = 10.5, varname = "powermenu", glyph = 0xe9b6, initvar = function(val,prf){prf.POWERMENU <- val}, title = "Power menu", help = "Enable or disable power options in exit menu" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
 {v = 7.2, varname = "horizontalrows", glyph = 0xea72, initvar = function(val,prf){prf.HORIZONTALROWS <- val}, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode" , options = ["1-Small", "1", "2", "3"], values = [-1,1,2,3], selection = 2, picsel = ["rows1mini"+AF.prefs.imgext,"rows1"+AF.prefs.imgext,"rows2"+AF.prefs.imgext,"rows3"+AF.prefs.imgext],pic = "rows2"+AF.prefs.imgext},
-{v = 7.2, varname = "verticalrows", glyph = 0xea71, initvar = function(val,prf){prf.VERTICALROWS <- val}, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1", "2", "3"], values = [1,2,3], selection = 2, picsel = ["rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
+{v = 15.5, varname = "verticalrows", glyph = 0xea71, initvar = function(val,prf){prf.VERTICALROWS <- val}, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1-Small","1", "2", "3"], values = [-1,1,2,3], selection = 3, picsel = ["rows1mini"+AF.prefs.imgext,"rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
 {v = 7.2, varname = "cleanlayout", glyph = 0xe997, initvar = function(val,prf){prf.CLEANLAYOUT <- val}, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
 {v = 7.2, varname = "lowres", glyph = 0xe997, initvar = function(val,prf){prf.LOWRES <- val}, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
 {v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
@@ -2402,7 +2402,16 @@ fl.surf2.mipmap = 1
 fl.surf2.zorder = 100000
 */
 if (fl.h_os > fl.w_os) UI.vertical = true
-if (UI.vertical) prf.SLIMLINE = false
+if (UI.vertical) {
+	if (prf.VERTICALROWS == -1){
+		prf.VERTICALROWS = 1
+		prf.SLIMLINE = true
+	}
+	else {
+		prf.VERTICALROWS = prf.VERTICALROWS.tointeger()
+		prf.SLIMLINE = false
+	}
+}
 if (UI.vertical) UI.rows = prf.VERTICALROWS
 
 UI.rows = (prf.LOWRES ? 1 : UI.rows)
@@ -12383,6 +12392,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.noteitems[i].word_wrap = true
 		zmenu.noteitems[i].margin = 0
 		zmenu.noteitems[i].align = Align.MiddleRight
+		zmenu.noteitems[i].line_spacing = 0.8//1.0
 		zmenu.noteitems[i].bg_alpha = 0
 		zmenu.noteitems[i].set_rgb(255,255,255)
 
@@ -12419,7 +12429,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].margin = 0
 		zmenu.items[i].align = (center ? Align.MiddleCentre : Align.MiddleLeft)
 		zmenu.items[i].bg_alpha = 0
-		zmenu.items[i].line_spacing = 1.0
+		zmenu.items[i].line_spacing = 0.8//1.0
 		zmenu.items[i].set_rgb(255,255,255)
 		//zmenu.items[i].set_bg_rgb(100,0,0)
 
@@ -12445,7 +12455,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 		// Check if there's space for item _and_ notes
 		if (!center){
-			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > (zmenu.tilew - zmenu.items[i].x)) {
+			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > 0.9*(zmenu.tilew - zmenu.items[i].x)) {
 				zmenu.items[i].width = zmenu.items[i].width * 0.5
 				zmenu.noteitems[i].x = zmenu.items[i].x + zmenu.items[i].width
 				zmenu.noteitems[i].width = zmenu.tilew - zmenu.pad + (shrink ? zmenu.pad - disp.width : 0) - zmenu.items[i].width - zmenu.items[i].x
