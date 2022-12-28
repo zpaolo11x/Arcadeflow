@@ -160,10 +160,10 @@ function parsejsonA(scrapeid, gamedata){
 
 
    // PARSING MEDIA SCRAPE
-   local ss_cat = ["ss","wheel-hd","wheel","video-normalized","video","box-2D","marquee","sstitle","fanart"]
-   local AF_priority = [0,1,0,1,0,0,0,0,0]
-   local AF_cat = ["snap","wheel","wheel","video","video","flyer","marquee","title","fanart"]
-   local AF_extA = ["png","png","png","mp4","mp4","png","png","png","png"]
+   local ss_cat = ["ss","wheel-hd","wheel","video-normalized","video","box-2D","marquee","sstitle","fanart","box-3D"]
+   local AF_priority = [0,1,0,1,0,0,0,0,0,0]
+   local AF_cat = ["snap","wheel","wheel","video","video","flyer","marquee","title","fanart","box3d"]
+   local AF_extA = ["png","png","png","mp4","mp4","png","png","png","png","png"]
 
    gamedata.adb_media = {}
 
@@ -352,9 +352,9 @@ function parsejson(scrapeid, gamedata){
       }
 
    // PARSING MEDIA SCRAPE
-   local ss_cat = ["ss","wheel-hd","wheel","video-normalized","video","box-2D","marquee","sstitle","fanart"]
-   local AF_priority = [0,1,0,1,0,0,0,0,0]
-   local AF_cat = ["snap","wheel","wheel","video","video","flyer","marquee","title","fanart"]
+   local ss_cat = ["ss","wheel-hd","wheel","video-normalized","video","box-2D","marquee","sstitle","fanart","box-3D"]
+   local AF_priority = [0,1,0,1,0,0,0,0,0,0]
+   local AF_cat = ["snap","wheel","wheel","video","video","flyer","marquee","title","fanart","box3d"]
 
    /*
    local catmap = {}
