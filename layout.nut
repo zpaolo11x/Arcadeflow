@@ -990,7 +990,7 @@ AF.prefs.l1.push([
 {v = 9.0, varname = "olddisplaychange", glyph = 0xe912, initvar = function(val,prf){prf.OLDDISPLAYCHANGE <- val}, title = "Enable Fast Displays Change", help = "Disable fast display change if you want to use other layouts for different displays" , options = ["Yes", "No"], values= [false,true],selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Look and Feel", selection = AF.req.liner},
 {v = 7.2, varname = "dmpgeneratelogo", glyph = 0xe90d, initvar = function(val,prf){prf.DMPGENERATELOGO <- val}, title = "Generate display logo", help = "Generate displays name related artwork for displays list" , options = ["Yes","No"], values = [true,false], selection = 0,picsel=["dmplistlogoyes"+AF.prefs.imgext,"dmplistlogono"+AF.prefs.imgext], pic = "dmplistlogo"+AF.prefs.imgext},
-{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "By display name", "By system year", "By system brand then name", "By system brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
+{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "Display name", "System year", "System brand then name", "System brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
 {v = 9.4, varname = "dmpseparators", glyph = 0xeaf5, initvar = function(val,prf){prf.DMPSEPARATORS <- val}, title = "Show group separators", help = "When sorting by brand show separators in the menu for each brand" , options = ["Yes", "No"], values= [true,false],selection = 0},
 {v = 12.3, varname = "dmpimages", glyph = 0xea77, initvar = function(val,prf){prf.DMPIMAGES <- val}, title = "Displays menu layout", help = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder" , options = ["List", "List with artwork", "list with walls"], values= [null,"ARTWORK","WALLS"],selection = 2, picsel = ["dmplistartno"+AF.prefs.imgext,"dmplistartyes"+AF.prefs.imgext],pic = "dmplistartyes"+AF.prefs.imgext},
 {v = 9.8, varname = "dmart", glyph = 0xe90d, initvar = function(val,prf){prf.DMART <- val}, title = "Artwork Source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
@@ -12357,6 +12357,11 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	local fontscaler = 0.7
 	local iindex = 0
 
+	local items_x = shrink ? 0 : zmenu.glyphw
+	local items_w = shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
+	local noteitems_x = 0
+	local noteitems_w = shrink ? zmenu.tilew - disp.width : zmenu.tilew - zmenu.pad
+
 	// Hide excess items from menu display
 	for (local i = 0 ; i < zmenu.items.len() ; i++ ){
 		try {disp.images[i].visible = false} catch (err) {}
@@ -12384,7 +12389,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.noteitems.push(null)
 			zmenu.noteitems[i] = zmenu_surface.add_text(" ",0,0,1,1)
 		}
-		zmenu.noteitems[i].set_pos(0, zmenu.midoffset + i * zmenu.tileh , zmenu.tilew - zmenu.pad + (shrink ? zmenu.pad - disp.width : 0), zmenu.tileh)
+		zmenu.noteitems[i].set_pos(noteitems_x, zmenu.midoffset + i * zmenu.tileh , noteitems_w, zmenu.tileh)
 		zmenu.noteitems[i].visible = true
 		zmenu.noteitems[i].msg = zmenu.notes[i]
 		zmenu.noteitems[i].font = uifonts.gui
@@ -12419,7 +12424,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.items.push(null)
 			zmenu.items[i] = zmenu_surface.add_text(" ",0,0,1,1)
 		}
-		zmenu.items[i].set_pos(shrink ? 0 : zmenu.glyphw , zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.glyphw) + (shrink ?  -1.0* disp.width : 0), zmenu.tileh)
+		zmenu.items[i].set_pos(items_x , zmenu.midoffset + i * zmenu.tileh , items_w, zmenu.tileh)
 		zmenu.items[i].msg = menuarray[i]
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW",AF.LNG)
 		zmenu.items[i].font = uifonts.gui
@@ -12455,11 +12460,23 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 		// Check if there's space for item _and_ notes
 		if (!center){
+			if (zmenu.noteitems[i].msg_width > 0.45 * items_w + items_x+items_w-noteitems_w) {
+				zmenu.noteitems[i].x = items_x + items_w * 0.55
+				zmenu.noteitems[i].width = noteitems_w - zmenu.noteitems[i].x
+				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
+			}
+			else if (glypharray[i]!=-1){
+				zmenu.items[i].width = items_w - zmenu.noteitems[i].msg_width - zmenu.pad - items_x
+			}
+
+			///TEST155
+			/*
 			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > 0.9*(zmenu.tilew - zmenu.items[i].x)) {
-				zmenu.items[i].width = zmenu.items[i].width * 0.5
+				zmenu.items[i].width = zmenu.items[i].width *0.5
 				zmenu.noteitems[i].x = zmenu.items[i].x + zmenu.items[i].width
 				zmenu.noteitems[i].width = zmenu.tilew - zmenu.pad + (shrink ? zmenu.pad - disp.width : 0) - zmenu.items[i].width - zmenu.items[i].x
 			}
+			*/
 		}
 
 		if (zmenu.dmp && prf.ALLGAMES){
