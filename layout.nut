@@ -2297,6 +2297,7 @@ local UI = {
 	footer = {
 		h = 0 //content size
 		h2 = 0 //spacer size
+		h3 = 0 //for slimline use
 	}
 
 	footermargin = 0
@@ -2435,7 +2436,13 @@ UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!pr
 UI.footer.h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
 UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
 UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
+
+// If slimline is enabled the label row is raised from the bottom
+// but footer.h3 is used to keep track of old value to size menus
+UI.footer.h3 = UI.footer.h
 if (prf.SLIMLINE) UI.footer.h = floor(UI.footer.h * 1.4)
+
+
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2
 
@@ -7803,8 +7810,8 @@ local overlay = {
 	filterbg = null
 	//TEST155 CHECK PER QUANDO C'E' SLIMLINE
 	ex_top = floor(UI.header.h * 0.6)
-	ex_bottom = floor(UI.footer.h * 0.5)
-	in_side = UI.vertical ? floor(UI.footer.h * 0.5) : floor(UI.footer.h * 0.65)
+	ex_bottom = floor(UI.footer.h3 * 0.5)
+	in_side = UI.vertical ? floor(UI.footer.h3 * 0.5) : floor(UI.footer.h3 * 0.65)
 	x = 0
 	y = 0
 	w = 0
@@ -7822,7 +7829,7 @@ overlay.labelheight = overlay.rowsize * 1
 overlay.labelcharsize = overlay.charsize * 1
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
-overlay.menuheight = fl.h - UI.header.h - UI.footer.h - overlay.labelheight + overlay.ex_top + overlay.ex_bottom
+overlay.menuheight = fl.h - UI.header.h - UI.footer.h3 - overlay.labelheight + overlay.ex_top + overlay.ex_bottom
 overlay.fullwidth = ((overlay.menuheight + overlay.labelheight)*3.0/2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.menuheight + overlay.labelheight)*3.0/2.0 : (fl.w - 2 * overlay.in_side))
 
 // Integer conversion and fullwidth is even
@@ -9240,7 +9247,7 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelheight-2,overlay.w,2)
 
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-UI.footer.h+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-UI.footer.h3+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50 * UI.scalerate), overlay.y,floor(50 * UI.scalerate), overlay.h))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
