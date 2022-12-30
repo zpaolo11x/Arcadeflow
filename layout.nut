@@ -9436,7 +9436,7 @@ prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew , prfmenu.picrateh)
-prfmenu.description.set_pos (prfmenu.bg.x + UI.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*UI.padding , prfmenu.picrateh)
+prfmenu.description.set_pos (prfmenu.bg.x + floor(UI.padding * 0.5) + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*floor(UI.padding * 0.5) , prfmenu.picrateh)
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
 function buildselectarray(options,selection){
