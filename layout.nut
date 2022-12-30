@@ -7792,7 +7792,7 @@ local overlay = {
 	fullwidth = null
 	menuheight = null
 	menuheight_temp = null
-
+	padding = null
 	background = null
 	listbox = null
 	label = null
@@ -7801,6 +7801,7 @@ local overlay = {
 	shad = []
 	wline = null
 	filterbg = null
+	//TEST155 CHECK PER QUANDO C'E' SLIMLINE
 	ex_top = floor(UI.header.h * 0.6)
 	ex_bottom = floor(UI.footer.h * 0.5)
 	in_side = UI.vertical ? floor(UI.footer.h * 0.5) : floor(UI.footer.h * 0.65)
@@ -7839,6 +7840,8 @@ overlay.menuheight_temp = overlay.menuheight
 overlay.menuheight = overlay.rows * floor(overlay.menuheight * 1.0/overlay.rows)
 overlay.labelheight = overlay.labelheight + overlay.menuheight_temp - overlay.menuheight
 overlay.rowsize = overlay.menuheight * 1.0 / overlay.rows
+
+overlay.padding = floor(0.5*overlay.rowsize)
 
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
@@ -9224,8 +9227,8 @@ overlay.sidelabel.set_bg_rgb(0,200,0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 pixelizefont (overlay.sidelabel, overlay.labelcharsize*0.6,2)
-
-overlay.glyph = fe.add_text("", overlay.x + UI.padding, overlay.y, overlay.labelheight*0.98, overlay.labelheight*0.98 )
+//TEST155pad
+overlay.glyph = fe.add_text("", overlay.x + overlay.padding, overlay.y, overlay.labelheight*0.98, overlay.labelheight*0.98 )
 overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize*1.25
@@ -9412,9 +9415,9 @@ local prfmenu = {
 	picratew = overlay.fullwidth * 0.3
 
 }
-
+//TEST155pad
 // First calculation of bottom panel
-prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - UI.padding * 0.5
+prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - overlay.padding * 0.5
 prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew)*1.0/overlay.rows))
 prfmenu.picrateh = prfmenu.picratew
 
@@ -9436,7 +9439,8 @@ prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew , prfmenu.picrateh)
-prfmenu.description.set_pos (prfmenu.bg.x + UI.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*UI.padding , prfmenu.picrateh)
+//TEST155pad
+prfmenu.description.set_pos (prfmenu.bg.x + overlay.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*overlay.padding , prfmenu.picrateh)
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
 function buildselectarray(options,selection){
@@ -12002,7 +12006,8 @@ local disp = {
 	xstop = 0
 	   bgtileh = 0
 	speed = null
-	pad = UI.padding
+	//TEST155pad
+	pad = overlay.padding
 	width = null
 	height = overlay.menuheight
 	spacing = null
@@ -12117,7 +12122,8 @@ zmenu = {
 	xstart = 0
 	xstop = 0
 	speed = null
-	pad = floor(UI.padding * 0.5)
+	//TEST155pad
+	pad = floor(overlay.padding * 0.5)
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.menuheight
@@ -12650,7 +12656,8 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 	//TEST123 CHECK IF THIS CAN BE MOVED OUTSIDE OF THE CREATION
 	if (prfmenu.showing){
-		zmenu.blanker = zmenu_surface.add_image(AF.folder+"pics/black.png",0,zmenu.height,fl.w,prfmenu.picrateh+UI.padding)
+		//TEST155pad
+		zmenu.blanker = zmenu_surface.add_image(AF.folder+"pics/black.png",0,zmenu.height,fl.w,prfmenu.picrateh+overlay.padding)
 		zmenu.blanker.visible = true
 	}
 
