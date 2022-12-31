@@ -7848,8 +7848,8 @@ overlay.menuheight = overlay.rows * floor(overlay.menuheight * 1.0/overlay.rows)
 overlay.labelheight = overlay.labelheight + overlay.menuheight_temp - overlay.menuheight
 overlay.rowsize = overlay.menuheight * 1.0 / overlay.rows
 
-overlay.padding = floor(0.5*overlay.rowsize)
-
+overlay.padding = floor(0.5*overlay.charsize)
+testpr ("pad:"+overlay.padding+"\n")
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
@@ -12130,7 +12130,7 @@ zmenu = {
 	xstop = 0
 	speed = null
 	//TEST155pad
-	pad = floor(overlay.padding * 0.5)
+	pad = floor(overlay.padding)//TEST155 * 0.5)
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.menuheight
@@ -12141,7 +12141,7 @@ zmenu = {
 	glyphs = []
 	notes = []
 	noteitems = []
-	glyphw = floor(overlay.menuheight/overlay.rows)
+	glyphw = floor(overlay.padding*5.25)//TEST155 floor(overlay.menuheight/overlay.rows)
 	glyphh = floor(overlay.menuheight/overlay.rows)
 	midoffset = 0
 	virtualheight = 0
