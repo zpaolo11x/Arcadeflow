@@ -7849,7 +7849,7 @@ overlay.labelheight = overlay.labelheight + overlay.menuheight_temp - overlay.me
 overlay.rowsize = overlay.menuheight * 1.0 / overlay.rows
 
 overlay.padding = floor(0.5*overlay.charsize)
-testpr ("pad:"+overlay.padding+"\n")
+
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
