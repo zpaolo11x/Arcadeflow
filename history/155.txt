@@ -4,3 +4,4 @@ Added option for 1 line small thumbs in vertical
 Added option to show 3D box art
 Enabled scraping of 3D box art
 Fixed bug related to menu sizing
+Minor bug fixes
