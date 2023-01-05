@@ -881,10 +881,10 @@ BR | Define o estilo utilizado quando se ativa o menu Displays, uma lista simple
 FR | Précisez le style à utilisé dans le Displays Menu: Une liste simple, ou une liste avec le graphique système
 DE | Style für das Display Menu auswählen, einfache Liste oder Liste plus System Artwork aus dem menu-artwork Ordner
 
-EN | Artwork Source
+EN | Artwork source
 IT | Fonte delle immagini
 ES | Origen del artwork
-DE | Artwork Quelle
+DE | Artwork quelle
 
 EN | Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder
 IT | Scegli la fonte delle immagini dei sistemi: la libreria di Arcadeflow o quelle nella cartella menu-art

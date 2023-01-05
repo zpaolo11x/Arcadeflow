@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.4
+// Arcadeflow - v 15.5
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.4"
+	version = "15.5"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -856,7 +856,7 @@ AF.prefs.l1.push([
 {v = 10.5, varname = "powermenu", glyph = 0xe9b6, initvar = function(val,prf){prf.POWERMENU <- val}, title = "Power menu", help = "Enable or disable power options in exit menu" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
 {v = 7.2, varname = "horizontalrows", glyph = 0xea72, initvar = function(val,prf){prf.HORIZONTALROWS <- val}, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode" , options = ["1-Small", "1", "2", "3"], values = [-1,1,2,3], selection = 2, picsel = ["rows1mini"+AF.prefs.imgext,"rows1"+AF.prefs.imgext,"rows2"+AF.prefs.imgext,"rows3"+AF.prefs.imgext],pic = "rows2"+AF.prefs.imgext},
-{v = 7.2, varname = "verticalrows", glyph = 0xea71, initvar = function(val,prf){prf.VERTICALROWS <- val}, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1", "2", "3"], values = [1,2,3], selection = 2, picsel = ["rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
+{v = 15.5, varname = "verticalrows", glyph = 0xea71, initvar = function(val,prf){prf.VERTICALROWS <- val}, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1-Small","1", "2", "3"], values = [-1,1,2,3], selection = 3, picsel = ["rows1mini"+AF.prefs.imgext,"rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
 {v = 7.2, varname = "cleanlayout", glyph = 0xe997, initvar = function(val,prf){prf.CLEANLAYOUT <- val}, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
 {v = 7.2, varname = "lowres", glyph = 0xe997, initvar = function(val,prf){prf.LOWRES <- val}, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
 {v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
@@ -882,12 +882,12 @@ AF.prefs.l1.push([
 {v = 10.4, varname = "tilezoom", glyph = 0xea57, initvar = function(val,prf){prf.TILEZOOM <- val}, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
 {v = 10.7, varname = "logosonly", glyph = 0xea6d, initvar = function(val,prf){prf.LOGOSONLY <- val}, title = "Show only logos", help = "If enabled, only game tilte logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = AF.req.liner},
-{v = 8.8, varname = "titleart", glyph = 0xe915, initvar = function(val,prf){prf.TITLEART <- val}, title = "Snapshot artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
+{v = 8.8, varname = "titleart", glyph = 0xe915, initvar = function(val,prf){prf.TITLEART <- val}, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
 {v = 8.4, varname = "titleonsnap", glyph = 0xea6d, initvar = function(val,prf){prf.TITLEONSNAP <- val}, title = "Show game title", help = "Show the title of the game over the thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Box Art Options", selection = AF.req.liner},
 {v = 7.2, varname = "boxartmode", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTMODE <- val}, title = "Box Art mode", help = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["boxarton"+AF.prefs.imgext,"boxartoff"+AF.prefs.imgext], pic = "boxart"+AF.prefs.imgext},
 {v = 7.2, varname = "titleonbox", glyph = 0xe918, initvar = function(val,prf){prf.TITLEONBOX <- val}, title = "Game title over box art", help = "Shows the game title artwork overlayed on the box art graphics" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["boxarttitle"+AF.prefs.imgext,"boxarton"+AF.prefs.imgext],pic = "boxarttitle"+AF.prefs.imgext},
-{v = 7.2, varname = "boxartsource", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTSOURCE <- val}, title = "Box Art artwork source", help = "Chose the artwork source for box art graphics" , options = ["flyer", "fanart"], values = ["flyer", "fanart"], selection = 0 },
+{v = 15.5, varname = "boxartsource", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTSOURCE <- val}, title = "Artwork source", help = "Chose the artwork source for box art graphics" , options = ["flyer", "fanart","box3d"], values = ["flyer", "fanart", "box3d"], selection = 0 },
 {v = 0.0, varname = "", glyph = -1, title = "Video Snaps", selection = AF.req.liner},
 {v = 7.2, varname = "thumbvideo", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDEO <- val}, title = "Video thumbs", help = "Enable video overlay on snapshot thumbnails" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 8.5, varname = "fadevideotitle", glyph = 0xe913, initvar = function(val,prf){prf.FADEVIDEOTITLE <- val}, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
@@ -898,7 +898,7 @@ AF.prefs.l1.push([
 {v = 9.6, varname = "redcross", glyph = 0xe936, initvar = function(val,prf){prf.REDCROSS <- val}, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 7.2, varname = "newgame", glyph = 0xe936, initvar = function(val,prf){prf.NEWGAME <- val}, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
 {v = 7.2, varname = "tagshow", glyph = 0xe936, initvar = function(val,prf){prf.TAGSHOW <- val}, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decortag"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decortag"+AF.prefs.imgext},
-{v = 7.2, varname = "tagname", glyph = 0xe936, initvar = function(val,prf){prf.TAGNAME <- val}, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = "", values = "", selection = AF.req.keyboard},
+{v = 7.2, varname = "tagname", glyph = 0xe936, initvar = function(val,prf){prf.TAGNAME <- val}, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = ["Tag"], values = "", selection = AF.req.keyboard},
 {v = 7.2, varname = "gbrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.GBRECOLOR <- val}, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference" , options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL" ,"NONE"], selection = 0, picsel = ["gb"+AF.prefs.imgext,"gbclassic"+AF.prefs.imgext,"gbpocket"+AF.prefs.imgext,"gblight"+AF.prefs.imgext,"gbnone"+AF.prefs.imgext],pic = "gb"+AF.prefs.imgext},
 {v = 10.3, varname = "crtrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.CRTRECOLOR <- val}, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette" , options = ["Yes", "No"], values = [true,false], selection = 1},
 ])
@@ -990,10 +990,10 @@ AF.prefs.l1.push([
 {v = 9.0, varname = "olddisplaychange", glyph = 0xe912, initvar = function(val,prf){prf.OLDDISPLAYCHANGE <- val}, title = "Enable Fast Displays Change", help = "Disable fast display change if you want to use other layouts for different displays" , options = ["Yes", "No"], values= [false,true],selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Look and Feel", selection = AF.req.liner},
 {v = 7.2, varname = "dmpgeneratelogo", glyph = 0xe90d, initvar = function(val,prf){prf.DMPGENERATELOGO <- val}, title = "Generate display logo", help = "Generate displays name related artwork for displays list" , options = ["Yes","No"], values = [true,false], selection = 0,picsel=["dmplistlogoyes"+AF.prefs.imgext,"dmplistlogono"+AF.prefs.imgext], pic = "dmplistlogo"+AF.prefs.imgext},
-{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "By display name", "By system year", "By system brand then name", "By system brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
+{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "Display name", "System year", "System brand then name", "System brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
 {v = 9.4, varname = "dmpseparators", glyph = 0xeaf5, initvar = function(val,prf){prf.DMPSEPARATORS <- val}, title = "Show group separators", help = "When sorting by brand show separators in the menu for each brand" , options = ["Yes", "No"], values= [true,false],selection = 0},
 {v = 12.3, varname = "dmpimages", glyph = 0xea77, initvar = function(val,prf){prf.DMPIMAGES <- val}, title = "Displays menu layout", help = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder" , options = ["List", "List with artwork", "list with walls"], values= [null,"ARTWORK","WALLS"],selection = 2, picsel = ["dmplistartno"+AF.prefs.imgext,"dmplistartyes"+AF.prefs.imgext],pic = "dmplistartyes"+AF.prefs.imgext},
-{v = 9.8, varname = "dmart", glyph = 0xe90d, initvar = function(val,prf){prf.DMART <- val}, title = "Artwork Source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
+{v = 9.8, varname = "dmart", glyph = 0xe90d, initvar = function(val,prf){prf.DMART <- val}, title = "Artwork source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
 {v = 12.3, varname = "dmcategoryart", glyph = 0xe90d, initvar = function(val,prf){prf.DMCATEGORYART <- val}, title = "Enable category artwork", help = "You can separately enable/disable artwork for categories like console, computer, pinball etc." , options = ["Yes", "No"], values= [true,false],selection = 0},
 {v = 7.3, varname = "dmpgrouped", glyph = 0xea78, initvar = function(val,prf){prf.DMPGROUPED <- val}, title = "Categorized Displays Menu", help = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections" , options = ["Yes", "No"], values= [true,false],selection = 0, picsel = ["dmpgroupedyes"+AF.prefs.imgext,"dmpgroupedno"+AF.prefs.imgext],pic = "dmpgroupedyes"+AF.prefs.imgext},
 {v = 7.4, varname = "dmpexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPEXITAF <- val}, title = "Add Exit Arcadeflow to menu", help = "Add an entry to exit Arcadeflow from the displays menu page" , options = ["Yes", "No"], values= [true,false],selection = 1},
@@ -1025,10 +1025,10 @@ AF.prefs.l0.push({ label = "ATTRACT MODE", glyph = 0xe9a5, description = "Arcade
 AF.prefs.l1.push([
 {v = 7.2, varname = "amenable", glyph = 0xe9a5, initvar = function(val,prf){prf.AMENABLE <- val}, title = "Enable attract mode", help = "Enable or disable attract mode at layout startup" , options = ["From start", "Inactivity only", "Disabled"], values =["From start", "Inactivity only", "Disabled"], selection = 1,pic = "attractmode"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Look & Feel", selection = AF.req.liner},
-{v = 7.2, varname = "amtimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMTIMER <- val}, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = "", values ="120", selection = AF.req.keyboard},
-{v = 7.2, varname = "amchangetimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMCHANGETIMER <- val}, title = "Game change time (s)", help = "Time interval between each game change", options = "", values = "10", selection = AF.req.keyboard},
+{v = 7.2, varname = "amtimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMTIMER <- val}, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = ["Timer"], values ="120", selection = AF.req.keyboard},
+{v = 7.2, varname = "amchangetimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMCHANGETIMER <- val}, title = "Game change time (s)", help = "Time interval between each game change", options = ["Interval"], values = "10", selection = AF.req.keyboard},
 {v = 9.1, varname = "amshowlogo", glyph = 0xea6d, initvar = function(val,prf){prf.AMSHOWLOGO <- val}, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "ammessage", glyph = 0xea6d, initvar = function(val,prf){prf.AMMESSAGE <- val}, title = "Attract message", help = "Text to show during attract mode", options = "", values = " - PRESS ANY KEY - ", selection = AF.req.keyboard,pic = "attractmode"+AF.prefs.imgext},
+{v = 7.2, varname = "ammessage", glyph = 0xea6d, initvar = function(val,prf){prf.AMMESSAGE <- val}, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = " - PRESS ANY KEY - ", selection = AF.req.keyboard,pic = "attractmode"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
 {v = 7.2, varname = "amtune", glyph = 0xe911, initvar = function(val,prf){prf.AMTUNE <- val}, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
 {v = 7.2, varname = "amsound", glyph = 0xea27, initvar = function(val,prf){prf.AMSOUND <- val}, title = "Enable game sound", help = "Enable game sounds during attract mode" , options = ["Yes","No"], values = [true,false], selection = 0},
@@ -1038,7 +1038,7 @@ menucounter ++
 AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
 AF.prefs.l1.push([
 {v = 14.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = "", values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
+{v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = ["Res"], values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
 {v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = AF.req.liner},
 {v = 12.8, varname = "overscanw", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANW <- val}, title = "Width %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
@@ -2297,6 +2297,7 @@ local UI = {
 	footer = {
 		h = 0 //content size
 		h2 = 0 //spacer size
+		h3 = 0 //for slimline use
 	}
 
 	footermargin = 0
@@ -2402,7 +2403,16 @@ fl.surf2.mipmap = 1
 fl.surf2.zorder = 100000
 */
 if (fl.h_os > fl.w_os) UI.vertical = true
-if (UI.vertical) prf.SLIMLINE = false
+if (UI.vertical) {
+	if (prf.VERTICALROWS == -1){
+		prf.VERTICALROWS = 1
+		prf.SLIMLINE = true
+	}
+	else {
+		prf.VERTICALROWS = prf.VERTICALROWS.tointeger()
+		prf.SLIMLINE = false
+	}
+}
 if (UI.vertical) UI.rows = prf.VERTICALROWS
 
 UI.rows = (prf.LOWRES ? 1 : UI.rows)
@@ -2426,7 +2436,13 @@ UI.header.h2 = floor (prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!pr
 UI.footer.h = floor (prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate ) // content
 UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
 UI.footer.h2 = floor (prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
+
+// If slimline is enabled the label row is raised from the bottom
+// but footer.h3 is used to keep track of old value to size menus
+UI.footer.h3 = UI.footer.h
 if (prf.SLIMLINE) UI.footer.h = floor(UI.footer.h * 1.4)
+
+
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2
 
@@ -7783,7 +7799,7 @@ local overlay = {
 	fullwidth = null
 	menuheight = null
 	menuheight_temp = null
-
+	padding = null
 	background = null
 	listbox = null
 	label = null
@@ -7792,9 +7808,10 @@ local overlay = {
 	shad = []
 	wline = null
 	filterbg = null
+	//TEST155 CHECK PER QUANDO C'E' SLIMLINE
 	ex_top = floor(UI.header.h * 0.6)
-	ex_bottom = floor(UI.footer.h * 0.5)
-	in_side = UI.vertical ? floor(UI.footer.h * 0.5) : floor(UI.footer.h * 0.65)
+	ex_bottom = floor(UI.footer.h3 * 0.5)
+	in_side = UI.vertical ? floor(UI.footer.h3 * 0.5) : floor(UI.footer.h3 * 0.65)
 	x = 0
 	y = 0
 	w = 0
@@ -7812,7 +7829,7 @@ overlay.labelheight = overlay.rowsize * 1
 overlay.labelcharsize = overlay.charsize * 1
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
-overlay.menuheight = fl.h - UI.header.h - UI.footer.h - overlay.labelheight + overlay.ex_top + overlay.ex_bottom
+overlay.menuheight = fl.h - UI.header.h - UI.footer.h3 - overlay.labelheight + overlay.ex_top + overlay.ex_bottom
 overlay.fullwidth = ((overlay.menuheight + overlay.labelheight)*3.0/2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.menuheight + overlay.labelheight)*3.0/2.0 : (fl.w - 2 * overlay.in_side))
 
 // Integer conversion and fullwidth is even
@@ -7830,6 +7847,8 @@ overlay.menuheight_temp = overlay.menuheight
 overlay.menuheight = overlay.rows * floor(overlay.menuheight * 1.0/overlay.rows)
 overlay.labelheight = overlay.labelheight + overlay.menuheight_temp - overlay.menuheight
 overlay.rowsize = overlay.menuheight * 1.0 / overlay.rows
+
+overlay.padding = floor(0.6*overlay.charsize)
 
 overlay.x = fl.x + 0.5*(fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
@@ -9215,8 +9234,8 @@ overlay.sidelabel.set_bg_rgb(0,200,0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 pixelizefont (overlay.sidelabel, overlay.labelcharsize*0.6,2)
-
-overlay.glyph = fe.add_text("", overlay.x + UI.padding, overlay.y, overlay.labelheight*0.98, overlay.labelheight*0.98 )
+//TEST155pad
+overlay.glyph = fe.add_text("", overlay.x + overlay.padding, overlay.y, overlay.labelheight*0.98, overlay.labelheight*0.98 )
 overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize*1.25
@@ -9228,7 +9247,7 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x,overlay.y + overlay.labelheight-2,overlay.w,2)
 
-overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-UI.footer.h+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h-UI.footer.h3+overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientTb.png", overlay.x, overlay.y-floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientLb.png", overlay.x-floor(50 * UI.scalerate), overlay.y,floor(50 * UI.scalerate), overlay.h))
 overlay.shad.push (fe.add_image(AF.folder+"pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
@@ -9403,9 +9422,9 @@ local prfmenu = {
 	picratew = overlay.fullwidth * 0.3
 
 }
-
+//TEST155pad
 // First calculation of bottom panel
-prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - UI.padding * 0.5
+prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - overlay.padding * 0.5
 prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew)*1.0/overlay.rows))
 prfmenu.picrateh = prfmenu.picratew
 
@@ -9427,7 +9446,8 @@ prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh , overlay.fullwidth , prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew , prfmenu.picrateh)
-prfmenu.description.set_pos (prfmenu.bg.x + UI.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*UI.padding , prfmenu.picrateh)
+//TEST155pad
+prfmenu.description.set_pos (prfmenu.bg.x + overlay.padding + prfmenu.picratew , prfmenu.bg.y , overlay.fullwidth - prfmenu.picratew - 2*overlay.padding , prfmenu.picrateh)
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
 function buildselectarray(options,selection){
@@ -9503,7 +9523,7 @@ function optionsmenu_lev3(){
 
 		keyboard_select (0, UI.vertical ? 1 : 0)
 
-		keyboard_show(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title,AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values ,
+		keyboard_show(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options[0],AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values ,
 		function(){ //TYPE
 			return
 		},
@@ -11993,7 +12013,8 @@ local disp = {
 	xstop = 0
 	   bgtileh = 0
 	speed = null
-	pad = UI.padding
+	//TEST155pad
+	pad = overlay.padding
 	width = null
 	height = overlay.menuheight
 	spacing = null
@@ -12108,7 +12129,8 @@ zmenu = {
 	xstart = 0
 	xstop = 0
 	speed = null
-	pad = floor(UI.padding * 0.5)
+	//TEST155pad
+	pad = floor(overlay.padding)//TEST155 * 0.5)
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.menuheight
@@ -12119,7 +12141,7 @@ zmenu = {
 	glyphs = []
 	notes = []
 	noteitems = []
-	glyphw = floor(overlay.menuheight/overlay.rows)
+	glyphw = floor(overlay.padding*4.75)//TEST155 floor(overlay.menuheight/overlay.rows)
 	glyphh = floor(overlay.menuheight/overlay.rows)
 	midoffset = 0
 	virtualheight = 0
@@ -12348,6 +12370,11 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 	local fontscaler = 0.7
 	local iindex = 0
 
+	local items_x = shrink ? 0 : zmenu.glyphw
+	local items_w = shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
+	local noteitems_x = 0
+	local noteitems_w = shrink ? zmenu.tilew - disp.width : zmenu.tilew - zmenu.pad
+
 	// Hide excess items from menu display
 	for (local i = 0 ; i < zmenu.items.len() ; i++ ){
 		try {disp.images[i].visible = false} catch (err) {}
@@ -12375,7 +12402,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.noteitems.push(null)
 			zmenu.noteitems[i] = zmenu_surface.add_text(" ",0,0,1,1)
 		}
-		zmenu.noteitems[i].set_pos(0, zmenu.midoffset + i * zmenu.tileh , zmenu.tilew - zmenu.pad + (shrink ? zmenu.pad - disp.width : 0), zmenu.tileh)
+		zmenu.noteitems[i].set_pos(noteitems_x, zmenu.midoffset + i * zmenu.tileh , noteitems_w, zmenu.tileh)
 		zmenu.noteitems[i].visible = true
 		zmenu.noteitems[i].msg = zmenu.notes[i]
 		zmenu.noteitems[i].font = uifonts.gui
@@ -12383,6 +12410,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.noteitems[i].word_wrap = true
 		zmenu.noteitems[i].margin = 0
 		zmenu.noteitems[i].align = Align.MiddleRight
+		zmenu.noteitems[i].line_spacing = 0.8//1.0
 		zmenu.noteitems[i].bg_alpha = 0
 		zmenu.noteitems[i].set_rgb(255,255,255)
 
@@ -12409,7 +12437,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 			zmenu.items.push(null)
 			zmenu.items[i] = zmenu_surface.add_text(" ",0,0,1,1)
 		}
-		zmenu.items[i].set_pos(shrink ? 0 : zmenu.glyphw , zmenu.midoffset + i * zmenu.tileh , zmenu.tilew -2*(shrink ? 0 : zmenu.glyphw) + (shrink ?  -1.0* disp.width : 0), zmenu.tileh)
+		zmenu.items[i].set_pos(items_x , zmenu.midoffset + i * zmenu.tileh , items_w, zmenu.tileh)
 		zmenu.items[i].msg = menuarray[i]
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW",AF.LNG)
 		zmenu.items[i].font = uifonts.gui
@@ -12419,7 +12447,7 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 		zmenu.items[i].margin = 0
 		zmenu.items[i].align = (center ? Align.MiddleCentre : Align.MiddleLeft)
 		zmenu.items[i].bg_alpha = 0
-		zmenu.items[i].line_spacing = 1.0
+		zmenu.items[i].line_spacing = 0.8//1.0
 		zmenu.items[i].set_rgb(255,255,255)
 		//zmenu.items[i].set_bg_rgb(100,0,0)
 
@@ -12445,11 +12473,23 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 		// Check if there's space for item _and_ notes
 		if (!center){
-			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > (zmenu.tilew - zmenu.items[i].x)) {
-				zmenu.items[i].width = zmenu.items[i].width * 0.5
+			if (zmenu.noteitems[i].msg_width > 0.45 * items_w + items_x+items_w-noteitems_w) {
+				zmenu.noteitems[i].x = items_x + items_w * 0.55
+				zmenu.noteitems[i].width = noteitems_w - zmenu.noteitems[i].x
+				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
+			}
+			else if (glypharray[i]!=-1){
+				zmenu.items[i].width = items_w - zmenu.noteitems[i].msg_width - zmenu.pad - items_x
+			}
+
+			///TEST155
+			/*
+			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > 0.9*(zmenu.tilew - zmenu.items[i].x)) {
+				zmenu.items[i].width = zmenu.items[i].width *0.5
 				zmenu.noteitems[i].x = zmenu.items[i].x + zmenu.items[i].width
 				zmenu.noteitems[i].width = zmenu.tilew - zmenu.pad + (shrink ? zmenu.pad - disp.width : 0) - zmenu.items[i].width - zmenu.items[i].x
 			}
+			*/
 		}
 
 		if (zmenu.dmp && prf.ALLGAMES){
@@ -12623,7 +12663,8 @@ function zmenudraw (menuarray,glypharray,sidearray,title,titleglyph,presel,shrin
 
 	//TEST123 CHECK IF THIS CAN BE MOVED OUTSIDE OF THE CREATION
 	if (prfmenu.showing){
-		zmenu.blanker = zmenu_surface.add_image(AF.folder+"pics/black.png",0,zmenu.height,fl.w,prfmenu.picrateh+UI.padding)
+		//TEST155pad
+		zmenu.blanker = zmenu_surface.add_image(AF.folder+"pics/black.png",0,zmenu.height,fl.w,prfmenu.picrateh+overlay.padding)
 		zmenu.blanker.visible = true
 	}
 
@@ -12950,7 +12991,7 @@ function afinstall(zipball,afname){
 	AF.updatechecking = false
 	bar_cycle_update(AF.bar.stop)
 	frostshow()
-	zmenudraw ([ltxt("Quit",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
+	zmenudraw ([ltxt("Restart",AF.LNG)],null,null, ltxt("Arcadeflow updated to",AF.LNG)+" "+ zipball ,0xe91c,0,false,false,true,false,false,
 	function(out){
 		zmenuhide()
 		frosthide()
@@ -14175,7 +14216,7 @@ function updatebgsnap (index){
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
 	bgs_freeze(false)
-	bgs.bgpic_array[bgs.stacksize-1].file_name  = fe.get_art((prf.BOXARTMODE ? (prf.LAYERSNAP ? "snap" : prf.BOXARTSOURCE) : (prf.TITLEART ? (prf.LAYERSNAP ? "snap" : "title") : "snap")) , tilez[index].offset,0,Art.ImagesOnly)
+	bgs.bgpic_array[bgs.stacksize-1].file_name  = fe.get_art((prf.BOXARTMODE ? (prf.LAYERSNAP ? "snap" : (prf.BOXARTSOURCE == "box3d" ? "flyer": prf.BOXARTSOURCE)) : (prf.TITLEART ? (prf.LAYERSNAP ? "snap" : "title") : "snap")) , tilez[index].offset,0,Art.ImagesOnly)
 
 	if (prf.MULTIMON) {
 		mon2.pic_array[bgs.stacksize-1].file_name  = fe.get_art(prf.MONITORMEDIA1, tilez[index].offset,0,Art.ImagesOnly)
@@ -14543,7 +14584,7 @@ function update_thumbdecor(i,var,aspect){
 	}
 	*/
 	if (prf.TAGNAME == "") tilez[i].tg_mx.visible = (tagcheckerlist.len() >= 1)
-	else tilez[i].tg_mx.visible = ((z_list.gametable [ z_list_target ].z_tags).find(prf.TAGNAME) != null)
+	else tilez[i].tg_mx.visible = ((z_list.gametable2 [ z_list_target ].z_tags).find(prf.TAGNAME) != null)
 
 	local ARdata = ARprocess(aspect)
 	/*
