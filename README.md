@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.4 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.5 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,11 +10,14 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.4 #
+## What's new in v 15.5 #
 
-- Added transparent background to boxart mode
-- Added option to enable/disable white border around thumbnails
-- Ambient volume set in AM option affects AF background music volume
+- Changed spacing of menu entries
+- Added option for 1 line small thumbs in vertical
+- Added option to show 3D box art
+- Enabled scraping of 3D box art
+- Fixed bug related to menu sizing
+- Minor bug fixes
 
 ## Emulator system identifier #
 
@@ -100,14 +103,14 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
-#### GENERAL
+#### ❗ GENERAL ❗
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
 - 'Power menu' : Enable or disable power options in exit menu
 - Layout
 - 'Rows in horizontal' : Number of rows to use in 'horizontal' mode
-- 'Rows in vertical' : Number of rows to use in 'vertical' mode
+- '❗ Rows in vertical ❗' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
 - 'Low resolution' : Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout
 - 'Custom color' : Define a custom color for UI elements using sliders
@@ -123,7 +126,7 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Enable sorting' : Enable custom realtime sorting, diable to keep romlist sort order
 - 'Save sort order' : Custom sort order is saved through Arcadeflow sessions
 
-#### THUMBNAILS
+#### ❗ THUMBNAILS ❗
 Chose the aspect ratio of thumbnails, video thumbnails and decorations
 
 - 'Aspect ratio' : Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation
@@ -132,12 +135,12 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Zoom thumbnails' : Chose if you want the selected thumbnail to zoom to a larger size
 - 'Show only logos' : If enabled, only game tilte logos will be shown instead of the screenshot
 - Snapshot Options
-- 'Snapshot artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
+- 'Artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
 - 'Show game title' : Show the title of the game over the thumbnail
 - Box Art Options
 - 'Box Art mode' : Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)
 - 'Game title over box art' : Shows the game title artwork overlayed on the box art graphics
-- 'Box Art artwork source' : Chose the artwork source for box art graphics
+- '❗ Artwork source ❗' : Chose the artwork source for box art graphics
 - Video Snaps
 - 'Video thumbs' : Enable video overlay on snapshot thumbnails
 - 'Fade title on video' : Fades game title and decoration when the video is playing
@@ -230,7 +233,7 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Sort displays menu' : Show displays in the menu in your favourite order
 - 'Show group separators' : When sorting by brand show separators in the menu for each brand
 - 'Displays menu layout' : Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder
-- 'Artwork Source' : Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder
+- 'Artwork source' : Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder
 - 'Enable category artwork' : You can separately enable/disable artwork for categories like console, computer, pinball etc.
 - 'Categorized Displays Menu' : Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections
 - 'Add Exit Arcadeflow to menu' : Add an entry to exit Arcadeflow from the displays menu page
@@ -266,7 +269,7 @@ Arcadeflow has its own attract mode screensaver that kicks in after some inactiv
 - 'Background music' : Path to a music file to play in background
 - 'Enable game sound' : Enable game sounds during attract mode
 
-#### ❗ PERFORMANCE & FX ❗
+#### PERFORMANCE & FX
 Turn on or off special effects that might impact on Arcadeflow performance
 
 - 'Adjust performance' : Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
@@ -281,7 +284,7 @@ Turn on or off special effects that might impact on Arcadeflow performance
 - 'Low Spec mode' : Reduce most visual effects to boost speed on lower spec systems
 - 'Smooth shadow' : Enable smooth shadow under game title and data in the GUI
 - 'Glow effect' : Add a glowing halo around the selected game thumbnail
-- '❗ Snap border ❗' : Add a white border around the selected game thumbnail
+- 'Snap border' : Add a white border around the selected game thumbnail
 - 'Thumb gradient' : Blurs the artwork behind the game logo so it's more readable
 
 #### MULTIPLE MONITOR
@@ -382,6 +385,12 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.4*
+
+- Added transparent background to boxart mode
+- Added option to enable/disable white border around thumbnails
+- Ambient volume set in AM option affects AF background music volume
 
 *v15.3*
 
