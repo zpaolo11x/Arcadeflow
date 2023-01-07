@@ -8,21 +8,5 @@ pref_layoutoptions.txt
 latest_version.txt
 .DS_Store
 pref_update.txt
-layout_139.nut
-layout_140.nut
-pref_mf_fbneo_All.txt
-pref_mf_mame_All.txt
-pref_mf_PC Engine CD_All.txt
-pref_mf_Arcade_All.txt
-pref_mf_GameBOy Advance SP_All.txt
-pref_mf_Supergrafx_All.txt
-aaa_bgm.mp3
-aaa_bgms/bg1.wav
-aaa_bgms/bg2.wav
-aaa_bgms/bg3.wav
-pref_mf_AF All Games_All.txt
+pref_mf_*.txt
 ss_login.txt
-pref_mf_Nintendo Entertainment System_All.txt
-pref_mf_AF Last Played_All.txt
-pref_mf_arcade_.txt
-pref_mf_Super Nintendo Entertainment System_All.txt
