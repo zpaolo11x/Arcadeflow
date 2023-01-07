@@ -604,6 +604,9 @@ supersystem
 nintendo switch,0,0,SWT,LCD,NONE,0,0,HANDHELD,Nintendo,2017,Nintendo Switch,225,rom,joystick (8-way),4
 switch
 
+nintendo virtual console,0,0,VCON,LCD,NONE,0,0,CONSOLE,Nintendo,2013,Virtual Console,16,iso,joystick (8-way),4
+virtual console
+
 nintendo virtualboy,0,0,VBOY,CRT,NONE,4,3,CONSOLE,Nintendo,1995,Virtualboy,11,rom,joystick (8-way),2
 nintendo virtual boy
 virtualboy
