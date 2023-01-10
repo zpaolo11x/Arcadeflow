@@ -4668,7 +4668,7 @@ function resetromlist(){
 function cleandatabase(temppref){
 
 	if (temppref.MASTERLIST) {
-		z_edit_dialog("Not possible when master romlist is enabled")
+		z_edit_dialog("Not possible when master romlist is enabled","")
 		return
 	}
 
