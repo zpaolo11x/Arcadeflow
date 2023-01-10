@@ -4481,7 +4481,7 @@ function listfields_to_db1(listfields){
 	target.z_players = listfields[7]
 	target.z_rotation = listfields[8]
 	target.z_control = listfields[9]
-	target.z_buttons = subst_replace(listfields[16],ap,"'")
+	try{target.z_buttons = subst_replace(listfields[16],ap,"'")}catch(err){}
 	try{target.z_series = subst_replace(listfields[17],ap,"'")}catch(err){}
 	try{target.z_region = listfields[19]}catch(err){}
 	try{target.z_rating = listfields[20]}catch(err){}
