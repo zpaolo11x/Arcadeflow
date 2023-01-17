@@ -16836,9 +16836,11 @@ function tick( tick_time ) {
 	}
 
 	if (prf.UPDATECHECK){
-		if ((tick_time >= 8000) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
+		if ((tick_time >= 8000) && (fl.surf.alpha == 255) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
+			//AF.bgs_freezecount = 2 //TEST256
+			//foreach (i, item in tilez) item.freezecount == 2 //TEST256
 		}
 	}
 
