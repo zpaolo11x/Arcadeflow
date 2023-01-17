@@ -16085,7 +16085,7 @@ function tick( tick_time ) {
 
 //	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 //	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-testpr(fl.surf.alpha+"\n")
+
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
@@ -16836,7 +16836,7 @@ testpr(fl.surf.alpha+"\n")
 	}
 
 	if (prf.UPDATECHECK){
-		if ((tick_time >= 8000) && (fl.surf.alpha == 255) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
+		if ((tick_time >= 8000) && (endfade(flowT.blacker) == 1) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
 			//AF.bgs_freezecount = 2 //TEST256
