@@ -1,3 +1,4 @@
-15.5
+15.6
 Added Virtual Console logo
 Fixed wheel animation
+Fixed issue with auto update
