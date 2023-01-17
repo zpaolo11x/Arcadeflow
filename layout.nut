@@ -7783,6 +7783,7 @@ local tilez = []
 
 fl.surf = fe.add_surface(fl.w_os,fl.h_os)
 fl.surf.redraw = true
+fl.surf.alpha = 0
 
 // fl.surf.mipmap = 1
 // fl.surf.zorder = -1000
@@ -16085,7 +16086,7 @@ function tick( tick_time ) {
 
 //	testpr("zmenu_sh: "+zmenu_sh.surf_rt.redraw+" - zmenu_cont: "+zmenu_surface_container.redraw+"\n")
 //	testpr(zmenu.xstart+" "+zmenu.xstop+" "+zmenu.speed+"\n")
-
+testpr(fl.surf.alpha+"\n")
 	foreach (i, item in tilez){
 		if (item.freezecount == 2){
 			tile_freeze(i,false)
