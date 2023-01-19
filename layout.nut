@@ -16839,8 +16839,6 @@ function tick( tick_time ) {
 		if ((tick_time >= 8000) && (endfade(flowT.blacker) == 1) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
-			//AF.bgs_freezecount = 2 //TEST256
-			//foreach (i, item in tilez) item.freezecount == 2 //TEST256
 		}
 	}
 
