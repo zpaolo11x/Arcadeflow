@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.5 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.6 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,14 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.5 #
+## What's new in v 15.6 #
 
-- Changed spacing of menu entries
-- Added option for 1 line small thumbs in vertical
-- Added option to show 3D box art
-- Enabled scraping of 3D box art
-- Fixed bug related to menu sizing
-- Minor bug fixes
+- Added Virtual Console logo
+- Fixed wheel animation
+- Fixed issue with auto update
 
 ## Emulator system identifier #
 
@@ -103,14 +100,14 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
-#### ❗ GENERAL ❗
+#### GENERAL
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
 - 'Power menu' : Enable or disable power options in exit menu
 - Layout
 - 'Rows in horizontal' : Number of rows to use in 'horizontal' mode
-- '❗ Rows in vertical ❗' : Number of rows to use in 'vertical' mode
+- 'Rows in vertical' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
 - 'Low resolution' : Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout
 - 'Custom color' : Define a custom color for UI elements using sliders
@@ -126,7 +123,7 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Enable sorting' : Enable custom realtime sorting, diable to keep romlist sort order
 - 'Save sort order' : Custom sort order is saved through Arcadeflow sessions
 
-#### ❗ THUMBNAILS ❗
+#### THUMBNAILS
 Chose the aspect ratio of thumbnails, video thumbnails and decorations
 
 - 'Aspect ratio' : Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation
@@ -140,7 +137,7 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - Box Art Options
 - 'Box Art mode' : Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)
 - 'Game title over box art' : Shows the game title artwork overlayed on the box art graphics
-- '❗ Artwork source ❗' : Chose the artwork source for box art graphics
+- 'Artwork source' : Chose the artwork source for box art graphics
 - Video Snaps
 - 'Video thumbs' : Enable video overlay on snapshot thumbnails
 - 'Fade title on video' : Fades game title and decoration when the video is playing
@@ -385,6 +382,15 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.5*
+
+- Changed spacing of menu entries
+- Added option for 1 line small thumbs in vertical
+- Added option to show 3D box art
+- Enabled scraping of 3D box art
+- Fixed bug related to menu sizing
+- Minor bug fixes
 
 *v15.4*
 
