@@ -11541,6 +11541,8 @@ function history_updateoverlay(){
 
 function history_updatesnap(){
 	hist_screen.file_name = fe.get_art ("snap")
+	//TEST157
+	if (prf.AUDIOVIDHISTORY && (prf.BACKGROUNDTUNE != "")) snd.bgtuneplay = false
 	hist_screen.shader = (islcd(0,0) ? shader_lcd : (prf.CRTGEOMETRY ? shader_lottes : noshader))
 
 	local crt_deformed = (!islcd(0,0) && prf.CRTGEOMETRY)
@@ -11810,6 +11812,8 @@ function history_show(h_startup)
 
 function history_hide() {
 	tilesTableZoom[focusindex.new] = startfade (tilesTableZoom[focusindex.new],0.015,-5.0)
+
+	if (prf.AUDIOVIDHISTORY && prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.Default
 	if (prf.THUMBVIDEO) videosnap_restore()
@@ -17666,6 +17670,14 @@ function ra_selectemu(startemu){
 function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
+
+	//TEST157
+	if (sig == "custom1"){
+		snd.bgtuneplay = false
+	}
+	if (sig == "custom2"){
+		snd.bgtuneplay = true
+	}
 	//TEST152
 	/*
 	if (sig == "custom1"){
