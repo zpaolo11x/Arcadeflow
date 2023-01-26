@@ -17671,13 +17671,7 @@ function on_signal( sig ){
 	debugpr ("\n Si:" + sig )
 
 
-	//TEST157
-	if (sig == "custom1"){
-		snd.bgtuneplay = false
-	}
-	if (sig == "custom2"){
-		snd.bgtuneplay = true
-	}
+
 	//TEST152
 	/*
 	if (sig == "custom1"){
