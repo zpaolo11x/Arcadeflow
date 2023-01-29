@@ -1,0 +1,2 @@
+15.7
+Background music stops in history page
