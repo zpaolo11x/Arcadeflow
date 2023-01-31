@@ -731,6 +731,7 @@ function unzipfile (zipfilepath, outputpath, updatecycle = false){
          fout = file( savepath, "wb" )
          blb = zip_extract_file( zipfilepath, item )
          fout.writeblob( blb )
+			fout.close()
       }
    }
 }
