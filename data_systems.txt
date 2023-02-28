@@ -634,7 +634,7 @@ nintendo classics
 openbor,0,0,OBOR,CRT,NONE,4,3,COMPUTER,Various,null,OpenBor,214,fichier,null,null
 open bor
 
-oric,240,220,ORC,CRT,NONE,4,3,COMPUTER,Tangering,1984,Oric,131,rom,joystick (8-way),1
+oric,240,220,ORC,CRT,NONE,4,3,COMPUTER,Tangerine,1984,Oric,131,rom,joystick (8-way),1
 
 panasonic 3do,0,0,3DO,CRT,NONE,4,3,CONSOLE,3DO Company,1993,3DO,29,iso,joystick (8-way),3
 3do
