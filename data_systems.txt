@@ -118,7 +118,7 @@ wonderswan color
 bandai wonderswan,224,144,WSW,LCD,LCDBW,-224,144,HANDHELD,Bandai,2000,WonderSwan,45,rom,joystick (8-way),2
 wonderswan
 
-* camputers lynx,256,252,CALY,CRT,NONE,4,3,COMPUTER,Camputers,1983,Lynx PC,88,rom,joystick (8-way),1
+camputers lynx,256,252,CALY,CRT,NONE,4,3,COMPUTER,Camputers,1983,Lynx PC,88,rom,joystick (8-way),1
 lynx pc
 
 capcom play system 1,0,0,CPS1,CRT,NONE,-4,3,ARCADE,Capcom,1988,Capcom CP System,6,rom,null,null
@@ -177,7 +177,7 @@ adam
 coleco vision,0,0,COLE,CRT,NONE,4,3,CONSOLE,Coleco,1982,Coleco Vision,48,rom,joystick (8-way),2
 colecovision
 
-* colour genie,0,0,EG2K,CRT,NONE,4,3,COMPUTER,EACA,1982,Colour Genie,92,rom,joystick (8-way),1
+colour genie,0,0,EG2K,CRT,NONE,4,3,COMPUTER,EACA,1982,Colour Genie,92,rom,joystick (8-way),1
 eaca colour genie
 eg2000 colour genie
 
@@ -249,7 +249,7 @@ elan enterprise
 entex adventure vision,150,40,ADV,CRT,NONE,4,3,CONSOLE,Entex,1983,Adventure Vision,78,rom,joystick (8-way),4
 adventure vision
 
-* exelvision exl 100,320,250,EXL1,CRT,NONE,4,3,COMPUTER,Exelvision,1984,EXL 100,96,rom,joystick (8-way),1
+exelvision exl 100,320,250,EXL1,CRT,NONE,4,3,COMPUTER,Exelvision,1984,EXL 100,96,rom,joystick (8-way),1
 exl 100
 exelvision exl100
 exl100
@@ -306,7 +306,7 @@ mattel intellivision
 irem,0,0,IREM,CRT,NONE,-4,3,ARCADE,Irem,null,Irem,148,rom,null,null
 irem classics
 
-* jupiter ace,256,192,JACE,CRT,NONE,4,3,COMPUTER,Jupiter Cantab,1982,Jupiter ACE,126,rom,joystick (8-way),1
+jupiter ace,256,192,JACE,CRT,NONE,4,3,COMPUTER,Jupiter Cantab,1982,Jupiter ACE,126,rom,joystick (8-way),1
 
 konami,0,0,KNMI,CRT,NONE,-4,3,ARCADE,Konami,null,Konami,158,rom,null,null
 konami classics
@@ -340,13 +340,13 @@ microsoft windows,0,0,WIN,CRT,NONE,4,3,COMPUTER,Microsoft,1993,Windows,138,iso,j
 ms windows
 windows
 
-* microsoft windows 3.x,0,0,WIN3,CRT,NONE,4,3,COMPUTER,Microsoft,1992,Windows 3x,136,dossier,joystick (8-way),1
+microsoft windows 3.x,0,0,WIN3,CRT,NONE,4,3,COMPUTER,Microsoft,1992,Windows 3x,136,dossier,joystick (8-way),1
 ms windows 3.x
 windows 3.x
 windows 3.11
 windows 3x
 
-* microsoft windows 9x,0,0,W9x,CRT,NONE,4,3,COMPUTER,Microsoft,1995,Windows 9x,137,rom,joystick (8-way),1
+microsoft windows 9x,0,0,W9x,CRT,NONE,4,3,COMPUTER,Microsoft,1995,Windows 9x,137,rom,joystick (8-way),1
 ms windows 9x
 windows 9x
 windows 95
@@ -355,7 +355,7 @@ windows 98
 midway,0,0,MIDW,CRT,NONE,-4,3,ARCADE,Midway,null,Midway,150,rom,null,null
 midway classics
 
-* mikrosha,320,240,MIKR,NONE,4,3,COMPUTER,Radio-86RK,1986,Mikrosha,124,rom,joystick (8-way),1
+mikrosha,320,240,MIKR,NONE,4,3,COMPUTER,Radio-86RK,1986,Mikrosha,124,rom,joystick (8-way),1
 radio-86rk
 radio-86rk mikrosha
 
@@ -378,7 +378,7 @@ msx-1
 mugen,0,0,MGEN,CRT,NONE,4,3,COMPUTER,Various,null,MUGEN,null,null,joystick (8-way),6
 m.u.g.e.n.
 
-* nabu,480,250,NABU,CRT,NONE,4,3,COMPUTER,NABU,1982,NABU,0,rom,joystick (8-way),1
+nabu,480,250,NABU,CRT,NONE,4,3,COMPUTER,NABU,1982,NABU,0,rom,joystick (8-way),1
 nabu personal computer
 nabu pc
 
@@ -676,9 +676,9 @@ panasonic 3do,0,0,3DO,CRT,NONE,4,3,CONSOLE,3DO Company,1993,3DO,29,iso,joystick 
 pc,0,0,PC,CRT,NONE,4,3,COMPUTER,Various,null,PC,135,dossier,joystick (8-way),1
 pc games
 
-* pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64,125,rom,joystick (8-way),1
+pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64,125,rom,joystick (8-way),1
 
-* pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
+pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
 aamber pegasus
 
 pinball arcade,0,0,PAR,CRT,NONE,4,3,PINBALL,Various,null,Pinball Arcade,200,fichier,null,null
@@ -935,7 +935,7 @@ zx81
 snk,0,0,SNK,CRT,NONE,-4,3,ARCADE,SNK,null,SNK,154,rom,null,null
 snk classics
 
-* sol-20,0,0,SOL20,CRT,NONE,4,3,COMPUTER,Processor Technology,1976,Sol-20,0,rom,joystick (8-way),1
+sol-20,0,0,SOL20,CRT,NONE,4,3,COMPUTER,Processor Technology,1976,Sol-20,0,rom,joystick (8-way),1
 sol terminal computer
 sol-20 terminal computer
 sol20 terminal computer
@@ -997,7 +997,7 @@ ultra64
 
 vectrex,0,0,VECT,CRT,NONE,9,11,CONSOLE,GCE,1982,Vectrex,102,rom,joystick (8-way),4
 
-* vg5000,320,250,VG5K,CRT,NONE,4,3,COMPUTER,Philips,1984,VG5000,261,rom,joystick (8-way),1
+vg5000,320,250,VG5K,CRT,NONE,4,3,COMPUTER,Philips,1984,VG5000,261,rom,joystick (8-way),1
 philips vg5000
 vg 5000
 philips vg 5000
