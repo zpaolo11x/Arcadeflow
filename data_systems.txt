@@ -662,6 +662,9 @@ pc games
 
 * pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64,125,rom,joystick (8-way),1
 
+* pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
+aamber pegasus
+
 pinball arcade,0,0,PAR,CRT,NONE,4,3,PINBALL,Various,null,Pinball Arcade,200,fichier,null,null
 
 pinball fx2,0,0,PFX2,CRT,NONE,4,3,PINBALL,Various,null,Pinball FX2,143,fichier,null,null
@@ -915,6 +918,12 @@ zx81
 
 snk,0,0,SNK,CRT,NONE,-4,3,ARCADE,SNK,null,SNK,154,rom,null,null
 snk classics
+
+* sol-20,0,0,SOL20,CRT,NONE,4,3,COMPUTER,Processor Technology,1976,Sol-20,0,rom,joystick (8-way),1
+sol terminal computer
+sol-20 terminal computer
+sol20 terminal computer
+sol20
 
 spectravideo,256,192,SVI,CRT,8BIT,4,3,COMPUTER,Spectravideo,1983,Spectravideo,218,rom,joystick (8-way),1
 svi
