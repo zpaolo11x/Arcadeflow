@@ -355,7 +355,7 @@ windows 98
 midway,0,0,MIDW,CRT,NONE,-4,3,ARCADE,Midway,null,Midway,150,rom,null,null
 midway classics
 
-mikrosha,320,240,MIKR,NONE,4,3,COMPUTER,Radio-86RK,1986,Mikrosha,124,rom,joystick (8-way),1
+mikrosha,320,240,MIKR,CRT,NONE,4,3,COMPUTER,Radio-86RK,1986,Mikrosha,124,rom,joystick (8-way),1
 radio-86rk
 radio-86rk mikrosha
 
