@@ -336,6 +336,19 @@ microsoft windows,0,0,WIN,CRT,NONE,4,3,COMPUTER,Microsoft,1993,Windows,138,iso,j
 ms windows
 windows
 
+* microsoft windows 3.x,0,0,WIN3,CRT,NONE,4,3,COMPUTER,Microsoft,1992,Windows 3x,136,dossier,joystick (8-way),1
+ms windows 3.x
+windows 3.x
+windows 3.11
+windows 3x
+
+* microsoft windows 9x,0,0,W9x,CRT,NONE,4,3,COMPUTER,Microsoft,1995,Windows 9x,137,rom,joystick (8-way),1
+ms windows 9x
+windows 9x
+windows 95
+windows 98
+
+
 midway,0,0,MIDW,CRT,NONE,-4,3,ARCADE,Midway,null,Midway,150,rom,null,null
 midway classics
 
@@ -980,6 +993,11 @@ ultra 64,0,0,U64,CRT,NONE,4,3,ARCADE,Various,null,Ultra 64,75,rom,null,null
 ultra64
 
 vectrex,0,0,VECT,CRT,NONE,9,11,CONSOLE,GCE,1982,Vectrex,102,rom,joystick (8-way),4
+
+* vg5000,320,250,VG5K,CRT,NONE,4,3,COMPUTER,Philips,1984,VG5000,261,rom,joystick (8-way),1
+philips vg5000
+vg 5000
+philips vg 5000
 
 videopac plus,320,238,VPLUS,CRT,NONE,4,3,CONSOLE,Philips,1983,Videopac Plus,104,rom,joystick (8-way),1
 philips videopac plus
