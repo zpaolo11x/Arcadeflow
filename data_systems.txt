@@ -177,6 +177,10 @@ adam
 coleco vision,0,0,COLE,CRT,NONE,4,3,CONSOLE,Coleco,1982,Coleco Vision,48,rom,joystick (8-way),2
 colecovision
 
+* colour genie,0,0,EG2K,CRT,NONE,4,3,COMPUTER,EACA,1982,Colour Genie,92,rom,joystick (8-way),1
+eaca colour genie
+eg2000 colour genie
+
 commodore 16,0,0,C16,CRT,NONE,4,3,COMPUTER,Commodore,1984,C 16,99,rom,joystick (8-way),1
 c16
 c 16
