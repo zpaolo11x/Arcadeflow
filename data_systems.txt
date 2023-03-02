@@ -118,6 +118,9 @@ wonderswan color
 bandai wonderswan,224,144,WSW,LCD,LCDBW,-224,144,HANDHELD,Bandai,2000,WonderSwan,45,rom,joystick (8-way),2
 wonderswan
 
+* camputers lynx,256,252,CALY,CRT,NONE,4,3,COMPUTER,Camputers,1983,Lynx PC,88,rom,joystick (8-way),1
+lynx pc
+
 capcom play system 1,0,0,CPS1,CRT,NONE,-4,3,ARCADE,Capcom,1988,Capcom CP System,6,rom,null,null
 capcom play system
 capcom play system i
@@ -242,6 +245,11 @@ elan enterprise
 entex adventure vision,150,40,ADV,CRT,NONE,4,3,CONSOLE,Entex,1983,Adventure Vision,78,rom,joystick (8-way),4
 adventure vision
 
+* exelvision exl 100,320,250,EXL1,CRT,NONE,4,3,COMPUTER,Exelvision,1984,EXL 100,96,rom,joystick (8-way),1
+exl 100
+exelvision exl100
+exl100
+
 fairchild channel f,128,64,CHF,CRT,NONE,4,3,CONSOLE,Fairchild,1976,Channel F,80,rom,joystick (8-way),2
 channel f
 
@@ -294,6 +302,8 @@ mattel intellivision
 irem,0,0,IREM,CRT,NONE,-4,3,ARCADE,Irem,null,Irem,148,rom,null,null
 irem classics
 
+* jupiter ace,256,192,JACE,CRT,NONE,4,3,COMPUTER,Jupiter Cantab,1982,Jupiter ACE,126,rom,joystick (8-way),1
+
 konami,0,0,KNMI,CRT,NONE,-4,3,ARCADE,Konami,null,Konami,158,rom,null,null
 konami classics
 
@@ -329,6 +339,10 @@ windows
 midway,0,0,MIDW,CRT,NONE,-4,3,ARCADE,Midway,null,Midway,150,rom,null,null
 midway classics
 
+* mikrosha,320,240,MIKR,NONE,4,3,COMPUTER,Radio-86RK,1986,Mikrosha,124,rom,joystick (8-way),1
+radio-86rk
+radio-86rk mikrosha
+
 ms dos,320,200,DOS,CRT,NONE,4,3,COMPUTER,Microsoft,1981,MS DOS,135,dossier,joystick (8-way),1
 msdos
 ms-dos
@@ -347,6 +361,10 @@ msx-1
 
 mugen,0,0,MGEN,CRT,NONE,4,3,COMPUTER,Various,null,MUGEN,null,null,joystick (8-way),6
 m.u.g.e.n.
+
+* nabu,480,250,NABU,CRT,NONE,4,3,COMPUTER,NABU,1982,NABU,0,rom,joystick (8-way),1
+nabu personal computer
+nabu pc
 
 namco,0,0,NMCO,CRT,NONE,-4,3,ARCADE,Namco,null,Namco,75,rom,null,null
 namco classics
@@ -641,6 +659,8 @@ panasonic 3do,0,0,3DO,CRT,NONE,4,3,CONSOLE,3DO Company,1993,3DO,29,iso,joystick 
 
 pc,0,0,PC,CRT,NONE,4,3,COMPUTER,Various,null,PC,135,dossier,joystick (8-way),1
 pc games
+
+* pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64,125,rom,joystick (8-way),1
 
 pinball arcade,0,0,PAR,CRT,NONE,4,3,PINBALL,Various,null,Pinball Arcade,200,fichier,null,null
 
