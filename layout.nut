@@ -15644,6 +15644,13 @@ function checkit2(){
 }
 //checkit2()
 
+function datestring(){
+	local datetab = date()
+	local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
+	datestr = datestr.tostring()
+
+}
+
 fe.add_signal_handler( this, "on_signal" )
 fe.add_transition_callback( this, "on_transition" )
 fe.add_ticks_callback( this, "tick" )
@@ -15721,29 +15728,11 @@ function on_transition( ttype, var0, ttime ) {
 	debugpr ("\nTr:" + transdata[ttype] +" var0:" + var0 + "\n")
 
 	if (ttype == Transition.ToGame){
-
-		// Update the rundate table in memory
-		local datetab = date()
-		local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
-		datestr = datestr.tostring()
-		local gamename = z_list.gametable[z_list.index].z_name
-		local emulatorname = z_list.gametable[z_list.index].z_emulator
-
-		z_list.gametable2[z_list.index].z_rundate = datestr
+		z_list.gametable2[z_list.index].z_rundate = datestring()
 		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
-
-
-//		z_list.rundatetable[emulatorname][gamename] <- datestr
-
-		//save the rundate table to file
-//		z_saverundatetofile()
 	}
 
 	if (ttype == Transition.FromGame) {
-		/*
-		flowT.data = startfade (flowT.data,0.06,3.0)
-		flowT.fg = startfade (flowT.fg,-0.06,3.0)
-		*/
 		flowT.groupbg = startfade (flowT.groupbg,0.06,3.0)
 	}
 
