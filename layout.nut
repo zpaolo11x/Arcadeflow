@@ -18146,10 +18146,7 @@ function on_signal( sig ){
 
 		// If the new game has been set to favourite, update the favdate
 		if (z_list.gametable2[z_list.index].z_favourite){
-			local datetab = date()
-			local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
-			datestr = datestr.tostring()
-			z_list.gametable2[z_list.index].z_favdate = datestr
+			z_list.gametable2[z_list.index].z_favdate = datestring()
 		}
 
 		// Save rhe rom database with new data
