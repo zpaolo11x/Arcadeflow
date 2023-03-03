@@ -15648,7 +15648,7 @@ function datestring(){
 	local datetab = date()
 	local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
 	datestr = datestr.tostring()
-
+	return datestr
 }
 
 fe.add_signal_handler( this, "on_signal" )
