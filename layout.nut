@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.7
+// Arcadeflow - v 15.8
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -80,7 +80,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.7"
+	version = "15.8"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
