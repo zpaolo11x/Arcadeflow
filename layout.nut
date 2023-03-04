@@ -15644,7 +15644,7 @@ function checkit2(){
 }
 //checkit2()
 
-function datestring(){
+function get_date_string(){
 	local datetab = date()
 	local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
 	datestr = datestr.tostring()
@@ -15728,7 +15728,7 @@ function on_transition( ttype, var0, ttime ) {
 	debugpr ("\nTr:" + transdata[ttype] +" var0:" + var0 + "\n")
 
 	if (ttype == Transition.ToGame){
-		z_list.gametable2[z_list.index].z_rundate = datestring()
+		z_list.gametable2[z_list.index].z_rundate = get_date_string()
 		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
 	}
 
@@ -18146,7 +18146,7 @@ function on_signal( sig ){
 
 		// If the new game has been set to favourite, update the favdate
 		if (z_list.gametable2[z_list.index].z_favourite){
-			z_list.gametable2[z_list.index].z_favdate = datestring()
+			z_list.gametable2[z_list.index].z_favdate = get_date_string()
 		}
 
 		// Save rhe rom database with new data
