@@ -1324,7 +1324,7 @@ function generateprefstable(){
          local tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
 				if (tempdat.selection >=0) prf[tempdat.varname] <- ((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection])
-   	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)){//-2 is the function execution
+   	      else if ((tempdat.selection != req.executef) && (tempdat.selection != req.exenoret)){//function execution with or without return
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					prf[tempdat.varname] <- tempdat.values
 				}
@@ -1344,7 +1344,7 @@ function generateselectiontable(){
          local tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
 	         if (tempdat.selection >=0) prf[tempdat.varname] <- tempdat.selection
-   	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)) {
+   	      else if ((tempdat.selection != req.executef) && (tempdat.selection != req.exenoret)) {
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					prf[tempdat.varname] <- tempdat.values
 				}
