@@ -1324,7 +1324,7 @@ function generateprefstable(){
          local tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
 				if (tempdat.selection >=0) prf[tempdat.varname] <- ((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection])
-   	      else if ((tempdat.selection != req.executef) && (tempdat.selection != req.exenoret)){//function execution with or without return
+   	      else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)){//function execution with or without return
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					prf[tempdat.varname] <- tempdat.values
 				}
@@ -1344,7 +1344,7 @@ function generateselectiontable(){
          local tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
 	         if (tempdat.selection >=0) prf[tempdat.varname] <- tempdat.selection
-   	      else if ((tempdat.selection != req.executef) && (tempdat.selection != req.exenoret)) {
+   	      else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					prf[tempdat.varname] <- tempdat.values
 				}
@@ -2139,74 +2139,75 @@ function getfiltered(arrayin,arrayw){
 	return sumv*1.0/sumw
 }
 
-local colormapper = {}
+local colormapper = {
+	"LCDGBA" : {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(150,0.5,0.2)
+		b = hsl2rgb(70,0.50,0.6)
+		lcdcolor = 1.0
+		remap = 0.0
+		hsv = [0.0,0.0,0.0]
+	}
 
-colormapper["LCDGBA"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(150,0.5,0.2)
-	b = hsl2rgb(70,0.50,0.6)
-	lcdcolor = 1.0
-	remap = 0.0
-	hsv = [0.0,0.0,0.0]
+	"LCDGBC": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(103.0,0.95,0.15)
+		b = hsl2rgb(68,0.68,0.40)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"LCDGBP": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(90,0.05,0.10)
+		b = hsl2rgb(66,0.26,0.7)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"LCDGBL": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(160,0.9,0.15)
+		b = hsl2rgb(160,0.7,0.5)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"LCDBW": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(90,0.05,0.2)
+		b = hsl2rgb(66,0.2,0.7)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"NONE": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(150,0.5,0.2)
+		b = hsl2rgb(70,0.50,0.6)
+		lcdcolor = 0.0
+		remap = 0.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"BOXART": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(0,0.0,0.8)
+		b = hsl2rgb(0,0.0,0.4)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+
+	"8BIT": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(0,0.0,0.0)
+		b = hsl2rgb(0,0.0,0.0)
+		lcdcolor = 0.0
+		remap = 0.0
+		hsv = prf.CRTRECOLOR ? [0.0,-0.2,-0.03] : [0.0,0.0,0.0]
+	}
 }
 
-colormapper["LCDGBC"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(103.0,0.95,0.15)
-	b = hsl2rgb(68,0.68,0.40)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["LCDGBP"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(90,0.05,0.10)
-	b = hsl2rgb(66,0.26,0.7)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["LCDGBL"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(160,0.9,0.15)
-	b = hsl2rgb(160,0.7,0.5)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["LCDBW"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(90,0.05,0.2)
-	b = hsl2rgb(66,0.2,0.7)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["NONE"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(150,0.5,0.2)
-	b = hsl2rgb(70,0.50,0.6)
-	lcdcolor = 0.0
-	remap = 0.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["BOXART"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(0,0.0,0.8)
-	b = hsl2rgb(0,0.0,0.4)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-
-colormapper["8BIT"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(0,0.0,0.0)
-	b = hsl2rgb(0,0.0,0.0)
-	lcdcolor = 0.0
-	remap = 0.0
-	hsv = prf.CRTRECOLOR ? [0.0,-0.2,-0.03] : [0.0,0.0,0.0]
-}
 
 foreach (item, val in colormapper){
 	colormapper[item].shad.set_param ("color1",val.a.R,val.a.G,val.a.B)
@@ -2217,7 +2218,7 @@ foreach (item, val in colormapper){
 }
 
 // GAME BOY green tints in HSL format (H = 0 360, SL = 0 1)
-
+/*
 local gbrgb = {
 	"LCDGBC" : {
 		a = hsl2rgb(103.0,0.95,0.15)
@@ -2240,7 +2241,7 @@ local gbrgb = {
 		b = hsl2rgb(70,0.50,0.6)
 	}
 }
-
+*/
 // Horizontal rows definition
 if (prf.HORIZONTALROWS == -1){
 	prf.HORIZONTALROWS = 1
