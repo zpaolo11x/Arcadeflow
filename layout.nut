@@ -1440,50 +1440,55 @@ function loaddate(){
 
 local transdata = ["StartLayout", "EndLayout", "ToNewSelection","FromOldSelection","ToGame","FromGame","ToNewList","EndNavigation","ShowOverlay","HideOverlay","NewSelOverlay","ChangedTag"]
 
-local infotable = [
-{ id = "z_name", val = Info.Name, label = "_Name"},
-{ id = "z_title", val = Info.Title, label = "_Title"},
-{ id = "z_emulator", val = Info.Emulator, label = "_Emul"},
-{ id = "z_cloneof", val = Info.CloneOf, label = "_Clone"},
-{ id = "z_year", val = Info.Year, label = "_Year"},
+local z_info = {
+"z_name": {id = Info.Name, label = "_Name"},
+"z_title": {id = Info.Title, label = "_Title"},
+"z_emulator": {id = Info.Emulator, label = "_Emul"},
+"z_cloneof": {id = Info.CloneOf, label = "_Clone"},
+"z_year": {id = Info.Year, label = "_Year"},
 
-{ id = "z_manufacturer", val = Info.Manufacturer, label = "_Manuf"},
-{ id = "z_category", val = Info.Category, label = "_Categ"},
-{ id = "z_players", val = Info.Players, label = "_Players"},
-{ id = "z_rotation", val = Info.Rotation, label = "_Rot"},
-{ id = "z_control", val = Info.Control, label = "_Cntrl"},
+"z_manufacturer": {id = Info.Manufacturer, label = "_Manuf"},
+"z_category": {id = Info.Category, label = "_Categ"},
+"z_players": {id = Info.Players, label = "_Players"},
+"z_rotation": {id = Info.Rotation, label = "_Rot"},
+"z_control": {id = Info.Control, label = "_Cntrl"},
 
-{ id = "z_status", val = Info.Status, label = "_Status"},
-{ id = "z_displaycount", val = Info.DisplayCount, label = "_DispCt"},
-{ id = "z_displaytype", val = Info.DisplayType, label = "_DispTp"},
-{ id = "z_altromname", val = Info.AltRomname, label = "_AltRomn"},
-{ id = "z_alttitle", val = Info.AltTitle, label = "_AltTitle"},
+"z_status": {id = Info.Status, label = "_Status"},
+"z_displaycount": {id = Info.DisplayCount, label = "_DispCt"},
+"z_displaytype": {id = Info.DisplayType, label = "_DispTp"},
+"z_altromname": {id = Info.AltRomname, label = "_AltRomn"},
+"z_alttitle": {id = Info.AltTitle, label = "_AltTitle"},
 
-{ id = "z_extra", val = Info.Extra, label = "_Extra"},
-{ id = "z_favourite", val = Info.Favourite, label = "_Fav"},
-{ id = "z_tags", val = Info.Tags, label = "_Tags"},
-{ id = "z_playedcount", val = Info.PlayedCount, label = "_PlCount"},
-{ id = "z_playedtime", val = Info.PlayedTime, label = "_PlTime"},
+"z_extra": {id = Info.Extra, label = "_Extra"},
+"z_favourite": {id = Info.Favourite, label = "_Fav"},
+"z_tags": {id = Info.Tags, label = "_Tags"},
+"z_playedcount": {id = Info.PlayedCount, label = "_PlCount"},
+"z_playedtime": {id = Info.PlayedTime, label = "_PlTime"},
 
-{ id = "z_fileisavailable", val = Info.FileIsAvailable, label = "_Avail"},
-{ id = "z_system", val = Info.System, label = "_System"},
-{ id = "z_buttons", val = Info.Buttons, label = "_Butns"},
-{ id = "z_region", val = Info.Region, label = "_Regn"},
-{ id = "z_overview", val = Info.Overview, label = "_Over"},
-{ id = "z_ispaused", val = Info.IsPaused, label = "_isPause"},
+"z_fileisavailable": {id = Info.FileIsAvailable, label = "_Avail"},
+"z_system": {id = Info.System, label = "_System"},
+"z_buttons": {id = Info.Buttons, label = "_Butns"},
+"z_region": {id = Info.Region, label = "_Regn"},
+"z_overview": {id = Info.Overview, label = "_Over"},
+"z_ispaused": {id = Info.IsPaused, label = "_isPause"},
 
-{ id = "z_rundate", val = 90, label = "_Run"},
-{ id = "z_favdate", val = 91, label = "_FavDt"},
-{ id = "z_rating", val = 92, label = "_Rate"},
-{ id = "z_series", val = 93, label = "_Series"},
-]
-
+"z_rundate": {id = 90, label = "_Run"},
+"z_favdate": {id = 91, label = "_FavDt"},
+"z_rating": {id = 92, label = "_Rate"},
+"z_series": {id = 93, label = "_Series"},
+}
+local orderdatalabel = {}
+foreach (item, val in z_info){
+	orderdatalabel[val.id] <- split(ltxt(val.label,AF.LNG),"_")[0]
+}
+/*
 local z_info = {}
 local orderdatalabel = {}
 foreach (i, item in infotable){
 	z_info[item.id] <- item.val
 	orderdatalabel[item.val] <- split(ltxt(item.label,AF.LNG),"_")[0]
 }
+*/
 
 // prf is the table that cotains all the layout variables as they are used in the layout, like prf.CROPSNAPS etc
 // this command generate default prefs table, this contains the variable names and values as used in the layout (not the selections)
@@ -7037,26 +7042,26 @@ function z_listsort(orderby,reverse){
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == z_info.z_rundate)
+	else if (orderby == z_info.z_rundate.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable2.map(function(a){return(a.z_rundate )}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == z_info.z_favdate)
+	else if (orderby == z_info.z_favdate.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable2.map(function(a){return(a.z_favdate + a.z_favourite)}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == z_info.z_series) {
+	else if (orderby == z_info.z_series.id) {
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(a.z_series.tolower())}),
 		z_list.gametable.map(function(a){return(( format("%010s",sortclean(a.z_year).tolower())) + "|"+nameclean(a.z_title).tolower()+blanker + "|"+a.z_system.tolower()+blanker)}),
 		reverse)
 	}
 
-	else if (orderby == z_info.z_rating) {
+	else if (orderby == z_info.z_rating.id) {
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return((a.z_rating == "" ) ? "0000000000" : format("%010u", a.z_rating.tofloat()*10))}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker + "|"+a.z_system.tolower()+blanker)}),
@@ -7110,7 +7115,7 @@ function z_liststops(){
 
 		else if (z_list.orderby == Info.PlayedCount ) temp.push( z_list.gametable2[i].z_playedcount.tostring().tolower())
 
-		else if (z_list.orderby == z_info.z_rundate ){
+		else if (z_list.orderby == z_info.z_rundate.id ){
 			local rdate = z_list.gametable2[i].z_rundate.tostring()
 			if (rdate == "00000000000000") temp.push("?")
 			else {
@@ -7118,7 +7123,7 @@ function z_liststops(){
 			}
 		}
 
-		else if (z_list.orderby == z_info.z_favdate ){
+		else if (z_list.orderby == z_info.z_favdate.id ){
 			local rdate = z_list.gametable2[i].z_favdate.tostring()
 			if (rdate == "00000000000000") temp.push("?")
 			else {
@@ -7145,9 +7150,9 @@ function z_liststops(){
 
 		else if (z_list.orderby == Info.Players ) temp.push( z_list.gametable[i].z_players.tolower())
 
-		else if (z_list.orderby == z_info.z_series ) temp.push( z_list.gametable[i].z_series.tolower())
+		else if (z_list.orderby == z_info.z_series.id ) temp.push( z_list.gametable[i].z_series.tolower())
 
-		else if (z_list.orderby == z_info.z_rating ) temp.push( z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
+		else if (z_list.orderby == z_info.z_rating.id ) temp.push( z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
 	}
 
 	for (local i = 0 ; i < z_list.size ; i++){
@@ -14676,11 +14681,11 @@ function sortarrays(){
 	out.glypharray_sort.push (((z_list.orderby == Info.System) && (z_list.reverse == false)) ? 0xea10 : 0)
 	out.glypharray_sort.push (((z_list.orderby == Info.System) && (z_list.reverse == true)) ? 0xea10 : 0)
 
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_rating) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_series) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_rating.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_series.id) && (z_list.reverse == false)) ? 0xea10 : 0)
 
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_rundate) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_favdate) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_rundate.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_favdate.id) && (z_list.reverse == true)) ? 0xea10 : 0)
 
 
  	for (local i = 0 ; i < out.glypharray_sort.len() ; i++) {
@@ -14732,11 +14737,11 @@ function buildutilitymenu(){
 				else if (result2 == 8) result_sort = [Info.System,false]
 				else if (result2 == 9) result_sort = [Info.System,true]
 
-				else if (result2 == 10) result_sort = [z_info.z_rating,true]
-				else if (result2 == 11) result_sort = [z_info.z_series,false]
+				else if (result2 == 10) result_sort = [z_info.z_rating.id,true]
+				else if (result2 == 11) result_sort = [z_info.z_series.id,false]
 
-				else if (result2 == 12) result_sort = [z_info.z_rundate,true]
-				else if (result2 == 13) result_sort = [z_info.z_favdate,true]
+				else if (result2 == 12) result_sort = [z_info.z_rundate.id,true]
+				else if (result2 == 13) result_sort = [z_info.z_favdate.id,true]
 
 				if (result2 != -1 ){
 					/*
