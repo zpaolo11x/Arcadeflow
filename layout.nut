@@ -3383,8 +3383,9 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
+	local linein = null
 	while (!jsfilein.eos()){
-		local linein = jsfilein.read_line()
+		linein = jsfilein.read_line()
 		jsarray.push (linein)
 		/*
 		if(jsarray[(jsarray.len()-1)][0].tochar() == "<") {
@@ -3409,8 +3410,9 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
    jsarray[0] = "return(" + jsarray[0]
 
    local jsfileout = WriteTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA_out.nut"))
-   foreach (i,item in jsarray){
-      local item_clean = item
+   local item_clean = null
+	foreach (i,item in jsarray){
+      item_clean = item
       item_clean = uniclean(item_clean)
       foreach (uid, uval in unicorrect){
          item_clean = subst_replace(item_clean,uval.old,uval.new)
@@ -3473,8 +3475,9 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json.nut"))
+	local linein = null
 	while (!jsfilein.eos()){
-		local linein = jsfilein.read_line()
+		linein = jsfilein.read_line()
 		jsarray.push (linein)
 		if(jsarray[(jsarray.len()-1)][0].tochar() == "<") {
 			dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -3503,8 +3506,9 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
    jsarray[0] = "return(" + jsarray[0]
 
    local jsfileout = WriteTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json_out.nut"))
-   foreach (i,item in jsarray){
-      local item_clean = item
+   local item_clean = null
+	foreach (i,item in jsarray){
+      item_clean = item
       item_clean = uniclean(item_clean)
       foreach (uid, uval in unicorrect){
          item_clean = subst_replace(item_clean,uval.old,uval.new)
