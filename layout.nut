@@ -7000,43 +7000,43 @@ function z_listsort(orderby,reverse){
 
 	local z_tempsort = []
 
-	if (orderby == Info.Title)
+	if (orderby == z_info.z_title.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(nameclean(a.z_title).tolower()+blanker)}),
 		z_list.gametable.map(function(a){return("|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Year)
+	else if (orderby == z_info.z_year.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return( format("%010s",sortclean(a.z_year).tolower()))}),
 		z_list.gametable.map(function(a){return( "|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Manufacturer )
+	else if (orderby == z_info.z_manufacturer.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(sortclean(a.z_manufacturer).tolower())}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.PlayedCount )
+	else if (orderby == z_info.z_playedcount.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable2.map(function(a){return( format("%010s",a.z_playedcount.tostring().tolower()))}),
 		z_list.gametable.map(function(a){return( "|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Category )
+	else if (orderby == z_info.z_category.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(sortclean(a.z_category).tolower()+blanker)}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Players )
+	else if (orderby == z_info.z_players.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return( a.z_players.tolower())}),
 		z_list.gametable.map(function(a){return( "|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.System)
+	else if (orderby == z_info.z_system.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(a.z_system.tolower()+blanker)}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
@@ -7086,7 +7086,7 @@ function z_liststops(){
 
 	for (local i = 0 ; i < z_list.size ; i++){
 
-		if ((z_list.orderby == Info.Title)) {
+		if ((z_list.orderby == z_info.z_title.id)) {
 			local s = z_list.gametable[i].z_title
 			if (prf.STRIPARTICLE) s = nameclean (s)
 			if (s.len() > 0) s = s[0].tochar().tolower()
@@ -7095,14 +7095,14 @@ function z_liststops(){
 			temp.push (s )
 		}
 
-		else if (z_list.orderby == Info.Year) {
+		else if (z_list.orderby == z_info.z_year.id) {
 			local s = z_list.gametable[i].z_year.tolower()
 			if ((s != "") && (s.len()>3)) s = s.slice(0,3)+"x"
 			else (s = "?")
 			temp.push( s)
 		}
 
-		else if (z_list.orderby == Info.Manufacturer ) {
+		else if (z_list.orderby == z_info.z_manufacturer.id ) {
 			local s = z_list.gametable[i].z_manufacturer
 			if (s == "") s = "?"
 			else if (s.tolower() == "bootleg") s = "☠"
@@ -7113,7 +7113,7 @@ function z_liststops(){
 		}
 
 
-		else if (z_list.orderby == Info.PlayedCount ) temp.push( z_list.gametable2[i].z_playedcount.tostring().tolower())
+		else if (z_list.orderby == z_info.z_playedcount.id ) temp.push( z_list.gametable2[i].z_playedcount.tostring().tolower())
 
 		else if (z_list.orderby == z_info.z_rundate.id ){
 			local rdate = z_list.gametable2[i].z_rundate.tostring()
@@ -7131,9 +7131,9 @@ function z_liststops(){
 			}
 		}
 
-		else if (z_list.orderby == Info.System ) temp.push( z_list.gametable[i].z_system.tolower())
+		else if (z_list.orderby == z_info.z_system.id ) temp.push( z_list.gametable[i].z_system.tolower())
 
-		else if (z_list.orderby == Info.Category ) {
+		else if (z_list.orderby == z_info.z_category.id ) {
 			local sout = ""
 			local s0 = z_list.gametable[i].z_category.tolower()
 			if (s0 == "") temp.push("?")
@@ -7148,7 +7148,7 @@ function z_liststops(){
 			}
 		}
 
-		else if (z_list.orderby == Info.Players ) temp.push( z_list.gametable[i].z_players.tolower())
+		else if (z_list.orderby == z_info.z_players.id ) temp.push( z_list.gametable[i].z_players.tolower())
 
 		else if (z_list.orderby == z_info.z_series.id ) temp.push( z_list.gametable[i].z_series.tolower())
 
@@ -14670,16 +14670,16 @@ function sortarrays(){
 		nowsort = 0
 	}
 
-	out.glypharray_sort.push (((z_list.orderby == Info.Title) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Title) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Manufacturer) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Manufacturer) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Year) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Year) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Category) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Category) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.System) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.System) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_title.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_title.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_manufacturer.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_manufacturer.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_year.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_year.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_category.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_category.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_system.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_system.id) && (z_list.reverse == true)) ? 0xea10 : 0)
 
 	out.glypharray_sort.push (((z_list.orderby == z_info.z_rating.id) && (z_list.reverse == true)) ? 0xea10 : 0)
 	out.glypharray_sort.push (((z_list.orderby == z_info.z_series.id) && (z_list.reverse == false)) ? 0xea10 : 0)
@@ -14726,16 +14726,16 @@ function buildutilitymenu(){
 			zmenudraw (dat.switcharray_sort,dat.glypharray_sort,null,"  " + ltxt("Sort by",AF.LNG)+"...",0xea4c,dat.nowsort,false,false,false,false,false,
 			function(result2){
 				local result_sort = []
-				if 	  (result2 == 0) result_sort = [Info.Title,false]
-				else if (result2 == 1) result_sort = [Info.Title,true]
-				else if (result2 == 2) result_sort = [Info.Manufacturer,false]
-				else if (result2 == 3) result_sort = [Info.Manufacturer,true]
-				else if (result2 == 4) result_sort = [Info.Year,false]
-				else if (result2 == 5) result_sort = [Info.Year,true]
-				else if (result2 == 6) result_sort = [Info.Category,false]
-				else if (result2 == 7) result_sort = [Info.Category,true]
-				else if (result2 == 8) result_sort = [Info.System,false]
-				else if (result2 == 9) result_sort = [Info.System,true]
+				if 	  (result2 == 0) result_sort = [z_info.z_title.id,false]
+				else if (result2 == 1) result_sort = [z_info.z_title.id,true]
+				else if (result2 == 2) result_sort = [z_info.z_manufacturer.id,false]
+				else if (result2 == 3) result_sort = [z_info.z_manufacturer.id,true]
+				else if (result2 == 4) result_sort = [z_info.z_year.id,false]
+				else if (result2 == 5) result_sort = [z_info.z_year.id,true]
+				else if (result2 == 6) result_sort = [z_info.z_category.id,false]
+				else if (result2 == 7) result_sort = [z_info.z_category.id,true]
+				else if (result2 == 8) result_sort = [z_info.z_system.id,false]
+				else if (result2 == 9) result_sort = [z_info.z_system.id,true]
 
 				else if (result2 == 10) result_sort = [z_info.z_rating.id,true]
 				else if (result2 == 11) result_sort = [z_info.z_series.id,false]
