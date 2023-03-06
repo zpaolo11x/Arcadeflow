@@ -7,13 +7,6 @@
 // Load file nut
 fe.do_nut("nut_file.nut")
 
-function z_write_line(file, line){
-	local b = blob( line.len() )
-	foreach (id, item in line)
-		b.writen( item, 'b' )
-	file.writeblob( b )
-}
-
 function split_complete(str_in, separator){
 	local outarray = []
 	local index = 0
@@ -4295,11 +4288,11 @@ function buildcleanromlist(romlist, fields){
 // Exports the rom database, romtable is the current zdb and can be db1 or db2 or both
 function saveromdb(romlist,zdb,dbext){
 	local dbpath = AF.romlistfolder + romlist + "." + dbext
-	local dbfile = file(dbpath,"w")
+	local dbfile = WriteTextFile(dbpath)
 	local templine = ""
-	z_write_line(dbfile, "return({\n")
+	dbfile.write_line("return({\n")
 	foreach (item, value in zdb){
-		z_write_line(dbfile, "   "+ap + item + ap + " : {\n")
+		dbfile.write_line("   "+ap + item + ap + " : {\n")
 
 		foreach (item2, value2 in value){
 			if ((typeof value2 == "table") || (item2 == "z_inmfz")){
@@ -4314,13 +4307,13 @@ function saveromdb(romlist,zdb,dbext){
 				templine += ("]\n")
 			}
 			else templine = "      " + item2 + " = " + (typeof value2 == "string" ? ap + value2 + ap : value2) + "\n"
-			z_write_line(dbfile, templine)
+			dbfile.write_line(templine)
 		}
 
-		z_write_line(dbfile, "   }\n")
+		dbfile.write_line("   }\n")
 	}
-	z_write_line(dbfile,"})\n")
-	dbfile.close()
+	dbfile.write_line("})\n")
+	dbfile.close_file()
 }
 
 function saveromdb1(romlist,zdb){
@@ -16192,9 +16185,9 @@ function tick( tick_time ) {
 
 
 			local outreport = AF.folder+"scrapelog.txt"
-			local outfile = file(outreport,"w")
-			z_write_line(outfile,endreport)
-			outfile.close()
+			local outfile = WriteTextFile(outreport)
+			outfile.write_line(endreport)
+			outfile.close_file()
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
 
