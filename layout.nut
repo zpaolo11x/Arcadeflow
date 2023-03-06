@@ -539,74 +539,59 @@ local z_af_collections = {
 	arr = []
 }
 
-z_af_collections.tab = {
-	"AF All Games" : {
-		id = "AF All Games"
+z_af_collections.arr = [
+	{	id = "AF All Games"
 		group = "COLLECTIONS"
 		groupedname = "All Games"
 		ungroupedname = "All Games"
 		filename = "_all_all"
-	}
-	"AF Favourites" : {
-		id = "AF Favourites"
+	},
+	{	id = "AF Favourites"
 		group = "COLLECTIONS"
 		groupedname = "Favourites"
 		ungroupedname = "Favourites"
 		filename = "_favourites_all"
-	}
-	"AF Last Played" : {
-		id = "AF Last Played"
+	},
+	{	id = "AF Last Played"
 		group = "COLLECTIONS"
 		groupedname = "Last Played"
 		ungroupedname = "Last Played"
 		filename = "_lastplayed_all"
-	}
-	"AF All Arcade Games" : {
-		id = "AF All Arcade Games"
+	},
+	{	id = "AF All Arcade Games"
 		group = "ARCADE"
 		groupedname = "All Games"
 		ungroupedname = "All Arcade Games"
 		filename = "_arcade_all"
-	}
-	"AF All Console Games" : {
-		id = "AF All Console Games"
+	},
+	{	id = "AF All Console Games"
 		group = "CONSOLE"
 		groupedname = "All Games"
 		ungroupedname = "All Console Games"
 		filename = "_console_all"
-	}
-	"AF All Handheld Games" : {
-		id = "AF All Handheld Games"
+	},
+	{	id = "AF All Handheld Games"
 		group = "HANDHELD"
 		groupedname = "All Games"
 		ungroupedname = "All Handheld Games"
 		filename = "_handheld_all"
-	}
-	"AF All Computer Games" : {
-		id = "AF All Computer Games"
+	},
+	{	id = "AF All Computer Games"
 		group = "COMPUTER"
 		groupedname = "All Games"
 		ungroupedname = "All Computer Games"
 		filename = "_computer_all"
-	}
-	"AF All Pinball Games" : {
-		id = "AF All Pinball Games"
+	},
+	{	id = "AF All Pinball Games"
 		group = "PINBALL"
 		groupedname = "All Games"
 		ungroupedname = "All Pinball Games"
 		filename = "_pinball_all"
-	}
-}
+	}]
 
-z_af_collections.arr.push (z_af_collections.tab["AF All Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF Favourites"])
-z_af_collections.arr.push (z_af_collections.tab["AF Last Played"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Arcade Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Console Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Handheld Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Computer Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Pinball Games"])
-z_af_collections.arr.reverse()
+	foreach(i, item in z_af_collections.arr){
+		z_af_collections.tab[item.id]<-item
+	}
 
 // Update the attract.cfg to incorporate all the collections
 // This function doesn't reboot the layout, so changes are not effective
