@@ -1319,9 +1319,10 @@ function printabout(){
 // This is the table with the values used in the layout like prf.BOXARTMODE = true etc
 function generateprefstable(){
    local prf = {}
+	local tempdat = null
    for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
       for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-         local tempdat = AF.prefs.l1[i][j]
+         tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
 				if (tempdat.selection >=0) prf[tempdat.varname] <- ((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection])
    	      else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)){//function execution with or without return
@@ -1339,9 +1340,10 @@ function generateprefstable(){
 // This table contains the NAME of the variable (like "BOXARTMODE" and the current selection like 0, 1, 2 etc )
 function generateselectiontable(){
    local prf = {}
-   for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
+   local tempdat = null
+	for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
       for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-         local tempdat = AF.prefs.l1[i][j]
+         tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
 	         if (tempdat.selection >=0) prf[tempdat.varname] <- tempdat.selection
    	      else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
@@ -1387,13 +1389,17 @@ function readprefdata(target){
 	}
 
 	local warnmessage = ""
+	local templine = null
+	local z = null
+	local tempdat = null
+
 	while (!prffile.eos()){
-		local templine = prffile.read_line()
-		local z = split (templine,"|")
+		templine = prffile.read_line()
+		z = split (templine,"|")
 
 		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-				local tempdat = AF.prefs.l1[i][j] //Instancing!
+				tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((tempdat.varname.toupper() == z[0]) && ( (tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD") )) {
 					if (tempdat.v.tofloat() <= version.tofloat() ) {
@@ -1408,12 +1414,15 @@ function readprefdata(target){
 			}
 		}
 	}
+	local ss_templine = null
+	local ss_z = null
+	local ss_tempdat = null
 	while (!ss_prffile.eos()){
-		local ss_templine = ss_prffile.read_line()
-		local ss_z = split (ss_templine,"|")
+		ss_templine = ss_prffile.read_line()
+		ss_z = split (ss_templine,"|")
 		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-				local ss_tempdat = AF.prefs.l1[i][j] //Instancing!
+				ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ( (ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD") )) {
 						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
@@ -1676,9 +1685,13 @@ function readsystemdata(){
 	local sysfile = file(syspath,"rb")
 	local tempcell = {}
 
+	local char = null
+	local line = null
+	local linearray = null
+
 	while ( !sysfile.eos() ) {
-		local char = 0
-		local line = ""
+		char = 0
+		line = ""
 
 		while (char != 10) {
 			char = sysfile.readn('b')
@@ -1686,7 +1699,7 @@ function readsystemdata(){
 		}
 
 		if (line != ""){
-			local linearray = split (line,",")
+			linearray = split (line,",")
 			if (linearray.len() > 1){
 				sysdata[linearray[0]] <- {
 					w = linearray[1].tofloat()
