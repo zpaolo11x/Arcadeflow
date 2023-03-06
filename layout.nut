@@ -7,6 +7,8 @@
 // Load file nut
 fe.do_nut("nut_file.nut")
 
+local ap = '"'.tochar()
+
 function split_complete(str_in, separator){
 	local outarray = []
 	local index = 0
@@ -38,8 +40,6 @@ local elapse = {
 	timer = false
 	timetable = {}
 }
-
-local ap = '"'.tochar()
 
 function timestart(name){
 	if (!elapse.timer) return
@@ -688,7 +688,6 @@ function testprln2 (instring){
 }
 
 function unzipfile (zipfilepath, outputpath, updatecycle = false){
-   local ap = '"'.tochar()
    local zipdir = zip_get_dir (zipfilepath)
    local blb = null
    local fout = null
@@ -1441,38 +1440,49 @@ function loaddate(){
 
 local transdata = ["StartLayout", "EndLayout", "ToNewSelection","FromOldSelection","ToGame","FromGame","ToNewList","EndNavigation","ShowOverlay","HideOverlay","NewSelOverlay","ChangedTag"]
 
-local z_info = {
-	z_name = Info.Name
-	z_title = Info.Title
-	z_emulator = Info.Emulator
-	z_cloneof = Info.CloneOf
-	z_year = Info.Year
-	z_manufacturer = Info.Manufacturer
-	z_category = Info.Category
-	z_players = Info.Players
-	z_rotation = Info.Rotation
-	z_control = Info.Control
-	z_status = Info.Status
-	z_displaycount = Info.DisplayCount
-	z_displaytype = Info.DisplayType
-	z_altromname = Info.AltRomname
-	z_alttitle = Info.AltTitle
-	z_extra = Info.Extra
-	z_favourite = Info.Favourite
-	z_tags = Info.Tags
-	z_playedcount = Info.PlayedCount
-	z_playedtime = Info.PlayedTime
-	z_fileisavailable = Info.FileIsAvailable
-	z_system = Info.System
-	z_buttons = Info.Buttons
-	z_region = Info.Region
-	z_overview = Info.Overview
-	z_ispaused = Info.IsPaused
+local infotable = [
+{ id = "z_name", val = Info.Name, label = "_Name"},
+{ id = "z_title", val = Info.Title, label = "_Title"},
+{ id = "z_emulator", val = Info.Emulator, label = "_Emul"},
+{ id = "z_cloneof", val = Info.CloneOf, label = "_Clone"},
+{ id = "z_year", val = Info.Year, label = "_Year"},
 
-	z_rundate = 90
-	z_favdate = 91
-	z_rating = 92
-	z_series = 93
+{ id = "z_manufacturer", val = Info.Manufacturer, label = "_Manuf"},
+{ id = "z_category", val = Info.Category, label = "_Categ"},
+{ id = "z_players", val = Info.Players, label = "_Players"},
+{ id = "z_rotation", val = Info.Rotation, label = "_Rot"},
+{ id = "z_control", val = Info.Control, label = "_Cntrl"},
+
+{ id = "z_status", val = Info.Status, label = "_Status"},
+{ id = "z_displaycount", val = Info.DisplayCount, label = "_DispCt"},
+{ id = "z_displaytype", val = Info.DisplayType, label = "_DispTp"},
+{ id = "z_altromname", val = Info.AltRomname, label = "_AltRomn"},
+{ id = "z_alttitle", val = Info.AltTitle, label = "_AltTitle"},
+
+{ id = "z_extra", val = Info.Extra, label = "_Extra"},
+{ id = "z_favourite", val = Info.Favourite, label = "_Fav"},
+{ id = "z_tags", val = Info.Tags, label = "_Tags"},
+{ id = "z_playedcount", val = Info.PlayedCount, label = "_PlCount"},
+{ id = "z_playedtime", val = Info.PlayedTime, label = "_PlTime"},
+
+{ id = "z_fileisavailable", val = Info.FileIsAvailable, label = "_Avail"},
+{ id = "z_system", val = Info.System, label = "_System"},
+{ id = "z_buttons", val = Info.Buttons, label = "_Butns"},
+{ id = "z_region", val = Info.Region, label = "_Regn"},
+{ id = "z_overview", val = Info.Overview, label = "_Over"},
+{ id = "z_ispaused", val = Info.IsPaused, label = "_isPause"},
+
+{ id = "z_rundate", val = 90, label = "_Run"},
+{ id = "z_favdate", val = 91, label = "_FavDt"},
+{ id = "z_rating", val = 92, label = "_Rate"},
+{ id = "z_series", val = 93, label = "_Series"},
+]
+
+local z_info = {}
+local orderdatalabel = {}
+foreach (i, item in infotable){
+	z_info[item.id] <- item.val
+	orderdatalabel[item.val] <- split(ltxt(item.label,AF.LNG),"_")[0]
 }
 
 // prf is the table that cotains all the layout variables as they are used in the layout, like prf.CROPSNAPS etc
@@ -1625,35 +1635,6 @@ try{prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err){
 
 // End prf setup
 
-
-local orderdatalabel = {}
-orderdatalabel [Info.System] <- split(ltxt("_System",AF.LNG),"_")[0]
-orderdatalabel [Info.Name] <- split(ltxt("_Name",AF.LNG),"_")[0]
-orderdatalabel [Info.Title] <- split(ltxt("_Title",AF.LNG),"_")[0]
-orderdatalabel [Info.Emulator] <- split(ltxt("_Emul",AF.LNG),"_")[0]
-orderdatalabel [Info.CloneOf] <- split(ltxt("_Clone",AF.LNG),"_")[0]
-orderdatalabel [Info.Year] <- split(ltxt("_Year",AF.LNG),"_")[0]
-orderdatalabel [Info.Manufacturer] <- split(ltxt("_Manuf",AF.LNG),"_")[0]
-orderdatalabel [Info.Category] <- split(ltxt("_Categ",AF.LNG),"_")[0]
-orderdatalabel [Info.Players] <- split(ltxt("_Players",AF.LNG),"_")[0]
-orderdatalabel [Info.Rotation] <- split(ltxt("_Rot",AF.LNG),"_")[0]
-orderdatalabel [Info.Control] <- split(ltxt("_Cntrl",AF.LNG),"_")[0]
-orderdatalabel [Info.Status] <- split(ltxt("_Status",AF.LNG),"_")[0]
-orderdatalabel [Info.DisplayCount] <- split(ltxt("_DispCt",AF.LNG),"_")[0]
-orderdatalabel [Info.DisplayType] <- split(ltxt("_DispTp",AF.LNG),"_")[0]
-orderdatalabel [Info.AltRomname] <- split(ltxt("_AltRomn",AF.LNG),"_")[0]
-orderdatalabel [Info.AltTitle] <- split(ltxt("_AltTitle",AF.LNG),"_")[0]
-orderdatalabel [Info.Extra] <- split(ltxt("_Extra",AF.LNG),"_")[0]
-orderdatalabel [Info.Favourite] <- split(ltxt("_Fav",AF.LNG),"_")[0]
-orderdatalabel [Info.Tags] <- split(ltxt("_Tags",AF.LNG),"_")[0]
-orderdatalabel [Info.PlayedCount] <- split(ltxt("_PlCount",AF.LNG),"_")[0]
-orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",AF.LNG),"_")[0]
-orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",AF.LNG),"_")[0]
-
-orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavDt",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_series] <- split(ltxt("_Series",AF.LNG),"_")[0]
 
 function readsystemdata(){
 	local sysdata = {}
