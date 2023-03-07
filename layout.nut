@@ -3427,7 +3427,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (romtype != null) execss += "&romtype="+romtype
 		if (romfilename != null) execss += "&romnom="+romfilename
 		if (romsize != null) execss += "&romtaille="+romsize
-		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
+		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + " && echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
 
 	system (execss)
@@ -3521,7 +3521,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 	local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
 	local stripmatch = true
-   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+	dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
 
 	 scraprt("ID"+scrapeid+"         getromdata suspend 1\n")
 	suspend() // Wait for the json to be read
