@@ -71,8 +71,12 @@ function matchrom(scrapeid, filename){
    // the other is from one of the roms in the list, matching the name of current rom
 
    local jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")
+
    local crc_from_romlist = ""
    local crc_from_romid = ""
+
+   local size_from_romlist = ""
+   local size_from_romid = ""
 
    // Scan all roms from this game
    try{
@@ -90,6 +94,7 @@ function matchrom(scrapeid, filename){
          // If the name of the current rom matches the name of the rom in the list, sets crc_from_romlist the crc associated
          if (romcleanname == filename) {
             crc_from_romlist = item.romcrc
+            size_from_romlist = item.romsize
             break
          }
          // Add here custom check for Amiga WHDLoad filename without version, that is:
@@ -97,6 +102,7 @@ function matchrom(scrapeid, filename){
          else if (romcleanname.find("_v") != null){
             if (cleanWHDL(romcleanname) == cleanWHDL(filename)){
                crc_from_romlist = item.romcrc
+               size_from_romlist = item.romsize
                break
             }
          }
@@ -105,10 +111,13 @@ function matchrom(scrapeid, filename){
 
    // Now find the crc from the rom associated with this search
    try{crc_from_romid = jstab.response.jeu.rom.romcrc}catch(err){print("\nCRCERROR\n")}
+   try{size_from_romid = jstab.response.jeu.rom.romsize}catch(err){print("\nSIZEERROR\n")}
 
    return ({
       name_crc = crc_from_romlist,
-      rom_crc = crc_from_romid
+      rom_crc = crc_from_romid,
+      name_size = size_from_romlist,
+      rom_size = size_from_romid
    })
 }
 
@@ -710,7 +719,7 @@ function getromcrc_lookup4(filepath){
          }
          catch(err){
             print ("*****CRC ERROR****\n")
-            return ([null,null])
+            return ([null,null,null])
          }
       }
    }
@@ -720,9 +729,10 @@ function getromcrc_lookup4(filepath){
       }
       catch(err){
          print ("*****CRC ERROR****\n")
-         return ([null,null])
+         return ([null,null,null])
       }
    }
+   print ("\n"+blb.len()+"\n\n") ///XXX
    local i = 0
    local crc = 0xFFFFFFFF
    local one = 0
@@ -742,7 +752,7 @@ function getromcrc_lookup4(filepath){
    }
    crc = ~crc
 
-   return ([format("%X",crc).slice(-8),format("%x",crc).slice(-8)])
+   return ([format("%X",crc).slice(-8),format("%x",crc).slice(-8),blb.len()])
 
 }
 
