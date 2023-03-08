@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.7 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.8 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,10 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.7 #
+## What's new in v 15.8 #
 
-- Background music stops in history page
-- Fixed Sega CD and Sega 32X logos crashing in 4K
+- Added 12 new retro computer systems
+- Fixed issue with CRC scraping
 
 ## Emulator system identifier #
 
@@ -381,6 +381,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.7*
+
+- Background music stops in history page
+- Fixed Sega CD and Sega 32X logos crashing in 4K
 
 *v15.6*
 
