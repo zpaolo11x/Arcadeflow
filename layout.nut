@@ -1,4 +1,4 @@
-// Arcadeflow - v 15.7
+// Arcadeflow - v 15.8
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -7,12 +7,7 @@
 // Load file nut
 fe.do_nut("nut_file.nut")
 
-function z_write_line(file, line){
-	local b = blob( line.len() )
-	foreach (id, item in line)
-		b.writen( item, 'b' )
-	file.writeblob( b )
-}
+local ap = '"'.tochar()
 
 function split_complete(str_in, separator){
 	local outarray = []
@@ -46,8 +41,6 @@ local elapse = {
 	timetable = {}
 }
 
-local ap = '"'.tochar()
-
 function timestart(name){
 	if (!elapse.timer) return
 	print ("\n    "+name+" START\n")
@@ -80,7 +73,7 @@ local AF = {
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "15.7"
+	version = "15.8"
 	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
@@ -546,74 +539,59 @@ local z_af_collections = {
 	arr = []
 }
 
-z_af_collections.tab = {
-	"AF All Games" : {
-		id = "AF All Games"
+z_af_collections.arr = [
+	{	id = "AF All Games"
 		group = "COLLECTIONS"
 		groupedname = "All Games"
 		ungroupedname = "All Games"
 		filename = "_all_all"
-	}
-	"AF Favourites" : {
-		id = "AF Favourites"
+	},
+	{	id = "AF Favourites"
 		group = "COLLECTIONS"
 		groupedname = "Favourites"
 		ungroupedname = "Favourites"
 		filename = "_favourites_all"
-	}
-	"AF Last Played" : {
-		id = "AF Last Played"
+	},
+	{	id = "AF Last Played"
 		group = "COLLECTIONS"
 		groupedname = "Last Played"
 		ungroupedname = "Last Played"
 		filename = "_lastplayed_all"
-	}
-	"AF All Arcade Games" : {
-		id = "AF All Arcade Games"
+	},
+	{	id = "AF All Arcade Games"
 		group = "ARCADE"
 		groupedname = "All Games"
 		ungroupedname = "All Arcade Games"
 		filename = "_arcade_all"
-	}
-	"AF All Console Games" : {
-		id = "AF All Console Games"
+	},
+	{	id = "AF All Console Games"
 		group = "CONSOLE"
 		groupedname = "All Games"
 		ungroupedname = "All Console Games"
 		filename = "_console_all"
-	}
-	"AF All Handheld Games" : {
-		id = "AF All Handheld Games"
+	},
+	{	id = "AF All Handheld Games"
 		group = "HANDHELD"
 		groupedname = "All Games"
 		ungroupedname = "All Handheld Games"
 		filename = "_handheld_all"
-	}
-	"AF All Computer Games" : {
-		id = "AF All Computer Games"
+	},
+	{	id = "AF All Computer Games"
 		group = "COMPUTER"
 		groupedname = "All Games"
 		ungroupedname = "All Computer Games"
 		filename = "_computer_all"
-	}
-	"AF All Pinball Games" : {
-		id = "AF All Pinball Games"
+	},
+	{	id = "AF All Pinball Games"
 		group = "PINBALL"
 		groupedname = "All Games"
 		ungroupedname = "All Pinball Games"
 		filename = "_pinball_all"
-	}
-}
+	}]
 
-z_af_collections.arr.push (z_af_collections.tab["AF All Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF Favourites"])
-z_af_collections.arr.push (z_af_collections.tab["AF Last Played"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Arcade Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Console Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Handheld Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Computer Games"])
-z_af_collections.arr.push (z_af_collections.tab["AF All Pinball Games"])
-z_af_collections.arr.reverse()
+	foreach(i, item in z_af_collections.arr){
+		z_af_collections.tab[item.id]<-item
+	}
 
 // Update the attract.cfg to incorporate all the collections
 // This function doesn't reboot the layout, so changes are not effective
@@ -710,7 +688,6 @@ function testprln2 (instring){
 }
 
 function unzipfile (zipfilepath, outputpath, updatecycle = false){
-   local ap = '"'.tochar()
    local zipdir = zip_get_dir (zipfilepath)
    local blb = null
    local fout = null
@@ -853,104 +830,104 @@ local sorter = {}
 
 AF.prefs.l0.push({label = "GENERAL", glyph = 0xe993, description = "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc"})
 AF.prefs.l1.push([
-{v = 10.2, varname = "layoutlanguage", glyph = 0xe9ca, initvar = function(val,prf){prf.LAYOUTLANGUAGE <- val}, title = "Layout language", help = "Chose the language of the layout" , options = languagearray(), values = languagetokenarray(), selection = 1, picsel = languageflags(),pic="flags.jpg"},
-{v = 10.5, varname = "powermenu", glyph = 0xe9b6, initvar = function(val,prf){prf.POWERMENU <- val}, title = "Power menu", help = "Enable or disable power options in exit menu" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout" , options = languagearray(), values = languagetokenarray(), selection = 1, picsel = languageflags(),pic="flags.jpg"},
+{v = 10.5, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 7.2, varname = "horizontalrows", glyph = 0xea72, initvar = function(val,prf){prf.HORIZONTALROWS <- val}, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode" , options = ["1-Small", "1", "2", "3"], values = [-1,1,2,3], selection = 2, picsel = ["rows1mini"+AF.prefs.imgext,"rows1"+AF.prefs.imgext,"rows2"+AF.prefs.imgext,"rows3"+AF.prefs.imgext],pic = "rows2"+AF.prefs.imgext},
-{v = 15.5, varname = "verticalrows", glyph = 0xea71, initvar = function(val,prf){prf.VERTICALROWS <- val}, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1-Small","1", "2", "3"], values = [-1,1,2,3], selection = 3, picsel = ["rows1mini"+AF.prefs.imgext,"rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
-{v = 7.2, varname = "cleanlayout", glyph = 0xe997, initvar = function(val,prf){prf.CLEANLAYOUT <- val}, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
-{v = 7.2, varname = "lowres", glyph = 0xe997, initvar = function(val,prf){prf.LOWRES <- val}, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
-{v = 12.8, varname = "customcolor", glyph = 0xe90c, initvar = function(val,prf){prf.CUSTOMCOLOR <- val}, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
+{v = 7.2, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode" , options = ["1-Small", "1", "2", "3"], values = [-1,1,2,3], selection = 2, picsel = ["rows1mini"+AF.prefs.imgext,"rows1"+AF.prefs.imgext,"rows2"+AF.prefs.imgext,"rows3"+AF.prefs.imgext],pic = "rows2"+AF.prefs.imgext},
+{v = 15.5, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode" , options = ["1-Small","1", "2", "3"], values = [-1,1,2,3], selection = 3, picsel = ["rows1mini"+AF.prefs.imgext,"rowsv1"+AF.prefs.imgext,"rowsv2"+AF.prefs.imgext,"rowsv3"+AF.prefs.imgext],pic = "rowsv3"+AF.prefs.imgext},
+{v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["cleanyes"+AF.prefs.imgext,"cleanno"+AF.prefs.imgext],pic = "cleanyes"+AF.prefs.imgext},
+{v = 7.2, varname = "LOWRES", glyph = 0xe997, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["lowreson"+AF.prefs.imgext,"lowresoff"+AF.prefs.imgext],pic = "lowreson"+AF.prefs.imgext},
+{v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders" , options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
-{v = 7.2, varname = "showsubname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSUBNAME <- val}, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosubname"+AF.prefs.imgext]},
-{v = 7.2, varname = "showsysname", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSYSNAME <- val}, title = "Display System Name", help = "Shows the System name under the game title" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosystem"+AF.prefs.imgext]},
-{v = 10.1, varname = "showarcadename", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWARCADENAME <- val}, title = "Display Arcade System Name", help = "Shows the name of the Arcade system if available" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "showsysart", glyph = 0xea6d, initvar = function(val,prf){prf.SHOWSYSART <- val}, title = "System Name as artwork", help = "If enabled, the system name under the game title is rendered as a logo instead of plain text" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosystemart"+AF.prefs.imgext]},
+{v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosubname"+AF.prefs.imgext]},
+{v = 7.2, varname = "SHOWSYSNAME", glyph = 0xea6d, title = "Display System Name", help = "Shows the System name under the game title" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosystem"+AF.prefs.imgext]},
+{v = 10.1, varname = "SHOWARCADENAME", glyph = 0xea6d, title = "Display Arcade System Name", help = "Shows the name of the Arcade system if available" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "SHOWSYSART", glyph = 0xea6d, title = "System Name as artwork", help = "If enabled, the system name under the game title is rendered as a logo instead of plain text" , options = ["Yes","No"], values = [true,false], selection = 0, picsel = ["subdefaultname"+AF.prefs.imgext,"subnosystemart"+AF.prefs.imgext]},
 {v = 0.0, varname = "", glyph = -1, title = "Scroll & Sort", selection = AF.req.liner},
-{v = 10.3, varname = "scrollamount", glyph = 0xea45, initvar = function(val,prf){prf.SCROLLAMOUNT <- val}, title = "Page jump size", help = "Page jumps are one screen by default, you can increase it if you want to jump faster" , options = ["1 Screen", "2 Screens", "3 Screens"], values = [1, 2, 3] , selection = 0},
-{v = 7.2, varname = "scrollertype", glyph = 0xea45, initvar = function(val,prf){prf.SCROLLERTYPE <- val}, title = "Scrollbar style", help = "Select how the scrollbar should look" , options = ["Timeline", "Scrollbar", "Label List"], values = ["timeline", "scrollbar", "labellist"] , selection = 0, picsel = ["scrolltimeline"+AF.prefs.imgext,"scrollscrollbar"+AF.prefs.imgext,"scrolllabellist"+AF.prefs.imgext],pic="scroll"+AF.prefs.imgext},
-{v = 7.2, varname = "striparticle", glyph = 0xea4c, initvar = function(val,prf){prf.STRIPARTICLE <- val}, title = "Strip article from sort", help = "When sorting by Title ignore articles" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 10.9, varname = "enablesort", glyph = 0xea4c, initvar = function(val,prf){prf.ENABLESORT <- val}, title = "Enable sorting", help = "Enable custom realtime sorting, diable to keep romlist sort order" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "sortsave", glyph = 0xea4c, initvar = function(val,prf){prf.SORTSAVE <- val}, title = "Save sort order", help = "Custom sort order is saved through Arcadeflow sessions" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 10.3, varname = "SCROLLAMOUNT", glyph = 0xea45, title = "Page jump size", help = "Page jumps are one screen by default, you can increase it if you want to jump faster" , options = ["1 Screen", "2 Screens", "3 Screens"], values = [1, 2, 3] , selection = 0},
+{v = 7.2, varname = "SCROLLERTYPE", glyph = 0xea45, title = "Scrollbar style", help = "Select how the scrollbar should look" , options = ["Timeline", "Scrollbar", "Label List"], values = ["timeline", "scrollbar", "labellist"] , selection = 0, picsel = ["scrolltimeline"+AF.prefs.imgext,"scrollscrollbar"+AF.prefs.imgext,"scrolllabellist"+AF.prefs.imgext],pic="scroll"+AF.prefs.imgext},
+{v = 7.2, varname = "STRIPARTICLE", glyph = 0xea4c, title = "Strip article from sort", help = "When sorting by Title ignore articles" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 10.9, varname = "ENABLESORT", glyph = 0xea4c, title = "Enable sorting", help = "Enable custom realtime sorting, diable to keep romlist sort order" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "SORTSAVE", glyph = 0xea4c, title = "Save sort order", help = "Custom sort order is saved through Arcadeflow sessions" , options = ["Yes","No"], values = [true,false], selection = 0},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "THUMBNAILS", glyph = 0xe915, description = "Chose the aspect ratio of thumbnails, video thumbnails and decorations"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "cropsnaps", glyph = 0xea57, initvar = function(val,prf){prf.CROPSNAPS <- val}, title = "Aspect ratio", help = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation", options = ["Adaptive", "Square"], values = [false, true], selection = 0, picsel= ["aradaptive"+AF.prefs.imgext,"arsquare"+AF.prefs.imgext],pic = "arsquare"+AF.prefs.imgext},
-{v = 8.7, varname = "morphaspect", glyph = 0xea57, initvar = function(val,prf){prf.MORPHASPECT <- val}, title = "Morph snap ratio", help = "Chose if you want the box to morph into the actual game video or if it must be cropped", options = ["Morph video", "Crop video"], values = [true, false], selection = 0},
-{v = 10.9, varname = "fix169", glyph = 0xea57, initvar = function(val,prf){prf.FIX169 <- val}, title = "Optimize vertical arcade", help = "Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 10.4, varname = "tilezoom", glyph = 0xea57, initvar = function(val,prf){prf.TILEZOOM <- val}, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
-{v = 10.7, varname = "logosonly", glyph = 0xea6d, initvar = function(val,prf){prf.LOGOSONLY <- val}, title = "Show only logos", help = "If enabled, only game tilte logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 7.2, varname = "CROPSNAPS", glyph = 0xea57, title = "Aspect ratio", help = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation", options = ["Adaptive", "Square"], values = [false, true], selection = 0, picsel= ["aradaptive"+AF.prefs.imgext,"arsquare"+AF.prefs.imgext],pic = "arsquare"+AF.prefs.imgext},
+{v = 8.7, varname = "MORPHASPECT", glyph = 0xea57, title = "Morph snap ratio", help = "Chose if you want the box to morph into the actual game video or if it must be cropped", options = ["Morph video", "Crop video"], values = [true, false], selection = 0},
+{v = 10.9, varname = "FIX169", glyph = 0xea57, title = "Optimize vertical arcade", help = "Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 10.4, varname = "TILEZOOM", glyph = 0xea57, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
+{v = 10.7, varname = "LOGOSONLY", glyph = 0xea6d, title = "Show only logos", help = "If enabled, only game tilte logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = AF.req.liner},
-{v = 8.8, varname = "titleart", glyph = 0xe915, initvar = function(val,prf){prf.TITLEART <- val}, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
-{v = 8.4, varname = "titleonsnap", glyph = 0xea6d, initvar = function(val,prf){prf.TITLEONSNAP <- val}, title = "Show game title", help = "Show the title of the game over the thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 8.8, varname = "TITLEART", glyph = 0xe915, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
+{v = 8.4, varname = "TITLEONSNAP", glyph = 0xea6d, title = "Show game title", help = "Show the title of the game over the thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Box Art Options", selection = AF.req.liner},
-{v = 7.2, varname = "boxartmode", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTMODE <- val}, title = "Box Art mode", help = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["boxarton"+AF.prefs.imgext,"boxartoff"+AF.prefs.imgext], pic = "boxart"+AF.prefs.imgext},
-{v = 7.2, varname = "titleonbox", glyph = 0xe918, initvar = function(val,prf){prf.TITLEONBOX <- val}, title = "Game title over box art", help = "Shows the game title artwork overlayed on the box art graphics" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["boxarttitle"+AF.prefs.imgext,"boxarton"+AF.prefs.imgext],pic = "boxarttitle"+AF.prefs.imgext},
-{v = 15.5, varname = "boxartsource", glyph = 0xe918, initvar = function(val,prf){prf.BOXARTSOURCE <- val}, title = "Artwork source", help = "Chose the artwork source for box art graphics" , options = ["flyer", "fanart","box3d"], values = ["flyer", "fanart", "box3d"], selection = 0 },
+{v = 7.2, varname = "BOXARTMODE", glyph = 0xe918, title = "Box Art mode", help = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["boxarton"+AF.prefs.imgext,"boxartoff"+AF.prefs.imgext], pic = "boxart"+AF.prefs.imgext},
+{v = 7.2, varname = "TITLEONBOX", glyph = 0xe918, title = "Game title over box art", help = "Shows the game title artwork overlayed on the box art graphics" , options = ["Yes","No"], values = [true,false], selection = 1,picsel = ["boxarttitle"+AF.prefs.imgext,"boxarton"+AF.prefs.imgext],pic = "boxarttitle"+AF.prefs.imgext},
+{v = 15.5, varname = "BOXARTSOURCE", glyph = 0xe918, title = "Artwork source", help = "Chose the artwork source for box art graphics" , options = ["flyer", "fanart","box3d"], values = ["flyer", "fanart", "box3d"], selection = 0 },
 {v = 0.0, varname = "", glyph = -1, title = "Video Snaps", selection = AF.req.liner},
-{v = 7.2, varname = "thumbvideo", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDEO <- val}, title = "Video thumbs", help = "Enable video overlay on snapshot thumbnails" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 8.5, varname = "fadevideotitle", glyph = 0xe913, initvar = function(val,prf){prf.FADEVIDEOTITLE <- val}, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 8.4, varname = "thumbvidelay", glyph = 0xe913, initvar = function(val,prf){prf.THUMBVIDELAY <- val}, title = "Video delay multiplier", help = "Increase video load delay" , options = ["0.25x","0.5x","1x", "2x","3x","4x","5x"], values = [0.25,0.5,1,2,3,4,5], selection = 2},
-{v = 7.2, varname = "missingwheel", glyph = 0xea6d, initvar = function(val,prf){prf.MISSINGWHEEL <- val}, title = "Generate missing title art", help = "If no game title is present, the layout can generate it" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["missingwheelyes"+AF.prefs.imgext,"missingwheelno"+AF.prefs.imgext],pic = "missingwheel"+AF.prefs.imgext},
-{v = 14.8, varname = "vid169", glyph = 0xea57, initvar = function(val,prf){prf.VID169 <- val}, title = "Vertical arcade videos", help = "Enable this option if you are using 9:16 videos from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 7.2, varname = "THUMBVIDEO", glyph = 0xe913, title = "Video thumbs", help = "Enable video overlay on snapshot thumbnails" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 8.5, varname = "FADEVIDEOTITLE", glyph = 0xe913, title = "Fade title on video", help = "Fades game title and decoration when the video is playing" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 8.4, varname = "THUMBVIDELAY", glyph = 0xe913, title = "Video delay multiplier", help = "Increase video load delay" , options = ["0.25x","0.5x","1x", "2x","3x","4x","5x"], values = [0.25,0.5,1,2,3,4,5], selection = 2},
+{v = 7.2, varname = "MISSINGWHEEL", glyph = 0xea6d, title = "Generate missing title art", help = "If no game title is present, the layout can generate it" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["missingwheelyes"+AF.prefs.imgext,"missingwheelno"+AF.prefs.imgext],pic = "missingwheel"+AF.prefs.imgext},
+{v = 14.8, varname = "VID169", glyph = 0xea57, title = "Vertical arcade videos", help = "Enable this option if you are using 9:16 videos from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Decorations", selection = AF.req.liner},
-{v = 9.6, varname = "redcross", glyph = 0xe936, initvar = function(val,prf){prf.REDCROSS <- val}, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "newgame", glyph = 0xe936, initvar = function(val,prf){prf.NEWGAME <- val}, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
-{v = 7.2, varname = "tagshow", glyph = 0xe936, initvar = function(val,prf){prf.TAGSHOW <- val}, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decortag"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decortag"+AF.prefs.imgext},
-{v = 7.2, varname = "tagname", glyph = 0xe936, initvar = function(val,prf){prf.TAGNAME <- val}, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = ["Tag"], values = "", selection = AF.req.keyboard},
-{v = 7.2, varname = "gbrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.GBRECOLOR <- val}, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference" , options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL" ,"NONE"], selection = 0, picsel = ["gb"+AF.prefs.imgext,"gbclassic"+AF.prefs.imgext,"gbpocket"+AF.prefs.imgext,"gblight"+AF.prefs.imgext,"gbnone"+AF.prefs.imgext],pic = "gb"+AF.prefs.imgext},
-{v = 10.3, varname = "crtrecolor", glyph = 0xe90c, initvar = function(val,prf){prf.CRTRECOLOR <- val}, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette" , options = ["Yes", "No"], values = [true,false], selection = 1},
+{v = 9.6, varname = "REDCROSS", glyph = 0xe936, title = "Game not available indicator", help = "Games that are not available will be marked with a red cross overlay" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "NEWGAME", glyph = 0xe936, title = "New game indicator", help = "Games not played are marked with a glyph" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decornewgame"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decornewgame"+AF.prefs.imgext},
+{v = 7.2, varname = "TAGSHOW", glyph = 0xe936, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["decortag"+AF.prefs.imgext,"decornone"+AF.prefs.imgext],pic = "decortag"+AF.prefs.imgext},
+{v = 7.2, varname = "TAGNAME", glyph = 0xe936, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = ["Tag"], values = "", selection = AF.req.keyboard},
+{v = 7.2, varname = "GBRECOLOR", glyph = 0xe90c, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference" , options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL" ,"NONE"], selection = 0, picsel = ["gb"+AF.prefs.imgext,"gbclassic"+AF.prefs.imgext,"gbpocket"+AF.prefs.imgext,"gblight"+AF.prefs.imgext,"gbnone"+AF.prefs.imgext],pic = "gb"+AF.prefs.imgext},
+{v = 10.3, varname = "CRTRECOLOR", glyph = 0xe90c, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette" , options = ["Yes", "No"], values = [true,false], selection = 1},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "BACKGROUND", glyph = 0xe90c, description = "Chose the layout background theme in main page and in History page, or select custom backgrounds"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "colortheme", glyph = 0xe90c, initvar = function(val,prf){prf.COLORTHEME <- val}, title = "Overlay color", help = "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered" , options = ["Basic", "Dark", "Light", "Pop"], values =["basic", "dark", "light", "pop"], selection = 3, picsel = ["overlaybasic"+AF.prefs.imgext,"overlaydark"+AF.prefs.imgext,"overlaylight"+AF.prefs.imgext,"overlaypop"+AF.prefs.imgext], pic = "overlay"+AF.prefs.imgext},
-{v = 8.9, varname = "overcustom", glyph = 0xe930, initvar = function(val,prf){prf.OVERCUSTOM <- val}, title = "Custom overlay", help = "Insert custom PNG to be overlayed over everything", options = "", values = "pics/", selection = AF.req.filereqs},
-{v = 8.4, varname = "bgcustom", glyph = 0xe930, initvar = function(val,prf){prf.BGCUSTOM <- val}, title = "Custom main BG image", help = "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)", options = "", values = "pics/", selection = AF.req.filereqs,pic="bgcustom"+AF.prefs.imgext},
-{v = 8.4, varname = "bgcustomstretch", glyph = 0xea57, initvar = function(val,prf){prf.BGCUSTOMSTRETCH <- val}, title = "Format of main BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustom"+AF.prefs.imgext},
+{v = 7.2, varname = "COLORTHEME", glyph = 0xe90c, title = "Overlay color", help = "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered" , options = ["Basic", "Dark", "Light", "Pop"], values =["basic", "dark", "light", "pop"], selection = 3, picsel = ["overlaybasic"+AF.prefs.imgext,"overlaydark"+AF.prefs.imgext,"overlaylight"+AF.prefs.imgext,"overlaypop"+AF.prefs.imgext], pic = "overlay"+AF.prefs.imgext},
+{v = 8.9, varname = "OVERCUSTOM", glyph = 0xe930, title = "Custom overlay", help = "Insert custom PNG to be overlayed over everything", options = "", values = "pics/", selection = AF.req.filereqs},
+{v = 8.4, varname = "BGCUSTOM", glyph = 0xe930, title = "Custom main BG image", help = "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)", options = "", values = "pics/", selection = AF.req.filereqs,pic="bgcustom"+AF.prefs.imgext},
+{v = 8.4, varname = "BGCUSTOMSTRETCH", glyph = 0xea57, title = "Format of main BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustom"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "History BG", selection = AF.req.liner},
-{v = 8.4, varname = "bgcustomhistory", glyph = 0xe930, initvar = function(val,prf){prf.BGCUSTOMHISTORY <- val}, title = "Custom history BG image", help = "Insert custom background art path for history page (leave blank if the same as main background)", options = "", values ="pics/", selection = AF.req.filereqs,pic="bgcustomhistory"+AF.prefs.imgext},
-{v = 8.4, varname = "bgcustomhistorystretch", glyph = 0xea57, initvar = function(val,prf){prf.BGCUSTOMHISTORYSTRETCH <- val}, title = "Format of history BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustomhistory"+AF.prefs.imgext},
+{v = 8.4, varname = "BGCUSTOMHISTORY", glyph = 0xe930, title = "Custom history BG image", help = "Insert custom background art path for history page (leave blank if the same as main background)", options = "", values ="pics/", selection = AF.req.filereqs,pic="bgcustomhistory"+AF.prefs.imgext},
+{v = 8.4, varname = "BGCUSTOMHISTORYSTRETCH", glyph = 0xea57, title = "Format of history BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop","Stretch"], values = [false,true], selection = 1,pic="bgcustomhistory"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "BG Snaps", selection = AF.req.liner},
-{v = 7.2, varname = "layersnap", glyph = 0xe90d, initvar = function(val,prf){prf.LAYERSNAP <- val}, title = "Background snap", help = "Add a faded game snapshot to the background" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["bgsnapyes"+AF.prefs.imgext,"bgsnapno"+AF.prefs.imgext],pic="bgsnap"+AF.prefs.imgext},
-{v = 7.2, varname = "layervideo", glyph = 0xe913, initvar = function(val,prf){prf.LAYERVIDEO <- val}, title = "Animate BG snap", help = "Animate video on background" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "layervidelay", glyph = 0xe913, initvar = function(val,prf){prf.LAYERVIDELAY <- val}, title = "Delay BG animation", help = "Don't load immediately the background video animation" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "LAYERSNAP", glyph = 0xe90d, title = "Background snap", help = "Add a faded game snapshot to the background" , options = ["Yes","No"], values = [true,false], selection = 1, picsel = ["bgsnapyes"+AF.prefs.imgext,"bgsnapno"+AF.prefs.imgext],pic="bgsnap"+AF.prefs.imgext},
+{v = 7.2, varname = "LAYERVIDEO", glyph = 0xe913, title = "Animate BG snap", help = "Animate video on background" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "LAYERVIDELAY", glyph = 0xe913, title = "Delay BG animation", help = "Don't load immediately the background video animation" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Per Display", selection = AF.req.liner},
-{v = 7.5, varname = "bgperdisplay", glyph = 0xe912, initvar = function(val,prf){prf.BGPERDISPLAY <- val}, title = "Per Display background", help = "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.5, varname = "BGPERDISPLAY", glyph = 0xe912, title = "Per Display background", help = "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "LOGO", glyph = 0xe916, description = "Customize the splash logo at the start of Arcadeflow"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "splashon", glyph = 0xe916, initvar = function(val,prf){prf.SPLASHON <- val}, title = "Enable splash logo", help = "Enable or disable the AF start logo" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["logoyes"+AF.prefs.imgext,"logono"+AF.prefs.imgext], pic = "logoyes"+AF.prefs.imgext},
-{v = 7.2, varname = "splashlogofile", glyph = 0xe930, initvar = function(val,prf){prf.SPLASHLOGOFILE <- val}, title = "Custom splash logo", help = "Insert the path to a custom AF splash logo (or keep blank for default logo)", options = "", values ="", selection = AF.req.filereqs,pic = "logocustom"+AF.prefs.imgext},
+{v = 7.2, varname = "SPLASHON", glyph = 0xe916, title = "Enable splash logo", help = "Enable or disable the AF start logo" , options = ["Yes","No"], values = [true,false], selection = 0,picsel = ["logoyes"+AF.prefs.imgext,"logono"+AF.prefs.imgext], pic = "logoyes"+AF.prefs.imgext},
+{v = 7.2, varname = "SPLASHLOGOFILE", glyph = 0xe930, title = "Custom splash logo", help = "Insert the path to a custom AF splash logo (or keep blank for default logo)", options = "", values ="", selection = AF.req.filereqs,pic = "logocustom"+AF.prefs.imgext},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "COLOR CYCLE", glyph = 0xe982, description = "Enable and edit color cycling animation of tile highlight border"})
 AF.prefs.l1.push([
-{v = 10.7, varname = "huecycle", glyph = 0xe982, initvar = function(val,prf){prf.HUECYCLE <- val}, title = "Enable color cycle", help = "Enable/disable color cycling of the tile higlight border", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 10.7, varname = "HUECYCLE", glyph = 0xe982, title = "Enable color cycle", help = "Enable/disable color cycling of the tile higlight border", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Cycle Options", selection = AF.req.liner},
-{v = 10.7, varname = "hcspeed", glyph = 0xe9a6, initvar = function(val,prf){prf.HCSPEED <- val}, title = "Cycle speed", help = "Select the speed of color cycle" options = ["Slow", "Medium", "Fast"], values = [2, 5, 8], selection = 1},
-{v = 10.7, varname = "hccolor", glyph = 0xe90c, initvar = function(val,prf){prf.HCCOLOR <- val}, title = "Cycle color", help = "Select a color intensity preset for the cycle" , options = ["Standard","Popping", "Light"], values = ["0.7_0.7","1.0_0.5","1.0_0.9"], selection = 0},
-{v = 10.7, varname = "hcpingpong", glyph = 0xea2d, initvar = function(val,prf){prf.HCPINGPONG <- val}, title = "Ping Pong effect", help = "Enable this if you want the cycle to revert once finished instead of restarting" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 12.8, varname = "hchuestart", glyph = 0xe994, initvar = function(val,prf){prf.HCHUESTART <- val}, title = "Start hue", help = "Define the start value of the hue cycle (0 - 359)", options = "", values = "", selection = AF.req.huevalue},
-{v = 12.8, varname = "hchuestop", glyph = 0xe994, initvar = function(val,prf){prf.HCHUESTOP <- val}, title = "Stop hue", help = "Define the stop value of the hue cycle (0 - 359)", options = "", values = "", selection = -8},
+{v = 10.7, varname = "HCSPEED", glyph = 0xe9a6, title = "Cycle speed", help = "Select the speed of color cycle" options = ["Slow", "Medium", "Fast"], values = [2, 5, 8], selection = 1},
+{v = 10.7, varname = "HCCOLOR", glyph = 0xe90c, title = "Cycle color", help = "Select a color intensity preset for the cycle" , options = ["Standard","Popping", "Light"], values = ["0.7_0.7","1.0_0.5","1.0_0.9"], selection = 0},
+{v = 10.7, varname = "HCPINGPONG", glyph = 0xea2d, title = "Ping Pong effect", help = "Enable this if you want the cycle to revert once finished instead of restarting" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 12.8, varname = "HCHUESTART", glyph = 0xe994, title = "Start hue", help = "Define the start value of the hue cycle (0 - 359)", options = "", values = "", selection = AF.req.huevalue},
+{v = 12.8, varname = "HCHUESTOP", glyph = 0xe994, title = "Stop hue", help = "Define the stop value of the hue cycle (0 - 359)", options = "", values = "", selection = -8},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "AUDIO", glyph = 0xea27, description = "Configure layout sounds and audio options for videos"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "themeaudio", glyph = 0xea27, initvar = function(val,prf){prf.THEMEAUDIO <- val}, title = "Enable theme sounds", help = "Enable audio sounds when browsing and moving around the theme" options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "audiovidsnaps", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDSNAPS <- val}, title = "Audio in videos (thumbs)", help = "Select wether you want to play audio in videos on thumbs" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "audiovidhistory", glyph = 0xea27, initvar = function(val,prf){prf.AUDIOVIDHISTORY <- val}, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "backgroundtune", glyph = 0xe911, initvar = function(val,prf){prf.BACKGROUNDTUNE <- val}, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
-{v = 10.2, varname = "randomtune", glyph = 0xe911, initvar = function(val,prf){prf.RANDOMTUNE <- val}, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 15.2, varname = "perdisplaytune", glyph = 0xe911, initvar = function(val,prf){prf.PERDISPLAYTUNE <- val}, title = "Per display background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display" ,  options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "nobgonattract", glyph = 0xe911, initvar = function(val,prf){prf.NOBGONATTRACT <- val}, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
+{v = 7.2, varname = "THEMEAUDIO", glyph = 0xea27, title = "Enable theme sounds", help = "Enable audio sounds when browsing and moving around the theme" options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "AUDIOVIDSNAPS", glyph = 0xea27, title = "Audio in videos (thumbs)", help = "Select wether you want to play audio in videos on thumbs" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "AUDIOVIDHISTORY", glyph = 0xea27, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "BACKGROUNDTUNE", glyph = 0xe911, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow" ,  options = "", values ="", selection = AF.req.filereqs},
+{v = 10.2, varname = "RANDOMTUNE", glyph = 0xe911, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 15.2, varname = "PERDISPLAYTUNE", glyph = 0xe911, title = "Per display background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display" ,  options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "NOBGONATTRACT", glyph = 0xe911, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode" ,  options = ["Yes","No"], values =[true,false] selection = 0},
 ])
 
 
@@ -961,47 +938,47 @@ AF.prefs.l1.push([])
 menucounter ++
 AF.prefs.l0.push({label = "BUTTONS", glyph = 0xea54, description = "Define custom control buttons for different features of Arcadeflow"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "overmenubutton", glyph = 0xea54, initvar = function(val,prf){prf.OVERMENUBUTTON <- val}, title = "Context menu button", help = "Chose the button to open the game context menu" , options = ["None","Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none","select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "contextmenu"+AF.prefs.imgext},
-{v = 7.2, varname = "utilitymenubutton", glyph = 0xea54, initvar = function(val,prf){prf.UTILITYMENUBUTTON <- val}, title = "Utility menu button", help = "Chose the button to open the utility menu" , options = ["None", "Up", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "up", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "utilitymenu"+AF.prefs.imgext},
-{v = 7.2, varname = "historybutton", glyph = 0xea54, initvar = function(val,prf){prf.HISTORYBUTTON <- val}, title = "History page button", help = "Chose the button to open the history or overview page" , options = ["None", "Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "bgcustomhistory"+AF.prefs.imgext},
-{v = 7.2, varname = "switchmodebutton", glyph = 0xea54, initvar = function(val,prf){prf.SWITCHMODEBUTTON <- val}, title = "Thumbnail mode button", help = "Chose the button to use to switch from snapshot mode to box art mode" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 3,pic = "boxarton"+AF.prefs.imgext},
+{v = 7.2, varname = "OVERMENUBUTTON", glyph = 0xea54, title = "Context menu button", help = "Chose the button to open the game context menu" , options = ["None","Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none","select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "contextmenu"+AF.prefs.imgext},
+{v = 7.2, varname = "UTILITYMENUBUTTON", glyph = 0xea54, title = "Utility menu button", help = "Chose the button to open the utility menu" , options = ["None", "Up", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "up", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 1,pic = "utilitymenu"+AF.prefs.imgext},
+{v = 7.2, varname = "HISTORYBUTTON", glyph = 0xea54, title = "History page button", help = "Chose the button to open the history or overview page" , options = ["None", "Select", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values =["none", "select", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "bgcustomhistory"+AF.prefs.imgext},
+{v = 7.2, varname = "SWITCHMODEBUTTON", glyph = 0xea54, title = "Thumbnail mode button", help = "Chose the button to use to switch from snapshot mode to box art mode" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 3,pic = "boxarton"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Search and Filters", selection = AF.req.liner},
-{v = 7.5, varname = "searchbutton", glyph = 0xea54, initvar = function(val,prf){prf.SEARCHBUTTON <- val}, title = "Search menu button", help = "Chose the button to use to directly open the search menu instead of using the utility menu" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "inputscreenkeys"+AF.prefs.imgext},
-{v = 7.6, varname = "categorybutton", glyph = 0xea54, initvar = function(val,prf){prf.CATEGORYBUTTON <- val}, title = "Category menu button", help = "Chose the button to use to open the list of game categories" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
-{v = 7.6, varname = "multifilterbutton", glyph = 0xea54, initvar = function(val,prf){prf.MULTIFILTERBUTTON <- val}, title = "Multifilter menu button", help = "Chose the button to use to open the menu for dynamic filtering of romlist" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
-{v = 14.2, varname = "favbutton", glyph = 0xea54, initvar = function(val,prf){prf.FAVBUTTON <- val}, title = "Show favorites button", help = "Chose the button to use to toggle favorite filtering" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 7.5, varname = "SEARCHBUTTON", glyph = 0xea54, title = "Search menu button", help = "Chose the button to use to directly open the search menu instead of using the utility menu" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0,pic = "inputscreenkeys"+AF.prefs.imgext},
+{v = 7.6, varname = "CATEGORYBUTTON", glyph = 0xea54, title = "Category menu button", help = "Chose the button to use to open the list of game categories" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 7.6, varname = "MULTIFILTERBUTTON", glyph = 0xea54, title = "Multifilter menu button", help = "Chose the button to use to open the menu for dynamic filtering of romlist" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 14.2, varname = "FAVBUTTON", glyph = 0xea54, title = "Show favorites button", help = "Chose the button to use to toggle favorite filtering" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
-{v = 12.5, varname = "volumebutton", glyph = 0xea54, initvar = function(val,prf){prf.VOLUMEBUTTON <- val}, title = "Volume button", help = "Chose the button to use to change system volume" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 12.5, varname = "VOLUMEBUTTON", glyph = 0xea54, title = "Volume button", help = "Chose the button to use to change system volume" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "ROM Management", selection = AF.req.liner},
-{v = 9.8, varname = "deletebutton", glyph = 0xea54, initvar = function(val,prf){prf.DELETEBUTTON <- val}, title = "Delete ROM button", help = "Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
+{v = 9.8, varname = "DELETEBUTTON", glyph = 0xea54, title = "Delete ROM button", help = "Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder" , options = ["None", "Custom 1", "Custom 2", "Custom 3", "Custom 4", "Custom 5", "Custom 6"], values=["none", "custom1", "custom2", "custom3", "custom4", "custom5", "custom6"], selection = 0},
 ])
 
 menucounter ++
 sorter.rawset("um", menucounter)
 AF.prefs.l0.push({label = "UTILITY MENU", glyph = 0xe9bd, description = "Customize the utility menu entries that you want to see in the menu"})
 AF.prefs.l1.push([
-{v = 15.0, varname = "umvector", glyph = 0xe9bd, initvar = function(val,prf){prf.UMVECTOR <- val}, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(21), selection = AF.req.menusort},
-{v = 15.0, varname = "umvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.UMVECTORRESET <- val}, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(21)}, selection = AF.req.executef},
+{v = 15.0, varname = "UMVECTOR", glyph = 0xe9bd, title = "Customize Utility Menu", help = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(umtablenames(umtable))}, values = sortstring(21), selection = AF.req.menusort},
+{v = 15.0, varname = "UMVECTORRESET", glyph = 0xe965, title = "Reset Utility Menu", help = "Reset sorting and selection of Utility Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.um][0].values = sortstring(21)}, selection = AF.req.executef},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "DISPLAYS MENU PAGE", glyph = 0xe912, description = "Arcadeflow has its own Displays Menu page that can be configured here"})
 AF.prefs.l1.push([
-{v = 8.7, varname = "dmpenabled", glyph = 0xe912, initvar = function(val,prf){prf.DMPENABLED <- val}, title = "Enable Arcadeflow Displays Menu page", help = "If you disable Arcadeflow menu page you can use other layouts as displays menu" , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 9.0, varname = "olddisplaychange", glyph = 0xe912, initvar = function(val,prf){prf.OLDDISPLAYCHANGE <- val}, title = "Enable Fast Displays Change", help = "Disable fast display change if you want to use other layouts for different displays" , options = ["Yes", "No"], values= [false,true],selection = 0},
+{v = 8.7, varname = "DMPENABLED", glyph = 0xe912, title = "Enable Arcadeflow Displays Menu page", help = "If you disable Arcadeflow menu page you can use other layouts as displays menu" , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 9.0, varname = "OLDDISPLAYCHANGE", glyph = 0xe912, title = "Enable Fast Displays Change", help = "Disable fast display change if you want to use other layouts for different displays" , options = ["Yes", "No"], values= [false,true],selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Look and Feel", selection = AF.req.liner},
-{v = 7.2, varname = "dmpgeneratelogo", glyph = 0xe90d, initvar = function(val,prf){prf.DMPGENERATELOGO <- val}, title = "Generate display logo", help = "Generate displays name related artwork for displays list" , options = ["Yes","No"], values = [true,false], selection = 0,picsel=["dmplistlogoyes"+AF.prefs.imgext,"dmplistlogono"+AF.prefs.imgext], pic = "dmplistlogo"+AF.prefs.imgext},
-{v = 8.9, varname = "dmpsort", glyph = 0xeaf1, initvar = function(val,prf){prf.DMPSORT <- val}, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "Display name", "System year", "System brand then name", "System brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
-{v = 9.4, varname = "dmpseparators", glyph = 0xeaf5, initvar = function(val,prf){prf.DMPSEPARATORS <- val}, title = "Show group separators", help = "When sorting by brand show separators in the menu for each brand" , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 12.3, varname = "dmpimages", glyph = 0xea77, initvar = function(val,prf){prf.DMPIMAGES <- val}, title = "Displays menu layout", help = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder" , options = ["List", "List with artwork", "list with walls"], values= [null,"ARTWORK","WALLS"],selection = 2, picsel = ["dmplistartno"+AF.prefs.imgext,"dmplistartyes"+AF.prefs.imgext],pic = "dmplistartyes"+AF.prefs.imgext},
-{v = 9.8, varname = "dmart", glyph = 0xe90d, initvar = function(val,prf){prf.DMART <- val}, title = "Artwork source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
-{v = 12.3, varname = "dmcategoryart", glyph = 0xe90d, initvar = function(val,prf){prf.DMCATEGORYART <- val}, title = "Enable category artwork", help = "You can separately enable/disable artwork for categories like console, computer, pinball etc." , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 7.3, varname = "dmpgrouped", glyph = 0xea78, initvar = function(val,prf){prf.DMPGROUPED <- val}, title = "Categorized Displays Menu", help = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections" , options = ["Yes", "No"], values= [true,false],selection = 0, picsel = ["dmpgroupedyes"+AF.prefs.imgext,"dmpgroupedno"+AF.prefs.imgext],pic = "dmpgroupedyes"+AF.prefs.imgext},
-{v = 7.4, varname = "dmpexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPEXITAF <- val}, title = "Add Exit Arcadeflow to menu", help = "Add an entry to exit Arcadeflow from the displays menu page" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 7.2, varname = "DMPGENERATELOGO", glyph = 0xe90d, title = "Generate display logo", help = "Generate displays name related artwork for displays list" , options = ["Yes","No"], values = [true,false], selection = 0,picsel=["dmplistlogoyes"+AF.prefs.imgext,"dmplistlogono"+AF.prefs.imgext], pic = "dmplistlogo"+AF.prefs.imgext},
+{v = 8.9, varname = "DMPSORT", glyph = 0xeaf1, title = "Sort displays menu", help = "Show displays in the menu in your favourite order" , options = ["No sort", "Display name", "System year", "System brand then name", "System brand then year"], values= ["false","display","year","brandname","brandyear"],selection = 3},
+{v = 9.4, varname = "DMPSEPARATORS", glyph = 0xeaf5, title = "Show group separators", help = "When sorting by brand show separators in the menu for each brand" , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 12.3, varname = "DMPIMAGES", glyph = 0xea77, title = "Displays menu layout", help = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder" , options = ["List", "List with artwork", "list with walls"], values= [null,"ARTWORK","WALLS"],selection = 2, picsel = ["dmplistartno"+AF.prefs.imgext,"dmplistartyes"+AF.prefs.imgext],pic = "dmplistartyes"+AF.prefs.imgext},
+{v = 9.8, varname = "DMART", glyph = 0xe90d, title = "Artwork source", help = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder" , options = ["Arcadeflow only", "menu-art only", "Arcadeflow first", "menu-art first"], values= ["AF_ONLY","MA_ONLY","AF_MA","MA_AF"],selection = 0},
+{v = 12.3, varname = "DMCATEGORYART", glyph = 0xe90d, title = "Enable category artwork", help = "You can separately enable/disable artwork for categories like console, computer, pinball etc." , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 7.3, varname = "DMPGROUPED", glyph = 0xea78, title = "Categorized Displays Menu", help = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections" , options = ["Yes", "No"], values= [true,false],selection = 0, picsel = ["dmpgroupedyes"+AF.prefs.imgext,"dmpgroupedno"+AF.prefs.imgext],pic = "dmpgroupedyes"+AF.prefs.imgext},
+{v = 7.4, varname = "DMPEXITAF", glyph = 0xea7c, title = "Add Exit Arcadeflow to menu", help = "Add an entry to exit Arcadeflow from the displays menu page" , options = ["Yes", "No"], values= [true,false],selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Behavior", selection = AF.req.liner},
-{v = 7.4, varname = "dmpatstart", glyph = 0xea7a, initvar = function(val,prf){prf.DMPATSTART <- val}, title = "Open the Displays Menu at startup", help = "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode" , options = ["Yes", "No"], values= [true,false],selection = 1},
-{v = 7.4, varname = "dmpoutexitaf", glyph = 0xea7c, initvar = function(val,prf){prf.DMPOUTEXITAF <- val}, title = "Exit AF when leaving Menu", help = "The esc button from Displays Menu triggers the exit from Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
-{v = 7.4, varname = "dmpifexitaf", glyph = 0xea7a, initvar = function(val,prf){prf.DMPIFEXITAF <- val}, title = "Enter Menu when leaving display", help = "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 7.4, varname = "DMPATSTART", glyph = 0xea7a, title = "Open the Displays Menu at startup", help = "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 7.4, varname = "DMPOUTEXITAF", glyph = 0xea7c, title = "Exit AF when leaving Menu", help = "The esc button from Displays Menu triggers the exit from Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
+{v = 7.4, varname = "DMPIFEXITAF", glyph = 0xea7a, title = "Enter Menu when leaving display", help = "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow" , options = ["Yes", "No"], values= [true,false],selection = 1},
 ])
 
 
@@ -1009,49 +986,49 @@ menucounter ++
 AF.prefs.l0.push({ label = "HISTORY PAGE", glyph = 0xe923, description = "Configure the History page where larger thumbnail and game history data are shown"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = AF.req.liner},
-{v = 8.8, varname = "crtgeometry", glyph = 0xe95b, initvar = function(val,prf){prf.CRTGEOMETRY <- val}, title = "CRT deformation", help = "Enable CRT deformation for CRT snaps" options = ["Yes", "No"], values =[true,false], selection = 0},
-{v = 7.2, varname = "scanlinemode", glyph = 0xe95b, initvar = function(val,prf){prf.SCANLINEMODE <- val}, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline" options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2, picsel = ["slscanline"+AF.prefs.imgext,"slhalfres"+AF.prefs.imgext,"slaperture"+AF.prefs.imgext,"slnone"+AF.prefs.imgext],pic = "sl"+AF.prefs.imgext},
-{v = 7.2, varname = "lcdmode", glyph = 0xe959, initvar = function(val,prf){prf.LCDMODE <- val}, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1, picsel = ["lcdmatrix"+AF.prefs.imgext, "lcdhalfres"+AF.prefs.imgext, "lcdnone"+AF.prefs.imgext],pic = "lcd"+AF.prefs.imgext},
+{v = 8.8, varname = "CRTGEOMETRY", glyph = 0xe95b, title = "CRT deformation", help = "Enable CRT deformation for CRT snaps" options = ["Yes", "No"], values =[true,false], selection = 0},
+{v = 7.2, varname = "SCANLINEMODE", glyph = 0xe95b, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline" options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2, picsel = ["slscanline"+AF.prefs.imgext,"slhalfres"+AF.prefs.imgext,"slaperture"+AF.prefs.imgext,"slnone"+AF.prefs.imgext],pic = "sl"+AF.prefs.imgext},
+{v = 7.2, varname = "LCDMODE", glyph = 0xe959, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1, picsel = ["lcdmatrix"+AF.prefs.imgext, "lcdhalfres"+AF.prefs.imgext, "lcdnone"+AF.prefs.imgext],pic = "lcd"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 8.3, varname = "historysize", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYSIZE <- val}, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45,0.65,0.75,-1.0], selection = 1},
-{v = 7.2, varname = "historypanel", glyph = 0xe923, initvar = function(val,prf){prf.HISTORYPANEL <- val}, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true,false], selection = 0, picsel = ["histpanelyes"+AF.prefs.imgext,"histpanelno"+AF.prefs.imgext],pic="histpanelyes"+AF.prefs.imgext},
-{v = 7.2, varname = "darkpanel", glyph = 0xe923, initvar = function(val,prf){prf.DARKPANEL <- val}, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true,false,null], selection = 1,picsel=["histpaneldark"+AF.prefs.imgext,"histpaneldefault"+AF.prefs.imgext,"histpanelnone"+AF.prefs.imgext],pic = "histpaneldefault"+AF.prefs.imgext},
-{v = 8.2, varname = "histmininame", glyph = 0xe923, initvar = function(val,prf){prf.HISTMININAME <- val}, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false,true], selection = 0},
-{v = 14.5, varname = "controloverlay", glyph = 0xe923, initvar = function(val,prf){prf.CONTROLOVERLAY <- val}, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Always", "Never","Arcade only"], values = ["always","never","arcade"], selection = 0},
+{v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45,0.65,0.75,-1.0], selection = 1},
+{v = 7.2, varname = "HISTORYPANEL", glyph = 0xe923, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true,false], selection = 0, picsel = ["histpanelyes"+AF.prefs.imgext,"histpanelno"+AF.prefs.imgext],pic="histpanelyes"+AF.prefs.imgext},
+{v = 7.2, varname = "DARKPANEL", glyph = 0xe923, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true,false,null], selection = 1,picsel=["histpaneldark"+AF.prefs.imgext,"histpaneldefault"+AF.prefs.imgext,"histpanelnone"+AF.prefs.imgext],pic = "histpaneldefault"+AF.prefs.imgext},
+{v = 8.2, varname = "HISTMININAME", glyph = 0xe923, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false,true], selection = 0},
+{v = 14.5, varname = "CONTROLOVERLAY", glyph = 0xe923, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Always", "Never","Arcade only"], values = ["always","never","arcade"], selection = 0},
 ])
 
 
 menucounter ++
 AF.prefs.l0.push({ label = "ATTRACT MODE", glyph = 0xe9a5, description = "Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "amenable", glyph = 0xe9a5, initvar = function(val,prf){prf.AMENABLE <- val}, title = "Enable attract mode", help = "Enable or disable attract mode at layout startup" , options = ["From start", "Inactivity only", "Disabled"], values =["From start", "Inactivity only", "Disabled"], selection = 1,pic = "attractmode"+AF.prefs.imgext},
+{v = 7.2, varname = "AMENABLE", glyph = 0xe9a5, title = "Enable attract mode", help = "Enable or disable attract mode at layout startup" , options = ["From start", "Inactivity only", "Disabled"], values =["From start", "Inactivity only", "Disabled"], selection = 1,pic = "attractmode"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Look & Feel", selection = AF.req.liner},
-{v = 7.2, varname = "amtimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMTIMER <- val}, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = ["Timer"], values ="120", selection = AF.req.keyboard},
-{v = 7.2, varname = "amchangetimer", glyph = 0xe94e, initvar = function(val,prf){prf.AMCHANGETIMER <- val}, title = "Game change time (s)", help = "Time interval between each game change", options = ["Interval"], values = "10", selection = AF.req.keyboard},
-{v = 9.1, varname = "amshowlogo", glyph = 0xea6d, initvar = function(val,prf){prf.AMSHOWLOGO <- val}, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "ammessage", glyph = 0xea6d, initvar = function(val,prf){prf.AMMESSAGE <- val}, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = " - PRESS ANY KEY - ", selection = AF.req.keyboard,pic = "attractmode"+AF.prefs.imgext},
+{v = 7.2, varname = "AMTIMER", glyph = 0xe94e, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = ["Timer"], values ="120", selection = AF.req.keyboard},
+{v = 7.2, varname = "AMCHANGETIMER", glyph = 0xe94e, title = "Game change time (s)", help = "Time interval between each game change", options = ["Interval"], values = "10", selection = AF.req.keyboard},
+{v = 9.1, varname = "AMSHOWLOGO", glyph = 0xea6d, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "AMMESSAGE", glyph = 0xea6d, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = " - PRESS ANY KEY - ", selection = AF.req.keyboard,pic = "attractmode"+AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
-{v = 7.2, varname = "amtune", glyph = 0xe911, initvar = function(val,prf){prf.AMTUNE <- val}, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
-{v = 7.2, varname = "amsound", glyph = 0xea27, initvar = function(val,prf){prf.AMSOUND <- val}, title = "Enable game sound", help = "Enable game sounds during attract mode" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "AMTUNE", glyph = 0xe911, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
+{v = 7.2, varname = "AMSOUND", glyph = 0xea27, title = "Enable game sound", help = "Enable game sounds during attract mode" , options = ["Yes","No"], values = [true,false], selection = 0},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
 AF.prefs.l1.push([
-{v = 14.2, varname = "adaptspeed", glyph = 0xe994, initvar = function(val,prf){prf.ADAPTSPEED <- val}, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "customsize", glyph = 0xe994, initvar = function(val,prf){prf.CUSTOMSIZE <- val}, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = ["Res"], values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
-{v = 9.8, varname = "rpi", glyph = 0xe994, initvar = function(val,prf){prf.RPI <- val}, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 14.2, varname = "ADAPTSPEED", glyph = 0xe994, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "CUSTOMSIZE", glyph = 0xe994, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = ["Res"], values = "", selection = AF.req.keyboard, pic = "customresyes"+AF.prefs.imgext},
+{v = 9.8, varname = "RPI", glyph = 0xe994, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed" , options = ["Yes","No"], values = [true,false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = AF.req.liner},
-{v = 12.8, varname = "overscanw", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANW <- val}, title = "Width %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
-{v = 12.8, varname = "overscanh", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANH <- val}, title = "Height %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
-{v = 12.8, varname = "overscanx", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANX <- val}, title = "Shift X %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
-{v = 12.8, varname = "overscany", glyph = 0xe994, initvar = function(val,prf){prf.OVERSCANY <- val}, title = "Shift Y %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
+{v = 12.8, varname = "OVERSCANW", glyph = 0xe994, title = "Width %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
+{v = 12.8, varname = "OVERSCANH", glyph = 0xe994, title = "Height %", help = "For screens with overscan, define which percentage of the screen will be filled with actual content", options = [0,100,100], values = 100, selection = AF.req.slideint},
+{v = 12.8, varname = "OVERSCANX", glyph = 0xe994, title = "Shift X %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
+{v = 12.8, varname = "OVERSCANY", glyph = 0xe994, title = "Shift Y %", help = "For screens with overscan, screen will be shifted by the percentage", options = [-100,100,0], values = 0, selection = AF.req.slideint},
 {v = 0.0, varname = "", glyph = -1, title = "Effects", selection = AF.req.liner},
-{v = 7.2, varname = "lowspecmode", glyph = 0xe994, initvar = function(val,prf){prf.LOWSPECMODE <- val}, title = "Low Spec mode", help = "Reduce most visual effects to boost speed on lower spec systems" , options = ["Yes","No"], values = [true,false], selection = 1, picsel=["lslowspec"+AF.prefs.imgext,"lsdefault"+AF.prefs.imgext], pic = "lslowspec1"+AF.prefs.imgext},
-{v = 7.2, varname = "datashadowsmooth", glyph = 0xe994, initvar = function(val,prf){prf.DATASHADOWSMOOTH <- val}, title = "Smooth shadow", help = "Enable smooth shadow under game title and data in the GUI" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnodrop"+AF.prefs.imgext], pic = "lsdrop"+AF.prefs.imgext},
-{v = 7.2, varname = "snapglow", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGLOW <- val}, title = "Glow effect", help = "Add a glowing halo around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnoglow"+AF.prefs.imgext],pic = "lsglow"+AF.prefs.imgext},
-{v = 15.4, varname = "snapborder", glyph = 0xe994, initvar = function(val,prf){prf.SNAPBORDER <- val}, title = "Snap border", help = "Add a white border around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 7.2, varname = "snapgradient", glyph = 0xe994, initvar = function(val,prf){prf.SNAPGRADIENT <- val}, title = "Thumb gradient", help = "Blurs the artwork behind the game logo so it's more readable" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsgradient"+AF.prefs.imgext],pic = "lsgradient1"+AF.prefs.imgext},
+{v = 7.2, varname = "LOWSPECMODE", glyph = 0xe994, title = "Low Spec mode", help = "Reduce most visual effects to boost speed on lower spec systems" , options = ["Yes","No"], values = [true,false], selection = 1, picsel=["lslowspec"+AF.prefs.imgext,"lsdefault"+AF.prefs.imgext], pic = "lslowspec1"+AF.prefs.imgext},
+{v = 7.2, varname = "DATASHADOWSMOOTH", glyph = 0xe994, title = "Smooth shadow", help = "Enable smooth shadow under game title and data in the GUI" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnodrop"+AF.prefs.imgext], pic = "lsdrop"+AF.prefs.imgext},
+{v = 7.2, varname = "SNAPGLOW", glyph = 0xe994, title = "Glow effect", help = "Add a glowing halo around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsnoglow"+AF.prefs.imgext],pic = "lsglow"+AF.prefs.imgext},
+{v = 15.4, varname = "SNAPBORDER", glyph = 0xe994, title = "Snap border", help = "Add a white border around the selected game thumbnail" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 7.2, varname = "SNAPGRADIENT", glyph = 0xe994, title = "Thumb gradient", help = "Blurs the artwork behind the game logo so it's more readable" , options = ["Yes","No"], values = [true,false], selection = 0, picsel=["lsdefault"+AF.prefs.imgext,"lsgradient"+AF.prefs.imgext],pic = "lsgradient1"+AF.prefs.imgext},
 ])
 
 
@@ -1059,11 +1036,11 @@ menucounter ++
 AF.prefs.l0.push({ label = "MULTIPLE MONITOR", glyph = 0xeaf8, description = "Configure the appearence of a second monitor"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = AF.req.liner},
-{v = 13.7, varname = "multimon", glyph = 0xeaf8, initvar = function(val,prf){prf.MULTIMON <- val}, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
-{v = 13.7, varname = "monitornumber", glyph = 0xeaf9, initvar = function(val,prf){prf.MONITORNUMBER <- val}, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = ["Monitor 1", "Monitor 2","Monitor 3"], values = [1,2,3], selection = 0},
-{v = 13.7, varname = "monitoraspect", glyph = 0xea57, initvar = function(val,prf){prf.MONITORASPECT <- val}, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
-{v = 13.7, varname = "monitormedia1", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA1 <- val}, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
-{v = 13.7, varname = "monitormedia2", glyph = 0xe915, initvar = function(val,prf){prf.MONITORMEDIA2 <- val}, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
+{v = 13.7, varname = "MULTIMON", glyph = 0xeaf8, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true,false], selection = 1},
+{v = 13.7, varname = "MONITORNUMBER", glyph = 0xeaf9, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = ["Monitor 1", "Monitor 2","Monitor 3"], values = [1,2,3], selection = 0},
+{v = 13.7, varname = "MONITORASPECT", glyph = 0xea57, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes","No"], values =[true,false], selection = 0}
+{v = 13.7, varname = "MONITORMEDIA1", glyph = 0xe915, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee","logo"], values =["marquee","wheel"], selection = 0}
+{v = 13.7, varname = "MONITORMEDIA2", glyph = 0xe915, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee","logo"], values =["marquee","wheel"], selection = 1}
 ])
 
 
@@ -1077,61 +1054,61 @@ sorter.rawset("scrape", menucounter)
 AF.prefs.l0.push({ label = "SCRAPE AND METADATA", glyph = 0xea80, description = "You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "SCRAPING", selection = AF.req.liner},
-{v = 10.0, varname = "scraperomlist", glyph = 0xe9c2, initvar = function(val,prf){prf.SCRAPEROMLIST <- val}, title = "Scrape current romlist", help = "Arcadeflow will scrape your current romlist metadata and media, based on your options" , options = "", values = function(){local tempprf = generateprefstable();scraperomlist2(tempprf,tempprf.MEDIASCRAPE,false)},selection = AF.req.executef},
-{v = 10.1, varname = "scrapegame", glyph = 0xe9c2, initvar = function(val,prf){prf.SCRAPEGAME <- val}, title = "Scrape selected game", help = "Arcadeflow will scrape only metadata and media for current game" , options = "", values = function(){local tempprf = generateprefstable();scraperomlist2(tempprf,tempprf.MEDIASCRAPE,true)},selection = AF.req.executef},
-{v = 10.3, varname = "nocrc", glyph = 0xea0c, initvar = function(val,prf){prf.NOCRC <- val}, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)" , options = ["Yes","No"], values = [false,true],selection = 0},
-{v = 10.1, varname = "romscrape", glyph = 0xe9c4, initvar = function(val,prf){prf.ROMSCRAPE <- val}, title = "Rom Scrape Options", help = "You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match" , options = ["All roms","Skip CRC matched", "Skip name matched","Missing only"], values= ["ALL_ROMS","SKIP_CRC","SKIP_NAME","MISSING_ROMS"],selection = 1},
-{v = 12.0, varname = "errorscrape", glyph = 0xe9c4, initvar = function(val,prf){prf.ERRORSCRAPE <- val}, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping" , options = ["Yes","No"], values= [true,false],selection = 1},
-{v = 10.0, varname = "mediascrape", glyph = 0xe90d, initvar = function(val,prf){prf.MEDIASCRAPE <- val}, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping" , options = ["Overwrite media", "Only missing","No media scrape"], values= ["ALL_MEDIA","MISSING_MEDIA","NO_MEDIA"],selection = 1},
-{v = 10.0, varname = "regionprefs", glyph = 0xe9ca, initvar = function(val,prf){prf.REGIONPREFS <- val}, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference" , options = function(){return(AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
-{v = 10.0, varname = "resetregions", glyph = 0xe965, initvar = function(val,prf){prf.RESETREGIONS <- val}, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
+{v = 10.0, varname = "SCRAPEROMLIST", glyph = 0xe9c2, title = "Scrape current romlist", help = "Arcadeflow will scrape your current romlist metadata and media, based on your options" , options = "", values = function(){local tempprf = generateprefstable();scraperomlist2(tempprf,tempprf.MEDIASCRAPE,false)},selection = AF.req.executef},
+{v = 10.1, varname = "SCRAPEGAME", glyph = 0xe9c2, title = "Scrape selected game", help = "Arcadeflow will scrape only metadata and media for current game" , options = "", values = function(){local tempprf = generateprefstable();scraperomlist2(tempprf,tempprf.MEDIASCRAPE,true)},selection = AF.req.executef},
+{v = 10.3, varname = "NOCRC", glyph = 0xea0c, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)" , options = ["Yes","No"], values = [false,true],selection = 0},
+{v = 10.1, varname = "ROMSCRAPE", glyph = 0xe9c4, title = "Rom Scrape Options", help = "You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match" , options = ["All roms","Skip CRC matched", "Skip name matched","Missing only"], values= ["ALL_ROMS","SKIP_CRC","SKIP_NAME","MISSING_ROMS"],selection = 1},
+{v = 12.0, varname = "ERRORSCRAPE", glyph = 0xe9c4, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping" , options = ["Yes","No"], values= [true,false],selection = 1},
+{v = 10.0, varname = "MEDIASCRAPE", glyph = 0xe90d, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping" , options = ["Overwrite media", "Only missing","No media scrape"], values= ["ALL_MEDIA","MISSING_MEDIA","NO_MEDIA"],selection = 1},
+{v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference" , options = function(){return(AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
+{v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries" , options = "", values = function(){AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = AF.req.liner},
-{v = 10.0, varname = "ss_username", glyph = 0xe971, initvar = function(val,prf){prf.SS_USERNAME <- val}, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
-{v = 10.0, varname = "ss_password", glyph = 0xe98d, initvar = function(val,prf){prf.SS_PASSWORD <- val}, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
+{v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
+{v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
 {v = 0.0, varname = "", glyph = -1, title = "MAME DATA FILES", selection = AF.req.liner},
-{v = 12.0, varname = "dat_path", glyph = 0xe930, initvar = function(val,prf){prf.DAT_PATH <- val}, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
-{v = 12.0, varname = "index_clones", glyph = 0xe922, initvar = function(val,prf){prf.INDEX_CLONES <- val}, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 12.0, varname = "generate1", glyph = 0xea1c, initvar = function(val,prf){prf.GENERATE1 <- val}, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "" , values = function(){local tempprf = generateprefstable(); af_generate_index(tempprf);fe.signal("back");fe.signal("back")}, selection = AF.req.executef},
-//{v = 12.0, varname = "dat_command_path", glyph = 0xe930, initvar = function(val,prf){prf.DAT_COMMAND_PATH <- val}, title = "Command.dat", help = "Command.dat location.", options = "", values = "", selection = AF.req.filereqs},
-//{v = 12.0, varname = "generate2", glyph = 0xea1c, initvar = function(val,prf){prf.GENERATE2 <- val}, title = "Generate Command index", help = "Generate the command.dat index now (this can take some time)", options = "" , values = function(){local tempprf = generateprefstable(); af_generate_command_index(tempprf);fe.signal("back");fe.signal("back")}, selection = AF.req.executef},
-{v = 12.0, varname = "ini_bestgames_path", glyph = 0xe930, initvar = function(val,prf){prf.INI_BESTGAMES_PATH <- val}, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
+{v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "" , values = function(){local tempprf = generateprefstable(); af_generate_index(tempprf);fe.signal("back");fe.signal("back")}, selection = AF.req.executef},
+//{v = 12.0, varname = "dat_command_path", glyph = 0xe930, title = "Command.dat", help = "Command.dat location.", options = "", values = "", selection = AF.req.filereqs},
+//{v = 12.0, varname = "generate2", glyph = 0xea1c, title = "Generate Command index", help = "Generate the command.dat index now (this can take some time)", options = "" , values = function(){local tempprf = generateprefstable(); af_generate_command_index(tempprf);fe.signal("back");fe.signal("back")}, selection = AF.req.executef},
+{v = 12.0, varname = "INI_BESTGAMES_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML IMPORT", selection = AF.req.liner},
-{v = 9.7, varname = "importxml", glyph = 0xe92e, initvar = function(val,prf){prf.IMPORTXML <- val}, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data" , options = "", values = function(){local tempprf = generateprefstable();XMLtoAM2(tempprf,false);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 9.8, varname = "import1xml", glyph = 0xeaf4, initvar = function(val,prf){prf.IMPORT1XML <- val}, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data" , options = "", values = function(){local tempprf = generateprefstable();XMLtoAM2(tempprf,true);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 9.8, varname = "usegenreid", glyph = 0xe937, initvar = function(val,prf){prf.USEGENREID <- val}, title = "Prefer genreid categories", help = "If GenreID is specified in your games list, use that instead of usual categories" , options = ["Yes", "No"], values= [true,false],selection = 0},
-{v = 9.8, varname = "onlyavailable", glyph = 0xe912, initvar = function(val,prf){prf.ONLYAVAILABLE <- val}, title = "Import only available roms", help = "Import entrief from the games list only if the rom file is actually available" , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data" , options = "", values = function(){local tempprf = generateprefstable();XMLtoAM2(tempprf,false);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data" , options = "", values = function(){local tempprf = generateprefstable();XMLtoAM2(tempprf,true);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 9.8, varname = "USEGENREID", glyph = 0xe937, title = "Prefer genreid categories", help = "If GenreID is specified in your games list, use that instead of usual categories" , options = ["Yes", "No"], values= [true,false],selection = 0},
+{v = 9.8, varname = "ONLYAVAILABLE", glyph = 0xe912, title = "Import only available roms", help = "Import entrief from the games list only if the rom file is actually available" , options = ["Yes", "No"], values= [true,false],selection = 0},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "ROMLIST MANAGEMENT", glyph = 0xea80, description = "Manage romlists and collections"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "ROMLISTS", selection = AF.req.liner},
-{v = 12.0, varname = "refreshromlist", glyph = 0xe982, initvar = function(val,prf){prf.REFRESHROMLIST <- val}, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data" , options = "", values = function(){local tempprf = generateprefstable();refreshselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 14.7, varname = "resetdatabase", glyph = 0xe97c, initvar = function(val,prf){prf.RESETDATABASE <- val}, title = "Erase romlist database", help = "Doesn't rescan the romlist, bur erases all game database information" , options = "", values = function(){local tempprf = generateprefstable();eraseselecteddatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 12.0, varname = "cleanromlist", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANROMIST <- val}, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data" , options = "", values = function(){local tempprf = generateprefstable();resetselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 12.3, varname = "resetlastplayed", glyph = 0xe97c, initvar = function(val,prf){prf.RESETLASTPLAYED <- val}, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
+{v = 12.0, varname = "REFRESHROMLIST", glyph = 0xe982, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data" , options = "", values = function(){local tempprf = generateprefstable();refreshselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 14.7, varname = "RESETDATABASE", glyph = 0xe97c, title = "Erase romlist database", help = "Doesn't rescan the romlist, bur erases all game database information" , options = "", values = function(){local tempprf = generateprefstable();eraseselecteddatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 12.0, varname = "CLEANROMLIST", glyph = 0xe97c, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data" , options = "", values = function(){local tempprf = generateprefstable();resetselectedromlists(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 12.3, varname = "RESETLASTPLAYED", glyph = 0xe97c, title = "Reset last played", help = "Remove all last played data from the current romlist" , options = "", values = function(){local tempprf = resetlastplayed()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = AF.req.liner},
-{v = 13.9, varname = "masterlist", glyph = 0xe95c, initvar = function(val,prf){prf.MASTERLIST <- val}, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it" , options = ["Yes", "No"], values = [true, false],selection = 1},
-{v = 13.9, varname = "masterpath", glyph = 0xe930, initvar = function(val,prf){prf.MASTERPATH <- val}, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation", options = "", values = "", selection = AF.req.filereqs},
+{v = 13.9, varname = "MASTERLIST", glyph = 0xe95c, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it" , options = ["Yes", "No"], values = [true, false],selection = 1},
+{v = 13.9, varname = "MASTERPATH", glyph = 0xe930, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ROMLIST EXPORT", selection = AF.req.liner},
-{v = 12.0, varname = "buildxml", glyph = 0xe961, initvar = function(val,prf){prf.BUILDXML <- val}, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation" , options = "", values = function(){buildgamelistxml()},selection = AF.req.executef},
+{v = 12.0, varname = "BUILDXML", glyph = 0xe961, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation" , options = "", values = function(){buildgamelistxml()},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = AF.req.liner},
-{v = 12.1, varname = "allgames", glyph = 0xe95c, initvar = function(val,prf){prf.ALLGAMES <- val}, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
-{v = 12.0, varname = "updateallgames", glyph = 0xe95c, initvar = function(val,prf){prf.UPDATEALLGAMES <- val}, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 12.1, varname = "ALLGAMES", glyph = 0xe95c, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations" , options = ["Yes", "No"], values = [true, false],selection = 1},
+{v = 12.0, varname = "UPDATEALLGAMES", glyph = 0xe95c, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays" , options = "", values = function(){local tempprf = generateprefstable();updateallgamescollections(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = AF.req.liner},
-{v = 14.7, varname = "cleandatabase", glyph = 0xe97c, initvar = function(val,prf){prf.CLEANDATABASE <- val}, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry" , options = "", values = function(){local tempprf = generateprefstable();cleandatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
-{v = 14.1, varname = "enablehidden", glyph = 0xe997, initvar = function(val,prf){prf.ENABLEHIDDEN <- val}, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 10.9, varname = "enabledelete", glyph = 0xe9ac, initvar = function(val,prf){prf.ENABLEDELETE <- val}, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 14.7, varname = "CLEANDATABASE", glyph = 0xe97c, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry" , options = "", values = function(){local tempprf = generateprefstable();cleandatabase(tempprf);fe.signal("back");fe.signal("back");fe.set_display(fe.list.display_index)},selection = AF.req.executef},
+{v = 14.1, varname = "ENABLEHIDDEN", glyph = 0xe997, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 10.9, varname = "ENABLEDELETE", glyph = 0xe9ac, title = "Enable rom delete", help = "Enable or disable the options to delete a rom" , options = ["Yes","No"], values = [true,false], selection = 1},
 ])
 
 
 menucounter ++
 AF.prefs.l0.push({ label = "RETROARCH INTEGRATION", glyph = 0xeafa, description = "Assign retroarch cores to emulators"})
 AF.prefs.l1.push([
-	{v = 14.6, varname = "raenabled", glyph = 0xeafa, initvar = function(val,prf){prf.RAENABLED <- val}, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
-	{v = 14.6, varname = "raexepath", glyph = 0xe930, initvar = function(val,prf){prf.RAEXEPATH <- val}, title = "Custom executable path", help = "Enter the path to RetroArch executable if not installed in your OS default location", options = "", values = "", selection = AF.req.textentr},
-	{v = 14.6, varname = "racorepath", glyph = 0xe930, initvar = function(val,prf){prf.RACOREPATH <- val}, title = "Custom Core folder", help = "Enter a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.textentr},
-	{v = 14.7, varname = "rainfopath", glyph = 0xe930, initvar = function(val,prf){prf.RAINFOPATH <- val}, title = "Custom Info folder", help = "Enter a custom folder for RA info files if not using standard locations", options = "", values = "", selection = AF.req.textentr},
+	{v = 14.6, varname = "RAENABLED", glyph = 0xeafa, title = "Enable RetroArch integration", help = "Enable or disable the integration of RetroArch" , options = ["Yes","No"], values = [true,false], selection = 1},
+	{v = 14.6, varname = "RAEXEPATH", glyph = 0xe930, title = "Custom executable path", help = "Enter the path to RetroArch executable if not installed in your OS default location", options = "", values = "", selection = AF.req.textentr},
+	{v = 14.6, varname = "RACOREPATH", glyph = 0xe930, title = "Custom Core folder", help = "Enter a custom folder for RA cores if not using standard locations", options = "", values = "", selection = AF.req.textentr},
+	{v = 14.7, varname = "RAINFOPATH", glyph = 0xe930, title = "Custom Info folder", help = "Enter a custom folder for RA info files if not using standard locations", options = "", values = "", selection = AF.req.textentr},
 ])
 
 menucounter ++
@@ -1139,12 +1116,12 @@ sorter.rawset("mf", menucounter)
 AF.prefs.l0.push({ label = "SEARCH & FILTERS", glyph = 0xe986, description = "Configure the search page and multifilter options"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Search", selection = AF.req.liner},
-{v = 7.9, varname = "livesearch", glyph = 0xe985, initvar = function(val,prf){prf.LIVESEARCH <- val}, title = "Immediate search", help = "Live update results while searching" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 8.0, varname = "keylayout", glyph = 0xe955, initvar = function(val,prf){prf.KEYLAYOUT <- val}, title = "Keyboard layout", help = "Select the keyboard layout for on-screen keyboard" , options = ["ABCDEF","QWERTY","AZERTY"], values = ["ABCDEF","QWERTY","AZERTY"], selection = 0},
+{v = 7.9, varname = "LIVESEARCH", glyph = 0xe985, title = "Immediate search", help = "Live update results while searching" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 8.0, varname = "KEYLAYOUT", glyph = 0xe955, title = "Keyboard layout", help = "Select the keyboard layout for on-screen keyboard" , options = ["ABCDEF","QWERTY","AZERTY"], values = ["ABCDEF","QWERTY","AZERTY"], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Multifilter", selection = AF.req.liner},
-{v = 7.9, varname = "savemfz", glyph = 0xeaed, initvar = function(val,prf){prf.SAVEMFZ <- val}, title = "Save Multifilter sessions", help = "Save the Multifilter of each display when exiting Arcadeflow or changing list" , options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 12.8, varname = "mfzvector", glyph = 0xeaed, initvar = function(val,prf){prf.MFZVECTOR <- val}, title = "Customize Multifilter Menu", help = "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(mfztablenames(multifilterz.l0))}, values = sortstring(16), selection = AF.req.menusort},
-{v = 12.8, varname = "mfzvectorreset", glyph = 0xe965, initvar = function(val,prf){prf.MFZVECTORRESET <- val}, title = "Reset Multifilter Menu", help = "Reset sorting and selection of Multifilter Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.mf][5].values = sortstring(16)}, selection = AF.req.executef},
+{v = 7.9, varname = "SAVEMFZ", glyph = 0xeaed, title = "Save Multifilter sessions", help = "Save the Multifilter of each display when exiting Arcadeflow or changing list" , options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 12.8, varname = "MFZVECTOR", glyph = 0xeaed, title = "Customize Multifilter Menu", help = "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item" , options = function(){return(mfztablenames(multifilterz.l0))}, values = sortstring(16), selection = AF.req.menusort},
+{v = 12.8, varname = "MFZVECTORRESET", glyph = 0xe965, title = "Reset Multifilter Menu", help = "Reset sorting and selection of Multifilter Menu entries" , options = "", values = function(){AF.prefs.l1[sorter.mf][5].values = sortstring(16)}, selection = AF.req.executef},
 ])
 
 
@@ -1156,25 +1133,25 @@ AF.prefs.l1.push([])
 menucounter ++
 AF.prefs.l0.push({ label = "UPDATES", glyph = 0xe91c, description = "Configure update notifications"})
 AF.prefs.l1.push([
-{v = 8.0, varname = "updatecheck", glyph = 0xe91c, initvar = function(val,prf){prf.UPDATECHECK <- val}, title = "Automatically check for updates", help = "Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one" options = ["Yes","No"], values = [true,false], selection = 0},
-{v = 8.0, varname = "autoinstall", glyph = 0xe91c, initvar = function(val,prf){prf.AUTOINSTALL <- val}, title = "Install update after download", help = "Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly" options = ["Install after download","Download only"], values = [true,false], selection = 1},
+{v = 8.0, varname = "UPDATECHECK", glyph = 0xe91c, title = "Automatically check for updates", help = "Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one" options = ["Yes","No"], values = [true,false], selection = 0},
+{v = 8.0, varname = "AUTOINSTALL", glyph = 0xe91c, title = "Install update after download", help = "Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly" options = ["Install after download","Download only"], values = [true,false], selection = 1},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "SAVE & LOAD", glyph = 0xe962, description = "Save or reload options configurations"})
 AF.prefs.l1.push([
-{v = 9.9, varname = "saveprefs", glyph = 0xe9c5, initvar = function(val,prf){prf.SAVEPREFS <- val}, title = "Save current options", help = "Save the current options configuration in a custom named file", options = "" , values = function(){savecurrentoptions()}, selection = AF.req.exenoret},
-{v = 9.9, varname = "loadprefs", glyph = 0xe9c6, initvar = function(val,prf){prf.LOADPREFS <- val}, title = "Load options from external file", help = "Restore AF options from a previously saved file", options = "" , values = function(){ restoreoptions()}, selection = AF.req.exenoret},
+{v = 9.9, varname = "SAVEPREFS", glyph = 0xe9c5, title = "Save current options", help = "Save the current options configuration in a custom named file", options = "" , values = function(){savecurrentoptions()}, selection = AF.req.exenoret},
+{v = 9.9, varname = "LOADPREFS", glyph = 0xe9c6, title = "Load options from external file", help = "Restore AF options from a previously saved file", options = "" , values = function(){ restoreoptions()}, selection = AF.req.exenoret},
 ])
 
 menucounter ++
 AF.prefs.l0.push({ label = "DEBUG", glyph = 0xe998, description = "This section is for debug purposes only"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "fpson", glyph = 0xe998, initvar = function(val,prf){prf.FPSON <- val}, title = "FPS counter", help = "DBGON FPS COUNTER" options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "debugmode", glyph = 0xe998, initvar = function(val,prf){prf.DEBUGMODE <- val}, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging" options = ["Yes","No"], values = [true,false], selection = 1},
-{v = 7.2, varname = "oldoptions", glyph = 0xe998, initvar = function(val,prf){prf.OLDOPTIONS <- val}, title = "AM options page", help = "Shows the default Attract-Mode options page" options = "", values = function(){prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options");fe.signal("reload")}, selection = AF.req.executef},
-{v = 9.5, varname = "generatereadme", glyph = 0xe998, initvar = function(val,prf){prf.GENERATEREADME <- val}, title = "Generate readme file", help = "For developer use only..." options = "", values = function(){ AF.prefs.getout = true;savereadme()}, selection = AF.req.executef},
-{v = 7.2, varname = "resetlayout", glyph = 0xe998, initvar = function(val,prf){prf.RESETLAYOUT <- val}, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options" options = "", values = function(){ AF.prefs.getout = true;reset_layout()}, selection = AF.req.executef},
+{v = 7.2, varname = "FPSON", glyph = 0xe998, title = "FPS counter", help = "DBGON FPS COUNTER" options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging" options = ["Yes","No"], values = [true,false], selection = 1},
+{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page" options = "", values = function(){prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options");fe.signal("reload")}, selection = AF.req.executef},
+{v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only..." options = "", values = function(){ AF.prefs.getout = true;savereadme()}, selection = AF.req.executef},
+{v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options" options = "", values = function(){ AF.prefs.getout = true;reset_layout()}, selection = AF.req.executef},
 ])
 
 function reset_layout() {
@@ -1319,14 +1296,15 @@ function printabout(){
 // This is the table with the values used in the layout like prf.BOXARTMODE = true etc
 function generateprefstable(){
    local prf = {}
+	local tempdat = null
    for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
       for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-         local tempdat = AF.prefs.l1[i][j]
+         tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
-				if (tempdat.selection >=0) tempdat.initvar(((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection]),prf)
-   	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)){//-2 is the function execution
+				if (tempdat.selection >=0) prf[tempdat.varname] <- ((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection])
+   	      else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)){//function execution with or without return
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
-					tempdat.initvar(tempdat.values,prf)
+					prf[tempdat.varname] <- tempdat.values
 				}
 			}
 		}
@@ -1339,14 +1317,15 @@ function generateprefstable(){
 // This table contains the NAME of the variable (like "BOXARTMODE" and the current selection like 0, 1, 2 etc )
 function generateselectiontable(){
    local prf = {}
-   for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
+   local tempdat = null
+	for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
       for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-         local tempdat = AF.prefs.l1[i][j]
+         tempdat = AF.prefs.l1[i][j]
          if (tempdat.selection != AF.req.liner){
-	         if (tempdat.selection >=0) tempdat.initvar(tempdat.selection,prf)
-   	      else if ((tempdat.selection != -2) && (tempdat.selection != -5)) {
+	         if (tempdat.selection >=0) prf[tempdat.varname] <- tempdat.selection
+   	      else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
-					tempdat.initvar(tempdat.values,prf)
+					prf[tempdat.varname] <- tempdat.values
 				}
 			}
 		}
@@ -1387,13 +1366,17 @@ function readprefdata(target){
 	}
 
 	local warnmessage = ""
+	local templine = null
+	local z = null
+	local tempdat = null
+
 	while (!prffile.eos()){
-		local templine = prffile.read_line()
-		local z = split (templine,"|")
+		templine = prffile.read_line()
+		z = split (templine,"|")
 
 		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-				local tempdat = AF.prefs.l1[i][j] //Instancing!
+				tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((tempdat.varname.toupper() == z[0]) && ( (tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD") )) {
 					if (tempdat.v.tofloat() <= version.tofloat() ) {
@@ -1408,12 +1391,15 @@ function readprefdata(target){
 			}
 		}
 	}
+	local ss_templine = null
+	local ss_z = null
+	local ss_tempdat = null
 	while (!ss_prffile.eos()){
-		local ss_templine = ss_prffile.read_line()
-		local ss_z = split (ss_templine,"|")
+		ss_templine = ss_prffile.read_line()
+		ss_z = split (ss_templine,"|")
 		for (local i = 0 ; i < AF.prefs.l0.len() ; i++){
 			for (local j = 0 ; j < AF.prefs.l1[i].len() ; j++){
-				local ss_tempdat = AF.prefs.l1[i][j] //Instancing!
+				ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ( (ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD") )) {
 						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
@@ -1455,38 +1441,54 @@ function loaddate(){
 local transdata = ["StartLayout", "EndLayout", "ToNewSelection","FromOldSelection","ToGame","FromGame","ToNewList","EndNavigation","ShowOverlay","HideOverlay","NewSelOverlay","ChangedTag"]
 
 local z_info = {
-	z_name = Info.Name
-	z_title = Info.Title
-	z_emulator = Info.Emulator
-	z_cloneof = Info.CloneOf
-	z_year = Info.Year
-	z_manufacturer = Info.Manufacturer
-	z_category = Info.Category
-	z_players = Info.Players
-	z_rotation = Info.Rotation
-	z_control = Info.Control
-	z_status = Info.Status
-	z_displaycount = Info.DisplayCount
-	z_displaytype = Info.DisplayType
-	z_altromname = Info.AltRomname
-	z_alttitle = Info.AltTitle
-	z_extra = Info.Extra
-	z_favourite = Info.Favourite
-	z_tags = Info.Tags
-	z_playedcount = Info.PlayedCount
-	z_playedtime = Info.PlayedTime
-	z_fileisavailable = Info.FileIsAvailable
-	z_system = Info.System
-	z_buttons = Info.Buttons
-	z_region = Info.Region
-	z_overview = Info.Overview
-	z_ispaused = Info.IsPaused
+"z_name": {id = Info.Name, label = "_Name"},
+"z_title": {id = Info.Title, label = "_Title"},
+"z_emulator": {id = Info.Emulator, label = "_Emul"},
+"z_cloneof": {id = Info.CloneOf, label = "_Clone"},
+"z_year": {id = Info.Year, label = "_Year"},
 
-	z_rundate = 90
-	z_favdate = 91
-	z_rating = 92
-	z_series = 93
+"z_manufacturer": {id = Info.Manufacturer, label = "_Manuf"},
+"z_category": {id = Info.Category, label = "_Categ"},
+"z_players": {id = Info.Players, label = "_Players"},
+"z_rotation": {id = Info.Rotation, label = "_Rot"},
+"z_control": {id = Info.Control, label = "_Cntrl"},
+
+"z_status": {id = Info.Status, label = "_Status"},
+"z_displaycount": {id = Info.DisplayCount, label = "_DispCt"},
+"z_displaytype": {id = Info.DisplayType, label = "_DispTp"},
+"z_altromname": {id = Info.AltRomname, label = "_AltRomn"},
+"z_alttitle": {id = Info.AltTitle, label = "_AltTitle"},
+
+"z_extra": {id = Info.Extra, label = "_Extra"},
+"z_favourite": {id = Info.Favourite, label = "_Fav"},
+"z_tags": {id = Info.Tags, label = "_Tags"},
+"z_playedcount": {id = Info.PlayedCount, label = "_PlCount"},
+"z_playedtime": {id = Info.PlayedTime, label = "_PlTime"},
+
+"z_fileisavailable": {id = Info.FileIsAvailable, label = "_Avail"},
+"z_system": {id = Info.System, label = "_System"},
+"z_buttons": {id = Info.Buttons, label = "_Butns"},
+"z_region": {id = Info.Region, label = "_Regn"},
+"z_overview": {id = Info.Overview, label = "_Over"},
+"z_ispaused": {id = Info.IsPaused, label = "_isPause"},
+
+"z_rundate": {id = 90, label = "_Run"},
+"z_favdate": {id = 91, label = "_FavDt"},
+"z_rating": {id = 92, label = "_Rate"},
+"z_series": {id = 93, label = "_Series"},
 }
+local orderdatalabel = {}
+foreach (item, val in z_info){
+	orderdatalabel[val.id] <- split(ltxt(val.label,AF.LNG),"_")[0]
+}
+/*
+local z_info = {}
+local orderdatalabel = {}
+foreach (i, item in infotable){
+	z_info[item.id] <- item.val
+	orderdatalabel[item.val] <- split(ltxt(item.label,AF.LNG),"_")[0]
+}
+*/
 
 // prf is the table that cotains all the layout variables as they are used in the layout, like prf.CROPSNAPS etc
 // this command generate default prefs table, this contains the variable names and values as used in the layout (not the selections)
@@ -1639,35 +1641,6 @@ try{prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err){
 // End prf setup
 
 
-local orderdatalabel = {}
-orderdatalabel [Info.System] <- split(ltxt("_System",AF.LNG),"_")[0]
-orderdatalabel [Info.Name] <- split(ltxt("_Name",AF.LNG),"_")[0]
-orderdatalabel [Info.Title] <- split(ltxt("_Title",AF.LNG),"_")[0]
-orderdatalabel [Info.Emulator] <- split(ltxt("_Emul",AF.LNG),"_")[0]
-orderdatalabel [Info.CloneOf] <- split(ltxt("_Clone",AF.LNG),"_")[0]
-orderdatalabel [Info.Year] <- split(ltxt("_Year",AF.LNG),"_")[0]
-orderdatalabel [Info.Manufacturer] <- split(ltxt("_Manuf",AF.LNG),"_")[0]
-orderdatalabel [Info.Category] <- split(ltxt("_Categ",AF.LNG),"_")[0]
-orderdatalabel [Info.Players] <- split(ltxt("_Players",AF.LNG),"_")[0]
-orderdatalabel [Info.Rotation] <- split(ltxt("_Rot",AF.LNG),"_")[0]
-orderdatalabel [Info.Control] <- split(ltxt("_Cntrl",AF.LNG),"_")[0]
-orderdatalabel [Info.Status] <- split(ltxt("_Status",AF.LNG),"_")[0]
-orderdatalabel [Info.DisplayCount] <- split(ltxt("_DispCt",AF.LNG),"_")[0]
-orderdatalabel [Info.DisplayType] <- split(ltxt("_DispTp",AF.LNG),"_")[0]
-orderdatalabel [Info.AltRomname] <- split(ltxt("_AltRomn",AF.LNG),"_")[0]
-orderdatalabel [Info.AltTitle] <- split(ltxt("_AltTitle",AF.LNG),"_")[0]
-orderdatalabel [Info.Extra] <- split(ltxt("_Extra",AF.LNG),"_")[0]
-orderdatalabel [Info.Favourite] <- split(ltxt("_Fav",AF.LNG),"_")[0]
-orderdatalabel [Info.Tags] <- split(ltxt("_Tags",AF.LNG),"_")[0]
-orderdatalabel [Info.PlayedCount] <- split(ltxt("_PlCount",AF.LNG),"_")[0]
-orderdatalabel [Info.PlayedTime] <- split(ltxt("_PlTime",AF.LNG),"_")[0]
-orderdatalabel [Info.FileIsAvailable] <- split(ltxt("_Avail",AF.LNG),"_")[0]
-
-orderdatalabel [z_info.z_rundate] <- split(ltxt("_Run",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_favdate] <- split(ltxt("_FavDt",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_rating] <- split(ltxt("_Rate",AF.LNG),"_")[0]
-orderdatalabel [z_info.z_series] <- split(ltxt("_Series",AF.LNG),"_")[0]
-
 function readsystemdata(){
 	local sysdata = {}
 	local sysinc = 0
@@ -1676,9 +1649,13 @@ function readsystemdata(){
 	local sysfile = file(syspath,"rb")
 	local tempcell = {}
 
+	local char = null
+	local line = null
+	local linearray = null
+
 	while ( !sysfile.eos() ) {
-		local char = 0
-		local line = ""
+		char = 0
+		line = ""
 
 		while (char != 10) {
 			char = sysfile.readn('b')
@@ -1686,7 +1663,7 @@ function readsystemdata(){
 		}
 
 		if (line != ""){
-			local linearray = split (line,",")
+			linearray = split (line,",")
 			if (linearray.len() > 1){
 				sysdata[linearray[0]] <- {
 					w = linearray[1].tofloat()
@@ -2139,74 +2116,75 @@ function getfiltered(arrayin,arrayw){
 	return sumv*1.0/sumw
 }
 
-local colormapper = {}
+local colormapper = {
+	"LCDGBA" : {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(150,0.5,0.2)
+		b = hsl2rgb(70,0.50,0.6)
+		lcdcolor = 1.0
+		remap = 0.0
+		hsv = [0.0,0.0,0.0]
+	}
 
-colormapper["LCDGBA"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(150,0.5,0.2)
-	b = hsl2rgb(70,0.50,0.6)
-	lcdcolor = 1.0
-	remap = 0.0
-	hsv = [0.0,0.0,0.0]
+	"LCDGBC": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(103.0,0.95,0.15)
+		b = hsl2rgb(68,0.68,0.40)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"LCDGBP": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(90,0.05,0.10)
+		b = hsl2rgb(66,0.26,0.7)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"LCDGBL": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(160,0.9,0.15)
+		b = hsl2rgb(160,0.7,0.5)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"LCDBW": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(90,0.05,0.2)
+		b = hsl2rgb(66,0.2,0.7)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"NONE": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(150,0.5,0.2)
+		b = hsl2rgb(70,0.50,0.6)
+		lcdcolor = 0.0
+		remap = 0.0
+		hsv = [0.0,0.0,0.0]
+	}
+	"BOXART": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(0,0.0,0.8)
+		b = hsl2rgb(0,0.0,0.4)
+		lcdcolor = 0.0
+		remap = 1.0
+		hsv = [0.0,0.0,0.0]
+	}
+
+	"8BIT": {
+		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
+		a = hsl2rgb(0,0.0,0.0)
+		b = hsl2rgb(0,0.0,0.0)
+		lcdcolor = 0.0
+		remap = 0.0
+		hsv = prf.CRTRECOLOR ? [0.0,-0.2,-0.03] : [0.0,0.0,0.0]
+	}
 }
 
-colormapper["LCDGBC"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(103.0,0.95,0.15)
-	b = hsl2rgb(68,0.68,0.40)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["LCDGBP"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(90,0.05,0.10)
-	b = hsl2rgb(66,0.26,0.7)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["LCDGBL"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(160,0.9,0.15)
-	b = hsl2rgb(160,0.7,0.5)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["LCDBW"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(90,0.05,0.2)
-	b = hsl2rgb(66,0.2,0.7)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["NONE"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(150,0.5,0.2)
-	b = hsl2rgb(70,0.50,0.6)
-	lcdcolor = 0.0
-	remap = 0.0
-	hsv = [0.0,0.0,0.0]
-}
-colormapper["BOXART"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(0,0.0,0.8)
-	b = hsl2rgb(0,0.0,0.4)
-	lcdcolor = 0.0
-	remap = 1.0
-	hsv = [0.0,0.0,0.0]
-}
-
-colormapper["8BIT"] <- {
-	shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
-	a = hsl2rgb(0,0.0,0.0)
-	b = hsl2rgb(0,0.0,0.0)
-	lcdcolor = 0.0
-	remap = 0.0
-	hsv = prf.CRTRECOLOR ? [0.0,-0.2,-0.03] : [0.0,0.0,0.0]
-}
 
 foreach (item, val in colormapper){
 	colormapper[item].shad.set_param ("color1",val.a.R,val.a.G,val.a.B)
@@ -2217,7 +2195,7 @@ foreach (item, val in colormapper){
 }
 
 // GAME BOY green tints in HSL format (H = 0 360, SL = 0 1)
-
+/*
 local gbrgb = {
 	"LCDGBC" : {
 		a = hsl2rgb(103.0,0.95,0.15)
@@ -2240,7 +2218,7 @@ local gbrgb = {
 		b = hsl2rgb(70,0.50,0.6)
 	}
 }
-
+*/
 // Horizontal rows definition
 if (prf.HORIZONTALROWS == -1){
 	prf.HORIZONTALROWS = 1
@@ -3369,8 +3347,9 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
+	local linein = null
 	while (!jsfilein.eos()){
-		local linein = jsfilein.read_line()
+		linein = jsfilein.read_line()
 		jsarray.push (linein)
 		/*
 		if(jsarray[(jsarray.len()-1)][0].tochar() == "<") {
@@ -3395,8 +3374,9 @@ function createjsonA(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,
    jsarray[0] = "return(" + jsarray[0]
 
    local jsfileout = WriteTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA_out.nut"))
-   foreach (i,item in jsarray){
-      local item_clean = item
+   local item_clean = null
+	foreach (i,item in jsarray){
+      item_clean = item
       item_clean = uniclean(item_clean)
       foreach (uid, uval in unicorrect){
          item_clean = subst_replace(item_clean,uval.old,uval.new)
@@ -3432,10 +3412,10 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (ssuser != null) execss += "&ssid="+ssuser
 		if (sspass != null) execss += "&sspassword="+sspass
 		if (romcrc != null) execss += "&crc="+romcrc
+		if (romsize != null) execss += "&romtaille="+romsize
 		if (systemid != null) execss += "&systemeid="+systemid
 		if (romtype != null) execss += "&romtype="+romtype
 		if (romfilename != null) execss += "&romnom="+romfilename
-		if (romsize != null) execss += "&romtaille="+romsize
 		execss += ap + " " + ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "json.nut" + ap + " "+ ap + char_replace(AF.subfolder,"/","\\") + "\\json\\" + scrapeid + "json.txt" + ap
 	}
 	else {
@@ -3443,11 +3423,11 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (ssuser != null) execss += "&ssid="+ssuser
 		if (sspass != null) execss += "&sspassword="+sspass
 		if (romcrc != null) execss += "&crc="+romcrc
+		if (romsize != null) execss += "&romtaille="+romsize
 		if (systemid != null) execss += "&systemeid="+systemid
 		if (romtype != null) execss += "&romtype="+romtype
 		if (romfilename != null) execss += "&romnom="+romfilename
-		if (romsize != null) execss += "&romtaille="+romsize
-		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
+		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + " && echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
 
 	system (execss)
@@ -3459,8 +3439,9 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json.nut"))
+	local linein = null
 	while (!jsfilein.eos()){
-		local linein = jsfilein.read_line()
+		linein = jsfilein.read_line()
 		jsarray.push (linein)
 		if(jsarray[(jsarray.len()-1)][0].tochar() == "<") {
 			dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -3489,8 +3470,9 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
    jsarray[0] = "return(" + jsarray[0]
 
    local jsfileout = WriteTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json_out.nut"))
-   foreach (i,item in jsarray){
-      local item_clean = item
+   local item_clean = null
+	foreach (i,item in jsarray){
+      item_clean = item
       item_clean = uniclean(item_clean)
       foreach (uid, uval in unicorrect){
          item_clean = subst_replace(item_clean,uval.old,uval.new)
@@ -3534,12 +3516,15 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	// or to generate a full scraping for non-arcade games
    // CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
+	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
    scraprt("ID"+scrapeid+"         getromdata CALL createjson 1\n")
 
 	local strippedrom = strip(split(strip(split(romname,"(")[0]),"_")[0])
 	local stripmatch = true
-   dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+	local skipcrc = false
+	skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+	dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,strippedrom,skipcrc?"":dispatcher[scrapeid].gamedata.crc[0],skipcrc?"":dispatcher[scrapeid].gamedata.crc[2],systemid,systemmedia)
 
 	 scraprt("ID"+scrapeid+"         getromdata suspend 1\n")
 	suspend() // Wait for the json to be read
@@ -3553,7 +3538,8 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 			stripmatch = false
          dispatcher[scrapeid].jsonstatus = null
 		   scraprt("ID"+scrapeid+"         getromdata CALL createjson ERR\n")
-			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,(AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)?"":dispatcher[scrapeid].gamedata.crc[0],null,systemid,systemmedia)
+			skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+			dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,romname,skipcrc?"":dispatcher[scrapeid].gamedata.crc[0],skipcrc?"":dispatcher[scrapeid].gamedata.crc[2],systemid,systemmedia)
 		   scraprt("ID"+scrapeid+"         getromdata suspend ERR\n")
 			suspend()
 		   scraprt("ID"+scrapeid+"         getromdata resumed\n")
@@ -3579,7 +3565,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				dispatcher[scrapeid].jsonstatus = null
 				scraprt("ID"+scrapeid+"         getromdata CALL createjson 2\n")
 
-				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,stripmatch ? strippedrom : romname,getcrc.name_crc,null,systemid,systemmedia)
+				dispatcher[scrapeid].createjson.call(scrapeid,ss_username,ss_password,stripmatch ? strippedrom : romname,getcrc.name_crc,getcrc.name_size,systemid,systemmedia)
 				scraprt("ID"+scrapeid+"         getromdata suspend 2\n")
 				suspend()
 				scraprt("ID"+scrapeid+"         getromdata resumed 2\n")
@@ -4277,11 +4263,11 @@ function buildcleanromlist(romlist, fields){
 // Exports the rom database, romtable is the current zdb and can be db1 or db2 or both
 function saveromdb(romlist,zdb,dbext){
 	local dbpath = AF.romlistfolder + romlist + "." + dbext
-	local dbfile = file(dbpath,"w")
+	local dbfile = WriteTextFile(dbpath)
 	local templine = ""
-	z_write_line(dbfile, "return({\n")
+	dbfile.write_line("return({\n")
 	foreach (item, value in zdb){
-		z_write_line(dbfile, "   "+ap + item + ap + " : {\n")
+		dbfile.write_line("   "+ap + item + ap + " : {\n")
 
 		foreach (item2, value2 in value){
 			if ((typeof value2 == "table") || (item2 == "z_inmfz")){
@@ -4296,13 +4282,13 @@ function saveromdb(romlist,zdb,dbext){
 				templine += ("]\n")
 			}
 			else templine = "      " + item2 + " = " + (typeof value2 == "string" ? ap + value2 + ap : value2) + "\n"
-			z_write_line(dbfile, templine)
+			dbfile.write_line(templine)
 		}
 
-		z_write_line(dbfile, "   }\n")
+		dbfile.write_line("   }\n")
 	}
-	z_write_line(dbfile,"})\n")
-	dbfile.close()
+	dbfile.write_line("})\n")
+	dbfile.close_file()
 }
 
 function saveromdb1(romlist,zdb){
@@ -7018,68 +7004,68 @@ function z_listsort(orderby,reverse){
 
 	local z_tempsort = []
 
-	if (orderby == Info.Title)
+	if (orderby == z_info.z_title.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(nameclean(a.z_title).tolower()+blanker)}),
 		z_list.gametable.map(function(a){return("|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Year)
+	else if (orderby == z_info.z_year.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return( format("%010s",sortclean(a.z_year).tolower()))}),
 		z_list.gametable.map(function(a){return( "|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Manufacturer )
+	else if (orderby == z_info.z_manufacturer.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(sortclean(a.z_manufacturer).tolower())}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.PlayedCount )
+	else if (orderby == z_info.z_playedcount.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable2.map(function(a){return( format("%010s",a.z_playedcount.tostring().tolower()))}),
 		z_list.gametable.map(function(a){return( "|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Category )
+	else if (orderby == z_info.z_category.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(sortclean(a.z_category).tolower()+blanker)}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.Players )
+	else if (orderby == z_info.z_players.id )
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return( a.z_players.tolower())}),
 		z_list.gametable.map(function(a){return( "|"+nameclean(a.z_title).tolower()+blanker+"|"+a.z_system.tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == Info.System)
+	else if (orderby == z_info.z_system.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(a.z_system.tolower()+blanker)}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == z_info.z_rundate)
+	else if (orderby == z_info.z_rundate.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable2.map(function(a){return(a.z_rundate )}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == z_info.z_favdate)
+	else if (orderby == z_info.z_favdate.id)
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable2.map(function(a){return(a.z_favdate + a.z_favourite)}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker)}),
 		reverse)
 
-	else if (orderby == z_info.z_series) {
+	else if (orderby == z_info.z_series.id) {
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return(a.z_series.tolower())}),
 		z_list.gametable.map(function(a){return(( format("%010s",sortclean(a.z_year).tolower())) + "|"+nameclean(a.z_title).tolower()+blanker + "|"+a.z_system.tolower()+blanker)}),
 		reverse)
 	}
 
-	else if (orderby == z_info.z_rating) {
+	else if (orderby == z_info.z_rating.id) {
 		z_tempsort = afsortdual( z_list.gametable, z_list.gametable2,
 		z_list.gametable.map(function(a){return((a.z_rating == "" ) ? "0000000000" : format("%010u", a.z_rating.tofloat()*10))}),
 		z_list.gametable.map(function(a){return("|"+nameclean(a.z_title).tolower()+blanker + "|"+a.z_system.tolower()+blanker)}),
@@ -7104,7 +7090,7 @@ function z_liststops(){
 
 	for (local i = 0 ; i < z_list.size ; i++){
 
-		if ((z_list.orderby == Info.Title)) {
+		if ((z_list.orderby == z_info.z_title.id)) {
 			local s = z_list.gametable[i].z_title
 			if (prf.STRIPARTICLE) s = nameclean (s)
 			if (s.len() > 0) s = s[0].tochar().tolower()
@@ -7113,14 +7099,14 @@ function z_liststops(){
 			temp.push (s )
 		}
 
-		else if (z_list.orderby == Info.Year) {
+		else if (z_list.orderby == z_info.z_year.id) {
 			local s = z_list.gametable[i].z_year.tolower()
 			if ((s != "") && (s.len()>3)) s = s.slice(0,3)+"x"
 			else (s = "?")
 			temp.push( s)
 		}
 
-		else if (z_list.orderby == Info.Manufacturer ) {
+		else if (z_list.orderby == z_info.z_manufacturer.id ) {
 			local s = z_list.gametable[i].z_manufacturer
 			if (s == "") s = "?"
 			else if (s.tolower() == "bootleg") s = "☠"
@@ -7131,9 +7117,9 @@ function z_liststops(){
 		}
 
 
-		else if (z_list.orderby == Info.PlayedCount ) temp.push( z_list.gametable2[i].z_playedcount.tostring().tolower())
+		else if (z_list.orderby == z_info.z_playedcount.id ) temp.push( z_list.gametable2[i].z_playedcount.tostring().tolower())
 
-		else if (z_list.orderby == z_info.z_rundate ){
+		else if (z_list.orderby == z_info.z_rundate.id ){
 			local rdate = z_list.gametable2[i].z_rundate.tostring()
 			if (rdate == "00000000000000") temp.push("?")
 			else {
@@ -7141,7 +7127,7 @@ function z_liststops(){
 			}
 		}
 
-		else if (z_list.orderby == z_info.z_favdate ){
+		else if (z_list.orderby == z_info.z_favdate.id ){
 			local rdate = z_list.gametable2[i].z_favdate.tostring()
 			if (rdate == "00000000000000") temp.push("?")
 			else {
@@ -7149,9 +7135,9 @@ function z_liststops(){
 			}
 		}
 
-		else if (z_list.orderby == Info.System ) temp.push( z_list.gametable[i].z_system.tolower())
+		else if (z_list.orderby == z_info.z_system.id ) temp.push( z_list.gametable[i].z_system.tolower())
 
-		else if (z_list.orderby == Info.Category ) {
+		else if (z_list.orderby == z_info.z_category.id ) {
 			local sout = ""
 			local s0 = z_list.gametable[i].z_category.tolower()
 			if (s0 == "") temp.push("?")
@@ -7166,11 +7152,11 @@ function z_liststops(){
 			}
 		}
 
-		else if (z_list.orderby == Info.Players ) temp.push( z_list.gametable[i].z_players.tolower())
+		else if (z_list.orderby == z_info.z_players.id ) temp.push( z_list.gametable[i].z_players.tolower())
 
-		else if (z_list.orderby == z_info.z_series ) temp.push( z_list.gametable[i].z_series.tolower())
+		else if (z_list.orderby == z_info.z_series.id ) temp.push( z_list.gametable[i].z_series.tolower())
 
-		else if (z_list.orderby == z_info.z_rating ) temp.push( z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
+		else if (z_list.orderby == z_info.z_rating.id ) temp.push( z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
 	}
 
 	for (local i = 0 ; i < z_list.size ; i++){
@@ -14688,22 +14674,22 @@ function sortarrays(){
 		nowsort = 0
 	}
 
-	out.glypharray_sort.push (((z_list.orderby == Info.Title) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Title) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Manufacturer) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Manufacturer) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Year) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Year) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Category) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.Category) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.System) && (z_list.reverse == false)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == Info.System) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_title.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_title.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_manufacturer.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_manufacturer.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_year.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_year.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_category.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_category.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_system.id) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_system.id) && (z_list.reverse == true)) ? 0xea10 : 0)
 
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_rating) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_series) && (z_list.reverse == false)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_rating.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_series.id) && (z_list.reverse == false)) ? 0xea10 : 0)
 
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_rundate) && (z_list.reverse == true)) ? 0xea10 : 0)
-	out.glypharray_sort.push (((z_list.orderby == z_info.z_favdate) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_rundate.id) && (z_list.reverse == true)) ? 0xea10 : 0)
+	out.glypharray_sort.push (((z_list.orderby == z_info.z_favdate.id) && (z_list.reverse == true)) ? 0xea10 : 0)
 
 
  	for (local i = 0 ; i < out.glypharray_sort.len() ; i++) {
@@ -14744,22 +14730,22 @@ function buildutilitymenu(){
 			zmenudraw (dat.switcharray_sort,dat.glypharray_sort,null,"  " + ltxt("Sort by",AF.LNG)+"...",0xea4c,dat.nowsort,false,false,false,false,false,
 			function(result2){
 				local result_sort = []
-				if 	  (result2 == 0) result_sort = [Info.Title,false]
-				else if (result2 == 1) result_sort = [Info.Title,true]
-				else if (result2 == 2) result_sort = [Info.Manufacturer,false]
-				else if (result2 == 3) result_sort = [Info.Manufacturer,true]
-				else if (result2 == 4) result_sort = [Info.Year,false]
-				else if (result2 == 5) result_sort = [Info.Year,true]
-				else if (result2 == 6) result_sort = [Info.Category,false]
-				else if (result2 == 7) result_sort = [Info.Category,true]
-				else if (result2 == 8) result_sort = [Info.System,false]
-				else if (result2 == 9) result_sort = [Info.System,true]
+				if 	  (result2 == 0) result_sort = [z_info.z_title.id,false]
+				else if (result2 == 1) result_sort = [z_info.z_title.id,true]
+				else if (result2 == 2) result_sort = [z_info.z_manufacturer.id,false]
+				else if (result2 == 3) result_sort = [z_info.z_manufacturer.id,true]
+				else if (result2 == 4) result_sort = [z_info.z_year.id,false]
+				else if (result2 == 5) result_sort = [z_info.z_year.id,true]
+				else if (result2 == 6) result_sort = [z_info.z_category.id,false]
+				else if (result2 == 7) result_sort = [z_info.z_category.id,true]
+				else if (result2 == 8) result_sort = [z_info.z_system.id,false]
+				else if (result2 == 9) result_sort = [z_info.z_system.id,true]
 
-				else if (result2 == 10) result_sort = [z_info.z_rating,true]
-				else if (result2 == 11) result_sort = [z_info.z_series,false]
+				else if (result2 == 10) result_sort = [z_info.z_rating.id,true]
+				else if (result2 == 11) result_sort = [z_info.z_series.id,false]
 
-				else if (result2 == 12) result_sort = [z_info.z_rundate,true]
-				else if (result2 == 13) result_sort = [z_info.z_favdate,true]
+				else if (result2 == 12) result_sort = [z_info.z_rundate.id,true]
+				else if (result2 == 13) result_sort = [z_info.z_favdate.id,true]
 
 				if (result2 != -1 ){
 					/*
@@ -15644,6 +15630,13 @@ function checkit2(){
 }
 //checkit2()
 
+function get_date_string(){
+	local datetab = date()
+	local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
+	datestr = datestr.tostring()
+	return datestr
+}
+
 fe.add_signal_handler( this, "on_signal" )
 fe.add_transition_callback( this, "on_transition" )
 fe.add_ticks_callback( this, "tick" )
@@ -15721,29 +15714,11 @@ function on_transition( ttype, var0, ttime ) {
 	debugpr ("\nTr:" + transdata[ttype] +" var0:" + var0 + "\n")
 
 	if (ttype == Transition.ToGame){
-
-		// Update the rundate table in memory
-		local datetab = date()
-		local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
-		datestr = datestr.tostring()
-		local gamename = z_list.gametable[z_list.index].z_name
-		local emulatorname = z_list.gametable[z_list.index].z_emulator
-
-		z_list.gametable2[z_list.index].z_rundate = datestr
+		z_list.gametable2[z_list.index].z_rundate = get_date_string()
 		saveromdb2 (z_list.gametable[z_list.index].z_emulator,z_list.db2[z_list.gametable[z_list.index].z_emulator])
-
-
-//		z_list.rundatetable[emulatorname][gamename] <- datestr
-
-		//save the rundate table to file
-//		z_saverundatetofile()
 	}
 
 	if (ttype == Transition.FromGame) {
-		/*
-		flowT.data = startfade (flowT.data,0.06,3.0)
-		flowT.fg = startfade (flowT.fg,-0.06,3.0)
-		*/
 		flowT.groupbg = startfade (flowT.groupbg,0.06,3.0)
 	}
 
@@ -16185,9 +16160,9 @@ function tick( tick_time ) {
 
 
 			local outreport = AF.folder+"scrapelog.txt"
-			local outfile = file(outreport,"w")
-			z_write_line(outfile,endreport)
-			outfile.close()
+			local outfile = WriteTextFile(outreport)
+			outfile.write_line(endreport)
+			outfile.close_file()
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist+" "+AF.scrape.totalroms+"/"+AF.scrape.totalroms,"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n"+AF.scrape.separator2+"\n"+endreport+"\n",false,AF.boxmessage)
 
@@ -18157,10 +18132,7 @@ function on_signal( sig ){
 
 		// If the new game has been set to favourite, update the favdate
 		if (z_list.gametable2[z_list.index].z_favourite){
-			local datetab = date()
-			local datestr = datetab.year * 10000000000 + datetab.month * 100000000 + datetab.day * 1000000+datetab.hour*10000+datetab.min*100 + datetab.sec
-			datestr = datestr.tostring()
-			z_list.gametable2[z_list.index].z_favdate = datestr
+			z_list.gametable2[z_list.index].z_favdate = get_date_string()
 		}
 
 		// Save rhe rom database with new data

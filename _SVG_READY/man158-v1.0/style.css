@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'man158';
+  src:
+    url('fonts/man158.ttf?3iwvk0') format('truetype'),
+    url('fonts/man158.woff?3iwvk0') format('woff'),
+    url('fonts/man158.svg?3iwvk0#man158') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'man158' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-colour-genie:before {
+  content: "\e900";
+}
+.icon-windows-3x:before {
+  content: "\e901";
+}
+.icon-windows-9x:before {
+  content: "\e902";
+}
+.icon-camputers-lynx:before {
+  content: "\e903";
+}
+.icon-pecom-64:before {
+  content: "\e904";
+}
+.icon-nabu:before {
+  content: "\e905";
+}
+.icon-jupiter-ace:before {
+  content: "\e906";
+}
+.icon-sol20:before {
+  content: "\e907";
+}
+.icon-pegasus:before {
+  content: "\e908";
+}
+.icon-mikrosha:before {
+  content: "\e909";
+}
+.icon-exl100:before {
+  content: "\e90a";
+}
+.icon-vg5000:before {
+  content: "\e90b";
+}
