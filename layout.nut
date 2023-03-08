@@ -3429,7 +3429,7 @@ function createjson(scrapeid,ssuser,sspass,romfilename,romcrc,romsize,systemid,r
 		if (romfilename != null) execss += "&romnom="+romfilename
 		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + " && echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
 	}
-testpr(execss+"\n")
+
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true

@@ -732,7 +732,7 @@ function getromcrc_lookup4(filepath){
          return ([null,null,null])
       }
    }
-   print ("\n"+blb.len()+"\n\n") ///XXX
+
    local i = 0
    local crc = 0xFFFFFFFF
    local one = 0
