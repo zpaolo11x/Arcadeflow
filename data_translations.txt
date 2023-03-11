@@ -40,9 +40,11 @@ DE | Sprache des Layouts auswählen
 
 EN | Power menu
 IT | Menu arresto
+DE | Power Menü
 
 EN | Enable or disable power options in exit menu
 IT | Abilita un menu per spegnere o riavviare la macchina uscendo da Arcadeflow
+DE | Aktivieren/Deaktivieren der Power Optionen im Exit-Menü
 
 EN | GENERAL
 IT | GENERALE
@@ -186,9 +188,11 @@ DE | Zeigt den Systemnamen unter dem Spiel-Titel
 
 EN | Display Arcade System Name
 IT | Mostra nome del sistema Arcade
+DE | Zeige Arcade System Namen
 
 EN | Shows the name of the Arcade system if available
 IT | Se disponibile, mostra il nome del sistema Arcade su cui gira il gioco
+DE | Zeigt den Namen des Arcade System sofern verfügbar
 
 EN | System Name as artwork
 IT | Nome del sistema come grafica
@@ -206,9 +210,11 @@ DE | Wenn aktiviert, wird der Systemname unter dem Spiel-Titel als Logo statt al
 
 EN | Page jump size
 IT | Dimensione salto pagina
+DE | Seitensprunggröße
 
 EN | Page jumps are one screen by default, you can increase it if you want to jump faster
 IT | Il salto pagina di default è uno schermo alla volta, si può aumentare con l'opzione
+DE | Seitensprünge betragen standardmäßig einen Bildschirm, erhöhen wenn schneller gesprungen werden soll
 
 EN | Scrollbar style
 IT | Barra di scorrimento
@@ -240,9 +246,11 @@ DE | Bei Sortierung nach Titel, werden Artikel ignoriert
 
 EN | Enable sorting
 IT | Abilita ordinamento
+DE | Aktiviere Sortierung
 
 EN | Enable custom realtime sorting, diable to keep romlist sort order
 IT | Abilita l'ordinamento personalizzato, disabilitare per mantenere l'ordinamento della romlist
+DE | Aktivieren der Real-Time Sortierung, deaktivieren um die ROMLIST Reihenfolge beizubehalten
 
 EN | Save sort order
 IT | Salva l'ordinamento
@@ -284,13 +292,15 @@ IT | Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalit
 ES | Optimiza el tema para pantallas con baja resolución: sólo muestra una fila, agranda la fuente y limpia el layout
 BR | Otimiza o tema para telas de baixa resolução, forçando o layout de uma linha, fonte ampliada e layout simplificado
 FR | Optimize ce theme pour résolutions basses. Agencement à une ligne forcé, police plus grande et agencement plus simple.
-DE | Optimierung des Theme für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout
+DE | Optimierung des Themes für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout
 
 EN | Custom color
 IT | Colore personalizzato
+DE | Benutzerdefinierte Farbe
 
 EN | Define a custom color for UI elements using sliders
 IT | Definisci un colore personalizzato da usare per gli elementi della UI
+DE | Definition einer benutzerdefinierten Farbe für UI-Elemente mit Schiebreglern
 
 EN | BUTTONS
 IT | PULSANTI
@@ -386,15 +396,19 @@ DE | Taste zum Öffnen des Menü für dynamisches Filtern der Romliste auswähle
 
 EN | Show favorites button
 IT | Tasto modalità preferiti
+DE | Zeige Favoriten Taste
 
 EN | Chose the button to use to toggle favorite filtering
 IT | Seleziona il tasto da usare per mostrare solo i giochi preferiti
+DE | Wähle die Taste zum umschalten des Favoriten Filter
 
 EN | Volume button
 IT | Tasto volume
+DE | Lautstärke Taste
 
 EN | Chose the button to use to change system volume
 IT | Seleziona il tasto da usare per regolare il volume di sistema
+DE | Wähle die Taste zum ändern der System Lautstärke
 
 EN | Delete ROM button
 IT | Tasto elimina ROM
@@ -440,6 +454,7 @@ DE | Sortierung und Auswahl von Einträgen des Utility Menü zurücksetzen
 
 EN | SCRAPE AND METADATA
 IT | SCRAPE E METADATI
+DE | SCRAPING UND METADATEN
 
 EN | You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 IT | Puoi usare Arcadeflow per fare lo scraping dei metadati e dei media dei giochi, o importare una lista XML nel formato EmulationStation
@@ -463,15 +478,19 @@ DE | Arcadeflow scraped die Metadaten und Medien der aktuellen Romliste, basiere
 
 EN | Scrape selected game
 IT | Scrape del gioco attuale
+DE | Scrape aktuelles Spiel
 
 EN | Arcadeflow will scrape only metadata and media for current game
 IT | Arcadeflow farà lo scraping dei media e metadati del solo gioco attuale
+DE | Arcadeflow scraped nur die Metadaten und Medien für das aktuelle Spiel
 
 EN | Enable CRC check
 IT | Abilita controllo CRC
+DE | Aktiviere CRC Prüfung
 
 EN | You can enable rom CRC matching (slower) or just name matching (faster)
 IT | Abilita il calcolo del CRC per trovare le rom (più lento del semplice controllo nomi)
+DE | Du kannst CRC Matching für ROMS aktivieren (langsamer) oder nur Namens Matching (schneller)
 
 EN | Rom Scrape Options
 IT | Opzioni scrape rom
@@ -485,9 +504,11 @@ DE | Auswählen ob alle ROMs, nur ROMs ohne Scrapedaten oder ROMs mit Daten die 
 
 EN | Scrape error roms
 IT | Scrape di rom con errore
+DE | Scrape ROMs mit Fehler
 
 EN | When scraping you can include or exclude roms that gave an error in the previous scraping
 IT | Durante lo scraping puoi includere o escludere le rom che hanno generato errori precedentemente
+DE | Beim scrapen kannt du ROMSs ein- oder ausschliessen die beim letzten scrapen einen Fehler hatten
 
 EN | All roms
 IT | Tutte le rom
@@ -626,84 +647,111 @@ DE | Importiere Daten aus der XML Liste nur wenn das ROM tatsächlich vorhanden 
 
 EN | ROMLIST MANAGEMENT
 IT | GESTIONE ROMLIST
+DE | ROMLISTEN VERWALTUNG
 
 EN | Manage romlists and collections
 IT | Gestisci le romlist e le collezioni
+DE | Verwalten von ROMLISTEN und Sammlungen
 
 EN | ROMLISTS
 IT | ROMLIST
+DE | ROMLISTEN
 
 EN | Refresh current romlist
 IT | Aggiorna questa romlist
+DE | Aktualisere aktuelle ROMLISTE
 
 EN | Refresh the romlist with added/removed roms, won't reset current data
 IT | Aggiorna la romlist con le rom aggiunte/rimosse, non resetta i dati
+DE | Aktualisiere die ROMLISTE mit hinzugefügten/gelöschten roms, resettet nicht die aktuellen Daten
 
 EN | Reset current romlist
 IT | Reset di questa romlist
+DE | Resete aktuelle ROMLISTE
 
 EN | Rescan the romlist erasing and regenerating all romlist data
 IT | Ricrea la romlist cancellando e rigenerando tutti i dati
+DE | Erneutes Scannen der ROMLIST, wobei alle Daten der ROMLIST gelöscht und neu generiert werden
 
 EN | Reset last played
 IT | Cancella ultimi giocati
+DE | Resete zuletzt gespielt
 
 EN | Remove all last played data from the current romlist
 IT | Rimuovi tutti i dati dell'ultimo lancio da questa romlist
+DE | Entferne alle zuletzt gespielt Daten aus der aktuellen ROMLIST
 
 EN | MASTER ROMLIST
 IT | MASTER ROMLIST
+DE | MASTER ROMLIST
 
 EN | Enable Master Romlist
 IT | Abilita la Master Romlist
+DE | Aktiviere Master ROMLIST
 
 EN | Turn this on and set master romlist path so AF can manage it
 IT | Attiva e imposta il path della Master Romlist così AF la può gestire
+DE | Aktivieren und Master ROMLIST Pfad angeben, damit AF sie verwalten kann
 
 EN | Master Romlist Path
 IT | Percorso Master Romlist
+DE | Master ROMLIST Pfad
 
 EN | If you are using a master romlist, locate it here to enable AF master romlist optimisation
 IT | Se usi una master romlist, indica il path in cui è salvata per abilitare l'ottimizzazione
+DE | Wenn du eine Master ROMLIST verwendest, gib sie hier an und aktiviere AF Master ROMLIST Optimierung
 
 EN | ROMLIST EXPORT
 IT | ESPORTA ROMLIST
+DE | ROMLIST EXPORT
 
 EN | Export to gamelist xml
 IT | Esporta a gamelist xml
+DE | Exportiere in gamelist xml
 
 EN | You can export your romlist in the XML format used by EmulationStation
 IT | Puoi esportare la romlist nel formato XML usato da EmulationStation
+DE | Du kannst deine ROMLIST im EmulationStation XML Format exportieren
 
 EN | COLLECTIONS
 IT | COLLEZIONI
+DE | SAMMLUNGEN
 
 EN | Enable all games collections
 IT | Abilita le collezioni all games
+DE | Aktiviere alle Spiel Sammlungen
 
 EN | If enabled, Arcadeflow will create All Games compilations
 IT | Se abilitato, Arcadeflow creerà delle collezioni All Games
+DE | Wenn aktiviert, erstellt Arcadeflow alle Spiele Sammlungen
 
 EN | Update all games collections
 IT | Aggiorna le collezioni all games
+DE | Aktualisiere alle Spiel Sammlungen
 
 EN | Force the update of all games collections, use when you remove displays
 IT | Forza l'aggiornamento delle collezioni all games, da usare quando si rimuove un display
+DE | Erzwinge die Aktualisierung aller Spiele Sammlungen, verwenden wenn Displays entfernt werden
 
 EN | DANGER ZONE
 IT | ZONA PERICOLOSA
+DE | GEFAHRENZONE
 
 EN | Enable game hiding
 IT | Abilita nascondi giochi
+DE | Aktiviere Spiel verstecken
 
 EN | Enable or disable the options to hide games using tags menu
 IT | Abilita o disabilità le opzioni per nascondere i giochi dal menu tag
+DE | Aktivieren oder deaktiviere die Option Spiele mittels des TAGS Menü zu verstecken
 
 EN | Enable rom delete
 IT | Abilita cancellazione rom
+DE | ROM löschen erlauben
 
 EN | Enable or disable the options to delete a rom
 IT | Abilita o disabilita le opzioni per cancellare i file delle rom
+DE | Aktiviere oder deaktiviere die Möglichkeit ein ROM zu löschen
 
 EN | DISPLAYS MENU MODE
 IT | Modalità Displays Menu
@@ -1044,41 +1092,48 @@ DE | Fix für Systeme mit Problemen nach Rückkehr aus einem Spiel, neuladen des
 
 EN | Width %
 IT | Larghezza %
+DE | Breite
 
 EN | For screens with overscan, define which percentage of the screen will be filled with actual content
 IT | Per schermi con overscan, definisce la percentuale di schermo con contenuto
 
 EN | Height %
 IT | Altezza %
+DE | Höhe
 
 EN | For screens with overscan, define which percentage of the screen will be filled with actual content
 IT | Per schermi con overscan, definisce la percentuale di schermo con contenuto
+DE | Für Bildschirme mit Overscan, Prozentsatz des Bildschirms angeben der mit tatsächlichem Inhalt gefüllt werden soll
 
 EN | Shift X %
 IT | Spostamento X %
+DE | Versatz X %
 
 EN | For screens with overscan, screen will be shifted by the percentage
 IT | Per schermi con overscan, lo schermo verrà spostato della percentuale
+DE | Für Bildschirme mit Overscan, Bildschirm wird um den angegebenen Prozentsatz verschoben
 
 EN | Shift Y %
 IT | Spostamento Y %
+DE | Versatz Y %
 
 EN | For screens with overscan, screen will be shifted by the percentage
 IT | Per schermi con overscan, lo schermo verrà spostato della percentuale
+DE | Für Bildschirme mit Overscan, Bildschirm wird um den angegebenen Prozentsatz verschoben
 
 EN | Smooth shadow
 IT | Ombre morbide
 ES | Sombra suave
 BR | Sombreamento suaves
 FR | Ombres dousses
-DE | Weiche Schatten
+DE | Weicher Schatten
 
 EN | Enable smooth shadow under game title and data in the GUI
 IT | Abilita le ombre morbide sotto il titolo del gioco e i dati dell'interfaccia
 ES | Activa una sombra suave bajo el título del juego y los datos en la interfaz
 BR | Ativa um sombreamento suave abaixo do título do jogo e dos dados da interface
 FR | Active des ombres dousses dessous le titre du jeu et autre informations dans l'interface.
-DE | Aktiviere weiche Schatten unter Spiel Titel und Daten im GUI
+DE | Aktiviere weichen Schatten unter Spiel Titel und Daten im GUI
 
 EN | Frosted glass
 IT | Vetro opaco
@@ -1204,24 +1259,31 @@ DE | Auswählen ob das Box Art in das Video eingefügt oder ausgeschnitten werde
 
 EN | Zoom thumbnails
 IT | Zoom miniature
+DE | Zoom Vorschaubild
 
 EN | Chose if you want the selected thumbnail to zoom to a larger size
 IT | Personalizza lo zoom delle miniature a una dimensione maggiore
+De | Lege fest ob das ausgewählte Vorschaubild vergrößert werden soll
 
 EN | Standard
 IT | Standard
+De | Standard
 
 EN | Reduced
 IT | Ridotto
+DE | Reduziert
 
 EN | None
 IT | Nessuno
+DE | Kein
 
 EN | Show only logos
 IT | Mostra solo loghi
+DE | zeige nur Logos
 
-EN | If enabled, only game tilte logos will be shown instead of the screenshot
+EN | If enabled, only game title logos will be shown instead of the screenshot
 IT | Se abilitato, solo i loghi dei giochi verranno mostrati al posto degli screenshot
+DE | Wenn aktiv werden nur Title Logos statt Screenshots gezeigt
 
 EN | Morph video
 IT | Trasforma il video
@@ -1371,9 +1433,11 @@ DE | Anwenden eines Färbeeffekts auf schwarz/weiße GameBoy Vorschaubilder
 
 EN | MSX crt color correction
 IT | Correzione colore MSX
+DE | MSX Farbkorrektur
 
 EN | Apply a palette correction to MSX media that was captured with MSX2 palette
 IT | Applica una correzione colore alle immagini MSX che usano la palette MSX2
+DE | Anwenden einer Palettenkorrektur auf MSX-Medien, die mit der MSX2-Palette aufgenommen wurden
 
 EN | BACKGROUND
 IT | SFONDO
@@ -1583,7 +1647,7 @@ DE | ATTRACT MODE
 EN | Look & Feel
 IT | Aspetto
 ES | Aspecto
-DE | Erscheinungsbild
+DE | Look & Feel
 
 EN | Sound
 IT | Suono
@@ -1692,27 +1756,35 @@ DE | Text der während des Attract Mode angezeigt werden soll
 
 EN | RETROARCH INTEGRATION
 IT | INTEGRA RETROARCH
+DE | RETROARCH INTEGRATION
 
 EN | Assign retroarch cores to emulators
 IT | Assegna i core RetroArch ai diversi emulatori
+DE | RetroArch Cores für Emulatoren festlegen
 
 EN | Enable RetroArch integration
 IT | Abilita integrazione RetroArch
+DE | Aktiviere RetroArch Integration
 
 EN | Enable or disable the integration of RetroArch
 IT | Abilita o disabilita l'integrazione di Retroarch
+DE | Aktiviere oder deaktiviere die Integration von RetroArch
 
 EN | Custom executable path
 IT | Path eseguibile custom
+DE | Benutzerdefinierter Ausführungspfad
 
 EN | Enter the path to RetroArch executable if not installed in your OS default location
 IT | Inserisci il percorso all'eseguibile di RetroArch se non usi la directory standard
+DE | Gib den Pfad zur ausführbaren Datei von RetroArch ein, wenn diese nicht im Standardverzeichnis des OS installiert ist.
 
 EN | Custom Core folder
 IT | Directory core custom
+DE | Benutzerdefinierter Pfad Cores
 
 EN | Enter a custom folder for RA cores if not using standard locations
 IT | Inserisci il percorso di una cartella dei core se non utilizzi la directory standard
+DE | Gib ein benutzerdefiniertes Verzeichnis für RA Cores an, wenn nicht das Standardverzeichnis verwendet wird
 
 EN | SEARCH & FILTERS
 IT | RICERCA E FILTRI
@@ -1723,6 +1795,7 @@ DE | SUCHE & FILTER
 
 EN | Search and Filters
 IT | Ricerca e filtri
+DE | Suche und Filter
 
 EN | Configure the search page and multifilter options
 IT | Configura la pagina di ricerca e il multifiltro
@@ -1925,12 +1998,15 @@ DE | Zeige Controller und Buttons Overlay auf der History Seite
 
 EN | Always
 IT | Sempre
+DE | Immer
 
 EN | Never
 IT | Mai
+DE | Nie
 
 EN | Arcade only
 IT | Solo Arcade
+DE | Nur Arcade
 
 EN | History.dat
 IT | History.dat
@@ -2069,9 +2145,11 @@ DE | Datei für Hintergrundmusik auswählen, die während Arcadeflow gespielt we
 
 EN | Randomize background music
 IT | Musica di fondo casuale
+DE | Zufällige Hintergrundmusik
 
 EN | If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music
 IT | Se abilitato, Arcadeflow riprodurrà casualmente tutti i file mp3 nella cartella della musica di fondo
+DE | Wenn dies aktiv ist spielt Arcadeflow ein zufälliges MP3 aus dem ausgewählten Hintergrundmusik Verzeichnis
 
 EN | Stop bg music in attract mode
 IT | Ferma la musica di fondo in attract mode
@@ -2155,96 +2233,127 @@ DE | Zuvor gespeicherte AF Einstellungen wiederherstellen
 
 EN | MULTIPLE MONITOR
 IT | MONITOR MULTIPLI
+DE | MEHRERE BILDSCHIRME
 
 EN | Configure the appearence of a second monitor
 IT | Configura l'aspetto di un secondo monitor
+DE | Konfiguriere das Aussehen eines zweiten Bildschirms
 
 EN | Enable multiple monitor
 IT | Abilita monitor multipli
+DE | Aktiviere mehrere Bildschirme
 
 EN | Enable Arcadeflow multiple monitor suport
 IT | Abilita il supporto per monitor multipli in Arcadeflow
+DE | Aktiviere die Arcadeflow Unterstützung für mehrere Bildschirme
 
 EN | Monitor identifier
 IT | Identificatore monitor
+DE | Bildschirm Indentifikation
 
 EN | Select the identification number for the external monitor
 IT | Seleziona il numero identificatore per il monitor esterno
+DE | Wähle die Identifikationsnummer für den externen Bildschirm
 
 EN | Correct aspect ratio
 IT | Correggi rapporto di forma
+DE | Seitenverhältnis korrigieren
 
 EN | Select if the image on the second monitor should be stretched or not
 IT | Scegli se l'immagine sul secondo monitor deve essere stirata o mantenere il rapporto corretto
+DE | Wähle aus ob das Bild auf dem zweiten Bildschirm gestreckt werden soll oder nicht
 
 EN | Main media source
 IT | Fonte principale
+DE | Hauptquelle für Medien
 
 EN | Select the artwork source to be used on secondary monitor
 IT | Seleziona la fonte principale delle immagini da mostrare sul secondo monitor
+DE | Wähle die Artwork Quelle aus die für den zweiten Bildschirm genutzt werden soll
 
 EN | Alternate media source
 IT | Fonte alternativa
+DE | Alternative Medien Quelle
 
 EN | Select the artwork source to be used on secondary monitor in case first one is not present
 IT | Selezione la fonte delle immagini da usare nel caso non sia disponibile la prima
+DE | Wähle die Artwork Quelle für den zweiten Bildschirm für den Fall das die Erste nicht verfügbar ist
 
 EN | COLOR CYCLE
 IT | CICLATURA COLORI
+DE | FARBWECHSEL
 
 EN | Enable and edit color cycling animation of tile highlight border
 IT | Attiva e configura l'animazione di ciclatura colori per il bordo evidenziato
+DE | Aktivieren und Bearbeiten der Farbwechsel-Animation des Titel-Highlight-Rahmens
 
 EN | Enable color cycle
 IT | Abilita ciclatura colori
+DE | Aktiviere Farbwechsel
 
 EN | Enable/disable color cycling of the tile higlight border
 IT | Attiva o disattiva l'effetto di ciclatura del colore del bordo della miniatura selezionata
+DE | Aktivieren/Deaktivieren der Farbwechsel-Animation des Titel-Highlight-Rahmens
 
 EN | Cycle Options
 IT | Opzioni ciclatura
+DE | Wechsel-Einstellungen
 
 EN | Cycle speed
 IT | Velocità di ciclatura
+DE | Wechsel-Geschwindigkeit
 
 EN | Select the speed of color cycle
 IT | Seleziona la velocità con cui ciclano i colori
+DE | Auswählen der Wechsel-Geschwindigkeit
 
 EN | Slow
 IT | Lento
+DE | Langsam
 
 EN | Medium
 IT | Medio
+DE | Mittel
 
 EN | Fast
 IT | Veloce
+DE | Schnell
 
 EN | Cycle color
 IT | Colore della ciclatura
+DE | Wechsel Farbe
 
 EN | Select a color intensity preset for the cycle
 IT | Seleziona l'intensità del colore
+DE | Auswählen der Farbintensivität des Farbwechsels
 
 EN | Popping
 IT | Sgargiante
+DE | Aufspringen
 
 EN | Ping Pong effect
 IT | Effetto Ping Pong
+DE | Ping-Pong Effekt
 
 EN | Enable this if you want the cycle to revert once finished instead of restarting
 IT | Abilita questo effetto per far ritornare indietro il colore a ogni ciclo
+DE | Aktivieren wenn der Wechsel nach Beendigung umzukehren statt von vorne zu starten
 
 EN | Start hue
 IT | Tinta di partenza
+DE | Start Farbton
 
 EN | Define the start value of the hue cycle (0 - 359)
 IT | Definici la tinta da cui parte la ciclatura (0 - 359)
+DE | Definieren des Start Werts des Farbton Wechsels (0 - 359)
 
 EN | Stop hue
 IT | Tinta di fine
+DE | Stop Farbton
 
 EN | Define the stop value of the hue cycle (0 - 359)
 IT | Definisce l'ultima tinta della ciclatura (0 - 359)
+DE | Definieren des Stop Werts des Farbton Wechsels (0 - 359)
 
 EN | DEBUG
 IT | DEBUG
@@ -2371,7 +2480,7 @@ IT | CHIUDI ARCADEFLOW
 ES | SALIR DE ARCADEFLOW
 BR | SAIR DO ARCADEFLOW
 FR | QUITTEZ ARCADEFLOW
-DE | ARCADEFLOR VERLASSEN
+DE | ARCADEFLOW VERLASSEN
 
 # TAGS MENU
 
@@ -2441,18 +2550,22 @@ DE | Springe zu
 
 EN | Favourites Filter
 IT | Filtro preferiti
+DE | Favortiten Filter
 
 EN | FAVOURITES
 IT | PREFERITI
+DE | FAVORITEN
 
 EN | ALL GAMES
 IT | TUTTI I GIOCHI
+DE | ALLE SPIELE
 
 EN | Utility Menu
 IT | Utility Menu
 ES | Menú de utilidades
 BR | Utility Menu
 FR | Menu Utilitaire
+DE | Utility Menü
 
 EN | Sort by
 IT | Ordina per
@@ -2484,6 +2597,7 @@ DE | Suche nach
 
 EN | NO SEARCH
 IT | NESSUNA
+DE | KEINE SUCHE
 
 EN | Search
 IT | Cerca
@@ -2565,7 +2679,7 @@ DE | Neue Version:
 EN | Arcadeflow updated to
 IT | Arcadeflow aggiornato a
 ES | Arcadeflow actualizado a
-DE | Arcade aktualisiert auf
+DE | Arcadeflow aktualisiert auf
 
 EN | Quit
 IT | Esci
@@ -2586,30 +2700,39 @@ DE | Kategorien
 
 EN | RetroArch Integration
 IT | Integrazione RetroArch
+DE | RetroArch Integration
 
 EN | DISABLED
 IT | DISABILITATO
+DE | DEAKTIVIERT
 
 EN | Discard changes
 IT | Annulla modifiche
+DE | Änderungen verwerfen
 
 EN | Apply changes
 IT | Applica modifiche
+DE | Änderungen anwenden
 
 EN | Assigned cores
 IT | Core assegnati
+DE | Zugewiesene Cores
 
 EN | Select core
 IT | Seleziona core
+DE | Core auswählen
 
 EN | Select emulator
 IT | Seleziona emulatore
+DE | Emulator auswählen
 
 EN | Apply RA core
 IT | Applica un core RA
+DE | RA Core anwenden
 
 EN | Change core assignment
 IT | Modifica assegnazione core
+DE | Ändere Core Zuweisung
 
 # SORT, SEARCH AND MULTIFILTER MENU
 
@@ -2642,6 +2765,7 @@ DE | Spieler
 
 EN | Rotation
 IT | Orientamento
+DE | Rotation
 
 EN | Favourite
 IT | Preferito
@@ -2660,15 +2784,19 @@ DE | Buttons
 
 EN | Region
 IT | Regione
+DE | Region
 
 EN | Rating
 IT | Voto
+DE | Wertung
 
 EN | Series
 IT | Serie
+DE | Serie
 
 EN | Arcade System
 IT | Sistema Arcade
+DE | Arcade System
 
 EN | Controls
 IT | Controlli
@@ -2937,7 +3065,7 @@ IT | Altri dello stesso
 ES | Más de lo mismo
 BR | Outros como este
 FR | Encore et encore
-DE | Mehr vom gleichen
+DE | Ähnliche
 
 EN | Decade
 IT | Decennio
@@ -3062,6 +3190,7 @@ DE | Liste mit Artwork
 
 EN | list with walls
 IT | Lista con sfondi
+DE | Liste mit Walls
 
 EN | Adaptive
 IT | Adattato
@@ -3204,70 +3333,91 @@ DE | NACH JAHR
 
 EN | Power
 IT | Arresto
+DE | Power
 
 EN | Shutdown
 IT | Spegni
+DE | Herunterfahren
 
 EN | Restart
 IT | Riavvia
+DE | Neustart
 
 EN | Sleep
 IT | Sospendi
+DE | Ruhezustand
 
 # METADATA EDITOR
 
 EN | Game Metadata
 IT | Metadati del Gioco
+DE | Metadaten Spiel
 
 EN | Original
 IT | Originale
+DE | Original
 
 EN | Values
 IT | Valori
+DE | Werte
 
 EN | Manual entry
 IT | Inserisci
+DE | Manueller Eintrag
 
 # OVERMENU
 
 EN | Game Menu
 IT | Menu Gioco
+DE | Spiel Menü
 
 EN | More of the same...
 IT | Altri dello stesso...
+DE | Mehr davon...
 
 EN | Similar Games
 IT | Giochi simili
+DE | Ähnliche Spiele
 
 EN | Scrape selected game
 IT | Scrape questo gioco
+DE | Scrape ausgewähltes Spiel
 
 EN | Edit metadata
 IT | Modifica metadati
+DE | Metadaten bearbeiten
 
 EN | CAUTION!
 IT | ATTENZIONE!
+DE | ACHTUNG!
 
 EN | Delete ROM
 IT | Cancella ROM
+DE | ROM löschen
 
 EN | ROM Management
 IT | Gestione ROM
+DE | ROM Verwaltung
 
 EN | Delete
 IT | Elimina
+DE | Löschen
 
 # SLIDER CONTROLS
 
 EN | ACTIONS
 IT | AZIONI
+DE | AKTIONEN
 
 EN | APPLY
 IT | APPLICA
+DE | ANWENDEN
 
 EN | RGB Color
 IT | Colore RGB
+DE | RGB Farbe
 
 EN | HUE Value
 IT | Valore HUE
+DE | HUE Wert
 
