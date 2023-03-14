@@ -66,6 +66,8 @@ function returngly(){
 	return (uniglyph)
 }
 
+/// Main layout structures setup ///
+
 // General AF data table
 local AF = {
 
@@ -236,6 +238,8 @@ local uifonts = {
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 }
+
+/// Splash functions ///
 
 // Custom splash message wrappers with AF custom fonts
 function z_splash_message(text){
