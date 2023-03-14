@@ -2378,10 +2378,10 @@ fl.x = 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x
 fl.y = 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y
 
 function print_variable(variablein, level, name){
-	if (level == "") print ("* "+name+" *\n")
-	level = level+"   "
+	if (level == "") print ("* " + name + " *\n")
+	level = level + "   "
 	foreach (item, val in variablein){
-		print (level+" "+(typeof val)+" "+item+" "+val+"\n")
+		print (level + " " + (typeof val) + " " + item + " " + val + "\n")
 		if ((typeof val == "table") || (typeof val == "array")) print_variable(val, level, "")
 	}
 }
@@ -8022,8 +8022,8 @@ local shader_bg = {
 	v = fe.add_shader (Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 	bg = fe.add_shader (Shader.Fragment, "glsl/bgdresser.glsl")
 }
-gaussshader (shader_bg.v, 9.0, 2.2, 0.0, bglay.blursize)
-gaussshader (shader_bg.h, 9.0, 2.2, bglay.blursize, 0.0)
+gaussshader(shader_bg.v, 9.0, 2.2, 0.0, bglay.blursize)
+gaussshader(shader_bg.h, 9.0, 2.2, bglay.blursize, 0.0)
 shader_bg.bg.set_param ("bgmix", themeT.themeoverlayalpha/255.0)
 shader_bg.bg.set_param ("bgcol", themeT.themeoverlaycolor/255.0)
 
@@ -8713,8 +8713,8 @@ local shader_tx = {
 	h = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 }
-gaussshader (shader_tx.h, 9.0, 3.0, 1.0/(fl.w*sh_scale.r1), 0.0)
-gaussshader (shader_tx.v, 9.0, 3.0, 0.0, 1.0/(fl.h*sh_scale.r1))
+gaussshader(shader_tx.h, 9.0, 3.0, 1.0/(fl.w*sh_scale.r1), 0.0)
+gaussshader(shader_tx.v, 9.0, 3.0, 0.0, 1.0/(fl.h*sh_scale.r1))
 
 
 local data_surface_sh_rt = fl.surf.add_surface(data_surface.width * sh_scale.r1, data_surface.height * sh_scale.r1)
@@ -11387,8 +11387,8 @@ local shadowshader = {
 	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern13_v.glsl", "glsl/gauss_kern13_f.glsl")
 	glow = fe.add_shader (Shader.Fragment, "glsl/testglow.glsl")
 }
-gaussshader (shadowshader.h, 13.0, 2.0, blursizeglow.x, 0.0)
-gaussshader (shadowshader.v, 13.0, 2.0, 0.0, blursizeglow.y)
+gaussshader(shadowshader.h, 13.0, 2.0, blursizeglow.x, 0.0)
+gaussshader(shadowshader.v, 13.0, 2.0, 0.0, blursizeglow.y)
 
 shadowsurf_1.shader = noshader
 shadowsurf_2.shader = noshader
@@ -12223,8 +12223,8 @@ shader_tx2.h.set_texture_param("texture")
 shader_tx2.h.set_param ("kernelData", 9, 3.0)
 shader_tx2.h.set_param ("offsetFactor", 1.0/(fl.w_os*sh_scale.r2), 0.000)
 */
-gaussshader (shader_tx2.h, 9.0, 3.0, 1.0/(fl.w*sh_scale.r2), 0.0)
-gaussshader (shader_tx2.v, 9.0, 3.0, 0.0, 1.0/(fl.h*sh_scale.r2))
+gaussshader(shader_tx2.h, 9.0, 3.0, 1.0/(fl.w*sh_scale.r2), 0.0)
+gaussshader(shader_tx2.v, 9.0, 3.0, 0.0, 1.0/(fl.h*sh_scale.r2))
 
 zmenu_sh.surf_2.shader = noshader
 zmenu_sh.surf_1.shader = noshader
