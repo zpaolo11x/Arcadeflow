@@ -18364,8 +18364,7 @@ function on_signal(sig){
 		}
 
 		// history page signal response
-		if (history_visible())
-		{
+		if (history_visible()){
 			debugpr (" HISTORY \n")
 
 			if (sig == "select") {
@@ -18529,7 +18528,6 @@ function on_signal(sig){
 
 				case "up":
 				if (checkrepeat(count.up)){
-
 					if (!data_surface.redraw) data_freeze(false)
 
 					if ((z_list.index % UI.rows > 0) && (scroll.jump == false) && (scroll.sortjump == false)) {
@@ -18547,7 +18545,7 @@ function on_signal(sig){
 					else if (scroll.sortjump == true){
 						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
 
-					if (prf.SCROLLERTYPE == "labellist") tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
+						if (prf.SCROLLERTYPE == "labellist") tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 						scroll.sortjump = false
 						labelstrip.visible = false
@@ -18557,11 +18555,9 @@ function on_signal(sig){
 							scroller2.visible = scrollineglow.visible = true
 						}
 					}
-
 					else {
 						count.up = -1
 						if (prf.UTILITYMENUBUTTON == "up") {
-
 							utilitymenu(0)
 						}
 					}
@@ -18571,7 +18567,6 @@ function on_signal(sig){
 
 				case "down":
 				if (checkrepeat(count.down)){
-
 					if (!data_surface.redraw) data_freeze(false)
 
 					if ((scroll.jump == false) && (scroll.sortjump == false) && ((z_list.index % UI.rows < UI.rows - 1) && (!((z_list.index / UI.rows == z_list.size / UI.rows) && (z_list.index%UI.rows + 1 > (z_list.size - 1)%UI.rows))))){
@@ -18579,7 +18574,6 @@ function on_signal(sig){
 						z_list_indexchange (z_list.index + 1)
 						if(prf.THEMEAUDIO) snd.plingsound.playing = true
 					}
-
 					// if you go down and label list is not active, activate scroll.jump
 					else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")){
 						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
@@ -18591,7 +18585,6 @@ function on_signal(sig){
 						scroller2.visible = scrollineglow.visible = true
 						scroll.sortjump = false
 					}
-
 					// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
 					else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))){
 						if(prf.THEMEAUDIO) snd.wooshsound.playing = true
