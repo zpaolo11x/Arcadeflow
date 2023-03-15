@@ -17549,6 +17549,28 @@ function on_signal(sig){
 
 	if (AF.updatechecking) return
 
+
+	// Key response when attract mode is enabled (running or not)
+	if (prf.AMENABLE){
+		// Resets attract timer so when attract is not running the wait time is reset
+		attract.timer = fe.layout.time
+
+		if (attract.rolltext){
+			// If attract is running stops attract unless we are taking screenshots
+
+			if (sig == "screenshot") return false
+
+			flowT.attract = [0.0, 1.0, 0.0, -0.09, 3.0]
+			attract.start = false
+			attract.rolltext = false
+			attract.gametimer = false
+
+			layoutfadein()
+			return true
+		}
+
+	}
+	
 	// Keyboard signal response
 	if (keyboard_visible()){
 		debugpr (" KEYBOARD \n")
@@ -17598,27 +17620,6 @@ function on_signal(sig){
 
 	if (sig == prf.DELETEBUTTON){
 		deletecurrentrom()
-	}
-
-	// Key response when attract mode is enabled (running or not)
-	if (prf.AMENABLE){
-		// Resets attract timer so when attract is not running the wait time is reset
-		attract.timer = fe.layout.time
-		testpr("X "+ attract.timer+"\n")
-		if (attract.rolltext){
-			// If attract is running stops attract unless we are taking screenshots
-
-			if (sig == "screenshot") return false
-
-			flowT.attract = [0.0, 1.0, 0.0, -0.09, 3.0]
-			attract.start = false
-			attract.rolltext = false
-			attract.gametimer = false
-
-			layoutfadein()
-			return true
-		}
-
 	}
 
 	// Signal responses that are available in every context
