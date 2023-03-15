@@ -17549,10 +17549,9 @@ function on_signal(sig){
 
 	if (AF.updatechecking) return
 
-	// search page signal response
-	if (keyboard_visible())
-	{
-		debugpr (" SEARCH \n")
+	// Keyboard signal response
+	if (keyboard_visible()){
+		debugpr (" KEYBOARD \n")
 
 		if (sig == "up") {
 			if (checkrepeat(count.up)){
@@ -17562,7 +17561,6 @@ function on_signal(sig){
 				count.up++
 			}
 		}
-
 		else if (sig == "down") {
 			if (checkrepeat(count.down)){
 				keyboard_select_relative(0, 1)
@@ -17571,7 +17569,6 @@ function on_signal(sig){
 				count.down++
 			}
 		}
-
 		else if (sig == "left") {
 			if (checkrepeat(count.left)){
 				keyboard_select_relative(-1, 0)
@@ -17580,7 +17577,6 @@ function on_signal(sig){
 				count.left++
 			}
 		}
-
 		else if (sig == "right") {
 			if (checkrepeat(count.right)){
 				keyboard_select_relative(1, 0)
@@ -17589,18 +17585,14 @@ function on_signal(sig){
 				count.right++
 			}
 		}
-
 		else if (sig == "select") keyboard_type(key_rows[key_selected[1]][key_selected[0]].tochar())
-
 		else if (sig == "back") {
 			kb.f_back()
 			keyboard_hide()
 		}
-
 		else if (sig == "screenshot"){
 			return false
 		}
-
 		return true
 	}
 
