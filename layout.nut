@@ -17604,7 +17604,7 @@ function on_signal(sig){
 	if (prf.AMENABLE){
 		// Resets attract timer so when attract is not running the wait time is reset
 		attract.timer = fe.layout.time
-
+		testpr("X "+ attract.timer+"\n")
 		if (attract.rolltext){
 			// If attract is running stops attract unless we are taking screenshots
 
