@@ -17474,29 +17474,8 @@ function ra_selectemu(startemu){
 function on_signal(sig){
 	debugpr ("\n Si:" + sig)
 
-	//TEST152
-	/*
-	if (sig == "custom1"){
-		testpr(z_list.boot[325].z_manufacturer+"\n")
-
-	}
-	*/
-	//TEST151
-/*	if (sig == "custom1"){
-		local zipball = "14.3"
-		local afname = "testzip"
-		//z_splash_message("Downloading...")
-		AF.bar.splashmessage = "Downloading"
-		bar_cycle_update(AF.bar.start)
-		//fe.plugin_command ("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname+".zip" + ap, "timewheel")
-		//fe.plugin_command ("curl", "-L https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball, "downloadwheel")
-		//fe.plugin_command ("curl", "-L -k -Z https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball --output - https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap), "bar_cycle_update")
-		fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball -o "+(ap + fe.path_expand(AF.folder) + afname+".zip" + ap)+" --trace-ascii -", "bar_cycle_update")
-		//fe.plugin_command ("ls", "-la", "timewheel")
-		bar_cycle_update(AF.bar.stop)
-	}
-*/
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
+
 	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
 
 	if (AF.scrape.purgedromdirlist != null) {
@@ -17506,6 +17485,7 @@ function on_signal(sig){
 		return true
 	}
 
+	// Scraping has finished and the end mesage is showing
 	if ((AF.scrape.purgedromdirlist == null) && (AF.messageoverlay.visible == true)) {
 		if (sig == "back") {
 			AF.messageoverlay.visible = false
@@ -17520,8 +17500,7 @@ function on_signal(sig){
 			try {
 				fe.set_display(fe.list.display_index, false, false)
 			}catch(err) {
-
-			//OLD METHOD BEFORE THE NEW SET_DISPLAY
+				//OLD METHOD BEFORE THE NEW SET_DISPLAY
 				if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null){
 					fe.signal("next_display")
 					fe.signal("prev_display")
@@ -17532,62 +17511,36 @@ function on_signal(sig){
 				}
 				else fe.signal("reload")
 			}
-
-			// Alternative method, reloads the whole layout
-			// fe.set_display(fe.list.display_index)
-
-			//Third method, with or without getallgamesdb(), doesn't update correctly the artwork
-			/*
-			getallgamesdb()
-			*/
-			/*
-			z_listboot()
-			buildcategorytable()
-			mfz_build(true)
-			try {
-				mfz_load()
-				mfz_populatereverse()
-				} catch(err) {}
-			mfz_apply(true)
-			*/
 		}
-
-		else if (sig == "up") {
+		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)){
 				AF.messageoverlay.first_line_hint--
 				count.up ++
-				return true
 			}
-			else return true
+			return true
 		}
-
-		else if (sig == "down") {
+		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)){
 				AF.messageoverlay.first_line_hint++
 				count.down ++
-				return true
 			}
-			else return true
+			return true
 		}
-
 		else if (sig == "left") {
-			if (checkrepeat(count.left)){
+			if (checkrepeat(count.left)){ //Faster jump scroll
 				AF.messageoverlay.first_line_hint-=10
 				count.left ++
-				return true
 			}
-			else return true
+			return true
 		}
 
 		else if (sig == "right") {
-			if (checkrepeat(count.right)){
+			if (checkrepeat(count.right)){ //Faster jump scroll
 				AF.messageoverlay.first_line_hint+=10
 				count.right ++
-				return true
 			}
-			else return true
+			return true
 		}
-
 		else if (sig == "screenshot"){
 			return false
 		}
@@ -18379,23 +18332,18 @@ function on_signal(sig){
 				if (checkrepeat(count.up)){
 					af_on_scroll_up()
 					count.up ++
-					return true
 				}
-				else return true
+				return true
 			}
-
 			else if (sig == "down") {
 				if (checkrepeat(count.down)){
 					af_on_scroll_down()
 					count.down ++
-					return true
 				}
-				else return true
+				return true
 			}
-
 			else if ((sig == "left")) {
 				if (checkrepeat(count.left)){
-
 					if (z_list.index > 0) {
 						z_list_indexchange (z_list.index - 1)
 						history_changegame(-1)
@@ -18404,18 +18352,12 @@ function on_signal(sig){
 						z_list_indexchange (z_list.size - 1)
 						history_changegame(1)
 					}
-
 					count.left++
-					//history_show(false)
-					return true
 				}
-				else return true
+				return true
 			}
-
 			else if ((sig == "right")) {
-
 				if (checkrepeat(count.right)){
-
 					if (z_list.index < (z_list.size - 1)) {
 						z_list_indexchange (z_list.index + 1)
 						history_changegame(1)
@@ -18424,18 +18366,14 @@ function on_signal(sig){
 						z_list_indexchange (0)
 						history_changegame (-1)
 					}
-					//history_show(false)
 					count.right++
-					return true
 				}
-				else return true
+				return true
 			}
-
 			else if (sig == "back") {
 				history_exit()
 				return true
 			}
-
 			return false
 		}
 
