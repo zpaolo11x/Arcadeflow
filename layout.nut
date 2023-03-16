@@ -2036,9 +2036,7 @@ function bgtunefilename() {
 	return (prf.BACKGROUNDTUNE)
 }
 
-//TEST152
 if (prf.BACKGROUNDTUNE != "") {
-	//TEST154AMBIENT snd.bgtune = fe.add_sound(bgtunefilename())
 	fe.ambient_sound.file_name = prf.BACKGROUNDTUNE
 }
 
@@ -3875,7 +3873,6 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 	// io ho già i vari db, la z_list.boot ecc... posso creare una fake list
 	// in cui caricare i giochi da scrapare
 
-	//TEST152 remove custom metadata
 	//z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
 	metarevert(romlist)
 
@@ -4460,7 +4457,6 @@ function listfields_to_db1(listfields) {
 // It doesn't wipe the existing metadata and is used when adding/removing roms
 // If AF collections are enabled it then updates all the collections
 function refreshromlist(romlist, fulllist, updateromlist = true) {
-	//TEST152 add code to remove metadata editing
 	// Clean custom edited metadata
 	metarevert(romlist)
 	//z_list.db1.rawset (romlist, dofile(AF.romlistfolder + romlist + ".db1"))
@@ -4854,7 +4850,6 @@ function metachanger(gamename, romlist, meta_new, metavals, metaflag, result) {
 	}
 	if (meta_new == "") {
 		try {
-			//TEST152
 			z_list.db1[romlist][gamename].rawset(metadata.ids[result], z_list.dboriginal[romlist][gamename][metadata.ids[result]])
 			z_list.dbmeta[romlist][gamename].rawdelete(metadata.ids[result])
 			if (z_list.dbmeta[romlist][gamename].len() == 0) {
@@ -6666,7 +6661,7 @@ function z_mots2filter(index) {
 	}
 
 	if (search.mots[0] == "z_tags") return (currentval.find(search.mots[1]) != null)
-	else return (currentval.tolower().find(search.mots[1].tolower()) == 0) //TEST152
+	else return (currentval.tolower().find(search.mots[1].tolower()) == 0)
 
 	return false
 
@@ -6727,7 +6722,6 @@ function getallgamesdb(logopic) {
 				z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
 				z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
 
-				//TEST152 POPULATE META TABLES
 				metadata.path = AF.romlistfolder + itemname + ".meta"
 				try {meta_edited = dofile(metadata.path)}catch(err) {}
 				if (meta_edited.len() > 0) {
@@ -7746,7 +7740,7 @@ local overlay = {
 	shad = []
 	wline = null
 	filterbg = null
-	//TEST155 CHECK PER QUANDO C'E' SLIMLINE
+
 	ex_top = floor(UI.header.h * 0.6)
 	ex_bottom = floor(UI.footer.h3 * 0.5)
 	in_side = UI.vertical ? floor(UI.footer.h3 * 0.5) : floor(UI.footer.h3 * 0.65)
@@ -8816,7 +8810,7 @@ displaynamesurf.surf.redraw = false
 // fading letter
 local letterobjsurf = {
 	surf = null
-	w = fl.w_os * 1.8 //TEST120 was 3.0!!!
+	w = fl.w_os * 1.8
 	w3 = fl.w_os * 3.0
 	h = carrierT.h
 	y0 = carrierT.y - data_surface.y
@@ -9152,7 +9146,7 @@ overlay.sidelabel.set_bg_rgb(0, 200, 0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 pixelizefont (overlay.sidelabel, overlay.labelcharsize * 0.6, 2)
-//TEST155pad
+
 overlay.glyph = fe.add_text("", overlay.x + overlay.padding, overlay.y, overlay.labelheight * 0.98, overlay.labelheight * 0.98)
 overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
@@ -9337,7 +9331,7 @@ local prfmenu = {
 	picratew = overlay.fullwidth * 0.3
 
 }
-//TEST155pad
+
 // First calculation of bottom panel
 prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - overlay.padding * 0.5
 prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
@@ -9361,7 +9355,7 @@ prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh, overlay.fullwidth, prfmenu.picrateh)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew, prfmenu.picrateh)
-//TEST155pad
+
 prfmenu.description.set_pos (prfmenu.bg.x + overlay.padding + prfmenu.picratew, prfmenu.bg.y, overlay.fullwidth - prfmenu.picratew - 2 * overlay.padding, prfmenu.picrateh)
 prfmenu.description.visible = prfmenu.helppic.visible = prfmenu.bg.visible = false
 
@@ -11432,7 +11426,7 @@ function history_updateoverlay() {
 
 function history_updatesnap() {
 	hist_screen.file_name = fe.get_art ("snap")
-	//TEST157
+
 	if (prf.AUDIOVIDHISTORY && (prf.BACKGROUNDTUNE != "")) snd.bgtuneplay = false
 	hist_screen.shader = (islcd(0, 0) ? shader_lcd : (prf.CRTGEOMETRY ? shader_lottes : noshader))
 
@@ -11898,13 +11892,13 @@ local disp = {
 	bgshadowt = null
 	bgshadowb = null
 
-	tilew = ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h) //TEST120 was 0.5, then 0.485
+	tilew = ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	xstart = 0
 	xstop = 0
 	bgtileh = 0
 	speed = null
-	//TEST155pad
+
 	pad = overlay.padding
 	width = null
 	height = overlay.menuheight
@@ -12018,8 +12012,8 @@ zmenu = {
 	xstart = 0
 	xstop = 0
 	speed = null
-	//TEST155pad
-	pad = floor(overlay.padding)//TEST155 * 0.5)
+
+	pad = floor(overlay.padding)
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.menuheight
@@ -12030,7 +12024,7 @@ zmenu = {
 	glyphs = []
 	notes = []
 	noteitems = []
-	glyphw = floor(overlay.padding * 4.75)//TEST155 floor(overlay.menuheight / overlay.rows)
+	glyphw = floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
 	glyphh = floor(overlay.menuheight / overlay.rows)
 	midoffset = 0
 	virtualheight = 0
@@ -12362,15 +12356,6 @@ function zmenudraw(menuarray, glypharray, sidearray, title, titleglyph, presel, 
 			else if (glypharray[i] != -1) {
 				zmenu.items[i].width = items_w - zmenu.noteitems[i].msg_width - zmenu.pad - items_x
 			}
-
-			///TEST155
-			/*
-			while (zmenu.items[i].msg_width + zmenu.noteitems[i].msg_width > 0.9 * (zmenu.tilew - zmenu.items[i].x)) {
-				zmenu.items[i].width = zmenu.items[i].width *0.5
-				zmenu.noteitems[i].x = zmenu.items[i].x + zmenu.items[i].width
-				zmenu.noteitems[i].width = zmenu.tilew - zmenu.pad + (shrink ? zmenu.pad - disp.width : 0) - zmenu.items[i].width - zmenu.items[i].x
-			}
-			*/
 		}
 
 		if (zmenu.dmp && prf.ALLGAMES) {
@@ -12543,7 +12528,6 @@ function zmenudraw(menuarray, glypharray, sidearray, title, titleglyph, presel, 
 
 	//TEST123 CHECK IF THIS CAN BE MOVED OUTSIDE OF THE CREATION
 	if (prfmenu.showing) {
-		//TEST155pad
 		zmenu.blanker = zmenu_surface.add_image(AF.folder + "pics/black.png", 0, zmenu.height, fl.w, prfmenu.picrateh + overlay.padding)
 		zmenu.blanker.visible = true
 	}
@@ -15699,14 +15683,11 @@ function on_transition(ttype, var0, ttime) {
 		//Update background image
 		updatecustombg()
 
-		//TEST152 per display background music
 		if ((prf.BACKGROUNDTUNE != "") && snd.bgtuneplay && prf.PERDISPLAYTUNE) {
 			try {
-				//TEST154AMBIENT snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
 				fe.ambient_sound.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".mp3"
 			} catch(err) {}
 			try {
-				//TEST154AMBIENT snd.bgtune.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
 				fe.ambient_sound.file_name = AF.songdir + fe.displays[fe.list.display_index].name + ".wav"
 			} catch(err) {}
 		}
@@ -15965,10 +15946,10 @@ function tick(tick_time) {
 		tilez[focusindex.new].bd_mx.set_rgb(255 * huecycle.RGB.R, 255 * huecycle.RGB.G, 255 * huecycle.RGB.B)
 	}
 
-	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != fe.ambient_sound.playing)) {//TEST154AMBIENT snd.bgtune.playing)) {
-		if (snd.bgtuneplay) fe.ambient_sound.file_name = bgtunefilename() //TEST154AMBIENT snd.bgtune.file_name = bgtunefilename()
+	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != fe.ambient_sound.playing)) {
+		if (snd.bgtuneplay) fe.ambient_sound.file_name = bgtunefilename()
 
-		fe.ambient_sound.playing = snd.bgtuneplay //TEST154AMBIENT  snd.bgtune.playing = snd.bgtuneplay
+		fe.ambient_sound.playing = snd.bgtuneplay
 	}
 
 	if (snd.attracttuneplay != snd.attracttune.playing) {
