@@ -1077,8 +1077,6 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
 {v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
-//{v = 12.0, varname = "dat_command_path", glyph = 0xe930, title = "Command.dat", help = "Command.dat location.", options = "", values = "", selection = AF.req.filereqs},
-//{v = 12.0, varname = "generate2", glyph = 0xea1c, title = "Generate Command index", help = "Generate the command.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_command_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
 {v = 12.0, varname = "INI_BESTGAMES_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML IMPORT", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
@@ -1268,7 +1266,6 @@ function buildreadme() {
 	foreach (i, item in readme) {
 		print(item)
 	}
-
 }
 
 function savereadme() {
@@ -1279,23 +1276,6 @@ function savereadme() {
 		aboutfile.write_line(about[i])
 	}
 	aboutfile.close_file()
-}
-
-function saveabout() {
-	local aboutpath = fe.path_expand(AF.folder + "about.txt")
-	local aboutfile = WriteTextFile(aboutpath)
-	local about = abouttext()
-	for (local i = 0; i < about.len(); i++) {
-		aboutfile.write_line(about[i] + "\n")
-	}
-	aboutfile.close_file()
-}
-
-function printabout() {
-	local about = abouttext()
-	for (local i = 0; i < about.len(); i++) {
-		print(about[i] + "\n")
-	}
 }
 
 // Reads data from the preferences structures and builds the preferences variable table
