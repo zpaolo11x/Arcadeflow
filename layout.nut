@@ -2468,7 +2468,7 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 
 // correction data for non-centered first tiles
 // deltacol are the marginal columns with respect to center one
-local deltacol = (UI.cols - 3) / 2 //TEST103 controllare se questo "-3" va sempre bene o in alcuni casi fa saltare
+local deltacol = (UI.cols - 3) / 2
 
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
@@ -3642,7 +3642,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 		adb_media = {}
 		adb_history = ""
 
-		notgame = false //TEST132 was true
+		notgame = false
 		crc = null
 	}
 
@@ -6677,7 +6677,7 @@ function getallgamesdb(logopic) {
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
 			// The emulator has a self named romlist
-			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) { //TEST139 If we are in masterlist keep scanning for db
+			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) {
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
 				z_splash_message("")//("\n\n\n\n\n\n\n" + "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
@@ -16416,7 +16416,6 @@ function tick(tick_time) {
 			tilez[i].obj.x = impulse2.tilepos - surfacePosOffset + tilesTablePos.X[i]
 			tilez[i].obj.y = tilesTablePos.Y[i]
 
-			//TEST101 ADD VISIBILITY OFF SCREEN CONTROL
 			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
