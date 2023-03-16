@@ -1674,7 +1674,6 @@ function readsystemdata() {
 	}
 
 	return sysdata
-
 }
 
 local system_data = readsystemdata()
@@ -1963,7 +1962,6 @@ function applycustomcolor() {
 	themeT.listboxselbg.r = min(max(0, colorarray[0] - deltacolor), 255)
 	themeT.listboxselbg.g = min(max(0, colorarray[1] - deltacolor), 255)
 	themeT.listboxselbg.b = min(max(0, colorarray[2] - deltacolor), 255)
-
 }
 
 if (prf.CUSTOMCOLOR != "") applycustomcolor()
@@ -2607,7 +2605,6 @@ function parsecommanddat() {
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
-
 }
 //parsecommanddat()
 
@@ -2767,7 +2764,6 @@ function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
 	}
 
 	return ([sortlist1, sortlist2])
-
 }
 
 /*
@@ -2829,7 +2825,6 @@ function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
 	}
 
 	return arr_extval
-
 }
 
 function exitcommand() {
@@ -2907,7 +2902,6 @@ function clean_desc(inputstring) {
 
 function clean_synopsis(inputstring) {
 	return char_replace(char_replace (subst_replace(subst_replace(inputstring, "\\n", "^"), "&#039;", "'"), ";", "§"), "’", "'")
-
 }
 
 function parseXML(inputpath) {
@@ -3348,7 +3342,6 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	scraprt("ID" + scrapeid + "             createjsonA SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
 	return
-
 }
 
 function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
@@ -3960,7 +3953,6 @@ function XMLtoAM2(prefst, current) {
 		}
 	}
 	AF.boxmessage = messageOLDboxer ("Reloading Layout", "", false, AF.boxmessage)
-
 }
 
 function XMLtoAM(prefst, dir) {
@@ -4408,7 +4400,6 @@ function splitlistline(str_in) {
 	}
 
 	return listfields
-
 }
 
 function listfields_to_db1(listfields) {
@@ -4480,7 +4471,6 @@ function refreshromlist(romlist, fulllist, updateromlist = true) {
 	}
 	saveromdb1 (romlist, z_list.db1[romlist])
 	saveromdb2(romlist, z_list.db2[romlist])
-
 }
 
 // This function scans the current AM romlist and creates a dedicated db1 and db2 from the fields
@@ -5035,7 +5025,6 @@ function z_list_startorder() {
 		}
 		catch(err) {}
 	}
-
 }
 
 // This function scans the romlist looking for all the romlists that are present
@@ -6155,7 +6144,6 @@ function mfz_menudata(inputtable, level, translate, sort) {
 	}
 
 	return (out)
-
 }
 
 /*
@@ -6174,7 +6162,6 @@ function ztestz() {
 	foreach(item, val in test) {
 		print(item + " : " + val + "\n")
 	}
-
 }
 
 //ztestz()
@@ -6607,7 +6594,6 @@ function z_catfilter(index) {
 	if ((search.catg[0] == nowcat[0]) && (search.catg[1] == nowcat[1])) return true
 
 	return false
-
 }
 
 function z_favfilter(index) {
@@ -6633,7 +6619,6 @@ function z_mots2filter(index) {
 	else return (currentval.tolower().find(search.mots[1].tolower()) == 0)
 
 	return false
-
 }
 
 function z_checkhidden(i) {
@@ -6804,7 +6789,6 @@ timestart("boot")
 	timestop("z_listboot")
 
 	//missing_manufacturer_list_vector(z_list)
-
 }
 
 local nolist_blanker = null
@@ -6847,7 +6831,7 @@ function z_listcreate() {
 		if ((checkfilter)) {
 			ifilter++
 
-			if (z_list.boot[i].z_infav &&z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2 && (!z_list.boot2[i].z_hidden || prf.SHOWHIDDEN)) {
+			if (z_list.boot[i].z_infav && z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2 && (!z_list.boot2[i].z_hidden || prf.SHOWHIDDEN)) {
 				z_list.jumptable.push(
 					{
 						index = ireal
@@ -6983,7 +6967,6 @@ function z_listsort(orderby, reverse) {
 		savetabletofile(SORTTABLE, "pref_sortorder.txt")
 	}
 	timestop("    z_listsort")
-
 }
 
 // Creates an array for prev-next jump
@@ -8245,7 +8228,6 @@ local shaders = {
 	lg = {
 		hv = fe.add_shader(Shader.VertexAndFragment, "glsl/octablur_v.glsl", "glsl/octablur_f.glsl")
 	}
-
 }
 
 shaders.gr.hv.set_texture_param("texture")
@@ -9167,7 +9149,6 @@ function frostshaders(turnon) {
 		frost.surf_1.shader = noshader
 		frost.pic.shader = noshader
 	}
-
 }
 
 function videosnap_hide() {
@@ -9278,7 +9259,6 @@ local prfmenu = {
 	picrateh = overlay.menuheight * 0.4
 	//	picratew = 1.25 * overlay.menuheight * 0.4
 	picratew = overlay.fullwidth * 0.3
-
 }
 
 // First calculation of bottom panel
@@ -10596,7 +10576,6 @@ if (UI.vertical) {
 		hist_textT.y = fl.y + fl.h * hist.split_h
 		hist_textT.h = fl.h * (1.0 - hist.split_h)
 	}
-
 }
 
 local shadowscale = 0.025
@@ -10717,7 +10696,6 @@ function updatecustombg() {
 		picture.bg_hist.visible = true
 	}
 	picture.bg_hist.visible = true
-
 }
 
 updatecustombg()
@@ -10786,7 +10764,6 @@ if (prf.HISTORYPANEL) {
 	hist_titletxt_bot.line_spacing = 0.6
 	hist_titletxt_bot.set_rgb(0, 0, 0)
 	hist_titletxt_bot.alpha = hist_titleT.transparency
-
 }
 
 local hist_titletxt_bd = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
@@ -11605,7 +11582,6 @@ function history_updatetext() {
 	hist_text.descr.margin = 0.3 * hist_textT.linesize
 
 	descrshader(false)
-
 }
 
 function history_show(h_startup)
@@ -11995,7 +11971,6 @@ zmenu = {
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
-
 }
 
 zmenu.speed = zmenu.tileh * 0.1
@@ -12534,7 +12509,6 @@ function zmenudraw(menuarray, glypharray, sidearray, title, titleglyph, presel, 
 		count.skipup ++
 		i++
 	}
-
 }
 
 function zmenuhide() {
@@ -13261,7 +13235,6 @@ function builddisplaystructure() {
 			}
 		}
 	}
-
 }
 
 function displaygrouped() {
@@ -13293,7 +13266,6 @@ function displaygrouped() {
 	// After preparing the structure displaygrouped1 is called, it will manage
 	// main list and sublists by sorting, grouping etc
 	displaygrouped1()
-
 }
 
 /// Layout fades ///
@@ -13526,7 +13498,6 @@ if (prf.AMENABLE) {
 	attractitem.shader_2_lottes.set_param ("cornersize", 0.05)		// 0.0 to 0.1
 	attractitem.shader_2_lottes.set_param ("cornersmooth", 60)		// Reduce jagginess of corners
 	attractitem.shader_2_lottes.set_param ("vignettebase", 0.0, 1.0, 3.0)
-
 }
 
 if (prf.AMENABLE) {
@@ -13693,7 +13664,6 @@ function simtitle(in1, in2) {
 	local normsim = (sameword *2.0 / (in1array.len() + in2array.len()))
 
 	return (normsim)
-
 }
 
 function updatesimpic(index) {
@@ -13716,7 +13686,6 @@ function updatesimpic(index) {
 	zmenu.simpicshR.set_pos(zmenu.simpic.x + zmenu.simpic.width - shsize, zmenu.simpic.y, 2 * shsize, zmenu.simpic.height)
 	zmenu.simvid.shader = noshader
 	zmenu.simpic.shader = colormapper[recolorise (zmenu.similar[index].index - z_list.index, 0)].shad
-
 }
 
 function similarmenu() {
@@ -13912,7 +13881,6 @@ function monitortick(tick_time) {
 		fps.x0 = 0
 		fps.tick000 = 0
 	}
-
 }
 
 /// Pre-Transition functions for labels jumps ///
@@ -14003,7 +13971,6 @@ function updatebgsnap(index) {
 	bgs.bg_mono[bgs.stacksize - 1] = recolorise (tilez[index].offset, 0)
 	bgs.bg_index[bgs.stacksize - 1] = z_list.index
 	bgs.bg_aspect[bgs.stacksize - 1] = getAR(bgs.bg_index[bgs.stacksize - 1] - z_list.index, bgs.bgpic_array[bgs.stacksize - 1], 0, false)
-
 }
 
 function ARcurve(AR) {
@@ -14064,7 +14031,6 @@ function getvidAR(tileindex, tile, reftile, var) {
 	if (sysAR < 0) return (txtAR > 1.0 ? -1.0 * sysAR : -1.0 / sysAR)
 
 	return (sysAR != 0.0 ? sysAR : txtAR)
-
 }
 
 function getAR(tileindex, tile, var, boxart) {
@@ -14111,7 +14077,6 @@ function update_gradient(i, noboxart) {
 
 	// Make generated text visible or not
 	tilez[i].txshz.visible = tilez[i].txt1z.visible = tilez[i].txt2z.visible = ((prf.TITLEONSNAP) && (tilez[i].loshz.subimg_width == 0) && (prf.MISSINGWHEEL) && (!(prf.BOXARTMODE) || (prf.BOXARTMODE && prf.TITLEONBOX)))
-
 }
 
 function clampaspect(aspect) {
@@ -14348,7 +14313,6 @@ function update_thumbdecor(i, var, aspect) {
 
 	tilez[i].nw_mx.set_pos (tilez[i].snapz.x, tilez[i].snapz.y + tilez[i].snapz.height - tilez[i].nw_mx.height)
 	tilez[i].tg_mx.set_pos (tilez[i].snapz.x + tilez[i].snapz.width - UI.zoomedcoreheight / 8.0, tilez[i].snapz.y + tilez[i].snapz.height - UI.zoomedcoreheight / 10.0)
-
 }
 
 function switchmode() {
@@ -14393,7 +14357,6 @@ function favtoggle() {
 		//mfz_populate()
 		mfz_apply(false)
 		if (zmenu.showing) utilitymenu(umpresel)
-
 }
 
 umtable = []
@@ -16793,7 +16756,6 @@ function tick(tick_time) {
 
 		history_surface.alpha = 255 * flowT.history[1]
 	}
-
 }
 
 //Category functions used for category filter menu
@@ -16986,7 +16948,6 @@ function categorymenu() {
 	// Detect current main category
 	local currentcat = stripcat(0)
 	maincategorymenu(currentcat[0], currentcat[1])
-
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
@@ -17033,7 +16994,6 @@ function sortmenu(vector, namevector, presel, glyph, title) {
 		return
 	}
 	)
-
 }
 
 function deletecurrentrom() {
@@ -17072,7 +17032,6 @@ function deletecurrentrom() {
 
 	z_list.gametable[z_list.index].z_fileisavailable = 0
 	z_listrefreshtiles()
-
 }
 
 function buildgamelistxml() {
@@ -17203,7 +17162,6 @@ function ra_init() {
 	}
 
 	ra.corelist.sort(@(a, b) ra.coretable[a].displayname <=> ra.coretable[b].displayname)
-
 }
 
 if (prf.RAENABLED) ra_init()
@@ -17700,7 +17658,7 @@ function on_signal(sig) {
 					zmenu.noteitems[i].set_rgb (0, 0, 0)
 					zmenu.glyphs[i].set_rgb (0, 0, 0)
 				}
-				if ((zmenu.mfm) &&(zmenu.notes[i] == "(0)")) {
+				if ((zmenu.mfm) && (zmenu.notes[i] == "(0)")) {
 					zmenu.items[i].set_rgb(81, 81, 81)
 					zmenu.noteitems[i].set_rgb(81, 81, 81)
 				}
@@ -17924,29 +17882,23 @@ function on_signal(sig) {
 							updatesearchdatamsg()
 							mfz_apply(false)
 						}
-
 						if (result == -1) {
 							frosthide()
 							zmenuhide()
 						}
-
 						if (result == 0) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year]
 							search.mots2string = ltxt("Year", AF.LNG) + ":" + search.mots[1]
 						}
-
 						if (result == 1) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year.slice(0, 3)]
 							search.mots2string = ltxt("Year", AF.LNG) + ":" + search.mots[1] + "x"
-
 						}
-
 						if (result == 2) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
 							if (search.mots[1] != "") search.mots[1] = split(search.mots[1], "_")[0]
  							search.mots2string = ltxt("Manufacturer", AF.LNG) + ":" + search.mots[1]
 						}
-
 						if (result == 3) {
 							try {
 								local s = z_list.gametable[z_list.index].z_category
@@ -17956,43 +17908,35 @@ function on_signal(sig) {
 							}
 							catch(err) {}
 						}
-
 						if (result == 4) {
 							search.mots = ["z_category", z_list.gametable[z_list.index].z_category]
 							search.mots2string = ltxt("Category", AF.LNG) + ":" + search.mots[1]
 
 						}
-
 						if (result == 5) {
 							search.mots = ["z_rotation", z_list.gametable[z_list.index].z_rotation]
 							search.mots2string = ltxt("Rotation", AF.LNG) + ":" + search.mots[1]
 						}
-
 						if (result == 6) {
 							search.mots = ["z_favourite", z_list.gametable2[z_list.index].z_favourite.tostring()]
 							search.mots2string = ltxt("Favourite", AF.LNG) + ":" + (search.mots[1])
 						}
-
 						if (result == 7) {
 							search.mots = ["z_series", z_list.gametable[z_list.index].z_series]
 							search.mots2string = ltxt("Series", AF.LNG) + ":" + search.mots[1]
 						}
-
 						if (result == 8) {
 							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
 							search.mots2string = ltxt("Rating", AF.LNG) + ":" + search.mots[1]
 						}
-
 						if (result == 9) {
 							search.mots = ["z_arcadesystem", z_list.gametable[z_list.index].z_arcadesystem]
 							search.mots2string = ltxt("Arcade Sys", AF.LNG) + ":" + search.mots[1]
 						}
-
 						if ((result >= numset) && (result < numtag)) {
 							search.mots = ["z_tags", taglist[result - numset]]
 							search.mots2string = ltxt("Tags", AF.LNG) + ":" + search.mots[1]
 						}
-
 						// GOOD
 						if ((result != numtag) && (result != -1) && (search.mots[1] != "")) {
 
@@ -18107,7 +18051,6 @@ function on_signal(sig) {
 			}
 			return true
 		}
-
 		if (sig == "prev_page") {
 			if (checkrepeat(count.prev_page)) {
 				if (prf.THEMEAUDIO) snd.plingsound.playing = true
@@ -18128,11 +18071,9 @@ function on_signal(sig) {
 			}
 			return true
 		}
-
 		if (sig == "next_favourite") {
 			local i0 = z_list.index
-			local i1 = i0 +1
-
+			local i1 = i0 + 1
 			while (i0 != i1) {
 				if (i1 == z_list.size) i1 = 0
 				if (z_list.gametable[i1].z_favourite == "1") {
@@ -18141,14 +18082,11 @@ function on_signal(sig) {
 				}
 				i1 ++
 			}
-
 			return true
 		}
-
 		if (sig == "prev_favourite") {
 			local i0 = z_list.index
 			local i1 = i0 - 1
-
 			while (i0 != i1) {
 				if (i1 == -1) i1 = z_list.size - 1
 				if (z_list.gametable[i1].z_favourite == "1") {
@@ -18157,10 +18095,8 @@ function on_signal(sig) {
 				}
 				i1 --
 			}
-
 			return true
 		}
-
 		if (sig == "next_letter") {
 			if (checkrepeat(count.next_letter)) {
 				if (prf.THEMEAUDIO) snd.plingsound.playing = true
