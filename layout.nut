@@ -17042,7 +17042,6 @@ function categorymenu() {
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
-
 	local labelvector = []
 	local glyphvector = []
 	for (local i = 0; i < namevector.len(); i++) {
@@ -17129,7 +17128,6 @@ function deletecurrentrom() {
 }
 
 function buildgamelistxml() {
-
 	local romlist = fe.displays[fe.list.display_index].romlist
 	local rompath = AF.emulatordata[romlist].rompath
 	local xmlpath = AF.emulatordata[romlist].rompath + "gamelist.xml"
