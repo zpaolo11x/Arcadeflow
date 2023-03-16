@@ -330,9 +330,7 @@ function bar_cycle_update(command) {
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
 		//print("\n")
-
 	}
-
 }
 
 function bar_progress_update(i, init, max) {
@@ -383,9 +381,7 @@ function bar_progress_update(i, init, max) {
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
 		//print("\n")
-
 	}
-
 }
 
 /// Config management ///
