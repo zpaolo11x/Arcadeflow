@@ -600,7 +600,7 @@ z_af_collections.arr = [
 ]
 
 foreach(i, item in z_af_collections.arr) {
-	z_af_collections.tab[item.id]<-item
+	z_af_collections.tab[item.id] <- item
 }
 
 // Update the attract.cfg to incorporate all the collections
@@ -5882,7 +5882,7 @@ function mfz_build(reset) {
 					}
 					catch(err) {
 						if (table0.menu[vals.l1name].submenu == null) table0.menu[vals.l1name].submenu = {}
-						table0.menu[vals.l1name].submenu[vals.l2name] <-{
+						table0.menu[vals.l1name].submenu[vals.l2name] <- {
 							num = 1
 							filtered = false
 							filtervalue = vals.l2val
@@ -6237,9 +6237,7 @@ function mfz_refreshnum(catin) {
 }
 
 function mfz_menu2(presel) {
-
 	//2nd level menu is never translated and is always sorted by value
-
 	local valcurrent = null
 
 	if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
@@ -6535,24 +6533,19 @@ function mfz_apply(startlist) {
 	}
 
 	z_filteredlistupdateindex(reindex)
-
 	z_liststops()
-
 	z_listrefreshlabels()
 
 	if (!startlist) z_listrefreshtiles()
-
 	if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
 
 	z_updatefilternumbers(z_list.index)
-
 	data_freeze(false)
 	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
 	/*
 			z_listrefreshtiles()
 			updatebgsnap (focusindex.new)
 	*/
-
 	timestop("mfz_apply")
 }
 
@@ -6737,26 +6730,6 @@ function z_listboot() {
 
 	z_updatetagstable()
 
-	//Reset meta_edited and meta_original
-	/*
-	meta_edited = {}
-	meta_original = {}
-	all_meta_edited = {}
-	all_meta_original = {}
-	metadata.path = ""
-*/
-	//Update metadata editing structures
-	/*
-	foreach(item, val in z_list.allromlists) {
-		metadata.path = AF.romlistfolder + item + ".meta"
-		try {meta_edited = dofile(metadata.path)}catch(err) {}
-		if (meta_edited.len() > 0) {
-			all_meta_edited[item] <- meta_edited // Adds a table for edited metadata
-			all_meta_original[item] <- {} // Create an empty table that will be populated afterwards
-		}
-		meta_edited = {}
-	}
-	*/
 	timestart("z_rawset")
 
 	// TEST152
