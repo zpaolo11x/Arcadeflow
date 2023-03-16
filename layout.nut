@@ -223,7 +223,7 @@ local zmenu = null
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too.
 fe.do_nut("nut_language.nut")
 AF.LNG = "EN"
-try {AF.LNG = loadlanguage ()} catch(err) {}
+try {AF.LNG = loadlanguage()} catch(err) {}
 
 // font definition
 local uifonts = {
@@ -277,21 +277,15 @@ function splash_update(command) {
 	AF.bar.time1 = clock()
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {
 		AF.bar.count = AF.bar.count + 1
-		//if (AF.bar.count == AF.bar.scroller.len()) AF.bar.count = 0
-		//z_splash_message(AF.bar.splashmessage + "\n" + AF.bar.scroller[AF.bar.count] + "\n")
 		if (AF.bar.count == 10) AF.bar.count = 0
 		z_splash_message(AF.bar.splashmessage + "\n" + gly(0xeb08 + AF.bar.count) + "\n")
-
 		AF.bar.time0 = AF.bar.time1
-
 	}
 }
 
 function bar_cycle_update(command) {
-	//	print("i:" + i + " ")
 	local redraw = false
 	if (command == AF.bar.start) {
-		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
@@ -306,9 +300,7 @@ function bar_cycle_update(command) {
 		}
 		return
 	}
-
 	if (command == AF.bar.stop) {
-		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
@@ -320,7 +312,6 @@ function bar_cycle_update(command) {
 		AF.bar.text.visible = false
 		return
 	}
-
 	AF.bar.time1 = clock()
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {
 		AF.bar.count = AF.bar.count + 1
@@ -329,15 +320,12 @@ function bar_cycle_update(command) {
 		redraw = true
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
-		//print("\n")
 	}
 }
 
 function bar_progress_update(i, init, max) {
-	//	print("i:" + i + " ")
 	local redraw = false
 	if (i == init) {
-		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
@@ -349,7 +337,6 @@ function bar_progress_update(i, init, max) {
 	}
 
 	if (i == max - 1) {
-		//print("CLOSE\n")
 		AF.bar.pic.visible = false
 		AF.bar.picbg.visible = false
 		return
@@ -358,29 +345,23 @@ function bar_progress_update(i, init, max) {
 	AF.bar.time1 = clock()
 
 	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {
-		//print(" FRAME ")
 		if (i <= max * 0.2) {
-			//print("i < max * 0.2")
 			redraw = true
 			AF.bar.pic.alpha = 255 * i / (max * 0.2)
 			AF.bar.picbg.alpha = AF.bar.darkalpha * i / (max * 0.2)
 		}
 		else if (i >= max * 0.9) {
-			//print("i > max * 0.8")
 			redraw = true
 			AF.bar.pic.alpha = 255 * (1.0 - (i - max * 0.9) / (max * 0.1))
-			AF.bar.picbg.alpha = 0//AF.bar.darkalpha * (1.0 - (i - max * 0.8) / (max * 0.2))
+			AF.bar.picbg.alpha = 0
 		}
-
 		if (floor(11 * i * 1.0 / max) != AF.bar.progress) {
 			AF.bar.progress = floor(11 * i * 1.0 / max)
 			AF.bar.pic.msg = gly(0xeafb + AF.bar.progress)
-			//print(" progress:" + AF.bar.progress + " ")
 			redraw = true
 		}
 		AF.bar.time0 = AF.bar.time1
 		if (redraw) fe.layout.redraw()
-		//print("\n")
 	}
 }
 
@@ -684,15 +665,12 @@ local dispatchernum = 0
 function scraprt(instring) {
 	print(dispatchernum + " " + instring)
 }
-
 function testpr(instring) {
 	print(instring)
 }
-
 function testprln(instring) {
 	print(instring + "\n")
 }
-
 function testprln2(instring) {
 	print("\n" + instring + "\n\n")
 }
