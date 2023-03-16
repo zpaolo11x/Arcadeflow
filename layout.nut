@@ -11404,7 +11404,6 @@ function history_updateoverlay() {
 	try {commands_dat = commandtable[rom]}catch(err) {}
 	commands = z_list.gametable[z_list.index].z_commands
 	if (commandtable.rawin(rom)) commands = commandtable[rom]
-//	if (commands_scrape.len() == 0) commands = commands_dat else commands = commands_scrape
 
 	local commandnull = true
 	foreach(i, item in commands) {
@@ -11586,8 +11585,6 @@ function history_updatetext() {
 			if (i < z_list.gametable2[z_list.index].z_tags.len() - 1)
 				hist_text.descr.msg = hist_text.descr.msg +", "
 		}
-
-		//hist_text.compl.msg = (z_list.gametable2[z_list.index].z_favourite ? gly(0xe90a) : gly(0xe909)) + "  " + (z_list.gametable2[z_list.index].z_completed ? gly(0xe908) : gly (0xe907))
 		hist_text.descr.msg = hist_text.descr.msg + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
 
 	}
@@ -11606,64 +11603,60 @@ function history_updatetext() {
 		}
 		hist_text.tags.word_wrap = true
 		hist_text.copy.msg = "©" + z_list.gametable[z_list.index].z_year
-		//hist_text.compl.msg = (z_list.gametable2[z_list.index].z_favourite ? gly(0xe90a) : gly(0xe909)) + "  " + (z_list.gametable2[z_list.index].z_completed ? gly(0xe908) : gly (0xe907))
 		hist_text.playr.msg = gly(0xe900) + " " + z_list.gametable[z_list.index].z_players
 		hist_text.buttn.msg = gly(0xe901) + " " + z_list.gametable[z_list.index].z_buttons
 		hist_text.ratng.msg = gly(0xe904) + " " + z_list.gametable[z_list.index].z_rating
 	}
 
-		hist_curr_rom = rom
-		local alt = fe.game_info(Info.AltRomname)
-		local cloneof = fe.game_info(Info.CloneOf)
+	hist_curr_rom = rom
+	local alt = fe.game_info(Info.AltRomname)
+	local cloneof = fe.game_info(Info.CloneOf)
 
-		local lookup = af_get_history_offset(sys, rom, alt, cloneof)
+	local lookup = af_get_history_offset(sys, rom, alt, cloneof)
 
-		local tempdesc = "" //this description comes from history.dat
+	local tempdesc = "" //this description comes from history.dat
 
-		if (lookup >= 0) {
-			//fe.overlay.splash_message(lookup + " " + my_config)
-			try {
-				tempdesc = af_get_history_entry(lookup, prf)
-			} catch(err) {
-				tempdesc = "\n\n\nThere was an error loading game data, please check history.dat preferences in the layout options"
-			}
+	if (lookup >= 0) {
+		//fe.overlay.splash_message(lookup + " " + my_config)
+		try {
+			tempdesc = af_get_history_entry(lookup, prf)
+		} catch(err) {
+			tempdesc = "\n\n\nThere was an error loading game data, please check history.dat preferences in the layout options"
 		}
-		else
-		{
-			if (lookup == -2)
-				tempdesc = "\n\n\nIndex file not found. Try generating an index from the history.dat plug-in configuration menu."
-			else{
-				tempdesc = ""
-				foreach (i, item in z_list.gametable[z_list.index].z_description)
-					tempdesc = tempdesc + item + "\n"
-			}
+	}
+	else
+	{
+		if (lookup == -2)
+			tempdesc = "\n\n\nIndex file not found. Try generating an index from the history.dat plug-in configuration menu."
+		else{
+			tempdesc = ""
+			foreach (i, item in z_list.gametable[z_list.index].z_description)
+				tempdesc = tempdesc + item + "\n"
 		}
+	}
 
-		local tempdesc3 = "" //this comes from the overview
-		tempdesc3 = fe.game_info(Info.Overview)
+	local tempdesc3 = "" //this comes from the overview
+	tempdesc3 = fe.game_info(Info.Overview)
 
-		if (tempdesc3 != "") tempdesc = tempdesc3 + "\n\n"
+	if (tempdesc3 != "") tempdesc = tempdesc3 + "\n\n"
 
-		local tempdesc2 = "" //This comes from the romlist
-				foreach (i, item in z_list.gametable[z_list.index].z_description)
-					tempdesc2 = tempdesc2 + item + "\n"
-		if ((tempdesc2 != "?") && (tempdesc2 != "")) {
-			tempdesc = tempdesc2 + "\n\n"
-		}
+	local tempdesc2 = "" //This comes from the romlist
+			foreach (i, item in z_list.gametable[z_list.index].z_description)
+				tempdesc2 = tempdesc2 + item + "\n"
+	if ((tempdesc2 != "?") && (tempdesc2 != "")) {
+		tempdesc = tempdesc2 + "\n\n"
+	}
 
-		if (prf.LOWRES) tempdesc = hist_text.descr.msg + "\n" + tempdesc
+	if (prf.LOWRES) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
-		hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
-		hist_text.descr.align = Align.TopCentre
-		hist_text.descr.word_wrap = true
-		hist_text.descr.first_line_hint = 1
-		hist_text.descr.margin = 0.3 * hist_textT.linesize
+	hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
+	hist_text.descr.align = Align.TopCentre
+	hist_text.descr.word_wrap = true
+	hist_text.descr.first_line_hint = 1
+	hist_text.descr.margin = 0.3 * hist_textT.linesize
 
-		descrshader(false)
+	descrshader(false)
 
-		//hist_text.title.msg = hist_text_tempmessage + tempdesc + z_list.gametable[z_list.index].z_name + "\n" + "Scrape: " + z_list.gametable[z_list.index].z_scrapestatus + "\n\n\n"
-		//hist_text.msg = "\n" + packtext(packstring, packcols)
-//	}
 }
 
 function history_show(h_startup)
@@ -11683,10 +11676,7 @@ function history_show(h_startup)
 		history_redraw(true)
 		flowT.history = startfade(flowT.history, 0.05, 3.0)
 		flowT.histtext = startfade(flowT.histtext, 0.05, -3.0)
-		/*
-		flowT.data = startfade(flowT.data, -0.08, -3.0)
-		flowT.fg = startfade(flowT.fg, 0.08, -3.0)
-		*/
+
 		flowT.groupbg = startfade(flowT.groupbg, -0.08, -3.0)
 		flowT.historyscroll = [0.5, 0.5, 0.5, 0.0, 0.0]
 	}
@@ -11703,10 +11693,7 @@ function history_hide() {
 
 	flowT.history = startfade(flowT.history, -0.05, -3.0)
 	flowT.histtext = startfade(flowT.histtext, -0.5, 0.0)
-	/*
-	flowT.data = startfade(flowT.data, 0.06, 3.0)
-	flowT.fg = startfade(flowT.fg, -0.06, 3.0)
-	*/
+
 	flowT.groupbg = startfade(flowT.groupbg, 0.06, 3.0)
 }
 
@@ -11725,8 +11712,6 @@ function af_on_scroll_down() {
 }
 
 function history_exit() {
-//	hist_title.file_name = AF.folder + "pics/transparent.png"
-//	hist_screen.file_name = AF.folder + "pics/transparent.png"
 	history_hide()
 }
 
@@ -12092,15 +12077,7 @@ local shader_tx2 = {
 	h = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 }
-/*
-shader_tx2.v.set_texture_param("texture")
-shader_tx2.v.set_param ("kernelData", 9, 3.0)
-shader_tx2.v.set_param ("offsetFactor", 0.000, 1.0 / (fl.h_os * sh_scale.r2))
 
-shader_tx2.h.set_texture_param("texture")
-shader_tx2.h.set_param ("kernelData", 9, 3.0)
-shader_tx2.h.set_param ("offsetFactor", 1.0 / (fl.w_os * sh_scale.r2), 0.000)
-*/
 gaussshader(shader_tx2.h, 9.0, 3.0, 1.0 / (fl.w * sh_scale.r2), 0.0)
 gaussshader(shader_tx2.v, 9.0, 3.0, 0.0, 1.0 / (fl.h * sh_scale.r2))
 
@@ -12122,18 +12099,16 @@ zmenu.simbg.alpha = 40
 zmenu.simbg.set_rgb(0, 0, 0)
 if (prf.DMPIMAGES == "WALLS") zmenu.simbg.zorder = 1000
 
-// NICE: top 2.0 a150, bot 2.0 a150
-// SHAD: top 0.25 a100, bot 0.5 a150
 disp.bgshadowt = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientTc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
-										disp.bgtileh)//0.25
+										disp.bgtileh)
 disp.bgshadowb = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientBc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
-										disp.bgtileh)//0.5
+										disp.bgtileh)
 
 disp.bgshadowt.set_rgb(0, 0, 0)
 disp.bgshadowb.set_rgb(0, 0, 0)
@@ -12444,15 +12419,7 @@ function zmenudraw(menuarray, glypharray, sidearray, title, titleglyph, presel, 
 
 			if (z_af_collections.tab.rawin(menuarray[i])) disp.images[i].blend_mode = BlendMode.Premultiplied
 				else disp.images[i].blend_mode = 0
-			/*
-			obj_dispimage = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + i * disp.spacing, disp.tilew -2.0 * pad, disp.tileh - 2.0 * pad)
-			obj_dispimage.preserve_aspect_ratio = true
-			obj_dispimage.file_name = filename
-			obj_dispimage.video_flags = Vid.NoAudio
-			obj_dispimage.mipmap = 1
-			if (z_af_collections.tab.rawin(menuarray[i])) obj_dispimage.blend_mode = BlendMode.Premultiplied
-			*/
-			//	try {disp.images[i] = obj_dispimage} catch(err) {disp.images.push(obj_dispimage)}
+
 			disp.pos0[i] = disp.images[i].y + ((prf.DMPIMAGES == "WALLS") ? (zmenu.height - disp.bgtileh) * 0.5 : 0)
 
 			// Crop display artwork
@@ -12466,12 +12433,7 @@ function zmenudraw(menuarray, glypharray, sidearray, title, titleglyph, presel, 
 			}
 		}
 
-		//try {zmenu.glyphs[i] = obj_glyph} catch(err) {zmenu.glyphs.push(obj_glyph)}
-		//try {zmenu.items[i] = obj_item} catch(err) {zmenu.items.push(obj_item)}
-		//try {zmenu.noteitems[i] = obj_note} catch(err) {zmenu.noteitems.push(obj_note)}
-		//try {zmenu.strikelines[i] = obj_strikeline} catch(err) {zmenu.strikelines.push(obj_strikeline)}
 		try {zmenu.pos0 [i] = zmenu.items[i].y} catch(err) {zmenu.pos0.push(zmenu.items[i].y)}
-
 	}
 
 	//Centering
@@ -13154,8 +13116,8 @@ function displaygrouped1() {
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
-	// COLLECTIONS!
-	/*
+		// COLLECTIONS!
+		/*
 		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1) - 2) && prf.ALLGAMES) {
 			jumptodisplay(z_af_collections.tab["AF All Games"].display_id)
 			return
@@ -13392,12 +13354,10 @@ function hideallbutbg() {
 	if (prf.REDCROSS && !z_list.gametable[z_list.index].z_fileisavailable) return true
 
 	flowT.groupbg = startfade(flowT.groupbg, -2.0, 0.0)
-
 	flowT.history = startfade(flowT.history, -2.0, 0.0)
 	flowT.histtext = startfade(flowT.histtext, -2.0, 0.0)
 
 	return false
-	//history_hide()
 }
 
 function layoutfadein() {
@@ -13405,18 +13365,10 @@ function layoutfadein() {
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
 
 	if (prf.SPLASHON) {
-		/*
-		flowT.fg = [0.0, 1.0, 0.0, -0.016, 3.0]
-		flowT.data = [0.0, 0.0, 0.0, 0.016, 3.0]
-		*/
 		flowT.groupbg = [0.0, 0.0, 0.0, 0.016, 3.0]
 		flowT.logo = [0.0, 1.0, 0.0, -0.02, 3.0]
 	}
 	else {
-		/*
-		flowT.fg = [0.0, 1.0, 0.0, -0.016, -3.0]
-		flowT.data = [0.0, 0.0, 0.0, 0.016, -3.0]
-		*/
 		flowT.groupbg = [0.0, 0.0, 0.0, 0.016, -3.0]
 		flowT.logo = [0.0, 1.0, 0.0, -0.02, 3.0]
 	}
@@ -13432,7 +13384,7 @@ data_surface.alpha = data_surface_sh_rt.alpha = 0
 /// Attract mode ///
 local attract = {
 	start = true
-	// updatesnap = false
+
 	rolltext = false
 	gametimer = false
 	starttimer = false
@@ -16245,7 +16197,6 @@ function tick(tick_time) {
 			attract.start = false
 			attract.rolltext = true
 			attract.gametimer = true
-			//attract.updatesnap = true
 			attractupdatesnap()
 			attract.timer = tick_time
 		}
@@ -16721,7 +16672,6 @@ function tick(tick_time) {
 		flowT.historyblack = fadeupdate(flowT.historyblack)
 
 		if (endfade(flowT.historyblack) == 1) {
-			// history_updatesnap()
 			flowT.historyblack = startfade(flowT.historyblack, -flowT.historyscroll[3] * 2.0, 3.0)
 		}
 
