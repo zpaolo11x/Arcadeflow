@@ -6868,73 +6868,71 @@ function z_listsort(orderby, reverse) {
 	z_list.reverse = reverse
 
 	local z_tempsort = []
+	switch (orderby) {
+		case z_info.z_title.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (nameclean(a.z_title).tolower() + blanker)}),
+			z_list.gametable.map(function(a) {return ("|" + a.z_system.tolower() + blanker)}),
+			reverse)
 
-	if (orderby == z_info.z_title.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (nameclean(a.z_title).tolower() + blanker)}),
-		z_list.gametable.map(function(a) {return ("|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_year.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (format("%010s", sortclean(a.z_year).tolower()))}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_year.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (format("%010s", sortclean(a.z_year).tolower()))}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_manufacturer.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (sortclean(a.z_manufacturer).tolower())}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_manufacturer.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (sortclean(a.z_manufacturer).tolower())}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_playedcount.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable2.map(function(a) {return (format("%010s", a.z_playedcount.tostring().tolower()))}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_playedcount.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable2.map(function(a) {return (format("%010s", a.z_playedcount.tostring().tolower()))}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_category.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (sortclean(a.z_category).tolower() + blanker)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_category.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (sortclean(a.z_category).tolower() + blanker)}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_players.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (a.z_players.tolower())}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_players.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (a.z_players.tolower())}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_system.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (a.z_system.tolower() + blanker)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_system.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (a.z_system.tolower() + blanker)}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
-		reverse)
+		case z_info.z_rundate.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable2.map(function(a) {return (a.z_rundate)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_rundate.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable2.map(function(a) {return (a.z_rundate)}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
-		reverse)
+		case z_info.z_favdate.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable2.map(function(a) {return (a.z_favdate + a.z_favourite)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
+			reverse)
 
-	else if (orderby == z_info.z_favdate.id)
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable2.map(function(a) {return (a.z_favdate + a.z_favourite)}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
-		reverse)
-
-	else if (orderby == z_info.z_series.id) {
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return (a.z_series.tolower())}),
-		z_list.gametable.map(function(a) {return ((format("%010s", sortclean(a.z_year).tolower())) + "|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
-	}
-
-	else if (orderby == z_info.z_rating.id) {
-		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable.map(function(a) {return ((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))}),
-		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-		reverse)
+		case z_info.z_series.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (a.z_series.tolower())}),
+			z_list.gametable.map(function(a) {return ((format("%010s", sortclean(a.z_year).tolower())) + "|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
+		case z_info.z_rating.id:
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return ((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 	}
 
 	z_list.gametable = z_tempsort[0]
