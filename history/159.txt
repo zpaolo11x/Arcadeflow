@@ -1,3 +1,4 @@
 15.9
 Updated German translation (thanks ScherzKeks)
+Fixed progress bar with overscan
 Code cleanup
