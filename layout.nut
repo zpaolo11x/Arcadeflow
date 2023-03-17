@@ -296,7 +296,7 @@ function bar_cycle_update(command) {
 		AF.bar.count = 0
 		if (AF.bar.splashmessage != "") {
 			AF.bar.text.msg = AF.bar.splashmessage + "\n\n\n\n"
-			AF.bar.text.visible = true
+			AF.bar.text.visible = AF.bar.bg.visible = true
 		}
 		return
 	}
@@ -309,7 +309,7 @@ function bar_cycle_update(command) {
 		AF.bar.count = 0
 		AF.bar.splashmessage = ""
 		AF.bar.text.msg = ""
-		AF.bar.text.visible = false
+		AF.bar.text.visible = AF.bar.bg.visible = false
 		return
 	}
 	AF.bar.time1 = clock()
@@ -13721,8 +13721,9 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.scrape.columns) + 0
 
 /// PROGRESS BAR ///
 
-AF.bar.text = fe.add_text("", 0, 0, fl.w_os, fl.h_os) //TEST151 check with OSCAN
-AF.bar.picbg = fe.add_text("", floor(0.5 * (fl.w_os - AF.bar.size * UI.scalerate)), floor(0.5 * (fl.h_os - AF.bar.size * UI.scalerate)), floor(AF.bar.size * UI.scalerate), floor(AF.bar.size * UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
+AF.bar.bg = fe.add_rectangle(0, 0, fl.w_os, fl.h_os) //TEST151 check with OSCAN
+AF.bar.text = fe.add_text("", fl.x, fl.y, fl.w, fl.h) //TEST151 check with OSCAN
+AF.bar.picbg = fe.add_text("", fl.x + floor(0.5 * (fl.w - AF.bar.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - AF.bar.size * UI.scalerate)), floor(AF.bar.size * UI.scalerate), floor(AF.bar.size * UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
 AF.bar.pic = fe.add_text("", AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height) //TEST149 CHECK CENTERING WITH OD
 
 AF.bar.pic.font = AF.bar.picbg.font = uifonts.glyphs
@@ -13735,9 +13736,10 @@ AF.bar.pic.charsize = AF.bar.size * UI.scalerate
 AF.bar.picbg.charsize = AF.bar.size * UI.scalerate
 AF.bar.text.charsize = 0.35 * AF.bar.pic.height
 
-AF.bar.text.zorder = 100000
-AF.bar.picbg.zorder = 100001
-AF.bar.pic.zorder = 100002
+AF.bar.bg.zorder = 100000
+AF.bar.text.zorder = 100001
+AF.bar.picbg.zorder = 100002
+AF.bar.pic.zorder = 100003
 
 AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = AF.bar.text.word_wrap = true
 AF.bar.pic.visible = AF.bar.picbg.visible = AF.bar.text.visible = false
@@ -13745,8 +13747,8 @@ AF.bar.pic.visible = AF.bar.picbg.visible = AF.bar.text.visible = false
 AF.bar.pic.set_rgb(255, 255, 255)
 AF.bar.picbg.set_rgb(AF.bar.dark, AF.bar.dark, AF.bar.dark)
 AF.bar.text.set_rgb(255, 255, 255)
-AF.bar.text.set_bg_rgb(30, 30, 30)
-AF.bar.text.bg_alpha = 190
+AF.bar.bg.set_rgb(30, 30, 30)
+AF.bar.bg.alpha = 190
 
 	//Number of rows is 0.78 * (fl.h_os - 2.0 * AF.messageoverlay.margin)/AF.messageoverlay.char_size
 /// FPS MONITOR ///
