@@ -13723,7 +13723,7 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.scrape.columns) + 0
 
 AF.bar.bg = fe.add_rectangle(0, 0, fl.w_os, fl.h_os)
 AF.bar.text = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
-AF.bar.picbg = fe.add_text("", fl.x + floor(0.5 * (fl.w - AF.bar.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - AF.bar.size * UI.scalerate)), floor(AF.bar.size * UI.scalerate), floor(AF.bar.size * UI.scalerate)) //TEST149 CHECK CENTERING WITH OD
+AF.bar.picbg = fe.add_text("", fl.x + floor(0.5 * (fl.w - AF.bar.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - AF.bar.size * UI.scalerate)), floor(AF.bar.size * UI.scalerate), floor(AF.bar.size * UI.scalerate))
 AF.bar.pic = fe.add_text("", AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height)
 
 AF.bar.pic.font = AF.bar.picbg.font = uifonts.glyphs
@@ -14016,13 +14016,6 @@ function update_snapcrop(i, var, indexoffsetvar, indexvar, aspect, cropaspect) {
 		tilez[i].AR.current = tilez[i].AR.crop
 	}
 	local noboxart = false
-
-	//TEST99 E' GIUSTO TOGLIERE QUESTA PARTE?!?!?
-	if (prf.BOXARTMODE) {
-		//TEST99 tilez[i].snapz.shader.set_param ("lcdcolor", 0.0)
-		//TEST99 tilez[i].gr_snapz.shader.set_param ("lcdcolor", 0.0)
-		//tilez[i].snapz.shader = tilez[i].gr_snapz.shader = colormapper["NONE"].shad
-	}
 
 	//TEST87 TO DO SPOSTARE QUESTO DOVE VENGONO CARICATI I DATI DELL'IMMAGINE E NON IN CROPSNAP!
 	if (prf.BOXARTMODE && (tilez[i].gr_snapz.texture_width == 0)) {
@@ -14383,7 +14376,7 @@ function buildutilitymenu() {
 					*/
 
 					z_listsort(result_sort[0], result_sort[1])
-					AF.dat_freezecount = 2 //TEST144
+					AF.dat_freezecount = 2
 					z_liststupdateindex() //When sorting the index is always there, and no need to rebuild the list
 					z_liststops()
 					z_listrefreshlabels()
@@ -15632,7 +15625,7 @@ function on_transition(ttype, var0, ttime) {
 
 		varoffset = z_list.gametable[modwrap(z_list.newindex, z_list.size)].z_felistindex - z_list.gametable[modwrap(z_list.index, z_list.size)].z_felistindex
 
-		z_list_updategamedata(z_list.gametable[z_list.newindex].z_felistindex) //TEST109 era varoffset
+		z_list_updategamedata(z_list.gametable[z_list.newindex].z_felistindex)
 
 		dat.alphapos [dat.stacksize - 1] = 1
 		z_updatefilternumbers(z_list.newindex)
@@ -16174,7 +16167,7 @@ function tick(tick_time) {
 			//if (aspectmorph != tilez[i].AR.current) {
 
 			if (prf.MORPHASPECT)	{
-				update_snapcrop (i, 0, var, z_list.index + var, tilez[i].AR.snap, aspectmorph)	//TEST88 CHECK VAR
+				update_snapcrop (i, 0, var, z_list.index + var, tilez[i].AR.snap, aspectmorph)
 				update_borderglow(i, 0, aspectmorph)
 				update_thumbdecor(i, 0, aspectmorph)
 				tilez[i].AR.current = aspectmorph
