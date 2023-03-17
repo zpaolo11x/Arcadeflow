@@ -431,6 +431,7 @@ function parseconfig() {
 	local postdisplays = []
 	local id = 0
 	local af_collections = false
+	local exitcommand = null
 
 	inline = cfgfile.read_line()
 	while (inline[0].tochar() == "#") {
@@ -502,6 +503,9 @@ function parseconfig() {
 			tempval = split(item, " ")[1]
 			if (tempval != "default") warning = true
 		}
+		if (item.find("exit_command") == 0) {
+			exitcommand = strip(item.slice(12, item.len()))
+		}
 	}
 	if (warning) print("\n\nWARNING: some options in attract.cfg clash with Arcadeflow\n\n")
 
@@ -510,6 +514,7 @@ function parseconfig() {
 		displays = displaytable
 		footer = postdisplays
 		collections = af_collections
+		exitcommand = exitcommand
 	}
 	//foreach(i, val in out.footer) print(i + " " + val + "\n")
 	return (out)
@@ -2803,25 +2808,6 @@ function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
 	}
 
 	return arr_extval
-}
-
-function exitcommand() {
-	local tempfile = ReadTextFile (fe.path_expand(FeConfigDirectory + "attract.cfg"))
-	local index0 = 0
-	local command = ""
-	local args = ""
-	while (!tempfile.eos()) {
-		local templine = tempfile.read_line()
-		local templine2 = ""
-		local templine3 = ""
-		index0 = templine.find("exit_command")
-		if (index0 != null) {
-			templine2 = strip(templine.slice(index0 + 12, templine.len()))
-			if (templine2 == "") return
-			system (templine2)
-			return
-		}
-	}
 }
 
 /// XML import routines ///
@@ -17657,7 +17643,7 @@ function on_signal(sig) {
 			//frosthide()
 			//zmenuhide()
 
-			exitcommand()
+			system (AF.config.exitcommand)
 
 			return false
 		}
