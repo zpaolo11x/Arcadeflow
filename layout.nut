@@ -5908,7 +5908,7 @@ function mfz_populatereverse() {
 			else {table1.filtered = false} //TEST128 questo va qui, o dentro l'if precedente?
 
 			if (table1.submenu != null) {
-				if (multifilterz.filter.rawin(id0)) { //TEST128
+				if (multifilterz.filter.rawin(id0)) {
 					foreach (id2, table2 in table1.submenu) {
 						if (multifilterz.filter[id0].find(table2.filtervalue) != null) {
 							table2.filtered = true
@@ -5916,7 +5916,6 @@ function mfz_populatereverse() {
 						else {
 							table2.filtered = false
 						}
-						//if (table2.filtered) multifilterz.filter[id0].push(table2.filtervalue)
 					}
 				}
 			}
@@ -6679,35 +6678,10 @@ function z_listboot() {
 
 	z_updatetagstable()
 
-	timestart("z_rawset")
-
-	// TEST152
-	// NON FACCIO PIU' NESSUN CONTROLLO SUI
-	// METADATI DA RESETTARE? VA BENE?
-
-/* THIS PART IS NOT NEEDED ANYMORE BECAUSE ALL THE CHECKS ARE DONE AT BOOT
-	foreach (item, val in z_list.allromlists) {
-		if (!file_exist(AF.romlistfolder + item + ".db1")) {
-			portromlist(item)
-		}
-		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
-		z_list.db2.rawset (item, dofile(AF.romlistfolder + item + ".db2"))
-	}
-	BUT THE LAST PART IS STILL NEEDED TO REMOVE METADATA EDITED FROM THE DB
-*/
-
-	/*
-	timestart("z_rawset")
-	foreach (item, val in z_list.allromlists) {
-		z_list.db1.rawset (item, dofile(AF.romlistfolder + item + ".db1"))
-	}
-	timestop("z_rawset")
-	*/
-
 	z_list.boot = []
 	z_list.boot2 = []
 
-timestart("boot")
+	timestart("boot")
 	// Update listboot with zdb data
 	local ifeindex = 0
 	local currentsystem = ""
@@ -8958,7 +8932,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	dat.gameyear_array.push(game_year)
 }
 
-//TEST Uncomment this to monitor the cloned surface
+// Uncomment this to monitor the cloned surface
 /*
 fl.surf3 = fl.surf2.add_clone(fl.surf)
 fl.surf3.set_pos(0, 0, fl.w_os * 0.2, fl.h_os * 0.2)
