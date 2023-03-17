@@ -11620,28 +11620,6 @@ history_surface.set_pos(0, 0)
 
 /// Fade mechanics routines ///
 
-function fadeupdate_old(fadearray) {
-	local t_counter = fadearray[0]
-	local t_value = fadearray[1]
-	local t_starter = fadearray[2]
-	local t_increaser = fadearray[3]
-	local t_easer = fadearray[4]
-
-	t_counter = t_counter + t_increaser * AF.tsc
-
-	local speedsign = t_increaser > 0 ? 1.0 : -1.0
-	local easesign = t_easer > 0 ? 1.0 : -1.0
-
-	if (t_easer == 0)
-		t_value = t_counter
-	else if (t_easer > 0)
-		t_value = t_starter + speedsign * (pow((speedsign * (t_counter - t_starter)), easesign * t_easer))
-	else if (t_easer < 0)
-		t_value = t_starter + speedsign * (1.0 - pow(1.0 - speedsign * (t_counter - t_starter), easesign * t_easer))
-
-	return ([t_counter, t_value, t_starter, t_increaser, t_easer])
-}
-
 /* New fade mechanics
 
 	startfade receives three inputs:
