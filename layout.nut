@@ -13603,95 +13603,88 @@ function updatesimpic(index) {
 }
 
 function similarmenu() {
-		local algo = {
-			"z_title" : 100
-			"z_series" : 18
-			"z_category" : 12
-			// name similarity : 6
-			"z_manufacturer" : 3
-			"z_arcadesystem" : 2
-			"z_system" : 1
-		}
+	local algo = {
+		"z_title" : 100
+		"z_series" : 18
+		"z_category" : 12
+		// name similarity : 6
+		"z_manufacturer" : 3
+		"z_arcadesystem" : 2
+		"z_system" : 1
+	}
 
-		local currentgame = z_list.gametable[z_list.index]
-		local similarray = []
-		local i = 0
-		foreach (gindex, item in z_list.gametable) {
-			similarray.push({
-				name = item.z_name
-				data = item
-				similar = 0
-				gamenotes = ""
-				syslogo = ""
-				index = gindex
-			})
+	local currentgame = z_list.gametable[z_list.index]
+	local similarray = []
+	local i = 0
+	foreach (gindex, item in z_list.gametable) {
+		similarray.push({
+			name = item.z_name
+			data = item
+			similar = 0
+			gamenotes = ""
+			syslogo = ""
+			index = gindex
+		})
 
-			// Evaluate base algorythm
-			foreach (algo_item, algo_val in algo) {
-				if ((item[algo_item]!="") && (item[algo_item] == currentgame[algo_item])) {
-					similarray[i].similar = similarray[i].similar + algo_val
-				}
+		// Evaluate base algorythm
+		foreach (algo_item, algo_val in algo) {
+			if ((item[algo_item]!="") && (item[algo_item] == currentgame[algo_item])) {
+				similarray[i].similar = similarray[i].similar + algo_val
 			}
-
-			// Add similar name contribution
-			similarray[i].similar = similarray[i].similar + 6 * simtitle(split(currentgame.z_title, "([")[0], split(item.z_title, "([")[0])
-
-			i++
 		}
 
-		similarray.sort(@(a, b) b.similar <=> a.similar)
-		if (similarray.len() > 30) similarray.resize (30)
-		local similarray2 = []
-		foreach (i, item in similarray) {
-			if (item.similar >= 12) similarray2.push(item)
+		// Add similar name contribution
+		similarray[i].similar = similarray[i].similar + 6 * simtitle(split(currentgame.z_title, "([")[0], split(item.z_title, "([")[0])
+		i++
+	}
+
+	similarray.sort(@(a, b) b.similar <=> a.similar)
+	if (similarray.len() > 30) similarray.resize (30)
+	local similarray2 = []
+	foreach (i, item in similarray) {
+		if (item.similar >= 12) similarray2.push(item)
+	}
+
+	zmenu.similar = similarray2
+
+	local namearray = []
+	local notesarray = []
+	foreach (i, item in zmenu.similar) {
+		namearray.push(item.data.z_title)
+		notesarray.push(system_data[item.data.z_system.tolower()].sysname)
+		zmenu.similar[i].gamenotes = "©" + item.data.z_year + " by " + item.data.z_manufacturer + "\n" + item.data.z_category + "\n"
+		zmenu.similar[i].syslogo = system_data[item.data.z_system.tolower()].logo
+	}
+	zmenu.sim = true
+	zmenusimvisible(true)
+	updatesimpic(0)
+	zmenu.simtxt.msg = zmenu.similar[0].gamenotes
+	zmenu.simsys.msg = zmenu.similar[0].syslogo
+
+	frostshow()
+	zmenudraw(namearray, null, null, ltxt("Similar Games", AF.LNG), 0xeaf7, 0, true, false, true, false, false,
+		function(out) {
+			if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
+
+			zmenu.sim = false
+			zmenusimvisible(false)
+			zmenu.simpic.file_name = zmenu.simvid.file_name = AF.folder + "pics/transparent.png"
+			/*
+			prfmenu.bg.visible = prfmenu.description.visible = prfmenu.helppic.visible = false
+			prfmenu.description.msg = ""
+			prfmenu.helppic.file_name = AF.folder + "pics/transparent.png"
+			*/
+			zmenuhide()
+			frosthide()
+			zmenu.simpic.shader = zmenu.simvid.shader = noshader
+			return
+		},
+		null,
+		function() {
+			zmenu.simvid.file_name = fe.get_art ("snap", zmenu.similar[zmenu.selected].data.z_felistindex - fe.list.index, 0, Vid.NoAudio)
+			zmenu.simvid.shader = colormapper[recolorise (zmenu.similar[zmenu.selected].index - z_list.index, 0)].shad
 		}
-
-		zmenu.similar = similarray2
-
-		local namearray = []
-		local notesarray = []
-		foreach (i, item in zmenu.similar) {
-			namearray.push(item.data.z_title)
-			notesarray.push(system_data[item.data.z_system.tolower()].sysname)
-			zmenu.similar[i].gamenotes = "©" + item.data.z_year + " by " + item.data.z_manufacturer + "\n" + item.data.z_category + "\n"
-			zmenu.similar[i].syslogo = system_data[item.data.z_system.tolower()].logo
-		}
-		zmenu.sim = true
-		zmenusimvisible(true)
-		updatesimpic(0)
-		zmenu.simtxt.msg = zmenu.similar[0].gamenotes
-		zmenu.simsys.msg = zmenu.similar[0].syslogo
-		/*
-		prfmenu.bg.visible = prfmenu.description.visible = prfmenu.helppic.visible = true
-		try {prfmenu.description.msg = zmenu.similar[0].data.z_description[0]}catch(err) {prfmenu.description.msg = ""}
-		prfmenu.helppic.file_name = fe.get_art ("snap", zmenu.similar[0].data.z_felistindex - fe.list.index)
-		*/
-		frostshow()
-		zmenudraw(namearray, null, null, ltxt("Similar Games", AF.LNG), 0xeaf7, 0, true, false, true, false, false,
-			function(out) {
-
-				if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
-
-				zmenu.sim = false
-				zmenusimvisible(false)
-				zmenu.simpic.file_name = zmenu.simvid.file_name = AF.folder + "pics/transparent.png"
-				/*
-				prfmenu.bg.visible = prfmenu.description.visible = prfmenu.helppic.visible = false
-				prfmenu.description.msg = ""
-				prfmenu.helppic.file_name = AF.folder + "pics/transparent.png"
-				*/
-				zmenuhide()
-				frosthide()
-				zmenu.simpic.shader = zmenu.simvid.shader = noshader
-				return
-			},
-			null,
-			function() {
-				zmenu.simvid.file_name = fe.get_art ("snap", zmenu.similar[zmenu.selected].data.z_felistindex - fe.list.index, 0, Vid.NoAudio)
-				zmenu.simvid.shader = colormapper[recolorise (zmenu.similar[zmenu.selected].index - z_list.index, 0)].shad
-			}
-
-		)
+	)
 }
 
 /// Custom Foreground ///
@@ -13708,7 +13701,7 @@ AF.messageoverlay.margin = 50 * UI.scalerate
 AF.messageoverlay.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.scrape.columns) //40 columns text
 AF.messageoverlay.word_wrap = true
 AF.messageoverlay.set_bg_rgb (40, 40, 40)
-AF.messageoverlay.bg_alpha = 220 + 0 * 240
+AF.messageoverlay.bg_alpha = 220
 AF.messageoverlay.align = Align.TopLeft
 AF.messageoverlay.font = uifonts.mono
 AF.messageoverlay.visible = false
@@ -13762,24 +13755,24 @@ local fps = {
 }
 
 if (prf.FPSON) {
-fps.monitor = fe.add_text("", fe.layout.width * 0.5 - 550 * 0.5 * UI.scalerate, 0, 550 * UI.scalerate, 80 * UI.scalerate)
-//X fps.monitor = fe.add_text("", 0, 0, fl.w_os, 120)
+	fps.monitor = fe.add_text("", fe.layout.width * 0.5 - 550 * 0.5 * UI.scalerate, 0, 550 * UI.scalerate, 80 * UI.scalerate)
+	//X fps.monitor = fe.add_text("", 0, 0, fl.w_os, 120)
 
-fps.monitor.set_bg_rgb (50, 50, 50)
-fps.monitor.bg_alpha = 200
-fps.monitor.set_rgb (255, 255, 255)
-fps.monitor.char_size = 50 * UI.scalerate
-fps.monitor.zorder = 20000
-//X fps.monitor.word_wrap = true
+	fps.monitor.set_bg_rgb (50, 50, 50)
+	fps.monitor.bg_alpha = 200
+	fps.monitor.set_rgb (255, 255, 255)
+	fps.monitor.char_size = 50 * UI.scalerate
+	fps.monitor.zorder = 20000
+	//X fps.monitor.word_wrap = true
 
-fps.monitor2 = fe.add_text("", 0, 0, 10, 10)
-fps.monitor2.set_bg_rgb (255, 0, 0)
-fps.monitor2.visible = true
+	fps.monitor2 = fe.add_text("", 0, 0, 10, 10)
+	fps.monitor2.set_bg_rgb (255, 0, 0)
+	fps.monitor2.visible = true
 
-fps.tick000 = 0
-fps.x0 = 0
+	fps.tick000 = 0
+	fps.x0 = 0
 
-fe.add_ticks_callback(this, "monitortick")
+	fe.add_ticks_callback(this, "monitortick")
 }
 
 function monitortick(tick_time) {
@@ -13905,20 +13898,10 @@ function ARcurve(AR) {
 
 function ARprocess(aspect) {
 	local out = {x = 0.0, y = 0.0, w = 1.0, h = 1.0}
-	//if (aspect <= 1.0) {
-		out.h = ARcurve(aspect).y *1.0 / 640 //(min (320.0 + 120.0 / aspect, 500.0)) / 640.0
-		out.w = ARcurve(aspect).x *1.0 / 640
-		out.x = 0.5 * (1.0 - out.w)
-		out.y = 0.5 * (1.0 - out.h)
-	/*
-	}
-	else {
-		out.h = ((min (320.0 + 120.0 * aspect, 500.0)) / aspect) / 640.0
-		out.w = out.h * aspect
-		out.x = 0.5 * (1.0 - out.w)
-		out.y = 0.5 * (1.0 - out.h)
-	}
-	*/
+	out.h = ARcurve(aspect).y *1.0 / 640 //(min (320.0 + 120.0 / aspect, 500.0)) / 640.0
+	out.w = ARcurve(aspect).x *1.0 / 640
+	out.x = 0.5 * (1.0 - out.w)
+	out.y = 0.5 * (1.0 - out.h)
 	return (out)
 }
 
@@ -14176,16 +14159,11 @@ function update_thumbdecor(i, var, aspect) {
 	local fe_list_target = z_list.gametable[z_list_target].z_felistindex
 
 	tilez[i].donez.visible = z_list.gametable2[z_list_target].z_completed
-
 	tilez[i].availz.visible = prf.REDCROSS && ((z_list.gametable[z_list_target].z_system != "") && (!z_list.gametable[z_list_target].z_fileisavailable))
-
 	tilez[i].alphazero = (prf.SHOWHIDDEN ? (z_list.gametable2[z_list_target].z_hidden ? 80 : 255) : 255)
 	tilez[i].obj.alpha = tilez[i].alphazero * tilez[i].alphafade / 255.0
-
 	tilez[i].favez.visible = z_list.gametable2[z_list_target].z_favourite
-
 	tilez[i].logoz.visible = tilez[i].loshz.visible = ((!(prf.BOXARTMODE) && prf.TITLEONSNAP) || (prf.BOXARTMODE && prf.TITLEONBOX))
-
 	tilez[i].nw_mx.visible = !prf.LOGOSONLY && (z_list.gametable2[z_list_target].z_playedcount == 0)
 
 	//Check if the only tags present are "COMPLETED" or "HIDDEN"
@@ -14203,13 +14181,7 @@ function update_thumbdecor(i, var, aspect) {
 	else tilez[i].tg_mx.visible = ((z_list.gametable2 [z_list_target].z_tags).find(prf.TAGNAME) != null)
 
 	local ARdata = ARprocess(aspect)
-	/*
-	local sysAR = systemAR(tilez[i].offset, var)
-	if (!prf.BOXARTMODE) {
-		if ((aspect != sysAR) && (sysAR != 0.0)) aspect = sysAR
-		ARdata = ARprocess(aspect)
-	}
-	*/
+
 	local ARshadow = {x = 0, y = 0, w = 0, h = 0, border = (100.0 + 60.0) / 640.0}
 	ARshadow.w = ARdata.w - 60.0 * 2.0 / 640.0
 	ARshadow.h = ARdata.h - 60.0 * 2.0 / 640.0
