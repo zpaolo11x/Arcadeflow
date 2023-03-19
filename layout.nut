@@ -15607,12 +15607,8 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-	//print(tilez[focusindex.new].obj.x + " " + tilez[focusindex.new].obj.y + " " + tilez[focusindex.new].obj.width + " " + tilez[focusindex.new].obj.height + "\n")
-	//print(tilez[focusindex.new].snapz.x + " " + tilez[focusindex.new].snapz.y + " " + tilez[focusindex.new].snapz.width + " " + tilez[focusindex.new].snapz.height + "\n")
 
-//	testpr("zmenu_sh: " + zmenu_sh.surf_rt.redraw + " - zmenu_cont: " + zmenu_surface_container.redraw + "\n")
-//	testpr(zmenu.xstart + " " + zmenu.xstop + " " + zmenu.speed + "\n")
-
+	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
 			tile_freeze(i, false)
@@ -15642,9 +15638,9 @@ function tick(tick_time) {
 		AF.bgs_freezecount = 0
 	}
 
+	// Hue color cycling
 	if (prf.HUECYCLE) {
 		huecycle.RGB = hsl2rgb(huecycle.hue, huecycle.saturation, huecycle.lightness)
-
 		huecycle.hue = huecycle.hue + huecycle.speed
 		if (huecycle.hue > (huecycle.maxhue)) {
 			huecycle.hue = huecycle.pingpong ? huecycle.maxhue - huecycle.speed : huecycle.minhue
@@ -15654,15 +15650,12 @@ function tick(tick_time) {
 			huecycle.hue = huecycle.minhue - huecycle.speed
 			huecycle.speed = huecycle.speed * -1
 		}
-
 		if (prf.SNAPGLOW) snap_glow[focusindex.new].set_param ("basergb", huecycle.RGB.R, huecycle.RGB.G, huecycle.RGB.B)
-
 		tilez[focusindex.new].bd_mx.set_rgb(255 * huecycle.RGB.R, 255 * huecycle.RGB.G, 255 * huecycle.RGB.B)
 	}
 
 	if ((prf.BACKGROUNDTUNE != "") && (snd.bgtuneplay != fe.ambient_sound.playing)) {
 		if (snd.bgtuneplay) fe.ambient_sound.file_name = bgtunefilename()
-
 		fe.ambient_sound.playing = snd.bgtuneplay
 	}
 
@@ -15670,6 +15663,7 @@ function tick(tick_time) {
 		snd.attracttune.playing = snd.attracttuneplay
 	}
 
+	// Scraping 
 	// When the scrapelist is populated, scraper starts running through it
 	if (AF.scrape.purgedromdirlist != null) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
@@ -15823,11 +15817,11 @@ function tick(tick_time) {
 		}
 	}
 
+	// Get input state when keyboard is on
 	if (keyboard_visible()) {
 		foreach (key, item in kb.rt_keys) {
 			local pressedkey = fe.get_input_state(key)
 			if (!item.prs && pressedkey) {
-				//displaybutton.msg = displaybutton.msg + item.val
 				keyboard_select (0, 4)
 				keyboard_type(item.val)
 			}
@@ -15879,6 +15873,7 @@ function tick(tick_time) {
 	// prevent attract mode from running when menus are visible
 	if ((overlay.listbox.visible == true) || (zmenu.showing) || (AF.messageoverlay.visible)) attract.timer = fe.layout.time
 
+	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
 		disp.speed = (0.15 * (disp.xstop - disp.xstart))
 		if (absf(disp.speed) > disp.tileh) {
@@ -15914,6 +15909,7 @@ function tick(tick_time) {
 		}
 	}
 
+	// zmenu items scrolling routine
 	if (zmenu.xstart != zmenu.xstop) {
 		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (0.2 * (zmenu.xstop - zmenu.xstart))
 		if (absf(zmenu.speed) > 0.0005 * zmenu.tileh) {
@@ -15922,9 +15918,7 @@ function tick(tick_time) {
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh * 0.5) + zmenu.xstart + zmenu.speed
-
 			}
-
 			zmenu.xstart = zmenu.xstart + zmenu.speed
 		}
 		else {
@@ -15942,7 +15936,6 @@ function tick(tick_time) {
 
 	// Attract mode management
 	if (prf.AMENABLE) {
-
 		if (attract.start) {
 			// block theme videos and set snap audio
 			if (prf.THUMBVIDEO) tilez[focusindex.new].gr_vidsz.video_playing = false
@@ -15992,6 +15985,7 @@ function tick(tick_time) {
 		squarebgtop()
 	}
 
+	// Manage signal counter
 	if (count.right != 0) count.right = repeatsignal("right", count.right)
 	if (count.left != 0) count.left = repeatsignal("left", count.left)
 	if (count.up != 0) count.up = repeatsignal("up", count.up)
@@ -16017,6 +16011,8 @@ function tick(tick_time) {
 
 	if (bglay.surf_1.redraw && (bgs.bgpic_array[bgs.stacksize - 1].alpha == 255)) AF.bgs_freezecount = 1
 
+	// Check fade progressions
+
 	if (checkfade(flowT.alphaletter)) {
 		flowT.alphaletter = fadeupdate(flowT.alphaletter)
 		if (endfade(flowT.alphaletter) == 1.0) {
@@ -16033,7 +16029,6 @@ function tick(tick_time) {
 		local scalesurf = 0.5 + 0.5 * flowT.zoomletter[1]
 		//letterobj.charsize = lettersize.name * (1.0 + flowT.zoomletter[1])
 		letterobjsurf.surf.set_pos(fl.x + 0.5 * (fl.w - letterobjsurf.w * scalesurf), letterobjsurf.y0 + 0.5 * letterobjsurf.h - 0.5 * letterobjsurf.h * scalesurf, letterobjsurf.w * scalesurf, letterobjsurf.h * scalesurf)
-
 	}
 
 	if (checkfade(flowT.alphadisplay)) {
@@ -16196,6 +16191,7 @@ function tick(tick_time) {
 	CCC = CCC + 0.5
 */
 
+	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
 		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
 
@@ -16250,11 +16246,9 @@ function tick(tick_time) {
 			}
 			globalposnew = tilez[focusindex.new].obj.x
 		}
-
 	}
 
 	if ((surfacePos != 0)) {
-
 		if ((surfacePos < 0.1) && (surfacePos > -0.1)) surfacePos = 0
 		surfacePos = surfacePos * spdT.scrollspeed
 
@@ -16263,9 +16257,9 @@ function tick(tick_time) {
 		}
 		if (surfacePos < -impulse2.maxoffset) {
 			surfacePos = -impulse2.maxoffset
-			}
-
+		}
 	}
+	
 	// fade of bg video
 	if ((prf.LAYERVIDEO)) {
 		if (vidposbg != 0) {
