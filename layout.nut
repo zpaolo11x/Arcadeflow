@@ -17157,6 +17157,7 @@ function on_signal(sig) {
 
 	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
 
+	// Check if scraping has been interrupted
 	if (AF.scrape.purgedromdirlist != null) {
 		if (sig == "back") {
 			AF.scrape.quit = true
@@ -17212,7 +17213,6 @@ function on_signal(sig) {
 			}
 			return true
 		}
-
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) { //Faster jump scroll
 				AF.messageoverlay.first_line_hint += 10
@@ -17226,8 +17226,8 @@ function on_signal(sig) {
 		return true
 	}
 
+	// Block signal response during update checks
 	if (AF.updatechecking) return
-
 
 	// Key response when attract mode is enabled (running or not)
 	if (prf.AMENABLE) {
@@ -17303,19 +17303,20 @@ function on_signal(sig) {
 
 	// Signal responses that are available in every context
 
-	// Switch thumbnails between snaps and boxart
+	// Button press: switch thumbnails between snaps and boxart
 	if ((sig == prf.SWITCHMODEBUTTON)) {
 		if (keyboard_visible()) return true
-
 		switchmode()
 		return true
 	}
 
+	// Button press: toggle favourite attribute
 	if ((sig == prf.FAVBUTTON) && !zmenu.showing) {
 		favtoggle()
 		return true
 	}
 
+	// Button press: volume editor
 	if ((sig == prf.VOLUMEBUTTON) && !zmenu.showing) {
 		local currvol = 0
 		if (OS == "OSX") fe.plugin_command ("osascript", "-e " + ap + "get volume settings " + ap, "parsevolume")
@@ -17352,6 +17353,7 @@ function on_signal(sig) {
 		)
 	}
 
+	// Button press: open category menu
 	if (sig == prf.CATEGORYBUTTON) {
 		if (zmenu.sim) return true
 		if (history_visible()) return true
@@ -17361,6 +17363,7 @@ function on_signal(sig) {
 		categorymenu()
 	}
 
+	// Button press: open multifilter menu
 	if (sig == prf.MULTIFILTERBUTTON) {
 		if (zmenu.sim) return true
 		if (history_visible()) return true
@@ -17373,6 +17376,7 @@ function on_signal(sig) {
 		mfz_menu0(0)
 	}
 
+	// Button press: search button
 	if (sig == prf.SEARCHBUTTON) {
 		if (zmenu.sim) return true
 		if (history_visible()) return true
@@ -17522,11 +17526,7 @@ function on_signal(sig) {
 		}
 
 		if (sig == "exit_to_desktop") {
-			//frosthide()
-			//zmenuhide()
-
 			system (AF.config.exitcommand)
-
 			return false
 		}
 
