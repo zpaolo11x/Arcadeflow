@@ -14168,15 +14168,6 @@ function update_thumbdecor(i, var, aspect) {
 
 	//Check if the only tags present are "COMPLETED" or "HIDDEN"
 	local tagcheckerlist = z_list.gametable2 [z_list_target].z_tags
-	/*
-	if (
-		((tagcheckerlist.len() == 1) && ((tagcheckerlist[0] == "COMPLETED") || (tagcheckerlist[0] == "HIDDEN"))) ||
-		((tagcheckerlist.len() == 2) && ((tagcheckerlist[0] == "COMPLETED") && (tagcheckerlist[1] == "HIDDEN"))) ||
-		((tagcheckerlist.len() == 2) && ((tagcheckerlist[1] == "COMPLETED") && (tagcheckerlist[0] == "HIDDEN")))
-	) {
-		tilez[i].tg_mx.visible = false
-	}
-	*/
 	if (prf.TAGNAME == "") tilez[i].tg_mx.visible = (tagcheckerlist.len() >= 1)
 	else tilez[i].tg_mx.visible = ((z_list.gametable2 [z_list_target].z_tags).find(prf.TAGNAME) != null)
 
@@ -14189,7 +14180,6 @@ function update_thumbdecor(i, var, aspect) {
 	ARshadow.y = (1.0 - ARshadow.h - 2.0 * ARshadow.border) * 0.5
 
 	tilez[i].sh_mx.shader.set_param ("shadow", ARshadow.x, ARshadow.y, ARshadow.border)
-
 	tilez[i].sh_mx.visible = true
 
 	tilez[i].nw_mx.set_pos (tilez[i].snapz.x, tilez[i].snapz.y + tilez[i].snapz.height - tilez[i].nw_mx.height)
@@ -14210,34 +14200,19 @@ function switchmode() {
 
 function new_search() {
 	frostshow()
-
 	keyboard_search()
-
 	if (prf.LIVESEARCH) frosthide()
 	zmenuhide()
 }
 
 function favtoggle() {
-	/*
-	try {
-		if (multifilterz.l0["Favourite"].menu["Favourite"].filtered) {
-			multifilterz.l0["Favourite"].menu["Favourite"].filtered = null
-		}
-		else multifilterz.l0["Favourite"].menu["Favourite"].filtered = true
+	search.fav = !search.fav
 
-		mfz_populate()
-		mfz_apply(false)
-		if (zmenu.showing) utilitymenu(umpresel)
-	}
-	catch(err) {return}
-	*/
-		search.fav = !search.fav
+	updatesearchdatamsg()
 
-		updatesearchdatamsg()
-
-		//mfz_populate()
-		mfz_apply(false)
-		if (zmenu.showing) utilitymenu(umpresel)
+	//mfz_populate()
+	mfz_apply(false)
+	if (zmenu.showing) utilitymenu(umpresel)
 }
 
 umtable = []
@@ -14744,12 +14719,6 @@ function utilitymenu(presel) {
 		}
 		i_id++
 	}
-
-	/*
-	foreach (i, item in sidearray1) {
-		sidearray1[i] = i.tostring()
-	}
-	*/
 
 	frostshow()
 	zmenudraw(switcharray1, glypharray1, sidearray1, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, false, false, false, false, false,
