@@ -1577,13 +1577,13 @@ try {
 	huecycle.minhue = prf.HCHUESTART.tointeger()
 	if (huecycle.minhue < 0) huecycle.minhue = 0
 	if (huecycle.minhue > 358) huecycle.minhue = 358
-}catch(err) {}
+} catch(err) {}
 
 try {
 	huecycle.maxhue = prf.HCHUESTOP.tointeger()
 	if (huecycle.maxhue < 1) huecycle.maxhue = 1
 	if (huecycle.maxhue > 359) huecycle.maxhue = 359
-}catch(err) {}
+} catch(err) {}
 
 if (huecycle.maxhue <= huecycle.minhue) {
 	huecycle.minhue = 0
@@ -2278,28 +2278,28 @@ try {
 	if ((fl.overscan_w > 0) && (fl.overscan_w <= 100)) {
 		fl.overscan_w = fl.overscan_w / 100.0
 	}
-}catch(err) {}
+} catch(err) {}
 
 try {
 	fl.overscan_h = prf.OVERSCANH.tointeger()
 	if ((fl.overscan_h > 0) && (fl.overscan_h <= 100)) {
 		fl.overscan_h = fl.overscan_h / 100.0
 	}
-}catch(err) {}
+} catch(err) {}
 
 try {
 	fl.overscan_x = prf.OVERSCANX.tointeger()
 	if ((fl.overscan_x >= -100) && (fl.overscan_x <= 100)) {
 		fl.overscan_x = fl.overscan_x / 100.0
 	}
-}catch(err) {}
+} catch(err) {}
 
 try {
 	fl.overscan_y = prf.OVERSCANY.tointeger()
 	if ((fl.overscan_y >= -100) && (fl.overscan_y <= 100)) {
 		fl.overscan_y = fl.overscan_y / 100.0
 	}
-}catch(err) {}
+} catch(err) {}
 
 local rotation = {
 	real = null
@@ -2571,7 +2571,7 @@ function parsecommanddat() {
 			newline = datfile.read_line() //skip separator
 			newline = datfile.read_line() //first button
 			while (newline != "") {
-				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))}catch(err) {}
+				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
 				newline = datfile.read_line()
 			}
 			commandstring = "[" + ap + commandsarray[0] + ap
@@ -3077,7 +3077,7 @@ function getemulatordata(emulatorname) {
 	rompath = fe.path_expand(rompath)
 
 	foreach (id, item in artworktable) {
-		//	try {if (item.slice(0, 3) == "../") artworktable[id] = FeConfigDirectory + item}catch(err) {}
+		//	try {if (item.slice(0, 3) == "../") artworktable[id] = FeConfigDirectory + item} catch(err) {}
 		if (!isroot(item)) artworktable[id] = ((workdir == "") ? FeConfigDirectory : workdir) + item
 		artworktable[id] = fe.path_expand(artworktable[id])
 	}
@@ -3423,8 +3423,8 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 		// cleanup
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
-		try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")}catch(err) {}
-		try {remove(AF.folder + "json/" + scrapeid + "jsonA_out.nut")}catch(err) {}
+		try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
+		try {remove(AF.folder + "json/" + scrapeid + "jsonA_out.nut")} catch(err) {}
 	}
 
 	//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
@@ -3515,8 +3515,8 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	dispatcher[scrapeid].done = true
 
 	try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json.nut")}catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")}catch(err) {}
+	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
+	try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
 	scraprt("ID" + scrapeid + "         getromdata RETURN\n")
 	return //gamedata
 }
@@ -3536,7 +3536,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 	// want to scrape using CRC, otherwise CRC calculation will fail
 
 	//	local ext = split(inputitem, ".").pop() // Get file extension
-	try {dispatcher[scrapeid].gamedata.clear()}catch(err) {}
+	try {dispatcher[scrapeid].gamedata.clear()} catch(err) {}
 	local gd = systemSSname (AF.emulatordata[inputitem.z_emulator].mainsysname)
 	local garcade = systemSSarcade (AF.emulatordata[inputitem.z_emulator].mainsysname)
 	local gname = inputitem.z_name //slice(0, -1 * (ext.len() + 1))
@@ -3657,7 +3657,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			}
 			/*
 			else {
-				try {listline = AF.scrape.checktable[inputitem].line}catch(err) {
+				try {listline = AF.scrape.checktable[inputitem].line} catch(err) {
 					listline = gname + ";" + gname + ";" + AF.scrape.romlist + ";;;;;;;;;;;;;" + "‖ " + dispatcher[scrapeid].gamedata.scrapestatus +" ‖ "+ dispatcher[scrapeid].gamedata.scrapestatus + " ‖" + ";;;;;;"
 				}
 			}
@@ -3670,7 +3670,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 	}
 	else {
 		local tempreason = ""
-		try {tempreason = " " + inputitem.z_scrapestatus}catch(err) {}
+		try {tempreason = " " + inputitem.z_scrapestatus} catch(err) {}
 
 		dispatcher[scrapeid].gamedata.scrapestatus = "SKIP " + strip(tempreason)
 		inputitem.z_scrapestatus = "ERROR"
@@ -3703,8 +3703,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			debugpr("emuartcat:" + emuartcat + " " + emuartfolder + "\n")
 			local tempdata = []
 			local tempdataA = null
-			try {tempdata = dispatcher[scrapeid].gamedata.media[emuartcat]}catch(err) {}
-			if (dispatcher[scrapeid].gamedata.isarcade) try {tempdataA = dispatcher[scrapeid].gamedata.adb_media[emuartcat]}catch(err) {}
+			try {tempdata = dispatcher[scrapeid].gamedata.media[emuartcat]} catch(err) {}
+			if (dispatcher[scrapeid].gamedata.isarcade) try {tempdataA = dispatcher[scrapeid].gamedata.adb_media[emuartcat]} catch(err) {}
 
 			debugpr("gamedata.media[emuartcat] size:" + tempdata.len() + "\n")
 
@@ -3824,14 +3824,14 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 			if (scrapecriteria == "ALL_ROMS") scrapethis = true
 			else if (scrapecriteria == "SKIP_CRC") {
 				// Scrape all roms that are not CRC matched
-				try {scrapethis = ((item.z_scrapestatus != "CRC"))}catch(err) {}
+				try {scrapethis = ((item.z_scrapestatus != "CRC"))} catch(err) {}
 			}
 			else if (scrapecriteria == "SKIP_NAME") {
 				// Scrape only roms that have guess name matches
-				try {scrapethis = ((item.z_scrapestatus == "GUESS") || (item.z_scrapestatus == "ERROR"))}catch(err) {}
+				try {scrapethis = ((item.z_scrapestatus == "GUESS") || (item.z_scrapestatus == "ERROR"))} catch(err) {}
 			}
 			else if (scrapecriteria == "MISSING_ROMS") {
-				try {scrapethis = ((item.z_scrapestatus == "NONE") || (item.z_scrapestatus == "ERROR"))}catch(err) {}
+				try {scrapethis = ((item.z_scrapestatus == "NONE") || (item.z_scrapestatus == "ERROR"))} catch(err) {}
 			}
 
 			if ((!prf.ERRORSCRAPE) && (item.z_scrapestatus == "ERROR")) scrapethis = false
@@ -3897,7 +3897,7 @@ function XMLtoAM2(prefst, current) {
 				if ((dataline.len() >= 3) && (dataline[2]!="@") && (dataline[2]!="Emulator")) {
 					try {
 						listoflists[dataline[2]] <- 1
-					}catch(err) {}
+					} catch(err) {}
 				}
 			}
 
@@ -3955,7 +3955,7 @@ function XMLtoAM(prefst, dir) {
 
 		//clear scrape data
 		//local scrapepath = FeConfigDirectory + "romlists/" + xmlsysnames[id] + ".scrape"
-		//try {remove(scrapepath)}catch(err) {}
+		//try {remove(scrapepath)} catch(err) {}
 
 		local romlistpath = FeConfigDirectory + "romlists/" + xmlsysnames[id] + ".txt"
 		local rompath = AF.emulatordata [xmlsysnames[id]].rompath
@@ -4162,7 +4162,7 @@ function buildcleanromlist(romlist, fields) {
 	foreach (id, item in roms[0]) {
 		romtable.rawset(item, clone(fields))
 		romtable[item].z_name = item
-		try {romtable[item].z_title = item}catch(err) {}
+		try {romtable[item].z_title = item} catch(err) {}
 		romtable[item].z_filename = roms[0][id] + "." + roms[1][id]
 		romtable[item].z_system = AF.emulatordata[romlist].mainsysname
 		romtable[item].z_emulator = romlist
@@ -4220,8 +4220,8 @@ function resetselectedromlists(tempprf) {
 	foreach (item, val in z_list.allromlists) {
 		local listpath1 = AF.romlistfolder + item + ".db1"
 		local listpath2 = AF.romlistfolder + item + ".db2"
-		try {remove(listpath1)}catch(err) {print("ERROR1\n")}
-		try {remove(listpath2)}catch(err) {print("ERROR2\n")}
+		try {remove(listpath1)} catch(err) {print("ERROR1\n")}
+		try {remove(listpath2)} catch(err) {print("ERROR2\n")}
 		refreshromlist(item, true)
 	}
 	updateallgamescollections(tempprf)
@@ -4231,8 +4231,8 @@ function eraseselecteddatabase(tempprf) {
 	foreach (item, val in z_list.allromlists) {
 		local listpath1 = AF.romlistfolder + item + ".db1"
 		local listpath2 = AF.romlistfolder + item + ".db2"
-		try {remove(listpath1)}catch(err) {print("ERROR1\n")}
-		try {remove(listpath2)}catch(err) {print("ERROR2\n")}
+		try {remove(listpath1)} catch(err) {print("ERROR1\n")}
+		try {remove(listpath2)} catch(err) {print("ERROR2\n")}
 	}
 }
 
@@ -4283,7 +4283,7 @@ function regionsfromfile(title) {
 	local regionshort = ["wor", "us", "eu", "jp", "it", "fr", "de", "sp", "kr", "tw", "asi", "au", "br", "ca", "cn", "dk", "fi", "nl", "pt", "uk", "ru", "se", "tr"]
 
 	local regionsubstring = ""
-	try {regionsubstring = split(title, "(")[1]}catch(err) {}
+	try {regionsubstring = split(title, "(")[1]} catch(err) {}
 
 		foreach (id, item in regionnames) {
 		if (regionsubstring.find(item) != null) {
@@ -4294,7 +4294,7 @@ function regionsfromfile(title) {
 	for (local i = 0; i < filenameregionsarray.len() - 1; i++) {
 		filenameregions = filenameregions + filenameregionsarray[i] + comma
 	}
-	try {filenameregions = filenameregions + filenameregionsarray[filenameregionsarray.len() - 1]}catch(err) {}
+	try {filenameregions = filenameregions + filenameregionsarray[filenameregionsarray.len() - 1]} catch(err) {}
 
 	return (filenameregions)
 }
@@ -4375,10 +4375,10 @@ function listfields_to_db1(listfields) {
 	target.z_players = listfields[7]
 	target.z_rotation = listfields[8]
 	target.z_control = listfields[9]
-	try {target.z_buttons = subst_replace(listfields[16], ap, "'")}catch(err) {}
-	try {target.z_series = subst_replace(listfields[17], ap, "'")}catch(err) {}
-	try {target.z_region = listfields[19]}catch(err) {}
-	try {target.z_rating = listfields[20]}catch(err) {}
+	try {target.z_buttons = subst_replace(listfields[16], ap, "'")} catch(err) {}
+	try {target.z_series = subst_replace(listfields[17], ap, "'")} catch(err) {}
+	try {target.z_region = listfields[19]} catch(err) {}
+	try {target.z_rating = listfields[20]} catch(err) {}
 	target.z_name = listfields[0]
 	return target
 }
@@ -4453,7 +4453,7 @@ function portromlist(romlist) {
 		local playcount = 0
 		local playcgamename = split(item, ".")[0]
 		local statfile = ReadTextFile(fe.path_expand(FeConfigDirectory + "stats/" + romlist + "/" + item))
-		try {playcount = statfile.read_line().tointeger()}catch(err) {}
+		try {playcount = statfile.read_line().tointeger()} catch(err) {}
 		playctable.rawset(playcgamename, playcount)
 	}
 
@@ -4699,7 +4699,7 @@ local all_scrape = {}
 // data in the correct path
 /*
 metadata.path = AF.romlistfolder + fe.displays[fe.list.display_index].romlist + ".meta")
-try {meta_edited = dofile(metadata.path)}catch(err) {}
+try {meta_edited = dofile(metadata.path)} catch(err) {}
 if (meta_edited.len() > 0) {
 	all_meta_edited[fe.displays[fe.list.display_index].romlist] <- meta_edited
 }
@@ -4806,8 +4806,8 @@ function metamenu(starter) {
 
 	foreach (id, item in metadata.ids) {
 		metavals.push(z_list.gametable[z_list.index][item])
-		try {metavals[id] = z_list.dboriginal[romlist][gamename][item]}catch(err) {}
-		try {metavals[id] = z_list.dbmeta[romlist][gamename][item]}catch(err) {}
+		try {metavals[id] = z_list.dboriginal[romlist][gamename][item]} catch(err) {}
+		try {metavals[id] = z_list.dbmeta[romlist][gamename][item]} catch(err) {}
 		metaglyphs.push(0)
 
 		metaflag.push(false)
@@ -4816,7 +4816,7 @@ function metamenu(starter) {
 				metaglyphs[id] = 0xe905
 				metaflag[id] = true
 			}
-		}catch(err) {}
+		} catch(err) {}
 		metanotes.push(metavals[id])
 	}
 	zmenudraw(metadata.names, metaglyphs, metanotes, ltxt("Game Metadata", AF.LNG), 0xe906, starter, false, false, false, false, false,
@@ -4824,7 +4824,7 @@ function metamenu(starter) {
 
 		if (result != -1) {
 			local meta_unedited = ""
-			try {meta_unedited = z_list.dboriginal[romlist][gamename][metadata.ids[result]]}catch(err) {
+			try {meta_unedited = z_list.dboriginal[romlist][gamename][metadata.ids[result]]} catch(err) {
 				meta_unedited = metavals[result]
 			}
 			local meta_new = ""
@@ -5652,7 +5652,7 @@ multifilterz.l0["Rating"] <- {
 				v = "??"
 			}
 			else {
-				try {v2 = format ("%05.1f", v.tofloat())}catch(err) {}
+				try {v2 = format ("%05.1f", v.tofloat())} catch(err) {}
 			}
 			local v3 = v
 			//if (v.len() == 1) v = " " + v
@@ -5788,7 +5788,7 @@ function mfz_build(reset) {
 			if (multifilterz.filter.rawin(item)) multifilterz.filter[item] = []
 			else multifilterz.filter.rawset(item, [])
 		}
-		try {table.menu.clear()}catch(err) {print("\nERROR!\n")}
+		try {table.menu.clear()} catch(err) {print("\nERROR!\n")}
 		multifilterz.l0[item].label = ltxt(item, AF.LNG)
 	}
 
@@ -6430,7 +6430,7 @@ function mfz_apply(startlist) {
 	timestart("mfz_apply")
 	local bootlist_index_remap = 0
 	local bootlist_index_old = 0
-	try {bootlist_index_old = z_list.gametable[z_list.index].z_felistindex}catch(err) {}
+	try {bootlist_index_old = z_list.gametable[z_list.index].z_felistindex} catch(err) {}
 	local reindex = null // This is the new index of the new z_list
 	local z_list_index_old = z_list.index
 	local listzero = ((z_list.size == 0) || startlist)
@@ -6445,9 +6445,9 @@ function mfz_apply(startlist) {
 	if (!listzero) {
 		debugpr("ZLI:" + z_list.index +" ZLNI:" + z_list.newindex+ " FLI:" + fe.list.index)
 		if (z_list.index < z_list.size - 1)
-			try {bootlist_index_remap = z_list.gametable[z_list.index + 1].z_felistindex}catch(err) {}
+			try {bootlist_index_remap = z_list.gametable[z_list.index + 1].z_felistindex} catch(err) {}
 		else
-			try {bootlist_index_remap = z_list.gametable[z_list.index - 1].z_felistindex}catch(err) {}
+			try {bootlist_index_remap = z_list.gametable[z_list.index - 1].z_felistindex} catch(err) {}
 	}
 
 	debugpr("mfz_apply\n")
@@ -6640,7 +6640,7 @@ function getallgamesdb(logopic) {
 				z_list.db2.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db2"))
 
 				metadata.path = AF.romlistfolder + itemname + ".meta"
-				try {meta_edited = dofile(metadata.path)}catch(err) {}
+				try {meta_edited = dofile(metadata.path)} catch(err) {}
 				if (meta_edited.len() > 0) {
 					z_list.dbmeta[itemname] <- meta_edited // Adds a table for edited metadata
 					z_list.dboriginal[itemname] <- {}
@@ -6713,7 +6713,7 @@ function z_listboot() {
 	//apply metadata customisation
 	for (local i = 0; i < fe.list.size; i++) {
 		local game_edited = false
-		try {game_edited = z_list.dbmeta[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null}catch(err) {}
+		try {game_edited = z_list.dbmeta[z_list.boot[i].z_emulator][z_list.boot[i].z_name] != null} catch(err) {}
 
 		if (game_edited) {
 			//all_meta_original[z_list.boot[i].z_emulator][z_list.boot[i].z_name] <- {}
@@ -9383,7 +9383,7 @@ function optionsmenu_lev2() {
 	function(prfmenures1) {
 		prfmenu.res1 = prfmenures1
 		// EXIT FROM SUBMENU 1
-		try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help}catch(err) {prfmenu.description.msg = ""}
+		try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help} catch(err) {prfmenu.description.msg = ""}
 		if (prfmenu.res1 == -1) {
 			prfmenu.outres1 = 0
 			optionsmenu_lev1()
@@ -9517,7 +9517,7 @@ function optionsmenu_lev1() {
 			while (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection == AF.req.liner) {
 				prfmenu.outres1++
 			}
-			try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help}catch(err) {prfmenu.description.msg = ""}
+			try {prfmenu.description.msg = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].help} catch(err) {prfmenu.description.msg = ""}
 			optionsmenu_lev2()
 		}
 	},
@@ -11245,13 +11245,13 @@ function history_updateoverlay() {
 		hist_over.surface.visible = true
 	}
 
-	try {hist_over.overcontrol.file_name = "metapics/overlaycontroller/" + controller_pic (z_list.gametable[z_list.index].z_control)}catch(err) {}
+	try {hist_over.overcontrol.file_name = "metapics/overlaycontroller/" + controller_pic (z_list.gametable[z_list.index].z_control)} catch(err) {}
 
 	local commands = []
 
 	local numbuttons = z_list.gametable[z_list.index].z_buttons
 	local labeldata = hist_over.overlaybuttonsdata["0"]
-	try {labeldata = hist_over.overlaybuttonsdata[numbuttons]}catch(err) {}
+	try {labeldata = hist_over.overlaybuttonsdata[numbuttons]} catch(err) {}
 	for (local i = 0; i < 6; i++) {
 		hist_over.bt[i].set_pos (floor(hist_over.picscale * labeldata.btxy[i][0]), floor(hist_over.picscale * labeldata.btxy[i][1]))
 		hist_over.btsh[i].set_pos (floor(hist_over.picscale * labeldata.btxy[i][0] + 3 * UI.scalerate), floor(hist_over.picscale * labeldata.btxy[i][1] + 5 * UI.scalerate))
@@ -11263,7 +11263,7 @@ function history_updateoverlay() {
 
 	local commands_dat = []
 	local commands_scrape = []
-	try {commands_dat = commandtable[rom]}catch(err) {}
+	try {commands_dat = commandtable[rom]} catch(err) {}
 	commands = z_list.gametable[z_list.index].z_commands
 	if (commandtable.rawin(rom)) commands = commandtable[rom]
 
@@ -11274,7 +11274,7 @@ function history_updateoverlay() {
 
 	if ((commands.len() > 0) && !commandnull) {
 		if (numbuttons == "") numbuttons = "0"
-		try {hist_over.overbuttons2.file_name = "metapics/overlaybuttons/" + numbuttons + "over.png"}catch(err) {}
+		try {hist_over.overbuttons2.file_name = "metapics/overlaybuttons/" + numbuttons + "over.png"} catch(err) {}
 		for (local i = 0; i < min(commands.len(), min(6, numbuttons.tointeger())); i++) {
 			hist_over.btsh[i].msg = hist_over.bt[i].msg = commands[i].toupper()
 		}
@@ -11282,7 +11282,7 @@ function history_updateoverlay() {
 	else {
 		hist_over.overbuttons2.file_name = AF.folder + "pics/transparent.png"
 	}
-		try {hist_over.overbuttons.file_name = "metapics/overlaybuttons/" + numbuttons + ".png"}catch(err) {}
+		try {hist_over.overbuttons.file_name = "metapics/overlaybuttons/" + numbuttons + ".png"} catch(err) {}
 }
 
 function history_updatesnap() {
@@ -11796,7 +11796,7 @@ function update_allgames_collections(verbose, tempprf) {
 			listfields = splitlistline(listline)
 
 			foreach (item, val in z_af_collections.tab) {
-				try {sysname = AF.emulatordata[listfields[2]].mainsysname}catch(err) {sysname = ""}
+				try {sysname = AF.emulatordata[listfields[2]].mainsysname} catch(err) {sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
 						if (verbose && (sysname != cursysname)) {
@@ -15199,44 +15199,44 @@ fe.add_transition_callback(this, "on_transition")
 fe.add_ticks_callback(this, "tick")
 
 /*
-try {print("fl.surf:" + fl.surf.parents + "\n")}catch(err) {}
+try {print("fl.surf:" + fl.surf.parents + "\n")} catch(err) {}
 
-try {print("frost.surf_rt:" + frost.surf_rt.parents + "\n")}catch(err) {}
-try {print("frost.surf_2:" + frost.surf_2.parents + "\n")}catch(err) {}
-try {print("frost.surf_1:" + frost.surf_1.parents + "\n")}catch(err) {}
+try {print("frost.surf_rt:" + frost.surf_rt.parents + "\n")} catch(err) {}
+try {print("frost.surf_2:" + frost.surf_2.parents + "\n")} catch(err) {}
+try {print("frost.surf_1:" + frost.surf_1.parents + "\n")} catch(err) {}
 
-try {print("frost.pic:" + frost.pic.parents + "\n")}catch(err) {}
+try {print("frost.pic:" + frost.pic.parents + "\n")} catch(err) {}
 
-try {print("bglay.surf_rt:" + bglay.surf_rt.parents + "\n")}catch(err) {}
-try {print("bglay.surf_2:" + bglay.surf_2.parents + "\n")}catch(err) {}
-try {print("bglay.surf_1:" + bglay.surf_1.parents + "\n")}catch(err) {}
+try {print("bglay.surf_rt:" + bglay.surf_rt.parents + "\n")} catch(err) {}
+try {print("bglay.surf_2:" + bglay.surf_2.parents + "\n")} catch(err) {}
+try {print("bglay.surf_1:" + bglay.surf_1.parents + "\n")} catch(err) {}
 
-try {print("bgvidsurf_1:" + bgvidsurf_1.parents + "\n")}catch(err) {}
+try {print("bgvidsurf_1:" + bgvidsurf_1.parents + "\n")} catch(err) {}
 
-try {print("obj:" + tilez[0].obj.parents + "\n")}catch(err) {}
-try {print("gradsurf_rt:" + gradsurf_rt.parents + "\n")}catch(err) {}
-try {print("gradsurf_1:" + gradsurf_1.parents + "\n")}catch(err) {}
-try {print("logosurf_rt:" + logosurf_rt.parents + "\n")}catch(err) {}
-try {print("logosurf_1:" + logosurf_1.parents + "\n")}catch(err) {}
+try {print("obj:" + tilez[0].obj.parents + "\n")} catch(err) {}
+try {print("gradsurf_rt:" + gradsurf_rt.parents + "\n")} catch(err) {}
+try {print("gradsurf_1:" + gradsurf_1.parents + "\n")} catch(err) {}
+try {print("logosurf_rt:" + logosurf_rt.parents + "\n")} catch(err) {}
+try {print("logosurf_1:" + logosurf_1.parents + "\n")} catch(err) {}
 
-try {print("data_surface:" + data_surface.parents + "\n")}catch(err) {}
-try {print("data_surface_sh_rt:" + data_surface_sh_rt.parents + "\n")}catch(err) {}
-try {print("data_surface_sh_2:" + data_surface_sh_2.parents + "\n")}catch(err) {}
-try {print("data_surface_sh_1:" + data_surface_sh_1.parents + "\n")}catch(err) {}
+try {print("data_surface:" + data_surface.parents + "\n")} catch(err) {}
+try {print("data_surface_sh_rt:" + data_surface_sh_rt.parents + "\n")} catch(err) {}
+try {print("data_surface_sh_2:" + data_surface_sh_2.parents + "\n")} catch(err) {}
+try {print("data_surface_sh_1:" + data_surface_sh_1.parents + "\n")} catch(err) {}
 
-try {print("labelsurf:" + labelsurf.parents + "\n")}catch(err) {}
-try {print("displaynamesurf:" + displaynamesurf.parents + "\n")}catch(err) {}
-try {print("letterobjsurf:" + letterobjsurf.parents + "\n")}catch(err) {}
+try {print("labelsurf:" + labelsurf.parents + "\n")} catch(err) {}
+try {print("displaynamesurf:" + displaynamesurf.parents + "\n")} catch(err) {}
+try {print("letterobjsurf:" + letterobjsurf.parents + "\n")} catch(err) {}
 
-try {print("keyboard_surface:" + keyboard_surface.parents + "\n")}catch(err) {}
+try {print("keyboard_surface:" + keyboard_surface.parents + "\n")} catch(err) {}
 
-try {print("history_surface:" + history_surface.parents + "\n")}catch(err) {}
+try {print("history_surface:" + history_surface.parents + "\n")} catch(err) {}
 
-try {print("zmenu_surface_container:" + zmenu_surface_container.parents + "\n")}catch(err) {}
-try {print("zmenu_surface:" + zmenu_surface.parents + "\n")}catch(err) {}
-try {print("zmenu_sh.surf_rt:" + zmenu_sh.surf_rt.parents + "\n")}catch(err) {}
-try {print("zmenu_sh.surf_2:" + zmenu_sh.surf_2.parents + "\n")}catch(err) {}
-try {print("zmenu_sh.surf_1:" + zmenu_sh.surf_1.parents + "\n")}catch(err) {}
+try {print("zmenu_surface_container:" + zmenu_surface_container.parents + "\n")} catch(err) {}
+try {print("zmenu_surface:" + zmenu_surface.parents + "\n")} catch(err) {}
+try {print("zmenu_sh.surf_rt:" + zmenu_sh.surf_rt.parents + "\n")} catch(err) {}
+try {print("zmenu_sh.surf_2:" + zmenu_sh.surf_2.parents + "\n")} catch(err) {}
+try {print("zmenu_sh.surf_1:" + zmenu_sh.surf_1.parents + "\n")} catch(err) {}
 
 print("\n")
 */
@@ -16863,7 +16863,7 @@ function deletecurrentrom() {
 					system (OS == "Windows" ?
 						"move " + char_replace(frompath, "/", "\\") + " " + char_replace(topath, "/", "\\") :
 						"mv " + frompath + " " + topath)
-				}catch(err) {}
+				} catch(err) {}
 			}
 		}
 
@@ -17179,7 +17179,7 @@ function on_signal(sig) {
 
 			try {
 				fe.set_display(fe.list.display_index, false, false)
-			}catch(err) {
+			} catch(err) {
 				//OLD METHOD BEFORE THE NEW SET_DISPLAY
 				if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null) {
 					fe.signal("next_display")

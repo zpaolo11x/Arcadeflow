@@ -17,7 +17,7 @@ function uniclean(instring){
    while (id != null){
       idtext = instring.slice(id,id+6)
       idval = unival.find(idtext)
-      try{
+      try {
          instring = instring.slice(0,id) + unichar[idval] + instring.slice(id+6)
       }catch (err){
          instring = instring.slice(0,id) + "?" + instring.slice(id+6)
@@ -77,7 +77,7 @@ function matchrom(scrapeid, filename){
    local size_from_romid = ""
 
    // Scan all roms from this game
-   try{
+   try {
       foreach (i,item in jstab.response.jeu.roms){
 
          local romext = split(item.romfilename,".")
@@ -105,11 +105,11 @@ function matchrom(scrapeid, filename){
             }
          }
       }
-   }catch(err){print("\nROMERROR\n")}
+   } catch(err) {print("\nROMERROR\n")}
 
    // Now find the crc from the rom associated with this search
-   try{crc_from_romid = jstab.response.jeu.rom.romcrc}catch(err){print("\nCRCERROR\n")}
-   try{size_from_romid = jstab.response.jeu.rom.romsize}catch(err){print("\nSIZEERROR\n")}
+   try {crc_from_romid = jstab.response.jeu.rom.romcrc} catch(err) {print("\nCRCERROR\n")}
+   try {size_from_romid = jstab.response.jeu.rom.romsize} catch(err) {print("\nSIZEERROR\n")}
 
    return ({
       name_crc = crc_from_romlist,
@@ -130,7 +130,7 @@ function collapsetable(tablein,tablecriteria){
 function filtertable(tablein,filters,force){
    local out = ""
    for (local i = filters.len()-1 ; i>=0 ; i--){
-      try{out = tablein[filters[i]]} catch (err){}
+      try {out = tablein[filters[i]]} catch (err){}
    }
    if ((out == "") && (force)){
       foreach (i, item in tablein){
@@ -142,28 +142,28 @@ function filtertable(tablein,filters,force){
 
 function parsejsonA(scrapeid, gamedata){
    local jstab = null
-   try{jstab = dofile (affolder+"json/" + scrapeid+"jsonA_out.nut")}catch(err){return({})}
+   try {jstab = dofile (affolder+"json/" + scrapeid+"jsonA_out.nut")} catch(err) {return({})}
 
    if (jstab.result.len() == 0) {
       gamedata.isarcade = false
       return gamedata
    }
 
-   try{gamedata.adb_title = jstab.result[0].title} catch (err){}
-   try{gamedata.adb_cloneof = jstab.result[0].cloneof} catch (err){}
-   try{gamedata.adb_manufacturer = jstab.result[0].manufacturer} catch (err){}
-   try{gamedata.adb_genre = jstab.result[0].genre} catch (err){}
-   try{gamedata.adb_players = jstab.result[0].players} catch (err){}
-   try{gamedata.adb_year = jstab.result[0].year} catch (err){}
-   try{gamedata.adb_status = jstab.result[0].status} catch (err){}
-   try{gamedata.adb_rate = jstab.result[0].rate} catch (err){}
-   try{gamedata.adb_inputcontrols = jstab.result[0].input_controls} catch (err){}
-   try{gamedata.adb_inputbuttons = jstab.result[0].input_buttons} catch (err){}
-   try{gamedata.adb_buttonscolors = jstab.result[0].buttons_colors} catch (err){}
-   try{gamedata.adb_serie = jstab.result[0].serie} catch (err){}
-   try{gamedata.adb_screenorientation = jstab.result[0].screen_orientation} catch (err){}
-   try{gamedata.adb_screenresolution = jstab.result[0].screen_resolution} catch (err){}
-   try{gamedata.adb_history = jstab.result[0].history} catch (err){}
+   try {gamedata.adb_title = jstab.result[0].title} catch (err){}
+   try {gamedata.adb_cloneof = jstab.result[0].cloneof} catch (err){}
+   try {gamedata.adb_manufacturer = jstab.result[0].manufacturer} catch (err){}
+   try {gamedata.adb_genre = jstab.result[0].genre} catch (err){}
+   try {gamedata.adb_players = jstab.result[0].players} catch (err){}
+   try {gamedata.adb_year = jstab.result[0].year} catch (err){}
+   try {gamedata.adb_status = jstab.result[0].status} catch (err){}
+   try {gamedata.adb_rate = jstab.result[0].rate} catch (err){}
+   try {gamedata.adb_inputcontrols = jstab.result[0].input_controls} catch (err){}
+   try {gamedata.adb_inputbuttons = jstab.result[0].input_buttons} catch (err){}
+   try {gamedata.adb_buttonscolors = jstab.result[0].buttons_colors} catch (err){}
+   try {gamedata.adb_serie = jstab.result[0].serie} catch (err){}
+   try {gamedata.adb_screenorientation = jstab.result[0].screen_orientation} catch (err){}
+   try {gamedata.adb_screenresolution = jstab.result[0].screen_resolution} catch (err){}
+   try {gamedata.adb_history = jstab.result[0].history} catch (err){}
 
 
    // PARSING MEDIA SCRAPE
@@ -174,37 +174,37 @@ function parsejsonA(scrapeid, gamedata){
 
    gamedata.adb_media = {}
 
-   try{gamedata.adb_media["snap"] <- {
+   try {gamedata.adb_media["snap"] <- {
       url = jstab.result[0].url_image_ingame
       ext = "png"
-   }}catch(err){}
-   try{gamedata.adb_media["video"] <- {
+   }} catch(err) {}
+   try {gamedata.adb_media["video"] <- {
       url = jstab.result[0].url_video_shortplay
       ext = "mp4"
-   }}catch(err){}
-   try{gamedata.adb_media["flyer"] <- {
+   }} catch(err) {}
+   try {gamedata.adb_media["flyer"] <- {
       url = jstab.result[0].url_image_flyer
       ext = "png"
-   }}catch(err){}
-   try{gamedata.adb_media["marquee"] <- {
+   }} catch(err) {}
+   try {gamedata.adb_media["marquee"] <- {
       url = jstab.result[0].url_image_marquee
       ext = "png"
-   }}catch(err){}
-   try{gamedata.adb_media["title"] <- {
+   }} catch(err) {}
+   try {gamedata.adb_media["title"] <- {
       url = jstab.result[0].url_image_title
       ext = "png"
-   }}catch(err){}
-   try{gamedata.adb_media["wheel"] <- {
+   }} catch(err) {}
+   try {gamedata.adb_media["wheel"] <- {
       url = "http://adb.arcadeitalia.net/media/mame.current/decals/"+gamedata.filename+".png"//"http://adb.arcadeitalia.net/?mame="+gamedata.filename+"&type=decal&resize=0"
       ext = "png"
-   }}catch(err){}
+   }} catch(err) {}
 
    return gamedata
 }
 
 function parsejson(scrapeid, gamedata){
    local jstab = null
-   try{jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")}catch(err){return({})}
+   try {jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")} catch(err) {return({})}
 
    local filenameregions = ""
    local filenameregionsarray = []
@@ -212,7 +212,7 @@ function parsejson(scrapeid, gamedata){
    local regionshort = ["wor","us","eu","jp","it","fr","de","sp","kr","tw","asi","au","br","ca","cn","dk","fi","nl","pt","uk","ru","se","tr"]
 
    local regionsubstring = ""
-   try{regionsubstring = split(gamedata.filename, "(")[1]}catch(err){}
+   try {regionsubstring = split(gamedata.filename, "(")[1]} catch(err) {}
 
    foreach (id, item in regionnames){
       if (regionsubstring.find(item) != null){
@@ -223,7 +223,7 @@ function parsejson(scrapeid, gamedata){
    for (local i = 0 ; i < filenameregionsarray.len()-1;i++){
       filenameregions = filenameregions + filenameregionsarray[i]+","
    }
-   try{filenameregions = filenameregions + filenameregionsarray[filenameregionsarray.len()-1]}catch(err){}
+   try {filenameregions = filenameregions + filenameregionsarray[filenameregionsarray.len()-1]} catch(err) {}
 
    // ** filenameregions is the list of regions from the filename (eg. japan, usa etc) in SS format (eg. jp, us ecc)
 
@@ -276,18 +276,18 @@ function parsejson(scrapeid, gamedata){
       try {gamedata.title = collapsetable(jstab.response.jeu.noms,"region")["ss"]}
       catch(err){}
    }
-   try{gamedata.publisher = jstab.response.jeu.editeur.text} catch (err){}
-   try{gamedata.developer = jstab.response.jeu.developpeur.text} catch (err){}
-   try{gamedata.players = jstab.response.jeu.joueurs.text} catch (err){}
-   try{gamedata.rating = jstab.response.jeu.note.text.tointeger()*1.0/2.0} catch (err){}
+   try {gamedata.publisher = jstab.response.jeu.editeur.text} catch (err){}
+   try {gamedata.developer = jstab.response.jeu.developpeur.text} catch (err){}
+   try {gamedata.players = jstab.response.jeu.joueurs.text} catch (err){}
+   try {gamedata.rating = jstab.response.jeu.note.text.tointeger()*1.0/2.0} catch (err){}
    // At the moment filters synopsis and only gets the english version (hardcoded, may change in the future)
-   try{gamedata.synopsis = collapsetable(jstab.response.jeu.synopsis,"langue")[langtouse]}catch(err){}
+   try {gamedata.synopsis = collapsetable(jstab.response.jeu.synopsis,"langue")[langtouse]} catch(err) {}
    // Scans the release date table to look for the rom region entry, if not found it scans the whole
    // table and basically outputs the topmost entry, whatever it is
-   try{gamedata.releasedate = split(filtertable(collapsetable(jstab.response.jeu.dates,"region"),regionprefs,true),"-")[0]}catch(err){}
+   try {gamedata.releasedate = split(filtertable(collapsetable(jstab.response.jeu.dates,"region"),regionprefs,true),"-")[0]} catch(err) {}
    // Scans the whole familles table for noms, if the language is the correct one it returns it, otherwise it keeps
    // scanning and returns whatever it finds (usually "fr")
-   try{
+   try {
       foreach (i, item in jstab.response.jeu.familles){
          foreach (i2, item2 in item.noms){
             gamedata.series = item2.text
@@ -299,7 +299,7 @@ function parsejson(scrapeid, gamedata){
    // otherwise the first genre with no "/" structure
    local genresarray_main = []
    local genresarray_sub = []
-   try{
+   try {
       foreach (i, item in jstab.response.jeu.genres){
          local genretable = collapsetable(item.noms,"langue")
          if (item.principale == "1") genresarray_main.push (genretable[langtouse])
@@ -313,24 +313,24 @@ function parsejson(scrapeid, gamedata){
 
    local extraitems = ["demo","proto","unl","beta"]
    foreach (i, item in extraitems){
-      try{if ((jstab.response.jeu.rom[item] == "1") && (gamedata.filename.tolower().find(item)!=null)) gamedata.extradata += (gamedata.extradata == "" ? item : ","+item)} catch (err){}
+      try {if ((jstab.response.jeu.rom[item] == "1") && (gamedata.filename.tolower().find(item)!=null)) gamedata.extradata += (gamedata.extradata == "" ? item : ","+item)} catch (err){}
    }
 
    try {
       gamedata.requests = jstab.response.ssuser.requeststoday+"/"+jstab.response.ssuser.maxrequestsperday
-   }catch(err){}
+   } catch(err) {}
 
    try {
       gamedata.notgame = jstab.response.jeu.notgame == "true"
-   }catch(err){
+   } catch(err) {
       gamedata.notgame = false
    }
 
    // SCRAPE DATA FOR ARCADE GAMES
    if (gamedata.isarcade){
-      try{gamedata.a_rotation = jstab.response.jeu.rotation} catch (err){}
-      try{gamedata.a_resolution = jstab.response.jeu.resolution} catch (err){}
-      try{gamedata.a_system = jstab.response.jeu.systeme.text} catch (err){}
+      try {gamedata.a_rotation = jstab.response.jeu.rotation} catch (err){}
+      try {gamedata.a_resolution = jstab.response.jeu.resolution} catch (err){}
+      try {gamedata.a_system = jstab.response.jeu.systeme.text} catch (err){}
       local a_controls = ""
       try {a_controls = jstab.response.jeu.controles} catch (err){}
       local a_controls_array = split (a_controls,"^")
@@ -340,13 +340,13 @@ function parsejson(scrapeid, gamedata){
          local zip = split (item,"=")
          if (zip.len()>1) a_controls_table[zip[0]] <- zip[1]
       }
-      try{gamedata.a_buttons = a_controls_table["P1NumButtons"]}
+      try {gamedata.a_buttons = a_controls_table["P1NumButtons"]}
          catch(err)
-         {try{gamedata.a_controls = a_controls_table["Buttons"]}catch(err){print ("NODATA\n")}}
-      try{gamedata.a_controls = split(a_controls_table["P1Controls"],"+")[0]}
+         {try {gamedata.a_controls = a_controls_table["Buttons"]} catch(err) {print ("NODATA\n")}}
+      try {gamedata.a_controls = split(a_controls_table["P1Controls"],"+")[0]}
          catch(err)
-         {try{gamedata.a_controls = a_controls_table["Input"]}catch(err){print ("NODATA\n")}}
-      }
+         {try {gamedata.a_controls = a_controls_table["Input"]} catch(err) {print ("NODATA\n")}}
+   }
 
    // PARSING MEDIA SCRAPE
    local ss_cat = ["ss","wheel-hd","wheel","video-normalized","video","box-2D","marquee","sstitle","fanart","box-3D"]
@@ -363,7 +363,7 @@ function parsejson(scrapeid, gamedata){
          local catname = AF_cat[ss_cat.find(item.type)]//= catmap[item.type]
          local catpriority = AF_priority[ss_cat.find(item.type)]
          local checkregion = ""
-         try {checkregion = item.region}catch(err){}
+         try {checkregion = item.region} catch(err) {}
          local tempdata = {
             path = item.url
             region = checkregion
@@ -420,7 +420,7 @@ function parsejson(scrapeid, gamedata){
 
    if (jstab.response.jeu.rawin("roms")){
       foreach (id, item in jstab.response.jeu.roms){
-         try{if (item.id == jstab.response.jeu.romid) gamedata.matchedrom = item.romfilename}catch(err){}
+         try {if (item.id == jstab.response.jeu.romid) gamedata.matchedrom = item.romfilename} catch(err) {}
       }
    }
 
@@ -668,7 +668,7 @@ function getromcrc_lookup4(filepath){
       //NOTE: If the zip has more than one file, check the crc of the zip itselfs
       if (zipcontent.len() == 1) blb = zip_extract_file(filepath, zipcontent[0] )
       else {
-         try{
+         try {
             blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
          }
          catch(err){
@@ -678,7 +678,7 @@ function getromcrc_lookup4(filepath){
       }
    }
    else {
-      try{
+      try {
          blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
       }
       catch(err){
