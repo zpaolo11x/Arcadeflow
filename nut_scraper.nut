@@ -6,7 +6,6 @@ foreach (i, item in unichar){
 
 local echoon = false
 
-
 function echoprint (intext){
    if (echoon) print(intext)
 }
@@ -30,13 +29,12 @@ function uniclean(instring){
 
 function unicorrect(){
    local unicorrect = []
-   unicorrect.push ({old = "\\r",new=""})
-   unicorrect.push ({old = "\\n",new="^"})
-   unicorrect.push ({old = "&quot;",new="'"})
-   unicorrect.push ({old = "&nbsp;",new=" "})
-   unicorrect.push ({old = "\\/",new="/"})
-   //unicorrect.push ({old = ";",new="§"})
-   //unicorrect.push ({old = "|",new=":"})
+   unicorrect.push ({old = "\\r", new = ""})
+   unicorrect.push ({old = "\\n", new = "^"})
+   unicorrect.push ({old = "&quot;", new = "'"})
+   unicorrect.push ({old = "&nbsp;", new = " "})
+   unicorrect.push ({old = "\\/", new = "/"})
+
    return unicorrect
 }
 
@@ -327,16 +325,6 @@ function parsejson(scrapeid, gamedata){
    }catch(err){
       gamedata.notgame = false
    }
-   //TEST111
-   //print ("NOTGAME:"+jstab.response.jeu.notgame+"\n")
-   /*
-   foreach (id,value in gamedata){
-     echoprint (id+":"+value+"\n")
-   }
-   */
-
-   //TEST104 TODO: Maybe add actions parsing here and use that as input also for numbuttons
-   //TEST104 TODO: or use the same controles to get the game control functions (should be the same)
 
    // SCRAPE DATA FOR ARCADE GAMES
    if (gamedata.isarcade){
@@ -365,17 +353,6 @@ function parsejson(scrapeid, gamedata){
    local AF_priority = [0,1,0,1,0,0,0,0,0,0]
    local AF_cat = ["snap","wheel","wheel","video","video","flyer","marquee","title","fanart","box3d"]
 
-   /*
-   local catmap = {}
-      catmap["ss"] <- "snap"
-      catmap["wheel"] <- "wheel"
-      catmap["wheel-hd"] <- "wheel"
-      catmap["video"] <- "video"
-      catmap["video-normalized"] <- "video"
-      catmap["box-2D"] <- "flyer"
-      catmap["marquee"] <- "marquee"
-   */
-
    gamedata.media = {}
    foreach (id, item in AF_cat){
       gamedata.media[item] <- []
@@ -397,18 +374,7 @@ function parsejson(scrapeid, gamedata){
       }
       catch(err){}
    }
-/*
-   echoprint ("\n\nRAW DATA\n\n")
-   foreach (id, item in gamedata.media){
-      echoprint ("------"+id+"------\n")
-      foreach (id2, item2 in item){
-         foreach (id3, item3 in item2){
-            echoprint (id+" - "+id3+" "+item3+"\n")
-         }
-      }
-   }
-*/
-  // echoprint ("\nREGION FILTERING\n")
+
    foreach (id, item in gamedata.media){
       if (item.len() > 1) { // There is more than one media in this category
          // Region filtering
@@ -416,14 +382,10 @@ function parsejson(scrapeid, gamedata){
 
          // First round, check if one of the rom regions is present,
          // checking from back to front (eg: eu,us privileges eu)
-    //     echoprint ("round1\n")
          for (local i2 = romregionsarray.len()-1; i2>=0;i2--){
             local item2 = romregionsarray[i2]
-      //      echoprint ("check *"+item2+"* with:\n")
             foreach (i3, item3 in item){
-        //       echoprint (" *"+item3.region+"*\n")
                if (item2 == item3.region) {
-          //        echoprint ("OK1\n")
                   filteredarray = [item3]
                }
             }
@@ -432,13 +394,9 @@ function parsejson(scrapeid, gamedata){
          // No correct rom region, for the second round we take
          // the first available region from wor and ss entries
          if (filteredarray == null) {
-       //     echoprint ("round2\n")
             foreach (i2, item2 in ["wor","ss"]){
-         //      echoprint ("check *"+item2+"* with:\n")
                foreach (i3, item3 in item){
-           //       echoprint (" *"+item3.region+"*\n")
                   if (item2 == item3.region) {
-             //        echoprint ("OK2\n")
                      filteredarray = [item3]
                   }
                }
@@ -451,14 +409,10 @@ function parsejson(scrapeid, gamedata){
       }
    }
 
-  // echoprint ("\n\nFILTERED RESULT\n\n")
-  // echoprint (gamedata.media+"\n")
    foreach (id, item in gamedata.media){
-    //  echoprint ("------"+id+"------\n")
       if (item != null){
          foreach (id2, item2 in item){
             foreach (id3, item3 in item2){
-      //         echoprint (id+" - "+id3+" "+item3+"\n")
             }
          }
       }
