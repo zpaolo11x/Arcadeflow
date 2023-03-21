@@ -6,14 +6,16 @@ VARIATIONS
 		EA Sports 2000 onwards
 		Rockstar
 		Take2
-		Koei classic logo
 		Electro brain classic logo
 
-NAMES
-
+NAMES NEW
 aki akicorporation
 esp entertainmentsoftware entertainmentsoftwarepublishing
 ufo ufointeractive ufointeractivegames
 mediafactory
 piko pikointeractive|0,2018
 piko pikointeractive|2019,10000
+
+NAMES ADD VARIANTS
+koei koeicoltd|0,1998
+OLD koei koeicoltd|1999,10000
