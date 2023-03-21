@@ -15340,7 +15340,7 @@ function on_transition(ttype, var0, ttime) {
 	if ((ttype == Transition.ToNewSelection)) {
 		update_thumbdecor (focusindex.new, 0, getAR(tilez[focusindex.new].offset, tilez[focusindex.new].snapz, 0, prf.BOXARTMODE))
 	}
-*/
+	*/
 	logotitle = null
 	boxtitle = null
 
@@ -15475,9 +15475,7 @@ function on_transition(ttype, var0, ttime) {
 			local index = - (floor(tiles.total / 2) - 1) + corrector
 
 			for (local i = 0; i < tiles.total; i++) {
-
 				changetiledata(i, index, ((ttype == Transition.ToNewList) || ((ttype == Transition.ToNewSelection) && ((((column.stop > column.start) && (i / UI.rows >= tiles.total / UI.rows - column.offset)) || ((column.stop < column.start) && (i / UI.rows < -column.offset)))))))
-
 				index ++
 			}
 
