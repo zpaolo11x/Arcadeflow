@@ -8,7 +8,7 @@
 aackosoft
 able ablecorpltd
 abrasco
-absoluteentertainment absoluteentertainmentinc
+absolute absoluteentertainment absoluteentertainmentinc
 academy academysoftware academysoft
 access accesssoftware accessoftwareinc accessgames
 acclaim acclaimjapan
@@ -555,8 +555,8 @@ kanekotaito kanekotaitocorporationjapan
 kanekowarashi
 kansascitysystems
 keegames
-kemco|0,1992
-kemco|1993,10000
+kemco|0,1998
+kemco|1999,10000
 kingrecord kingrecords
 kingsoft kingsoftgmbh
 kixx
