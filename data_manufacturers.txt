@@ -39,6 +39,7 @@ aikytaito
 ail
 aimsoftware
 aisystemtokyo
+aki akicorporation
 aksys aksysgames
 alalamiah
 alasoftware
@@ -373,6 +374,7 @@ ere ereinformatique
 escapesega
 escotradingcoinc
 esd
+esp entertainmentsoftware entertainmentsoftwarepublishing
 espsoftware espsoft
 eurocom eurocomentertainmentsoftware
 eurosoft
@@ -630,6 +632,7 @@ meadowsgames meadowsgamesinc
 mebiosoftware
 mecc
 mediaentertainment
+mediafactory
 mediaringscorporation mediarings
 megami
 megaplaymore
@@ -780,6 +783,8 @@ philkocorporation
 philkocorporationpoaraenterprises philkopoaraenterprises
 philkosharpimage
 phoenix phoenixsoftware
+piko pikointeractive|0,2018
+piko pikointeractive|2019,10000
 pil
 pioneer pioneerldc|0,1997
 pioneer pioneerldc|1998,10000
@@ -855,6 +860,9 @@ rebellion
 redratsoftware redratsoftwareltd
 redshift redshiftltd
 redspotgames
+redstorm redstormentertainment|0,2008
+redstorm redstormentertainment|2009,2015
+redstorm redstormentertainment|2016,10000
 reline relinesoftware
 renegade renegadesoftware
 reno
@@ -1148,6 +1156,7 @@ ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmen
 ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2004,2017
 ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2018,10000
 ucom
+ufo ufointeractive ufointeractivegames
 ultimateplaythegame ultimate
 ultra ultrasoft ultragames
 umi

@@ -1,5 +1,4 @@
 NEW
-SVG	Red Storm
 
 
 VARIATIONS
@@ -9,15 +8,7 @@ VARIATIONS
 		Electro brain classic logo
 
 NAMES NEW
-aki akicorporation
-esp entertainmentsoftware entertainmentsoftwarepublishing
-ufo ufointeractive ufointeractivegames
-mediafactory
-piko pikointeractive|0,2018
-piko pikointeractive|2019,10000
-redstorm redstormentertainment|0,2008
-redstorm redstormentertainment|2009,2015
-redstorm redstormentertainment|2016,10000
+
 
 NAMES ADD VARIANTS
 koei koeicoltd|0,1998
