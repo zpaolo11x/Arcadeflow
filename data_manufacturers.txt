@@ -328,7 +328,9 @@ dynax
 dynaxsigma
 eagames
 eaglesoft
-easports
+easports|0,1999
+easports|2000,2005
+easports|2006,10000
 east easttechnology easttechnologycorp
 eastcoastcoincompany
 edisoft
@@ -341,7 +343,8 @@ ejsoftware
 electricdreams electricdreamsinc
 electricdreamssoftware
 electricsoftware electricsoftwarelimited
-electrobrain electrobraincorp
+electrobrain electrobraincorp|0,1990
+electrobrain electrobraincorp|1991,10000
 electronicarts electronicartsinc electronicartscanada|0,1993
 electronicarts electronicartsinc electronicartscanada|1994,1997
 electronicarts electronicartsinc electronicartscanada|1998,1999
@@ -562,7 +565,8 @@ kemco|1999,10000
 kingrecord kingrecords
 kingsoft kingsoftgmbh
 kixx
-koei koeicoltd
+koei koeicoltd|0,1998
+koei koeicoltd|1999,10000
 kogado kogadosoftwareproducts
 konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|0,1986
 konami konamiindustrycoltd konamicoltd konamicomputerentertainmentosaka konamiofamericainc|1986,2003
@@ -873,7 +877,10 @@ riot
 riverhill riverhillsoft riverhillsoftware riverhillsoftwareinc
 robico robicosoftware
 rockola
-rockstar rockstargames
+rockstar rockstargames|0,1998
+rockstar rockstargames|1999,2004
+rockstar rockstargames|2005,2007
+rockstar rockstargames|2008,10000
 rocksteady rocksteadystudios
 roklan roklancorp roklancorporation
 romhack hack

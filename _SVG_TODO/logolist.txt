@@ -1,20 +1,7 @@
 NEW
 
-
 VARIATIONS
-		Rockstar
 
 NAMES NEW
 
-
 NAMES ADD VARIANTS
-koei koeicoltd|0,1998
-* koei koeicoltd|1999,10000
-easports|2006,10000
-easports|2000,2005
-* easports|0,1999
-* taketwointeractive taketwointeractiveinteractive taketwointeractivesoftwareinc take2interactive|2003,10000
-taketwointeractive taketwointeractiveinteractive taketwointeractivesoftwareinc take2interactive|2000,2002
-taketwointeractive taketwointeractiveinteractive taketwointeractivesoftwareinc take2interactive|0,1999
-electrobrain electrobraincorp|1991,10000
-* electrobrain electrobraincorp|0,1990
