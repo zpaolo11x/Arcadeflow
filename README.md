@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.8 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 15.9 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,12 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 15.8 #
+## What's new in v 15.9 #
 
-- Added 12 new retro computer systems
-- Fixed issue with CRC scraping
+- Added new manufacturer logos
+- Updated German translation (thanks ScherzKeks)
+- Fixed progress bar with overscan
+- Code cleanup
 
 ## Emulator system identifier #
 
@@ -129,7 +131,7 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Morph snap ratio' : Chose if you want the box to morph into the actual game video or if it must be cropped
 - 'Optimize vertical arcade' : Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project
 - 'Zoom thumbnails' : Chose if you want the selected thumbnail to zoom to a larger size
-- 'Show only logos' : If enabled, only game tilte logos will be shown instead of the screenshot
+- 'Show only logos' : If enabled, only game title logos will be shown instead of the screenshot
 - Snapshot Options
 - 'Artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
 - 'Show game title' : Show the title of the game over the thumbnail
@@ -381,6 +383,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v15.8*
+
+- Added 12 new retro computer systems
+- Fixed issue with CRC scraping
 
 *v15.7*
 
