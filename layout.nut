@@ -6871,7 +6871,7 @@ function z_listsort(orderby, reverse) {
 		reverse)
 	}	else if (orderby == z_info.z_favdate.id){
 		z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-		z_list.gametable2.map(function(a) {return (a.z_favdate + a.z_favourite)}),
+		z_list.gametable2.map(function(a) {return (a.z_favourite ? (a.z_favdate + a.z_favourite) : ("00000000000000" + a.z_favourite))}),
 		z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
 		reverse)
 	}	else if (orderby ==  z_info.z_series.id){
@@ -17636,6 +17636,9 @@ function on_signal(sig) {
 		// If the new game has been set to favourite, update the favdate
 		if (z_list.gametable2[z_list.index].z_favourite) {
 			z_list.gametable2[z_list.index].z_favdate = get_date_string()
+		}
+		else {
+			z_list.gametable2[z_list.index].z_favdate = "00000000000000"
 		}
 
 		// Save rhe rom database with new data
