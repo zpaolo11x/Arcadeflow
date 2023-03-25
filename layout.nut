@@ -2082,7 +2082,6 @@ local colormapper = {
 		remap = 0.0
 		hsv = [0.0, 0.0, 0.0]
 	}
-
 	"LCDGBC": {
 		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
 		a = hsl2rgb(103.0, 0.95, 0.15)
@@ -2131,7 +2130,6 @@ local colormapper = {
 		remap = 1.0
 		hsv = [0.0, 0.0, 0.0]
 	}
-
 	"8BIT": {
 		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
 		a = hsl2rgb(0, 0.0, 0.0)

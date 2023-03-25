@@ -153,6 +153,11 @@ class ReadTextFile
 		return ( _blb.eos() && _f.eos() );
 	}
 
+	function close_file() 
+	{
+		_f.close();
+	}
+	
 	_f=null;
 	_blb=null;
 	_next_ln="";
