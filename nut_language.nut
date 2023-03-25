@@ -73,6 +73,25 @@ function savelanguage(savecode){
    local languagefile = WriteTextFile (languagepath)
    languagefile.write_line(savecode)
 }
+
+function ltxt(inputitem,languagestring) {
+   local out = inputitem
+	if (languagestring == "EN") return (inputitem)
+   else {
+		if (typeof inputitem != "array"){
+			try {return languagetable [inputitem][languagestring]} 
+			catch (err) {return(inputitem)}
+		}
+		else {
+			for (local i = 0 ; i < inputitem.len() ; i++) {
+				try {out[i] = languagetable [inputitem[i]][languagestring]}
+				catch (err) {out[i] = inputitem[i]}
+			}
+			return out			
+		}
+	}
+}
+
 /*
 function ltxt(inputstring,languagestring) {
    if (languagestring == "EN") return (inputstring)
@@ -93,21 +112,4 @@ function ltxtarray(inputarray,languagestring) {
 }
 
 */
-function ltxt(inputitem,languagestring) {
-   local out = inputitem
-	if (languagestring == "EN") return (inputitem)
-   else {
-		if (typeof inputitem != "array"){
-			try {return languagetable [inputitem][languagestring]} 
-			catch (err) {return(inputitem)}
-		}
-		else {
-			for (local i = 0 ; i < inputitem.len() ; i++) {
-				try {out[i] = languagetable [inputitem[i]][languagestring]}
-				catch (err) {out[i] = inputitem[i]}
-			}
-			return out			
-		}
-	}
-}
 
