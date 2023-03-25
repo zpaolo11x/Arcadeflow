@@ -17772,7 +17772,7 @@ function on_signal(sig) {
 							search.mots2string = ltxt("Rotation", AF.LNG) + ":" + search.mots[1]
 							hidemenu = true
 						}
-						if ((result == 6) && (z_list.gametable[z_list.index].z_favourite != "")) {
+						if ((result == 6) && (z_list.gametable2[z_list.index].z_favourite != "")) {
 							search.mots = ["z_favourite", z_list.gametable2[z_list.index].z_favourite.tostring()]
 							search.mots2string = ltxt("Favourite", AF.LNG) + ":" + (search.mots[1])
 							hidemenu = true
