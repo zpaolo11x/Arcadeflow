@@ -17748,7 +17748,7 @@ function on_signal(sig) {
 
 					switcharray.push(ltxt("RESET", AF.LNG))
 					switchnotes.push(" ")
-					switchglyph.push("")
+					switchglyph.push(0xea0f)
 
 					local hidemenu = false
 					
