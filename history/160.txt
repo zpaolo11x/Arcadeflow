@@ -1,2 +1,3 @@
 16.0
+Improved More of the Same menu
 Fixed bug with More of the Same menu
