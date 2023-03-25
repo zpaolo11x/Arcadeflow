@@ -1161,7 +1161,7 @@ for (local i = 0; i < AF.prefs.l1.len(); i ++) {
 		local isnew = (AF.prefs.l1[i][j].v.tofloat() == AF.version.tofloat())
 		AF.prefs.l1[i][j].title = (isnew ? "❗ " : "") + ltxt(AF.prefs.l1[i][j].title, AF.LNG) + (isnew ? " ❗" : "")
 		if ((AF.prefs.l1[i][j].selection != AF.req.liner)) AF.prefs.l1[i][j].help = ltxt(AF.prefs.l1[i][j].help, AF.LNG)
-		if ((AF.prefs.l1[i][j].selection != AF.req.menusort) && (AF.prefs.l1[i][j].selection != AF.req.liner)) AF.prefs.l1[i][j].options = ltxtarray(AF.prefs.l1[i][j].options, AF.LNG)
+		if ((AF.prefs.l1[i][j].selection != AF.req.menusort) && (AF.prefs.l1[i][j].selection != AF.req.liner)) AF.prefs.l1[i][j].options = ltxt(AF.prefs.l1[i][j].options, AF.LNG)
 		if (isnew) isnewparent = true
 	}
 	AF.prefs.l0[i].label = (isnewparent ? "❗ " : "") + ltxt(AF.prefs.l0[i].label, AF.LNG) + (isnewparent ? " ❗" : "")
@@ -4683,7 +4683,7 @@ local metadata = {
 				]
 }
 
-metadata.names = ltxtarray(metadata.names, AF.LNG)
+metadata.names = ltxt(metadata.names, AF.LNG)
 
 local meta_edited = {}
 local meta_original = {}
@@ -9858,9 +9858,9 @@ function filebrowser1(file0) {
 	local lastname = []
 	local folderappend = []
 
-	lastname.push(ltxt ("DEFAULT", AF.LNG))
-	lastname.push(ltxt ("Attract Folder", AF.LNG))
-	lastname.push(ltxt ("Arcadeflow Folder", AF.LNG))
+	lastname.push(ltxt("DEFAULT", AF.LNG))
+	lastname.push(ltxt("Attract Folder", AF.LNG))
+	lastname.push(ltxt("Arcadeflow Folder", AF.LNG))
 	lastname.push("..")
 
 	folderappend.push(0)
@@ -12662,7 +12662,7 @@ function afinstall(zipball, afname) {
 
 function gh_menu(presel) {
 	//frostshow()
-	zmenudraw(ltxtarray(["Install branch", "Install release"], AF.LNG), [0xe9bc, 0xe94e], null, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
+	zmenudraw(ltxt(["Install branch", "Install release"], AF.LNG), [0xe9bc, 0xe94e], null, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
 	function(out) {
 		if (out == 0) {
 			gh.branchlist = []
@@ -12887,7 +12887,7 @@ function displayungrouped() {
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw(ltxtarray(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			zmenudraw(ltxt(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -12975,7 +12975,7 @@ function displaygrouped1() {
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw(ltxtarray(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			zmenudraw(ltxt(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -14343,7 +14343,7 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt ("Jump to", AF.LNG)
+		label = ltxt("Jump to", AF.LNG)
 		glyph = 0xea22
 		visible = true
 		order = 0
@@ -14578,7 +14578,7 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt ("Change core assignment", AF.LNG)
+		label = ltxt("Change core assignment", AF.LNG)
 		glyph = 0xeafa
 		visible = true
 		id = 0
@@ -14619,7 +14619,7 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt ("Check for updates", AF.LNG)
+		label = ltxt("Check for updates", AF.LNG)
 		glyph = 0xe91c
 		visible = true
 		id = 0
@@ -14634,7 +14634,7 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt ("Install from repository", AF.LNG)
+		label = ltxt("Install from repository", AF.LNG)
 		glyph = 0xe9c2
 		visible = true
 		id = 0
@@ -14649,7 +14649,7 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt ("About Arcadeflow", AF.LNG)
+		label = ltxt("About Arcadeflow", AF.LNG)
 		glyph = 0xea09
 		visible = true
 		id = 0
@@ -17132,7 +17132,7 @@ function ra_selectemu(startemu) {
 		}
 		else {
 			if (AF.emulatordata[emulist[result]].racore == "") {
-				zmenudraw(ltxtarray(["Yes", "No"], AF.LNG), [0xea10, 0xea0f], null, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
+				zmenudraw(ltxt(["Yes", "No"], AF.LNG), [0xea10, 0xea0f], null, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
 				function(result2) {
 					if (result2 == 0) ra_selectcore(emulist[result])
 					else if (result2 == 1) {
@@ -17541,7 +17541,7 @@ function on_signal(sig) {
 	if (sig == "exit") {
 		if (!prf.DMPIFEXITAF) {
 			frostshow()
-			zmenudraw(ltxtarray(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			zmenudraw(ltxt(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
 				if (result == 0) 	fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -17677,7 +17677,7 @@ function on_signal(sig) {
 			frostshow()
 			overmenu_hide(false)
 
-			zmenudraw(ltxtarray(["More of the same...", "Similar Games", "Scrape selected game", "Edit metadata", "CAUTION!", "Delete ROM"], AF.LNG), [0xe987, 0xeaf7, 0xe9c2, 0xe906, -1, 0xe9ac], ["", "", "", "", "", prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)], ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
+			zmenudraw(ltxt(["More of the same...", "Similar Games", "Scrape selected game", "Edit metadata", "CAUTION!", "Delete ROM"], AF.LNG), [0xe987, 0xeaf7, 0xe9c2, 0xe906, -1, 0xe9ac], ["", "", "", "", "", prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)], ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
 			function(result) {
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
@@ -17811,7 +17811,7 @@ function on_signal(sig) {
 					metamenu(0)
 				}
 				if (result == 5) { // Delete ROM
-					zmenudraw(ltxtarray(["Delete", "Cancel"], AF.LNG), [0xea10, 0xea0f], null, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
+					zmenudraw(ltxt(["Delete", "Cancel"], AF.LNG), [0xea10, 0xea0f], null, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
 					function(result) {
 						if (result == 0) {
 							deletecurrentrom()
