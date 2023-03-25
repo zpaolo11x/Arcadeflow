@@ -17683,6 +17683,7 @@ function on_signal(sig) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
 					local switcharray = []
 					local switchnotes = []
+					local switchglyph = []
 					switcharray.push(ltxt("Year", AF.LNG))
 					switcharray.push(ltxt("Decade", AF.LNG))
 					switcharray.push(ltxt("Manufacturer", AF.LNG))
@@ -17718,7 +17719,9 @@ function on_signal(sig) {
 					local numtag = switcharray.len()
 					//switcharray.push(ltxt("RESET (KEEP FOCUS)", AF.LNG))
 					switcharray.push(ltxt("RESET", AF.LNG))
-
+					
+					local hidemenu = false
+					
 					frostshow()
 					zmenudraw(switcharray, null, switchnotes, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, false, false, false, false, false,
 					function(result) {
@@ -17727,25 +17730,29 @@ function on_signal(sig) {
 							search.mots = ["", ""]
 							updatesearchdatamsg()
 							mfz_apply(false)
+							hidemenu = true
 						}
 						if (result == -1) {
 							frosthide()
 							zmenuhide()
 						}
-						if (result == 0) {
+						if ((result == 0) && (z_list.gametable[z_list.index].z_year != "")){
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year]
 							search.mots2string = ltxt("Year", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
-						if (result == 1) {
+						if ((result == 1) && (z_list.gametable[z_list.index].z_year != "")) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year.slice(0, 3)]
 							search.mots2string = ltxt("Year", AF.LNG) + ":" + search.mots[1] + "x"
+							hidemenu = true
 						}
-						if (result == 2) {
+						if ((result == 2) && (z_list.gametable[z_list.index].z_manufacturer != "")) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
 							if (search.mots[1] != "") search.mots[1] = split(search.mots[1], "_")[0]
  							search.mots2string = ltxt("Manufacturer", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
-						if (result == 3) {
+						if ((result == 3) && (z_list.gametable[z_list.index].z_category != "")) {
 							try {
 								local s = z_list.gametable[z_list.index].z_category
 								local s2 = split(s, "/")
@@ -17753,38 +17760,45 @@ function on_signal(sig) {
 								search.mots2string = ltxt("Category", AF.LNG) + ":" + s2[0]
 							}
 							catch(err) {}
+							hidemenu = true
 						}
-						if (result == 4) {
+						if ((result == 4) && (z_list.gametable[z_list.index].z_category != "")) {
 							search.mots = ["z_category", z_list.gametable[z_list.index].z_category]
 							search.mots2string = ltxt("Category", AF.LNG) + ":" + search.mots[1]
-
+							hidemenu = true
 						}
-						if (result == 5) {
+						if ((result == 5) && (z_list.gametable[z_list.index].z_rotation != "")) {
 							search.mots = ["z_rotation", z_list.gametable[z_list.index].z_rotation]
 							search.mots2string = ltxt("Rotation", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
-						if (result == 6) {
+						if ((result == 6) && (z_list.gametable[z_list.index].z_favourite != "")) {
 							search.mots = ["z_favourite", z_list.gametable2[z_list.index].z_favourite.tostring()]
 							search.mots2string = ltxt("Favourite", AF.LNG) + ":" + (search.mots[1])
+							hidemenu = true
 						}
-						if (result == 7) {
+						if ((result == 7) && (z_list.gametable[z_list.index].z_series != "")){
 							search.mots = ["z_series", z_list.gametable[z_list.index].z_series]
 							search.mots2string = ltxt("Series", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
-						if (result == 8) {
+						if ((result == 8) && (z_list.gametable[z_list.index].z_rating != "")) {
 							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
 							search.mots2string = ltxt("Rating", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
-						if (result == 9) {
+						if ((result == 9) && (z_list.gametable[z_list.index].z_arcadesystem != "")) {
 							search.mots = ["z_arcadesystem", z_list.gametable[z_list.index].z_arcadesystem]
 							search.mots2string = ltxt("Arcade Sys", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
 						if ((result >= numset) && (result < numtag)) {
 							search.mots = ["z_tags", taglist[result - numset]]
 							search.mots2string = ltxt("Tags", AF.LNG) + ":" + search.mots[1]
+							hidemenu = true
 						}
 						// GOOD
-						if ((result != numtag) && (result != -1) && (search.mots[1] != "")) {
+						if (hidemenu && (result != numtag) && (result != -1) && (search.mots[1] != "")) {
 
 							local currentname = z_list.gametable[z_list.index].z_name
 							local currentsystem = z_list.gametable[z_list.index].z_system
@@ -17792,12 +17806,13 @@ function on_signal(sig) {
 								backs.index = fe.list.index
 							}
 							updatesearchdatamsg()
-
 							mfz_apply(false)
 						}
-
-						frosthide()
-						zmenuhide()
+						if (hidemenu){
+							hidemenu = false
+							frosthide()
+							zmenuhide()
+						}
 					})
 				} // Here ends the first entry of the menu
 				if (result == 1) { //similar games menu
