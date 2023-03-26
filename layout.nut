@@ -17773,56 +17773,116 @@ function on_signal(sig) {
 					local switcharray = []
 					local switchnotes = []
 					local switchglyph = []
-					switcharray.push(ltxt("Year", AF.LNG))
-					switcharray.push(ltxt("Decade", AF.LNG))
-					switcharray.push(ltxt("Manufacturer", AF.LNG))
-					switcharray.push(ltxt("Main Category", AF.LNG))
-					switcharray.push(ltxt("Sub Category", AF.LNG))
-					switcharray.push(ltxt("Orientation", AF.LNG))
-					switcharray.push(ltxt("Favourite state", AF.LNG))
-					switcharray.push(ltxt("Series", AF.LNG))
-					switcharray.push(ltxt("Rating", AF.LNG))
-					switcharray.push(ltxt("Arcade System", AF.LNG))
 
-					switchnotes.push(z_list.gametable[z_list.index].z_year)
-					switchnotes.push((z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0, 3) : "") + "x")
-					switchnotes.push(z_list.gametable[z_list.index].z_manufacturer)
-					try {
-						switchnotes.push(split(z_list.gametable[z_list.index].z_category, "/")[0])
-					}
-					catch(err) {
-						switchnotes.push("?")
-					}
-					switchnotes.push(z_list.gametable[z_list.index].z_category)
-					switchnotes.push(z_list.gametable[z_list.index].z_rotation)
-					switchnotes.push((z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes", AF.LNG) : ltxt("No", AF.LNG)))
-					switchnotes.push(z_list.gametable[z_list.index].z_series)
-					switchnotes.push(z_list.gametable[z_list.index].z_rating)
-					switchnotes.push(z_list.gametable[z_list.index].z_arcadesystem)
+					local motsdata = [{
+						text = ltxt("Year", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_year
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_year == "")
+						skip = (z_list.gametable[z_list.index].z_year == "")
+					},{
+						text = ltxt("Decade", AF.LNG),
+						glyph = 0,
+						note = (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0, 3) : "") + "x"
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_year == "")
+						skip = (z_list.gametable[z_list.index].z_year == "")
+					},{
+						text = ltxt("Manufacturer", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_manufacturer
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_manufacturer == "")
+						skip = (z_list.gametable[z_list.index].z_manufacturer == "")						
+					},{
+						text = ltxt("Main Category", AF.LNG),
+						glyph = 0,
+						note = split(z_list.gametable[z_list.index].z_category, "/")[0],
+						liner = false,
+						fade = (split(z_list.gametable[z_list.index].z_category, "/")[0] == ""),
+						skip = (split(z_list.gametable[z_list.index].z_category, "/")[0] == "")							
+					},{
+						text = ltxt("Sub Category", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_category
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_category == "")
+						skip = (z_list.gametable[z_list.index].z_category == "")							
+					},{
+						text = ltxt("Orientation", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_rotation
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_rotation == "")
+						skip = (z_list.gametable[z_list.index].z_rotation == "")	
+					},{
+						text = ltxt("Favourite state", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes", AF.LNG) : ltxt("No", AF.LNG)
+						liner = false
+						fade = false
+						skip = false							
+					},{
+						text = ltxt("Series", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_series
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_series == "")
+						skip = (z_list.gametable[z_list.index].z_series == "")							
+					},{
+						text = ltxt("Rating", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_rating
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_rating == "")
+						skip = (z_list.gametable[z_list.index].z_rating == "")							
+					},{
+						text = ltxt("Arcade System", AF.LNG),
+						glyph = 0,
+						note = z_list.gametable[z_list.index].z_arcadesystem
+						liner = false
+						fade = (z_list.gametable[z_list.index].z_arcadesystem == "")
+						skip = (z_list.gametable[z_list.index].z_arcadesystem == "")							
+					}]
 
-					local numset = switcharray.len()
+					local numset = motsdata.len()
 
-					switcharray.extend(taglist.map(function(value) {return ("🏷 " + value)}))
-					for (local i = switchnotes.len(); i < switcharray.len(); i++) switchnotes.push(" ")
+					motsdata.extend(taglist.map(function(value) {return ({
+						text = "🏷 " + value
+						glyph = 0
+						note = ""
+						liner = false
+						fade = false
+						skip = false
+					})}))
 
-					local numtag = switcharray.len()
+					local numtag = motsdata.len()
 					
-					foreach (i, item in switcharray) switchglyph.push("")
-					
-					switcharray.push("")
-					switchnotes.push(" ")
-					switchglyph.push(-1)
+					motsdata.push({
+						text = ""
+						glyph = 0
+						note = ""
+						liner = true
+						fade = false
+						skip = false						
+					})
+					motsdata.push({
+						text = ltxt("RESET", AF.LNG)
+						glyph = 0xea0f
+						note = ""
+						liner = false
+						fade = false
+						skip = false						
+					})
 
-					switcharray.push(ltxt("RESET", AF.LNG))
-					switchnotes.push(" ")
-					switchglyph.push(0xea0f)
 
 					local hidemenu = false
 					
 					frostshow()
-					zmenudraw(switcharray, switchglyph, switchnotes, ["",true], "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, false, false, false, false, false,
+					zmenudraw2(motsdata, true, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, false, false, false, false, false,
 					function(result) {
-						if (result == numtag) {
+						if (result == numtag+1) {
 							search.mots2string = ""
 							search.mots = ["", ""]
 							updatesearchdatamsg()
