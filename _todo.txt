@@ -1,3 +1,34 @@
+
+Note su nuovo zmenu:
+invece di passare array su array, passare un array in cui ogni elemento è una tabella.
+la tabella contiene i dati di ogni campo:
+
+{
+	text
+	glyph
+	note
+	fade
+	liner
+	skip
+}
+
+Sulla base di questi dati vengono costruiti gli array interni a zmenu
+sulla base di liner e skip viene costruito un array di target:
+
+target[i].down è il target a scendere, target[i].up è a salire, come per le label,
+così facendo non c'è più bisogno di fare tanti calcoli ma si salta direttamente al target.
+
+come implementare il force? io farei:
+
+target[i] = {
+	up = 
+	down =
+	upforce =
+	downforce =
+}
+
+---
+
 misc.gamblingboard
 misc.order
 misc.prediction

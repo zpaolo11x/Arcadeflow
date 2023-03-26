@@ -11833,6 +11833,9 @@ function update_allgames_collections(verbose, tempprf) {
 /// Zmenu definition ///
 
 zmenu = {
+	data = []
+	target = []
+
 	items = []
 	tilew = overlay.w
 	tileh = floor(overlay.menuheight / overlay.rows)
@@ -11851,7 +11854,7 @@ zmenu = {
 	shown = 0 // Number of entry in the list
 	selected = 0 // Index of the selected entry
 	glyphs = []
-	notes = []
+
 	noteitems = []
 	glyphw = floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
 	glyphh = floor(overlay.menuheight / overlay.rows)
@@ -11982,12 +11985,77 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+function zmenudraw(menudata, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+	zmenu.data = menudata
 	zmenu.singleline = singleline
+	zmenu.midscroll = midscroll
+	zmenu.shown = menudata.len()
 
+	local nextarray = []
+	local prevarray = []
+
+	zmenu.target = []
+	foreach (i, item in zmenu.data){
+		zmenu.target.push({up = 0, down = 0, upforce = 0, downforce = 0 })
+	}
+	// Build liner skip array
+	foreach(i, item in menudata){
+		if (menudata[i].liner) {
+			prevarray.push(0) 
+			nextarray.push(0) 
+		}
+		else {
+
+			local targetdown = i + 1
+			while (targetdown < 2 * zmenu.shown){
+				if (menudata[targetdown % zmenu.shown].liner){
+					targetdown ++
+				}
+				else {
+					zmenu.target[i].down = targetdown % zmenu.shown
+					break
+				}
+			}
+
+			local targetup = (zmenu.shown + i - 1)
+			while (targetup >= 0){
+				if (menudata[targetup % zmenu.shown].liner){
+					targetup --
+				}
+				else {
+					zmenu.target[i].up = targetup % zmenu.shown
+					break
+				}
+			}
+			local targetdownforce = i + 1
+			while (targetdownforce < 2 * zmenu.shown){
+				if (menudata[targetdownforce % zmenu.shown].skip){
+					targetdownforce ++
+				}
+				else {
+					zmenu.target[i].downforce = targetdownforce % zmenu.shown
+					break
+				}
+			}
+
+			local targetupforce = (zmenu.shown + i - 1)
+			while (targetupforce >= 0){
+				if (menudata[targetupforce % zmenu.shown].skip){
+					targetupforce --
+				}
+				else {
+					zmenu.target[i].upforce = targetupforce % zmenu.shown
+					break
+				}
+			}
+		}
+	}
+	
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
 
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
+
+	local noteskip = [null,false]
 
 	if (noteskip != null){
 		count.noteskip = noteskip[0]
@@ -11998,24 +12066,15 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 	}
 
 	count.skipup = count.noteskipup = 0
-	count.skipdown = count.noteskipdown = menuarray.len() - 1
+	count.skipdown = count.noteskipdown = menudata.len() - 1
 	count.forceup = false
 	count.forcedown = false
 
-	zmenu.midscroll = midscroll
-
 	foreach (item in overlay.shad) item.visible = true
 	flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.08, 0.0)
-
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
-	if (sidearray == null) {
-		sidearray = array(menuarray.len(), "")
-	}
-
-	zmenu.notes = sidearray
-
-	foreach (i, item in zmenu.notes) try {zmenu.notes[i] = zmenu.notes[i].toupper()} catch(err) {}
+	foreach (i, item in zmenu.data) try {zmenu.data[i].note = zmenu.data[i].note.toupper()} catch(err) {}
 	foreach (item in disp.images) {
 		item.file_name = AF.folder + "pics/transparent.png"
 	}
@@ -12055,13 +12114,6 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 
 	zmenu.showing = true
 
-	if (glypharray == null) {
-		glypharray = []
-		for (local i = 0; i < menuarray.len(); i++) {
-			glypharray.push(" ")
-		}
-	}
-
 	local artname = ""
 	local filename = ""
 	local obj_item = null
@@ -12086,12 +12138,12 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 		zmenu.noteitems[i].visible = false
 		zmenu.strikelines[i].visible = false
 	}
-	zmenu.virtualheight = zmenu.tileh * menuarray.len()
+	zmenu.virtualheight = zmenu.tileh * menudata.len()
 	zmenu.midoffset = zmenu.height * 0.5 - zmenu.virtualheight * 0.5
 
 	// Generate items for menu display
 	local iskip = 0
-	for (local i = 0; i < menuarray.len(); i++) {
+	for (local i = 0; i < menudata.len(); i++) {
 		if (i >= zmenu.items.len()) {
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0, 0, 1, 1)
@@ -12107,7 +12159,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 		}
 		zmenu.noteitems[i].set_pos(noteitems_x, zmenu.midoffset + i * zmenu.tileh, noteitems_w, zmenu.tileh)
 		zmenu.noteitems[i].visible = true
-		zmenu.noteitems[i].msg = zmenu.notes[i]
+		zmenu.noteitems[i].msg = zmenu.data[i].note
 		zmenu.noteitems[i].font = uifonts.gui
 		zmenu.noteitems[i].char_size = overlay.charsize
 		zmenu.noteitems[i].word_wrap = true
@@ -12127,7 +12179,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 		zmenu.glyphs[i].margin = 0
 		zmenu.glyphs[i].char_size = overlay.charsize * 1.25
 		zmenu.glyphs[i].align = Align.MiddleCentre
-		zmenu.glyphs[i].msg = (glypharray[i] == -1) ? "" : gly(glypharray[i])
+		zmenu.glyphs[i].msg = gly(menudata[i].glyph)
 		//zmenu.glyphs[i].set_bg_rgb (100, 0, 0)
 		zmenu.glyphs[i].bg_alpha = 0
 		zmenu.glyphs[i].set_rgb(255, 255, 255)
@@ -12140,7 +12192,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 			zmenu.items[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
 		zmenu.items[i].set_pos(items_x, zmenu.midoffset + i * zmenu.tileh, items_w, zmenu.tileh)
-		zmenu.items[i].msg = menuarray[i]
+		zmenu.items[i].msg = menudata[i].text
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW", AF.LNG)
 		zmenu.items[i].font = uifonts.gui
 		zmenu.items[i].char_size = overlay.charsize
@@ -12160,14 +12212,14 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 
 		if (zmenu.dmp || zmenu.sim) zmenu.noteitems[i].visible = false
 
-		if (glypharray[i] == -1) {
+		if (menudata[i].liner) {
 			zmenu.items[i].msg = zmenu.items[i].msg.toupper()
 			zmenu.items[i].font = uifonts.lite
 			zmenu.items[i].align = Align.MiddleCentre
 			zmenu.items[i].set_bg_rgb (0, 0, 0)
 			zmenu.items[i].bg_alpha = 255
 			zmenu.items[i].x = floor((shrink ? zmenu.tilew - disp.width : zmenu.tilew) * 0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
-			zmenu.items[i].width = zmenu.items[i].msg_width + 2 *zmenu.pad
+			zmenu.items[i].width = zmenu.items[i].msg_width + 2 * zmenu.pad
 			zmenu.items[i].visible = zmenu.items[i].msg != ""
 			zmenu.strikelines[i].visible = true
 		}
@@ -12179,30 +12231,30 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 				zmenu.noteitems[i].width = noteitems_w - zmenu.noteitems[i].x
 				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
 			}
-			else if (glypharray[i] != -1) {
+			else if (!menudata[i].liner) {
 				zmenu.items[i].width = items_w - zmenu.noteitems[i].msg_width - zmenu.pad - items_x
 			}
 		}
 
 		if (zmenu.dmp && prf.ALLGAMES) {
-			if (z_af_collections.tab.rawin(menuarray[i])) {
-				zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menuarray[i]].groupedname : z_af_collections.tab[menuarray[i]].ungroupedname
+			if (z_af_collections.tab.rawin(menudata[i].text)) {
+				zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menudata[i].text].groupedname : z_af_collections.tab[menuarray[i]].ungroupedname
 			}
 		}
 
 		if ((prf.DMPIMAGES != null) && zmenu.dmp) {
-			artname = FeConfigDirectory + "menu-art/snap/" + menuarray[i]
+			artname = FeConfigDirectory + "menu-art/snap/" + menudata[i].text
 			filename = ""
 
 			local system_art = ""
 			if (prf.DMPGENERATELOGO) {
-				try {system_art = system_data[menuarray[i].tolower()].sysname}
+				try {system_art = system_data[menudata[i].text.tolower()].sysname}
 				catch(err) {/*print("system data error")*/}
 			}
 
 			if (prf.ALLGAMES) {
-				if (z_af_collections.tab.rawin(menuarray[i])) {
-					system_art = z_af_collections.tab[menuarray[i]].filename
+				if (z_af_collections.tab.rawin(menudata[i].text)) {
+					system_art = z_af_collections.tab[menudata[i].text].filename
 				}
 			}
 
@@ -12213,7 +12265,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 			}
 			else if (prf.DMPIMAGES == "WALLS") {
 				if (file_exist (AF.folder+ "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
-				else if (file_exist (AF.folder+ "system_bgs/" + menuarray[i] + ".jpg")) af_art = AF.folder + "system_bgs/" + menuarray[i] + ".jpg"
+				else if (file_exist (AF.folder+ "system_bgs/" + menudata[i].text + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].text + ".jpg"
 			}
 
 			if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
@@ -12230,9 +12282,9 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 			if (filename == null) filename = ""
 			if (!dmpart) filename = ""
 
-		  if (glypharray[i] == -1) filename = AF.folder + "pics/transparent.png"
+		  if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
 
-			if (glypharray[i] != -1) iskip = iskip + 1.0 else iskip = iskip + 0.0
+			if (!menudata[i].liner) iskip = iskip + 1.0 else iskip = iskip + 0.0
 
 			if (i >= disp.images.len()) {
 				disp.noskip.push(null)
@@ -12268,7 +12320,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 			disp.images[i].visible = true
 			disp.images[i].zorder = 100
 
-			if (z_af_collections.tab.rawin(menuarray[i])) disp.images[i].blend_mode = BlendMode.Premultiplied
+			if (z_af_collections.tab.rawin(menudata[i].text)) disp.images[i].blend_mode = BlendMode.Premultiplied
 				else disp.images[i].blend_mode = 0
 
 			disp.pos0[i] = disp.images[i].y + ((prf.DMPIMAGES == "WALLS") ? (zmenu.height - disp.bgtileh) * 0.5 : 0)
@@ -12290,17 +12342,16 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 	//Centering
 	if (center) {
 		local maxwidth = 0
-		for (local i = 0; i < glypharray.len(); i++) {
+		for (local i = 0; i < menudata.len(); i++) {
 			if (zmenu.items[i].msg_width > maxwidth) maxwidth = zmenu.items[i].msg_width
 		}
 
-		for (local i = 0; i < glypharray.len(); i++) {
+		for (local i = 0; i < menudata.len(); i++) {
 			zmenu.glyphs[i].x = max((zmenu.width * 0.5 - 0.5 * maxwidth - zmenu.glyphs[i].width), 0)
 			if (shrink) zmenu.glyphs[i].x = zmenu.pad * 0.5
 		}
 	}
 
-	zmenu.shown = menuarray.len()
 	zmenu.selected = presel
 	while (zmenu.strikelines[zmenu.selected].visible) {
 		zmenu.selected ++
@@ -12321,7 +12372,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 		//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 	}
 
-	zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
+	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	zmenu.sidelabel.visible = zmenu.dmp || zmenu.sim
 
 	zmenu.items[zmenu.selected].set_rgb(0, 0, 0)
@@ -12376,7 +12427,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 			zmenu.items[i].set_rgb (255, 255, 255)
 			zmenu.noteitems[i].set_rgb (255, 255, 255)
 			zmenu.glyphs[i].set_rgb (255, 255, 255)
-			if ((zmenu.notes[i] == count.noteskip)) {
+			if ((zmenu.data[i].fade)) {
 				zmenu.items[i].set_rgb(81, 81, 81)
 			 	zmenu.noteitems[i].set_rgb(81, 81, 81)
 			}
@@ -12405,7 +12456,7 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 
 		if (prf.DMPGENERATELOGO) {
 			for (local i = 0; i < ((prf.DMPEXITAF && (zmenu.jumplevel == 0)) ? zmenu.shown - 1 : zmenu.shown); i++) {
-				if (glypharray[i] != -1) {
+				if (!menudata[i].liner) {
 					zmenu.items[i].font = uifonts.gui
 					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.LOWRES?0.65:0.7))
 					zmenu.items[i].align = Align.MiddleCentre
@@ -12436,17 +12487,6 @@ function zmenudraw(menuarray, glypharray, sidearray, noteskip, title, titleglyph
 		count.skipup ++
 		i++
 	}
-
-	i = 0
-	while (((zmenu.notes[i] == count.noteskip)) && (i < zmenu.shown)) {
-		count.noteskipup ++
-		i++
-	}
-	i = zmenu.shown - 1
-	while (((zmenu.notes[i] == count.noteskip)) && (i >= 0)) {
-		count.noteskipdown --
-		i--
-	}
 }
 
 function zmenuhide() {
@@ -12469,8 +12509,24 @@ function zmenuhide() {
 
 function zmenunavigate_up(signal, noteskip = false) {
 
+	if (zmenu.selected - zmenu.target[zmenu.selected].up > 0){
+		zmenu.selected = zmenu.target[zmenu.selected].up
+	}
+	else if (count[signal] == 0){
+		zmenu.selected = zmenu.target[zmenu.selected].up
+		count.forceup = false
+	 }
+	else if ((!count.forceup) && (count[signal] != 0)) {
+		testpr("2\n")
+		count.forceup = true
+	}
+	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
+	count[signal] ++ 
+
+/*
 	noteskip = (noteskip || count.noteforce)
 	if ((!noteskip && (zmenu.selected > count.skipup)) || (noteskip && (zmenu.selected > count.noteskipup))) {
+		testpr("A\n")
 		zmenu.selected = zmenu.selected - 1
 
 		while ((zmenu.strikelines[zmenu.selected].visible) || (noteskip && (zmenu.notes[zmenu.selected] == count.noteskip))) {
@@ -12485,6 +12541,7 @@ function zmenunavigate_up(signal, noteskip = false) {
 		}
 	}
 	else if ((count[signal] == 0)) {
+		testpr("B\n")
 		zmenu.selected = zmenu.shown - 1
 
 		while ((zmenu.strikelines[zmenu.selected].visible) || (noteskip && (zmenu.notes[zmenu.selected] == count.noteskip))) {
@@ -12496,14 +12553,30 @@ function zmenunavigate_up(signal, noteskip = false) {
 		//return true
 	}
 	else if ((!count.forceup) && (count[signal] != 0)) {
+		testpr("C\n")
 		count.forceup = true
 		//return true
 	}
-	zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
+	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	count[signal] ++
+	*/
 }
 
 function zmenunavigate_down(signal, noteskip = false) {
+	if (zmenu.target[zmenu.selected].down - zmenu.selected > 0){
+		zmenu.selected = zmenu.target[zmenu.selected].down
+	}
+	else if (count[signal] == 0){
+		zmenu.selected = zmenu.target[zmenu.selected].down
+		count.forcedown = false
+	 }
+	else if ((!count.forcedown) && (count[signal] != 0)) {
+		testpr("2\n")
+		count.forcedown = true
+	}
+	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
+	count[signal] ++ 
+	/*
 	noteskip = (noteskip || count.noteforce)
 	if ((!noteskip && (zmenu.selected < count.skipdown)) || (noteskip && (zmenu.selected < count.noteskipdown))) {
 
@@ -12535,8 +12608,9 @@ function zmenunavigate_down(signal, noteskip = false) {
 		//return true
 	}
 
-	zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
+	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	count[signal] ++
+	*/
 }
 
 zmenu.xstop = 0
@@ -17174,6 +17248,23 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
 
+	//TEST160
+	if (sig=="custom1"){
+		local menudata = [
+			{text = "zero", glyph = 0xea36, note = "", fade = false, liner = true, skip = false},
+			{text = "uno", glyph = 0xea36, note = "test1", fade = false, liner = false, skip = false},
+			{text = "due", glyph = 0xea36, note = "test2", fade = true, liner = false, skip = true},
+			{text = "tre", glyph = "", note = "", fade = false, liner = true, skip = false},
+			{text = "quattro", glyph = 0xea36, note = "", fade = false, liner = false, skip = false},
+			{text = "cinque", glyph = 0xea36, note = "", fade = false, liner = false, skip = false}
+			{text = "zero", glyph = 0xea36, note = "", fade = false, liner = true, skip = false},
+		]
+		frostshow()
+		zmenudraw (menudata,"Test Menu", 0xe91c, 0, false, false, false, false, false, function(out) {
+			return
+		})
+	}
+
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
 	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
@@ -17469,7 +17560,7 @@ function on_signal(sig) {
 			if (checkrepeat(count.left)) {
 				if (zmenu.reactleft == null) {
 					zmenu.selected = count.skipup
-					zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
+					zmenu.sidelabel.msg = zmenu[zmenu.selected].note
 				}
 				else zmenu.reactleft()
 				count.left ++
@@ -17527,7 +17618,7 @@ function on_signal(sig) {
 					zmenu.noteitems[i].set_rgb (0, 0, 0)
 					zmenu.glyphs[i].set_rgb (0, 0, 0)
 				}
-				if ((zmenu.notes[i] == count.noteskip)) {
+				if ((zmenu.data[i].fade)) {
 					zmenu.items[i].set_rgb(81, 81, 81)
 					zmenu.noteitems[i].set_rgb(81, 81, 81)
 				}
