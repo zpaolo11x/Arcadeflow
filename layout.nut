@@ -4803,6 +4803,8 @@ function metamenu(starter) {
 	local gamename = z_list.gametable[z_list.index].z_name
 	local romlist = z_list.gametable[z_list.index].z_emulator
 
+	local metamenudat = []
+
 	foreach (id, item in metadata.ids) {
 		metavals.push(z_list.gametable[z_list.index][item])
 		try {metavals[id] = z_list.dboriginal[romlist][gamename][item]} catch(err) {}
@@ -4818,9 +4820,20 @@ function metamenu(starter) {
 		} catch(err) {}
 		metanotes.push(metavals[id])
 	}
-	zmenudraw(metadata.names, metaglyphs, metanotes, null, ltxt("Game Metadata", AF.LNG), 0xe906, starter, false, false, false, false, false,
-	function(result) {
 
+	foreach (i, item in metadata.names){
+		metamenudat.push ({
+			text = metadata.names[i]
+			glyph = metaglyphs[i]
+			note = metanotes[i]
+			fade = false
+			liner = false
+			skip = false
+		})
+	}
+
+	zmenudraw2(metamenudat, false, ltxt("Game Metadata", AF.LNG), 0xe906, starter, false, false, false, false, false,
+	function(result) {
 		if (result != -1) {
 			local meta_unedited = ""
 			try {meta_unedited = z_list.dboriginal[romlist][gamename][metadata.ids[result]]} catch(err) {
@@ -9145,37 +9158,34 @@ function overlay_hide() {
 
 /// Preferences overlay ///
 
-function getsubmenu(index) {
+function getsubmenunotes(index, i) {		
+	local selection = AF.prefs.l1[index][i].selection
+	
+	if (selection == AF.req.keyboard) return("⌨")
+	else if ((selection == AF.req.executef) || (selection == AF.req.exenoret)) return("⏩")
+	else if (selection == AF.req.filereqs) return("⏏")
+	else if (selection == AF.req.menusort) return("☰")
+	else if (selection == AF.req.slideint) return(AF.prefs.l1[index][i].values)
+	else if (selection < 0) return("")
+	else return(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
+	
+}
+
+function getsubmenudata(index) {
 	local out = []
 	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
-		out.push(AF.prefs.l1[index][i].title)
+		out.push({
+			text = AF.prefs.l1[index][i].title,
+			glyph = AF.prefs.l1[index][i].glyph,
+			note = getsubmenunotes(index, i),
+			fade = false,
+			liner = (AF.prefs.l1[index][i].glyph == -1),
+			skip = false
+		})
 	}
 	return out
 }
 
-function getsubmenuglyphs(index) {
-	local out = []
-	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
-		out.push(AF.prefs.l1[index][i].glyph)
-	}
-	return out
-}
-
-function getsubmenunotes(index) {
-	local out = []
-	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
-
-		local selection = AF.prefs.l1[index][i].selection
-		if 	  (selection == AF.req.keyboard) out.push("⌨")
-		else if ((selection == AF.req.executef) || (selection == AF.req.exenoret))out.push("⏩")
-		else if (selection == AF.req.filereqs) out.push("⏏")
-		else if (selection == AF.req.menusort) out.push("☰")
-		else if (selection == AF.req.slideint) out.push(AF.prefs.l1[index][i].values)
-		else if (selection < 0) out.push("")
-		else out.push(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
-	}
-	return out
-}
 
 local prfmenu = {
 	res0 = 0
@@ -9278,7 +9288,19 @@ function optionsmenu_lev3() {
 	updatemenu(prfmenu.level, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection)
 	if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection >= 0) {
 		// MULTIPLE CHOICE OPTION (selection >= 0)
-		zmenudraw(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options, buildselectarray(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection), null, null, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, false, false, true, false, false,
+
+		local menu_lev3 = []
+		foreach (i, item in AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options){
+			menu_lev3.push({
+				text = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options[i],
+				glyph = (i == AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection ? 0xea10 : 0),
+				note = "",
+				fade = false,
+				liner = false,
+				skip = false
+			})
+		}
+		zmenudraw2(menu_lev3, false, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, false, false, true, false, false,
 		function(prfmenures2) {
 			prfmenu.res2 = prfmenures2
 			if (prfmenu.res2 != -1) {
@@ -9381,7 +9403,7 @@ function optionsmenu_lev2() {
 
 	updatemenu(prfmenu.level, prfmenu.outres1)
 
-	zmenudraw(getsubmenu(prfmenu.outres0), getsubmenuglyphs(prfmenu.outres0), getsubmenunotes(prfmenu.outres0), null, AF.prefs.l0[prfmenu.outres0].label, AF.prefs.l0[prfmenu.outres0].glyph, prfmenu.outres1, false, false, false, false, false,
+	zmenudraw2(getsubmenudata(prfmenu.outres0), false, AF.prefs.l0[prfmenu.outres0].label, AF.prefs.l0[prfmenu.outres0].glyph, prfmenu.outres1, false, false, false, false, false,
 	function(prfmenures1) {
 		prfmenu.res1 = prfmenures1
 		// EXIT FROM SUBMENU 1
@@ -9480,7 +9502,7 @@ function optionsmenu_lev1() {
 	}
 
 	// First level menu
-	zmenudraw(menu_lev1, false, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, false, false, false, false, false,
+	zmenudraw2(menu_lev1, false, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, false, false, false, false, false,
 	function(prfmenures0) {
 		// EXIT FROM OPTIONSMENU
 		prfmenu.res0 = prfmenures0
@@ -11994,7 +12016,7 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-function zmenudraw(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
 	zmenu.data = menudata
 	zmenu.singleline = singleline
 	zmenu.midscroll = midscroll
@@ -14280,7 +14302,8 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("Sort and Filter", AF.LNG)
-		glyph = -1
+		glyph = 0
+		liner = true
 		visible = true
 		order = 0
 		id = 0
@@ -14291,6 +14314,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Sort by", AF.LNG)
 		glyph = 0xea4c
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14353,6 +14377,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Jump to", AF.LNG)
 		glyph = 0xea22
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14399,6 +14424,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Favourites Filter", AF.LNG)
 		glyph = 0xe9d9
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14415,6 +14441,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Multifilter", AF.LNG)
 		glyph = 0xeaed
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14432,6 +14459,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Filters", AF.LNG)
 		glyph = 0xea5b
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14446,6 +14474,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Displays", AF.LNG)
 		glyph = 0xe912
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14476,6 +14505,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Categories", AF.LNG)
 		glyph = 0xe916
+		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14490,6 +14520,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Search", AF.LNG)
 		glyph = 0xe986
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14503,7 +14534,8 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("Screensaver", AF.LNG)
-		glyph = -1
+		glyph = 0
+		liner = true
 		visible = true
 		order = 0
 		id = 0
@@ -14514,6 +14546,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Attract mode", AF.LNG)
 		glyph = 0xe9a5
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14528,7 +14561,8 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("Visuals", AF.LNG)
-		glyph = -1
+		glyph = 0
+		liner = true
 		visible = true
 		order = 0
 		id = 0
@@ -14539,6 +14573,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Snaps or Box-Art", AF.LNG)
 		glyph = 0xeaf3
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14560,6 +14595,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Reset Box Art", AF.LNG)
 		glyph = 0xe965
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14577,7 +14613,8 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("RetroArch Integration", AF.LNG)
-		glyph = -1
+		glyph = 0
+		liner = true		
 		visible = true
 		order = 0
 		id = 0
@@ -14588,6 +14625,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Change core assignment", AF.LNG)
 		glyph = 0xeafa
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14603,7 +14641,8 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("System", AF.LNG)
-		glyph = -1
+		glyph = 0
+		liner = true
 		visible = true
 		order = 0
 		id = 0
@@ -14614,6 +14653,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Layout options", AF.LNG)
 		glyph = 0xe991
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14629,6 +14669,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Check for updates", AF.LNG)
 		glyph = 0xe91c
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14644,6 +14685,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Install from repository", AF.LNG)
 		glyph = 0xe9c2
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14659,6 +14701,7 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("About Arcadeflow", AF.LNG)
 		glyph = 0xea09
+		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14714,11 +14757,23 @@ function utilitymenu(presel) {
 	local idarray1 = []
 	local sidearray1 = []
 
+	local umdata = []
+
 	local i_pos = 0
 	local i_id = 0
 
 	foreach (item in umtable) {
 		if (item.visible) {
+
+			umdata.push({
+				text = item.label
+				glyph = item.glyph
+				note = item.sidenote()
+				fade = false
+				liner = item.liner
+				skip = false
+			})
+
 			switcharray1.push(item.label)
 			glypharray1.push(item.glyph)
 			posarray1.push(i_pos)
@@ -14730,7 +14785,7 @@ function utilitymenu(presel) {
 	}
 
 	frostshow()
-	zmenudraw(switcharray1, glypharray1, sidearray1, null, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, false, false, false, false, false,
+	zmenudraw2(umdata, true, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, false, false, false, false, false,
 	function(result1) {
 		if (result1 == -1) {
 			umvisible = false
@@ -17702,7 +17757,16 @@ function on_signal(sig) {
 			frostshow()
 			overmenu_hide(false)
 
-			zmenudraw(ltxt(["More of the same...", "Similar Games", "Scrape selected game", "Edit metadata", "CAUTION!", "Delete ROM"], AF.LNG), [0xe987, 0xeaf7, 0xe9c2, 0xe906, -1, 0xe9ac], ["", "", "", "", "", prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)], null, ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
+
+
+			zmenudraw2([
+				{text = ltxt("More of the same...",AF.LNG), glyph = 0xe987, note = "", fade = false, liner = false, skip = false},
+				{text = ltxt("Similar Games",AF.LNG), glyph = 0xeaf7, note = "", fade = false, liner = false, skip = false},
+				{text = ltxt("Scrape selected game",AF.LNG), glyph = 0xe9c2, note = "", fade = false, liner = false, skip = false},
+				{text = ltxt("Edit metadata",AF.LNG), glyph = 0xe906, note = "", fade = false, liner = false, skip = false},
+				{text = ltxt("CAUTION!",AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false},
+				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe906, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG), fade = false, liner = false, skip = false}],
+			false, ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
 			function(result) {
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
