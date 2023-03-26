@@ -2024,10 +2024,7 @@ local count = {
 	forceright = false
 	forceup = false
 	forcedown = false
-	skipup = 0
-	skipdown = 0
-	// mfskipdown = 0
-	noteskip = null
+
 	noteforce = false
 	noteskipdown = 0
 	noteskipup = 0
@@ -9528,6 +9525,7 @@ function optionsmenu_lev1() {
 	},
 	null,
 	function() {
+		//TEST160 cambiare questo col nuovo menu
 		for (local i = zmenu.selected; i < items.len(); i++) {
 			if (zmenu.strikelines[i].visible) {
 				zmenu.selected = i + 1
@@ -11835,6 +11833,8 @@ function update_allgames_collections(verbose, tempprf) {
 zmenu = {
 	data = []
 	target = []
+	firstitem = 0
+	forceskip = false
 
 	items = []
 	tilew = overlay.w
@@ -11985,11 +11985,12 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-function zmenudraw(menudata, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+function zmenudraw(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
 	zmenu.data = menudata
 	zmenu.singleline = singleline
 	zmenu.midscroll = midscroll
 	zmenu.shown = menudata.len()
+	zmenu.forceskip = forceskip
 
 	local nextarray = []
 	local prevarray = []
@@ -12000,73 +12001,61 @@ function zmenudraw(menudata, title, titleglyph, presel, shrink, dmpart, center, 
 	}
 	// Build liner skip array
 	foreach(i, item in menudata){
-		if (menudata[i].liner) {
-			prevarray.push(0) 
-			nextarray.push(0) 
-		}
-		else {
 
-			local targetdown = i + 1
-			while (targetdown < 2 * zmenu.shown){
-				if (menudata[targetdown % zmenu.shown].liner){
-					targetdown ++
-				}
-				else {
-					zmenu.target[i].down = targetdown % zmenu.shown
-					break
-				}
+		local targetdown = i + 1
+		while (targetdown < 2 * zmenu.shown){
+			if (menudata[targetdown % zmenu.shown].liner){
+				targetdown ++
 			}
-
-			local targetup = (zmenu.shown + i - 1)
-			while (targetup >= 0){
-				if (menudata[targetup % zmenu.shown].liner){
-					targetup --
-				}
-				else {
-					zmenu.target[i].up = targetup % zmenu.shown
-					break
-				}
-			}
-			local targetdownforce = i + 1
-			while (targetdownforce < 2 * zmenu.shown){
-				if (menudata[targetdownforce % zmenu.shown].skip){
-					targetdownforce ++
-				}
-				else {
-					zmenu.target[i].downforce = targetdownforce % zmenu.shown
-					break
-				}
-			}
-
-			local targetupforce = (zmenu.shown + i - 1)
-			while (targetupforce >= 0){
-				if (menudata[targetupforce % zmenu.shown].skip){
-					targetupforce --
-				}
-				else {
-					zmenu.target[i].upforce = targetupforce % zmenu.shown
-					break
-				}
+			else {
+				zmenu.target[i].down = targetdown % zmenu.shown
+				break
 			}
 		}
+
+		local targetup = (zmenu.shown + i - 1)
+		while (targetup >= 0){
+			if (menudata[targetup % zmenu.shown].liner){
+				targetup --
+			}
+			else {
+				zmenu.target[i].up = targetup % zmenu.shown
+				break
+			}
+		}
+		local targetdownforce = i + 1
+		while (targetdownforce < 2 * zmenu.shown){
+			if (menudata[targetdownforce % zmenu.shown].skip || menudata[targetdownforce % zmenu.shown].liner){
+				targetdownforce ++
+			}
+			else {
+				zmenu.target[i].downforce = targetdownforce % zmenu.shown
+				break
+			}
+		}
+
+		local targetupforce = (zmenu.shown + i - 1)
+		while (targetupforce >= 0){
+			if (menudata[targetupforce % zmenu.shown].skip || menudata[targetupforce % zmenu.shown].liner){
+				targetupforce --
+			}
+			else {
+				zmenu.target[i].upforce = targetupforce % zmenu.shown
+				break
+			}
+		}
+		
 	}
-	
+	foreach (i, item in zmenu.data){
+		testpr(i+" "+(zmenu.data[i].liner ? "-":" ")+" "+zmenu.target[i].down+" "+zmenu.target[i].up+"\n")
+	}
+
+	if (zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
+
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
 
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
 
-	local noteskip = [null,false]
-
-	if (noteskip != null){
-		count.noteskip = noteskip[0]
-		count.noteforce = noteskip[1]
-	} else {
-		count.noteskip = null
-		count.noteforce = false
-	}
-
-	count.skipup = count.noteskipup = 0
-	count.skipdown = count.noteskipdown = menudata.len() - 1
 	count.forceup = false
 	count.forcedown = false
 
@@ -12205,7 +12194,7 @@ function zmenudraw(menudata, title, titleglyph, presel, shrink, dmpart, center, 
 		zmenu.items[i].set_rgb(255, 255, 255)
 		//zmenu.items[i].set_bg_rgb(100, 0, 0)
 
-		if ((zmenu.noteitems[i].msg == count.noteskip)) {
+		if ((zmenu.data[i].fade)) {
 			zmenu.items[i].set_rgb	(81, 81, 81)
 			zmenu.noteitems[i].set_rgb (81, 81, 81)
 		}
@@ -12353,12 +12342,8 @@ function zmenudraw(menudata, title, titleglyph, presel, shrink, dmpart, center, 
 	}
 
 	zmenu.selected = presel
-	while (zmenu.strikelines[zmenu.selected].visible) {
-		zmenu.selected ++
-		if (zmenu.selected == zmenu.shown) {
-			zmenu.selected = 0
-		}
-	}
+	
+	if (zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if ((prf.DMPIMAGES != null) && zmenu.dmp) {
@@ -12480,13 +12465,6 @@ function zmenudraw(menudata, title, titleglyph, presel, shrink, dmpart, center, 
 			}
 		}
 	}
-
-	// After building menu define skipup limits
-	local i = 0
-	while (((zmenu.strikelines[i].visible)) && (i < zmenu.shown)) {
-		count.skipup ++
-		i++
-	}
 }
 
 function zmenuhide() {
@@ -12507,13 +12485,14 @@ function zmenuhide() {
 	zmenu.showing = false
 }
 
-function zmenunavigate_up(signal, noteskip = false) {
+function zmenunavigate_up(signal, forceskip = false) {
+	local tvalue = forceskip ? "upforce" : "up"
 
-	if (zmenu.selected - zmenu.target[zmenu.selected].up > 0){
-		zmenu.selected = zmenu.target[zmenu.selected].up
+	if (zmenu.selected - zmenu.target[zmenu.selected][tvalue] > 0){
+		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 	}
 	else if (count[signal] == 0){
-		zmenu.selected = zmenu.target[zmenu.selected].up
+		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 		count.forceup = false
 	 }
 	else if ((!count.forceup) && (count[signal] != 0)) {
@@ -12523,51 +12502,16 @@ function zmenunavigate_up(signal, noteskip = false) {
 	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	count[signal] ++ 
 
-/*
-	noteskip = (noteskip || count.noteforce)
-	if ((!noteskip && (zmenu.selected > count.skipup)) || (noteskip && (zmenu.selected > count.noteskipup))) {
-		testpr("A\n")
-		zmenu.selected = zmenu.selected - 1
-
-		while ((zmenu.strikelines[zmenu.selected].visible) || (noteskip && (zmenu.notes[zmenu.selected] == count.noteskip))) {
-			if ((!noteskip && (zmenu.selected > count.skipup)) || (noteskip && (zmenu.selected > count.noteskipup))) {
-				zmenu.selected = zmenu.selected - 1
-			}
-			else {
-				zmenu.selected = zmenu.selected + 1
-				if (!noteskip) count.skipup = zmenu.selected
-				else count.noteskipup = zmenu.selected
-			}
-		}
-	}
-	else if ((count[signal] == 0)) {
-		testpr("B\n")
-		zmenu.selected = zmenu.shown - 1
-
-		while ((zmenu.strikelines[zmenu.selected].visible) || (noteskip && (zmenu.notes[zmenu.selected] == count.noteskip))) {
-			if ((!noteskip && (zmenu.selected > count.skipup)) || (noteskip && (zmenu.selected > count.noteskipup))) {
-				zmenu.selected = zmenu.selected - 1
-			}
-		}
-		count.forceup = false
-		//return true
-	}
-	else if ((!count.forceup) && (count[signal] != 0)) {
-		testpr("C\n")
-		count.forceup = true
-		//return true
-	}
-	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
-	count[signal] ++
-	*/
 }
 
-function zmenunavigate_down(signal, noteskip = false) {
-	if (zmenu.target[zmenu.selected].down - zmenu.selected > 0){
-		zmenu.selected = zmenu.target[zmenu.selected].down
+function zmenunavigate_down(signal, forceskip = false) {
+	local tvalue = forceskip ? "downforce" : "down"
+
+	if (zmenu.target[zmenu.selected][tvalue] - zmenu.selected > 0){
+		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 	}
 	else if (count[signal] == 0){
-		zmenu.selected = zmenu.target[zmenu.selected].down
+		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 		count.forcedown = false
 	 }
 	else if ((!count.forcedown) && (count[signal] != 0)) {
@@ -12576,41 +12520,7 @@ function zmenunavigate_down(signal, noteskip = false) {
 	}
 	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	count[signal] ++ 
-	/*
-	noteskip = (noteskip || count.noteforce)
-	if ((!noteskip && (zmenu.selected < count.skipdown)) || (noteskip && (zmenu.selected < count.noteskipdown))) {
-
-		zmenu.selected = zmenu.selected + 1
-
-		while ((zmenu.strikelines[zmenu.selected].visible) || (noteskip && (zmenu.notes[zmenu.selected] == count.noteskip))) {
-			if ((!noteskip && (zmenu.selected < count.skipdown)) || (noteskip && (zmenu.selected < count.noteskipdown))) {
-				zmenu.selected = zmenu.selected + 1
-			}
-			else {
-				zmenu.selected = zmenu.selected - 1
-				if (!noteskip) count.skipdown = zmenu.selected
-				else count.noteskipdown = zmenu.selected
-			}
-		}
-	}
-	else if (count[signal] == 0) {
-		zmenu.selected = 0
-		while ((zmenu.strikelines[zmenu.selected].visible) || (noteskip && (zmenu.notes[zmenu.selected] == count.noteskip))) {
-			if ((!noteskip && (zmenu.selected < count.skipdown)) || (noteskip && (zmenu.selected < count.noteskipdown))) {
-				zmenu.selected = zmenu.selected + 1
-			}
-		}
-		count.forcedown = false
-		//return true
-	}
-	else if ((!count.forcedown) && (count[signal] != 0)) {
-		count.forcedown = true
-		//return true
-	}
-
-	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
-	count[signal] ++
-	*/
+	
 }
 
 zmenu.xstop = 0
@@ -17260,7 +17170,7 @@ function on_signal(sig) {
 			{text = "zero", glyph = 0xea36, note = "", fade = false, liner = true, skip = false},
 		]
 		frostshow()
-		zmenudraw (menudata,"Test Menu", 0xe91c, 0, false, false, false, false, false, function(out) {
+		zmenudraw (menudata,true,"Test Menu", 0xe91c, 0, false, false, false, false, false, function(out) {
 			return
 		})
 	}
@@ -17544,14 +17454,14 @@ function on_signal(sig) {
 
 		if (sig == "up") {
 			if (checkrepeat(count.up)) {
-				zmenunavigate_up("up")
+				zmenunavigate_up("up", zmenu.forceskip)
 			}
 			else return true
 		}
 
 		if (sig == "down") {
 			if (checkrepeat (count.down)) {
-				zmenunavigate_down("down")
+				zmenunavigate_down("down", zmenu.forceskip)
 			}
 			else return true
 		}
@@ -17559,8 +17469,8 @@ function on_signal(sig) {
 		if (sig == "left") {
 			if (checkrepeat(count.left)) {
 				if (zmenu.reactleft == null) {
-					zmenu.selected = count.skipup
-					zmenu.sidelabel.msg = zmenu[zmenu.selected].note
+					zmenu.selected = zmenu.firstitem
+					zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 				}
 				else zmenu.reactleft()
 				count.left ++
