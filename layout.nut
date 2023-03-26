@@ -17983,7 +17983,10 @@ function on_signal(sig) {
 					metamenu(0)
 				}
 				if (result == 5) { // Delete ROM
-					zmenudraw(ltxt(["Delete", "Cancel"], AF.LNG), [0xea10, 0xea0f], null, null, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
+					zmenudraw2([
+						{text = ltxt("Delete", AF.LNG), glyph = 0xea10, note = "", fade = false, liner = false, skip = false},
+						{text = ltxt("Cancel", AF.LNG), glyph = 0xea0f, note = "", fade = false, liner = false, skip = false}
+					], false, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
 					function(result) {
 						if (result == 0) {
 							deletecurrentrom()
