@@ -9467,8 +9467,20 @@ function optionsmenu_lev1() {
 	prfmenu.level = 1
 	updatemenu(prfmenu.level, prfmenu.outres0)
 
+	local menu_lev1 = []
+	foreach (i, value in AF.prefs.a0){
+		menu_lev1.push ({
+			text = AF.prefs.a0[i],
+			glyph = AF.prefs.gl0[i],
+			note = "",
+			fade = false,
+			liner = (AF.prefs.gl0[i] == -1),
+			skip = false
+		})
+	}
+
 	// First level menu
-	zmenudraw(AF.prefs.a0, AF.prefs.gl0, null, null, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, false, false, false, false, false,
+	zmenudraw(menu_lev1, false, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, false, false, false, false, false,
 	function(prfmenures0) {
 		// EXIT FROM OPTIONSMENU
 		prfmenu.res0 = prfmenures0
@@ -9525,15 +9537,12 @@ function optionsmenu_lev1() {
 	},
 	null,
 	function() {
-		//TEST160 cambiare questo col nuovo menu
 		for (local i = zmenu.selected; i < items.len(); i++) {
-			if (zmenu.strikelines[i].visible) {
+			if (zmenu.data[i].liner) {
 				zmenu.selected = i + 1
 				break
 			}
 		}
-		//zmenu.selected = 5
-		//optionsmenu_lev1()
 	})
 }
 
@@ -11992,16 +12001,14 @@ function zmenudraw(menudata, forceskip, title, titleglyph, presel, shrink, dmpar
 	zmenu.shown = menudata.len()
 	zmenu.forceskip = forceskip
 
-	local nextarray = []
-	local prevarray = []
-
 	zmenu.target = []
 	foreach (i, item in zmenu.data){
 		zmenu.target.push({up = 0, down = 0, upforce = 0, downforce = 0 })
 	}
-	// Build liner skip array
-	foreach(i, item in menudata){
+	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
+	// user defined skip values
 
+	foreach(i, item in menudata){
 		local targetdown = i + 1
 		while (targetdown < 2 * zmenu.shown){
 			if (menudata[targetdown % zmenu.shown].liner){
@@ -12012,7 +12019,6 @@ function zmenudraw(menudata, forceskip, title, titleglyph, presel, shrink, dmpar
 				break
 			}
 		}
-
 		local targetup = (zmenu.shown + i - 1)
 		while (targetup >= 0){
 			if (menudata[targetup % zmenu.shown].liner){
@@ -12033,7 +12039,6 @@ function zmenudraw(menudata, forceskip, title, titleglyph, presel, shrink, dmpar
 				break
 			}
 		}
-
 		local targetupforce = (zmenu.shown + i - 1)
 		while (targetupforce >= 0){
 			if (menudata[targetupforce % zmenu.shown].skip || menudata[targetupforce % zmenu.shown].liner){
@@ -12043,13 +12048,10 @@ function zmenudraw(menudata, forceskip, title, titleglyph, presel, shrink, dmpar
 				zmenu.target[i].upforce = targetupforce % zmenu.shown
 				break
 			}
-		}
-		
-	}
-	foreach (i, item in zmenu.data){
-		testpr(i+" "+(zmenu.data[i].liner ? "-":" ")+" "+zmenu.target[i].down+" "+zmenu.target[i].up+"\n")
+		}	
 	}
 
+	// Update first item index
 	if (zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
