@@ -9648,7 +9648,14 @@ function rgbselector(rgb, sel, old, start) {
 
 	local spaces = zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)
 
-	zmenudraw(["R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), ltxt("ACTIONS", AF.LNG), ltxt("APPLY", AF.LNG), ltxt("DEFAULT", AF.LNG)], [0, 0, 0, -1, 0, (start && (old == "")) ? 0xea10 : 0xe965], [rgb[0], rgb[1], rgb[2], "", "", ""], null, ltxt("RGB Color", AF.LNG), 0xe992, sel, false, false, false, false, false,
+	zmenudraw2([
+		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[0], liner = false, fade = false, skip = false}, 
+		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[1], liner = false, fade = false, skip = false},
+		{ text = "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[2], liner = false, fade = false, skip = false}, 
+		{ text = ltxt("ACTIONS", AF.LNG), glyph = 0, note = "", liner = true, fade = false, skip = false}, 
+		{ text = ltxt("APPLY", AF.LNG), glyph = 0, note = "", liner = false, fade = false, skip = false}, 
+		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = "", liner = false, fade = false, skip = false}],
+		false, ltxt("RGB Color", AF.LNG), 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			prfmenu.rgbshowing = false
