@@ -9646,8 +9646,8 @@ function rgbselector(rgb, sel, old, start) {
 	if (rgb.len() == 0) rgb = [255, 255, 255]
 	prfmenu.helppic.set_rgb(rgb[0], rgb[1], rgb[2])
 
-	local spaces = zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)
-
+	local spaces = (zmenu.width - zmenu.glyphw * 4) / (0.5 * uifonts.pixel * overlay.charsize)
+	testpr("spaces:"+spaces+"\n")
 	zmenudraw2([
 		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[0], liner = false, fade = false, skip = false}, 
 		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[1], liner = false, fade = false, skip = false},
