@@ -4848,24 +4848,16 @@ function metamenu(starter) {
 
 				local current_index = metadata.sub[result].find(metavals[result])
 				if (current_index != null) current_index = current_index + 2 else current_index = 0
-				local metaarray = []
-				local metanotes = []
-				local metaglyphs = []
 
-				metaarray.push(ltxt("Original", AF.LNG))
-				metanotes.push(meta_unedited)
-				metaglyphs.push(0xe965)
-
-				metaarray.push(ltxt("Values", AF.LNG))
-				metanotes.push("")
-				metaglyphs.push(-1)
-
+				local metamenu = [
+					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited, fade = false, liner = false, skip = false},
+					{text = ltxt("Values", AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false},
+				]
 				foreach (i, item in metadata.sub[result]) {
-					metaarray.push(metadata.sub[result][i])
-					metanotes.push("")
-					metaglyphs.push(0)
+					metamenu.push({text = metadata.sub[result][i], glyph = 0, note = "", fade = false, liner = false, skip = false})
 				}
-				zmenudraw(metaarray, metaglyphs, metanotes, null, metadata.names[result], 0xe906, current_index, false, false, false, false, false,
+
+				zmenudraw2(metamenu, false, metadata.names[result], 0xe906, current_index, false, false, false, false, false,
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -4881,29 +4873,18 @@ function metamenu(starter) {
 				})
 			}
 			else if (typeof metadata.sub[result] == "table") {
-				local metaarray = []
-				local metanotes = []
-				local metaglyphs = []
 
-				metaarray.push(ltxt("Original", AF.LNG))
-				metanotes.push(meta_unedited)
-				metaglyphs.push(0xe965)
-
-				metaarray.push(ltxt("Manual entry", AF.LNG))
-				metanotes.push("")
-				metaglyphs.push(0xe955)
-
-				metaarray.push(ltxt("Values", AF.LNG))
-				metanotes.push("")
-				metaglyphs.push(-1)
+				local metamenu = [
+					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited, fade = false, liner = false, skip = false},
+					{text = ltxt("Manual entry", AF.LNG), glyph = 0xe955, note = "", fade = false, liner = false, skip = false},
+					{text = ltxt("Values", AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false},
+				]				
 
 				foreach (i, item in metadata.sub[result].names) {
-					metaarray.push(metadata.sub[result].names[i])
-					metanotes.push(metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":"")
-					metaglyphs.push(0)
+					metamenu.push({text = metadata.sub[result].names[i], glyph = 0, note = metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":"", fade = false, liner = false, skip = false})
 				}
 
-				zmenudraw(metaarray, metaglyphs, metanotes, null, metadata.names[result], 0xe906, 0, false, false, false, false, false,
+				zmenudraw2(metamenu, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -4925,23 +4906,21 @@ function metamenu(starter) {
 								metachanger (gamename, romlist, meta_new, metavals, metaflag, result)
 						}
 						else {
-							local metaarray2 = []
-							metaarray2.push(tempname)
+							local metamenu2 = [{text = tempname, glyph = 0, note = "", fade = false, liner = false, skip = false}]
 							foreach (i, item in temparray) {
-								metaarray2.push(temparray[i])
+								metamenu2.push({text = temparray[i], glyph = 0, note = "", fade = false, liner = false, skip = false})
 							}
-							zmenudraw(metaarray2, null, null, null, metadata.names[result], 0xe906, 0, false, false, false, false, false,
+							zmenudraw2(metamenu2, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
 							function(result3) {
 								if (result3 == -1) {
 									metamenu (result)
 								}
 								else {
-									meta_new = metaarray2[result3]
+									meta_new = metamenu2[result3].text
 									metachanger (gamename, romlist, meta_new, metavals, metaflag, result)
 								}
 							})
 						}
-
 					}
 				})
 
@@ -6222,11 +6201,16 @@ function mfz_menu2(presel) {
 	numberarray.insert(0, "")
 	numberarray.insert(0, "")
 
+	local mfzmenu2 = []
+	foreach (i, item in namearray){
+		mfzmenu2.push({text = namearray[i], glyph = filterarray[i], note = numberarray[i], fade = (numberarray[i] == "(0)"), liner = false, skip = (numberarray[i] == "(0)")})
+	}
+
 	if (valcurrent != null) {
 		if ((valcurrent.l1name == mf.cat1) && (presel == 0)) presel = indexarray.find(valcurrent.l2name)
 	}
 
-	zmenudraw(namearray, filterarray, numberarray, ["(0)",false], mf.cat1, 0xeaed, presel, false, false, false, false, false,
+	zmenudraw2(mfzmenu2, false, mf.cat1, 0xeaed, presel, false, false, false, false, false,
 	function(out) {
 
 		if (out == -1) {
@@ -6279,6 +6263,11 @@ function mfz_menu1(presel) {
 	filterarray.insert(0, 0xea0f)
 	numberarray.insert(0, "")
 
+	local mfzmenu1 = []
+	foreach (i, item in namearray){
+		mfzmenu1.push({text = namearray[i], glyph = filterarray[i], note = numberarray[i], fade = (numberarray[i] == "(0)"), liner = false, skip = (numberarray[i] == "(0)")})
+	}
+
 	if (presel == -1) {
 		if ((valcurrent != null) && !(valcurrent.l1array)) {
 			presel = indexarray.find(valcurrent.l1name)
@@ -6288,16 +6277,7 @@ function mfz_menu1(presel) {
 		}
 	}
 
-/*
-	if (valcurrent == null) {
-		if (presel == -1) presel = 0
-	}
-	else {
-		if ((presel == -1) && !(valcurrent.l1array)) presel = indexarray.find(valcurrent.l1name)
-		else if (presel == -1) presel = 0
-	}
-*/
-	zmenudraw(namearray, filterarray, numberarray, ["(0)",false], multifilterz.l0[mf.cat0].label, 0xeaed, presel, false, false, false, false, false,
+	zmenudraw2(mfzmenu1, false, multifilterz.l0[mf.cat0].label, 0xeaed, presel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			mf.sel1 = -1
@@ -6349,6 +6329,9 @@ function mfz_menu0(presel) {
  	zmenu.mfm = true
 
 	local mfzdat = mfz_menudata(multifilterz.l0, 0, true, true)
+
+	local mfzmenu0 = []
+	
 	local namearray = mfzdat.names
 	local indexarray = mfzdat.index
 	local filterarray = mfzdat.glyph
@@ -6357,7 +6340,11 @@ function mfz_menu0(presel) {
 	indexarray.insert(0, 0)
 	filterarray.insert(0, 0xea0f)
 
-	zmenudraw(namearray, filterarray, null, null, ltxt("Multifilter", AF.LNG), 0xeaed, presel, false, false, false, false, false,
+	foreach (i, item in namearray){
+		mfzmenu0.push({text = namearray[i], glyph = filterarray[i], note = "", fade = false, liner = false, skip = false})
+	}
+
+	zmenudraw2(mfzmenu0, false, ltxt("Multifilter", AF.LNG), 0xeaed, presel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) { // Exit from multifilter menu
 			if (!umvisible) {
