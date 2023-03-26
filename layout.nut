@@ -14328,7 +14328,19 @@ function buildutilitymenu() {
 			// switcharray, glypharray and nowsort moved out of this function so it's available to sidenote
 			local dat = sortarrays()
 
-			zmenudraw(dat.switcharray_sort, dat.glypharray_sort, null, null, "  " + ltxt("Sort by", AF.LNG) + "...", 0xea4c, dat.nowsort, false, false, false, false, false,
+			local menusort = []
+			foreach (i, item in dat.switcharray_sort){
+				menusort.push({
+					text = dat.switcharray_sort[i],
+					glyph = dat.glypharray_sort[i],
+					note = "",
+					liner = false,
+					fade = false,
+					skip = false
+				})
+			}
+
+			zmenudraw2(menusort, false, "  " + ltxt("Sort by", AF.LNG) + "...", 0xea4c, dat.nowsort, false, false, false, false, false,
 			function(result2) {
 				local result_sort = []
 				if 	  (result2 == 0) result_sort = [z_info.z_title.id, false]
@@ -14388,15 +14400,20 @@ function buildutilitymenu() {
 			if (z_list.size == 0) return
 			local currentkey = z_list.jumptable[z_list.index].key
 
-			local textarray = []
-			foreach (i, item in labelorder) textarray.push(item)
+			local jumptomenu = []
+			foreach (i, item in labelorder){
+				if (currentkey == item) currentindex = i
+				jumptomenu.push({
+					text = item,
+					glyph = (currentkey == item ? 0xea10 : 0),
+					note = "",
+					fade = false,
+					liner = false,
+					skip = false
+				})
+			}
 
-			local currentindex = textarray.find(currentkey)
-
-			local glypharray = []
-			foreach (i, item in textarray) glypharray.push(i == currentindex ? 0xea10 : 0)
-
-			zmenudraw(textarray, glypharray, null, null, "Jump To", 0xea22, currentindex, false, false, false, false, false,
+			zmenudraw2(jumptomenu, false, "Jump To", 0xea22, currentindex, false, false, false, false, false,
 			function(out) {
 				if (out == -1) {
 					utilitymenu(umpresel)
