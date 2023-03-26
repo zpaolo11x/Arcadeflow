@@ -14399,7 +14399,8 @@ function buildutilitymenu() {
 		command = function() {
 			if (z_list.size == 0) return
 			local currentkey = z_list.jumptable[z_list.index].key
-
+			local currentindex = 0
+			
 			local jumptomenu = []
 			foreach (i, item in labelorder){
 				if (currentkey == item) currentindex = i
@@ -14729,18 +14730,28 @@ function buildutilitymenu() {
 			local aboutpath = fe.path_expand(AF.folder + "history/" + (AF.version.tofloat() * 10).tostring() + ".txt")
 			local aboutfile = ReadTextFile (aboutpath)
 
-			local textarray = []
-			local glypharray = []
+			local aboutmenu = []
 
 			while (!aboutfile.eos()) {
-				textarray.push(aboutfile.read_line())
-				glypharray.push(0xea08)
+				aboutmenu.push({
+					text = aboutfile.read_line(),
+					glyph = 0xea08,
+					note = "",
+					liner = false,
+					fade = false,
+					skip = false
+				})
+			}
+			aboutmenu[0] = {
+				text = "What's New",
+				glyph = 0,
+				note = "",
+				liner = false,
+				fade = false,
+				skip = false				
 			}
 
-			textarray[0] = "What's New"
-			glypharray[0] = 0
-
-			zmenudraw(textarray, glypharray, null, null, "Arcadeflow " + AF.version, 0xea09, 0, false, false, false, false, false,
+			zmenudraw2(aboutmenu, false, "Arcadeflow " + AF.version, 0xea09, 0, false, false, false, false, false,
 			function(out) {
 				if (out == -1) {
 					utilitymenu (umpresel)
