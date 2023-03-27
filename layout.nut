@@ -12650,11 +12650,15 @@ function afinstall(zipball, afname) {
 
 function gh_menu(presel) {
 	//frostshow()
-	zmenudraw(ltxt(["Install branch", "Install release"], AF.LNG), [0xe9bc, 0xe94e], null, null, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
+	zmenudraw2([
+		{ text = ltxt("Install branch", AF.LNG), glyph = 0xe9bc, note = "", fade = false, liner = false, skip = false},
+		{ text = ltxt("Install release", AF.LNG), glyph = 0xe94e, note = "", fade = false, liner = false, skip = false}
+		], false, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
 	function(out) {
 		if (out == 0) {
 			gh.branchlist = []
 			gh.commitlist = []
+	
 			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches", "gh_branchlist")
 			bar_cycle_update(AF.bar.stop)
@@ -12662,7 +12666,18 @@ function gh_menu(presel) {
 				gh_menu(0)
 				return
 			}
-			zmenudraw(gh.branchlist, null, gh.commitlist, null, "Install Branch", 0xe9bc, 0, false, false, true, false, false,
+
+			local ghmenu = []
+			foreach (i, item in gh.branchlist){
+				ghmenu.push({
+					text = gh.branchlist[i],
+					glyph = "",
+					note = gh.commitlist[i],
+					liner = false, fade = false, skip = false
+				})
+			}
+
+			zmenudraw2(ghmenu, false, "Install Branch", 0xe9bc, 0, false, false, true, false, false,
 			function(out0) {
 				if (out0 == -1) gh_menu(0)
 				else afinstall(gh.branchlist[out0], "Arcadeflow_" + gh.branchlist[out0] + "_" + strip(gh.commitlist[out0]))
@@ -12678,7 +12693,16 @@ function gh_menu(presel) {
 				gh_menu(1)
 				return
 			}
-			zmenudraw(gh.taglist, null, gh.releasedatelist, null, "Install Release", 0xe94e, 0, false, false, true, false, false,
+			local ghmenu = []
+			foreach (i, item in gh.taglist){
+				ghmenu.push({
+					text = gh.taglist[i],
+					glyph = "",
+					note = gh.releasedatelist[i],
+					liner = false, fade = false, skip = false
+				})
+			}
+			zmenudraw2(ghmenu, false, "Install Release", 0xe94e, 0, false, false, true, false, false,
 			function(out1) {
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1], "Arcadeflow_" + (gh.taglist[out1].tofloat() * 10).tointeger())
@@ -17201,6 +17225,8 @@ function on_signal(sig) {
 	debugpr("\n Si:" + sig)
 
 	//TEST160
+
+	/*
 	if (sig=="custom1"){
 		local menudata = [
 			{text = "zero", glyph = 0xea36, note = "", fade = false, liner = true, skip = false},
@@ -17216,7 +17242,7 @@ function on_signal(sig) {
 			return
 		})
 	}
-
+*/
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
 	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
