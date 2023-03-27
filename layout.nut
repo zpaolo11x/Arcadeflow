@@ -12962,7 +12962,9 @@ function displaygrouped1() {
 	zmenu.jumplevel = 0
 
 	// Displays the group menu
-	zmenudraw(disp.groupname, null, null, null, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, true, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, false,
+	zmenudraw2(disp.groupname.map(function(val){
+		return({text = val, glyph = 0, note = "", liner = false, fade = false, skip = false})
+	}), false, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, true, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, false,
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
@@ -13014,31 +13016,33 @@ function displaygrouped1() {
 
 			zmenu.jumplevel = 1
 
-			// Define menu display arrays
-			local showarray = []
-			local dispnotes = []
+			// Array structure for the menu
+			local dmenu1 = []
 			local groupnotes = []
-
-			// At this point all the entries are sorted and ready to be populated
 			foreach (i, item in menuarray) {
-				showarray.push(item.cleanname)
-				dispnotes.push(item.notes)
+				dmenu1.push({
+					text = item.cleanname,
+					note = item.notes,
+					glyph = 0,
+					fade = false, liner = false, skip = false
+				})
 				groupnotes.push(item.groupnotes)
 			}
 
 			// Add separators when the note is different from the previous one
-			local dispglyphs = array (showarray.len(), 0)
 			local currentnote = ""
 			local i = 0
 			if (prf.DMPSEPARATORS) {
-				while (i < showarray.len()) {
-
+				while (i < dmenu1.len()) {
 					if ((groupnotes[i] != currentnote) && (!menuarray[i].ontop)) {
 						currentnote = groupnotes[i]
-						showarray.insert(i, groupnotes[i])
-						dispnotes.insert(i, "")
+						dmenu1.insert(i, {
+							text = groupnotes[i],
+							note = "",
+							glyph = 0,
+							liner = true, fade = false, skip = false
+						})
 						groupnotes.insert(i, "")
-						dispglyphs.insert(i, -1)
 						menuarray.insert(i, null)
 						i++
 					}
@@ -13049,16 +13053,19 @@ function displaygrouped1() {
 			// Now it's the right moment to add code for AF Collecitons
 			if (prf.ALLGAMES) {
 				local itemcount = 0
-				foreach (ic, itemc in dispglyphs) {
-					if (itemc != -1) itemcount ++
+				foreach (ic, itemc in dmenu1) {
+					if (!itemc.liner) itemcount ++
 				}
 				foreach (item, val in z_af_collections.arr) {
 					// Only collection category and categories with more than 1 display show "all games"
 					if (((itemcount > 1) || (val.group == "COLLECTIONS")) && (val.group == disp.grouplabel[disp.gmenu0])) {
-						showarray.insert(0, val.id)
-						dispnotes.insert(0, "")
+						dmenu1.insert(i, {
+							text = val.id,
+							note = "",
+							glyph = 0,
+							liner = false, fade = false, skip = false
+						})						
 						groupnotes.insert(0, "")
-						dispglyphs.insert(0, 0)
 						menuarray.insert(0, z_disp[val.display_id])
 					}
 				}
@@ -13069,7 +13076,7 @@ function displaygrouped1() {
 				if (item != null) if (item.dispindex == fe.list.display_index) disp.gmenu1in = i
 			}
 
-			zmenudraw(showarray, dispglyphs, dispnotes, null, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, (prf.DMPIMAGES != null), (prf.DMPIMAGES != null), true, (prf.DMPIMAGES != null), false,
+			zmenudraw2(dmenu1, false, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, (prf.DMPIMAGES != null), (prf.DMPIMAGES != null), true, (prf.DMPIMAGES != null), false,
 			function(gmenu1) {
 				if (gmenu1 != -1) {
 					if (prf.DMPATSTART) {
