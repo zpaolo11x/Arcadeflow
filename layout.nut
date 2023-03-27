@@ -6605,7 +6605,6 @@ function getallgamesdb(logopic) {
 		textobj = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
 		textobj.char_size = text_charsize
 		textobj.font = uifonts.mono
-		//textobj.set_bg_rgb(255, 0, 0)
 		textobj.word_wrap = true
 	}
 
@@ -8269,8 +8268,6 @@ for (local i = 0; i < tiles.total; i++) {
 	txbox.line_spacing = logo.txtlinespacing
 	txbox.char_spacing = logo.txtcharspacing
 	txbox.set_rgb (255, 255, 255)
-	//txbox.set_bg_rgb(255, 0, 0)
-	//txbox.bg_alpha = 128
 
 	snap_glow.push(null)
 
@@ -8398,8 +8395,6 @@ for (local i = 0; i < tiles.total; i++) {
 	txt1z.margin = logo.txtmargin
 	txt1z.line_spacing = logo.txtlinespacing
 	txt1z.char_spacing = logo.txtcharspacing
-	//txt1z.set_bg_rgb(200, 0, 0)
-	//txt1z.bg_alpha = 50
 
 	loshz.alpha = 150
 	loshz.preserve_aspect_ratio = true
@@ -8576,7 +8571,6 @@ filterdata.char_size = (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI
 filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-//filterdata.set_bg_rgb (200, 10, 10)
 pixelizefont(filterdata, (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local filternumbers = data_surface.add_text((prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"), fl.x + fl.w - UI.footermargin, fl.y + fl.h - UI.footer.h, UI.footermargin, UI.footer.h)
@@ -8598,7 +8592,6 @@ multifilterglyph = data_surface.add_text("X", fl.x + fl.w - UI.footermargin, fl.
 multifilterglyph.margin = 0
 multifilterglyph.char_size = UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
-// multifilterglyph.set_bg_rgb (100, 0, 0)
 multifilterglyph.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 multifilterglyph.word_wrap = true
 multifilterglyph.msg = ""
@@ -8855,7 +8848,6 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_maincat.alpha = 255
 	game_maincat.margin = 0
 	game_maincat.line_spacing = 0.8
-	//	game_maincat.set_bg_rgb (255, 0, 0)
 	pixelizefont(game_maincat, floor((gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel) - 1, null, null, true)
 
 	local game_mainname = data_surface.add_text("", fl.x + gamed.mainnameT.x, fl.y + gamed.mainnameT.y, gamed.mainnameT.w, gamed.mainnameT.h)
@@ -8867,7 +8859,6 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_mainname.margin = 0
 	game_mainname.font = uifonts.gui
 	game_mainname.alpha = 255
-	// game_mainname.set_bg_rgb(200, 0, 0)
 	game_mainname.visible = true
 
 	local game_subname = data_surface.add_text("", fl.x + (prf.CLEANLAYOUT ? gamed.mainnameT.x : gamed.subnameT.x), fl.y + gamed.subnameT.y, gamed.subnameT.w, gamed.subnameT.h)
@@ -8878,7 +8869,6 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_subname.font = uifonts.gui
 	game_subname.alpha = 255
 	game_subname.margin = 0
-	//	game_subname.set_bg_rgb(200, 100, 0)
 
 	local game_manufacturerpic = data_surface.add_text("", fl.x + gamed.manufacturerpicT.x, fl.y + gamed.manufacturerpicT.y, gamed.manufacturerpicT.w, gamed.manufacturerpicT.h)
 
@@ -8891,7 +8881,6 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "fonts/font_manufacturers_2.ttf"
-	//game_manufacturerpic.set_bg_rgb(255, 0, 0)
 
 	local game_manufacturername = data_surface.add_text("", fl.x + gamed.manufacturerpicT.x, fl.y + gamed.manufacturerpicT.y, gamed.manufacturerpicT.w, gamed.manufacturerpicT.h)
 	// game_manufacturerpic.mipmap = 1
@@ -8913,7 +8902,6 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_year.font = uifonts.gui
 	game_year.margin = 0
 	game_year.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	// game_year.set_bg_rgb(200, 000, 100)
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
 
 	if (prf.CLEANLAYOUT) {
@@ -8982,7 +8970,6 @@ function overmenu_hide(strict) {
 // Overlay area background
 overlay.background = fe.add_rectangle(overlay.x, overlay.y, overlay.w, overlay.h)
 overlay.background.set_rgb(themeT.listboxbg, themeT.listboxbg, themeT.listboxbg)
-//overlay.background.set_bg_rgb(255, 0, 0)
 overlay.background.alpha = themeT.listboxalpha
 
 overlay.listbox = fe.add_listbox(overlay.x, overlay.y + overlay.labelheight, overlay.w, overlay.menuheight)
@@ -8990,7 +8977,7 @@ overlay.listbox.rows = overlay.rows
 overlay.listbox.char_size = overlay.charsize
 overlay.listbox.bg_alpha = 0
 overlay.listbox.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
-overlay.listbox.set_bg_rgb(0, 0, 0)
+overlay.listbox.set_bg_rgb(0, 0, 0) //TEST160 ???
 overlay.listbox.set_sel_rgb(themeT.listboxseltext, themeT.listboxseltext, themeT.listboxseltext)
 overlay.listbox.set_selbg_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.listbox.selbg_alpha = 255
@@ -9003,7 +8990,7 @@ overlay.label.char_size = overlay.labelcharsize
 overlay.label.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.label.align = Align.MiddleCentre
 overlay.label.font = uifonts.gui
-overlay.label.set_bg_rgb(0, 200, 0)
+overlay.label.set_bg_rgb(0, 200, 0) //TEST160 ???
 overlay.label.bg_alpha = 0
 
 overlay.sidelabel = fe.add_text("", overlay.x, overlay.y, overlay.w, overlay.labelheight)
@@ -9011,7 +8998,7 @@ overlay.sidelabel.char_size = overlay.labelcharsize * 0.6
 overlay.sidelabel.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.sidelabel.align = Align.MiddleRight
 overlay.sidelabel.font = uifonts.lite
-overlay.sidelabel.set_bg_rgb(0, 200, 0)
+overlay.sidelabel.set_bg_rgb(0, 200, 0) //TEST160 ???
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 pixelizefont (overlay.sidelabel, overlay.labelcharsize * 0.6, 2)
@@ -9021,7 +9008,6 @@ overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize*1.25
 overlay.glyph.align = Align.MiddleCentre
-//overlay.glyph.set_bg_rgb (100, 0, 0)
 overlay.glyph.bg_alpha = 0
 overlay.glyph.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.glyph.word_wrap = true
@@ -9201,15 +9187,12 @@ prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) 
 prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 prfmenu.picrateh = prfmenu.picratew
 
-//prfmenu.description.set_bg_rgb(100, 0, 0)
 prfmenu.description.char_size = 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
 prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
 prfmenu.description.margin = 0
 prfmenu.description.set_rgb (themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-//overlay.listbox.set_bg_rgb(80, 0, 0)
-//overlay.listbox.bg_alpha = 128
 pixelizefont(prfmenu.description, 48 * UI.scalerate - 1)
 
 prfmenu.helppic.preserve_aspect_ratio = true
@@ -9714,9 +9697,14 @@ function hueselector(hue, sel, old, start) {
 
 	prfmenu.helppic.set_rgb(rgbval.R * 255, rgbval.G * 255, rgbval.B * 255)
 
-	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
+	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5 //TEST160 check con RGB
 
-	zmenudraw(["HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), ltxt("ACTIONS", AF.LNG), ltxt("APPLY", AF.LNG), ltxt("DEFAULT", AF.LNG)], [0, -1, 0, (start && (old == "")) ? 0xea10 : 0xe965], [hue, "", "", ""], null, ltxt("HUE Value", AF.LNG), 0xe992, sel, false, false, false, false, false,
+	zmenudraw2([
+		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = hue, fade = false, liner = false, skip = false}, 
+		{ text = ltxt("ACTIONS", AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false}, 
+		{ text = ltxt("APPLY", AF.LNG), glyph = 0, note = "", fade = false, liner = false, skip = false},
+		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = "", fade = false, liner = false, skip = false}],
+		false, ltxt("HUE Value", AF.LNG), 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9790,7 +9778,12 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 */
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
-	zmenudraw([vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, ltxt("ACTIONS", AF.LNG), ltxt("APPLY", AF.LNG), ltxt("DEFAULT", AF.LNG)], [0, -1, 0, (val == def) ? 0xea10 : 0xe965], [val, "", "", ""], null, name, 0xe992, sel, false, false, false, false, false,
+	zmenudraw2([
+		{ text = vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, glyph = 0, note = val, liner = false, fade = false, skip = false},
+		{ text = ltxt("ACTIONS", AF.LNG), glyph = 0, note = "", liner = true, fade = false, skip = false},
+		{ text = ltxt("APPLY", AF.LNG), glyph = 0, note = "", liner = false, fade = false, skip = false},
+		{ text = ltxt("DEFAULT", AF.LNG), glyph = (val == def) ? 0xea10 : 0xe965, note = "",liner = false, fade = false, skip = false}
+		], false, name, 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
@@ -10318,65 +10311,45 @@ prf.SHOWHIDDEN <- false
 // Gets the list of tags for the current romlist directly from Attract Mode folders
 function tags_menu() {
 
-	local tagsarray = []
-	local tagstatus = []
-	local tagsnotes = []
+	local tagsmenu = []
+
 	foreach (item, array in z_list.tagstableglobal) {
-		//if ((item != "COMPLETED") && (item != "HIDDEN")) {
-			tagsarray.push(item)
-			tagstatus.push(0)
-		//}
+		tagsmenu.push({text = item, glyph = 0, note = z_list.tagstable.rawin(item) ? "" : "not here", liner = false, fade = false, skip = false})
 	}
-	tagsarray.sort(@(a, b) a.tolower() <=> b.tolower())
+	tagsmenu.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 
-	foreach (i, item in tagsarray) {
-		tagsnotes.push(z_list.tagstable.rawin(item) ? "" : "not here")
-	}
-
-	tagsarray.insert(0, "USER TAGS")
-	tagstatus.insert(0, -1)
-	tagsnotes.insert(0, "")
+	tagsmenu.insert (0, {text = "USER TAGS", glyph = 0, note = "", liner = true, fade = false, skip = false})
 
 	if (prf.ENABLEHIDDEN) {
-		tagsarray.insert(0, "HIDDEN")
-		tagstatus.insert(0, z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)
-		tagsnotes.insert(0, "")
+		tagsmenu.insert (0, {text = "HIDDEN", glyph = (z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a), note = "", liner = false, fade = false, skip = false})
 	}
 
-	tagsarray.insert(0, "COMPLETED")
-	tagstatus.insert(0, z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a)
-	tagsnotes.insert(0, "")
+	tagsmenu.insert(0, {text = "COMPLETED", glyph = (z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a), note = "", liner = false, fade = false, skip = false})
 
-	for (local i = (prf.ENABLEHIDDEN ? 3 : 2); i < tagsarray.len(); i++) {
-		tagstatus[i] = (z_list.gametable2[z_list.index].z_tags.find(tagsarray[i]) == null) ? 0xea0a : 0xea0b
+	for (local i = (prf.ENABLEHIDDEN ? 3 : 2); i < tagsmenu.len(); i++) {
+		tagsmenu[i].glyph = (z_list.gametable2[z_list.index].z_tags.find(tagsmenu[i].text) == null) ? 0xea0a : 0xea0b
 	}
 
-	tagsarray.push("")
-	tagstatus.push(-1)
-	tagsnotes.push("")
+	tagsmenu.push({text = "", glyph = 0, note = "", liner = true, fade = false, skip = false})
 
 	if (prf.ENABLEHIDDEN) {
-		tagsarray.push(prf.SHOWHIDDEN ? ltxt("Hide Hidden", AF.LNG) : ltxt("Show Hidden", AF.LNG))
-		tagstatus.push(0)
-		tagsnotes.push("")
+		tagsmenu.push({text = prf.SHOWHIDDEN ? ltxt("Hide Hidden", AF.LNG) : ltxt("Show Hidden", AF.LNG), glyph = 0, note = 0, fade = false, liner = false, skip = false})
 	}
-	tagsarray.push(ltxt("New Tag", AF.LNG))
-	tagstatus.push(0xeaee)
-	tagsnotes.push("")
+	tagsmenu.push({text = ltxt("New Tag", AF.LNG), glyph = 0xeaee, note = "", liner = false, fade = false, skip = false})
 
-	zmenudraw(tagsarray, tagstatus, tagsnotes, null, ltxt("TAGS", AF.LNG), 0xeaef, 0, false, false, true, false, false,
+	zmenudraw2(tagsmenu, false, ltxt("TAGS", AF.LNG), 0xeaef, 0, false, false, true, false, false,
 	function(out) {
 		if (out == -1) { //BACK
 			frosthide()
 			zmenuhide()
 		}
-		else if ((out == tagsarray.len() - 2) && (prf.ENABLEHIDDEN)) { //CHANGE HIDDEN STATUS
+		else if ((out == tagsmenu.len() - 2) && (prf.ENABLEHIDDEN)) { //CHANGE HIDDEN STATUS
 			zmenuhide()
 			frosthide()
 			prf.SHOWHIDDEN = !prf.SHOWHIDDEN
 			mfz_apply(false)
 		}
-		else if (out == tagsarray.len() - 1) { //ADD NEW TAG
+		else if (out == tagsmenu.len() - 1) { //ADD NEW TAG
 			zmenuhide()
 			flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.2, 0.0)
 			add_new_tag()
@@ -10386,13 +10359,11 @@ function tags_menu() {
 			if (out == 0) z_list.boot2[fe.list.index].z_completed = !z_list.boot2[fe.list.index].z_completed
 			else if ((out == 1) && (prf.ENABLEHIDDEN)) z_list.boot2[fe.list.index].z_hidden = !z_list.boot2[fe.list.index].z_hidden
 			else {
-				if (tagstatus[out] == 0xea0a) {
-					z_list.boot2[fe.list.index].z_tags.push(tagsarray[out])
-					//add_tag (tagsarray[out])
+				if (tagsmenu[out].glyph == 0xea0a) {
+					z_list.boot2[fe.list.index].z_tags.push(tagsmenu[out].text)
 				}
 				else {
-					z_list.boot2[fe.list.index].z_tags.remove(z_list.boot2[fe.list.index].z_tags.find(tagsarray[out]))
-					//remove_tag (tagsarray[out])
+					z_list.boot2[fe.list.index].z_tags.remove(z_list.boot2[fe.list.index].z_tags.find(tagsmenu[out].text))
 				}
 			}
 			z_updatetagstable() //TEST141 sposta sopra e fallo solo se il tag non era nella tagstable :O
@@ -11048,8 +11019,6 @@ foreach (item in hist_text) {
 		item.visible = true
 		item.align = Align.MiddleLeft
 		item.margin = -1
-		//item.set_bg_rgb(0, 0, 0)
-		//item.bg_alpha = 250.0 * (item.y / hist_textT.linesize) / 10.0
 		pixelizefont(item, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize))
 	}
 }
@@ -11260,8 +11229,6 @@ if (prf.CONTROLOVERLAY != "never") {
 		hist_over.btsh[i].alpha = 80
 		pixelizefont(hist_over.btsh[i], 22 * hist_over.picscale, 0, 0.5)
 		pixelizefont(hist_over.bt[i], 22 * hist_over.picscale, 0, 0.5)
-
-	//	hist_over.bt[i].set_bg_rgb(200, 0, 0)
 	}
 }
 
@@ -12000,7 +11967,6 @@ zmenu.sidelabel.margin = 2
 zmenu.sidelabel.set_rgb(0, 0, 0)
 zmenu.sidelabel.align = Align.BottomRight
 zmenu.sidelabel.font = uifonts.lite
-zmenu.sidelabel.set_bg_rgb(0, 200, 0)
 zmenu.sidelabel.bg_alpha = 0
 zmenu.sidelabel.word_wrap = true
 pixelizefont (zmenu.sidelabel, overlay.labelcharsize * 0.8, 2)
@@ -12175,7 +12141,6 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.noteitems[i].line_spacing = 0.8//1.0
 		zmenu.noteitems[i].bg_alpha = 0
 		zmenu.noteitems[i].set_rgb(255, 255, 255)
-		zmenu.noteitems[i].set_bg_rgb (100, 0, 0)
 
 		if (i >= zmenu.items.len()) {
 			zmenu.glyphs.push(null)
@@ -12188,11 +12153,9 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.glyphs[i].char_size = overlay.charsize * 1.25
 		zmenu.glyphs[i].align = Align.MiddleCentre
 		zmenu.glyphs[i].msg = gly(menudata[i].glyph)
-		//zmenu.glyphs[i].set_bg_rgb (100, 0, 0)
 		zmenu.glyphs[i].bg_alpha = 0
 		zmenu.glyphs[i].set_rgb(255, 255, 255)
 		zmenu.glyphs[i].visible = true
-		//zmenu.glyphs[i].set_bg_rgb(200, 0, 0)
 
 		//Y obj_item = zmenu_surface.add_text(" ", pad, zmenu.height * 0.5 - zmenu.tileh * 0.5 + i * zmenu.tileh, zmenu.tilew - 2.0 * pad, zmenu.tileh)
 		if (i >= zmenu.items.len()) {
@@ -12211,7 +12174,6 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].line_spacing = 0.8//1.0
 		zmenu.items[i].set_rgb(255, 255, 255)
-		zmenu.items[i].set_bg_rgb(150, 0, 0)
 
 		if ((zmenu.data[i].fade)) {
 			zmenu.items[i].set_rgb	(81, 81, 81)
@@ -13522,7 +13484,7 @@ zmenu.simpicbg = zmenu_surface_container.add_text("",
 										0,
 										(UI.vertical ? 0.9 : 0.75) * disp.width,
 										(UI.vertical ? 0.9 : 0.75) * disp.width)
-zmenu.simpicbg.set_bg_rgb(200, 0, 0)
+zmenu.simpicbg.set_bg_rgb(200, 0, 0) //TEST160
 zmenu.simpicbg.bg_alpha = 0
 zmenu.simpicbg.zorder = 10000
 
@@ -13570,7 +13532,6 @@ zmenu.simsys.word_wrap = true
 zmenu.simsys.align = Align.TopRight
 zmenu.simsys.font = uifonts.gui
 zmenu.simsys.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-//zmenu.simsys.set_bg_rgb(200, 0, 0)
 
 zmenu.simtxt = zmenu_surface_container.add_text("",
 										zmenu.simbg.x,
@@ -17427,12 +17388,17 @@ function on_signal(sig) {
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
 		local volarray = []
-		for (local i = 0; i <= 10; i++) {
-			volarray.push(textrate(10 - i, 10, 40, "Ⓞ ", "Ⓟ "))
-		}
 		local amparray = [0xea26, 0xea26, 0xea26, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
+		for (local i = 0; i <= 10; i++) {
+			volarray.push(
+				{text = textrate(10 - i, 10, 40, "Ⓞ ", "Ⓟ "),
+				glyph = amparray[i],
+				note = "",
+				fade = false, liner= false, skip = false}
+			)
+		}
 		frostshow()
-		zmenudraw(volarray, amparray, null, null, "Volume", 0xea26, 10 - AF.soundvolume, false, false, true, true, true,
+		zmenudraw2(volarray, false, "Volume", 0xea26, 10 - AF.soundvolume, false, false, true, true, true,
 			function(out) {
 				if (out != -1) {
 					AF.soundvolume = 10 - out
