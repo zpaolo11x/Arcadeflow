@@ -4826,9 +4826,6 @@ function metamenu(starter) {
 			text = metadata.names[i]
 			glyph = metaglyphs[i]
 			note = metanotes[i]
-			fade = false
-			liner = false
-			skip = false
 		})
 	}
 
@@ -4849,15 +4846,15 @@ function metamenu(starter) {
 				local current_index = metadata.sub[result].find(metavals[result])
 				if (current_index != null) current_index = current_index + 2 else current_index = 0
 
-				local metamenu = [
-					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited, fade = false, liner = false, skip = false},
-					{text = ltxt("Values", AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false},
+				local metamenu1 = [
+					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited},
+					{text = ltxt("Values", AF.LNG), liner = true},
 				]
 				foreach (i, item in metadata.sub[result]) {
-					metamenu.push({text = metadata.sub[result][i], glyph = 0, note = "", fade = false, liner = false, skip = false})
+					metamenu1.push({text = metadata.sub[result][i]})
 				}
 
-				zmenudraw2(metamenu, false, metadata.names[result], 0xe906, current_index, false, false, false, false, false,
+				zmenudraw2(metamenu1, false, metadata.names[result], 0xe906, current_index, false, false, false, false, false,
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -4874,17 +4871,17 @@ function metamenu(starter) {
 			}
 			else if (typeof metadata.sub[result] == "table") {
 
-				local metamenu = [
-					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited, fade = false, liner = false, skip = false},
-					{text = ltxt("Manual entry", AF.LNG), glyph = 0xe955, note = "", fade = false, liner = false, skip = false},
-					{text = ltxt("Values", AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false},
+				local metamenu2 = [
+					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited},
+					{text = ltxt("Manual entry", AF.LNG), glyph = 0xe955},
+					{text = ltxt("Values", AF.LNG), liner = true},
 				]				
 
 				foreach (i, item in metadata.sub[result].names) {
-					metamenu.push({text = metadata.sub[result].names[i], glyph = 0, note = metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":"", fade = false, liner = false, skip = false})
+					metamenu2.push({text = metadata.sub[result].names[i], note = metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":""})
 				}
 
-				zmenudraw2(metamenu, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
+				zmenudraw2(metamenu2, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -4906,17 +4903,17 @@ function metamenu(starter) {
 								metachanger (gamename, romlist, meta_new, metavals, metaflag, result)
 						}
 						else {
-							local metamenu2 = [{text = tempname, glyph = 0, note = "", fade = false, liner = false, skip = false}]
+							local metamenu3 = [{text = tempname}]
 							foreach (i, item in temparray) {
-								metamenu2.push({text = temparray[i], glyph = 0, note = "", fade = false, liner = false, skip = false})
+								metamenu3.push({text = temparray[i]})
 							}
-							zmenudraw2(metamenu2, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
+							zmenudraw2(metamenu3, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
 							function(result3) {
 								if (result3 == -1) {
 									metamenu (result)
 								}
 								else {
-									meta_new = metamenu2[result3].text
+									meta_new = metamenu3[result3].text
 									metachanger (gamename, romlist, meta_new, metavals, metaflag, result)
 								}
 							})
@@ -6341,7 +6338,7 @@ function mfz_menu0(presel) {
 	filterarray.insert(0, 0xea0f)
 
 	foreach (i, item in namearray){
-		mfzmenu0.push({text = namearray[i], glyph = filterarray[i], note = "", fade = false, liner = false, skip = false})
+		mfzmenu0.push({text = namearray[i], glyph = filterarray[i]})
 	}
 
 	zmenudraw2(mfzmenu0, false, ltxt("Multifilter", AF.LNG), 0xeaed, presel, false, false, false, false, false,
@@ -9264,10 +9261,6 @@ function optionsmenu_lev3() {
 			menu_lev3.push({
 				text = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options[i],
 				glyph = (i == AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection ? 0xea10 : 0),
-				note = "",
-				fade = false,
-				liner = false,
-				skip = false
 			})
 		}
 		zmenudraw2(menu_lev3, false, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, false, false, true, false, false,
@@ -9464,10 +9457,7 @@ function optionsmenu_lev1() {
 		menu_lev1.push ({
 			text = AF.prefs.a0[i],
 			glyph = AF.prefs.gl0[i],
-			note = "",
-			fade = false,
 			liner = (AF.prefs.gl0[i] == -1),
-			skip = false
 		})
 	}
 
@@ -9632,12 +9622,12 @@ function rgbselector(rgb, sel, old, start) {
 	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
 	testpr("spaces:"+spaces+"\n")
 	zmenudraw2([
-		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[0], liner = false, fade = false, skip = false}, 
-		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[1], liner = false, fade = false, skip = false},
-		{ text = "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[2], liner = false, fade = false, skip = false}, 
-		{ text = ltxt("ACTIONS", AF.LNG), glyph = 0, note = "", liner = true, fade = false, skip = false}, 
-		{ text = ltxt("APPLY", AF.LNG), glyph = 0, note = "", liner = false, fade = false, skip = false}, 
-		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = "", liner = false, fade = false, skip = false}],
+		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[0]}, 
+		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[1]},
+		{ text = "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[2]}, 
+		{ text = ltxt("ACTIONS", AF.LNG), liner = true}, 
+		{ text = ltxt("APPLY", AF.LNG)}, 
+		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = ""}],
 		false, ltxt("RGB Color", AF.LNG), 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
@@ -9700,10 +9690,10 @@ function hueselector(hue, sel, old, start) {
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5 //TEST160 check con RGB
 
 	zmenudraw2([
-		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = hue, fade = false, liner = false, skip = false}, 
-		{ text = ltxt("ACTIONS", AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false}, 
-		{ text = ltxt("APPLY", AF.LNG), glyph = 0, note = "", fade = false, liner = false, skip = false},
-		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = "", fade = false, liner = false, skip = false}],
+		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), note = hue}, 
+		{ text = ltxt("ACTIONS", AF.LNG), liner = true}, 
+		{ text = ltxt("APPLY", AF.LNG)},
+		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965}],
 		false, ltxt("HUE Value", AF.LNG), 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
@@ -9779,10 +9769,10 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
 	zmenudraw2([
-		{ text = vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, glyph = 0, note = val, liner = false, fade = false, skip = false},
-		{ text = ltxt("ACTIONS", AF.LNG), glyph = 0, note = "", liner = true, fade = false, skip = false},
-		{ text = ltxt("APPLY", AF.LNG), glyph = 0, note = "", liner = false, fade = false, skip = false},
-		{ text = ltxt("DEFAULT", AF.LNG), glyph = (val == def) ? 0xea10 : 0xe965, note = "",liner = false, fade = false, skip = false}
+		{ text = vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, note = val},
+		{ text = ltxt("ACTIONS", AF.LNG), liner = true},
+		{ text = ltxt("APPLY", AF.LNG)},
+		{ text = ltxt("DEFAULT", AF.LNG), glyph = (val == def) ? 0xea10 : 0xe965}
 		], false, name, 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
@@ -10314,28 +10304,28 @@ function tags_menu() {
 	local tagsmenu = []
 
 	foreach (item, array in z_list.tagstableglobal) {
-		tagsmenu.push({text = item, glyph = 0, note = z_list.tagstable.rawin(item) ? "" : "not here", liner = false, fade = false, skip = false})
+		tagsmenu.push({text = item, note = z_list.tagstable.rawin(item) ? "" : "not here"})
 	}
 	tagsmenu.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 
-	tagsmenu.insert (0, {text = "USER TAGS", glyph = 0, note = "", liner = true, fade = false, skip = false})
+	tagsmenu.insert (0, {text = "USER TAGS", liner = true})
 
 	if (prf.ENABLEHIDDEN) {
-		tagsmenu.insert (0, {text = "HIDDEN", glyph = (z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a), note = "", liner = false, fade = false, skip = false})
+		tagsmenu.insert (0, {text = "HIDDEN", glyph = (z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)})
 	}
 
-	tagsmenu.insert(0, {text = "COMPLETED", glyph = (z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a), note = "", liner = false, fade = false, skip = false})
+	tagsmenu.insert(0, {text = "COMPLETED", glyph = (z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a)})
 
 	for (local i = (prf.ENABLEHIDDEN ? 3 : 2); i < tagsmenu.len(); i++) {
-		tagsmenu[i].glyph = (z_list.gametable2[z_list.index].z_tags.find(tagsmenu[i].text) == null) ? 0xea0a : 0xea0b
+		tagsmenu[i].rawset ("glyph", (z_list.gametable2[z_list.index].z_tags.find(tagsmenu[i].text) == null) ? 0xea0a : 0xea0b)
 	}
 
-	tagsmenu.push({text = "", glyph = 0, note = "", liner = true, fade = false, skip = false})
+	tagsmenu.push({ liner = true})
 
 	if (prf.ENABLEHIDDEN) {
 		tagsmenu.push({text = prf.SHOWHIDDEN ? ltxt("Hide Hidden", AF.LNG) : ltxt("Show Hidden", AF.LNG), glyph = 0, note = 0, fade = false, liner = false, skip = false})
 	}
-	tagsmenu.push({text = ltxt("New Tag", AF.LNG), glyph = 0xeaee, note = "", liner = false, fade = false, skip = false})
+	tagsmenu.push({text = ltxt("New Tag", AF.LNG), glyph = 0xeaee})
 
 	zmenudraw2(tagsmenu, false, ltxt("TAGS", AF.LNG), 0xeaef, 0, false, false, true, false, false,
 	function(out) {
@@ -11976,7 +11966,20 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
+function cleanupmenudata(menudata){
+	foreach (i, item in menudata){
+		if (!item.rawin("text")) menudata[i].rawset("text","")
+		if (!item.rawin("glyph")) menudata[i].rawset("glyph",0)
+		if (!item.rawin("note")) menudata[i].rawset("note","")
+		if (!item.rawin("liner")) menudata[i].rawset("liner",false)
+		if (!item.rawin("skip")) menudata[i].rawset("skip",false)
+		if (!item.rawin("fade")) menudata[i].rawset("fade",false)
+	}
+	return menudata
+}
+
 function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+	menudata = cleanupmenudata(menudata)
 	zmenu.data = menudata
 	zmenu.singleline = singleline
 	zmenu.midscroll = midscroll
@@ -12651,8 +12654,8 @@ function afinstall(zipball, afname) {
 function gh_menu(presel) {
 	//frostshow()
 	zmenudraw2([
-		{ text = ltxt("Install branch", AF.LNG), glyph = 0xe9bc, note = "", fade = false, liner = false, skip = false},
-		{ text = ltxt("Install release", AF.LNG), glyph = 0xe94e, note = "", fade = false, liner = false, skip = false}
+		{ text = ltxt("Install branch", AF.LNG), glyph = 0xe9bc},
+		{ text = ltxt("Install release", AF.LNG), glyph = 0xe94e}
 		], false, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
 	function(out) {
 		if (out == 0) {
@@ -12671,9 +12674,7 @@ function gh_menu(presel) {
 			foreach (i, item in gh.branchlist){
 				ghmenu.push({
 					text = gh.branchlist[i],
-					glyph = "",
 					note = gh.commitlist[i],
-					liner = false, fade = false, skip = false
 				})
 			}
 
@@ -12697,9 +12698,7 @@ function gh_menu(presel) {
 			foreach (i, item in gh.taglist){
 				ghmenu.push({
 					text = gh.taglist[i],
-					glyph = "",
 					note = gh.releasedatelist[i],
-					liner = false, fade = false, skip = false
 				})
 			}
 			zmenudraw2(ghmenu, false, "Install Release", 0xe94e, 0, false, false, true, false, false,
@@ -12899,7 +12898,18 @@ function displayungrouped() {
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw(ltxt(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			zmenudraw2(prf.POWERMENU ? [
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+				{text = ltxt("Power", AF.LNG), liner = true},
+				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
+				{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
+				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
+			] : [
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+			], 
+			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -12962,9 +12972,7 @@ function displaygrouped1() {
 	zmenu.jumplevel = 0
 
 	// Displays the group menu
-	zmenudraw2(disp.groupname.map(function(val){
-		return({text = val, glyph = 0, note = "", liner = false, fade = false, skip = false})
-	}), false, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, true, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, false,
+	zmenudraw2(disp.groupname.map(function(val){return({text = val})}), false, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, true, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, false,
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
@@ -12989,7 +12997,18 @@ function displaygrouped1() {
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw(ltxt(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			zmenudraw2(prf.POWERMENU ? [
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+				{text = ltxt("Power", AF.LNG), liner = true},
+				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
+				{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
+				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
+			] : [
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+			], 
+			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -13020,12 +13039,7 @@ function displaygrouped1() {
 			local dmenu1 = []
 			local groupnotes = []
 			foreach (i, item in menuarray) {
-				dmenu1.push({
-					text = item.cleanname,
-					note = item.notes,
-					glyph = 0,
-					fade = false, liner = false, skip = false
-				})
+				dmenu1.push({text = item.cleanname, note = item.notes})
 				groupnotes.push(item.groupnotes)
 			}
 
@@ -13036,12 +13050,7 @@ function displaygrouped1() {
 				while (i < dmenu1.len()) {
 					if ((groupnotes[i] != currentnote) && (!menuarray[i].ontop)) {
 						currentnote = groupnotes[i]
-						dmenu1.insert(i, {
-							text = groupnotes[i],
-							note = "",
-							glyph = 0,
-							liner = true, fade = false, skip = false
-						})
+						dmenu1.insert(i, {text = groupnotes[i], liner = true})
 						groupnotes.insert(i, "")
 						menuarray.insert(i, null)
 						i++
@@ -13059,12 +13068,7 @@ function displaygrouped1() {
 				foreach (item, val in z_af_collections.arr) {
 					// Only collection category and categories with more than 1 display show "all games"
 					if (((itemcount > 1) || (val.group == "COLLECTIONS")) && (val.group == disp.grouplabel[disp.gmenu0])) {
-						dmenu1.insert(i, {
-							text = val.id,
-							note = "",
-							glyph = 0,
-							liner = false, fade = false, skip = false
-						})						
+						dmenu1.insert(i, {text = val.id})						
 						groupnotes.insert(0, "")
 						menuarray.insert(0, z_disp[val.display_id])
 					}
@@ -13681,7 +13685,7 @@ function similarmenu() {
 	zmenu.simsys.msg = zmenu.similar[0].syslogo
 
 	frostshow()
-	zmenudraw(namearray, null, null, null, ltxt("Similar Games", AF.LNG), 0xeaf7, 0, true, false, true, false, false,
+	zmenudraw2(namearray.map(function(value){return({text = value})}), false, ltxt("Similar Games", AF.LNG), 0xeaf7, 0, true, false, true, false, false,
 		function(out) {
 			if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
 
@@ -14321,10 +14325,6 @@ function buildutilitymenu() {
 				menusort.push({
 					text = dat.switcharray_sort[i],
 					glyph = dat.glypharray_sort[i],
-					note = "",
-					liner = false,
-					fade = false,
-					skip = false
 				})
 			}
 
@@ -14395,10 +14395,6 @@ function buildutilitymenu() {
 				jumptomenu.push({
 					text = item,
 					glyph = (currentkey == item ? 0xea10 : 0),
-					note = "",
-					fade = false,
-					liner = false,
-					skip = false
 				})
 			}
 
@@ -14721,23 +14717,9 @@ function buildutilitymenu() {
 			local aboutmenu = []
 
 			while (!aboutfile.eos()) {
-				aboutmenu.push({
-					text = aboutfile.read_line(),
-					glyph = 0xea08,
-					note = "",
-					liner = false,
-					fade = false,
-					skip = false
-				})
+				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
 			}
-			aboutmenu[0] = {
-				text = "What's New",
-				glyph = 0,
-				note = "",
-				liner = false,
-				fade = false,
-				skip = false				
-			}
+			aboutmenu[0] = {text = "What's New"}
 
 			zmenudraw2(aboutmenu, false, "Arcadeflow " + AF.version, 0xea09, 0, false, false, false, false, false,
 			function(out) {
@@ -14785,12 +14767,10 @@ function utilitymenu(presel) {
 				text = item.label
 				glyph = item.glyph
 				note = item.sidenote()
-				fade = false
 				liner = item.liner
-				skip = false
 			})
 
-			switcharray1.push(item.label)
+			switcharray1.push(item.label) //TEST160 ripulire questi?
 			glypharray1.push(item.glyph)
 			posarray1.push(i_pos)
 			idarray1.push(i_id)
@@ -17425,9 +17405,7 @@ function on_signal(sig) {
 		for (local i = 0; i <= 10; i++) {
 			volarray.push(
 				{text = textrate(10 - i, 10, 40, "Ⓞ ", "Ⓟ "),
-				glyph = amparray[i],
-				note = "",
-				fade = false, liner= false, skip = false}
+				glyph = amparray[i]}
 			)
 		}
 		frostshow()
@@ -17645,15 +17623,15 @@ function on_signal(sig) {
 		if (!prf.DMPIFEXITAF) {
 			frostshow()
 			zmenudraw2(prf.POWERMENU ? [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10, note = "", liner = false, fade = false, skip = false},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f, note = "", liner = false, fade = false, skip = false},
-				{text = ltxt("Power", AF.LNG), glyph = 0, note = "", liner = true, fade = false, skip = false},
-				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6, note = "", liner = false, fade = false, skip = false},
-				{text = ltxt("Restart", AF.LNG), glyph = 0xe984, note = "", liner = false, fade = false, skip = false},
-				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+				{text = ltxt("Power", AF.LNG), glyph = 0, liner = true},
+				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
+				{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
+				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
 			] : [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10, note = "", liner = false, fade = false, skip = false},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 			], 
 			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
@@ -17794,12 +17772,12 @@ function on_signal(sig) {
 
 
 			zmenudraw2([
-				{text = ltxt("More of the same...",AF.LNG), glyph = 0xe987, note = "", fade = false, liner = false, skip = false},
-				{text = ltxt("Similar Games",AF.LNG), glyph = 0xeaf7, note = "", fade = false, liner = false, skip = false},
-				{text = ltxt("Scrape selected game",AF.LNG), glyph = 0xe9c2, note = "", fade = false, liner = false, skip = false},
-				{text = ltxt("Edit metadata",AF.LNG), glyph = 0xe906, note = "", fade = false, liner = false, skip = false},
-				{text = ltxt("CAUTION!",AF.LNG), glyph = 0, note = "", fade = false, liner = true, skip = false},
-				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe906, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG), fade = false, liner = false, skip = false}],
+				{text = ltxt("More of the same...",AF.LNG), glyph = 0xe987},
+				{text = ltxt("Similar Games",AF.LNG), glyph = 0xeaf7},
+				{text = ltxt("Scrape selected game",AF.LNG), glyph = 0xe9c2},
+				{text = ltxt("Edit metadata",AF.LNG), glyph = 0xe906},
+				{text = ltxt("CAUTION!",AF.LNG), liner = true},
+				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe906, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)}],
 			false, ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
 			function(result) {
 				if (result == 0) {
@@ -17810,72 +17788,50 @@ function on_signal(sig) {
 
 					local motsdata = [{
 						text = ltxt("Year", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_year
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_year == "")
 						skip = (z_list.gametable[z_list.index].z_year == "")
 					},{
 						text = ltxt("Decade", AF.LNG),
-						glyph = 0,
 						note = (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0, 3) : "") + "x"
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_year == "")
 						skip = (z_list.gametable[z_list.index].z_year == "")
 					},{
 						text = ltxt("Manufacturer", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_manufacturer
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_manufacturer == "")
 						skip = (z_list.gametable[z_list.index].z_manufacturer == "")						
 					},{
 						text = ltxt("Main Category", AF.LNG),
-						glyph = 0,
 						note = split(z_list.gametable[z_list.index].z_category, "/")[0],
-						liner = false,
 						fade = (split(z_list.gametable[z_list.index].z_category, "/")[0] == ""),
 						skip = (split(z_list.gametable[z_list.index].z_category, "/")[0] == "")							
 					},{
 						text = ltxt("Sub Category", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_category
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_category == "")
 						skip = (z_list.gametable[z_list.index].z_category == "")							
 					},{
 						text = ltxt("Orientation", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_rotation
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_rotation == "")
 						skip = (z_list.gametable[z_list.index].z_rotation == "")	
 					},{
 						text = ltxt("Favourite state", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes", AF.LNG) : ltxt("No", AF.LNG)
-						liner = false
-						fade = false
-						skip = false							
 					},{
 						text = ltxt("Series", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_series
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_series == "")
 						skip = (z_list.gametable[z_list.index].z_series == "")							
 					},{
 						text = ltxt("Rating", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_rating
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_rating == "")
 						skip = (z_list.gametable[z_list.index].z_rating == "")							
 					},{
 						text = ltxt("Arcade System", AF.LNG),
-						glyph = 0,
 						note = z_list.gametable[z_list.index].z_arcadesystem
-						liner = false
 						fade = (z_list.gametable[z_list.index].z_arcadesystem == "")
 						skip = (z_list.gametable[z_list.index].z_arcadesystem == "")							
 					}]
@@ -17884,32 +17840,17 @@ function on_signal(sig) {
 
 					motsdata.extend(taglist.map(function(value) {return ({
 						text = "🏷 " + value
-						glyph = 0
-						note = ""
-						liner = false
-						fade = false
-						skip = false
 					})}))
 
 					local numtag = motsdata.len()
 					
 					motsdata.push({
-						text = ""
-						glyph = 0
-						note = ""
 						liner = true
-						fade = false
-						skip = false						
 					})
 					motsdata.push({
 						text = ltxt("RESET", AF.LNG)
 						glyph = 0xea0f
-						note = ""
-						liner = false
-						fade = false
-						skip = false						
 					})
-
 
 					local hidemenu = false
 					
@@ -18018,8 +17959,8 @@ function on_signal(sig) {
 				}
 				if (result == 5) { // Delete ROM
 					zmenudraw2([
-						{text = ltxt("Delete", AF.LNG), glyph = 0xea10, note = "", fade = false, liner = false, skip = false},
-						{text = ltxt("Cancel", AF.LNG), glyph = 0xea0f, note = "", fade = false, liner = false, skip = false}
+						{text = ltxt("Delete", AF.LNG), glyph = 0xea10},
+						{text = ltxt("Cancel", AF.LNG), glyph = 0xea0f}
 					], false, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
 					function(result) {
 						if (result == 0) {
