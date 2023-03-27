@@ -12175,6 +12175,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.noteitems[i].line_spacing = 0.8//1.0
 		zmenu.noteitems[i].bg_alpha = 0
 		zmenu.noteitems[i].set_rgb(255, 255, 255)
+		zmenu.noteitems[i].set_bg_rgb (100, 0, 0)
 
 		if (i >= zmenu.items.len()) {
 			zmenu.glyphs.push(null)
@@ -12210,7 +12211,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].line_spacing = 0.8//1.0
 		zmenu.items[i].set_rgb(255, 255, 255)
-		//zmenu.items[i].set_bg_rgb(100, 0, 0)
+		zmenu.items[i].set_bg_rgb(150, 0, 0)
 
 		if ((zmenu.data[i].fade)) {
 			zmenu.items[i].set_rgb	(81, 81, 81)
