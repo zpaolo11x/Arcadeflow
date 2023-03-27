@@ -9646,7 +9646,7 @@ function rgbselector(rgb, sel, old, start) {
 	if (rgb.len() == 0) rgb = [255, 255, 255]
 	prfmenu.helppic.set_rgb(rgb[0], rgb[1], rgb[2])
 
-	local spaces = (zmenu.width - zmenu.glyphw * 4) / (0.5 * uifonts.pixel * overlay.charsize)
+	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
 	testpr("spaces:"+spaces+"\n")
 	zmenudraw2([
 		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), glyph = 0, note = rgb[0], liner = false, fade = false, skip = false}, 
@@ -12240,7 +12240,8 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
 			}
 			else if (!menudata[i].liner) {
-				zmenu.items[i].width = items_w - zmenu.noteitems[i].msg_width - zmenu.pad - items_x
+				testpr("fixw:"+i+"\n")
+				zmenu.items[i].width = items_w + zmenu.glyphw - zmenu.noteitems[i].msg_width - 2 * zmenu.pad // TEST160 trimmed
 			}
 		}
 
