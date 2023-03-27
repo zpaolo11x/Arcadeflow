@@ -17644,7 +17644,18 @@ function on_signal(sig) {
 	if (sig == "exit") {
 		if (!prf.DMPIFEXITAF) {
 			frostshow()
-			zmenudraw(ltxt(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			zmenudraw2(prf.POWERMENU ? [
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("Power", AF.LNG), glyph = 0, note = "", liner = true, fade = false, skip = false},
+				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("Restart", AF.LNG), glyph = 0xe984, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6, note = "", liner = false, fade = false, skip = false},
+			] : [
+				{text = ltxt("Yes", AF.LNG), glyph = 0xea10, note = "", liner = false, fade = false, skip = false},
+				{text = ltxt("No", AF.LNG), glyph = 0xea0f, note = "", liner = false, fade = false, skip = false},
+			], 
+			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
 			function(result) {
 				if (result == 0) 	fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
