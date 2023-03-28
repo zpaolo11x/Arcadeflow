@@ -12875,7 +12875,18 @@ function displayungrouped() {
 		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
 	}
 
-	zmenudraw(showarray, dispglyphs, dispnotes, null, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, (prf.DMPIMAGES != null), true, true, (prf.DMPIMAGES != null), false,
+	local dungroupmenu = []
+
+	foreach(i, item in showarray){
+		dungroupmenu.push({
+			text = showarray[i],
+			glyph = dispglyphs[i],
+			note = dispnotes[i],
+			liner = dispglyphs[i] == -1
+		})
+	}
+
+	zmenudraw2(dungroupmenu, false, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, (prf.DMPIMAGES != null), true, true, (prf.DMPIMAGES != null), false,
 	function(displayout) {
 
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
