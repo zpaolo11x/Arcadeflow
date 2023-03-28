@@ -17180,21 +17180,21 @@ function ra_selectemu(startemu) {
 			ra_applychanges()
 		}
 		else {
-			if (AF.emulatordata[emulist[result]].racore == "") {
+			if (AF.emulatordata[emumenu[result].text].racore == "") {
 				zmenudraw2([
 					{ text = ltxt("Yes"), glyph = 0xea10},
 					{ text = ltxt("No"), glyph = 0xea0f}
 				], false, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
 				function(result2) {
-					if (result2 == 0) ra_selectcore(emulist[result])
+					if (result2 == 0) ra_selectcore(emumenu[result].text)
 					else if (result2 == 1) {
-						ra.todolist.rawdelete(emulist[result])
+						ra.todolist.rawdelete(emumenu[result].text)
 						ra_selectemu(startemu)
 					}
 					else ra_selectemu(startemu)
 				})
 			}
-			else ra_selectcore(emulist[result])
+			else ra_selectcore(emumenu[result].text)
 
 		}
 	})
