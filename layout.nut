@@ -17144,6 +17144,20 @@ function ra_selectemu(startemu) {
 	local startpos = 0
 	local currentemu = startemu
 
+	local emumenu = []
+	
+	foreach (item, val in AF.emulatordata) {
+		emumenu.push({
+			text = item,
+			note = ((val.racore == "") && (!ra.todolist.rawin(item))) ? "" : "("+ (ra.todolist.rawin(item) ? ra.todolist[item]: val.racore) +")"
+			glyph = (ra.todolist.rawin(item)) ? 0xe905 : 0
+		})
+
+	}
+
+	emumenu.sort(@(a, b) a.text <=> b.text)
+	startpos = emumenu.map(function(value){return(value.text)}).find(currentemu)
+/*
 	local emulist = []
 	local corelist = []
 	local todoglyph = []
@@ -17158,9 +17172,9 @@ function ra_selectemu(startemu) {
 		corelist.push(((AF.emulatordata[val].racore == "") && (!ra.todolist.rawin(val))) ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) +")")
 		todoglyph.push((ra.todolist.rawin(val)) ? 0xe905 : 0)
 	}
-
+*/
 	frostshow()
-	zmenudraw(emulist, todoglyph, corelist, null, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
+	zmenudraw2(emumenu, false, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			ra_applychanges()
