@@ -9866,33 +9866,26 @@ function filebrowser1(file0) {
 		".ttf"	: 0xea5c
 		".otf"	: 0xea5c
 	}
-	local lastname = []
-	local folderappend = []
-
-	lastname.push(ltxt("DEFAULT", AF.LNG))
-	lastname.push(ltxt("Attract Folder", AF.LNG))
-	lastname.push(ltxt("Arcadeflow Folder", AF.LNG))
-	lastname.push("..")
-
-	folderappend.push(0)
-	folderappend.push(0)
-	folderappend.push(0)
-	folderappend.push(0)
+	local browsemenu = [
+		{text = ltxt("DEFAULT", AF.LNG)},
+		{text = ltxt("Attract Folder", AF.LNG)},
+		{text = ltxt("Arcadeflow Folder", AF.LNG)},
+		{text = ".."}
+	]
 
 	for (local i = 4; i < fb.sortdir.len(); i++) {
 		local isfile = !fe.path_test(fb.sortdir[i], PathTest.IsDirectory)
 		local lastnametemp = split(fb.sortdir[i], "\\/")
 		lastnametemp = (lastnametemp[lastnametemp.len() - 1])
-		lastname.push(lastnametemp)
 		local extemp = ""
 		if (isfile) {
 			extemp = lastnametemp.slice(lastnametemp.len() - 4, lastnametemp.len())
 			try {extemp = extensions[extemp.tolower()]} catch(err) {extemp = ""}
 		}
-		folderappend.push(isfile ? extemp : 0xe92f)
+		browsemenu.push({text = lastnametemp, glyph = (isfile ? extemp : 0xe92f)})
 	}
-
-	zmenudraw(lastname, folderappend, null, null, fb.startdir, 0xe930, 4 + fb.select0, false, false, false, false, false,
+	
+	zmenudraw2(browsemenu, false, fb.startdir, 0xe930, 4 + fb.select0, false, false, false, false, false,
 	function(out) {
 		fb.file00 = fb.startdir
 
