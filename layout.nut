@@ -9620,7 +9620,7 @@ function rgbselector(rgb, sel, old, start) {
 	prfmenu.helppic.set_rgb(rgb[0], rgb[1], rgb[2])
 
 	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
-	testpr("spaces:"+spaces+"\n")
+
 	zmenudraw2([
 		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[0]}, 
 		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[1]},
@@ -11980,10 +11980,6 @@ function cleanupmenudata(menudata){
 
 function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
-
-print_variable(menudata,"","")
-
-
 	zmenu.data = menudata
 	zmenu.singleline = singleline
 	zmenu.midscroll = midscroll
@@ -12209,7 +12205,6 @@ print_variable(menudata,"","")
 				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
 			}
 			else if (!menudata[i].liner) {
-				testpr("fixw:"+i+"\n")
 				zmenu.items[i].width = items_w + zmenu.glyphw - zmenu.noteitems[i].msg_width - 2 * zmenu.pad // TEST160 trimmed
 			}
 		}
@@ -12331,9 +12326,8 @@ print_variable(menudata,"","")
 	}
 
 	zmenu.selected = presel
-	testpr("a\n")
+
 	if (zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
-	testpr("b\n")
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if ((prf.DMPIMAGES != null) && zmenu.dmp) {
@@ -12486,7 +12480,6 @@ function zmenunavigate_up(signal, forceskip = false) {
 		count.forceup = false
 	 }
 	else if ((!count.forceup) && (count[signal] != 0)) {
-		testpr("2\n")
 		count.forceup = true
 	}
 	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
@@ -12505,7 +12498,6 @@ function zmenunavigate_down(signal, forceskip = false) {
 		count.forcedown = false
 	 }
 	else if ((!count.forcedown) && (count[signal] != 0)) {
-		testpr("2\n")
 		count.forcedown = true
 	}
 	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
@@ -16745,8 +16737,33 @@ function subcategorymenu(maincategory, subcategory) {
 
 	local i = 0
 	foreach(item, val in cat[maincategory].subcats) {
+		catmenu2.push({
+			text = item,
+			note = cat[maincategory].subcats[item]
+		})
+	}
+
+	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
+	catmenu2[0].text = maincategory
+	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG) })
+
+	local currentcat = 0
+	
+	if (search.catg[0] == "") currentcat = null
+	else if (search.catg[1] == "*") currentcat = 0
+	else if ((search.catg[1] == "") && (search.catg[0] == catmenu2[1].text)) currentcat = 1
+	else currentcat = catmenu2.map(function(value){return(value.text)}).find(search.catg[1])
+
+	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
+
+	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(value){return(value.text)}).find(subcategory)
+
+/*
+	local i = 0
+	foreach(item, val in cat[maincategory].subcats) {
 		ctgarray.push(item)
 	}
+
 	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
 
 	for (local i = 0; i < ctgarray.len(); i++) {
@@ -16765,8 +16782,8 @@ function subcategorymenu(maincategory, subcategory) {
 	local currentcat = (search.catg[1] == "*") ? 0 : ctgarray.find(search.catg[1])
 
 	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
-
-	zmenudraw(ctgarray2, ctgarrayglyph, ctgarraynum, null, maincategory, 0xe916,  subcategory == "" ? 0 : ctgarray.find(subcategory), false, false,  false, false, false,
+*/
+	zmenudraw2(catmenu2, false, maincategory, 0xe916,  selectcat, false, false,  false, false, false,
 	function(result) {
 		if (result == -1) maincategorymenu(maincategory, subcategory)
 
@@ -16780,14 +16797,13 @@ function subcategorymenu(maincategory, subcategory) {
 					search.catg = [maincategory, "*"]
 				}
 			}
-			else {
-				if (ctgarray[result] == "") {
-					search.catg = [maincategory, ""]
-				}
-				else {
-					search.catg = [maincategory, ctgarray[result]]
-				}
+			else if (result == 1) {
+				search.catg = [maincategory, ""]
 			}
+			else {
+				search.catg = [maincategory, catmenu2[result].text]
+			}
+			
 
 			local currentname = z_list.gametable[z_list.index].z_name
 			local currentsystem = z_list.gametable[z_list.index].z_system
@@ -16835,8 +16851,7 @@ function maincategorymenu(maincategory, subcategory) {
 //	ctgarraynum.insert(0, "")
 
 	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
-	testpr("currentcat:"+currentcat+"\n")
-	catmenu1[currentcat].rawset (glyph, 0xea10)
+	catmenu1[currentcat].rawset ("glyph", 0xea10)
 
 	local startcat =  catmenu1.map(function(value){return(value.text)}).find(maincategory)
 //	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find(search.catg[0])
