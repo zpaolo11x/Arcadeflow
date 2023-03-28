@@ -16835,6 +16835,7 @@ function maincategorymenu(maincategory, subcategory) {
 //	ctgarraynum.insert(0, "")
 
 	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
+	testpr("currentcat:"+currentcat+"\n")
 	catmenu1[currentcat].rawset (glyph, 0xea10)
 
 	local startcat =  catmenu1.map(function(value){return(value.text)}).find(maincategory)
