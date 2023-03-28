@@ -17066,29 +17066,26 @@ function ra_updatecfg(emulator, core) {
 }
 
 function ra_applychanges() {
+
 	local emuarray = []
 	local corearray = []
-	local menuarray = []
-	local glypharray = []
+	local applymenu = []
+
 	foreach (item, val in ra.todolist) {
 		emuarray.push(item)
 		corearray.push(val)
-		menuarray.push(item + ": " + val)
-		glypharray.push(0)
+		applymenu.push({text = item + ": " + val})
 	}
-	if (emuarray.len() == 0) {
+
+	if (applymenu.len() == 0){
 		frosthide()
 		zmenuhide()
 	} else {
-		menuarray.insert(0, "")
-		menuarray.insert(0, ltxt("Discard changes", AF.LNG))
-		menuarray.insert(0, ltxt("Apply changes", AF.LNG))
-
-		glypharray.insert(0, -1)
-		glypharray.insert(0, 0xea0f)
-		glypharray.insert(0, 0xea10)
-
-		zmenudraw(menuarray, glypharray, null, null, ltxt("Assigned cores", AF.LNG), 0xeafa, 0, false, false, false, false, false,
+		applymenu.insert(0, {liner = true})
+		applymenu.insert(0, {text = ltxt("Discard changes", AF.LNG), glyph = 0xea0f})
+		applymenu.insert(0, {text = ltxt("Apply changes", AF.LNG), glyph = 0xea10})
+	
+		zmenudraw2(applymenu, false, ltxt("Assigned cores", AF.LNG), 0xeafa, 0, false, false, false, false, false,
 		function(result) {
 			if ((result == -1) || (result == 1)) {
 				ra.todolist = {}
@@ -17114,19 +17111,16 @@ function ra_selectcore(startemu) {
 	local startpos = newcore == "" ? ra.corelist.find(oldcore) : ra.corelist.find(newcore)
 	if (startpos == null) startpos = 0
 
-	local coremenulist = []
-	local coreglyphs = []
+	local coremenu = []
 	foreach (i, item in ra.corelist) {
-		coremenulist.push(ra.coretable[item].displayname)
-		if ((oldcore == newcore) || (newcore == "")) {
-			coreglyphs.push(i == ra.corelist.find(oldcore) ? 0xea10 : 0)
-		}
-		else {
-			coreglyphs.push(i == ra.corelist.find(oldcore) ? 0xea11 : (ra.corelist.find(newcore) == i ? 0xea10 : 0))
-		}
+		coremenu.push({
+			text = ra.coretable[item].displayname,
+			glyph = (oldcore == newcore) || (newcore == "") ? (i == ra.corelist.find(oldcore) ? 0xea10 : 0) : (i == ra.corelist.find(oldcore) ? 0xea11 : (ra.corelist.find(newcore) == i ? 0xea10 : 0))
+		})
 	}
+
 	frostshow()
-	zmenudraw(coremenulist, coreglyphs, null, null, ltxt("Select core", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
+	zmenudraw2(coremenu, false, ltxt("Select core", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			ra_selectemu(startemu)
