@@ -12811,12 +12811,53 @@ function displayungrouped() {
 			menuarray.push(z_disp[i])
 		}
 	}
-
 	if (prf.DMPSORT != "false") {
 		menuarray.sort(@(a, b) a.sortkey <=> b.sortkey)
 	}
 
 	// Define menu display arrays
+	local ungroupmenu = []
+	foreach (i, item in menuarray) {
+		ungroupmenu.push({
+			text = item.cleanname
+			note = item.notes
+		})
+	}
+
+	local currentnote = ""
+	local i = 0
+	if (prf.DMPSEPARATORS) {
+		while (i < menuarray.len()) {
+			if ((currentnote != menuarray[i].groupnotes) && (!menuarray[i].ontop)){
+				currentnote = menuarray[i].groupnotes
+				ungroupmenu.insert (i, {text = currentnote, liner = true})
+				menuarray.insert(i, null)
+				i++
+			}
+			i++
+		}
+	}
+
+	if (prf.ALLGAMES) {
+		foreach (item, val in z_af_collections.arr) {
+			ungroupmenu.insert(0, {text = val.id})
+			menuarray.insert(0, z_disp[val.display_id])
+		}
+	}
+
+	if (prf.DMPEXITAF && prf.DMPENABLED) {
+		ungroupmenu.push({text = ltxt("SYSTEM", AF.LNG), liner = true})
+		menuarray.push(null)
+
+		ungroupmenu.push({text = ltxt("EXIT ARCADEFLOW", AF.LNG), liner = true})
+		menuarray.push(null)
+	}
+
+	local currentdisplay = 0
+	foreach (i, item in menuarray) {
+		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
+	}
+	/*
 	local showarray = []
 	local dispnotes = []
 	local groupnotes = []
@@ -12885,8 +12926,8 @@ function displayungrouped() {
 			liner = dispglyphs[i] == -1
 		})
 	}
-
-	zmenudraw2(dungroupmenu, false, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, (prf.DMPIMAGES != null), true, true, (prf.DMPIMAGES != null), false,
+	*/
+	zmenudraw2(ungroupmenu, false, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, (prf.DMPIMAGES != null), true, true, (prf.DMPIMAGES != null), false,
 	function(displayout) {
 
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
@@ -12947,14 +12988,9 @@ function displayungrouped() {
 				frosthide()
 				zmenuhide()
 				if (prf.DMPATSTART) {
-					/*
-					flowT.fg = startfade(flowT.fg, -0.02, -1.0)
-					flowT.data = startfade(flowT.data, 0.02, -1.0)
-					*/
 					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 				}
-			}
-			else {
+			} else {
 				utilitymenu (umpresel)
 			}
 		}
