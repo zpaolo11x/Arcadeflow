@@ -12640,7 +12640,7 @@ function afinstall(zipball, afname) {
 	AF.updatechecking = false
 	bar_cycle_update(AF.bar.stop)
 	frostshow()
-	zmenudraw([ltxt("Restart", AF.LNG)], null, null, null, ltxt("Arcadeflow updated to", AF.LNG) + " "+ zipball, 0xe91c, 0, false, false, true, false, false,
+	zmenudraw2([{text = ltxt("Restart", AF.LNG)}], false, ltxt("Arcadeflow updated to", AF.LNG) + " "+ zipball, 0xe91c, 0, false, false, true, false, false,
 	function(out) {
 		zmenuhide()
 		frosthide()
@@ -12731,7 +12731,7 @@ function checkforupdates(force) {
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
 	if (ver_in.tofloat() <= AF.version.tofloat()) {
 		if (force) {
-			zmenudraw(["Ok"], null, null, null, ltxt("No update available", AF.LNG), 0xe91c, 0, false, false, true, false, false,
+			zmenudraw2([{text = "Ok"}], false, ltxt("No update available", AF.LNG), 0xe91c, 0, false, false, true, false, false,
 			function(out) {
 				zmenuhide()
 				frosthide()
@@ -12781,7 +12781,7 @@ function checkforupdates(force) {
 				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
-				zmenudraw(["Ok"], null, null, null, newafname + ".zip downloaded", 0xe91c, 0, false, false, true, false, false,
+				zmenudraw2([{text = "Ok"}], false, newafname + ".zip downloaded", 0xe91c, 0, false, false, true, false, false,
 				function(out) {
 					zmenuhide()
 					frosthide()
@@ -17176,7 +17176,10 @@ function ra_selectemu(startemu) {
 		}
 		else {
 			if (AF.emulatordata[emulist[result]].racore == "") {
-				zmenudraw(ltxt(["Yes", "No"], AF.LNG), [0xea10, 0xea0f], null, null, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
+				zmenudraw2([
+					{ text = ltxt("Yes"), glyph = 0xea10},
+					{ text = ltxt("No"), glyph = 0xea0f}
+				], false, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
 				function(result2) {
 					if (result2 == 0) ra_selectcore(emulist[result])
 					else if (result2 == 1) {
@@ -17196,25 +17199,6 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
 
-	//TEST160
-
-	/*
-	if (sig=="custom1"){
-		local menudata = [
-			{text = "zero", glyph = 0xea36, note = "", fade = false, liner = true, skip = false},
-			{text = "uno", glyph = 0xea36, note = "test1", fade = false, liner = false, skip = false},
-			{text = "due", glyph = 0xea36, note = "test2", fade = true, liner = false, skip = true},
-			{text = "tre", glyph = "", note = "", fade = false, liner = true, skip = false},
-			{text = "quattro", glyph = 0xea36, note = "", fade = false, liner = false, skip = false},
-			{text = "cinque", glyph = 0xea36, note = "", fade = false, liner = false, skip = false}
-			{text = "zero", glyph = 0xea36, note = "", fade = false, liner = true, skip = false},
-		]
-		frostshow()
-		zmenudraw (menudata,true,"Test Menu", 0xe91c, 0, false, false, false, false, false, function(out) {
-			return
-		})
-	}
-*/
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
 	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
