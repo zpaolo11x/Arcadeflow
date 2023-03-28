@@ -16848,7 +16848,7 @@ function maincategorymenu(maincategory, subcategory) {
 
 function categorymenu() {
 	// Detect current main category
-	local currentcat = stripcat(0)
+	local currentcat = stripcat(0) //TEST160 usare anche altrove!
 	maincategorymenu(currentcat[0], currentcat[1])
 }
 
