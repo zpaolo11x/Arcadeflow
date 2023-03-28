@@ -16831,14 +16831,19 @@ function maincategorymenu(maincategory, subcategory) {
 	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
 //	ctgarray.insert(0, ltxt("ALL", AF.LNG))
 //	ctgarraynum.insert(0, "")
-	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find(search.catg[0])
 
-	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
+	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
+	catmenu1[currentcat].rawset (glyph, 0xea10)
+
+	local startcat =  catmenu1.map(function(value){return(value.text)}).find(maincategory)
+//	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find(search.catg[0])
+
+//	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
 
 
 	frostshow()
 
-	zmenudraw2(catmenu1, false, ltxt("Categories", AF.LNG), 0xe916, ctgarray.find(maincategory), false, false, false, false, false,
+	zmenudraw2(catmenu1, false, ltxt("Categories", AF.LNG), 0xe916, startcat, false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			if (umvisible) {
