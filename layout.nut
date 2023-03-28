@@ -9578,16 +9578,17 @@ function restoreoptions() {
 	local optionsfiles = DirectoryListing(optionsdir, false).results
 	local optionsnames = []
 	foreach (id, item in optionsfiles) {
-		if (item[0].tochar() != ".") optionsnames.push(item.slice(0, -4))
+		if (item[0].tochar() != ".") optionsnames.push({text = item.slice(0, -4)})
 	}
+
 	if (optionsnames.len() > 0) {
-		zmenudraw(optionsnames, null, null, null, "Options files", null, 0, false, false, false, false, false,
+		zmenudraw2(optionsnames, false, "Options files", null, 0, false, false, false, false, false,
 		function(out) {
 			if (out == -1) {
 				optionsmenu_lev2()
 			}
 			else {
-				local prefsfilepath = fe.path_expand(AF.folder + "options/" + optionsnames.results[out] + ".txt")
+				local prefsfilepath = fe.path_expand(AF.folder + "options/" + optionsnames[out].text + ".txt")
 				readprefdata(prefsfilepath)
 				local outprefs = generateselectiontable()
 				saveprefdata(outprefs, null)
