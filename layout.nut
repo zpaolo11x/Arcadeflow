@@ -12971,13 +12971,8 @@ function displayungrouped() {
 			frosthide()
 			zmenuhide()
 			if (prf.DMPATSTART) {
-				/*
-				flowT.fg = startfade(flowT.fg, -0.02, -1.0)
-				flowT.data = startfade(flowT.data, 0.02, -1.0)
-				*/
 				flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 			}
-			//local targetdisplay = displaysindex[displaysarray[displayout]]
 			local targetdisplay = menuarray[displayout].dispindex
 
 			jumptodisplay(targetdisplay)
@@ -13006,21 +13001,6 @@ function displaygrouped1() {
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
-		// COLLECTIONS!
-		/*
-		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1) - 2) && prf.ALLGAMES) {
-			jumptodisplay(z_af_collections.tab["AF All Games"].display_id)
-			return
-		}
-		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1) - 1) && prf.ALLGAMES) {
-			jumptodisplay(z_af_collections.tab["AF Favourites"].display_id)
-			return
-		}
-		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1)) && prf.ALLGAMES) {
-			jumptodisplay(z_af_collections.tab["AF Last Played"].display_id)
-			return
-		}
-		else */
 		if (disp.gmenu0 != -1) disp.gmenu0out = disp.gmenu0
 
 		// Code when "ESC" is pressed in Displays Menu page
@@ -13114,10 +13094,6 @@ function displaygrouped1() {
 			function(gmenu1) {
 				if (gmenu1 != -1) {
 					if (prf.DMPATSTART) {
-						/*
-						flowT.fg = startfade(flowT.fg, -0.02, -1.0)
-						flowT.data = startfade(flowT.data, 0.02, -1.0)
-						*/
 						flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 					}
 					//local targetdisplay = disp.structure[disp.grouplabel[disp.gmenu0]].disps[temparray[gmenu1]].index
@@ -13138,12 +13114,7 @@ function displaygrouped1() {
 				frosthide()
 				zmenuhide()
 				if (prf.DMPATSTART) {
-					/*
-					flowT.fg = startfade(flowT.fg, -0.02, -1.0)
-					flowT.data = startfade(flowT.data, 0.02, -1.0)
-					*/
 					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
-
 				}
 			}
 			else {
