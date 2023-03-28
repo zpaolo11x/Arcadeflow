@@ -11980,6 +11980,10 @@ function cleanupmenudata(menudata){
 
 function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
+
+print_variable(menudata,"","")
+
+
 	zmenu.data = menudata
 	zmenu.singleline = singleline
 	zmenu.midscroll = midscroll
@@ -12327,8 +12331,9 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	}
 
 	zmenu.selected = presel
-	
+	testpr("a\n")
 	if (zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
+	testpr("b\n")
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if ((prf.DMPIMAGES != null) && zmenu.dmp) {
@@ -16803,25 +16808,37 @@ function maincategorymenu(maincategory, subcategory) {
 	local cat0 = ""
 	local cat1 = ""
 
+	local catmenu1 = []
+
 	local i = 0
 	foreach(item, val in cat) {
-		ctgarray.push(item)
+		catmenu1.push({
+			text = item,
+			note = val.num
+			})
+		//ctgarray.push(item)
 	}
-	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
 
+	catmenu1.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
+	
+//	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
+/*
 	for (local i = 0; i < ctgarray.len(); i++) {
 		ctgarraynum.push(cat[ctgarray[i]].num)
 	}
+*/
 
-	ctgarray.insert(0, ltxt("ALL", AF.LNG))
-	ctgarraynum.insert(0, "")
+	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
+//	ctgarray.insert(0, ltxt("ALL", AF.LNG))
+//	ctgarraynum.insert(0, "")
 	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find(search.catg[0])
 
 	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
 
+
 	frostshow()
 
-	zmenudraw(ctgarray, ctgarrayglyph, ctgarraynum, null, ltxt("Categories", AF.LNG), 0xe916, ctgarray.find(maincategory), false, false, false, false, false,
+	zmenudraw2(catmenu1, false, ltxt("Categories", AF.LNG), 0xe916, ctgarray.find(maincategory), false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			if (umvisible) {
@@ -16841,7 +16858,7 @@ function maincategorymenu(maincategory, subcategory) {
 			zmenuhide()
 		}
 		else {
-			subcategorymenu(ctgarray[result], (ctgarray[result] == maincategory) ? subcategory : "")
+			subcategorymenu(catmenu1[result].text, (catmenu1[result].text == maincategory) ? subcategory : "")
 		}
 	})
 }
