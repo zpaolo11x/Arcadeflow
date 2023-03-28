@@ -14750,12 +14750,8 @@ buildutilitymenu()
 function utilitymenu(presel) {
 	umvisible = true
 
-	local switcharray1 = []
-	local glypharray1 = []
 	local posarray1 = []
 	local idarray1 = []
-	local sidearray1 = []
-
 	local umdata = []
 
 	local i_pos = 0
@@ -14771,11 +14767,8 @@ function utilitymenu(presel) {
 				liner = item.liner
 			})
 
-			switcharray1.push(item.label) //TEST160 ripulire questi?
-			glypharray1.push(item.glyph)
 			posarray1.push(i_pos)
 			idarray1.push(i_id)
-			sidearray1.push(item.sidenote())
 			i_pos++
 		}
 		i_id++
