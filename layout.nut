@@ -16724,14 +16724,6 @@ function stripcat(offset) {
 }
 
 function subcategorymenu(maincategory, subcategory) {
-	local categories = {}
-	local ctgarray = []
-	local ctgarray2 = []
-	local ctgarraynum = []
-	local ctgarrayglyph = []
-	local cat0 = ""
-	local cat1 = ""
-	local cat2 = ""
 
 	local catmenu2 = []
 
@@ -16742,8 +16734,8 @@ function subcategorymenu(maincategory, subcategory) {
 			note = cat[maincategory].subcats[item]
 		})
 	}
-
 	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
+
 	catmenu2[0].text = maincategory
 	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG) })
 
@@ -16758,31 +16750,6 @@ function subcategorymenu(maincategory, subcategory) {
 
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(value){return(value.text)}).find(subcategory)
 
-/*
-	local i = 0
-	foreach(item, val in cat[maincategory].subcats) {
-		ctgarray.push(item)
-	}
-
-	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
-
-	for (local i = 0; i < ctgarray.len(); i++) {
-		ctgarraynum.push(cat[maincategory].subcats[ctgarray[i]])
-	}
-	//local currentcat = (search.catg[1] == "") ? 0 : ctgarray.find(search.catg[1])
-
-	for (local i = 0; i < ctgarray.len(); i++) {
-		ctgarray2.push((ctgarray[i] == "" ? maincategory : ctgarray[i]))
-	}
-
-	ctgarray.insert(0, ltxt("ALL", AF.LNG))
-	ctgarray2.insert(0, ltxt("ALL", AF.LNG))
-	ctgarraynum.insert(0, "")
-
-	local currentcat = (search.catg[1] == "*") ? 0 : ctgarray.find(search.catg[1])
-
-	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
-*/
 	zmenudraw2(catmenu2, false, maincategory, 0xe916,  selectcat, false, false,  false, false, false,
 	function(result) {
 		if (result == -1) maincategorymenu(maincategory, subcategory)
@@ -16804,7 +16771,6 @@ function subcategorymenu(maincategory, subcategory) {
 				search.catg = [maincategory, catmenu2[result].text]
 			}
 			
-
 			local currentname = z_list.gametable[z_list.index].z_name
 			local currentsystem = z_list.gametable[z_list.index].z_system
 
@@ -16819,12 +16785,6 @@ function subcategorymenu(maincategory, subcategory) {
 }
 
 function maincategorymenu(maincategory, subcategory) {
-	local categories = {}
-	local ctgarray = []
-	local ctgarraynum = []
-	local ctgarrayglyph = []
-	local cat0 = ""
-	local cat1 = ""
 
 	local catmenu1 = []
 
@@ -16833,31 +16793,16 @@ function maincategorymenu(maincategory, subcategory) {
 		catmenu1.push({
 			text = item,
 			note = val.num
-			})
-		//ctgarray.push(item)
+		})
 	}
-
 	catmenu1.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 	
-//	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
-/*
-	for (local i = 0; i < ctgarray.len(); i++) {
-		ctgarraynum.push(cat[ctgarray[i]].num)
-	}
-*/
-
 	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
-//	ctgarray.insert(0, ltxt("ALL", AF.LNG))
-//	ctgarraynum.insert(0, "")
 
 	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
 	catmenu1[currentcat].rawset ("glyph", 0xea10)
 
 	local startcat =  catmenu1.map(function(value){return(value.text)}).find(maincategory)
-//	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find(search.catg[0])
-
-//	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
-
 
 	frostshow()
 
