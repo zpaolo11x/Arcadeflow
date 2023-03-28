@@ -12742,29 +12742,21 @@ function checkforupdates(force) {
 
 	frostshow()
 	// Get the latest updates
-
-	local textarray = []
-	local glypharray = []
-
+	local updatemenu = []
 	foreach (i, item in gh.release_notes) {
-		textarray.push(item)
-		glypharray.push(0xea08)
+		updatemenu.push({text = item,	glyph = 0xea08})
 	}
+	updatemenu.push({text = ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG), glyph = 0xea36})
+	updatemenu.push({text = ltxt("Dismiss this update", AF.LNG), glyph = 0xea0f})
 
-	textarray.push(ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG))
-	glypharray.push(0xea36)
-
-	textarray.push(ltxt("Dismiss this update", AF.LNG))
-	glypharray.push(0xea0f)
-
-	zmenudraw(textarray, glypharray, null, null, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, false, false, false, false, false,
+	zmenudraw2(updatemenu, false, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			zmenuhide()
 			frosthide()
 		}
 
-		if (out == textarray.len() - 2) {
+		if (out == updatemenu.len() - 2) {
 
 			// Download latest layout
 			local newafname = "Arcadeflow_" + (ver_in.tofloat() * 10).tointeger()
@@ -12792,7 +12784,7 @@ function checkforupdates(force) {
 			}
 		}
 
-		if (out == textarray.len() - 1) {
+		if (out == updatemenu.len() - 1) {
 
 			// Dismiss auto updates
 			local updpath = fe.path_expand(AF.folder + "pref_update.txt")
@@ -16838,14 +16830,13 @@ function categorymenu() {
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
-	local labelvector = []
-	local glyphvector = []
+
+	local sortmenu = []
 	for (local i = 0; i < namevector.len(); i++) {
-		labelvector.push(namevector[abs(vector[i]) - 1])
-		glyphvector.push(vector[i] > 0 ? 0xea52 : 0)
+		sortmenu.push({text = namevector[abs(vector[i]) - 1], glyph = (vector[i] > 0 ? 0xea52 : 0)})
 	}
 
-	zmenudraw(labelvector, glyphvector, null, null, title, glyph, presel, false, false, false, false, false,
+	zmenudraw2(sortmenu, false, title, glyph, presel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			local v0 = ""
