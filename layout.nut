@@ -17459,18 +17459,18 @@ function on_signal(sig) {
 		if (prfmenu.showing || zmenu.dmp) return true
 		if (keyboard_visible()) return true
 
-		local filterarray = []
-		local filterglyphs = []
-		local filternotes = []
-		local filterindex = 0
+		local filtermenu = []
+
 		for (local i = 0; i < fe.filters.len(); i++) {
-			filterarray.push(fe.filters[i].name)
-			filternotes.push(fe.filters[i].size)
-			filterglyphs.push(fe.filters[i].name == fe.list.filter ? 0xea10 : 0)
+			filtermenu.push({
+				text = fe.filters[i].name,
+				note = fe.filters[i].size,
+				glyph = fe.filters[i].name == fe.list.filter ? 0xea10 : 0
+			})
 		}
 
 		frostshow()
-		zmenudraw(filterarray, filterglyphs, filternotes, null, ltxt("FILTERS", AF.LNG), 0xea5b, (fe.filters.len() != 0 ? fe.list.filter_index : 0), false, false, false, false, false,
+		zmenudraw2(filtermenu, false, ltxt("FILTERS", AF.LNG), 0xea5b, (fe.filters.len() != 0 ? fe.list.filter_index : 0), false, false, false, false, false,
 		function(result) {
 			if (result != -1) {
 				fe.list.filter_index = result
