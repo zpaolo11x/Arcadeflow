@@ -16741,6 +16741,8 @@ function subcategorymenu(maincategory, subcategory) {
 	local cat1 = ""
 	local cat2 = ""
 
+	local catmenu2 = []
+
 	local i = 0
 	foreach(item, val in cat[maincategory].subcats) {
 		ctgarray.push(item)
