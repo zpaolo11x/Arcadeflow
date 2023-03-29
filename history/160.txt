@@ -1,3 +1,5 @@
 16.0
+Added new option for increased tile zoom
 Improved More of the Same menu
 Fixed bug with More of the Same menu
+Fixed zoom ratio for slimline layout

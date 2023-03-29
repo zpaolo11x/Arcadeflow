@@ -850,7 +850,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "CROPSNAPS", glyph = 0xea57, title = "Aspect ratio", help = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation", options = ["Adaptive", "Square"], values = [false, true], selection = 0, picsel= ["aradaptive" + AF.prefs.imgext, "arsquare" + AF.prefs.imgext], pic = "arsquare" + AF.prefs.imgext},
 {v = 8.7, varname = "MORPHASPECT", glyph = 0xea57, title = "Morph snap ratio", help = "Chose if you want the box to morph into the actual game video or if it must be cropped", options = ["Morph video", "Crop video"], values = [true, false], selection = 0},
 {v = 10.9, varname = "FIX169", glyph = 0xea57, title = "Optimize vertical arcade", help = "Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 10.4, varname = "TILEZOOM", glyph = 0xea57, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
+{v = 16.0, varname = "TILEZOOM", glyph = 0xea57, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Increased", "Standard", "Reduced", "None"], values = [3, 2, 1, 0], selection = 1},
 {v = 10.7, varname = "LOGOSONLY", glyph = 0xea6d, title = "Show only logos", help = "If enabled, only game title logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = AF.req.liner},
 {v = 8.8, varname = "TITLEART", glyph = 0xe915, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
@@ -2422,7 +2422,21 @@ local carrierT = {
 // Changed zoomscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
 
-UI.zoomscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45))))
+// UI.zoomscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45))))
+
+if (prf.TILEZOOM == 0) {
+	UI.zoomscale = 1.0	// No zoom in any case
+} else if (prf.TILEZOOM == 1) {
+	UI.zoomscale = 1.15	// Reduced zoom in any case
+} else if (prf.TILEZOOM == 2) {
+	if ((UI.rows == 1) && (!prf.SLIMLINE)){	// Zoom when single line with large tiles
+		UI.zoomscale = (UI.vertical ? 1.15 : 1.45) // Horizontal vs Vertical
+	} else {
+		UI.zoomscale = ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) // Zoom in any case with 2+ rows or 1 slimline
+	}
+} else if (prf.TILEZOOM == 3) {
+	UI.zoomscale = 1.8	// Large zoom in any case
+}
 
 UI.whiteborder = 0.15
 
