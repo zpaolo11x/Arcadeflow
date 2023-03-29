@@ -2427,7 +2427,7 @@ local carrierT = {
 if (prf.TILEZOOM == 0) {
 	UI.zoomscale = 1.0	// No zoom in any case
 } else if (prf.TILEZOOM == 1) {
-	UI.zoomscale = 1.15	// Reduced zoom in any case
+	UI.zoomscale = 1.25	// Reduced zoom in any case (was 1.15)
 } else if (prf.TILEZOOM == 2) {
 	if ((UI.rows == 1) && (!prf.SLIMLINE)){	// Zoom when single line with large tiles
 		UI.zoomscale = (UI.vertical ? 1.15 : 1.45) // Horizontal vs Vertical
