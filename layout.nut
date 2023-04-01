@@ -8981,7 +8981,8 @@ fl.surf3.set_pos(0, 0, fl.w_os * 0.2, fl.h_os * 0.2)
 
 //local overmenuwidth = (vertical ? fl.w_os * 0.7 : fl.h_os * 0.7)
 local overmenuwidth = UI.zoomedwidth * 0.9
-if (((UI.rows == 1) && UI.vertical) || (!UI.vertical && (UI.rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2))) overmenuwidth = UI.zoomedwidth * 0.6
+if (((UI.rows == 1) && UI.vertical) || (!UI.vertical && (UI.rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM >= 2))) overmenuwidth = UI.zoomedwidth * 0.6
+if (prf.MAXLINE) overmenuwidth = UI.zoomedwidth * 0.35
 local overmenu = fl.surf.add_image("pics/ui/overmenu4.png", fl.x + fl.w * 0.5 - overmenuwidth * 0.5, fl.y + fl.h * 0.5 - overmenuwidth * 0.5, overmenuwidth, overmenuwidth)
 overmenu.visible = false
 overmenu.alpha = 0
