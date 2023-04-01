@@ -6726,7 +6726,7 @@ function z_listboot() {
 			z_list.boot[i].z_category = "display"
 			z_list.boot[i].z_fileisavailable = true
 			if (system_data.rawin(currentsystem)){
-				z_list.boot[i].z_category = system_data[currentsystem].group+"ico"
+				z_list.boot[i].z_category = system_data[currentsystem].group+" sys"
 				z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
 				z_list.boot[i].z_year = system_data[currentsystem].year
 			}
@@ -7536,11 +7536,11 @@ categorytable["GUN"] <- ["GUN", "GUN", [0, 250, 200]]//
 //pure red
 categorytable["PINBALL"] <- ["PBALL", "PBALL", [255, 0, 0]]//
 
-categorytable["CONSOLEICO"] <- ["CONS", "CONS", [255, 0, 0]]//
-categorytable["ARCADEICO"] <- ["ARCD", "ARCD", [255, 0, 0]]//
-categorytable["COMPUTERICO"] <- ["COMP", "COMP", [255, 0, 0]]//
-categorytable["HANDHELDICO"] <- ["HHELD", "HHELD", [255, 0, 0]]//
-categorytable["PINBALLICO"] <- ["PBALL", "PBALL", [255, 0, 0]]//
+categorytable["CONSOLE SYS"] <- ["CONS", "CONS", [255, 0, 0]]//
+categorytable["ARCADE SYS"] <- ["ARCD", "ARCD", [255, 0, 0]]//
+categorytable["COMPUTER SYS"] <- ["COMP", "COMP", [255, 0, 0]]//
+categorytable["HANDHELD SYS"] <- ["HHELD", "HHELD", [255, 0, 0]]//
+categorytable["PINBALL SYS"] <- ["PBALL", "PBALL", [255, 0, 0]]//
 
 
 function systemlabel(input) {
