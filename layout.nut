@@ -6697,6 +6697,7 @@ function z_listboot() {
 	for (local i = 0; i < fe.list.size; i++) {
 		ifeindex = i - fe.list.index
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
+			// This is a proper game from a real romlist
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex)))
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 
@@ -6714,14 +6715,20 @@ function z_listboot() {
 
 			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 		} else {
-			// Manage redirect romlists
+			// This is a redirection entry to a different display
 			z_list.boot.push(clone (z_fields1))
 			z_list.boot2.push(clone (z_fields2))
+			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
+			testpr("ZNAME:"+z_list.boot[i].z_name+"\n")
+			currentsystem = z_list.boot[i].z_name.tolower()
+			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
 			z_list.boot[i].z_felistindex = i
 			z_list.boot[i].z_category = "display"
 			z_list.boot[i].z_fileisavailable = true
-			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
-			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
+			if (system_data.rawin(currentsystem)){
+				z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
+				z_list.boot[i].z_year = system_data[currentsystem].year
+			}
 		}
 	}
 
