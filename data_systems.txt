@@ -411,6 +411,8 @@ core grafx
 
 nec pc engine cd,256,224,PCECD,CRT,NONE,4,3,CONSOLE,NEC,1988,PC Engine CD,114,iso,joystick (8-way),2
 pc engine cd
+pc engine-cd
+nec pc engine-cd
 
 nec pc engine duo,256,224,PCE2,CRT,NONE,4,3,CONSOLE,NEC,1992,PC Engine Duo,114,iso,joystick (8-way),2
 pc engine duo

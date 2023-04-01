@@ -6719,7 +6719,7 @@ function z_listboot() {
 			z_list.boot.push(clone (z_fields1))
 			z_list.boot2.push(clone (z_fields2))
 			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
-			testpr("ZNAME:"+z_list.boot[i].z_name+"\n")
+
 			currentsystem = z_list.boot[i].z_name.tolower()
 			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
 			z_list.boot[i].z_felistindex = i
