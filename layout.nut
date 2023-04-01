@@ -6696,23 +6696,32 @@ function z_listboot() {
 	local currentsystem = ""
 	for (local i = 0; i < fe.list.size; i++) {
 		ifeindex = i - fe.list.index
+		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
+			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex)))
+				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 
-		if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex)))
-			refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
+			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+			z_list.boot[i].z_felistindex = i
+			z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
+			currentsystem = z_list.boot[i].z_system.tolower()
 
-		z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-		z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-		z_list.boot[i].z_felistindex = i
-		z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
-		currentsystem = z_list.boot[i].z_system.tolower()
+			//insert here system overrides, for example change controller and numbuttons using system data fields
+			if (system_data.rawin(currentsystem)) {
+				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
+				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
+			}
 
-		//insert here system overrides, for example change controller and numbuttons using system data fields
-		if (system_data.rawin(currentsystem)) {
-			if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
-			if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
+			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
+		} else {
+			// Manage redirect romlists
+			z_list.boot.push(clone (z_fields1))
+			z_list.boot2.push(clone (z_fields2))
+			z_list.boot[i].z_felistindex = i
+			z_list.boot[i].z_fileisavailable = true
+			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
+			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
 		}
-
-		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
 
 	timestop("boot")
