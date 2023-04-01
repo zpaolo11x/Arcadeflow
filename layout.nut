@@ -826,8 +826,8 @@ AF.prefs.l1.push([
 {v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout", options = languagearray(), values = languagetokenarray(), selection = 1, picsel = languageflags(), pic = "flags.jpg"},
 {v = 10.5, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 7.2, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Small", "1", "2", "3"], values = [-1, 1, 2, 3], selection = 2, picsel = ["rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
-{v = 15.5, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Small", "1", "2", "3"], values = [-1, 1, 2, 3], selection = 3, picsel = ["rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
+{v = 7.2, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rows1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
+{v = 15.5, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rowsv1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["cleanyes" + AF.prefs.imgext, "cleanno" + AF.prefs.imgext], pic = "cleanyes" + AF.prefs.imgext},
 {v = 7.2, varname = "LOWRES", glyph = 0xe997, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
@@ -1491,6 +1491,7 @@ prf.AMSTART <- (prf.AMENABLE == "From start")
 prf.AMENABLE = (prf.AMENABLE != "Disabled")
 
 prf.SLIMLINE <- false
+prf.MAXLINE <- false
 
 // Update version dismiss: prf.UPDATEDIMISSVER gets the value of the latest "dismissed" revision,
 // checkforupdates downloads the latest version info and checks versus this one, if it's not newer than this
@@ -2178,10 +2179,15 @@ local gbrgb = {
 if (prf.HORIZONTALROWS == -1) {
 	prf.HORIZONTALROWS = 1
 	prf.SLIMLINE = true
-}
-else {
+	prf.MAXLINE = false
+} else if (prf.HORIZONTALROWS == -2) {
+	prf.HORIZONTALROWS = 1
+	prf.SLIMLINE = false
+	prf.MAXLINE = true
+} else {
 	prf.HORIZONTALROWS = prf.HORIZONTALROWS.tointeger()
 	prf.SLIMLINE = false
+	prf.MAXLINE = false
 }
 
 // layout preferences
@@ -2337,8 +2343,12 @@ if (UI.vertical) {
 	if (prf.VERTICALROWS == -1) {
 		prf.VERTICALROWS = 1
 		prf.SLIMLINE = true
-	}
-	else {
+		prf.MAXLINE = false
+	} else if (prf.VERTICALROWS == -2) {
+		prf.VERTICALROWS = 1
+		prf.SLIMLINE = false
+		prf.MAXLINE = true
+	} else {
 		prf.VERTICALROWS = prf.VERTICALROWS.tointeger()
 		prf.SLIMLINE = false
 	}
@@ -2360,7 +2370,6 @@ UI.scalerate = (UI.vertical ? fl.w : fl.h) / 1200.0
 // Changed header spacer from 200 to 220 better centering
 UI.header.h = floor(prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate) // content
 UI.header.h2 = floor(prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)) //spacer
-
 // Changed header spacer from 100 to 90 better centering
 UI.footer.h = floor(prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate) // content
 UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
@@ -2369,6 +2378,9 @@ UI.footer.h2 = floor(prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf
 // If slimline is enabled the label row is raised from the bottom
 // but footer.h3 is used to keep track of old value to size menus
 UI.footer.h3 = UI.footer.h
+
+if (prf.MAXLINE) UI.header.h2 = UI.footer.h2 = UI.footer.h3 = (UI.vertical ? 230 : 100) * UI.scalerate
+
 if (prf.SLIMLINE) UI.footer.h = floor(UI.footer.h * 1.4)
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2
@@ -2437,7 +2449,7 @@ if (prf.TILEZOOM == 0) {
 } else if (prf.TILEZOOM == 3) {
 	UI.zoomscale = 1.8	// Large zoom in any case
 }
-
+if (prf.MAXLINE) UI.zoomscale = UI.vertical ? 1.9 : 2.2//ARTZOOM
 UI.whiteborder = 0.15
 
 if (prf.PIXELACCURATE) {
