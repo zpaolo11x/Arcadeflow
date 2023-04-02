@@ -12038,6 +12038,8 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	}
 	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
 	// user defined skip values
+	
+	zmenu.firstitem = 0
 
 	foreach(i, item in menudata){
 		local targetdown = i + 1
