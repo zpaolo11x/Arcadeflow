@@ -1049,6 +1049,7 @@ AF.prefs.l1.push([
 {v = 10.0, varname = "MEDIASCRAPE", glyph = 0xe90d, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping", options = ["Overwrite media", "Only missing", "No media scrape"], values= ["ALL_MEDIA", "MISSING_MEDIA", "NO_MEDIA"], selection = 1},
 {v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference", options = function() {return (AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
 {v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
+{v = 16.0, varname = "SCRAPETIMEOUT", glyph = 0xe94e, title = "Scrape Timeout", help = "Set the number of seconds to wait for each scrape operation to complete", options = [0, 120, 10], values = 10, selection = AF.req.slideint},
 {v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = AF.req.liner},
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
@@ -15900,7 +15901,7 @@ function tick(tick_time) {
 					item.getromdata.wakeup()
 					scraprt("ID" + i + " main end first check\n")
 				}
-				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)) {
+				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= prf.SCRAPETIMEOUT * 1000)) {
 					AF.scrape.timeoutroms.push(item.rominputitem) //pushes the timeout item in the list
 					scraprt("ID" + i + " TIMEOUT\n")
 
