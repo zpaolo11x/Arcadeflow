@@ -8369,6 +8369,10 @@ for (local i = 0; i < tiles.total; i++) {
 	availz.alpha = 150
 
 	local favez = obj.add_image("pics/decor/starred.png", UI.zoomedpadding + UI.zoomedcorewidth / 2, UI.zoomedpadding + UI.zoomedcoreheight / 2 - UI.zoomedvshift, UI.zoomedcorewidth / 2, UI.zoomedcoreheight / 2)
+	if (prf.MAXLINE) favez.set_pos(	UI.zoomedpadding + UI.zoomedcorewidth * 3.0 / 2.0, 
+												UI.zoomedpadding + UI.zoomedcoreheight * 3.0 / 2.0 - UI.zoomedvshift, 
+												0.5 * UI.zoomedcorewidth / 2, 
+												0.5 * UI.zoomedcoreheight / 2)
 	favez.visible = false
 	favez.preserve_aspect_ratio = false
 
