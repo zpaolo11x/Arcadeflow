@@ -8375,7 +8375,7 @@ for (local i = 0; i < tiles.total; i++) {
 																	UI.zoomedcoreheight * 1.0 / 4.0)
 
 	if (prf.MAXLINE && UI.vertical) favez.set_pos(	UI.zoomedpadding + UI.zoomedcorewidth * 5.0 / 8.0, 
-																	UI.zoomedpadding + UI.zoomedcoreheight / 2 - UI.zoomedvshift, 
+																	UI.zoomedpadding + (UI.zoomedcoreheight * 2.5 / 4.0) - UI.zoomedvshift, 
 																	UI.zoomedcorewidth * 1.0 / 4.0, 
 																	UI.zoomedcoreheight * 1.0 / 4.0)
 

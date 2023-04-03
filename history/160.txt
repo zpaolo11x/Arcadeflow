@@ -1,5 +1,6 @@
 16.0
-Added new option for increased tile zoom
+Added option for increased tile zoom
+Added option for scrape timeout
 Improved More of the Same menu
 Fixed bug with More of the Same menu
 Fixed zoom ratio for slimline layout
