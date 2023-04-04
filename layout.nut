@@ -4641,8 +4641,8 @@ function portgame(romlist, emulator, gamename) {
 
 	romdb1.rawset(listfields[0], cleanromlist)
 	romdb2.rawset(listfields[0], cleanromlist2)
-	z_list.db1.rawset(listfields[0], cleanromlist)
-	z_list.db2.rawset(listfields[0], cleanromlist2)
+	z_list.db1[emulator]<-(listfields[0], cleanromlist)
+	z_list.db2[emulator]<-(listfields[0], cleanromlist2)
 testpr(listfields[0]+"\n")
 print_variable(cleanromlist,"","")
 	saveromdb1 (emulator, cleanromlist)
