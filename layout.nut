@@ -6646,6 +6646,12 @@ function getallgamesdb(logopic) {
 			itemname = item.slice(0, -4)
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
+			if (!prf.MASTERLIST && !file_exist(AF.romlistfolder + itemname + ".txt")){
+				if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
+				else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
+				else system ("attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)	
+			}
+
 			// The emulator has a self named romlist
 			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) {
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
