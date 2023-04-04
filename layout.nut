@@ -8459,15 +8459,18 @@ for (local i = 0; i < tiles.total; i++) {
 	//local tg_mx = obj.add_image("pics/decor/tag.png", 0, 0, width * selectorscale/6.0, height * selectorscale/6.0)
 
 	local nw_mx = obj.add_image("pics/decor/new.png", 0, 0, UI.zoomedcorewidth / 8.0, UI.zoomedcoreheight / 8.0)
+	if (prf.MAXLINE) nw_mx.width = nw_mx.height = UI.zoomedcoreheight / 12.0
 	nw_mx.visible = false
 	nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 
 	local tg_mx = obj.add_image("pics/decor/tag.png", 0, 0, UI.zoomedcorewidth / 6.0, UI.zoomedcoreheight / 6.0)
+	if (prf.MAXLINE) tg_mx.width = tg_mx.height = UI.zoomedcoreheight / 9.0
 	tg_mx.visible = false
 	tg_mx.mipmap = true
 	tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 
 	local donez = obj.add_image("pics/decor/completed.png", UI.zoomedpadding, UI.zoomedpadding - UI.zoomedvshift, UI.zoomedcorewidth, UI.zoomedcoreheight)
+	if (prf.MAXLINE) donez.set_pos (UI.zoomedpadding + UI.zoomedcorewidth * 0.1, UI.zoomedpadding - UI.zoomedvshift + UI.zoomedcorewidth * 0.5, UI.zoomedcorewidth * 0.5, UI.zoomedcoreheight * 0.5)
 	donez.visible = false
 	donez.preserve_aspect_ratio = false
 	donez.mipmap = true
@@ -8487,7 +8490,7 @@ for (local i = 0; i < tiles.total; i++) {
 																	UI.zoomedcoreheight * 1.0 / 4.0)
 
 	if (prf.MAXLINE && UI.vertical) favez.set_pos(	UI.zoomedpadding + UI.zoomedcorewidth * 5.0 / 8.0, 
-																	UI.zoomedpadding + (UI.zoomedcoreheight * 2.5 / 4.0) - UI.zoomedvshift, 
+																	UI.zoomedpadding + (UI.zoomedcoreheight * 2.2 / 4.0) - UI.zoomedvshift, 
 																	UI.zoomedcorewidth * 1.0 / 4.0, 
 																	UI.zoomedcoreheight * 1.0 / 4.0)
 
@@ -14384,7 +14387,8 @@ function update_thumbdecor(i, var, aspect) {
 	tilez[i].sh_mx.visible = true
 
 	tilez[i].nw_mx.set_pos (tilez[i].snapz.x, tilez[i].snapz.y + tilez[i].snapz.height - tilez[i].nw_mx.height)
-	tilez[i].tg_mx.set_pos (tilez[i].snapz.x + tilez[i].snapz.width - UI.zoomedcoreheight / 8.0, tilez[i].snapz.y + tilez[i].snapz.height - UI.zoomedcoreheight / 10.0)
+	tilez[i].tg_mx.set_pos (tilez[i].snapz.x + tilez[i].snapz.width - UI.zoomedcoreheight / 8.0, tilez[i].snapz.y + tilez[i].snapz.height - UI.zoomedcoreheight / 10.0  - (prf.MAXLINE ? tilez[i].snapz.height * 0.1 : 0))
+
 }
 
 function switchmode() {
