@@ -4465,6 +4465,8 @@ function refreshromlist(romlist, fulllist, updateromlist = true) {
 
 // This function scans the current AM romlist and creates a dedicated db1 and db2 from the fields
 // note that this must be run on a non-filtered romlist at the moment.
+// This function only works on single emulator romlists, by default multi-emulator romlists are not
+// processed this way but through MASTERLIST options or fixed at runtime with single game port!
 function portromlist(romlist) {
 
 	local favtable = {}
@@ -4549,6 +4551,102 @@ function portromlist(romlist) {
 
 	saveromdb1 (romlist, cleanromlist)
 	saveromdb2(romlist, cleanromlist2)
+}
+
+function portgame(romlist, emulator, gamename) {
+
+	local favtable = {}
+	local favfile = ReadTextFile(AF.romlistfolder + romlist + ".tag")
+	while (!favfile.eos()) {
+		favtable.rawset(favfile.read_line(), true)
+	}
+
+	local playctable = {}
+	local playclist = DirectoryListing (fe.path_expand(FeConfigDirectory + "stats/" + romlist), false).results
+	foreach (id, item in playclist) {
+		local playcount = 0
+		local playcgamename = split(item, ".")[0]
+		local statfile = ReadTextFile(fe.path_expand(FeConfigDirectory + "stats/" + romlist + "/" + item))
+		try {playcount = statfile.read_line().tointeger()} catch(err) {}
+		playctable.rawset(playcgamename, playcount)
+	}
+
+	local tagtable = {}
+	local completedtable = {}
+	local hiddentable = {}
+	local taglist = DirectoryListing ((AF.romlistfolder + romlist), false).results
+	foreach (id, item in taglist) {
+		local tagname = split(item, ".")[0]
+		local tagfile = ReadTextFile (AF.romlistfolder + romlist + "/" + item)
+		while (!tagfile.eos()) {
+			local taggame = tagfile.read_line()
+			if (tagname == "COMPLETED") completedtable.rawset(taggame, true)
+			else if (tagname == "HIDDEN") hiddentable.rawset(taggame, true)
+			else {
+				if (tagtable.rawin(taggame)) tagtable[taggame].push(tagname)
+				else tagtable.rawset(taggame, [tagname])
+			}
+		}
+	}
+	//ReadTextFile(AF.romlistfolder + romlist + ".tag"))
+	//while (!favfile.eos()) {
+		//favtable.rawset(favfile.read_line(), true)
+	//}
+
+	local cleanromlist = {}
+	local cleanromlist2 = {}
+	local listpath = AF.romlistfolder + romlist + ".txt"
+
+	if (prf.MASTERLIST) listpath = prf.MASTERPATH
+
+	local listfile = ReadTextFile(listpath)
+	local listline = listfile.read_line() //skip beginning headers
+	local listfields = []
+	while (!listfile.eos()) {
+
+		listline = listfile.read_line()
+		if ((listline == "") || (listline[0].tochar() == "#")) {
+			print("")
+			continue
+		}
+
+		listfields = splitlistline(listline)
+
+		listfields[0] = strip(listfields[0])
+		if (listfields[0] != gamename) continue
+		if (listfields[2] != emulator) continue
+		//if ((listfields.len() == 1) || (listfields[2] != romlist)) continue
+		cleanromlist[listfields[0]] <- {}
+		cleanromlist[listfields[0]] = listfields_to_db1(listfields)
+
+		cleanromlist[listfields[0]].z_system = AF.emulatordata[emulator].mainsysname
+		cleanromlist[listfields[0]].z_emulator = emulator
+
+		cleanromlist2[listfields[0]] <- {}
+		cleanromlist2[listfields[0]] = clone (z_fields2)
+		cleanromlist2[listfields[0]].z_favourite = favtable.rawin(listfields[0])
+		cleanromlist2[listfields[0]].z_playedcount = playctable.rawin(listfields[0]) ? playctable[listfields[0]] : 0
+		cleanromlist2[listfields[0]].z_completed = completedtable.rawin(listfields[0])
+		cleanromlist2[listfields[0]].z_hidden = hiddentable.rawin(listfields[0])
+		if (tagtable.rawin(listfields[0])) cleanromlist2[listfields[0]].z_tags = tagtable[listfields[0]]
+
+		cleanromlist2[listfields[0]].z_name = listfields[0]
+		cleanromlist2[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
+		cleanromlist2[listfields[0]].z_emulator = emulator
+
+	}
+
+	local romdb1 = dofile(AF.romlistfolder + emulator + ".db1")
+	local romdb2 = dofile(AF.romlistfolder + emulator + ".db2")
+
+	romdb1.rawset(listfields[0], cleanromlist)
+	romdb2.rawset(listfields[0], cleanromlist2)
+	z_list.db1.rawset(listfields[0], cleanromlist)
+	z_list.db2.rawset(listfields[0], cleanromlist2)
+testpr(listfields[0]+"\n")
+print_variable(cleanromlist,"","")
+	saveromdb1 (emulator, cleanromlist)
+	saveromdb2(emulator, cleanromlist2)
 }
 
 // Creates an empty romlist from current romlist
@@ -6646,10 +6744,14 @@ function getallgamesdb(logopic) {
 			itemname = item.slice(0, -4)
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
-			if (!prf.MASTERLIST && !file_exist(AF.romlistfolder + itemname + ".txt")){
+			if (!prf.MASTERLIST && !file_exist(AF.romlistfolder + itemname + ".txt")){ //TEST160
+				// Create empty db for emulators that don't have a romlist
+				refreshromlist (itemname, false, false)
+				/*
 				if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
 				else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
 				else system ("attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)	
+				*/
 			}
 
 			// The emulator has a self named romlist
@@ -6703,7 +6805,7 @@ function z_listboot() {
 	timestart("z_listboot")
 	debugpr("z_listboot\n")
 	z_list.allromlists = allromlists()
-
+	local romlistboot = fe.displays[fe.list.display_index].name
 	z_updatetagstable()
 
 	z_list.boot = []
@@ -6717,9 +6819,13 @@ function z_listboot() {
 		ifeindex = i - fe.list.index
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
 			// This is a proper game from a real romlist
-			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex)))
+			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
+				testpr("INIZIO\n")
+				testpr (fe.game_info(Info.Emulator, ifeindex) + " " + fe.game_info(Info.Name, ifeindex)+"\n")
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
-
+				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex)) //TEST160
+				testpr("FINE\n")
+			}
 			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
 			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
 			z_list.boot[i].z_felistindex = i
