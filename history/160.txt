@@ -1,7 +1,9 @@
 16.0
 Added option for increased tile zoom
 Added option for scrape timeout
+Added new zoom rate options
 Improved More of the Same menu
+Improved support for multi emulator romlists
 Fixed bug with More of the Same menu
 Fixed zoom ratio for slimline layout
 Fixed support of redirect romlists
