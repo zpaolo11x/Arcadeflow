@@ -4463,18 +4463,16 @@ function refreshromlist(romlist, fulllist, updateromlist = true) {
 	saveromdb2(romlist, z_list.db2[romlist])
 }
 
-// This function scans the current AM romlist and creates a dedicated db1 and db2 from the fields
-// note that this must be run on a non-filtered romlist at the moment.
-// This function only works on single emulator romlists, by default multi-emulator romlists are not
-// processed this way but through MASTERLIST options or fixed at runtime with single game port!
-function portromlist(romlist) {
-
+function buildfavtable(romlist){
 	local favtable = {}
 	local favfile = ReadTextFile(AF.romlistfolder + romlist + ".tag")
 	while (!favfile.eos()) {
 		favtable.rawset(favfile.read_line(), true)
 	}
+	return favtable
+}
 
+function buildplayctable(romlist){
 	local playctable = {}
 	local playclist = DirectoryListing (fe.path_expand(FeConfigDirectory + "stats/" + romlist), false).results
 	foreach (id, item in playclist) {
@@ -4484,7 +4482,10 @@ function portromlist(romlist) {
 		try {playcount = statfile.read_line().tointeger()} catch(err) {}
 		playctable.rawset(playcgamename, playcount)
 	}
+	return playctable
+}
 
+function buildtagtable(romlist){
 	local tagtable = {}
 	local completedtable = {}
 	local hiddentable = {}
@@ -4502,6 +4503,21 @@ function portromlist(romlist) {
 			}
 		}
 	}
+	return ([tagtable, completedtable, hiddentable])
+}
+
+// This function scans the current AM romlist and creates a dedicated db1 and db2 from the fields
+// note that this must be run on a non-filtered romlist at the moment.
+// This function only works on single emulator romlists, by default multi-emulator romlists are not
+// processed this way but through MASTERLIST options or fixed at runtime with single game port!
+function portromlist(romlist) {
+	local favtable = buildfavtable(romlist)
+	local playctable = buildplayctable(romlist)
+	local tagtable = buildtagtable(romlist)
+	local completedtable = tagtable[1]
+	local hiddentable = tagtable[2]
+	local tagtable = tagtable[0]
+
 	//ReadTextFile(AF.romlistfolder + romlist + ".tag"))
 	//while (!favfile.eos()) {
 		//favtable.rawset(favfile.read_line(), true)
@@ -4548,46 +4564,19 @@ function portromlist(romlist) {
 		cleanromlist2[listfields[0]].z_emulator = romlist
 
 	}
-
-	saveromdb1 (romlist, cleanromlist)
+	saveromdb1(romlist, cleanromlist)
 	saveromdb2(romlist, cleanromlist2)
 }
 
 function portgame(romlist, emulator, gamename) {
 
-	local favtable = {}
-	local favfile = ReadTextFile(AF.romlistfolder + romlist + ".tag")
-	while (!favfile.eos()) {
-		favtable.rawset(favfile.read_line(), true)
-	}
-
-	local playctable = {}
-	local playclist = DirectoryListing (fe.path_expand(FeConfigDirectory + "stats/" + romlist), false).results
-	foreach (id, item in playclist) {
-		local playcount = 0
-		local playcgamename = split(item, ".")[0]
-		local statfile = ReadTextFile(fe.path_expand(FeConfigDirectory + "stats/" + romlist + "/" + item))
-		try {playcount = statfile.read_line().tointeger()} catch(err) {}
-		playctable.rawset(playcgamename, playcount)
-	}
-
-	local tagtable = {}
-	local completedtable = {}
-	local hiddentable = {}
-	local taglist = DirectoryListing ((AF.romlistfolder + romlist), false).results
-	foreach (id, item in taglist) {
-		local tagname = split(item, ".")[0]
-		local tagfile = ReadTextFile (AF.romlistfolder + romlist + "/" + item)
-		while (!tagfile.eos()) {
-			local taggame = tagfile.read_line()
-			if (tagname == "COMPLETED") completedtable.rawset(taggame, true)
-			else if (tagname == "HIDDEN") hiddentable.rawset(taggame, true)
-			else {
-				if (tagtable.rawin(taggame)) tagtable[taggame].push(tagname)
-				else tagtable.rawset(taggame, [tagname])
-			}
-		}
-	}
+	local favtable = buildfavtable(romlist)
+	local playctable = buildplayctable(romlist)
+	local tagtable = buildtagtable(romlist)
+	local completedtable = tagtable[1]
+	local hiddentable = tagtable[2]
+	local tagtable = tagtable[0]
+	
 	//ReadTextFile(AF.romlistfolder + romlist + ".tag"))
 	//while (!favfile.eos()) {
 		//favtable.rawset(favfile.read_line(), true)
@@ -4647,10 +4636,7 @@ function portgame(romlist, emulator, gamename) {
 
 		saveromdb1 (emulator, romdb1)
 		saveromdb2(emulator, romdb2)
-
 	}
-
-
 }
 
 // Creates an empty romlist from current romlist
@@ -6824,11 +6810,8 @@ function z_listboot() {
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
 			// This is a proper game from a real romlist
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
-				testpr("INIZIO\n")
-				testpr (fe.game_info(Info.Emulator, ifeindex) + " " + fe.game_info(Info.Name, ifeindex)+"\n")
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex)) //TEST160
-				testpr("FINE\n")
 			}
 			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
 			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
