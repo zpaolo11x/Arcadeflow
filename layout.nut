@@ -4622,7 +4622,7 @@ function portgame(romlist, emulator, gamename) {
 		if (tagtable.rawin(listfields[0])) gamedb2.z_tags = tagtable[listfields[0]]
 
 		gamedb2.z_name = listfields[0]
-		gamedb2.z_system = AF.emulatordata[romlist].mainsysname
+		gamedb2.z_system = AF.emulatordata[emulator].mainsysname
 		gamedb2.z_emulator = emulator
 
 		local romdb1 = dofile(AF.romlistfolder + emulator + ".db1")
@@ -6810,8 +6810,10 @@ function z_listboot() {
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
 			// This is a proper game from a real romlist
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
+				testpr("START " + fe.game_info(Info.Name, ifeindex) + "\n")
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex)) //TEST160
+				testpr("STOP\n")
 			}
 			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
 			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
