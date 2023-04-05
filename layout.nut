@@ -4593,8 +4593,8 @@ function portgame(romlist, emulator, gamename) {
 		//favtable.rawset(favfile.read_line(), true)
 	//}
 
-	local cleanromlist = {}
-	local cleanromlist2 = {}
+	local gamedb1 = {}
+	local gamedb2 = {}
 	local listpath = AF.romlistfolder + romlist + ".txt"
 
 	if (prf.MASTERLIST) listpath = prf.MASTERPATH
@@ -4605,8 +4605,7 @@ function portgame(romlist, emulator, gamename) {
 
 	local foundgame = false
 
-	while (!listfile.eos()) {
-		foundgame = false
+	while (!(listfile.eos() || foundgame)) {
 		listline = listfile.read_line()
 		if ((listline == "") || (listline[0].tochar() == "#")) {
 			print("")
@@ -4614,46 +4613,40 @@ function portgame(romlist, emulator, gamename) {
 		}
 
 		listfields = splitlistline(listline)
-
 		listfields[0] = strip(listfields[0])
-		if (listfields[0] != gamename) continue
-		if (listfields[2] != emulator) continue
-		foundgame = true
-		break
-		//if ((listfields.len() == 1) || (listfields[2] != romlist)) continue
+		if ((listfields[0] == gamename) && (listfields[2] == emulator)) foundgame = true
 	}
 
 	if (foundgame) {
-		cleanromlist[listfields[0]] <- {}
-		cleanromlist[listfields[0]] = listfields_to_db1(listfields)
+		gamedb1 = {}
+		gamedb1 = listfields_to_db1(listfields)
 
-		cleanromlist[listfields[0]].z_system = AF.emulatordata[emulator].mainsysname
-		cleanromlist[listfields[0]].z_emulator = emulator
+		gamedb1.z_system = AF.emulatordata[emulator].mainsysname
+		gamedb1.z_emulator = emulator
 
-		cleanromlist2[listfields[0]] <- {}
-		cleanromlist2[listfields[0]] = clone (z_fields2)
-		cleanromlist2[listfields[0]].z_favourite = favtable.rawin(listfields[0])
-		cleanromlist2[listfields[0]].z_playedcount = playctable.rawin(listfields[0]) ? playctable[listfields[0]] : 0
-		cleanromlist2[listfields[0]].z_completed = completedtable.rawin(listfields[0])
-		cleanromlist2[listfields[0]].z_hidden = hiddentable.rawin(listfields[0])
-		if (tagtable.rawin(listfields[0])) cleanromlist2[listfields[0]].z_tags = tagtable[listfields[0]]
+		gamedb2 = {}
+		gamedb2 = clone (z_fields2)
+		gamedb2.z_favourite = favtable.rawin(listfields[0])
+		gamedb2.z_playedcount = playctable.rawin(listfields[0]) ? playctable[listfields[0]] : 0
+		gamedb2.z_completed = completedtable.rawin(listfields[0])
+		gamedb2.z_hidden = hiddentable.rawin(listfields[0])
+		if (tagtable.rawin(listfields[0])) gamedb2.z_tags = tagtable[listfields[0]]
 
-		cleanromlist2[listfields[0]].z_name = listfields[0]
-		cleanromlist2[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
-		cleanromlist2[listfields[0]].z_emulator = emulator
+		gamedb2.z_name = listfields[0]
+		gamedb2.z_system = AF.emulatordata[romlist].mainsysname
+		gamedb2.z_emulator = emulator
 
-	local romdb1 = dofile(AF.romlistfolder + emulator + ".db1")
-	local romdb2 = dofile(AF.romlistfolder + emulator + ".db2")
-print_variable(romdb2,"","")
-	romdb1.rawset(listfields[0], cleanromlist)
-	romdb2.rawset(listfields[0], cleanromlist2)
-print_variable(romdb2,"","")
-	z_list.db1[emulator]<-(listfields[0], cleanromlist)
-	z_list.db2[emulator]<-(listfields[0], cleanromlist2)
-//testpr(listfields[0]+"\n")
-//print_variable(cleanromlist,"","")
-	saveromdb1 (emulator, romdb1)
-	saveromdb2(emulator, romdb2)
+		local romdb1 = dofile(AF.romlistfolder + emulator + ".db1")
+		local romdb2 = dofile(AF.romlistfolder + emulator + ".db2")
+
+		romdb1.rawset(listfields[0], gamedb1)
+		romdb2.rawset(listfields[0], gamedb2)
+
+		z_list.db1[emulator].rawset(listfields[0], gamedb1)
+		z_list.db2[emulator].rawset(listfields[0], gamedb2)
+
+		saveromdb1 (emulator, romdb1)
+		saveromdb2(emulator, romdb2)
 
 	}
 
