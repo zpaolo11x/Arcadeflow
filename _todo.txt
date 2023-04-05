@@ -20,6 +20,7 @@ controllare che il nome del display TARGET sia quello di una console/computer ec
 si può a quel punto cambiare sia l'immagine della categoria e aggiungere magari 
 una nota, la data di creazione o l'immagine del manufacturer. O ADDIRITTURA il LOGO!
 
+---
 
 Note su nuovo zmenu:
 invece di passare array su array, passare un array in cui ogni elemento è una tabella.
