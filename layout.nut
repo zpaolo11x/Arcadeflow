@@ -4602,8 +4602,11 @@ function portgame(romlist, emulator, gamename) {
 	local listfile = ReadTextFile(listpath)
 	local listline = listfile.read_line() //skip beginning headers
 	local listfields = []
-	while (!listfile.eos()) {
 
+	local foundgame = false
+
+	while (!listfile.eos()) {
+		foundgame = false
 		listline = listfile.read_line()
 		if ((listline == "") || (listline[0].tochar() == "#")) {
 			print("")
@@ -4615,7 +4618,12 @@ function portgame(romlist, emulator, gamename) {
 		listfields[0] = strip(listfields[0])
 		if (listfields[0] != gamename) continue
 		if (listfields[2] != emulator) continue
+		foundgame = true
+		break
 		//if ((listfields.len() == 1) || (listfields[2] != romlist)) continue
+	}
+
+	if (foundgame) {
 		cleanromlist[listfields[0]] <- {}
 		cleanromlist[listfields[0]] = listfields_to_db1(listfields)
 
@@ -4634,19 +4642,22 @@ function portgame(romlist, emulator, gamename) {
 		cleanromlist2[listfields[0]].z_system = AF.emulatordata[romlist].mainsysname
 		cleanromlist2[listfields[0]].z_emulator = emulator
 
-	}
-
 	local romdb1 = dofile(AF.romlistfolder + emulator + ".db1")
 	local romdb2 = dofile(AF.romlistfolder + emulator + ".db2")
-
+print_variable(romdb2,"","")
 	romdb1.rawset(listfields[0], cleanromlist)
 	romdb2.rawset(listfields[0], cleanromlist2)
+print_variable(romdb2,"","")
 	z_list.db1[emulator]<-(listfields[0], cleanromlist)
 	z_list.db2[emulator]<-(listfields[0], cleanromlist2)
-testpr(listfields[0]+"\n")
-print_variable(cleanromlist,"","")
-	saveromdb1 (emulator, cleanromlist)
-	saveromdb2(emulator, cleanromlist2)
+//testpr(listfields[0]+"\n")
+//print_variable(cleanromlist,"","")
+	saveromdb1 (emulator, romdb1)
+	saveromdb2(emulator, romdb2)
+
+	}
+
+
 }
 
 // Creates an empty romlist from current romlist
