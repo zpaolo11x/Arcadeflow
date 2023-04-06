@@ -13165,7 +13165,6 @@ function displayungrouped() {
 }
 
 function displaygrouped1() {
-	testpr("G1\n")
 	zmenu.dmp = true
 	zmenu.jumplevel = 0
 
@@ -13262,8 +13261,6 @@ function displaygrouped1() {
 			foreach (i, item in menuarray) {
 				if (item != null) if (item.dispindex == fe.list.display_index) disp.gmenu1in = i
 			}
-			testpr("G2\n")
-			print_variable(dmenu1,"","")
 			zmenudraw2(dmenu1, false, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, (prf.DMPIMAGES != null), (prf.DMPIMAGES != null), true, (prf.DMPIMAGES != null), false,
 			function(gmenu1) {
 				if (gmenu1 != -1) {
