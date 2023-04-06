@@ -6748,6 +6748,10 @@ function getallgamesdb(logopic) {
 
 			// The emulator has a self named romlist or a db1 for that emulator already exists
 			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST || file_exist(AF.romlistfolder + itemname + ".db1")) {
+				// If there's no db1, the portromlist function is used to build it.
+				//TEST160 Maybe I can do the fix HERE in the portromlist, not in the bootlist creation
+				//TEST160 if done this way, it doesn't risk to happen during collection. 
+				//TEST160 But what happens if the emulator doesn't have a reference romlist?
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
 				z_splash_message("")//("\n\n\n\n\n\n\n" + "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
