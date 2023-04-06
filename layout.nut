@@ -6734,7 +6734,9 @@ function getallgamesdb(logopic) {
 			itemname = item.slice(0, -4)
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
-			if (!prf.MASTERLIST && !file_exist(AF.romlistfolder + itemname + ".txt")){ //TEST160
+
+			//TEST160 MAYBE MOVE THE CREATION OF MULTI EMULATOR DB FILE HERE AND NOT IN BOOTLIST CREATION?
+			if (!prf.MASTERLIST && !file_exist(AF.romlistfolder + itemname + ".txt") && !file_exist(AF.romlistfolder + itemname + ".db1")){ //TEST160
 				// Create empty db for emulators that don't have a romlist
 				refreshromlist (itemname, false, false)
 				/*
@@ -6744,8 +6746,8 @@ function getallgamesdb(logopic) {
 				*/
 			}
 
-			// The emulator has a self named romlist
-			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) {
+			// The emulator has a self named romlist or a db1 for that emulator already exists
+			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST || file_exist(AF.romlistfolder + itemname + ".db1")) {
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
 				z_splash_message("")//("\n\n\n\n\n\n\n" + "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
@@ -6810,7 +6812,7 @@ function z_listboot() {
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
 			// This is a proper game from a real romlist
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
-				testpr("START " + fe.game_info(Info.Name, ifeindex) + "\n")
+				testpr("START " + fe.game_info(Info.Name, ifeindex) + " not in " + fe.game_info(Info.Emulator, ifeindex) + "\n")
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex)) //TEST160
 				testpr("STOP\n")
@@ -12128,6 +12130,7 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 function cleanupmenudata(menudata){
+
 	foreach (i, item in menudata){
 		if (!item.rawin("text")) menudata[i].rawset("text","")
 		if (!item.rawin("glyph")) menudata[i].rawset("glyph",0)
@@ -13241,6 +13244,7 @@ function displaygrouped1() {
 			// Now it's the right moment to add code for AF Collecitons
 			if (prf.ALLGAMES) {
 				local itemcount = 0
+				dmenu1 = cleanupmenudata(dmenu1)
 				foreach (ic, itemc in dmenu1) {
 					if (!itemc.liner) itemcount ++
 				}
