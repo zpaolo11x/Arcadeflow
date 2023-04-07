@@ -2475,7 +2475,7 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 
 // correction data for non-centered first tiles
 // deltacol are the marginal columns with respect to center one
-local deltacol = (UI.cols - 3) / 2
+local deltacol = prf.MAXLINE ? 0 : (UI.cols - 3) / 2
 
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
