@@ -12381,7 +12381,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 
 		if (zmenu.dmp && prf.ALLGAMES) {
 			if (z_af_collections.tab.rawin(menudata[i].text)) {
-				zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menudata[i].text].groupedname : z_af_collections.tab[menuarray[i]].ungroupedname
+				zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menudata[i].text].groupedname : z_af_collections.tab[menudata[i].text].ungroupedname
 			}
 		}
 
