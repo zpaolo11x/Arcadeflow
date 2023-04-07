@@ -13015,9 +13015,9 @@ function displayungrouped() {
 	}
 
 	if (prf.ALLGAMES) {
-		for(local i = z_af_collections.arr.len()-1; i >= 0; i--) {
-			ungroupmenu.insert(0, {text = z_af_collections.arr[i].id})
-			menuarray.insert(0, z_disp[z_af_collections.arr[i].display_id])
+		for(local i = 0; i < z_af_collections.arr.len(); i++) {
+			ungroupmenu.insert(i, {text = z_af_collections.arr[i].id})
+			menuarray.insert(i, z_disp[z_af_collections.arr[i].display_id])
 		}
 	}
 
