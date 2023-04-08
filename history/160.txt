@@ -1,5 +1,5 @@
 16.0
-Added option for increased tile zoom
+Added option for fullscreen tiles
 Added option for scrape timeout
 Added new zoom rate options
 Improved More of the Same menu
