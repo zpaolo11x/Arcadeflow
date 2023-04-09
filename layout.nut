@@ -15483,9 +15483,6 @@ function on_transition(ttype, var0, ttime) {
 	if (ttype == Transition.FromGame) {
 		if (prf.RPI) fe.set_display(fe.list.display_index)
 
-		z_list.gametable2[z_list.index].z_playedcount ++
-		saveromdb2(z_list.gametable[z_list.index].z_emulator, z_list.db2[z_list.gametable[z_list.index].z_emulator])
-
 		update_thumbdecor (focusindex.new, 0, tilez[focusindex.new].AR.current)
 
 		mfz_build(true)
@@ -15501,6 +15498,7 @@ function on_transition(ttype, var0, ttime) {
 
 	if (ttype == Transition.ToGame) {
 		z_list.gametable2[z_list.index].z_rundate = get_date_string()
+		z_list.gametable2[z_list.index].z_playedcount ++
 		saveromdb2(z_list.gametable[z_list.index].z_emulator, z_list.db2[z_list.gametable[z_list.index].z_emulator])
 	}
 
