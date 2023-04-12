@@ -6816,10 +6816,8 @@ function z_listboot() {
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
 			// This is a proper game from a real romlist
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
-				testpr("START " + fe.game_info(Info.Name, ifeindex) + " not in " + fe.game_info(Info.Emulator, ifeindex) + "\n")
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex)) //TEST160
-				testpr("STOP\n")
 			}
 			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
 			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
