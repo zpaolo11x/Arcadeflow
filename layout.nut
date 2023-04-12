@@ -9859,7 +9859,7 @@ function hueselector(hue, sel, old, start) {
 
 	prfmenu.helppic.set_rgb(rgbval.R * 255, rgbval.G * 255, rgbval.B * 255)
 
-	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5 //TEST160 check con RGB
+	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
 
 	zmenudraw2([
 		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), note = hue}, 
