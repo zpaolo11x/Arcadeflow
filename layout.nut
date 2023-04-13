@@ -4944,7 +4944,7 @@ function metamenu(starter) {
 		})
 	}
 
-	zmenudraw2(metamenudat, false, ltxt("Game Metadata", AF.LNG), 0xe906, starter, false, false, false, false, false,
+	zmenudraw3(metamenudat, ltxt("Game Metadata", AF.LNG), 0xe906, starter, {},
 	function(result) {
 		if (result != -1) {
 			local meta_unedited = ""
@@ -4969,7 +4969,7 @@ function metamenu(starter) {
 					metamenu1.push({text = metadata.sub[result][i]})
 				}
 
-				zmenudraw2(metamenu1, false, metadata.names[result], 0xe906, current_index, false, false, false, false, false,
+				zmenudraw3(metamenu1, metadata.names[result], 0xe906, current_index, {},
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -4996,7 +4996,7 @@ function metamenu(starter) {
 					metamenu2.push({text = metadata.sub[result].names[i], note = metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":""})
 				}
 
-				zmenudraw2(metamenu2, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
+				zmenudraw3(metamenu2, metadata.names[result], 0xe906, 0, {},
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -5022,7 +5022,7 @@ function metamenu(starter) {
 							foreach (i, item in temparray) {
 								metamenu3.push({text = temparray[i]})
 							}
-							zmenudraw2(metamenu3, false, metadata.names[result], 0xe906, 0, false, false, false, false, false,
+							zmenudraw3(metamenu3, metadata.names[result], 0xe906, 0, {},
 							function(result3) {
 								if (result3 == -1) {
 									metamenu (result)
@@ -6322,7 +6322,7 @@ function mfz_menu2(presel) {
 		if ((valcurrent.l1name == mf.cat1) && (presel == 0)) presel = indexarray.find(valcurrent.l2name)
 	}
 
-	zmenudraw2(mfzmenu2, false, mf.cat1, 0xeaed, presel, false, false, false, false, false,
+	zmenudraw3(mfzmenu2, mf.cat1, 0xeaed, presel, {},
 	function(out) {
 
 		if (out == -1) {
@@ -6389,7 +6389,7 @@ function mfz_menu1(presel) {
 		}
 	}
 
-	zmenudraw2(mfzmenu1, false, multifilterz.l0[mf.cat0].label, 0xeaed, presel, false, false, false, false, false,
+	zmenudraw3(mfzmenu1, multifilterz.l0[mf.cat0].label, 0xeaed, presel, {},
 	function(out) {
 		if (out == -1) {
 			mf.sel1 = -1
@@ -6456,7 +6456,7 @@ function mfz_menu0(presel) {
 		mfzmenu0.push({text = namearray[i], glyph = filterarray[i]})
 	}
 
-	zmenudraw2(mfzmenu0, false, ltxt("Multifilter", AF.LNG), 0xeaed, presel, false, false, false, false, false,
+	zmenudraw3(mfzmenu0, ltxt("Multifilter", AF.LNG), 0xeaed, presel, {},
 	function(out) {
 		if (out == -1) { // Exit from multifilter menu
 			if (!umvisible) {
@@ -9434,7 +9434,7 @@ function optionsmenu_lev3() {
 				glyph = (i == AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection ? 0xea10 : 0),
 			})
 		}
-		zmenudraw2(menu_lev3, false, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, false, false, true, false, false,
+		zmenudraw3(menu_lev3, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, {center = true},
 		function(prfmenures2) {
 			prfmenu.res2 = prfmenures2
 			if (prfmenu.res2 != -1) {
@@ -9537,7 +9537,7 @@ function optionsmenu_lev2() {
 
 	updatemenu(prfmenu.level, prfmenu.outres1)
 
-	zmenudraw2(getsubmenudata(prfmenu.outres0), false, AF.prefs.l0[prfmenu.outres0].label, AF.prefs.l0[prfmenu.outres0].glyph, prfmenu.outres1, false, false, false, false, false,
+	zmenudraw3(getsubmenudata(prfmenu.outres0), AF.prefs.l0[prfmenu.outres0].label, AF.prefs.l0[prfmenu.outres0].glyph, prfmenu.outres1, {},
 	function(prfmenures1) {
 		prfmenu.res1 = prfmenures1
 		// EXIT FROM SUBMENU 1
@@ -9633,7 +9633,7 @@ function optionsmenu_lev1() {
 	}
 
 	// First level menu
-	zmenudraw2(menu_lev1, false, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, false, false, false, false, false,
+	zmenudraw3(menu_lev1, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, {},
 	function(prfmenures0) {
 		// EXIT FROM OPTIONSMENU
 		prfmenu.res0 = prfmenures0
@@ -9753,7 +9753,7 @@ function restoreoptions() {
 	}
 
 	if (optionsnames.len() > 0) {
-		zmenudraw2(optionsnames, false, "Options files", null, 0, false, false, false, false, false,
+		zmenudraw3(optionsnames, "Options files", null, 0, {},
 		function(out) {
 			if (out == -1) {
 				optionsmenu_lev2()
@@ -9793,14 +9793,14 @@ function rgbselector(rgb, sel, old, start) {
 
 	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
 
-	zmenudraw2([
+	zmenudraw3([
 		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[0]}, 
 		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[1]},
 		{ text = "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[2]}, 
 		{ text = ltxt("ACTIONS", AF.LNG), liner = true}, 
 		{ text = ltxt("APPLY", AF.LNG)}, 
 		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = ""}],
-		false, ltxt("RGB Color", AF.LNG), 0xe992, sel, false, false, false, false, false,
+		ltxt("RGB Color", AF.LNG), 0xe992, sel, {},
 	function(out) {
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9861,12 +9861,12 @@ function hueselector(hue, sel, old, start) {
 
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
 
-	zmenudraw2([
+	zmenudraw3([
 		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), note = hue}, 
 		{ text = ltxt("ACTIONS", AF.LNG), liner = true}, 
 		{ text = ltxt("APPLY", AF.LNG)},
 		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965}],
-		false, ltxt("HUE Value", AF.LNG), 0xe992, sel, false, false, false, false, false,
+		ltxt("HUE Value", AF.LNG), 0xe992, sel, {},
 	function(out) {
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9940,12 +9940,12 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 */
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
-	zmenudraw2([
+	zmenudraw3([
 		{ text = vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, note = val},
 		{ text = ltxt("ACTIONS", AF.LNG), liner = true},
 		{ text = ltxt("APPLY", AF.LNG)},
 		{ text = ltxt("DEFAULT", AF.LNG), glyph = (val == def) ? 0xea10 : 0xe965}
-		], false, name, 0xe992, sel, false, false, false, false, false,
+		], name, 0xe992, sel, {},
 	function(out) {
 		if (out == -1) {
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
@@ -10056,7 +10056,7 @@ function filebrowser1(file0) {
 		browsemenu.push({text = lastnametemp, glyph = (isfile ? extemp : 0xe92f)})
 	}
 	
-	zmenudraw2(browsemenu, false, fb.startdir, 0xe930, 4 + fb.select0, false, false, false, false, false,
+	zmenudraw3(browsemenu, fb.startdir, 0xe930, 4 + fb.select0, {},
 	function(out) {
 		fb.file00 = fb.startdir
 
@@ -10492,7 +10492,7 @@ function tags_menu() {
 	}
 	tagsmenu.push({text = ltxt("New Tag", AF.LNG), glyph = 0xeaee})
 
-	zmenudraw2(tagsmenu, false, ltxt("TAGS", AF.LNG), 0xeaef, 0, false, false, true, false, false,
+	zmenudraw3(tagsmenu, ltxt("TAGS", AF.LNG), 0xeaef, 0, {center = true},
 	function(out) {
 		if (out == -1) { //BACK
 			frosthide()
@@ -12040,6 +12040,15 @@ zmenu = {
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
+
+	dopts = {
+		shrink = false,
+		dmpart = false,
+		center = false,
+		midscroll = false,
+		singleline = false,
+		forceskip = false
+	}
 }
 
 zmenu.speed = zmenu.tileh * 0.1
@@ -12144,13 +12153,34 @@ function cleanupmenudata(menudata){
 	return menudata
 }
 
-function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+function cleanmenuopts(menuopts){
+	foreach (item, val in zmenu.dopts){
+		if (!menuopts.rawin(item)) menuopts.rawset(item, val)
+	}
+	return menuopts
+}
+
+//TEST160
+function pippo(input1, tableops = {input2 = 1, input3 = 2}){
+	local deftable = {input2 = 1, input3 = 2}
+	foreach(item, val in deftable){
+		if (!tableops.rawin(item)) tableops.rawset(item, val)
+	}
+	print ("input1:" + input1 + "\n")
+	print ("input2:" + tableops.input2 + "\n")
+	print ("input3:" + tableops.input3 + "\n")
+}
+pippo("TEST")
+pippo("TEST", {input2 = 12})
+
+function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
+	opts = cleanmenuopts(opts)
 	zmenu.data = menudata
-	zmenu.singleline = singleline
-	zmenu.midscroll = midscroll
+	zmenu.singleline = opts.singleline
+	zmenu.midscroll = opts.midscroll
 	zmenu.shown = menudata.len()
-	zmenu.forceskip = forceskip
+	zmenu.forceskip = opts.forceskip
 
 	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
 	// user defined skip values
@@ -12203,8 +12233,8 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 
 	// Update first item index if the first item is a liner or a skippable item.
 	zmenu.firstitem = 0
-	if (!forceskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
-	else if (forceskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
+	if (!zmenu.forceskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
+	else if (zmenu.forceskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
 
@@ -12272,10 +12302,10 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	local iindex = 0
 
 	// shrink compresses the menu on the left to let, used for dmp or for similar games
-	local items_x = shrink ? 0 : zmenu.glyphw
-	local items_w = shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
+	local items_x = opts.shrink ? 0 : zmenu.glyphw
+	local items_w = opts.shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
 	local noteitems_x = 0
-	local noteitems_w = shrink ? zmenu.tilew - disp.width : zmenu.tilew - zmenu.pad
+	local noteitems_w = opts.shrink ? zmenu.tilew - disp.width : zmenu.tilew - zmenu.pad
 
 	// Hide excess items from menu display
 	for (local i = 0; i < zmenu.items.len(); i++) {
@@ -12295,7 +12325,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0, 0, 1, 1)
 		}
-		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad, floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh, zmenu.tilew -2 * (shrink ? 0 : zmenu.pad) + (shrink ? -1.0 * disp.width : 0), 1)
+		zmenu.strikelines[i].set_pos(opts.shrink ? 0 : zmenu.pad, floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh, zmenu.tilew -2 * (opts.shrink ? 0 : zmenu.pad) + (opts.shrink ? -1.0 * disp.width : 0), 1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255, 255, 255)
 		zmenu.strikelines[i].alpha = 128
@@ -12343,7 +12373,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.items[i].word_wrap = true
 		zmenu.items[i].visible = true
 		zmenu.items[i].margin = 0
-		zmenu.items[i].align = (center ? Align.MiddleCentre : Align.MiddleLeft)
+		zmenu.items[i].align = (opts.center ? Align.MiddleCentre : Align.MiddleLeft)
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].line_spacing = 0.8//1.0
 		zmenu.items[i].set_rgb(255, 255, 255)
@@ -12361,14 +12391,14 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 			zmenu.items[i].align = Align.MiddleCentre
 			zmenu.items[i].set_bg_rgb (0, 0, 0)
 			zmenu.items[i].bg_alpha = 255
-			zmenu.items[i].x = floor((shrink ? zmenu.tilew - disp.width : zmenu.tilew) * 0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
+			zmenu.items[i].x = floor((opts.shrink ? zmenu.tilew - disp.width : zmenu.tilew) * 0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
 			zmenu.items[i].width = zmenu.items[i].msg_width + 2 * zmenu.pad
 			zmenu.items[i].visible = zmenu.items[i].msg != ""
 			zmenu.strikelines[i].visible = true
 		}
 
 		// Check if there's space for item _and_ notes
-		if (!center) {
+		if (!opts.center) {
 			if (zmenu.noteitems[i].msg_width > 0.45 * items_w + items_x + items_w - noteitems_w) {
 				zmenu.noteitems[i].x = items_x + items_w * 0.55
 				zmenu.noteitems[i].width = noteitems_w - zmenu.noteitems[i].x
@@ -12424,7 +12454,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 				else if (prf.DMART == "MA_AF") filename = (ma_art == null ? af_art : ma_art)
 
 				if (filename == null) filename = ""
-				if (!dmpart) filename = ""
+				if (!opts.dmpart) filename = ""
 
 			if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
 
@@ -12485,7 +12515,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	}
 
 	// Centering
-	if (center) {
+	if (opts.center) {
 		local maxwidth = 0
 		for (local i = 0; i < menudata.len(); i++) {
 			if (zmenu.items[i].msg_width > maxwidth) maxwidth = zmenu.items[i].msg_width
@@ -12493,14 +12523,14 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 
 		for (local i = 0; i < menudata.len(); i++) {
 			zmenu.glyphs[i].x = max((zmenu.width * 0.5 - 0.5 * maxwidth - zmenu.glyphs[i].width), 0)
-			if (shrink) zmenu.glyphs[i].x = zmenu.pad * 0.5
+			if (opts.shrink) zmenu.glyphs[i].x = zmenu.pad * 0.5
 		}
 	}
 
 	// Define the current selection, skipping if it's a liner
 	zmenu.selected = presel
-	if (!forceskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
-	else if (forceskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
+	if (!zmenu.forceskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
+	else if (zmenu.forceskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
@@ -12523,14 +12553,14 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 
 	zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	zmenu.selectedbar.height = zmenu.items[zmenu.selected].height
-	//zmenu.selectedbar.width = zmenu.tilew + ((shrink && zmenu.sim) ? -1 * disp.width : 0)
+	//zmenu.selectedbar.width = zmenu.tilew + ((opts.shrink && zmenu.sim) ? -1 * disp.width : 0)
 
 	//this substitutes the row above to have shorter bar
-	zmenu.selectedbar.width = zmenu.tilew + (shrink ? -1 * disp.width : 0)
-	zmenu.simbg.visible = shrink
+	zmenu.selectedbar.width = zmenu.tilew + (opts.shrink ? -1 * disp.width : 0)
+	zmenu.simbg.visible = opts.shrink
 
-	zmenu.sidelabel.x = shrink ? 0 : zmenu.pad
-	zmenu.sidelabel.width = shrink ? zmenu.width - disp.width : zmenu.width - 2 * zmenu.pad
+	zmenu.sidelabel.x = opts.shrink ? 0 : zmenu.pad
+	zmenu.sidelabel.width = opts.shrink ? zmenu.width - disp.width : zmenu.width - 2 * zmenu.pad
 
 	//TEST123 CHECK IF THIS CAN BE MOVED OUTSIDE OF THE CREATION
 	if (prfmenu.showing) {
@@ -12813,7 +12843,7 @@ function afinstall(zipball, afname) {
 	AF.updatechecking = false
 	bar_cycle_update(AF.bar.stop)
 	frostshow()
-	zmenudraw2([{text = ltxt("Restart", AF.LNG)}], false, ltxt("Arcadeflow updated to", AF.LNG) + " "+ zipball, 0xe91c, 0, false, false, true, false, false,
+	zmenudraw3([{text = ltxt("Restart", AF.LNG)}], ltxt("Arcadeflow updated to", AF.LNG) + " "+ zipball, 0xe91c, 0, {center = true},
 	function(out) {
 		zmenuhide()
 		frosthide()
@@ -12823,10 +12853,10 @@ function afinstall(zipball, afname) {
 
 function gh_menu(presel) {
 	//frostshow()
-	zmenudraw2([
+	zmenudraw3([
 		{ text = ltxt("Install branch", AF.LNG), glyph = 0xe9bc},
 		{ text = ltxt("Install release", AF.LNG), glyph = 0xe94e}
-		], false, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
+		], "Install from repository", 0xe9c2, presel, {},
 	function(out) {
 		if (out == 0) {
 			gh.branchlist = []
@@ -12848,7 +12878,7 @@ function gh_menu(presel) {
 				})
 			}
 
-			zmenudraw2(ghmenu, false, "Install Branch", 0xe9bc, 0, false, false, true, false, false,
+			zmenudraw3(ghmenu, "Install Branch", 0xe9bc, 0, {center = true},
 			function(out0) {
 				if (out0 == -1) gh_menu(0)
 				else afinstall(gh.branchlist[out0], "Arcadeflow_" + gh.branchlist[out0] + "_" + strip(gh.commitlist[out0]))
@@ -12871,7 +12901,7 @@ function gh_menu(presel) {
 					note = gh.releasedatelist[i],
 				})
 			}
-			zmenudraw2(ghmenu, false, "Install Release", 0xe94e, 0, false, false, true, false, false,
+			zmenudraw3(ghmenu, "Install Release", 0xe94e, 0, {center = true},
 			function(out1) {
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1], "Arcadeflow_" + (gh.taglist[out1].tofloat() * 10).tointeger())
@@ -12904,7 +12934,7 @@ function checkforupdates(force) {
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
 	if (ver_in.tofloat() <= AF.version.tofloat()) {
 		if (force) {
-			zmenudraw2([{text = "Ok"}], false, ltxt("No update available", AF.LNG), 0xe91c, 0, false, false, true, false, false,
+			zmenudraw3([{text = "Ok"}], ltxt("No update available", AF.LNG), 0xe91c, 0, {center = true},
 			function(out) {
 				zmenuhide()
 				frosthide()
@@ -12922,7 +12952,7 @@ function checkforupdates(force) {
 	updatemenu.push({text = ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG), glyph = 0xea36})
 	updatemenu.push({text = ltxt("Dismiss this update", AF.LNG), glyph = 0xea0f})
 
-	zmenudraw2(updatemenu, false, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, false, false, false, false, false,
+	zmenudraw3(updatemenu, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, {},
 	function(out) {
 		if (out == -1) {
 			zmenuhide()
@@ -12946,7 +12976,7 @@ function checkforupdates(force) {
 				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
-				zmenudraw2([{text = "Ok"}], false, newafname + ".zip downloaded", 0xe91c, 0, false, false, true, false, false,
+				zmenudraw3([{text = "Ok"}], newafname + ".zip downloaded", 0xe91c, 0, {center = true},
 				function(out) {
 					zmenuhide()
 					frosthide()
@@ -13106,13 +13136,13 @@ function displayungrouped() {
 		})
 	}
 	*/
-	zmenudraw2(ungroupmenu, false, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, (prf.DMPIMAGES != null), true, true, (prf.DMPIMAGES != null), false,
+	zmenudraw3(ungroupmenu, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, {shrink = (prf.DMPIMAGES != null), dmpart = true, center = true, midscroll = (prf.DMPIMAGES != null)} ,
 	function(displayout) {
 
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw2(prf.POWERMENU ? [
+			zmenudraw3(prf.POWERMENU ? [
 				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 				{text = ltxt("Power", AF.LNG), liner = true},
@@ -13123,7 +13153,7 @@ function displayungrouped() {
 				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 			], 
-			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
 			function(result) {
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -13176,7 +13206,7 @@ function displaygrouped1() {
 	zmenu.jumplevel = 0
 
 	// Displays the group menu
-	zmenudraw2(disp.groupname.map(function(val){return({text = val})}), false, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, true, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, false,
+	zmenudraw3(disp.groupname.map(function(val){return({text = val})}), ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, {shrink = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, dmpart = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, center = true, midscroll = (prf.DMPIMAGES != null) && prf.DMCATEGORYART},
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
@@ -13186,7 +13216,7 @@ function displaygrouped1() {
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw2(prf.POWERMENU ? [
+			zmenudraw3(prf.POWERMENU ? [
 				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 				{text = ltxt("Power", AF.LNG), liner = true},
@@ -13197,7 +13227,7 @@ function displaygrouped1() {
 				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 			], 
-			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
 			function(result) {
 				if (result == 0) fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -13268,7 +13298,7 @@ function displaygrouped1() {
 			foreach (i, item in menuarray) {
 				if (item != null) if (item.dispindex == fe.list.display_index) disp.gmenu1in = i
 			}
-			zmenudraw2(dmenu1, false, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, (prf.DMPIMAGES != null), (prf.DMPIMAGES != null), true, (prf.DMPIMAGES != null), false,
+			zmenudraw3(dmenu1, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, {shrink = (prf.DMPIMAGES != null), dmpart = (prf.DMPIMAGES != null), center = true, midscroll = (prf.DMPIMAGES != null)}, 
 			function(gmenu1) {
 				if (gmenu1 != -1) {
 					if (prf.DMPATSTART) {
@@ -13864,7 +13894,7 @@ function similarmenu() {
 	zmenu.simsys.msg = zmenu.similar[0].syslogo
 
 	frostshow()
-	zmenudraw2(namearray.map(function(value){return({text = value})}), false, ltxt("Similar Games", AF.LNG), 0xeaf7, 0, true, false, true, false, false,
+	zmenudraw3(namearray.map(function(value){return({text = value})}), ltxt("Similar Games", AF.LNG), 0xeaf7, 0, {shrink = true, center = true},
 		function(out) {
 			if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
 
@@ -14508,7 +14538,7 @@ function buildutilitymenu() {
 				})
 			}
 
-			zmenudraw2(menusort, false, "  " + ltxt("Sort by", AF.LNG) + "...", 0xea4c, dat.nowsort, false, false, false, false, false,
+			zmenudraw3(menusort, "  " + ltxt("Sort by", AF.LNG) + "...", 0xea4c, dat.nowsort, {},
 			function(result2) {
 				local result_sort = []
 				if 	  (result2 == 0) result_sort = [z_info.z_title.id, false]
@@ -14578,7 +14608,7 @@ function buildutilitymenu() {
 				})
 			}
 
-			zmenudraw2(jumptomenu, false, "Jump To", 0xea22, currentindex, false, false, false, false, false,
+			zmenudraw3(jumptomenu, "Jump To", 0xea22, currentindex, {},
 			function(out) {
 				if (out == -1) {
 					utilitymenu(umpresel)
@@ -14901,7 +14931,7 @@ function buildutilitymenu() {
 			}
 			aboutmenu[0] = {text = "What's New"}
 
-			zmenudraw2(aboutmenu, false, "Arcadeflow " + AF.version, 0xea09, 0, false, false, false, false, false,
+			zmenudraw3(aboutmenu, "Arcadeflow " + AF.version, 0xea09, 0, {},
 			function(out) {
 				if (out == -1) {
 					utilitymenu (umpresel)
@@ -14954,7 +14984,7 @@ function utilitymenu(presel) {
 	}
 
 	frostshow()
-	zmenudraw2(umdata, true, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, false, false, false, false, false,
+	zmenudraw3(umdata, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, {forceskip = true},
 	function(result1) {
 		if (result1 == -1) {
 			umvisible = false
@@ -16924,7 +16954,7 @@ function subcategorymenu(maincategory, subcategory) {
 
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(value){return(value.text)}).find(subcategory)
 
-	zmenudraw2(catmenu2, false, maincategory, 0xe916,  selectcat, false, false,  false, false, false,
+	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
 		if (result == -1) maincategorymenu(maincategory, subcategory)
 
@@ -16980,7 +17010,7 @@ function maincategorymenu(maincategory, subcategory) {
 
 	frostshow()
 
-	zmenudraw2(catmenu1, false, ltxt("Categories", AF.LNG), 0xe916, startcat, false, false, false, false, false,
+	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
 	function(result) {
 		if (result == -1) {
 			if (umvisible) {
@@ -17018,7 +17048,7 @@ function sortmenu(vector, namevector, presel, glyph, title) {
 		sortmenu.push({text = namevector[abs(vector[i]) - 1], glyph = (vector[i] > 0 ? 0xea52 : 0)})
 	}
 
-	zmenudraw2(sortmenu, false, title, glyph, presel, false, false, false, false, false,
+	zmenudraw3(sortmenu, title, glyph, presel, {},
 	function(out) {
 		if (out == -1) {
 			local v0 = ""
@@ -17267,7 +17297,7 @@ function ra_applychanges() {
 		applymenu.insert(0, {text = ltxt("Discard changes", AF.LNG), glyph = 0xea0f})
 		applymenu.insert(0, {text = ltxt("Apply changes", AF.LNG), glyph = 0xea10})
 	
-		zmenudraw2(applymenu, false, ltxt("Assigned cores", AF.LNG), 0xeafa, 0, false, false, false, false, false,
+		zmenudraw3(applymenu, ltxt("Assigned cores", AF.LNG), 0xeafa, 0, {},
 		function(result) {
 			if ((result == -1) || (result == 1)) {
 				ra.todolist = {}
@@ -17302,7 +17332,7 @@ function ra_selectcore(startemu) {
 	}
 
 	frostshow()
-	zmenudraw2(coremenu, false, ltxt("Select core", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
+	zmenudraw3(coremenu, ltxt("Select core", AF.LNG), 0xeafa, startpos, {},
 	function(result) {
 		if (result == -1) {
 			ra_selectemu(startemu)
@@ -17350,17 +17380,17 @@ function ra_selectemu(startemu) {
 	}
 */
 	frostshow()
-	zmenudraw2(emumenu, false, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
+	zmenudraw3(emumenu, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, {},
 	function(result) {
 		if (result == -1) {
 			ra_applychanges()
 		}
 		else {
 			if (AF.emulatordata[emumenu[result].text].racore == "") {
-				zmenudraw2([
+				zmenudraw3([
 					{ text = ltxt("Yes"), glyph = 0xea10},
 					{ text = ltxt("No"), glyph = 0xea0f}
-				], false, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
+				], ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, {center = true},
 				function(result2) {
 					if (result2 == 0) ra_selectcore(emumenu[result].text)
 					else if (result2 == 1) {
@@ -17382,13 +17412,13 @@ function on_signal(sig) {
 
 	//TEST160
 	if (sig == "custom1"){
-		zmenudraw2([
+		zmenudraw3([
 			{text="A",liner=true},
 			{text="B",skip=true},
 			{text="C"},
 			{text="D",skip=true},
 			{text="E"},
-		],true,"TEST",0,0,false,false,false,false,false,
+		],"TEST",0,0,{},
 		function(out){})
 	}
 
@@ -17571,7 +17601,7 @@ function on_signal(sig) {
 			)
 		}
 		frostshow()
-		zmenudraw2(volarray, false, "Volume", 0xea26, 10 - AF.soundvolume, false, false, true, true, true,
+		zmenudraw3(volarray, "Volume", 0xea26, 10 - AF.soundvolume, {center = true, midscroll = true, singleline = true},
 			function(out) {
 				if (out != -1) {
 					AF.soundvolume = 10 - out
@@ -17647,7 +17677,7 @@ function on_signal(sig) {
 		}
 
 		frostshow()
-		zmenudraw2(filtermenu, false, ltxt("FILTERS", AF.LNG), 0xea5b, (fe.filters.len() != 0 ? fe.list.filter_index : 0), false, false, false, false, false,
+		zmenudraw3(filtermenu, ltxt("FILTERS", AF.LNG), 0xea5b, (fe.filters.len() != 0 ? fe.list.filter_index : 0), {},
 		function(result) {
 			if (result != -1) {
 				fe.list.filter_index = result
@@ -17784,7 +17814,7 @@ function on_signal(sig) {
 	if (sig == "exit") {
 		if (!prf.DMPIFEXITAF) {
 			frostshow()
-			zmenudraw2(prf.POWERMENU ? [
+			zmenudraw3(prf.POWERMENU ? [
 				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 				{text = ltxt("Power", AF.LNG), glyph = 0, liner = true},
@@ -17795,7 +17825,7 @@ function on_signal(sig) {
 				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 			], 
-			false, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
 			function(result) {
 				if (result == 0) 	fe.signal("exit_to_desktop")
 				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
@@ -17933,14 +17963,14 @@ function on_signal(sig) {
 
 
 
-			zmenudraw2([
+			zmenudraw3([
 				{text = ltxt("More of the same...",AF.LNG), glyph = 0xe987},
 				{text = ltxt("Similar Games",AF.LNG), glyph = 0xeaf7},
 				{text = ltxt("Scrape selected game",AF.LNG), glyph = 0xe9c2},
 				{text = ltxt("Edit metadata",AF.LNG), glyph = 0xe906},
 				{text = ltxt("CAUTION!",AF.LNG), liner = true},
 				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe906, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)}],
-			false, ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
+			ltxt("Game Menu", AF.LNG), 0xe916, 0, {},
 			function(result) {
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
@@ -18017,7 +18047,7 @@ function on_signal(sig) {
 					local hidemenu = false
 					
 					frostshow()
-					zmenudraw2(motsdata, true, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, false, false, false, false, false,
+					zmenudraw3(motsdata, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, {forceskip = true},
 					function(result) {
 						if (result == numtag+1) {
 							search.mots2string = ""
@@ -18120,10 +18150,10 @@ function on_signal(sig) {
 					metamenu(0)
 				}
 				if (result == 5) { // Delete ROM
-					zmenudraw2([
+					zmenudraw3([
 						{text = ltxt("Delete", AF.LNG), glyph = 0xea10},
 						{text = ltxt("Cancel", AF.LNG), glyph = 0xea0f}
-					], false, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
+					], "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, {center = true},
 					function(result) {
 						if (result == 0) {
 							deletecurrentrom()
