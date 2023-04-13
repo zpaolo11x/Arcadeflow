@@ -50,6 +50,9 @@ target[i] = {
 	downforce =
 }
 
+Come funziona il force? Se forceskip è attivo sia le parti "skip" sia le parti "liner" vengono skippate. Se invece il force non è attivo, puoi
+usare up/down per muoverti normalmente e saltare solo i liner, o left/right (tipo in multifilter) per skippare direttamente ai buoni
+
 ---
 
 misc.gamblingboard
