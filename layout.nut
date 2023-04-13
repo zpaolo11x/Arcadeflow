@@ -12379,103 +12379,105 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 			}
 		}
 
-		if (zmenu.dmp && prf.ALLGAMES) {
-			if (z_af_collections.tab.rawin(menudata[i].text)) {
-				zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menudata[i].text].groupedname : z_af_collections.tab[menudata[i].text].ungroupedname
-			}
-		}
-
-		if (zmenu.dmp && (prf.DMPIMAGES != null)) {
-			artname = FeConfigDirectory + "menu-art/snap/" + menudata[i].text
-			filename = ""
-
-			local system_art = ""
-			if (prf.DMPGENERATELOGO) {
-				try {system_art = system_data[menudata[i].text.tolower()].sysname}
-				catch(err) {/*print("system data error")*/}
-			}
-
+		if (zmenu.dmp){
 			if (prf.ALLGAMES) {
 				if (z_af_collections.tab.rawin(menudata[i].text)) {
-					system_art = z_af_collections.tab[menudata[i].text].filename
+					zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menudata[i].text].groupedname : z_af_collections.tab[menudata[i].text].ungroupedname
 				}
 			}
 
-			local af_art = null
-			local ma_art = null
-			if (prf.DMPIMAGES == "ARTWORK") {
-				if (file_exist (AF.folder+ "system_images/" + system_art + ".png")) af_art = AF.folder + "system_images/" + system_art + ".png"
-			}
-			else if (prf.DMPIMAGES == "WALLS") {
-				if (file_exist (AF.folder+ "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
-				else if (file_exist (AF.folder+ "system_bgs/" + menudata[i].text + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].text + ".jpg"
-			}
+			if (prf.DMPIMAGES != null) {
+				artname = FeConfigDirectory + "menu-art/snap/" + menudata[i].text
+				filename = ""
 
-			if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
-			if (file_exist (artname + ".png")) ma_art = artname + ".png"
-			if (file_exist (artname + ".mp4")) ma_art = artname + ".mp4"
-			if (file_exist (artname + ".mkv")) ma_art = artname + ".mkv"
-			if (file_exist (artname + ".avi")) ma_art = artname + ".avi"
+				local system_art = ""
+				if (prf.DMPGENERATELOGO) {
+					try {system_art = system_data[menudata[i].text.tolower()].sysname}
+					catch(err) {/*print("system data error")*/}
+				}
 
-			if (prf.DMART == "AF_ONLY") filename = af_art
-			else if (prf.DMART == "MA_ONLY") filename = ma_art
-			else if (prf.DMART == "AF_MA") filename = (af_art == null ? ma_art : af_art)
-			else if (prf.DMART == "MA_AF") filename = (ma_art == null ? af_art : ma_art)
+				if (prf.ALLGAMES) {
+					if (z_af_collections.tab.rawin(menudata[i].text)) {
+						system_art = z_af_collections.tab[menudata[i].text].filename
+					}
+				}
 
-			if (filename == null) filename = ""
-			if (!dmpart) filename = ""
-
-		  if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
-
-			if (!menudata[i].liner) iskip = iskip + 1.0 else iskip = iskip + 0.0
-
-			if (i >= disp.images.len()) {
-				disp.noskip.push(null)
-			}
-
-			disp.noskip[i] = iskip
-
-			// Create new image slots if needed
-			if (i >= disp.images.len()) {
-
-				disp.images.push(null)
-				disp.pos0.push(null)
-				// Create the image item and apply all default values to that
+				local af_art = null
+				local ma_art = null
 				if (prf.DMPIMAGES == "ARTWORK") {
-					disp.images[i] = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing, disp.tilew - 2.0 * pad, disp.tileh - 2.0 * pad)
+					if (file_exist (AF.folder+ "system_images/" + system_art + ".png")) af_art = AF.folder + "system_images/" + system_art + ".png"
 				}
 				else if (prf.DMPIMAGES == "WALLS") {
-					disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
+					if (file_exist (AF.folder+ "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
+					else if (file_exist (AF.folder+ "system_bgs/" + menudata[i].text + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].text + ".jpg"
 				}
-				disp.images[i].preserve_aspect_ratio = true
-				disp.images[i].video_flags = Vid.NoAudio
-				disp.images[i].mipmap = 1
-			}
 
-			// Reposition the tiles and apply parameters that can change when a slot is already present
-			if (prf.DMPIMAGES == "ARTWORK") {
-				disp.images[i].set_pos(disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing)
-			}
-			else if (prf.DMPIMAGES == "WALLS") {
-				disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
-			}
-			disp.images[i].file_name = filename
-			disp.images[i].visible = true
-			disp.images[i].zorder = 100
+				if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
+				if (file_exist (artname + ".png")) ma_art = artname + ".png"
+				if (file_exist (artname + ".mp4")) ma_art = artname + ".mp4"
+				if (file_exist (artname + ".mkv")) ma_art = artname + ".mkv"
+				if (file_exist (artname + ".avi")) ma_art = artname + ".avi"
 
-			if (z_af_collections.tab.rawin(menudata[i].text)) disp.images[i].blend_mode = BlendMode.Premultiplied
-				else disp.images[i].blend_mode = 0
+				if (prf.DMART == "AF_ONLY") filename = af_art
+				else if (prf.DMART == "MA_ONLY") filename = ma_art
+				else if (prf.DMART == "AF_MA") filename = (af_art == null ? ma_art : af_art)
+				else if (prf.DMART == "MA_AF") filename = (ma_art == null ? af_art : ma_art)
 
-			disp.pos0[i] = disp.images[i].y + ((prf.DMPIMAGES == "WALLS") ? (zmenu.height - disp.bgtileh) * 0.5 : 0)
+				if (filename == null) filename = ""
+				if (!dmpart) filename = ""
 
-			// Crop display artwork
-			local extension = disp.images[i].file_name.slice(disp.images[i].file_name.len() - 3, disp.images[i].file_name.len())
-			if ((extension.tolower() == "jpg") && (prf.DMPIMAGES == "ARTWORK")) {
-				local sizew = min(disp.images[i].texture_width, disp.images[i].texture_height)
-				disp.images[i].subimg_width = sizew
-				disp.images[i].subimg_height = sizew
-				disp.images[i].subimg_x = (disp.images[i].texture_width - sizew ) * 0.5
-				disp.images[i].subimg_y = (disp.images[i].texture_height - sizew ) * 0.5
+			if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
+
+				if (!menudata[i].liner) iskip = iskip + 1.0 else iskip = iskip + 0.0
+
+				if (i >= disp.images.len()) {
+					disp.noskip.push(null)
+				}
+
+				disp.noskip[i] = iskip
+
+				// Create new image slots if needed
+				if (i >= disp.images.len()) {
+
+					disp.images.push(null)
+					disp.pos0.push(null)
+					// Create the image item and apply all default values to that
+					if (prf.DMPIMAGES == "ARTWORK") {
+						disp.images[i] = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing, disp.tilew - 2.0 * pad, disp.tileh - 2.0 * pad)
+					}
+					else if (prf.DMPIMAGES == "WALLS") {
+						disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
+					}
+					disp.images[i].preserve_aspect_ratio = true
+					disp.images[i].video_flags = Vid.NoAudio
+					disp.images[i].mipmap = 1
+				}
+
+				// Reposition the tiles and apply parameters that can change when a slot is already present
+				if (prf.DMPIMAGES == "ARTWORK") {
+					disp.images[i].set_pos(disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing)
+				}
+				else if (prf.DMPIMAGES == "WALLS") {
+					disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
+				}
+				disp.images[i].file_name = filename
+				disp.images[i].visible = true
+				disp.images[i].zorder = 100
+
+				if (z_af_collections.tab.rawin(menudata[i].text)) disp.images[i].blend_mode = BlendMode.Premultiplied
+					else disp.images[i].blend_mode = 0
+
+				disp.pos0[i] = disp.images[i].y + ((prf.DMPIMAGES == "WALLS") ? (zmenu.height - disp.bgtileh) * 0.5 : 0)
+
+				// Crop display artwork
+				local extension = disp.images[i].file_name.slice(disp.images[i].file_name.len() - 3, disp.images[i].file_name.len())
+				if ((extension.tolower() == "jpg") && (prf.DMPIMAGES == "ARTWORK")) {
+					local sizew = min(disp.images[i].texture_width, disp.images[i].texture_height)
+					disp.images[i].subimg_width = sizew
+					disp.images[i].subimg_height = sizew
+					disp.images[i].subimg_x = (disp.images[i].texture_width - sizew ) * 0.5
+					disp.images[i].subimg_y = (disp.images[i].texture_height - sizew ) * 0.5
+				}
 			}
 		}
 
@@ -12501,7 +12503,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	else if (forceskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
-	if ((prf.DMPIMAGES != null) && zmenu.dmp) {
+	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
 		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
 		disp.xstart = disp.xstop
 		foreach (id, item in disp.images) {
