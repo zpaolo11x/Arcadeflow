@@ -7760,7 +7760,7 @@ local overlay = {
 	label = null
 	sidelabel = null
 	glyph = null
-	shad = []
+	shadows = []
 	wline = null
 	filterbg = null
 
@@ -9182,12 +9182,12 @@ overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x, overlay.y + overlay.labelheight - 2, overlay.w, 2)
 
-overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h - UI.footer.h3 + overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
-overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientTb.png", overlay.x, overlay.y - floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
-overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientLb.png", overlay.x - floor(50 * UI.scalerate), overlay.y, floor(50 * UI.scalerate), overlay.h))
-overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
+overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h - UI.footer.h3 + overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
+overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientTb.png", overlay.x, overlay.y - floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
+overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientLb.png", overlay.x - floor(50 * UI.scalerate), overlay.y, floor(50 * UI.scalerate), overlay.h))
+overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
 
-foreach (item in overlay.shad) {
+foreach (item in overlay.shadows) {
 	item.alpha = 0
 	item.set_rgb(0, 0, 0)
 }
@@ -9197,7 +9197,7 @@ overlay.wline.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.t
 
 //overlay.filterbg.visible = overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
 overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
-foreach (item in overlay.shad) item.visible = false
+foreach (item in overlay.shadows) item.visible = false
 fe.overlay.set_custom_controls(overlay.label, overlay.listbox)
 
 function mfmbgshow() {
@@ -9280,7 +9280,7 @@ function overlay_show(var0) {
 	overlay.listbox.visible = true
 	overlay.glyph.visible = false
 	overlay.background.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.wline.visible = true
-	foreach (item in overlay.shad) item.visible = true
+	foreach (item in overlay.shadows) item.visible = true
 	flowT.zmenutx = startfade(flowT.zmenutx, 0.05, 0.0)
 	flowT.zmenush = startfade(flowT.zmenush, 0.05, 0.0)
 }
@@ -9294,7 +9294,7 @@ function overlay_hide() {
 	frosthide()
 
 	overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
-	foreach (item in overlay.shad) item.visible = false
+	foreach (item in overlay.shadows) item.visible = false
 }
 
 /// Preferences overlay ///
@@ -12152,15 +12152,12 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	zmenu.shown = menudata.len()
 	zmenu.forceskip = forceskip
 
+	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
+	// user defined skip values
 	zmenu.target = []
 	foreach (i, item in zmenu.data){
 		zmenu.target.push({up = 0, down = 0, upforce = 0, downforce = 0 })
 	}
-	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
-	// user defined skip values
-	
-	zmenu.firstitem = 0
-
 	foreach(i, item in menudata){
 		local targetdown = i + 1
 		while (targetdown < 2 * zmenu.shown){
@@ -12204,8 +12201,10 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		}	
 	}
 
-	// Update first item index
-	if (zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
+	// Update first item index if the first item is a liner or a skippable item.
+	zmenu.firstitem = 0
+	if (!forceskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
+	else if (forceskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
 
@@ -12214,7 +12213,8 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	count.forceup = false
 	count.forcedown = false
 
-	foreach (item in overlay.shad) item.visible = true
+	// Unhide overlay drop shadows and start fading of menu elements
+	foreach (item in overlay.shadows) item.visible = true
 	flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.08, 0.0)
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
@@ -12223,11 +12223,12 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		item.file_name = AF.folder + "pics/transparent.png"
 	}
 
+	// Cleanup the layout elements
+	
+	// Hide overmenu if it's visible
 	if (overmenu_visible()) overmenu_hide(false)
-
 	// silence snap video sound
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
-
 	// Stops video thumb playback
 	if (prf.THUMBVIDEO) videosnap_hide()
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
@@ -12256,6 +12257,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		zmenu.height = overlay.menuheight
 	}
 
+	// Zmenu is officially showing, now populate the various elements
 	zmenu.showing = true
 
 	local artname = ""
@@ -12269,6 +12271,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 	local fontscaler = 0.7
 	local iindex = 0
 
+	// shrink compresses the menu on the left to let, used for dmp or for similar games
 	local items_x = shrink ? 0 : zmenu.glyphw
 	local items_w = shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
 	local noteitems_x = 0
@@ -12292,7 +12295,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0, 0, 1, 1)
 		}
-		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad, floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh, zmenu.tilew -2 * (shrink ? 0 : zmenu.pad) + (shrink ? -1.0* disp.width : 0), 1)
+		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad, floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh, zmenu.tilew -2 * (shrink ? 0 : zmenu.pad) + (shrink ? -1.0 * disp.width : 0), 1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255, 255, 255)
 		zmenu.strikelines[i].alpha = 128
@@ -12318,7 +12321,6 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 			zmenu.glyphs[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
 		zmenu.glyphs[i].set_pos (0, zmenu.height * 0.5 - zmenu.tileh * 0.5 + i * zmenu.tileh, zmenu.glyphw, zmenu.glyphh)
-
 		zmenu.glyphs[i].font = uifonts.glyphs
 		zmenu.glyphs[i].margin = 0
 		zmenu.glyphs[i].char_size = overlay.charsize * 1.25
@@ -12383,7 +12385,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 			}
 		}
 
-		if ((prf.DMPIMAGES != null) && zmenu.dmp) {
+		if (zmenu.dmp && (prf.DMPIMAGES != null)) {
 			artname = FeConfigDirectory + "menu-art/snap/" + menudata[i].text
 			filename = ""
 
@@ -12480,7 +12482,7 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		try {zmenu.pos0 [i] = zmenu.items[i].y} catch(err) {zmenu.pos0.push(zmenu.items[i].y)}
 	}
 
-	//Centering
+	// Centering
 	if (center) {
 		local maxwidth = 0
 		for (local i = 0; i < menudata.len(); i++) {
@@ -12493,9 +12495,10 @@ function zmenudraw2(menudata, forceskip, title, titleglyph, presel, shrink, dmpa
 		}
 	}
 
+	// Define the current selection, skipping if it's a liner
 	zmenu.selected = presel
-
-	if (zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
+	if (!forceskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
+	else if (forceskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if ((prf.DMPIMAGES != null) && zmenu.dmp) {
@@ -16585,9 +16588,9 @@ function tick(tick_time) {
 	if (checkfade (flowT.zmenudecoration)) {
 		flowT.zmenudecoration = fadeupdate(flowT.zmenudecoration)
 		if (endfade (flowT.zmenudecoration) == 0) {
-			foreach (item in overlay.shad) item.visible = false
+			foreach (item in overlay.shadows) item.visible = false
 		}
-		foreach (item in overlay.shad) item.alpha = 60 * (flowT.zmenudecoration[1])
+		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
 	if (checkfade (flowT.zmenubg)) {
@@ -17374,6 +17377,18 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
+
+	//TEST160
+	if (sig == "custom1"){
+		zmenudraw2([
+			{text="A",liner=true},
+			{text="B",skip=true},
+			{text="C"},
+			{text="D",skip=true},
+			{text="E"},
+		],true,"TEST",0,0,false,false,false,false,false,
+		function(out){})
+	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
