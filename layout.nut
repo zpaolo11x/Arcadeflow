@@ -12553,7 +12553,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		try {zmenu.pos0 [i] = scanpos} catch(err) {zmenu.pos0.push(scanpos)}
 		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh //TEST160SPACER
 	}
-foreach(i,item in zmenu.pos0) testpr(i+" "+item+"\n")
+
 	// Centering glyph reposition
 	if (opts.center) {
 		local maxwidth = 0
