@@ -11978,10 +11978,12 @@ function update_allgames_collections(verbose, tempprf) {
 /// Zmenu definition ///
 
 zmenu = {
-	data = []
-	target = []
+	data = []				// main array for menu entries
+	target = []				// array of target values (up, down, upforce, downforce)
 	firstitem = 0
 	forceskip = false
+
+	showing = false // Boolean to tell the layout that menu is showing
 
 	items = []
 	tilew = overlay.w
@@ -12014,7 +12016,6 @@ zmenu = {
 	selectedbar = null
 	sidelabel = null
 	strikelines = []
-	showing = false // Boolean to tell the layout that menu is showing
 
 	reactfunction = null // Response function
 	reactleft = null
@@ -12041,13 +12042,13 @@ zmenu = {
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
 
-	dopts = {
-		shrink = false,
-		dmpart = false,
-		center = false,
-		midscroll = false,
-		singleline = false,
-		forceskip = false
+	dopts = { 					// These are the options that define the behavior of the menu
+		shrink = false,		// The menu is compressed to the left half of the panel
+		dmpart = false,		// flag to enable showing artwork in the display menu page
+		center = false,		// centers the items in the menu
+		midscroll = false,	// selected item is always at center of list
+		singleline = false,	// all menu items are shown in a single line (e.g. volume control)
+		forceskip = false		// items marked "skip" are skipped by default. In some cases it's useful to have the option to skip them or not
 	}
 }
 
