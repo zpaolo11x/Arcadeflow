@@ -12021,7 +12021,8 @@ zmenu = {
 
 	tilew = overlay.w
 	tileh = floor(overlay.menuheight / overlay.rows)
-	
+	strikeh = floor(0.5 * overlay.menuheight / overlay.rows)
+
 	pad = floor(overlay.padding)
 	width = overlay.w
 	fullwidth = overlay.w
@@ -12289,10 +12290,12 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	// Change menu height if options menu is visible
 	if (prfmenu.showing) {
 		zmenu.glyphh = zmenu.tileh = ((prfmenu.bg.y - zmenu.y) / overlay.rows)
+		zmenu.strikeh = zmenu.tileh
 		zmenu.height = prfmenu.bg.y - zmenu.y
 	}
 	else {
 		zmenu.glyphh = zmenu.tileh = (overlay.menuheight / overlay.rows)
+		zmenu.strikeh = floor(zmenu.tileh * 0.5)
 		zmenu.height = overlay.menuheight
 	}
 
@@ -12329,12 +12332,17 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Generate items for menu display
 	local iskip = 0
+	local scanpos = zmenu.midoffset
+
 	for (local i = 0; i < menudata.len(); i++) {
 		if (i >= zmenu.items.len()) {
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0, 0, 1, 1)
 		}
-		zmenu.strikelines[i].set_pos(opts.shrink ? 0 : zmenu.pad, floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh, zmenu.tilew -2 * (opts.shrink ? 0 : zmenu.pad) + (opts.shrink ? -1.0 * disp.width : 0), 1)
+		zmenu.strikelines[i].set_pos( opts.shrink ? 0 : zmenu.pad, 
+												scanpos + 0.5 * zmenu.strikeh, 
+												zmenu.tilew -2 * (opts.shrink ? 0 : zmenu.pad) + (opts.shrink ? -1.0 * disp.width : 0), 
+												1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255, 255, 255)
 		zmenu.strikelines[i].alpha = 128
@@ -12343,7 +12351,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.noteitems.push(null)
 			zmenu.noteitems[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
-		zmenu.noteitems[i].set_pos(noteitems_x, zmenu.midoffset + i * zmenu.tileh, noteitems_w, zmenu.tileh)
+		zmenu.noteitems[i].set_pos(noteitems_x, scanpos, noteitems_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh)
 		zmenu.noteitems[i].visible = true
 		zmenu.noteitems[i].msg = zmenu.data[i].note
 		zmenu.noteitems[i].font = uifonts.gui
@@ -12374,7 +12382,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.items.push(null)
 			zmenu.items[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
-		zmenu.items[i].set_pos(items_x, zmenu.midoffset + i * zmenu.tileh, items_w, zmenu.tileh)
+		zmenu.items[i].set_pos(items_x, scanpos, items_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh) //TEST160SPACE
 		zmenu.items[i].msg = menudata[i].text
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW", AF.LNG)
 		zmenu.items[i].font = uifonts.gui
@@ -12521,6 +12529,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 
 		try {zmenu.pos0 [i] = zmenu.items[i].y} catch(err) {zmenu.pos0.push(zmenu.items[i].y)}
+		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh //TEST160SPACER
 	}
 
 	// Centering glyph reposition
@@ -12599,7 +12608,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh * 0.5) + zmenu.xstop
+		zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
 	}
 
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -16184,7 +16193,7 @@ function tick(tick_time) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh * 0.5) + zmenu.xstart + zmenu.speed
+				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstart + zmenu.speed
 			}
 			zmenu.xstart = zmenu.xstart + zmenu.speed
 		}
@@ -16195,7 +16204,7 @@ function tick(tick_time) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.strikelines[i].y = zmenu.pos0[i] +floor(zmenu.tileh * 0.5) + zmenu.xstop
+				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
 			}
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
@@ -17420,12 +17429,18 @@ function on_signal(sig) {
 
 	//TEST160
 	if (sig == "custom1"){
+		frostshow()
 		zmenudraw3([
-			{text="A",liner=true},
-			{text="B",skip=true},
-			{text="C"},
-			{text="D",skip=true},
-			{text="E"},
+			{text="A", note = "aaa"},
+			{text="B", note = "bbb"},
+			{text="C", note = "ccc", liner=true},
+			{text="D", note = "ddd"},
+			{text="E", note = "eee"},
+			{text="E", liner=true},
+			{text="E", note = "eee"},
+			{text="E", note = "eee"},
+			{text="E", note = "eee"},
+			{text="E", note = "eee"},
 		],"TEST",0,0,{},
 		function(out){})
 	}
