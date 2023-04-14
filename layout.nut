@@ -12294,6 +12294,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (prfmenu.showing) {
 		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = ((prfmenu.bg.y - zmenu.y) / overlay.rows) //TEST160 CHECK PIXEL PERFECT
 		zmenu.height = prfmenu.bg.y - zmenu.y
+		zmenu.strikeh = zmenu.strikeh * 0.7
 	}
 	else {
 		zmenu.glyphh = zmenu.tileh = zmenu.tileh0
