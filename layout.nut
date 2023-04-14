@@ -12021,7 +12021,7 @@ zmenu = {
 
 	tilew = overlay.w
 	tileh0 = floor(overlay.menuheight / overlay.rows)
-	strikeh0 = floor(0.15 * overlay.menuheight / overlay.rows)
+	strikeh0 = floor(0.6 * overlay.menuheight / overlay.rows)
 	tileh = 0
 	strikeh = 0
 
