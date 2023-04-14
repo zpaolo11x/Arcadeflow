@@ -12327,7 +12327,13 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.noteitems[i].visible = false
 		zmenu.strikelines[i].visible = false
 	}
-	zmenu.virtualheight = zmenu.tileh * menudata.len()
+
+	zmenu.virtualheight = 0
+	
+	foreach (item, val in zmenu.data) {
+		zmenu.virtualheight = zmenu.virtualheight + (val.liner ? zmenu.strikeh : zmenu.tileh)
+	}
+	//zmenu.virtualheight = zmenu.tileh * menudata.len()
 	zmenu.midoffset = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
 
 	// Generate items for menu display
