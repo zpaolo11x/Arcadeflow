@@ -12422,6 +12422,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.items[i].width = zmenu.items[i].msg_width + 2 * zmenu.pad
 			zmenu.items[i].visible = zmenu.items[i].msg != ""
 			zmenu.strikelines[i].visible = true
+			pixelizefont(zmenu.items[i],overlay.charsize * 0.9)
 		}
 
 		// Check if there's space for item _and_ notes in non-centered mode
