@@ -12336,11 +12336,11 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.virtualheight = zmenu.virtualheight + (val.liner ? zmenu.strikeh : zmenu.tileh)
 	}
 	//zmenu.virtualheight = zmenu.tileh * menudata.len()
-	zmenu.midoffset = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+	//MO zmenu.midoffset = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
 
 	// Generate items for menu display
 	local iskip = 0
-	local scanpos = zmenu.midoffset
+	local scanpos = 0 //MO zmenu.midoffset
 
 	for (local i = 0; i < menudata.len(); i++) {
 		if (i >= zmenu.items.len()) {
@@ -12540,7 +12540,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh //TEST160SPACER
 	}
 foreach(i,item in zmenu.pos0) testpr(i+" "+item+"\n")
-testpr(zmenu.midoffset+"\n")
 	// Centering glyph reposition
 	if (opts.center) {
 		local maxwidth = 0
@@ -12605,18 +12604,19 @@ testpr(zmenu.midoffset+"\n")
 	local menucorrect = 0
 
 
-			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset < zmenu.height * 0.5) {
-				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset)//zmenu.pos0[zmenu.selected] - zmenu.midoffset
+			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] < zmenu.height * 0.5) {
+				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] )//zmenu.pos0[zmenu.selected] - zmenu.midoffset
 			}
 			
-			if (zmenu.pos0[zmenu.selected] - zmenu.midoffset < zmenu.height * 0.5) {
-				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] + zmenu.midoffset)
+			if (zmenu.pos0[zmenu.selected] < zmenu.height * 0.5) {
+				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] )
 			}
 
 			if (zmenu.midscroll) menucorrect = 0
 
 			zmenu.xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
-	if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
+	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) zmenu.xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+
 	zmenu.xstart = zmenu.xstop
 
 	// Initialize positions
@@ -17798,19 +17798,23 @@ function on_signal(sig) {
 
 			local menucorrect = 0
 
-			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset < zmenu.height * 0.5) {
-				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset)//zmenu.pos0[zmenu.selected] - zmenu.midoffset
+			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected]  < zmenu.height * 0.5) {
+				testpr("A\n")
+				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] )//zmenu.pos0[zmenu.selected] - zmenu.midoffset
 			}
 			
-			if (zmenu.pos0[zmenu.selected] - zmenu.midoffset < zmenu.height * 0.5) {
-				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] + zmenu.midoffset)
+			if (zmenu.pos0[zmenu.selected]  < zmenu.height * 0.5) {
+				testpr("B\n")
+				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] )
 			}
 
 			if (zmenu.midscroll) menucorrect = 0
-
+testpr("mcorr:"+menucorrect+"\n")
 			zmenu.xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
-			if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
-
+			if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) {
+				testpr("C\n")
+				zmenu.xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+			}
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
 					zmenu.items[i].set_rgb (255, 255, 255)
