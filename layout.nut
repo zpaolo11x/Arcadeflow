@@ -11989,53 +11989,63 @@ zmenu = {
 		fade = false		// fades the entry color
 	}
 
-	target = []				// array of target values (up, down, upforce, downforce)
-	firstitem = 0
-	forceskip = false
+	dopts = { 					// These are the options that define the behavior of the menu, passed as arguments to zmenudraw
+		shrink = false,		// The menu is compressed to the left half of the panel
+		dmpart = false,		// flag to enable showing artwork in the display menu page
+		center = false,		// centers the items in the menu
+		midscroll = false,	// selected item is always at center of list
+		singleline = false,	// all menu items are shown in a single line (e.g. volume control)
+		forceskip = false		// items marked "skip" are skipped by default. In some cases it's useful to have the option to skip them or not
+	}
 
-	showing = false // Boolean to tell the layout that menu is showing
+	shown = 0 				// Number of entry in the list
+	selected = 0 			// Index of the selected entry
+	firstitem = 0			// Index of the menu first item
+	target = []				// array of target values {up, down, upforce, downforce}
 
-	items = []
-	tilew = overlay.w
-	tileh = floor(overlay.menuheight / overlay.rows)
-	pos0 = []
+	midscroll = false 	// Proxies of the call parameters, used outside of the menu creation routine
+	singleline = false
+	forceskip = false		
 
+	showing = false 		// Boolean to tell the layout that menu is showing
+
+	items = []				// Objects used to draw the menu
+	glyphs = []
+	noteitems = []
+	strikelines = []
+	
+	pos0 = []				// Scroll control items
 	xstart = 0
 	xstop = 0
 	speed = null
 
+	tilew = overlay.w
+	tileh = floor(overlay.menuheight / overlay.rows)
+	
 	pad = floor(overlay.padding)
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.menuheight
 	x = overlay.x
 	y = overlay.y + overlay.labelheight
-	shown = 0 // Number of entry in the list
-	selected = 0 // Index of the selected entry
-	glyphs = []
 
-	noteitems = []
 	glyphw = floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
 	glyphh = floor(overlay.menuheight / overlay.rows)
 	midoffset = 0
 	virtualheight = 0
 	blanker = null
-	singleline = false
 
 	overlaymsg = ""
 	selectedbar = null
 	sidelabel = null
-	strikelines = []
 
 	reactfunction = null // Response function
 	reactleft = null
 	reactright = null
 
-	midscroll = false // True if the menu scroll needs to be centered vertically
+	similar = null			// Array of similar games entries
 
-	similar = null
-
-	simbg = null
+	simbg = null			// Items used in similar games menu
 	simpicbg = null
 	simpic = null
 	simvid = null
@@ -12051,15 +12061,6 @@ zmenu = {
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
-
-	dopts = { 					// These are the options that define the behavior of the menu
-		shrink = false,		// The menu is compressed to the left half of the panel
-		dmpart = false,		// flag to enable showing artwork in the display menu page
-		center = false,		// centers the items in the menu
-		midscroll = false,	// selected item is always at center of list
-		singleline = false,	// all menu items are shown in a single line (e.g. volume control)
-		forceskip = false		// items marked "skip" are skipped by default. In some cases it's useful to have the option to skip them or not
-	}
 }
 
 zmenu.speed = zmenu.tileh * 0.1
