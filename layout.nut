@@ -12195,19 +12195,6 @@ function getxstop(){
 	return xstop
 }
 
-//TEST160
-function pippo(input1, tableops = {input2 = 1, input3 = 2}){
-	local deftable = {input2 = 1, input3 = 2}
-	foreach(item, val in deftable){
-		if (!tableops.rawin(item)) tableops.rawset(item, val)
-	}
-	print ("input1:" + input1 + "\n")
-	print ("input2:" + tableops.input2 + "\n")
-	print ("input3:" + tableops.input3 + "\n")
-}
-pippo("TEST")
-pippo("TEST", {input2 = 12})
-
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
