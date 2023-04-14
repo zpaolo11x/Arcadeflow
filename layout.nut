@@ -12020,8 +12020,10 @@ zmenu = {
 	speed = null
 
 	tilew = overlay.w
-	tileh = floor(overlay.menuheight / overlay.rows)
-	strikeh = floor(0.5 * overlay.menuheight / overlay.rows)
+	tileh0 = floor(overlay.menuheight / overlay.rows)
+	strikeh0 = floor(0.15 * overlay.menuheight / overlay.rows)
+	tileh = 0
+	strikeh = 0
 
 	pad = floor(overlay.padding)
 	width = overlay.w
@@ -12031,7 +12033,7 @@ zmenu = {
 	y = overlay.y + overlay.labelheight
 
 	glyphw = floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
-	glyphh = floor(overlay.menuheight / overlay.rows)
+	glyphh = 0
 	midoffset = 0
 	virtualheight = 0
 	blanker = null
@@ -12191,6 +12193,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu.midscroll = opts.midscroll
 	zmenu.shown = menudata.len()
 	zmenu.alwaysskip = opts.alwaysskip
+	zmenu.pos0 = []
 
 	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
 	// user defined skip values
@@ -12289,13 +12292,12 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Change menu height if options menu is visible
 	if (prfmenu.showing) {
-		zmenu.glyphh = zmenu.tileh = ((prfmenu.bg.y - zmenu.y) / overlay.rows)
-		zmenu.strikeh = zmenu.tileh
+		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = ((prfmenu.bg.y - zmenu.y) / overlay.rows) //TEST160 CHECK PIXEL PERFECT
 		zmenu.height = prfmenu.bg.y - zmenu.y
 	}
 	else {
-		zmenu.glyphh = zmenu.tileh = (overlay.menuheight / overlay.rows)
-		zmenu.strikeh = floor(zmenu.tileh * 0.5)
+		zmenu.glyphh = zmenu.tileh = zmenu.tileh0
+		zmenu.strikeh = zmenu.strikeh0
 		zmenu.height = overlay.menuheight
 	}
 
@@ -12534,10 +12536,11 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			}
 		}
 
-		try {zmenu.pos0 [i] = zmenu.items[i].y} catch(err) {zmenu.pos0.push(zmenu.items[i].y)}
+		try {zmenu.pos0 [i] = scanpos} catch(err) {zmenu.pos0.push(scanpos)}
 		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh //TEST160SPACER
 	}
-
+foreach(i,item in zmenu.pos0) testpr(i+" "+item+"\n")
+testpr(zmenu.midoffset+"\n")
 	// Centering glyph reposition
 	if (opts.center) {
 		local maxwidth = 0
@@ -12598,14 +12601,15 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
-
+	
 	local menucorrect = 0
-	if (zmenu.shown - 1 - zmenu.selected < (overlay.rows - 1) / 2) menucorrect = (overlay.rows - 1) / 2 - zmenu.shown +1 + zmenu.selected
-	if (zmenu.selected < (overlay.rows - 1) / 2)  menucorrect = - (overlay.rows - 1) / 2 + zmenu.selected
+
+	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5) menucorrect = zmenu.height * 0.5 - zmenu.virtualheight + zmenu.pos0[zmenu.selected] + zmenu.tileh
+	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5) menucorrect = - zmenu.height * 0.5 + zmenu.pos0[zmenu.selected] + zmenu.tileh
 
 	if (zmenu.midscroll) menucorrect = 0
 
-	zmenu.xstop = menucorrect * zmenu.tileh - zmenu.midoffset - zmenu.selected * zmenu.tileh + (zmenu.height - zmenu.tileh) * 0.5
+	zmenu.xstop = menucorrect - zmenu.pos0[zmenu.selected] + (zmenu.height - zmenu.tileh) * 0.5
 	if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
 	zmenu.xstart = zmenu.xstop
 
@@ -17441,12 +17445,12 @@ function on_signal(sig) {
 			{text="B", note = "bbb"},
 			{text="C", note = "ccc", liner=true},
 			{text="D", note = "ddd"},
+			{text="C", note = "ccc", liner=true},
+			{text="C", note = "ccc", liner=true},
+			{text="C", note = "ccc", liner=true},
 			{text="E", note = "eee"},
 			{text="E", liner=true},
-			{text="E", note = "eee"},
-			{text="E", note = "eee"},
-			{text="E", note = "eee"},
-			{text="E", note = "eee"},
+			{text="E", note = "eee"}
 		],"TEST",0,0,{},
 		function(out){})
 	}
@@ -17788,12 +17792,20 @@ function on_signal(sig) {
 
 			local menucorrect = 0
 
-			if (zmenu.shown - 1 - zmenu.selected < (overlay.rows - 1) / 2) menucorrect = (overlay.rows - 1) / 2 - zmenu.shown +1 + zmenu.selected
-			if (zmenu.selected < (overlay.rows - 1) / 2) menucorrect = - (overlay.rows - 1) / 2 + zmenu.selected
+			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset < zmenu.height * 0.5) { // BOTTOM OF MENU
+				testpr("A\n")
+				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset)//zmenu.pos0[zmenu.selected] - zmenu.midoffset
+			}
+			
+			if (zmenu.pos0[zmenu.selected] - zmenu.midoffset < zmenu.height * 0.5) { // TOP OF MENU
+				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] + zmenu.midoffset)
+				testpr("B\n")
+			}
+testpr("mcorr:"+menucorrect+"\n")
 
 			if (zmenu.midscroll) menucorrect = 0
 
-			zmenu.xstop = menucorrect * zmenu.tileh - zmenu.midoffset - zmenu.selected * zmenu.tileh + (zmenu.height - zmenu.tileh) * 0.5
+			zmenu.xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
 			if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
 
 			for (local i = 0; i < zmenu.shown; i++) {
