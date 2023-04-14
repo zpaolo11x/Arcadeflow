@@ -11985,17 +11985,17 @@ zmenu = {
 		glyph = 0			// menu item glyph
 		note = ""			// side note for options etc
 		liner = false		// turns the menu into a strikeline
-		skip = false		// add the entry to forceskip list
+		skip = false		// add the entry to alwaysskip list
 		fade = false		// fades the entry color
 	}
 
-	dopts = { 					// These are the options that define the behavior of the menu, passed as arguments to zmenudraw
+	defopts = { 					// These are the options that define the behavior of the menu, passed as arguments to zmenudraw
 		shrink = false,		// The menu is compressed to the left half of the panel
 		dmpart = false,		// flag to enable showing artwork in the display menu page
 		center = false,		// centers the items in the menu
 		midscroll = false,	// selected item is always at center of list
 		singleline = false,	// all menu items are shown in a single line (e.g. volume control)
-		forceskip = false		// items marked "skip" are skipped by default. In some cases it's useful to have the option to skip them or not
+		alwaysskip = false	// items marked "skip" are skipped by default. In some cases it's useful to have the option to skip them or not
 	}
 
 	shown = 0 				// Number of entry in the list
@@ -12005,7 +12005,7 @@ zmenu = {
 
 	midscroll = false 	// Proxies of the call parameters, used outside of the menu creation routine
 	singleline = false
-	forceskip = false		
+	alwaysskip = false		
 
 	showing = false 		// Boolean to tell the layout that menu is showing
 
@@ -12153,7 +12153,6 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 function cleanupmenudata(menudata){
-
 	foreach (i, item in menudata){
 		foreach (item, val in zmenu.defdata){
 			if (!menudata[i].rawin(item)) menudata[i].rawset(item,val)
@@ -12163,7 +12162,7 @@ function cleanupmenudata(menudata){
 }
 
 function cleanmenuopts(menuopts){
-	foreach (item, val in zmenu.dopts){
+	foreach (item, val in zmenu.defopts){
 		if (!menuopts.rawin(item)) menuopts.rawset(item, val)
 	}
 	return menuopts
@@ -12185,11 +12184,12 @@ pippo("TEST", {input2 = 12})
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
+	
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
 	zmenu.midscroll = opts.midscroll
 	zmenu.shown = menudata.len()
-	zmenu.forceskip = opts.forceskip
+	zmenu.alwaysskip = opts.alwaysskip
 
 	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
 	// user defined skip values
@@ -12242,8 +12242,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Update first item index if the first item is a liner or a skippable item.
 	zmenu.firstitem = 0
-	if (!zmenu.forceskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
-	else if (zmenu.forceskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
+	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
+	else if (zmenu.alwaysskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
 
@@ -12325,7 +12325,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.strikelines[i].visible = false
 	}
 	zmenu.virtualheight = zmenu.tileh * menudata.len()
-	zmenu.midoffset = zmenu.height * 0.5 - zmenu.virtualheight * 0.5
+	zmenu.midoffset = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
 
 	// Generate items for menu display
 	local iskip = 0
@@ -12406,7 +12406,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.strikelines[i].visible = true
 		}
 
-		// Check if there's space for item _and_ notes
+		// Check if there's space for item _and_ notes in non-centered mode
 		if (!opts.center) {
 			if (zmenu.noteitems[i].msg_width > 0.45 * items_w + items_x + items_w - noteitems_w) {
 				zmenu.noteitems[i].x = items_x + items_w * 0.55
@@ -12523,7 +12523,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		try {zmenu.pos0 [i] = zmenu.items[i].y} catch(err) {zmenu.pos0.push(zmenu.items[i].y)}
 	}
 
-	// Centering
+	// Centering glyph reposition
 	if (opts.center) {
 		local maxwidth = 0
 		for (local i = 0; i < menudata.len(); i++) {
@@ -12531,15 +12531,14 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 
 		for (local i = 0; i < menudata.len(); i++) {
-			zmenu.glyphs[i].x = max((zmenu.width * 0.5 - 0.5 * maxwidth - zmenu.glyphs[i].width), 0)
+			zmenu.glyphs[i].x = floor(max((zmenu.width * 0.5 - 0.5 * maxwidth - zmenu.glyphs[i].width), 0))
 			if (opts.shrink) zmenu.glyphs[i].x = zmenu.pad * 0.5
 		}
 	}
-
 	// Define the current selection, skipping if it's a liner
 	zmenu.selected = presel
-	if (!zmenu.forceskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
-	else if (zmenu.forceskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
+	if (!zmenu.alwaysskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
+	else if (zmenu.alwaysskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
@@ -12681,8 +12680,8 @@ function zmenuhide() {
 	zmenu.showing = false
 }
 
-function zmenunavigate_up(signal, forceskip = false) {
-	local tvalue = forceskip ? "upforce" : "up"
+function zmenunavigate_up(signal, alwaysskip = false) {
+	local tvalue = alwaysskip ? "upforce" : "up"
 
 	if (zmenu.selected - zmenu.target[zmenu.selected][tvalue] > 0){
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
@@ -12699,8 +12698,8 @@ function zmenunavigate_up(signal, forceskip = false) {
 
 }
 
-function zmenunavigate_down(signal, forceskip = false) {
-	local tvalue = forceskip ? "downforce" : "down"
+function zmenunavigate_down(signal, alwaysskip = false) {
+	local tvalue = alwaysskip ? "downforce" : "down"
 
 	if (zmenu.target[zmenu.selected][tvalue] - zmenu.selected > 0){
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
@@ -14993,7 +14992,7 @@ function utilitymenu(presel) {
 	}
 
 	frostshow()
-	zmenudraw3(umdata, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, {forceskip = true},
+	zmenudraw3(umdata, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, {alwaysskip = true},
 	function(result1) {
 		if (result1 == -1) {
 			umvisible = false
@@ -17713,14 +17712,14 @@ function on_signal(sig) {
 
 		if (sig == "up") {
 			if (checkrepeat(count.up)) {
-				zmenunavigate_up("up", zmenu.forceskip)
+				zmenunavigate_up("up", zmenu.alwaysskip)
 			}
 			else return true
 		}
 
 		if (sig == "down") {
 			if (checkrepeat (count.down)) {
-				zmenunavigate_down("down", zmenu.forceskip)
+				zmenunavigate_down("down", zmenu.alwaysskip)
 			}
 			else return true
 		}
@@ -18056,7 +18055,7 @@ function on_signal(sig) {
 					local hidemenu = false
 					
 					frostshow()
-					zmenudraw3(motsdata, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, {forceskip = true},
+					zmenudraw3(motsdata, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, {alwaysskip = true},
 					function(result) {
 						if (result == numtag+1) {
 							search.mots2string = ""
