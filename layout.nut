@@ -12412,6 +12412,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 		if (menudata[i].liner) {
 			zmenu.items[i].msg = zmenu.items[i].msg.toupper()
+			zmenu.items[i].char_size = overlay.charsize * 0.9
 			zmenu.items[i].font = uifonts.lite
 			zmenu.items[i].align = Align.MiddleCentre
 			zmenu.items[i].set_bg_rgb (0, 0, 0)
