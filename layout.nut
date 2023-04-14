@@ -12171,6 +12171,30 @@ function cleanmenuopts(menuopts){
 	return menuopts
 }
 
+function getxstop(){
+	local xstop = 0
+	local menucorrect = 0
+	
+	// Lower portion
+	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
+		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
+		testpr("A\n")
+	}
+
+	// Upper portion
+	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
+		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
+		testpr("B\n")
+	}
+
+	if (zmenu.midscroll) menucorrect = 0
+	xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
+	
+	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+	
+	return xstop
+}
+
 //TEST160
 function pippo(input1, tableops = {input2 = 1, input3 = 2}){
 	local deftable = {input2 = 1, input3 = 2}
@@ -12604,23 +12628,7 @@ foreach(i,item in zmenu.pos0) testpr(i+" "+item+"\n")
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 	
-	local menucorrect = 0
-
-
-			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] < zmenu.height * 0.5) {
-				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] )//zmenu.pos0[zmenu.selected] - zmenu.midoffset
-			}
-			
-			if (zmenu.pos0[zmenu.selected] < zmenu.height * 0.5) {
-				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] )
-			}
-
-			if (zmenu.midscroll) menucorrect = 0
-
-			zmenu.xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
-	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) zmenu.xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
-
-	zmenu.xstart = zmenu.xstop
+	zmenu.xstart = zmenu.xstop = getxstop()
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -17799,25 +17807,8 @@ function on_signal(sig) {
 				prfmenu.helppic.file_name = prfmenu.browserdir[zmenu.selected]
 			}
 
-			local menucorrect = 0
+			zmenu.xstop = getxstop()
 
-			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected]  < zmenu.height * 0.5) {
-				testpr("A\n")
-				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] )//zmenu.pos0[zmenu.selected] - zmenu.midoffset
-			}
-			
-			if (zmenu.pos0[zmenu.selected]  < zmenu.height * 0.5) {
-				testpr("B\n")
-				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] )
-			}
-
-			if (zmenu.midscroll) menucorrect = 0
-testpr("mcorr:"+menucorrect+"\n")
-			zmenu.xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
-			if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) {
-				testpr("C\n")
-				zmenu.xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
-			}
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
 					zmenu.items[i].set_rgb (255, 255, 255)
