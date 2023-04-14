@@ -11979,6 +11979,16 @@ function update_allgames_collections(verbose, tempprf) {
 
 zmenu = {
 	data = []				// main array for menu entries
+
+	defdata = {				// Default menu data structure
+		text = ""			// Menu item label
+		glyph = 0			// menu item glyph
+		note = ""			// side note for options etc
+		liner = false		// turns the menu into a strikeline
+		skip = false		// add the entry to forceskip list
+		fade = false		// fades the entry color
+	}
+
 	target = []				// array of target values (up, down, upforce, downforce)
 	firstitem = 0
 	forceskip = false
@@ -12144,12 +12154,9 @@ zmenu_surface.shader = txtoalpha
 function cleanupmenudata(menudata){
 
 	foreach (i, item in menudata){
-		if (!item.rawin("text")) menudata[i].rawset("text","")
-		if (!item.rawin("glyph")) menudata[i].rawset("glyph",0)
-		if (!item.rawin("note")) menudata[i].rawset("note","")
-		if (!item.rawin("liner")) menudata[i].rawset("liner",false)
-		if (!item.rawin("skip")) menudata[i].rawset("skip",false)
-		if (!item.rawin("fade")) menudata[i].rawset("fade",false)
+		foreach (item, val in zmenu.defdata){
+			if (!menudata[i].rawin(item)) menudata[i].rawset(item,val)
+		}
 	}
 	return menudata
 }
