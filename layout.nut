@@ -12604,12 +12604,18 @@ testpr(zmenu.midoffset+"\n")
 	
 	local menucorrect = 0
 
-	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5) menucorrect = zmenu.height * 0.5 - zmenu.virtualheight + zmenu.pos0[zmenu.selected] + zmenu.tileh
-	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5) menucorrect = - zmenu.height * 0.5 + zmenu.pos0[zmenu.selected] + zmenu.tileh
 
-	if (zmenu.midscroll) menucorrect = 0
+			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset < zmenu.height * 0.5) {
+				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset)//zmenu.pos0[zmenu.selected] - zmenu.midoffset
+			}
+			
+			if (zmenu.pos0[zmenu.selected] - zmenu.midoffset < zmenu.height * 0.5) {
+				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] + zmenu.midoffset)
+			}
 
-	zmenu.xstop = menucorrect - zmenu.pos0[zmenu.selected] + (zmenu.height - zmenu.tileh) * 0.5
+			if (zmenu.midscroll) menucorrect = 0
+
+			zmenu.xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
 	if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
 	zmenu.xstart = zmenu.xstop
 
@@ -17792,16 +17798,13 @@ function on_signal(sig) {
 
 			local menucorrect = 0
 
-			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset < zmenu.height * 0.5) { // BOTTOM OF MENU
-				testpr("A\n")
+			if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset < zmenu.height * 0.5) {
 				menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected] + zmenu.midoffset)//zmenu.pos0[zmenu.selected] - zmenu.midoffset
 			}
 			
-			if (zmenu.pos0[zmenu.selected] - zmenu.midoffset < zmenu.height * 0.5) { // TOP OF MENU
+			if (zmenu.pos0[zmenu.selected] - zmenu.midoffset < zmenu.height * 0.5) {
 				menucorrect = - (zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected] + zmenu.midoffset)
-				testpr("B\n")
 			}
-testpr("mcorr:"+menucorrect+"\n")
 
 			if (zmenu.midscroll) menucorrect = 0
 
