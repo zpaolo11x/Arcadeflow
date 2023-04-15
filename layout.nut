@@ -13040,6 +13040,29 @@ function jumptodisplay(targetdisplay) {
 	zmenuhide()
 }
 
+function powermenu(parsefunction){
+	testpr("XXXXXX\n")
+	zmenudraw3(prf.POWERMENU ? [
+		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+		{text = ltxt("Power", AF.LNG), liner = true},
+		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
+		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
+		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
+	] : [
+		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
+		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+	], 
+	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
+	function(result) {
+		if (result == 0) fe.signal("exit_to_desktop")
+		else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
+		else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
+		else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
+		else { parsefunction() }
+	})
+}
+
 function displayungrouped() {
 	zmenu.dmp = true
 	zmenu.jumplevel = 0
@@ -13173,33 +13196,14 @@ function displayungrouped() {
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw3(prf.POWERMENU ? [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-				{text = ltxt("Power", AF.LNG), liner = true},
-				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
-				{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
-				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
-			] : [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-			], 
-			ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
-			function(result) {
-				if (result == 0) fe.signal("exit_to_desktop")
-				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
-				else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
-				else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
+			powermenu(function(){
+				zmenu.dmp = true
+				if (prf.DMPOUTEXITAF) {
+					//fe.signal("displays_menu")
+					displayungrouped()
+				}
 				else {
-					zmenu.dmp = true
-					if (prf.DMPOUTEXITAF) {
-						//fe.signal("displays_menu")
-						displayungrouped()
-					}
-					else {
-						displayungrouped()
-					}
-
+					displayungrouped()
 				}
 			})
 
@@ -13247,25 +13251,8 @@ function displaygrouped1() {
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1))) {
 
 			zmenu.dmp = false
-			zmenudraw3(prf.POWERMENU ? [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-				{text = ltxt("Power", AF.LNG), liner = true},
-				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
-				{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
-				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
-			] : [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-			], 
-			ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
-			function(result) {
-				if (result == 0) fe.signal("exit_to_desktop")
-				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
-				else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
-				else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
-
-				else displaygrouped1()
+			powermenu(function(){
+				displaygrouped1()
 			})
 		}
 
@@ -17843,27 +17830,9 @@ function on_signal(sig) {
 	if (sig == "exit") {
 		if (!prf.DMPIFEXITAF) {
 			frostshow()
-			zmenudraw3(prf.POWERMENU ? [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-				{text = ltxt("Power", AF.LNG), glyph = 0, liner = true},
-				{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
-				{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
-				{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
-			] : [
-				{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-				{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-			], 
-			ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
-			function(result) {
-				if (result == 0) 	fe.signal("exit_to_desktop")
-				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
-				else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
-				else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
-				else {
-					frosthide()
-					zmenuhide()
-				}
+			powermenu(function(){
+				frosthide()
+				zmenuhide()
 			})
 		}
 		else if (prf.DMPENABLED) {
