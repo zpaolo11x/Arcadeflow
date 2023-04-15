@@ -13120,76 +13120,7 @@ function displayungrouped() {
 	foreach (i, item in menuarray) {
 		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
 	}
-	/*
-	local showarray = []
-	local dispnotes = []
-	local groupnotes = []
 
-	foreach (i, item in menuarray) {
-		showarray.push(item.cleanname)
-		dispnotes.push(item.notes)
-		groupnotes.push(item.groupnotes)
-	}
-
-	local dispglyphs = array (showarray.len(), 0)
-	local currentnote = ""
-	local i = 0
-	if (prf.DMPSEPARATORS) {
-		while (i < showarray.len()) {
-
-			if ((groupnotes[i] != currentnote) && (!menuarray[i].ontop)) {
-				currentnote = groupnotes[i]
-				showarray.insert(i, groupnotes[i])
-				dispnotes.insert(i, "")
-				groupnotes.insert(i, "")
-				dispglyphs.insert(i, -1)
-				menuarray.insert(i, null)
-				i++
-			}
-			i++
-		}
-	}
-
-	if (prf.ALLGAMES) {
-		foreach (item, val in z_af_collections.arr) {
-			showarray.insert(0, val.id)
-			dispnotes.insert(0, "")
-			groupnotes.insert(0, "")
-			dispglyphs.insert(0, 0)
-			menuarray.insert(0, z_disp[val.display_id])
-		}
-	}
-
-	if (prf.DMPEXITAF && prf.DMPENABLED) {
-		showarray.push("SYSTEM") //Will be translated by zmenu drawing
-		dispnotes.push(ltxt("", AF.LNG))
-		groupnotes.push("")
-		dispglyphs.push(-1)
-		menuarray.push(null)
-
-		showarray.push("EXIT ARCADEFLOW") //Will be translated by zmenu drawing
-		dispnotes.push(ltxt("", AF.LNG))
-		groupnotes.push("")
-		dispglyphs.push(0)
-		menuarray.push(null)
-	}
-
-	local currentdisplay = 0
-	foreach (i, item in menuarray) {
-		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
-	}
-
-	local dungroupmenu = []
-
-	foreach(i, item in showarray){
-		dungroupmenu.push({
-			text = showarray[i],
-			glyph = dispglyphs[i],
-			note = dispnotes[i],
-			liner = dispglyphs[i] == -1
-		})
-	}
-	*/
 	zmenudraw3(ungroupmenu, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, {shrink = (prf.DMPIMAGES != null), dmpart = true, center = true, midscroll = (prf.DMPIMAGES != null)} ,
 	function(displayout) {
 
