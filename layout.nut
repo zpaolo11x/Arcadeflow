@@ -3650,8 +3650,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				//listline = gname + ";" //Name
 				inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
 				inputitem.z_title = subst_replace(inputitem.z_title, ap, "'")
-				//listline += AF.scrape.romlist + ";" //Emulator
-				//listline += ";" //Clone
+
 				inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
 				inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
 				inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, ap, "'")
@@ -3660,20 +3659,16 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
 				inputitem.z_rotation = isarcade ? dispatcher[scrapeid].gamedata.adb_screenorientation : dispatcher[scrapeid].gamedata.a_rotation //Rotation
 				inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
-				//listline += isarcade ? dispatcher[scrapeid].gamedata.adb_status + ";" : ";" //Status
-				//listline += ";" //DisplayCount
-				//listline += ";" //DisplayType
-				//listline += ";" //AltRomname
-				//listline += ";" //AltTitle
+
 				inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
 				inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
 				inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
 				inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
 				inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
-				//listline += "‖ " + dispatcher[scrapeid].gamedata.scrapestatus +" ‖ "+ dispatcher[scrapeid].gamedata.synopsis + " ‖ " + (isarcade ? split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0] : dispatcher[scrapeid].gamedata.a_resolution) + " ‖ " + dispatcher[scrapeid].gamedata.a_system + " ‖ " + (isarcade ? dispatcher[scrapeid].gamedata.adb_buttonscolors : "") + " ‖" + ";" //Extra
+
 				inputitem.z_buttons = isarcade ? dispatcher[scrapeid].gamedata.adb_inputbuttons.tostring() : dispatcher[scrapeid].gamedata.a_buttons.tostring()
 				inputitem.z_series = isarcade ? dispatcher[scrapeid].gamedata.adb_serie : dispatcher[scrapeid].gamedata.series //Series
-				//listline += ";" // Language
+
 				inputitem.z_region = isarcade ? "" : dispatcher[scrapeid].gamedata.regions //Region
 				inputitem.z_rating = dispatcher[scrapeid].gamedata.rating.tostring() //Rating
 			}
@@ -4517,11 +4512,6 @@ function portromlist(romlist) {
 	local completedtable = tagtable[1]
 	local hiddentable = tagtable[2]
 	local tagtable = tagtable[0]
-
-	//ReadTextFile(AF.romlistfolder + romlist + ".tag"))
-	//while (!favfile.eos()) {
-		//favtable.rawset(favfile.read_line(), true)
-	//}
 
 	local cleanromlist = {}
 	local cleanromlist2 = {}
@@ -9228,14 +9218,12 @@ function frosthide() {
 function frostshaders(turnon) {
 
 	if (turnon) {
-	//	frost.top.shader = flipshader
 		frost.surf_rt.visible = true
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
 		frost.surf_1.shader = shader_fr.h
 		frost.pic.shader = shader_fr.v
 	}
 	else{
-	//	frost.top.shader = noshader
 		frost.surf_rt.visible = false
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 		frost.surf_1.shader = noshader
