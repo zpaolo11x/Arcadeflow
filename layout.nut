@@ -4390,12 +4390,12 @@ function splitlistline(str_in) {
 function listfields_to_db1(listfields) {
 	local target = clone (z_fields1)
 	target.z_title = subst_replace(listfields[1], ap, "'")
-	target.z_year = listfields[4]
-	target.z_manufacturer = subst_replace(listfields[5], ap, "'")
-	target.z_category = listfields[6]
-	target.z_players = listfields[7]
-	target.z_rotation = listfields[8]
-	target.z_control = listfields[9]
+	try {target.z_year = listfields[4]} catch(err) {}
+	try {target.z_manufacturer = subst_replace(listfields[5], ap, "'")} catch(err) {}
+	try {target.z_category = listfields[6]} catch(err) {}
+	try {target.z_players = listfields[7]} catch(err) {}
+	try {target.z_rotation = listfields[8]} catch(err) {}
+	try {target.z_control = listfields[9]} catch(err) {}
 	try {target.z_buttons = subst_replace(listfields[16], ap, "'")} catch(err) {}
 	try {target.z_series = subst_replace(listfields[17], ap, "'")} catch(err) {}
 	try {target.z_region = listfields[19]} catch(err) {}
