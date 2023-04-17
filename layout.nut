@@ -9567,14 +9567,12 @@ function savecurrentoptions() {
 			local prffile = WriteTextFile(savefilepath)
 
 			saveprefdata (current_selection, savefilepath)
-
 		}
 
 		prfmenu.res2 = -1
 		optionsmenu_lev2()
 		return
-	}
-	)
+	})
 }
 
 function restoreoptions() {
@@ -9599,10 +9597,7 @@ function restoreoptions() {
 				fe.signal("reload")
 
 			}
-		},
-		function() {},
-		function() {}
-		)
+		})
 	}
 }
 
