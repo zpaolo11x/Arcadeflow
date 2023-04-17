@@ -6731,7 +6731,7 @@ function z_listboot() {
 			// This is a proper game from a real romlist
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
-				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex)) //TEST160
+				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
 			}
 			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
 			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
@@ -12226,7 +12226,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.items.push(null)
 			zmenu.items[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
-		zmenu.items[i].set_pos(items_x, scanpos, items_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh) //TEST160SPACE
+		zmenu.items[i].set_pos(items_x, scanpos, items_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh)
 		zmenu.items[i].msg = menudata[i].text
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW", AF.LNG)
 		zmenu.items[i].font = uifonts.gui
@@ -12268,7 +12268,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
 			}
 			else if (!menudata[i].liner) {
-				zmenu.items[i].width = items_w + zmenu.glyphw - zmenu.noteitems[i].msg_width - 2 * zmenu.pad // TEST160 trimmed
+				zmenu.items[i].width = items_w + zmenu.glyphw - zmenu.noteitems[i].msg_width - 2 * zmenu.pad
 			}
 		}
 
@@ -12375,7 +12375,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 
 		try {zmenu.pos0 [i] = scanpos} catch(err) {zmenu.pos0.push(scanpos)}
-		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh //TEST160SPACER
+		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh
 	}
 
 	// Centering glyph reposition
@@ -13494,7 +13494,7 @@ zmenu.simpicbg = zmenu_surface_container.add_text("",
 										0,
 										(UI.vertical ? 0.9 : 0.75) * disp.width,
 										(UI.vertical ? 0.9 : 0.75) * disp.width)
-zmenu.simpicbg.set_bg_rgb(200, 0, 0) //TEST160
+zmenu.simpicbg.set_bg_rgb(200, 0, 0)
 zmenu.simpicbg.bg_alpha = 0
 zmenu.simpicbg.zorder = 10000
 
@@ -13666,11 +13666,6 @@ function similarmenu() {
 			zmenu.sim = false
 			zmenusimvisible(false)
 			zmenu.simpic.file_name = zmenu.simvid.file_name = AF.folder + "pics/transparent.png"
-			/*
-			prfmenu.bg.visible = prfmenu.description.visible = prfmenu.helppic.visible = false
-			prfmenu.description.msg = ""
-			prfmenu.helppic.file_name = AF.folder + "pics/transparent.png"
-			*/
 			zmenuhide()
 			frosthide()
 			zmenu.simpic.shader = zmenu.simvid.shader = noshader
@@ -17163,24 +17158,6 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
-
-	//TEST160
-	if (sig == "custom1"){
-		frostshow()
-		zmenudraw3([
-			{text="A", note = "aaa"},
-			{text="B", note = "bbb"},
-			{text="C", note = "ccc", liner=true},
-			{text="D", note = "ddd"},
-			{text="C", note = "ccc", liner=true},
-			{text="C", note = "ccc", liner=true},
-			{text="C", note = "ccc", liner=true},
-			{text="E", note = "eee"},
-			{text="E", liner=true},
-			{text="E", note = "eee"}
-		],"TEST",0,0,{},
-		function(out){})
-	}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
