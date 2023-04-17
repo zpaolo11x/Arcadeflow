@@ -70,7 +70,6 @@ function returngly() {
 
 // General AF data table
 local AF = {
-
 	dat_freeze = true
 	dat_freezecount = 0
 
@@ -664,6 +663,7 @@ try {DBGON = loaddebug()} catch(err) {}
 function debugpr(instring) {
 	if (DBGON) print(instring)
 }
+
 local dispatcher = []
 local dispatchernum = 0
 
@@ -2681,7 +2681,6 @@ ratetonumber["80 to 90 (Very Good)"] <- "9.0"
 ratetonumber["90 to 100 (Best Games)"] <- "10.0"
 
 function afsort(arr_in, arr_mixval) {
-
 	foreach (i, item in arr_in) {
 		arr_mixval[i] = arr_mixval[i] + IDX[i]
 	}
@@ -2716,7 +2715,6 @@ function afsort(arr_in, arr_mixval) {
 */
 
 function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
-
 	local arr_extval2 = []
 	// scans the arr_in (just to get the # of items) and populate extval
 	// creting a sortable array
@@ -2791,7 +2789,6 @@ function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
 */
 
 function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
-
 	// scans the arr_in (just to get the # of items) and populate extval
 	// creting a sortable array
 	foreach (i, item in arr_in) {
@@ -4297,7 +4294,6 @@ function refreshselectedromlists(tempprf) {
 }
 
 function regionsfromfile(title) {
-
 	local filenameregions = ""
 	local filenameregionsarray = []
 	local regionnames = ["World", "USA", "Europe", "Japan", "Italy", "France", "Germany", "Spain", "Korea", "Taiwan", "Asia", "Australia", "Brazil", "Canada", "China", "Denmark", "Finland", "Netherlands", "Portugal", "United Kingdom", "Russia", "Sweden", "Turkey"]
@@ -4321,7 +4317,6 @@ function regionsfromfile(title) {
 }
 
 function splitlistline(str_in) {
-
 	local intoken = false
 	local i = 0
 	local str_char = ""
@@ -4559,7 +4554,6 @@ function portromlist(romlist) {
 }
 
 function portgame(romlist, emulator, gamename) {
-
 	local favtable = buildfavtable(romlist)
 	local playctable = buildplayctable(romlist)
 	local tagtable = buildtagtable(romlist)
@@ -4661,7 +4655,6 @@ function resetromlist() {
 }
 
 function cleandatabase(temppref) {
-
 	if (temppref.MASTERLIST) {
 		z_edit_dialog("Not possible when master romlist is enabled", "")
 		return
@@ -5968,7 +5961,6 @@ local mf = {
 local multifilterglyph = null // This is the layout object that turns on when a multifilter is active
 
 function mfz_checkin(index) {
-
 	local outOR = false
 	local outAND = true
 	local vtemp = null
@@ -6020,7 +6012,6 @@ function mfz_checkin(index) {
 }
 
 function mfz_menudata(inputtable, level, translate, sort) {
-
 	// Translate translates names and keep everything sorted by translated name
 	// Sort means that menu items are sort by (eventually translated)
 	// name value, otherwise they get sorted by filter value (to force sorting)
@@ -6149,7 +6140,6 @@ lo sono in parte allora metto "quadrato vuoto".
 */
 
 function ztestz() {
-
 	local test ={}
 
 	test["Filter"] <- "CIAO"
@@ -6288,7 +6278,6 @@ function mfz_menu2(presel) {
 }
 
 function mfz_menu1(presel) {
-
 	local valcurrent = null
 
 	if (z_list.size > 0) valcurrent = multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
@@ -6447,7 +6436,6 @@ function mfz_load() {
 }
 
 function z_list_updategamedata(index) {
-
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
@@ -6588,7 +6576,6 @@ function z_listsearch(index) {
 }
 
 function z_catfilter(index) {
-
 	if (search.catg[0] == "") return true
 
 	local nowcat = stripcat(index)
@@ -6600,14 +6587,12 @@ function z_catfilter(index) {
 }
 
 function z_favfilter(index) {
-
 	if (!search.fav) return true
 
 	return (z_list.boot2[index + fe.list.index].z_favourite)
 }
 
 function z_mots2filter(index) {
-
 	if (search.mots[0] == "") return true
 	local currentval = ""
 
@@ -6821,7 +6806,6 @@ function z_listcreate() {
 	local felist = array(fe.list.size)
 
 	foreach (i, item in z_list.boot) {
-
 		//bar_update(i, 0, z_list.boot.len())
 
 		local ifeindex = i - fe.list.index
@@ -7122,7 +7106,6 @@ function z_filteredlistupdateindex(reindex) {
 
 // Function to apply a change to the z_list
 function z_list_indexchange(newindex) {
-
 	z_var = newindex - z_list.index
 	z_list.newindex = newindex
 	if (z_list.size != 0) fe.list.index = z_list.gametable[modwrap((newindex), z_list.size)].z_felistindex
@@ -7309,7 +7292,6 @@ function gamename2(offset) {
 }
 
 function wrapme(testo, lim_col, lim_row) {
-
 	// INITIALIZE OUTPUT VARIABLE
 	local out = {
 		text = ""
@@ -7590,7 +7572,6 @@ function maincategory(offset) {
 
 //MAGIC TOKEN
 function maincategorydispl(offset) {
-
 	local s2 = categorylabel(maincategory(offset), 1)
 
 	return (s2)
@@ -7873,7 +7854,6 @@ bglay.pixelgrid = null
 bglay.bgvidsize = 90.0
 
 function squarebgtop() {
-
 	local ilast = bgs.stacksize - 1
 	local remapcolor = bgs.bg_mono[ilast]
 	//bgs.bgpic_top.shader = colormapper[remapcolor].shad
@@ -7899,7 +7879,6 @@ function squarebgtop() {
 }
 
 function squarebg() {
-
 	for (local i = 0; i < bgs.stacksize; i++) {
 		if ((!prf.BOXARTMODE) || ((prf.BOXARTMODE) && (prf.LAYERSNAP))) {
 
@@ -7965,20 +7944,6 @@ if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)) {
 			local bgvid = null
 
 			bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
-			/*
-			if (i == bgs.stacksize - 1) {
-				if (prf.LAYERVIDELAY) {
-					bgvid = bgvidsurf.add_image("white", 0, 0, bglay.bgvidsize, bglay.bgvidsize)
-					bgvid.video_flags = Vid.NoAudio
-					bgvid.alpha = 0
-				}
-				else {
-					bgvid = bgvidsurf.add_artwork("snap", 0, 0, bglay.bgvidsize, bglay.bgvidsize)
-					bgvid.video_flags = Vid.NoAudio
-				}
-			}
-			*/
-
 			bgvid.set_pos(0, 0, bglay.bgvidsize, bglay.bgvidsize)
 			bgvid.preserve_aspect_ratio = false
 			bgvid.trigger = Transition.EndNavigation
@@ -8327,9 +8292,6 @@ for (local i = 0; i < tiles.total; i++) {
 	//gr_vidsz.visible = false
 	if (!prf.SNAPGRADIENT) gr_vidsz.visible = false
 	// if (!prf.AUDIOVIDSNAPS) vidsz.video_flags = Vid.NoAudio
-
-	//local nw_mx = obj.add_image("pics/decor/new.png", selectorscale * padding, selectorscale * (padding - verticalshift + height * 6.0/8.0), width * selectorscale/8.0, height * selectorscale/8.0)
-	//local tg_mx = obj.add_image("pics/decor/tag.png", 0, 0, width * selectorscale/6.0, height * selectorscale/6.0)
 
 	local nw_mx = obj.add_image("pics/decor/new.png", 0, 0, UI.zoomedcorewidth / 8.0, UI.zoomedcoreheight / 8.0)
 	if (prf.MAXLINE) nw_mx.width = nw_mx.height = UI.zoomedcoreheight / 12.0
@@ -9002,7 +8964,6 @@ function overmenu_show() {
 }
 
 function overmenu_hide(strict) {
-
 	if (strict) {
 		overmenu.alpha = 0
 		overmenu.visible = false
@@ -9090,7 +9051,6 @@ function mfmbghide() {
 }
 
 function frostshow() {
-
 	if (overmenu_visible()) overmenu_hide(false)
 
 	frostshaders(true)
@@ -9106,7 +9066,6 @@ function frosthide() {
 }
 
 function frostshaders(turnon) {
-
 	if (turnon) {
 		frost.surf_rt.visible = true
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
@@ -9145,7 +9104,6 @@ function overlay_visible() {
 }
 
 function overlay_show(var0) {
-
 	if (overmenu_visible()) overmenu_hide(false)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
@@ -9262,7 +9220,6 @@ function buildselectarray(options, selection) {
 }
 
 function updatemenu(level, var) {
-
 	if (level == 1) {
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
 		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
@@ -9409,7 +9366,6 @@ function optionsmenu_lev3() {
 
 //Second menu level
 function optionsmenu_lev2() {
-
 	prfmenu.level = 2
 	zmenu.selected = prfmenu.outres1
 
@@ -9578,7 +9534,6 @@ function optionsmenu_lev1() {
 }
 
 function optionsmenu_boot() {
-
 	prfmenu.res0 = prfmenu.res1 = prfmenu.res2 = prfmenu.outres0 = prfmenu.outres1 = prfmenu.outres2 = prfmenu.level = 0
 	prfmenu.showing = true
 
@@ -9727,7 +9682,6 @@ function rgbselector(rgb, sel, old, start) {
 /// HUE Selector ///
 
 function hueselector(hue, sel, old, start) {
-
 	if (start) prfmenu.helppic.file_name = "pics/white.png"
 	prfmenu.rgbshowing = true
 
@@ -9794,7 +9748,6 @@ function hueselector(hue, sel, old, start) {
 }
 
 function sliderval(name, val, sel, old, start, vmin, vmax, def) {
-
 	// val: current value during the edit process
 	// sel: selected entity
 	// old: previous selected value when entering the menu
@@ -10145,7 +10098,6 @@ foreach(letter in kb.rt_stringkeys) {
 local keyboard_text = null
 
 function keyboard_show(text_base, entrytext, f_type, f_back, f_done) {
-
 	keyboard_surface.visible = true
 	keyboard_surface.redraw = true
 
@@ -10215,7 +10167,6 @@ function keyboard_type(c) {
 }
 
 function keyboard_draw() {
-
 	//draw the search surface bg
 	local bg = keyboard_surface.add_image("pics/ui/kbg2.png", 0, 0, keyboard_surface.width, keyboard_surface.height)
 	bg.alpha = 230
@@ -10310,7 +10261,6 @@ function search_update_rule() {
 }
 
 function keyboard_search() {
-
 	keyboard_select (0, UI.vertical ? 1 : 0)
 
 	keyboard_show("🔍", search.smart,
@@ -10343,7 +10293,6 @@ prf.SHOWHIDDEN <- false
 
 // Gets the list of tags for the current romlist directly from Attract Mode folders
 function tags_menu() {
-
 	local tagsmenu = []
 
 	foreach (item, array in z_list.tagstableglobal) {
@@ -11266,7 +11215,6 @@ if (prf.CONTROLOVERLAY != "never") {
 }
 
 function history_updateoverlay() {
-
 	if ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE")) {
 		hist_over.surface.visible = false
 	} else {
@@ -12056,13 +12004,11 @@ function getxstop(){
 	// Lower portion
 	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
-		testpr("A\n")
 	}
 
 	// Upper portion
 	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
-		testpr("B\n")
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
@@ -12564,7 +12510,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 }
 
 function zmenuhide() {
-
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 	foreach (item in disp.images) item.file_name = AF.folder + "pics/transparent.png"
@@ -12649,7 +12594,6 @@ function gh_releaselist(op) {
 }
 
 function gh_latestdata(op) {
-
 	if (op.find(ap + "tag_name" + ap) != null) {
 		gh.latest_version = split(op, ap)[3]
 	}
@@ -12824,7 +12768,6 @@ function gh_menu(presel) {
 }
 
 function checkforupdates(force) {
-
 	if (!force && (currentdate().tointeger() <= loaddate().tointeger())) return
 
 	savedate()
@@ -12919,7 +12862,6 @@ function jumptodisplay(targetdisplay) {
 }
 
 function powermenu(parsefunction){
-	testpr("XXXXXX\n")
 	zmenudraw3(prf.POWERMENU ? [
 		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
@@ -13001,7 +12943,6 @@ function displayungrouped() {
 
 	zmenudraw3(ungroupmenu, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, {shrink = (prf.DMPIMAGES != null), dmpart = true, center = true, midscroll = (prf.DMPIMAGES != null)} ,
 	function(displayout) {
-
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
 
 			zmenu.dmp = false
@@ -13256,7 +13197,6 @@ function hideallbutbg() {
 }
 
 function layoutfadein() {
-
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
 
 	if (prf.SPLASHON) {
@@ -13332,7 +13272,6 @@ local attractitem = {
 }
 
 function attractkick() {
-
 	if (!prf.AMENABLE) return
 
 	if (zmenu.sim) return true
@@ -13624,7 +13563,6 @@ function zmenusimvisible(visibility) {
 zmenusimvisible(false)
 
 function simtitle(in1, in2) {
-
 	local in1array = split(in1.tolower(), " ")
 	local in2array = split(in2.tolower(), " ")
 
@@ -14328,7 +14266,6 @@ function sortarrays() {
 }
 
 function buildutilitymenu() {
-
 	umtable.push({
 		label = ltxt("Sort and Filter", AF.LNG)
 		glyph = 0
@@ -14931,7 +14868,6 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
-
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15339,7 +15275,6 @@ print("\n")
 /// On Transition ///
 
 function on_transition(ttype, var0, ttime) {
-
 	if (ttype == Transition.FromGame) {
 		if (prf.RPI) fe.set_display(fe.list.display_index)
 
@@ -15693,7 +15628,6 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16692,7 +16626,6 @@ function tick(tick_time) {
 local cat = {}
 
 function cleancat(str) {
-
 	while (str.find("(") != null) {
 		local ind = str.find("(")
 		str = str.slice(0, ind) + "." + str.slice(ind + 1, str.len())
@@ -16755,7 +16688,6 @@ function stripcat(offset) {
 }
 
 function subcategorymenu(maincategory, subcategory) {
-
 	local catmenu2 = []
 
 	local i = 0
@@ -16816,7 +16748,6 @@ function subcategorymenu(maincategory, subcategory) {
 }
 
 function maincategorymenu(maincategory, subcategory) {
-
 	local catmenu1 = []
 
 	local i = 0
@@ -16869,7 +16800,6 @@ function categorymenu() {
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
-
 	local sortmenu = []
 	for (local i = 0; i < namevector.len(); i++) {
 		sortmenu.push({text = namevector[abs(vector[i]) - 1], glyph = (vector[i] > 0 ? 0xea52 : 0)})
@@ -17023,7 +16953,6 @@ function parsevolume(op) {
 // ra_init initialise the ra table with data regarding RA and cores
 local ra = {}
 function ra_init() {
-
 	ra.todolist <- {}
 
 	if (OS == "Windows") {
@@ -17105,7 +17034,6 @@ function ra_updatecfg(emulator, core) {
 }
 
 function ra_applychanges() {
-
 	local emuarray = []
 	local corearray = []
 	local applymenu = []
@@ -17173,7 +17101,6 @@ function ra_selectcore(startemu) {
 }
 
 function ra_selectemu(startemu) {
-
 	local startpos = 0
 	local currentemu = startemu
 
