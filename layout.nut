@@ -5536,7 +5536,6 @@ multifilterz.l0["Buttons"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index) {
-
 			local v = z_list.boot[index + fe.list.index].z_buttons
 
 			if (v == "") v = "??"
@@ -5870,7 +5869,6 @@ function mfz_build(reset) {
 			}
 		}
 	}
-	//mfz_print()
 	timestop("mfz_build")
 }
 
@@ -9717,7 +9715,6 @@ function hueselector(hue, sel, old, start) {
 		}
 	}
 	function() {
-
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.left)) && (hue > 0)) {
 				hue = hue - 1 - round(count.left / 5, 1)
@@ -9729,7 +9726,6 @@ function hueselector(hue, sel, old, start) {
 
 	}
 	function() {
-
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.right)) && (hue < 359)) {
 				hue = hue + 1 + round(count.right / 5, 1)
@@ -9757,13 +9753,6 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 
 	if (start) val = old
 
-	/*
-	if (val == "") {
-		val = def
-	} else {
-		val = val.tointeger()
-	}
-*/
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
 	zmenudraw3([
@@ -9794,7 +9783,6 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 		}
 	}
 	function() {
-
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.left)) && (val > vmin)) {
 				val = val - 1 - round(count.left / 5, 1)
@@ -9805,7 +9793,6 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 		}
 	}
 	function() {
-
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.right)) && (val < vmax)) {
 				val = val + 1 + round(count.right / 5, 1)
@@ -9814,8 +9801,7 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 				count.right ++
 			}
 		}
-	}
-	)
+	})
 }
 
 /// File Browser ///
