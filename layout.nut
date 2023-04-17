@@ -5108,45 +5108,6 @@ function z_updatetagstable() {
 			}
 		}
 	}
-	/*
-	foreach (romlistid, val in z_list.allromlists) {
-		local tagsarray = []
-		local tagsnamesarray = []
-
-		local romdir = (FeConfigDirectory + "romlists/" + romlistid)
-		local romdirpresent = (fe.path_test(romdir, PathTest.IsDirectory))
-
-		// No tags at all are present
-		if (!romdirpresent) continue
-
-		// Rom dir is present
-		// List all possible tags
-		tagsarray = DirectoryListing(romdir, false).results
-		if (tagsarray.len() == 0) continue // If there are no tags files, return clear table
-
-		// Scan all to create tags names
-		for (local i = 0; i < tagsarray.len();i++) {
-			if (tagsarray[i][0].tochar()!=".") {
-				tagsnamesarray.push(tagsarray[i].slice(0, tagsarray[i].len()-4))
-			}
-		}
-
-		local tempval = null
-		// Now scan all the files to populate the tags lists with rom names
-		foreach (item in tagsnamesarray) {
-			local temparray = []
-			local filein = ReadTextFile(romdir + "/" + item + ".tag")
-			while (!filein.eos()) {
-				tempval = filein.read_line()
-				temparray.push(romlistid + " " + tempval)
-			}
-			if (temparray.len() >= 1) {
-				z_list.tagstable[item] <- temparray
-			}
-		}
-
-	}
-	*/
 	timestop ("    z_updatetagstable")
 }
 
@@ -5379,8 +5340,6 @@ multifilterz.l0["System"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index + fe.list.index].z_system
 			if (v == "") v = "?"
 
@@ -5404,8 +5363,6 @@ multifilterz.l0["Arcade"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
-
 			local v = z_list.boot[index + fe.list.index].z_arcadesystem
 			if (v == "") v = "?"
 
