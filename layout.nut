@@ -6544,8 +6544,8 @@ local searchdata = null
 local	search = {
 	smart = "" // This is the main search field for smart search
 	catg = ["", ""] // This is the search field from category menu
-	mots = ["", ""]
-	mots2string = [""]
+	mots = ["", ""] // This is the search field from "more of the same" menu
+	mots2string = [""] // Descriptive string for MotS
 	fav = false // This is true if favourite filter is on
 }
 
@@ -7129,11 +7129,6 @@ function z_list_indexchange(newindex) {
 	z_updatefilternumbers(z_list.newindex)
 }
 
-local regsys = {
-	LCD = regexp(@"([Pp][Cc]\s*[Ee]ngine\s*[Gg][Tt])|([Vv]ita)|([Dd][Ss])|(3[Dd][Ss])|(PSP\s*Go)|([Gg]ame\s*[Bb]oy)|([Gg]ame\s*[Gg]ear)|([Ll]ynx)|([Tt]urbo\s*[Ee]xpress)|([Gg]amate)|([Ss]upervision)|([Nn]omad)|([Nn]eo\s*[Gg]eo\s*[Pp]ocket)|([Ww]onder\s*[Ss]wan)|([Pp]lay\s*[Ss]tation\s*[Pp]ortable)")
-	MONO = regexp(@"([Gg]ame\s*[Bb]oy$)|([Gg]ame\s*[Bb]oy\s*[Pp]ocket$)")
-}
-
 function systemSSname(sysname) {
 	local name = null
 	local output = null
@@ -7189,21 +7184,6 @@ function systemAR(offset, var) {
 	return 0.0
 }
 
-function screentype(offset, var) {
-	local name = null
-	local output = null
-	if ((z_list.size > 0)) {
-		name = z_list.gametable[modwrap(z_list.index + offset + var, z_list.size)].z_system
-		if (name == "") return "CRT"
-
-		name = split(name, ";")
-		try {output = system_data[name[0].tolower()].screen}
-		catch(err) {return "CRT"}
-		return output
-	}
-	return "CRT"
-}
-
 function recolorise(offset, var) {
 	local value = null
 	local output = null
@@ -7236,26 +7216,6 @@ function islcd(offset, var) {
 		return (output == "LCD")
 	}
 	return false
-}
-
-function screenrecolor(lcdtype) {
-
-	local out = "NONE"
-
-	// CASE 1: It's a gameboy
-	local isgb = ((lcdtype == "LCDGBC") || (lcdtype == "LCDGBP") || (lcdtype == "LCDGBL"))
-	if (isgb) {
-		if (prf.GBRECOLOR == "AUTO") return (lcdtype) else return (prf.GBRECOLOR)
-	}
-
-	// CASE 2: It's a recolored system
-	local isrecolor = ((lcdtype == "LCDBW") || (lcdtype == "LCDGBA"))
-	if (isrecolor) {
-		return lcdtype
-	}
-
-	// CASE 3: It's everything else
-	return ("NONE")
 }
 
 /// Misc functions ///
@@ -7459,15 +7419,6 @@ function gamemanufacturer(offset) {
 	else {
 		return s0
 	}
-}
-
-//MAGIC TOKEN
-function gameplaycount(offset) {
-	local s = fe.game_info(Info.PlayedCount, offset)
-	if (s.len() > 0) {
-		return s[0]
-	}
-	return ""
 }
 
 // MAGIC TOKEN gets the second part of the game name, after the "("
