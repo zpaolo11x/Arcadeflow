@@ -70,14 +70,17 @@ function returngly() {
 
 // General AF data table
 local AF = {
+	version = "16.0"
+	vernum = 0
+
+	LNG = ""
+
 	dat_freeze = true
 	dat_freezecount = 0
-
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-	version = "16.0"
-	vernum = 0
+
 	folder = fe.script_dir
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
@@ -123,8 +126,6 @@ local AF = {
 	scrape = null
 
 	emulatordata = {}
-
-	LNG = ""
 
 	bar = {
 		time0 = 0
