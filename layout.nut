@@ -4720,24 +4720,6 @@ function cleandatabase(temppref) {
 	//restartAM()
 }
 
-// Routine that returns an emty copy of the game data table
-// the result can be applied with rawset
-// this might be corrected with reference to the emulator and
-// update of the emulator field...
-// NOT USED!
-function creategametable() {
-	timestart("creategametable")
-	local out = {}
-	foreach (item, val in z_fields1) {
-		out.rawset (item, val)
-	}
-	foreach (item, val in z_fields2) {
-		out.rawset (item, val)
-	}
-	timestop("creategametable")
-	return out
-}
-
 local focusindex = {
 	new = 0
 	old = 0
