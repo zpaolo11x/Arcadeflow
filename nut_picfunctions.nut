@@ -253,23 +253,6 @@ function controller_pic(s){
 }
 
 
-function manufacturer_pic(offset){
-   local s = fe.game_info( Info.Manufacturer, offset )
-//	local t = fe.game_info( Info.Title, offset )
-
-   local s2 = split( s, "*%_/: .()-,<>?&+!・~·" )
-	local sout =""
-	if ( s2.len() > 1 ) {
-		for (local i=0;i<s2.len();i++){
-		if (s2[i] != "license")sout = sout + s2[i]
-		}
-		sout = sout.tolower()
-	}
-	else sout = strip(s).tolower()
-	return "manufacturer_images/" + ( (sout == "") ? "unknown" : sout) + ".png"
-}
-
-
 local gIDT = {}
    gIDT[0x0000] <- "None" //  No genre
    gIDT[0x0100] <- "Action" //  Generic Action games
@@ -812,46 +795,13 @@ function categorynamepurge(catname){
 }
 
 function category_pic_name(name){
-   //local s = fe.game_info( Info.Category, offset )
-   local s = name
-   local sout = categorynamepurge(s)
-
+   local sout = categorynamepurge(name)
 	return "metapics/category/"+sout+".png"
 }
 
-function category_pic(offset){
-   local s = fe.game_info( Info.Category, offset )
-   local sout = categorynamepurge(s)
-
-	return "metapics/category/"+sout+".png"
-}
-
-function category_pic_10_name(s){
-   local sout = categorynamepurge(s)
+function category_pic_10_name(name){
+   local sout = categorynamepurge(name)
 	return "metapics/category10/"+sout+".png"
-}
-
-function category_pic_10(offset){
-   local s = fe.game_info( Info.Category, offset )
-   local sout = categorynamepurge(s)
-	return "metapics/category10/"+sout+".png"
-}
-
-function manufacturer_list(){
-   local zout = ""
-   local indexer = 0
-   local s = ""
-   local t = ""
-   for (local i = 0; i<fe.list.size; i++){
-      zout = manufacturer_pic(i)
-      s = fe.game_info( Info.Manufacturer, i )
-	   t = fe.game_info( Info.Title, i )
-
-      if (!(file_exist(affolder + zout))){
-         indexer ++
-         print(  indexer + " *** " + s + " *** " + t + "\n")
-      }
-   }
 }
 
 function manufacturer_list_vector(){
