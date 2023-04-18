@@ -8488,7 +8488,7 @@ impulse2.flow = 0.5
 
 /// No list blanker ///
 
-nolist_blanker = fl.surf.add_text("LIST EMPTY", 0, 0, fl.w, fl.h)
+nolist_blanker = fl.surf.add_text(ltxt("LIST EMPTY",AF.LNG), 0, 0, fl.w, fl.h)
 nolist_blanker.set_bg_rgb(120, 120, 120)
 nolist_blanker.set_rgb(110, 110, 110)
 nolist_blanker.char_size = fl.h * 0.1
@@ -12691,7 +12691,7 @@ function gh_menu(presel) {
 	zmenudraw3([
 		{ text = ltxt("Install branch", AF.LNG), glyph = 0xe9bc},
 		{ text = ltxt("Install release", AF.LNG), glyph = 0xe94e}
-		], "Install from repository", 0xe9c2, presel, {},
+		], ltxt("Install from repository", AF.LNG), 0xe9c2, presel, {},
 	function(out) {
 		if (out == 0) {
 			gh.branchlist = []
@@ -12713,7 +12713,7 @@ function gh_menu(presel) {
 				})
 			}
 
-			zmenudraw3(ghmenu, "Install Branch", 0xe9bc, 0, {center = true},
+			zmenudraw3(ghmenu, ltxt("Install branch", AF.LNG), 0xe9bc, 0, {center = true},
 			function(out0) {
 				if (out0 == -1) gh_menu(0)
 				else afinstall(gh.branchlist[out0], "Arcadeflow_" + gh.branchlist[out0] + "_" + strip(gh.commitlist[out0]))
@@ -12736,7 +12736,7 @@ function gh_menu(presel) {
 					note = gh.releasedatelist[i],
 				})
 			}
-			zmenudraw3(ghmenu, "Install Release", 0xe94e, 0, {center = true},
+			zmenudraw3(ghmenu, ltxt("Install release", AF.LNG), 0xe94e, 0, {center = true},
 			function(out1) {
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1], "Arcadeflow_" + (gh.taglist[out1].tofloat() * 10).tointeger())
@@ -14349,7 +14349,7 @@ function buildutilitymenu() {
 				})
 			}
 
-			zmenudraw3(jumptomenu, "Jump To", 0xea22, currentindex, {},
+			zmenudraw3(jumptomenu, ltxt("Jump to", AF.LNG), 0xea22, currentindex, {},
 			function(out) {
 				if (out == -1) {
 					utilitymenu(umpresel)
