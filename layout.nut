@@ -16746,9 +16746,10 @@ function maincategorymenu(maincategory, subcategory) {
 	catmenu1[currentcat].rawset ("glyph", 0xea10)
 
 	local startcat =  catmenu1.map(function(value){return(value.text)}).find(maincategory)
-
+	if (startcat == null) startcat = 0
 	frostshow()
-
+print_variable(catmenu1,"","")
+testpr(startcat+"\n")
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
 	function(result) {
 		if (result == -1) {
