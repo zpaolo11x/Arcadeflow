@@ -311,8 +311,9 @@ function getcatnames_SS(){
    local catnames = {
       names = []
       table = {}
+		data = null
    }
-   local catnamesdata = [
+   catnames.data = [
 		"Action RPG",
 		"Action/Adventure",
 		"Action/Breakout games",
@@ -451,7 +452,7 @@ function getcatnames_SS(){
 		"Various/Utilities"
 	]
 
-   foreach (id, item in catnamesdata){
+   foreach (id, item in catnames.data){
       local vecn = split(item,"/")
       if (vecn.len() == 2){
          if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
@@ -477,8 +478,9 @@ function getcatnames(){
    local catnames = {
       names = []
       table = {}
+		data = null
    }
-   local catnamesdata = [
+   catnames.data = [
 		"Ball & Paddle/Breakout",
 		"Ball & Paddle/Breakout * Mature *",
 		"Ball & Paddle/Jump and Touch",
@@ -734,7 +736,7 @@ function getcatnames(){
 		"Whac-A-Mole/Shooter"
 	]
 
-   foreach (id, item in catnamesdata){
+   foreach (id, item in catnames.data){
       local vecn = split(item,"/")
       if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
       else {

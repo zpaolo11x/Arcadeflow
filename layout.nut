@@ -4724,7 +4724,7 @@ local focusindex = {
 local catnames = getcatnames()
 local catnames_SS = getcatnames_SS()
 local yearnames = getyears()
-
+print_variable(catnames_SS,"","")
 local metadata = {
 	path = null
 	ids = [	"z_title",
@@ -5397,6 +5397,43 @@ multifilterz.l0["Tags"] <- {
 		}
 	}
 
+function processcategory(categoryname){
+	/*
+	Returns an array of all the combinations of categories in a game
+	when category matches mame or ss it's returned as is, if it's a comma separated or "-" 
+	separated list, each element of the array is that
+	*/
+	local out = []
+	if (categoryname == "") return ([["Unknown", ""]])
+	local cathierarchy = split (categoryname, "/")
+	local catarray = split (categoryname, ",-")
+	local catmatch = !((catnames.data.find(categoryname) == null) && (catnames_SS.data.find(categoryname) == null))
+
+	if (catmatch) {
+		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
+	} 
+	testpr(catarray.len()+"\n")
+	foreach (i, item in catarray){
+		cathierarchy = split (item, "/")
+		if (cathierarchy.len() == 1) out.push ([strip(cathierarchy[0]),""]) else out.push (cathierarchy.map(function(val){return(strip(val))})) 
+	}
+	return out
+
+}
+
+print_variable(processcategory("RPG - Action, Adventure"),"","")
+print ("\n")
+print_variable(processcategory("Adventures"),"","")
+print ("\n")
+print_variable(processcategory("Adventure, sports / RPG"),"","")
+print ("\n")
+print_variable(processcategory("Whac-A-Mole/Gun"),"","")
+print ("\n")
+print_variable(processcategory(""),"","")
+print ("\n")
+
+pappo = 0
+
 multifilterz.l0["Category"] <- {
 		label = ""
 		filtered = false
@@ -5406,13 +5443,21 @@ multifilterz.l0["Category"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_category
 
+			/* 
+			In this multifilter category is analysed based on three factors:
+			A - matching of screenscraper or mame category (can't be an array even if it contains "," or "-")
+			B - presence of "/" as a category hierarchy separator
+			C - presence of "," or "-" as a multiple category separator
+			*/
+			
 			// Return data when no category is selected
 			if (v == "") return {l1val = "Unknown", l1array = false,  l1name = "Unknown", sub = false, l2val = null, l2name = null}
 
 			local v2 = split (v, "/")
-			local v3 = split (v, comma)
+			local v3 = split (v, ",-")
+			local match = !((catnames.data.find(v) == null) && (catnames_SS.data.find(v) == null))
 
-			if ((v2.len() == 1) && (v3.len() > 1)) { //Array of values
+			if (!match && (v2.len() == 1) && (v3.len() > 1)) { //Array of values
 				for (local i = 0; i < v3.len(); i++) {
 					v3[i] = strip (v3[i])
 				}
@@ -16745,11 +16790,12 @@ function maincategorymenu(maincategory, subcategory) {
 	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
 	catmenu1[currentcat].rawset ("glyph", 0xea10)
 
-	local startcat =  catmenu1.map(function(value){return(value.text)}).find(maincategory)
-	if (startcat == null) startcat = 0
+	local startcat = catmenu1.map(function(value){return(value.text)}).find(maincategory)
+	//if (startcat == null) startcat = 0
 	frostshow()
 print_variable(catmenu1,"","")
 testpr(startcat+"\n")
+testpr(maincategory+"\n")
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
 	function(result) {
 		if (result == -1) {
