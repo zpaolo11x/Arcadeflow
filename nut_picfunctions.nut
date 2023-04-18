@@ -448,7 +448,7 @@ function getcatnames_SS(){
 		"Various/Electro - Mechanical",
 		"Various/Print Club",
 		"Various/System",
-		"Various/Utilities
+		"Various/Utilities"
 	]
 
    foreach (id, item in catnamesdata){
