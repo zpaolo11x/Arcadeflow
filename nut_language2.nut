@@ -1,10 +1,9 @@
 local affolder = fe.script_dir
 local languagetable = dofile(fe.path_expand(affolder+"data_translations2.txt"))
-local languages = datatable.LNGCODES
 
 function languagearray() {
    local out = []
-   foreach (lang,code in languages){
+   foreach (lang,code in languagetable.LNGCODES){
       out.push (lang)   
    }
    out.sort(@(a,b) a <=> b)
@@ -21,15 +20,11 @@ function languagelist() {
    return strout
 }
 
-function languagecode(layoutlanguage) {
-   return languages[layoutlanguage]
-}
-
 function languagetokenarray() {
    local out = languagearray() 
    local out2 = out
    for (local i = 0 ; i < out.len() ; i++){
-      out2[i] = languagecode(out[i])
+      out2[i] = languagetable.LNGCODES[out[i]]
    }
    return out2
 }
