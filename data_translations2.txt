@@ -25,6 +25,7 @@ LNGCODES = {
 // Translation of sentences in the different languages
 
      "Language":{
+EN = "Language"
 IT = "Lingua"
 ES = "Idioma"
 BR = "Idioma"
@@ -35,6 +36,7 @@ DE = "Sprache"
 // OPTIONS SECTION
 
      "Layout language":{
+EN = "Layout language"
 IT = "Lingua del layout"
 ES = "Idioma del layout"
 BR = "Idioma do layout"
@@ -42,6 +44,7 @@ FR = "Langue de layout"
 DE = "Layout Sprache"
 }
      "Chose the language of the layout":{
+EN = "Chose the language of the layout"
 IT = "Seleziona la lingua usata nel layout"
 ES = "Selecciona el idioma del layout"
 BR = "Define o idioma do layout"
@@ -49,14 +52,17 @@ FR = "Choisissez la langue du layout"
 DE = "Sprache des Layouts auswählen"
 }
      "Power menu":{
+EN = "Power menu"
 IT = "Menu arresto"
 DE = "Power Menü"
 }
      "Enable or disable power options in exit menu":{
+EN = "Enable or disable power options in exit menu"
 IT = "Abilita un menu per spegnere o riavviare la macchina uscendo da Arcadeflow"
 DE = "Aktivieren/Deaktivieren der Power Optionen im Exit-Menü"
 }
      "GENERAL":{
+EN = "GENERAL"
 IT = "GENERALE"
 ES = "GENERAL"
 BR = "GERAL"
@@ -64,27 +70,32 @@ FR = "GENERAL"
 DE = "ALLGEMEIN"
 }
      "Layout":{
+EN = "Layout"
 IT = "Layout"
 ES = "Layout"
 DE = "Layout"
 }
      "Game Data":{
+EN = "Game Data"
 IT = "Dati del gioco"
 ES = "Datos del juego"
 DE = "Spieldaten"
 }
      "Scroll & Sort":{
+EN = "Scroll & Sort"
 IT = "Organizzazione"
 ES = "Organización"
 DE = "Scrollen & Sortierung"
 }
      "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc":{
+EN = "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc"
 IT = "Definisci le optioni principali per Arcadeflow: il numero di righe di miniature, i pulsanti, la lingua e altro"
 ES = "Define las opciones principales de Arcadeflow: número de filas, controles, lenguaje, fuente de las imagenes, etc."
 FR = "Definissez les options principales d'ArcadeFlow: nombres de lignes, agencement général, controles, langue, captures miniatures, etc."
 DE = "Definiere die Hauptoptionen von ArcadeFlow, wie Anzahl der Zeilen, allgemeines Layout, Schaltflächen, Sprache, Thumbnail-Quelle etc."
 }
      "Box Art mode":{
+EN = "Box Art mode"
 IT = "Modalità Box Art"
 ES = "Modo Box Art"
 BR = "Modo Arte da Caixa"
@@ -92,6 +103,7 @@ FR = "Mode Image de Boite"
 DE = "Box-Art Modus"
 }
      "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)":{
+EN = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)"
 IT = "Mostra la box art o i flyer al posto delle schermate del gioco (può essere configurato via menu o tasti rapidi)"
 ES = "Por defecto, muestra un Box Art o Flyer en lugar de la captura de pantalla (se puede configurar desde el menú o asignar una tecla rápida)"
 BR = "Mostra a arte da caixa ou flyer, ao invés de uma captura da tela (pode ser configurado pelo menu ou por um atalho)"
@@ -99,6 +111,7 @@ FR = "Montre l'image de la boite ou foliole au lieu des captures d'écrans par d
 DE = "Standardmäßig Box-Art oder Flyer anstelle von Bildschirmfotos anzeigen (kann über Menü oder Hotkey konfiguriert werden)"
 }
      "Game title over box art":{
+EN = "Game title over box art"
 IT = "Titolo sopra la box art"
 ES = "Mostrar el título del juego sobre el Box Art"
 BR = "Exibir o título do jogo sobreposto à arte da caixa"
@@ -106,6 +119,7 @@ FR = "Montre le titre du jeu par dessus l'image de la boite"
 DE = "Spiel-Titel über Box-Art"
 }
      "Shows the game title artwork overlayed on the box art graphics":{
+EN = "Shows the game title artwork overlayed on the box art graphics"
 IT = "Mostra la grafica del titolo del gioco sovraimposta sulla grafica della scatola"
 ES = "Muestra la imagen del título del juego superpuesto al Box Art"
 BR = "Exibe a arte do título do jogo sobreposta à arte da caixa"
@@ -113,6 +127,7 @@ FR = "Montre le titre du jeu, en logo, par dessus l'image de la boite"
 DE = "Zeigt die Titelgrafik des Spiels über der Box-Art"
 }
      "Box Art artwork source":{
+EN = "Box Art artwork source"
 IT = "Sorgente della Box Art"
 ES = "Fuente del Box Art"
 BR = "Local da Arte da Caixa"
@@ -120,6 +135,7 @@ FR = "Source pour images de boite"
 DE = "Box-Art Quelle"
 }
      "Chose the artwork source for box art graphics":{
+EN = "Chose the artwork source for box art graphics"
 IT = "Seleziona da quale sorgente prendere la grafica per la Box Art"
 ES = "Elige una fuente para las imagenes del Box Art"
 BR = "Define o local de onde os gráficos da Arte da Caixa serão obtidos"
@@ -127,6 +143,7 @@ FR = "Précisez le dossier où ce trouve les images de boites"
 DE = "Wähle die Quelle für die Box-Art"
 }
      "Rows in horizontal":{
+EN = "Rows in horizontal"
 IT = "Righe in orizzontale"
 ES = "Filas en horizontal"
 BR = "Linhas na horizontal"
@@ -134,6 +151,7 @@ FR = "Lignes en mode horizontales"
 DE = "Zeilen horizontal"
 }
      "Number of rows to use in 'horizontal' mode":{
+EN = "Number of rows to use in 'horizontal' mode"
 IT = "Numero di righe di miniature da mostrare in modalità orizzontale"
 ES = "Número de filas para el modo horizontal"
 BR = "Define a quantidade de linhas de miniaturas mostradas no modo horizontal"
@@ -141,6 +159,7 @@ FR = "Précisez la quantité de lignes de captures miniatures a montré en mode 
 DE = "Anzahl Zeilen im horizontalen Modus"
 }
      "Rows in vertical":{
+EN = "Rows in vertical"
 IT = "Righe in verticale"
 ES = "Filas en vertical"
 BR = "Linhas na vertical"
@@ -148,6 +167,7 @@ FR = "Linges en mode vertical"
 DE = "Zeilen vertikal"
 }
      "Number of rows to use in 'vertical' mode":{
+EN = "Number of rows to use in 'vertical' mode"
 IT = "Numero di righe di miniature da mostrare in modalità verticale"
 ES = "Número de filas para el modo vertical"
 BR = "Define a quantidade de linhas de miniaturas mostradas no modo vertical"
@@ -155,6 +175,7 @@ FR = "Précisez la quantité de lignes de captures miniatures a montré en mode 
 DE = "Anzahl Zeilen im vertikalen Modus"
 }
      "Clean layout":{
+EN = "Clean layout"
 IT = "Layout pulito"
 ES = "Limpiar layout"
 BR = "Layout simplificado"
@@ -162,6 +183,7 @@ FR = "Agencement simplifié"
 DE = "Sauberes Layout"
 }
      "Reduce game data shown on screen":{
+EN = "Reduce game data shown on screen"
 IT = "Riduce la quantità di dati mostrati su schermo"
 ES = "Reduce la cantidad de datos del juego que se muestran en pantalla"
 BR = "Reduz a quantidade de informações mostradas"
@@ -169,6 +191,7 @@ FR = "Reduisez la quantité d'information montrée a l'écran"
 DE = "Reduziere angezeigte Spiel-Daten"
 }
      "Display Game Long Name":{
+EN = "Display Game Long Name"
 IT = "Nome esteso del gioco"
 ES = "Mostrar el nombre completo del juego"
 BR = "Exibir o nome extenso do jogo"
@@ -176,6 +199,7 @@ FR = "Montrez le titre complet du jeu"
 DE = "Zeige den Langnamen des Spiels"
 }
      "Shows the part of the rom name with version and region data":{
+EN = "Shows the part of the rom name with version and region data"
 IT = "Mostra la parte del nome del gioco che contine iformazioni come la versione e la regione"
 ES = "Muestra la parte del nombre que indica la versión y la región"
 BR = "Exibe a parte do nome do jogo que contém as informações sobre a versão e região"
@@ -183,6 +207,7 @@ FR = "Montre la partie du nom du rom avec la version et l'information sur la ré
 DE = "Zeigt den Rom Namen mit Version und Region Informationen"
 }
      "Display System Name":{
+EN = "Display System Name"
 IT = "Mostra il nome del sistema"
 ES = "Mostrar el nombre del sistema"
 BR = "Exibir o nome do sistema"
@@ -190,6 +215,7 @@ FR = "Montrez le nom du système"
 DE = "Zeige Systemname"
 }
      "Shows the System name under the game title":{
+EN = "Shows the System name under the game title"
 IT = "Mostra il nome del sistema sotto il titolo del gioco"
 ES = "Muestra el nombre del sistema bajo el título del juego"
 BR = "Exibe o nome do sistema abaixo do título do jogo"
@@ -197,14 +223,17 @@ FR = "Montre le nom du système dessous le titre du jeu"
 DE = "Zeigt den Systemnamen unter dem Spiel-Titel"
 }
      "Display Arcade System Name":{
+EN = "Display Arcade System Name"
 IT = "Mostra nome del sistema Arcade"
 DE = "Zeige Arcade System Namen"
 }
      "Shows the name of the Arcade system if available":{
+EN = "Shows the name of the Arcade system if available"
 IT = "Se disponibile, mostra il nome del sistema Arcade su cui gira il gioco"
 DE = "Zeigt den Namen des Arcade System sofern verfügbar"
 }
      "System Name as artwork":{
+EN = "System Name as artwork"
 IT = "Nome del sistema come grafica"
 ES = "Mostrar logo como nombre del sistema"
 BR = "Exibir o nome do sistema em forma de arte gráfica"
@@ -212,6 +241,7 @@ FR = "Montrez le nom de système en logo"
 DE = "Systemname als Artwork"
 }
      "If enabled, the system name under the game title is rendered as a logo instead of plain text":{
+EN = "If enabled, the system name under the game title is rendered as a logo instead of plain text"
 IT = "Se abilitato, il nome del sistema sotto il titol odel gioco è sostituito da un logo grafico"
 ES = "Si está activado, el nombre del sistema bajo el título del juego se cambia por un logo"
 BR = "Se ativado, o nome do sistema abaixo do título do jogo será substituído pelo logotipo ao invês de um texto simples"
@@ -219,14 +249,17 @@ FR = "Si activé, le nom du système sous le titre du jeu est rendu en logo au l
 DE = "Wenn aktiviert, wird der Systemname unter dem Spiel-Titel als Logo statt als Text dargestellt"
 }
      "Page jump size":{
+EN = "Page jump size"
 IT = "Dimensione salto pagina"
 DE = "Seitensprunggröße"
 }
      "Page jumps are one screen by default, you can increase it if you want to jump faster":{
+EN = "Page jumps are one screen by default, you can increase it if you want to jump faster"
 IT = "Il salto pagina di default è uno schermo alla volta, si può aumentare con l'opzione"
 DE = "Seitensprünge betragen standardmäßig einen Bildschirm, erhöhen wenn schneller gesprungen werden soll"
 }
      "Scrollbar style":{
+EN = "Scrollbar style"
 IT = "Barra di scorrimento"
 ES = "Tipo de barra de desplazamiento"
 BR = "Estilo da barra de rolagem"
@@ -234,6 +267,7 @@ FR = "Style de la barre de défilement"
 DE = "Stil der Bildlaufleiste"
 }
      "Select how the scrollbar should look":{
+EN = "Select how the scrollbar should look"
 IT = "Seleziona l'aspetto della barra di scorrimento"
 ES = "Selecciona el tipo de barra de desplazamiento"
 BR = "Define a aparência da barra de rolagem"
@@ -241,6 +275,7 @@ FR = "Précisez l'apparence de la barre de défilement"
 DE = "Wähle wie die Bildlaufleiste aussehen soll"
 }
      "Strip article from sort":{
+EN = "Strip article from sort"
 IT = "Ordina ignorando gli articoli"
 ES = "Ignorar el artículo del título"
 BR = "Remover artigos ao organizar por títulos"
@@ -248,6 +283,7 @@ FR = "Ignorez les articles durant le triage"
 DE = "Artikel bei Sortierung ignorieren"
 }
      "When sorting by Title ignore articles":{
+EN = "When sorting by Title ignore articles"
 IT = "Ignora gli articoli quando la lista è ordinata per titolo"
 ES = "Cuando organiza por título se ignora el artículo"
 BR = "Ao organizar pelo título, ignora os artigos nos nomes dos jogos"
@@ -255,14 +291,17 @@ FR = "Ignorez les articles quand vous trier des titres"
 DE = "Bei Sortierung nach Titel, werden Artikel ignoriert"
 }
      "Enable sorting":{
+EN = "Enable sorting"
 IT = "Abilita ordinamento"
 DE = "Aktiviere Sortierung"
 }
      "Enable custom realtime sorting, diable to keep romlist sort order":{
+EN = "Enable custom realtime sorting, diable to keep romlist sort order"
 IT = "Abilita l'ordinamento personalizzato, disabilitare per mantenere l'ordinamento della romlist"
 DE = "Aktivieren der Real-Time Sortierung, deaktivieren um die ROMLIST Reihenfolge beizubehalten"
 }
      "Save sort order":{
+EN = "Save sort order"
 IT = "Salva l'ordinamento"
 ES = "Guardar orden de clasificación"
 BR = "Salvar a ordem de organização"
@@ -270,6 +309,7 @@ FR = "Sauvegardez l'odre de triage"
 DE = "Sortierungsreihenfolge speichern"
 }
      "Custom sort order is saved through Arcadeflow sessions":{
+EN = "Custom sort order is saved through Arcadeflow sessions"
 IT = "L'ordinamento delle liste è salvato tra una sesione e l'altra"
 ES = "Guarda el orden seleccionado para la próxima sesión"
 BR = "A organização personalizada da lista é mantida entre as sessões do Arcadeflow"
@@ -277,6 +317,7 @@ FR = "L'ordre de triage personnalisé est sauvegardé entre les sessions d'Arcad
 DE = "Benutzerdefinierte Sortierreihenfolge wird in Arcadeflow-Sitzungen gespeichert"
 }
      "Screen rotation":{
+EN = "Screen rotation"
 IT = "Rotazione dello schermo"
 ES = "Rotación de pantalla"
 BR = "Rotação de tela"
@@ -284,6 +325,7 @@ FR = "Rotation de l'écran"
 DE = "Bildschirmdrehung"
 }
      "Rotate screen":{
+EN = "Rotate screen"
 IT = "Ruota lo schermo"
 ES = "Gira la pantalla"
 BR = "Rotaciona a tela"
@@ -291,6 +333,7 @@ FR = "Tournez l'écran"
 DE = "Drehe Bildschirm"
 }
      "Low resolution":{
+EN = "Low resolution"
 IT = "Bassa risoluzione"
 ES = "Baja resolución"
 BR = "Baixa resolução"
@@ -298,6 +341,7 @@ FR = "résolution basse"
 DE = "Geringe Auflösung"
 }
      "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout":{
+EN = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout"
 IT = "Ottimizza il tema per schermi a bassa risoluzione, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout"
 ES = "Optimiza el tema para pantallas con baja resolución: sólo muestra una fila, agranda la fuente y limpia el layout"
 BR = "Otimiza o tema para telas de baixa resolução, forçando o layout de uma linha, fonte ampliada e layout simplificado"
@@ -305,24 +349,29 @@ FR = "Optimize ce theme pour résolutions basses. Agencement à une ligne forcé
 DE = "Optimierung des Themes für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout"
 }
      "Custom color":{
+EN = "Custom color"
 IT = "Colore personalizzato"
 DE = "Benutzerdefinierte Farbe"
 }
      "Define a custom color for UI elements using sliders":{
+EN = "Define a custom color for UI elements using sliders"
 IT = "Definisci un colore personalizzato da usare per gli elementi della UI"
 DE = "Definition einer benutzerdefinierten Farbe für UI-Elemente mit Schiebreglern"
 }
      "BUTTONS":{
+EN = "BUTTONS"
 IT = "PULSANTI"
 ES = "BOTONES"
 DE = "TASTEN"
 }
      "Define custom control buttons for different features of Arcadeflow":{
+EN = "Define custom control buttons for different features of Arcadeflow"
 IT = "Definisci i pulsanti da usare per diverse funzioni di Arcadeflow"
 ES = "Define el botón que se usará para diversas funciones de Arcadeflow"
 DE = "Definiere benutzerdefinierte Tasten für verschiedene Funktionen von Arcadeflow"
 }
      "Context menu button":{
+EN = "Context menu button"
 IT = "Tasto del menu contestuale"
 ES = "Tecla del menú contextual"
 BR = "Botão do menu de contexto"
@@ -330,6 +379,7 @@ FR = "Bouton pour menu contextuel"
 DE = "Kontextmenü-Taste"
 }
      "Chose the button to open the game context menu":{
+EN = "Chose the button to open the game context menu"
 IT = "Seleziona il tasto da usare per richiamare il menu contestuale"
 ES = "Elige una tecla para abrir el menú contextual"
 BR = "Define o botão utilizado para abrir o menu de contexto do jogo"
@@ -337,6 +387,7 @@ FR = "Précisez le bouton pour ouvrir le menu contetuel du jeu"
 DE = "Taste zum Öffnen des Kontextmenüs des Spiels auswählen"
 }
      "Utility menu button":{
+EN = "Utility menu button"
 IT = "Tasto del menu principale"
 ES = "Tecla del menú principal"
 BR = "Botão do menu principal"
@@ -344,6 +395,7 @@ FR = "Bouton pour menu principal"
 DE = "Taste Menü Dienstprogramme"
 }
      "Chose the button to open the utility menu":{
+EN = "Chose the button to open the utility menu"
 IT = "Seleziona il tasto da usare per richiamare il menu principale (utility menu)"
 ES = "Elige una tecla para abrir el menú principal (Utility Menu)"
 BR = "Define o botão utilizado para abrir o menu principal (utility menu)"
@@ -351,16 +403,19 @@ FR = "Précisez le bouton pour ouvrir le menu utilitaire"
 DE = "Taste zum Öffnen des Dienstprogramme-Menü auswählen"
 }
      "History page button":{
+EN = "History page button"
 IT = "Tasto della pagina history"
 ES = "Tecla para acceder a la pagina del Historial"
 DE = "Taste Historie"
 }
      "Chose the button to open the history or overview page":{
+EN = "Chose the button to open the history or overview page"
 IT = "Seleziona il tasto da usare per aprire la pagina della history (overview)"
 ES = "Selecciona la tecla para acceder a la página del Historial"
 DE = "Taste zum Öffnen der Historie oder Überblickseite auswählen"
 }
      "Thumbnail mode button":{
+EN = "Thumbnail mode button"
 IT = "Tasto modalità miniatura"
 ES = "Tecla para modo miniatura"
 BR = "Botão para alternar entre os modos miniatura"
@@ -368,6 +423,7 @@ FR = "Bouton pour changé au mode captures miniatures"
 DE = "Taste Miniaturbild-Modus"
 }
      "Chose the button to use to switch from snapshot mode to box art mode":{
+EN = "Chose the button to use to switch from snapshot mode to box art mode"
 IT = "Seleziona il tasto da usare per cambiare le miniature da modalità schermata a modalità box art"
 ES = "Elige una tecla para cambiar entre el modo miniatura y el modo Box Art"
 BR = "Define o botão utilizado para alternar entre o modo de Captura da tela (snapshot) para o modo Arte da Caixa"
@@ -375,62 +431,75 @@ FR = "Précisez le bouton pour changé du mode capture miniatures au mode image 
 DE = "Taste zum Wechsel zwischen Schnappschuss und Box-Art Modus auswählen"
 }
      "Search menu button":{
+EN = "Search menu button"
 IT = "Tasto menu ricerca"
 ES = "Tecla para el menú de busqueda"
 DE = "Taste Suche"
 }
      "Chose the button to use to directly open the search menu instead of using the utility menu":{
+EN = "Chose the button to use to directly open the search menu instead of using the utility menu"
 IT = "Seleziona il tasto da usare per richiamare direttamente il menu ricerca"
 ES = "Selecciona la tecla para acceder directamente al menú de busqueda"
 DE = "Taste zum direkten öffnen des Suchmenü, statt über das Dienstprogramme-Menü"
 }
      "Category menu button":{
+EN = "Category menu button"
 IT = "Tasto per menu categorie"
 ES = "Tecla para el menú categorías"
 DE = "Taste Kategorien-Menü"
 }
      "Chose the button to use to open the list of game categories":{
+EN = "Chose the button to use to open the list of game categories"
 IT = "Seleziona il tasto da usare per richiamare il menu delle categorie"
 ES = "Selecciona la tecla para mostrar el listado de categorías de juegos"
 DE = "Taste zum Öffnen der Liste der Spielkategorien auswählen"
 }
      "Multifilter menu button":{
+EN = "Multifilter menu button"
 IT = "Tasto del menu multifiltro"
 ES = "Tecla para el menú multifiltro"
 DE = "Taste Multifilter Menü"
 }
      "Chose the button to use to open the menu for dynamic filtering of romlist":{
+EN = "Chose the button to use to open the menu for dynamic filtering of romlist"
 IT = "Seleziona il tasto da usare per richiamare il menu multifiltro, per filtrare dinamicamente la lista dei giochi"
 ES = "Selecciona la tecla para abrir el menú multifiltro, para filtrar dinámicamente la lista de juegos"
 DE = "Taste zum Öffnen des Menü für dynamisches Filtern der Romliste auswählen"
 }
      "Show favorites button":{
+EN = "Show favorites button"
 IT = "Tasto modalità preferiti"
 DE = "Zeige Favoriten Taste"
 }
      "Chose the button to use to toggle favorite filtering":{
+EN = "Chose the button to use to toggle favorite filtering"
 IT = "Seleziona il tasto da usare per mostrare solo i giochi preferiti"
 DE = "Wähle die Taste zum umschalten des Favoriten Filter"
 }
      "Volume button":{
+EN = "Volume button"
 IT = "Tasto volume"
 DE = "Lautstärke Taste"
 }
      "Chose the button to use to change system volume":{
+EN = "Chose the button to use to change system volume"
 IT = "Seleziona il tasto da usare per regolare il volume di sistema"
 DE = "Wähle die Taste zum ändern der System Lautstärke"
 }
      "Delete ROM button":{
+EN = "Delete ROM button"
 IT = "Tasto elimina ROM"
 ES = "Eliminar una ROM"
 DE = "Taste ROM löschen"
 }
      "Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder":{
+EN = "Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder"
 IT = "Scegli il tasto da usare per cancellare una rom dal disco. Le rom cancellate vengono spostate nella cartella -deleted-"
 ES = "Elige el botón para eliminar una rom del disco. La rom eliminada se moverá a la carpeta -eliminado-"
 DE = "Taste um das aktuelle ROM von der HDD zu löschen auswählen. Gelöschte ROMs werden in einen -gelöscht- Ordner verschoben"
 }
      "UTILITY MENU":{
+EN = "UTILITY MENU"
 IT = "UTILITY MENU"
 ES = "MENÚ DE UTILIDADES"
 BR = "UTILITY MENU"
@@ -438,332 +507,405 @@ FR = "MENU UTILITAIRE"
 DE = "UTILITY MENÜ"
 }
      "Customize the utility menu entries that you want to see in the menu":{
+EN = "Customize the utility menu entries that you want to see in the menu"
 IT = "Personalizza il menu utility scegliendo le voci e l'ordine"
 ES = "Personalizar las categorias que quieres ver del menú de utilidades"
 DE = "Einträge des Utility Menü anpassen"
 }
      "Customize Utility Menu":{
+EN = "Customize Utility Menu"
 IT = "Personalizza il menu utility"
 ES = "Personaliza el menú de utilidades"
 DE = "Utility Menü anpassen"
 }
      "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item":{
+EN = "Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item"
 IT = "Riordina e personalizza il menu Utility: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare"
 ES = "Ordena y selecciona la categorias del menú de utilidades: Derecha/Izquierda para mover los items arriba o abajo, Select para activas/desactivar el item"
 DE = "Sortieren und Auswählen von Utility Menü Einträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren"
 }
      "Reset Utility Menu":{
+EN = "Reset Utility Menu"
 IT = "Ripristina il menu Utility"
 ES = "Resetear el menú de utilidades"
 DE = "Utility Menü zurücksetzen"
 }
      "Reset sorting and selection of Utility Menu entries":{
+EN = "Reset sorting and selection of Utility Menu entries"
 IT = "Ripristina l'ordine e le selezioni del menu Utility"
 ES = "Resetea el orden y las opciones del menú de utilidades"
 DE = "Sortierung und Auswahl von Einträgen des Utility Menü zurücksetzen"
 }
      "SCRAPE AND METADATA":{
+EN = "SCRAPE AND METADATA"
 IT = "SCRAPE E METADATI"
 DE = "SCRAPING UND METADATEN"
 }
      "You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format":{
+EN = "You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format"
 IT = "Puoi usare Arcadeflow per fare lo scraping dei metadati e dei media dei giochi, o importare una lista XML nel formato EmulationStation"
 ES = "Puedes usar Arcadeflow para hacer Scrape y obtener los metadatos y la media de tus juegos, o importar una lista en formato XML de EmulationStation"
 DE = "Der interne Arcadeflow Scraper kann verwendet werden um Metadaten und Medien für Spiele zu holen, oder XML Daten im EmulationStation Format importieren"
 }
      "SCRAPING":{
+EN = "SCRAPING"
 IT = "SCRAPING"
 ES = "SCRAPING"
 DE = "SCRAPING"
 }
      "Scrape current romlist":{
+EN = "Scrape current romlist"
 IT = "Scrape dell'attuale romlist"
 ES = "Scrape el actual romlist"
 DE = "Scrape aktuelle Romliste"
 }
      "Arcadeflow will scrape your current romlist metadata and media, based on your options":{
+EN = "Arcadeflow will scrape your current romlist metadata and media, based on your options"
 IT = "Arcadeflow effettuerà lo scraping per l'attuale romlist basandosi sulle preferenze"
 ES = "Arcadeflow hará scrape de la actual romlist basándose en tus preferencias"
 DE = "Arcadeflow scraped die Metadaten und Medien der aktuellen Romliste, basierend auf den gewählten Optionen"
 }
      "Scrape selected game":{
+EN = "Scrape selected game"
 IT = "Scrape del gioco attuale"
 DE = "Scrape aktuelles Spiel"
 }
      "Arcadeflow will scrape only metadata and media for current game":{
+EN = "Arcadeflow will scrape only metadata and media for current game"
 IT = "Arcadeflow farà lo scraping dei media e metadati del solo gioco attuale"
 DE = "Arcadeflow scraped nur die Metadaten und Medien für das aktuelle Spiel"
 }
      "Enable CRC check":{
+EN = "Enable CRC check"
 IT = "Abilita controllo CRC"
 DE = "Aktiviere CRC Prüfung"
 }
      "You can enable rom CRC matching (slower) or just name matching (faster)":{
+EN = "You can enable rom CRC matching (slower) or just name matching (faster)"
 IT = "Abilita il calcolo del CRC per trovare le rom (più lento del semplice controllo nomi)"
 DE = "Du kannst CRC Matching für ROMS aktivieren (langsamer) oder nur Namens Matching (schneller)"
 }
      "Rom Scrape Options":{
+EN = "Rom Scrape Options"
 IT = "Opzioni scrape rom"
 ES = "Configura scrape roms"
 DE = "ROM Scrape Einstellungen"
 }
      "You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match":{
+EN = "You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match"
 IT = "Puoi scegliere se vuoi fare lo scrape di tutte le rom, solo quelle che non hanno dati o che hanno un match non perfetto"
 ES = "Puedes decidir si quieres hacer scrape a todas tus roms, solo las roms sin datos o las que no ha encontrado correctamente"
 DE = "Auswählen ob alle ROMs, nur ROMs ohne Scrapedaten oder ROMs mit Daten die nicht perfekt übereinstimmen gescraped werden sollen"
 }
      "Scrape error roms":{
+EN = "Scrape error roms"
 IT = "Scrape di rom con errore"
 DE = "Scrape ROMs mit Fehler"
 }
      "When scraping you can include or exclude roms that gave an error in the previous scraping":{
+EN = "When scraping you can include or exclude roms that gave an error in the previous scraping"
 IT = "Durante lo scraping puoi includere o escludere le rom che hanno generato errori precedentemente"
 DE = "Beim scrapen kannt du ROMSs ein- oder ausschliessen die beim letzten scrapen einen Fehler hatten"
 }
      "All roms":{
+EN = "All roms"
 IT = "Tutte le rom"
 ES = "Todas las roms"
 DE = "Alle ROMs"
 }
      "Skip CRC matched":{
+EN = "Skip CRC matched"
 IT = "Salta rom con CRC"
 ES = "Ignorar roms con CRC"
 DE = "Überspringe ROMs mit CRC"
 }
      "Skip name matched":{
+EN = "Skip name matched"
 IT = "Salta rom con nome"
 ES = "Ignorar roms con nombre"
 DE = "Überspringe ROMs mit Namen"
 }
      "Error only":{
+EN = "Error only"
 IT = "Solo rom errate"
 ES = "Solamente roms erroneas"
 DE = "Nur ROMs mit Fehler"
 }
      "Media Scrape Options":{
+EN = "Media Scrape Options"
 IT = "Opzioni scrape dei media"
 ES = "Configura Scrape Media"
 DE = "Einstellungen Media Scrape"
 }
      "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping":{
+EN = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping"
 IT = "Puoi fare lo scrape di tutti i media, sovrascrivendo quelli esistenti, o dei media mancanti. Puoi anche disabilitare lo scraping dei media"
 ES = "Puedes decidir si quieres hacer scrape de toda la media, sobreescribiendo la existente, o solo la media que falta. Tambien puedes desactiva el scrape de media"
 DE = "Auwählen ob alle existierenden Medien überschrieben werden sollen oder nur fehlende Medien gescraped werden sollen. Medien scrapen kann auch deaktiviert werden"
 }
      "Overwrite media":{
+EN = "Overwrite media"
 IT = "Sovrascrivi media"
 ES = "Sobreescribir media"
 DE = "Überschreibe Medien"
 }
      "Only missing":{
+EN = "Only missing"
 IT = "Solo mancanti"
 ES = "Solo lo que falta"
 DE = "Nur fehlende"
 }
      "No media scrape":{
+EN = "No media scrape"
 IT = "Non fare scrape dei media"
 ES = "No scrape media"
 DE = "Keine Medien scrapen"
 }
      "Region Priority":{
+EN = "Region Priority"
 IT = "Priorità regioni"
 ES = "Región prioritaria"
 DE = "Regionen Priorität"
 }
      "Sort the regions used to scrape multi-region media and metadata in order of preference":{
+EN = "Sort the regions used to scrape multi-region media and metadata in order of preference"
 IT = "Ordina e filtra la lista delle regioni per ottenere dati regionali in ordine di preferenza"
 ES = "Ordena y filtra la lista por región para obtener los datos de la región preferrida"
 DE = "Sortiere die Regionen für die Multi-Region Medien und Metadaten in der Reihenfolge der Präferenz"
 }
      "Reset Region Table":{
+EN = "Reset Region Table"
 IT = "Ripristina lista regioni"
 ES = "Restablecer lista de región"
 DE = "Regionsliste zurücksetzen"
 }
      "Reset sorting and selection of Region entries":{
+EN = "Reset sorting and selection of Region entries"
 IT = "Riporta la lista delle regioni alle condizioni iniziali"
 ES = "Restablece la lista de región a la opción inicial"
 DE = "Sortierung und Auswahl der Region-Einträge zurücksetzen"
 }
      "SCREENSCRAPER":{
+EN = "SCREENSCRAPER"
 IT = "SCREENSCRAPER"
 ES = "SCREENSCRAPER"
 DE = "SCREENSCRAPER"
 }
      "SS Username":{
+EN = "SS Username"
 IT = "Username SS"
 ES = "Usuario SS"
 DE = "SS Username"
 }
      "Enter your screenscraper.fr username":{
+EN = "Enter your screenscraper.fr username"
 IT = "Immetti il tuo username screenscraper.fr"
 ES = "Indica tu nombre de usuario en screenscraper.fr"
 DE = "Screenscraper.fr Usernamen angeben"
 }
      "SS Password":{
+EN = "SS Password"
 IT = "Password SS"
 ES = "Password SS"
 DE = "SS Passwort"
 }
      "Enter your screenscraper.fr password":{
+EN = "Enter your screenscraper.fr password"
 IT = "Immetti la tua password screenscraper.fr"
 ES = "Indica tu contraseña en screenscraper.fr"
 DE = "Screenscraper.fr Passwort angeben"
 }
      "ES XML IMPORT":{
+EN = "ES XML IMPORT"
 IT = "IMPORTA XML DA ES"
 ES = "IMPORTAR XML DE ES"
 DE = "ES XML IMPORT"
 }
      "Import XML data for all romlists":{
+EN = "Import XML data for all romlists"
 IT = "Importa i dati XML per tutte le romlist"
 ES = "Importa los datos XML para todas las romlist"
 DE = "Importiere XML Daten für alle Romlisten"
 }
      "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data":{
+EN = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data"
 IT = "Specifica il path dell'xml nel campo import_extras della configurazione dell'emulatore per generare la romlist"
 ES = "Indica la dirección del archivo XML en el apartado import_extras de la configuración del emulador para generar la romlist"
 DE = "Wenn ein RetroPie XML Pfad im Emulatorfeld import_extras angegeben ist, wird die Romliste anhand dieser Daten erstellt"
 }
      "Import XML data for current romlists":{
+EN = "Import XML data for current romlists"
 IT = "Importa i dati XML per la romlist corrente"
 ES = "Importa los datos XML para la romlist actual"
 DE = "Importiere XML Daten für aktuelle Romlistgen"
 }
      "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data":{
+EN = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data"
 IT = "Specifica il path dell'xml nel campo import_extras della configurazione dell'emulatore per generare la romlist"
 ES = "Indica la dirección del archivo XML en el apartado import_extras de la configuración del emulador para generar la romlist"
 DE = "Wenn ein RetroPie XML Pfad im Emulatorfeld import_extras angegeben ist, wird die Romliste anhand dieser Daten erstellt"
 }
      "Prefer genreid categories":{
+EN = "Prefer genreid categories"
 IT = "Preferisci le categorie genreid"
 ES = "Preferencia del tipo de genreID"
 DE = "Genreid Kategorien bevorzugen"
 }
      "If GenreID is specified in your games list, use that instead of usual categories":{
+EN = "If GenreID is specified in your games list, use that instead of usual categories"
 IT = "Se GenreID è specificato nella lista, verrà usato al posto delle categorie"
 ES = "Si GenreID está indicado en tu lista, usará esa en lugar de las categorias habituales"
 DE = "Wenn eine GenreID in der Spieleliste angegeben ist, wird diese statt der üblichen Kategorien verwendet"
 }
      "Import only available roms":{
+EN = "Import only available roms"
 IT = "Importa solo rom disponibili"
 ES = "Importar solo las roms disponibles"
 DE = "Importiere nur verfügbare ROMs"
 }
      "Import entrief from the games list only if the rom file is actually available":{
+EN = "Import entrief from the games list only if the rom file is actually available"
 IT = "Importa i dati dalla lista xml solo se la rom è effettivamente disponibile"
 ES = "Importa los datos de la lista xml solo si la rom está realmente disponible"
 DE = "Importiere Daten aus der XML Liste nur wenn das ROM tatsächlich vorhanden ist"
 }
      "ROMLIST MANAGEMENT":{
+EN = "ROMLIST MANAGEMENT"
 IT = "GESTIONE ROMLIST"
 DE = "ROMLISTEN VERWALTUNG"
 }
      "Manage romlists and collections":{
+EN = "Manage romlists and collections"
 IT = "Gestisci le romlist e le collezioni"
 DE = "Verwalten von ROMLISTEN und Sammlungen"
 }
      "ROMLISTS":{
+EN = "ROMLISTS"
 IT = "ROMLIST"
 DE = "ROMLISTEN"
 }
      "Refresh current romlist":{
+EN = "Refresh current romlist"
 IT = "Aggiorna questa romlist"
 DE = "Aktualisere aktuelle ROMLISTE"
 }
      "Refresh the romlist with added/removed roms, won't reset current data":{
+EN = "Refresh the romlist with added/removed roms, won't reset current data"
 IT = "Aggiorna la romlist con le rom aggiunte/rimosse, non resetta i dati"
 DE = "Aktualisiere die ROMLISTE mit hinzugefügten/gelöschten roms, resettet nicht die aktuellen Daten"
 }
      "Reset current romlist":{
+EN = "Reset current romlist"
 IT = "Reset di questa romlist"
 DE = "Resete aktuelle ROMLISTE"
 }
      "Rescan the romlist erasing and regenerating all romlist data":{
+EN = "Rescan the romlist erasing and regenerating all romlist data"
 IT = "Ricrea la romlist cancellando e rigenerando tutti i dati"
 DE = "Erneutes Scannen der ROMLIST, wobei alle Daten der ROMLIST gelöscht und neu generiert werden"
 }
      "Reset last played":{
+EN = "Reset last played"
 IT = "Cancella ultimi giocati"
 DE = "Resete zuletzt gespielt"
 }
      "Remove all last played data from the current romlist":{
+EN = "Remove all last played data from the current romlist"
 IT = "Rimuovi tutti i dati dell'ultimo lancio da questa romlist"
 DE = "Entferne alle zuletzt gespielt Daten aus der aktuellen ROMLIST"
 }
      "MASTER ROMLIST":{
+EN = "MASTER ROMLIST"
 IT = "MASTER ROMLIST"
 DE = "MASTER ROMLIST"
 }
      "Enable Master Romlist":{
+EN = "Enable Master Romlist"
 IT = "Abilita la Master Romlist"
 DE = "Aktiviere Master ROMLIST"
 }
      "Turn this on and set master romlist path so AF can manage it":{
+EN = "Turn this on and set master romlist path so AF can manage it"
 IT = "Attiva e imposta il path della Master Romlist così AF la può gestire"
 DE = "Aktivieren und Master ROMLIST Pfad angeben, damit AF sie verwalten kann"
 }
      "Master Romlist Path":{
+EN = "Master Romlist Path"
 IT = "Percorso Master Romlist"
 DE = "Master ROMLIST Pfad"
 }
      "If you are using a master romlist, locate it here to enable AF master romlist optimisation":{
+EN = "If you are using a master romlist, locate it here to enable AF master romlist optimisation"
 IT = "Se usi una master romlist, indica il path in cui è salvata per abilitare l'ottimizzazione"
 DE = "Wenn du eine Master ROMLIST verwendest, gib sie hier an und aktiviere AF Master ROMLIST Optimierung"
 }
      "ROMLIST EXPORT":{
+EN = "ROMLIST EXPORT"
 IT = "ESPORTA ROMLIST"
 DE = "ROMLIST EXPORT"
 }
      "Export to gamelist xml":{
+EN = "Export to gamelist xml"
 IT = "Esporta a gamelist xml"
 DE = "Exportiere in gamelist xml"
 }
      "You can export your romlist in the XML format used by EmulationStation":{
+EN = "You can export your romlist in the XML format used by EmulationStation"
 IT = "Puoi esportare la romlist nel formato XML usato da EmulationStation"
 DE = "Du kannst deine ROMLIST im EmulationStation XML Format exportieren"
 }
      "COLLECTIONS":{
+EN = "COLLECTIONS"
 IT = "COLLEZIONI"
 DE = "SAMMLUNGEN"
 }
      "Enable all games collections":{
+EN = "Enable all games collections"
 IT = "Abilita le collezioni all games"
 DE = "Aktiviere alle Spiel Sammlungen"
 }
      "If enabled, Arcadeflow will create All Games compilations":{
+EN = "If enabled, Arcadeflow will create All Games compilations"
 IT = "Se abilitato, Arcadeflow creerà delle collezioni All Games"
 DE = "Wenn aktiviert, erstellt Arcadeflow alle Spiele Sammlungen"
 }
      "Update all games collections":{
+EN = "Update all games collections"
 IT = "Aggiorna le collezioni all games"
 DE = "Aktualisiere alle Spiel Sammlungen"
 }
      "Force the update of all games collections, use when you remove displays":{
+EN = "Force the update of all games collections, use when you remove displays"
 IT = "Forza l'aggiornamento delle collezioni all games, da usare quando si rimuove un display"
 DE = "Erzwinge die Aktualisierung aller Spiele Sammlungen, verwenden wenn Displays entfernt werden"
 }
      "DANGER ZONE":{
+EN = "DANGER ZONE"
 IT = "ZONA PERICOLOSA"
 DE = "GEFAHRENZONE"
 }
      "Enable game hiding":{
+EN = "Enable game hiding"
 IT = "Abilita nascondi giochi"
 DE = "Aktiviere Spiel verstecken"
 }
      "Enable or disable the options to hide games using tags menu":{
+EN = "Enable or disable the options to hide games using tags menu"
 IT = "Abilita o disabilità le opzioni per nascondere i giochi dal menu tag"
 DE = "Aktivieren oder deaktiviere die Option Spiele mittels des TAGS Menü zu verstecken"
 }
      "Enable rom delete":{
+EN = "Enable rom delete"
 IT = "Abilita cancellazione rom"
 DE = "ROM löschen erlauben"
 }
      "Enable or disable the options to delete a rom":{
+EN = "Enable or disable the options to delete a rom"
 IT = "Abilita o disabilita le opzioni per cancellare i file delle rom"
 DE = "Aktiviere oder deaktiviere die Möglichkeit ein ROM zu löschen"
 }
      "DISPLAYS MENU MODE":{
+EN = "DISPLAYS MENU MODE"
 IT = "Modalità Displays Menu"
 ES = "Modo Display Menú"
 BR = "APARÊNCIA DO MENU DISPLAYS"
@@ -771,12 +913,14 @@ FR = "MODE DISPLAYS MENU"
 DE = "Display Menü Mpdus"
 }
      "Configure how Arcadeflow will look when used as Displays Menu layout":{
+EN = "Configure how Arcadeflow will look when used as Displays Menu layout"
 IT = "Configura l'aspetto di Arcadeflow quando è usato come layout per Displays Menu"
 ES = "Configura el aspecto de Arcadeflow cuando se utiliza como Display Menú"
 FR = "Configurez le look d'Arcadeflow quand il est utilisé comme layout pour les Displays Menu"
 DE = "Konfiguriere wie Arcadeflow aussehen soll, wenn es als Display-Menü-Layout verwendet wird"
 }
      "Displays Rows in horizontal":{
+EN = "Displays Rows in horizontal"
 IT = "Righe di Display in orizzontale"
 ES = "Filas del Display en horizontal"
 BR = "Linhas horizontais no Display"
@@ -784,6 +928,7 @@ FR = "Lignes horizontales en Displays"
 DE = "Horizontale Anzeigezeilen"
 }
      "Number of rows to use in 'horizontal' Displays Menu mode":{
+EN = "Number of rows to use in 'horizontal' Displays Menu mode"
 IT = "Numero di righe di miniature da mostrare in Displays Menu in modalità orizzontale"
 ES = "Número de filas de miniaturas que se mostrarán en el modo horizontal del Display Menu"
 BR = "Número de linhas de miniaturas exibidas no Menu Display na modalidade horizontal"
@@ -791,6 +936,7 @@ FR = "Nombles de lignes de captures miniatures montree en mode horizontales dans
 DE = "Anzahl der zu verwendenden Zeilen im 'horizontalen' Display-Menü Modus"
 }
      "Displays Rows in vertical":{
+EN = "Displays Rows in vertical"
 IT = "Righe di Display in verticale"
 ES = "Filas del Display en vertical"
 BR = "Linhas verticais no Display"
@@ -798,6 +944,7 @@ FR = "Lignes verticales en Displays"
 DE = "Vertikale Anzeigezeilen"
 }
      "Number of rows to use in 'vertical' Displays Menu mode":{
+EN = "Number of rows to use in 'vertical' Displays Menu mode"
 IT = "Numero di righe di miniature da mostrare in Displays Menu in modalità verticale"
 ES = "Número de filas de miniaturas que se mostrarán en el modo vertical del Display Menu"
 BR = "Número de linhas de miniaturas exibidas no Menu Display na modalidade vertical"
@@ -805,6 +952,7 @@ FR = "Nombles de lignes de captures miniatures montree en mode verticales dans l
 DE = "Anzahl der zu verwendenden Zeilen im 'vertikalen' Display-Menü Modus"
 }
      "Generate missing name art":{
+EN = "Generate missing name art"
 IT = "Genera la grafica per i nomi"
 ES = "Generar imagen para el nombre del Display"
 BR = "Gerar arte para os nomes do Display"
@@ -812,6 +960,7 @@ FR = "Generez un graphique pour les noms manquants des Displays"
 DE = "Generiere Bild für Displayname"
 }
      "If no display title is present, the layout can generate it":{
+EN = "If no display title is present, the layout can generate it"
 IT = "Se non c'è la grafica per i nomi dei Display, il layout può crearla automaticamente"
 ES = "Si no hay imagen para el nombre del Display, el layout puede generarla automáticamente"
 BR = "Se arte para o nome do Display não estiver disponível, o layout pode gerar uma automaticamente"
@@ -819,16 +968,19 @@ FR = "S'il n'y a pas de titre pour le Display, il vas etre generé."
 DE = "Wenn keine Grafik für die Display-Namen vorhanden ist, kann das Layout diese automatisch erstellen."
 }
      "Enable video thumbnails":{
+EN = "Enable video thumbnails"
 IT = "Abilita miniature video"
 ES = "Activar video en miniatura"
 DE = "Aktiviere Video-Miniaturen"
 }
      "Enable video thumbnails for Displays Menu mode if it's enabled in normal layout pages":{
+EN = "Enable video thumbnails for Displays Menu mode if it's enabled in normal layout pages"
 IT = "Abilita i video nelle miniature anche nella modalità Displays Menu se attivate nella modalità normale"
 ES = "Activa el video en miniatura para el Menu Display si ya está activado en las paginas del layout"
 DE = "Aktiviere Video Miniaturen für den Display-Menü Modus, wenn dies im normalen Modus aktiviert ist"
 }
      "DISPLAYS MENU PAGE":{
+EN = "DISPLAYS MENU PAGE"
 IT = "PAGINA DISPLAYS MENU"
 ES = "PÁGINA DISPLAYS MENÚ"
 BR = "TELA DO MENU DISPLAYS"
@@ -836,37 +988,44 @@ FR = "PAGE DISPLAYS MENU"
 DE = "DISPLAY-MENÜ SEITE"
 }
      "Arcadeflow has its own Displays Menu page that can be configured here":{
+EN = "Arcadeflow has its own Displays Menu page that can be configured here"
 IT = "Arcadeflow ha la sua pagina per la lista dei Display, qui le opzioni"
 ES = "Arcadeflow tiene su propio menú Display y puedes configurarlo aquí"
 FR = "Arcadeflow a sa propre page Display Menu qui peut être configuré ici."
 DE = "Arcadeflow hat seine eigene Displays Menü Seite, die hier konfiguriert werden kann"
 }
      "Enable Arcadeflow Displays Menu page":{
+EN = "Enable Arcadeflow Displays Menu page"
 IT = "Abilita la pagina per la lista display"
 ES = "Habilitar la página del display menú"
 DE = "Aktiviere Arcadeflow Displays Menü Seite"
 }
      "If you disable Arcadeflow menu page you can use other layouts as displays menu":{
+EN = "If you disable Arcadeflow menu page you can use other layouts as displays menu"
 IT = "Disabilita la pagina display di Arcadeflow per usare un altro layout come menu display"
 ES = "Deshabilita la pagina del display menú de Arcadeflow para usar otro layout como display menú"
 DE = "Wenn die Arcadeflow Menü Seite deaktiviert wird, kann ein anderes Layout als Display-Menü verwendet werden"
 }
      "Enable Fast Displays Change":{
+EN = "Enable Fast Displays Change"
 IT = "Abilità cambio rapido dei display"
 ES = "Habilita el cambio rápido de display"
 DE = "Aktiviere schnellen Wechsel des Displays"
 }
      "Disable fast display change if you want to use other layouts for different displays":{
+EN = "Disable fast display change if you want to use other layouts for different displays"
 IT = "Disabilita il cambio rapido se non usi Arcadeflow per tutti i display"
 ES = "Desabilita el cambio rápido si no usas Arcadeflow para todos los display"
 DE = "Deaktiviere schnellen Display Wechsel wenn ein anderes Layout für andere Displays verwendet werden soll"
 }
      "Look and Feel":{
+EN = "Look and Feel"
 IT = "Aspetto"
 ES = "Aspecto"
 DE = "Look and Feel"
 }
      "Generate display logo":{
+EN = "Generate display logo"
 IT = "Genera i loghi per i Display"
 ES = "Generar imagen y logotipo para el nombre del Display"
 BR = "Gerar a arte para o nome e logotipo dos Displays"
@@ -874,6 +1033,7 @@ FR = "Generez des graphiques pour les noms et les logos des Displays"
 DE = "Generiere Display Logo"
 }
      "Generate displays name related artwork for displays list":{
+EN = "Generate displays name related artwork for displays list"
 IT = "Genera automaticamente la grafica relativa al nome del Display"
 ES = "Genera automáticamente la imagen asociado al nombre del Display"
 BR = "Gera automaticamente a a arte relacionada ao nome do Display"
@@ -881,51 +1041,61 @@ FR = "Generez automatiquement les graphiques du nom du Display"
 DE = "Generiere Grafiken die mit dem Namen des Displays verbunden sind"
 }
      "Sort displays menu":{
+EN = "Sort displays menu"
 IT = "Ordina il menu displays"
 ES = "Ordenar el menu Display"
 DE = "Sortiere Displays Menü"
 }
      "Show displays in the menu in your favourite order":{
+EN = "Show displays in the menu in your favourite order"
 IT = "Mostra i display in un ordine a tua scelta"
 ES = "Muestra el display en el orden que le indiques"
 DE = "Zeige Displays im Menü in der gewählten Reihenfolge"
 }
      "No sort":{
+EN = "No sort"
 IT = "Nessun ordinamento"
 ES = "Sin ordenar"
 DE = "Keine Sortierung"
 }
      "By display name":{
+EN = "By display name"
 IT = "Per nome del display"
 ES = "Por nombre del display"
 DE = "Nach Display Name"
 }
      "By system year":{
+EN = "By system year"
 IT = "Per anno del sistema"
 ES = "Por año del sistema"
 DE = "Nach Systemjahr"
 }
      "By system brand then name":{
+EN = "By system brand then name"
 IT = "Per marca e nome sistema"
 ES = "Por marca y nombre del sistema"
 DE = "Nach Systemmarke, dann Name"
 }
      "By system brand then year":{
+EN = "By system brand then year"
 IT = "Per marca e anno sistema"
 ES = "Por marca y año del sistema"
 DE = "Nach Systemmarke, dann Jahr"
 }
      "Show group separators":{
+EN = "Show group separators"
 IT = "Mostra i separatori"
 ES = "Mostrar separados por grupo"
 DE = "Zeige Gruppen Trennzeichen"
 }
      "When sorting by brand show separators in the menu for each brand":{
+EN = "When sorting by brand show separators in the menu for each brand"
 IT = "Quando è ordinato per marca, mostra i separatori per ogni marca"
 ES = "Cuando ordenas por marca, muestra una separación entre marca"
 DE = "Zeigt bei Sortierung nach Marke die Trennzeichen für jede Marke an"
 }
      "Displays menu layout":{
+EN = "Displays menu layout"
 IT = "Layout del menu Displays"
 ES = "Diseño del menú Displays"
 BR = "Layout do menu Displays"
@@ -933,6 +1103,7 @@ FR = "Agencement du Displays Menu"
 DE = "Displays Menü Layout"
 }
      "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder":{
+EN = "Chose the style to use when entering displays menu, a simple list or a list plus system artwork taken from the menu-art folder"
 IT = "Seleziona lo stile da usare quando si attiva il menu Displays: una semplice lista o una lista con grafica dalla cartella menu-art"
 ES = "Elige el diseño del menú Display: lista o lista con imagen"
 BR = "Define o estilo utilizado quando se ativa o menu Displays, uma lista simples ou uma lista + arte"
@@ -940,101 +1111,121 @@ FR = "Précisez le style à utilisé dans le Displays Menu: Une liste simple, ou
 DE = "Style für das Display Menu auswählen, einfache Liste oder Liste plus System Artwork aus dem menu-artwork Ordner"
 }
      "Artwork source":{
+EN = "Artwork source"
 IT = "Fonte delle immagini"
 ES = "Origen del artwork"
 DE = "Artwork quelle"
 }
      "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder":{
+EN = "Chose where the displays menu artwork comes from: Arcadeflow own system library or Attract Mode menu-art folder"
 IT = "Scegli la fonte delle immagini dei sistemi: la libreria di Arcadeflow o quelle nella cartella menu-art"
 ES = "Elige si los artworks del display menu vienen de: la libreria de Arcadeflow o el directorio menu-art de Attract Mode"
 DE = "Auwählen welche Quelle für Menü Artwork genutzt werden soll: Arcadeflows eigene Bibliothek oder Attract Mode menu-art Ordner"
 }
      "Arcadeflow only":{
+EN = "Arcadeflow only"
 IT = "Solo Arcadeflow"
 ES = "Solo de Arcadeflow"
 DE = "Nur Arcadeflow"
 }
      "menu-art only":{
+EN = "menu-art only"
 IT = "Solo menu-art"
 ES = "Solo del menu-art"
 DE = "Nur menu-art"
 }
      "Arcadeflow first":{
+EN = "Arcadeflow first"
 IT = "Priorità ad Arcadeflow"
 ES = "Prioridad para Arcadeflow"
 DE = "Arcadeflow zuerst"
 }
      "menu-art first":{
+EN = "menu-art first"
 IT = "Priorità a menu-art"
 ES = "Prioridad para menu-art"
 DE = "menu-art zuerst"
 }
      "Enable category artwork":{
+EN = "Enable category artwork"
 IT = "Attiva immagini categoria"
 ES = "Activar categoria del artwork"
 DE = "Aktiviere Kategorien Artwork"
 }
      "You can separately enable/disable artwork for categories like console, computer, pinball etc.":{
+EN = "You can separately enable/disable artwork for categories like console, computer, pinball etc."
 IT = "Puoi attivare o disattivare le immagini per le categorie quali console, computer, pinball ecc."
 ES = "Puedes activar/desactivar el artwork por la categoria: consola, ordenador, pinball, etc."
 DE = "Artwork für Kategorie wie Konsole, Computer, Pinball kann separat aktiviert/deaktiviert werden"
 }
      "Categorized Displays Menu":{
+EN = "Categorized Displays Menu"
 IT = "Menu Display per categorie"
 ES = "Menú Display por categorias"
 DE = "Kategorisiertes Displays Menü"
 }
      "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections":{
+EN = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections"
 IT = "Raggruppa i Display nel menu per categoria: Arcade, Computer, Handheld, Console, Pinball e Altro."
 ES = "Agrupa el menú Display por categorías: Arcade, Ordenadores, Portatiles, Consolas y otras más."
 DE = "Displays Menü wird nach System Kategorien gruppiert: Arcade, Computer, Handheld, Konsolen, Pinballs und Anderen für Kollektionen"
 }
      "Add Exit Arcadeflow to menu":{
+EN = "Add Exit Arcadeflow to menu"
 IT = "Aggiunge Chiudi Arcadeflow al menu"
 ES = "Añadir al menú la opcion de salir de Arcadeflow"
 DE = "Füge 'Arcade verlassen' zum Menü hinzu"
 }
      "Add an entry to exit Arcadeflow from the displays menu page":{
+EN = "Add an entry to exit Arcadeflow from the displays menu page"
 IT = "Aggiunge una voce al menu per chiudere Arcadeflow"
 ES = "Añade al menú Display una opción para salir de Arcadeflow"
 DE = "Füge einen Menüpunkt zum Verlassen von Arcadeflow zum Displays Menü hinzu"
 }
      "Behavior":{
+EN = "Behavior"
 IT = "Comportamento"
 ES = "Comportamiento"
 DE = "Verhalten"
 }
      "Open the Displays Menu at startup":{
+EN = "Open the Displays Menu at startup"
 IT = "Apri il Menu Display all'avvio"
 ES = "Abrir el menú Display al iniciar"
 DE = "Öffne das Displays Menü beim Start"
 }
      "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode":{
+EN = "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode"
 IT = "Mostra la pagina del Menu Display all'apertura di Arcadeflow, anzichè utilizzare l'opzione di Attract Mode"
 ES = "Muestra el menú Display al iniciar Arcadeflow, esta opción funciona mejor que la misma opción del menú General de Attract Mode"
 DE = "Zeige Display Menü direkt nach dem Start von Arcadeflow, dies funktioniert besser als in den Allgemeinen Opotionen von Attract Mode"
 }
      "Exit AF when leaving Menu":{
+EN = "Exit AF when leaving Menu"
 IT = "Chiudi AF all'uscita dal Menu"
 ES = "Salir de ArcadeFlow al cerrar el menú"
 DE = "Verlasse AF beim verlassen des Menüs"
 }
      "The esc button from Displays Menu triggers the exit from Arcadeflow":{
+EN = "The esc button from Displays Menu triggers the exit from Arcadeflow"
 IT = "Abbandonare il menu Display chiude Arcadeflow"
 ES = "Pulsando ESC desde el menú Display, sales de Arcadeflow"
 DE = "Die ESC Taste im Display Menü triggert das verlassen von Arcadeflow"
 }
      "Enter Menu when leaving display":{
+EN = "Enter Menu when leaving display"
 IT = "Aprire il menu uscendo dal display"
 ES = "Entras al menú cuando sales de la pantalla"
 DE = "Öffne Menü wenn Display verlassen wird"
 }
      "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow":{
+EN = "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow"
 IT = "Premendo il tasto ESC da Arcadeflow si attiva il menu Display invece di uscire da Arcadeflow"
 ES = "Pulsando ESC desde Arcadeflow se activa el menú Display en lugar de salir de Arcadeflow"
 DE = "Die ESC Taste in Arcadeflow öffnet das Display Menü statt Arcadeflow zu verlassen"
 }
      "PERFORMANCE & FX":{
+EN = "PERFORMANCE & FX"
 IT = "PERFORMANCE ED EFFETTI"
 ES = "RENDIMIENTO Y EFECTOS VISUALES"
 BR = "PERFORMANCE E EFEITOS"
@@ -1042,27 +1233,32 @@ FR = "PERFORMANCE ET EFFETS"
 DE = "LEISTUNG & EFFEKTE"
 }
      "Effects":{
+EN = "Effects"
 IT = "Effetti"
 ES = "Efectos"
 DE = "Effekte"
 }
      "Turn on or off special effects that might impact on Arcadeflow performance":{
+EN = "Turn on or off special effects that might impact on Arcadeflow performance"
 IT = "Attiva o disattiva effetti speciali che possono influire sulle prestazioni di Arcadeflow"
 ES = "Activa o desactiva los efectos especiales que pueden afectar al rendimiento de Arcadeflow"
 FR = "Active ou désactive les effets speciaux qui pourrais impacté la performance de Arcadeflow"
 DE = "An- und Ausschalten von Spezialeffekten die die Leistung von Arcadeflow beeinflussen können"
 }
      "Adjust performance":{
+EN = "Adjust performance"
 IT = "Adatta prestazioni"
 ES = "Ajustar el rendimiento"
 DE = "Leistung anspassen"
 }
      "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll":{
+EN = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll"
 IT = "Adatta la velocità degli effetti alle performance del sistema. Disabilitarlo per maggiore fluidità"
 ES = "Permite adaptar la velocidad según el rendimiento del sistema. Está activo para un scroll rápido, desactivalo para un scroll suave pero más lento"
 DE = "Versucht sich an die Systemperformance anzupassen. Aktivieren für schnelleres scrollen, deaktivieren für weicheres aber langsameres scrollen"
 }
      "Low Spec mode":{
+EN = "Low Spec mode"
 IT = "Modalità a basse prestazioni"
 ES = "Modo Bajo Rendimiento"
 BR = "Modo de baixa capacidade"
@@ -1070,6 +1266,7 @@ FR = "Mode pour basse specifications"
 DE = "Modus für schwächere Systeme"
 }
      "Reduce most visual effects to boost speed on lower spec systems":{
+EN = "Reduce most visual effects to boost speed on lower spec systems"
 IT = "Riduce la maggior parte degli effetti per migliorare le prestazioni su sitemi poco potenti"
 ES = "Reduce la mayoría de efectos visuales para mejorar el rendimiento en sistemas poco potentes"
 BR = "Reduz a maior parte dos efeitos visuais para aumentar a velocidade em sistemas de baixa capacidade"
@@ -1077,6 +1274,7 @@ FR = "Reduis la majorité des effets visuels pour augmenté la vitesse sur les s
 DE = "Reduziert die meisten visuellen Effekte für höhere Geschwindigkeit auf schwachen Systemen"
 }
      "Resolution W x H":{
+EN = "Resolution W x H"
 IT = "Risoluzione W x H"
 ES = "Resolución Ancho x Alto"
 BR = "Resolução L x A"
@@ -1084,6 +1282,7 @@ FR = "Resolution L x H"
 DE = "Auflösung B x H"
 }
      "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution":{
+EN = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution"
 IT = "Definisce una risoluzione personalizzata per il layout indipendente dalla risoluzione dello schermo. Il formato è LARGHEZZAxALTEZZA, lasciare vuoto per la risoluzione standard"
 ES = "Define una resolución personalizada para el layout distinta a la resolución de pantalla. El formato es Ancho x Alto, si está vacío usa la resolución por defecto."
 BR = "Define uma resolução personalizada para seu layout, independente da resolução da tela. O formato é LARGURAxALTURA, deixe em branco para manter a resolução padrão"
@@ -1091,47 +1290,58 @@ FR = "Precisez une résolution personnalizé pour votre agencement, indépendant
 DE = "Festlegen einer eigenen Auflösung für das Layout, unabhängig von der Bildschirmauflösung. Format Breite X Höhe, leer lassen für Standardauflösung"
 }
      "Raspberry Pi fix":{
+EN = "Raspberry Pi fix"
 IT = "Fix per Raspberry Pi"
 ES = "Fix para Raspberry Pi"
 DE = "Raspberry Pi Fix"
 }
      "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed":{
+EN = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed"
 IT = "Fix per sistemi che non funzionano bene quando si torna al layout da un gioco, ricarica il layout se necessario"
 ES = "Fix para el sistema cuando un juego no funciona bien, recarga el layout si es necesario"
 DE = "Fix für Systeme mit Problemen nach Rückkehr aus einem Spiel, neuladen des Layouts wenn notwendig"
 }
      "Width %":{
+EN = "Width %"
 IT = "Larghezza %"
 DE = "Breite"
 }
      "For screens with overscan, define which percentage of the screen will be filled with actual content":{
+EN = "For screens with overscan, define which percentage of the screen will be filled with actual content"
 IT = "Per schermi con overscan, definisce la percentuale di schermo con contenuto"
 }
      "Height %":{
+EN = "Height %"
 IT = "Altezza %"
 DE = "Höhe"
 }
      "For screens with overscan, define which percentage of the screen will be filled with actual content":{
+EN = "For screens with overscan, define which percentage of the screen will be filled with actual content"
 IT = "Per schermi con overscan, definisce la percentuale di schermo con contenuto"
 DE = "Für Bildschirme mit Overscan, Prozentsatz des Bildschirms angeben der mit tatsächlichem Inhalt gefüllt werden soll"
 }
      "Shift X %":{
+EN = "Shift X %"
 IT = "Spostamento X %"
 DE = "Versatz X %"
 }
      "For screens with overscan, screen will be shifted by the percentage":{
+EN = "For screens with overscan, screen will be shifted by the percentage"
 IT = "Per schermi con overscan, lo schermo verrà spostato della percentuale"
 DE = "Für Bildschirme mit Overscan, Bildschirm wird um den angegebenen Prozentsatz verschoben"
 }
      "Shift Y %":{
+EN = "Shift Y %"
 IT = "Spostamento Y %"
 DE = "Versatz Y %"
 }
      "For screens with overscan, screen will be shifted by the percentage":{
+EN = "For screens with overscan, screen will be shifted by the percentage"
 IT = "Per schermi con overscan, lo schermo verrà spostato della percentuale"
 DE = "Für Bildschirme mit Overscan, Bildschirm wird um den angegebenen Prozentsatz verschoben"
 }
      "Smooth shadow":{
+EN = "Smooth shadow"
 IT = "Ombre morbide"
 ES = "Sombra suave"
 BR = "Sombreamento suaves"
@@ -1139,6 +1349,7 @@ FR = "Ombres dousses"
 DE = "Weicher Schatten"
 }
      "Enable smooth shadow under game title and data in the GUI":{
+EN = "Enable smooth shadow under game title and data in the GUI"
 IT = "Abilita le ombre morbide sotto il titolo del gioco e i dati dell'interfaccia"
 ES = "Activa una sombra suave bajo el título del juego y los datos en la interfaz"
 BR = "Ativa um sombreamento suave abaixo do título do jogo e dos dados da interface"
@@ -1146,6 +1357,7 @@ FR = "Active des ombres dousses dessous le titre du jeu et autre informations da
 DE = "Aktiviere weichen Schatten unter Spiel Titel und Daten im GUI"
 }
      "Frosted glass":{
+EN = "Frosted glass"
 IT = "Vetro opaco"
 ES = "Cristal mate"
 BR = "Vidro fosco"
@@ -1153,6 +1365,7 @@ FR = "Vitre givrée"
 DE = "Mattiertes Glass"
 }
      "Enable a frosted glass effect for overlay menus":{
+EN = "Enable a frosted glass effect for overlay menus"
 IT = "Abilita l'effetto vetro opaco per i menu"
 ES = "Activa un efecto cristal mate para el menú"
 BR = "Ativa um efeito de vidro fosco no menu"
@@ -1160,6 +1373,7 @@ FR = "Active un effet de vitre givrée sur le menu"
 DE = "Aktiviere einen mattiertes Glas Effekt für Overlay Menüs"
 }
      "Glow effect":{
+EN = "Glow effect"
 IT = "Effetto alone"
 ES = "Efecto brillo"
 BR = "Efeito de brilho"
@@ -1167,6 +1381,7 @@ FR = "Effet de lueur"
 DE = "Gloweffekt"
 }
      "Add a glowing halo around the selected game thumbnail":{
+EN = "Add a glowing halo around the selected game thumbnail"
 IT = "Aggiugne un alone luminoso intorno alla miniatura del gioco selezionato"
 ES = "Añade un resplandor alrededor de la miniatura del juego seleccionado"
 BR = "Adiciona um brilho luminoso em torno da miniatura do jogo selecionado"
@@ -1174,6 +1389,7 @@ FR = "Ajoute un effet de lueur autour de la capture miniature du jeu sélection�
 DE = "Fügt einen leuchtenden Schein um das ausgewählte Vorschaubild hinzu"
 }
      "Logo smooth shadow":{
+EN = "Logo smooth shadow"
 IT = "Ombre morbide nel logo"
 ES = "Logo con sombra suave"
 BR = "Sombreamento suave do logotipo"
@@ -1181,6 +1397,7 @@ FR = "Ombre dousse sur logo"
 DE = "Weicher Schatten Logo"
 }
      "Enable smooth shadows under game logo":{
+EN = "Enable smooth shadows under game logo"
 IT = "Abilita le ombre morbide sotto il logo del gioco"
 ES = "Activa una sombra suave bajo el logo del juego"
 BR = "Ativa um sombreamento suave abaixo do logotipo do jogo"
@@ -1188,6 +1405,7 @@ FR = "Active une ombre dousse sous le logo du jeu"
 DE = "Aktiviert weiche Schatten unter dem Spiellogo"
 }
      "Thumb gradient":{
+EN = "Thumb gradient"
 IT = "Sfumatura delle miniature"
 ES = "Difuminado de la miniatura"
 BR = "Focalização de miniatura"
@@ -1195,6 +1413,7 @@ FR = "Estompage de la capture miniature"
 DE = "Schattierung von Vorschaubildern"
 }
      "Blurs the artwork behind the game logo so it's more readable":{
+EN = "Blurs the artwork behind the game logo so it's more readable"
 IT = "Sfoca la parte superiore della grafica sotto il logo per renderlo più leggibile"
 ES = "Difumina la imagen detrás del logo del juego para hacerlo más visible"
 BR = "Embaça a arte localizada por trás do logotipo do jogo para torná-lo mais legível"
@@ -1202,6 +1421,7 @@ FR = "Estompe l'image derriere le logo du jeu pour qu'il soit plus facilement li
 DE = "Den oberen Teil der Grafik unterhalb des Logos unscharf machen, um sie besser lesbar zu machen"
 }
      "THUMBNAILS":{
+EN = "THUMBNAILS"
 IT = "MINIATURE"
 ES = "MINIATURA"
 BR = "MINIATURAS"
@@ -1209,42 +1429,50 @@ FR = "CAPTURES MINIATURES"
 DE = "VORSCHAUBILDER"
 }
      "Snapshot Options":{
+EN = "Snapshot Options"
 IT = "Opzioni schermata"
 ES = "Opciones Snapshot"
 DE = "Snapshot Optionen"
 }
      "Box Art Options":{
+EN = "Box Art Options"
 IT = "Opzioni box art"
 ES = "Opciones Box Art"
 DE = "Box Art Optionen"
 }
      "Video Snaps":{
+EN = "Video Snaps"
 IT = "Snap video"
 ES = "Video Snaps"
 DE = "Video Snaps"
 }
      "Decorations":{
+EN = "Decorations"
 IT = "Decorazioni"
 ES = "Decoración"
 DE = "Dekorationen"
 }
      "Chose the aspect ratio of thumbnails, video thumbnails and decorations":{
+EN = "Chose the aspect ratio of thumbnails, video thumbnails and decorations"
 IT = "Personalizza l'aspetto delle miniature, rapporto di forma, miniature video, decorazioni ecc"
 ES = "Personaliza la miniatura: relación de aspecto, miniatura modo video y decoración"
 FR = "Choisissez l'aspect ratio des captures miniatures, video miniatures, et décorations"
 DE = "Auswählen des Seitenverhältnisses von Vorschaubildern, Video-Vorschauen und Dekorationen"
 }
      "Game not available indicator":{
+EN = "Game not available indicator"
 IT = "Indicatore di rom non disponibile"
 ES = "Indicador para juego no disponible"
 DE = "Indikator für Spiel nicht verfügbar"
 }
      "Games that are not available will be marked with a red cross overlay":{
+EN = "Games that are not available will be marked with a red cross overlay"
 IT = "I giochi senza rom disponibile verranno mostrati con una croce rossa"
 ES = "Los juegos no disponibles serán marcados con una cruz roja"
 DE = "Spiele die nicht verfügbar sind werden mit einem roten Kreuz Overlay markiert"
 }
      "Aspect ratio":{
+EN = "Aspect ratio"
 IT = "Rapporto di forma"
 ES = "Relación de aspecto"
 BR = "Proporção da imagem"
@@ -1252,6 +1480,7 @@ FR = "Aspect ratio"
 DE = "Seitenverhältnis"
 }
      "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation":{
+EN = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation"
 IT = "Seleziona se le miniature devono essere quadrate o adattarsi automaticamente all'orientamento del gioco"
 ES = "Selecciona si las miniaturas deben ser cuadradas o adaptarse automáticamente a la orientación del juego"
 BR = "Defina se as miniaturas deverão ser quadradas ou se adaptar automaticamente de acordo com a orientação do jogo"
@@ -1259,83 +1488,101 @@ FR = "Choisissez si les captures miniatures devrais etre coupées, carrées, ou 
 DE = "Auswählen ob Snaps quadratisch, beschnitten oder an die Ausrichtung des Spiel angepasst werden sollen"
 }
      "Morph snap ratio":{
+EN = "Morph snap ratio"
 IT = "Trasforma le miniature"
 ES = "Transformacion de la miniatura"
 DE = "Vorschaubilder transformieren"
 }
      "Chose if you want the box to morph into the actual game video or if it must be cropped":{
+EN = "Chose if you want the box to morph into the actual game video or if it must be cropped"
 IT = "Scegli se vuoi che la box art venga trasformata nel video, o che il video venga tagliato"
 DE = "Auswählen ob das Box Art in das Video eingefügt oder ausgeschnitten werden soll"
 }
      "Zoom thumbnails":{
+EN = "Zoom thumbnails"
 IT = "Zoom miniature"
 DE = "Zoom Vorschaubild"
 }
      "Chose if you want the selected thumbnail to zoom to a larger size":{
+EN = "Chose if you want the selected thumbnail to zoom to a larger size"
 IT = "Personalizza lo zoom delle miniature a una dimensione maggiore"
 DE = "Lege fest ob das ausgewählte Vorschaubild vergrößert werden soll"
 }
      "Standard":{
+EN = "Standard"
 IT = "Standard"
 DE = "Standard"
 }
      "Reduced":{
+EN = "Reduced"
 IT = "Ridotto"
 DE = "Reduziert"
 }
      "None":{
+EN = "None"
 IT = "Nessuno"
 DE = "Kein"
 }
      "Show only logos":{
+EN = "Show only logos"
 IT = "Mostra solo loghi"
 DE = "zeige nur Logos"
 }
      "If enabled, only game title logos will be shown instead of the screenshot":{
+EN = "If enabled, only game title logos will be shown instead of the screenshot"
 IT = "Se abilitato, solo i loghi dei giochi verranno mostrati al posto degli screenshot"
 DE = "Wenn aktiv werden nur Title Logos statt Screenshots gezeigt"
 }
      "Morph video":{
+EN = "Morph video"
 IT = "Trasforma il video"
 ES = "Transformación del video"
 DE = "Video transformieren"
 }
      "Crop video":{
+EN = "Crop video"
 IT = "Taglia il video"
 ES = "Encajar video"
 DE = "Video beschneiden"
 }
      "Snapshot artwork source":{
+EN = "Snapshot artwork source"
 IT = "Sorgente delle miniature"
 ES = "Origen de la miniatura"
 DE = "Quelle Snapshot Artwork"
 }
      "Chose if you want the snapshot artwork from gameplay or title screen":{
+EN = "Chose if you want the snapshot artwork from gameplay or title screen"
 IT = "Scegli se le miniature devono essere schermate del gioco o i titoli"
 ES = "Elige si quieres una captura del juego o la pantalla de título"
 DE = "Auswählen ob das Vorschaubild vom Spiel Screenshot oder Titelbildschirm sein soll"
 }
      "Gameplay":{
+EN = "Gameplay"
 IT = "Schermata del gioco"
 ES = "Gameplay"
 DE = "Gameplay"
 }
      "Title screen":{
+EN = "Title screen"
 IT = "Titolo del gioco"
 ES = "Título del juego"
 DE = "Titelbildschirm"
 }
      "Show game title":{
+EN = "Show game title"
 IT = "Mostra il titolo"
 ES = "Mostrar el título del juego"
 DE = "Zeige Spiel Titel"
 }
      "Show the title of the game over the thumbnail":{
+EN = "Show the title of the game over the thumbnail"
 IT = "Mostra il titolo del gioco sulla miniatura"
 ES = "Mostrar el título del juego sobre la miniatura"
 DE = "Zeige den Spieltitel über dem Vorschaubild"
 }
      "Video thumbs":{
+EN = "Video thumbs"
 IT = "Video miniature"
 ES = "Video miniatura"
 BR = "Miniaturas de vídeo"
@@ -1343,6 +1590,7 @@ FR = "Vidéos miniatures"
 DE = "Video Vorschau"
 }
      "Enable video overlay on snapshot thumbnails":{
+EN = "Enable video overlay on snapshot thumbnails"
 IT = "Abilita la sovrapposizione dei video alle miniature statiche"
 ES = "Activa el video en lugar de la miniatura estática"
 BR = "Ativa a sobreposição de vídeo sobre as miniaturas estáticas"
@@ -1350,16 +1598,19 @@ FR = "Activez les videos miniatures dessus les captures miniatures."
 DE = "Aktiviere Video Overlay auf snaphot Vorschaubild"
 }
      "Fade title on video":{
+EN = "Fade title on video"
 IT = "Nascondi il titolo sui video"
 ES = "Ocultar el título en el video"
 DE = "Titel bei Video ausblenden"
 }
      "Fades game title and decoration when the video is playing":{
+EN = "Fades game title and decoration when the video is playing"
 IT = "Durante la riproduzione dei video nascondi il titolo del gioco"
 ES = "Durante la reproducción del video esconde el título del juego"
 DE = "Während der Videowiedergabe den Spieltitel ausblenden"
 }
      "Video delay multiplier":{
+EN = "Video delay multiplier"
 IT = "Moltiplicatore ritardo video"
 ES = "Multiplicador para el retraso del video"
 BR = "Multiplicador do retardo do vídeo"
@@ -1367,6 +1618,7 @@ FR = "Délais multiplicateur du video"
 DE = "Multiplikator Videoverzögerung"
 }
      "Increase video load delay":{
+EN = "Increase video load delay"
 IT = "Aumenta il ritardo del caricamento dei video"
 ES = "Aumenta el retraso al cargar el video"
 BR = "Aumenta o retardo no carregamento do vídeo"
@@ -1374,6 +1626,7 @@ FR = "Augmente le délais de chargement des vidéos"
 DE = "Erhöhe Video-Ladeverzögerung"
 }
      "Generate missing title art":{
+EN = "Generate missing title art"
 IT = "Grafica per titoli mancanti"
 ES = "Generar imagen para el título"
 BR = "Gerar arte do título ausente"
@@ -1381,6 +1634,7 @@ FR = "Générez les graphiques manquant pour les titres"
 DE = "Erstelle Grafiken für fehlende Titel"
 }
      "If no game title is present, the layout can generate it":{
+EN = "If no game title is present, the layout can generate it"
 IT = "Se non c'è la grafica per i titoli dei giochi, il layout può generarla automaticamente"
 ES = "Si no hay imagen para el título del juego, el layout puede generarla automáticamente"
 BR = "Se não existir nenhuma arte de título para o jogo, o layout gera uma automaticamente"
@@ -1388,6 +1642,7 @@ FR = "S'il ny a pas de logo pour le jeu, un peu être générer automatiquement"
 DE = "Wenn keine Grafik für den Spieltitel vorhanden ist, kann dieser vom layout generiert werden"
 }
      "New game indicator":{
+EN = "New game indicator"
 IT = "Indicatore di gioco nuovo"
 ES = "Indicador de Juego Nuevo"
 BR = "Indicador de novo jogo"
@@ -1395,6 +1650,7 @@ FR = "Indicateur de nouveau jeu"
 DE = "Indikator für neue Spiele"
 }
      "Games not played are marked with a glyph":{
+EN = "Games not played are marked with a glyph"
 IT = "I giochi che non sono mai stati lanciati sono machiati con un angolino bianco"
 ES = "Los juegos que no se han jugado son marcados con una esquina blanca"
 BR = "Jogos que nunca foram iniciados recebem uma marca branca"
@@ -1402,6 +1658,7 @@ FR = "Les jeux injoué sont marqué avec un symbol"
 DE = "Spiele die noch nicht gestartet wurden werden mit einer weißen Ecke markiert"
 }
      "Show tag indicator":{
+EN = "Show tag indicator"
 IT = "Mostra indicatore dei tag"
 ES = "Mostrar etiqueta identificativa"
 BR = "Mostrar indicador de rótulo"
@@ -1409,6 +1666,7 @@ FR = "Montrez les tags"
 DE = "Indikator Tag-Anzeige"
 }
      "Shows a tag attached to thumbnails that contains any tag":{
+EN = "Shows a tag attached to thumbnails that contains any tag"
 IT = "Mostra un'icona a forma di tag sulle miniature dei giochi che contengono tag"
 ES = "Muestra una etiqueta en la miniatura del juego para indicar que tiene una etiqueta"
 BR = "Exibe um ícone de rótulo nas miniaturas de jogos que foram rotulados"
@@ -1416,6 +1674,7 @@ FR = "Montrez les tags sur les captures miniatures si elles en contiennent"
 DE = "Zeigt einen Tag am Vorschaubild das alle Tags beinhaltet"
 }
      "Custom tag name":{
+EN = "Custom tag name"
 IT = "Nome del tag personalizzato"
 ES = "Personalizar nombre de la etiqueta"
 BR = "Nome de rótulo personalizado"
@@ -1423,12 +1682,14 @@ FR = "Nom de tags personnalisé"
 DE = "Eigener Tag Name"
 }
      "You can see a tag glyph overlayed to the thumbs, chose the tag name to use":{
+EN = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use"
 IT = "Puoi scegliere di applicare la grafica del tag solo ai giochi che contengono un tag ben preciso"
 ES = "Puedes ver la etiqueta sobre la imagen, elige el nombre de la etiqueta que quieras"
 FR = "Vous pouvez voir le symbole du tag superposée sur la capture miniature. Choisissez le tag à utilisé."
 DE = "Tag-Grafiken nur bei Spielen mit einem bestimmten Tag anzeigen"
 }
      "Game Boy color correction":{
+EN = "Game Boy color correction"
 IT = "Correzione colori Game Boy"
 ES = "Corrección de color en Game Boy"
 BR = "Ajuste de cor para o Game Boy"
@@ -1436,20 +1697,24 @@ FR = "Correction de couleur pour le Game Boy"
 DE = "GameBoy Farbkorrektur"
 }
      "Apply a colorized palette to Game Boy games based on the system name or forced to your preference":{
+EN = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference"
 IT = "Applica un effetto di colorizzazione alle miniature del Game Boy in bianco e nero"
 ES = "Aplica una paleta de color a las miniaturas de los juegos de Game Boy"
 FR = "Appliquez une palette coloriée pour les jeux Game Boy"
 DE = "Anwenden eines Färbeeffekts auf schwarz/weiße GameBoy Vorschaubilder"
 }
      "MSX crt color correction":{
+EN = "MSX crt color correction"
 IT = "Correzione colore MSX"
 DE = "MSX Farbkorrektur"
 }
      "Apply a palette correction to MSX media that was captured with MSX2 palette":{
+EN = "Apply a palette correction to MSX media that was captured with MSX2 palette"
 IT = "Applica una correzione colore alle immagini MSX che usano la palette MSX2"
 DE = "Anwenden einer Palettenkorrektur auf MSX-Medien, die mit der MSX2-Palette aufgenommen wurden"
 }
      "BACKGROUND":{
+EN = "BACKGROUND"
 IT = "SFONDO"
 ES = "FONDO DE PANTALLA"
 BR = "PLANO DE FUNDO"
@@ -1457,27 +1722,32 @@ FR = "FOND D'ÉCRAN"
 DE = "HINTERGRUND"
 }
      "History BG":{
+EN = "History BG"
 IT = "Sfondo History"
 ES = "Fondo de la pantalla de Historia"
 DE = "History Hintergrund"
 }
      "BG Snaps":{
+EN = "BG Snaps"
 IT = "Sfondo schermate"
 ES = "Fondo de la captura de pantalla"
 DE = "Hintergrund Snaps"
 }
      "Per Display":{
+EN = "Per Display"
 IT = "Per Display"
 ES = "Por display"
 DE = "Pro Display"
 }
      "Chose the layout background theme in main page and in History page, or select custom backgrounds":{
+EN = "Chose the layout background theme in main page and in History page, or select custom backgrounds"
 IT = "Scegli il tema del layout per il colore di sfondo, o personalizza lo sfondo sia per la pagina principale che per la History"
 ES = "Elige un tema para el fondo del layout, o personaliza el fondo tanto en la página principal como en la del Historial"
 FR = "Choisissez le fond d'écran pour la page principale et la page d'histoire, ou selectionnez un fond d'écran personsalisé"
 DE = "Auswählen des Layout Hintergrunds der Hauptseite und der History, oder benutzerdefinierte Hintergründe"
 }
      "Overlay color":{
+EN = "Overlay color"
 IT = "Effetto in sovrapposizione"
 ES = "Color superpuesto"
 BR = "Efeito de sobreposição de camada"
@@ -1485,6 +1755,7 @@ FR = "Couleur superposée"
 DE = "Overlay Farbe"
 }
      "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered":{
+EN = "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered"
 IT = "Seleziona la luminosità del layout: Basic è leggermente ridotta, Dark ha un effetto più scuro, Light usa un fondo chiaro con testo scuro, Pop mantiene inalterati i colori dello sfondo"
 ES = "Selecciona la iluminación del layout: Simple es ligeramente opaco, Oscuro para oscurecer, Claro para aumentar la iluminación del fondo y resaltar el texto oscuro, Intenso para dejar la iluminación original"
 BR = "Define o brilho do layout: Basic é ligeiramente opaco, Dark tem um efeito mais escurecido, Light usa um fundo claro com texto escuro, Pop mantém as cores de fundo inalteradas"
@@ -1492,6 +1763,7 @@ FR = "Choisissez la luminosité du theme. Basic est semi sombre, Dark est Sombre
 DE = "Auswählen der Overlay Helligkeit, Basic ist leicht gedämpft, Dark ist dunkler, Light hat ein weißes Overlay und dunklen Text, Pop behält die Farben unverändert bei"
 }
      "Custom main BG image":{
+EN = "Custom main BG image"
 IT = "Sfondo principale personalizzato"
 ES = "Personalizar la imagen de fondo de pantalla"
 BR = "Plano de fundo personalizado"
@@ -1499,6 +1771,7 @@ FR = "Fond d'écran personallisé principal."
 DE = "Benutzerdefiniertes Haupt-Hintergrundbild"
 }
      "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)":{
+EN = "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)"
 IT = "Inserisce un'immagine personalizzata come sfondo (usa grey.png per uno sfondo grigio, vignette.png per un effetto vignettatura)"
 ES = "Inserta una imagen personalizada como fondo de pantalla (usa grey.png para un fondo gris y vignette.png para un efecto viñeta)"
 BR = "Inserir uma imagem personalizada como plano de fundo (use grey.png para um plano de fundo cinza, vinheta.png para obter um efeito de vinheta)"
@@ -1506,41 +1779,49 @@ FR = "Insérez une image personnalisé comme fond d'écran (utilisez grey.png po
 DE = "Einfügen eines benutzerdefinierten Bildes als Hintergrund (grey.png für einen grauen Hintergrund, vignette.png für einen Vignetteneffekt)"
 }
      "Custom overlay":{
+EN = "Custom overlay"
 IT = "Sovraimpressione"
 ES = "Imagen superpuesta"
 DE = "Benutzerdefiniertes Overlay"
 }
      "Insert custom PNG to be overlayed over everything":{
+EN = "Insert custom PNG to be overlayed over everything"
 IT = "Inserisce una PNG come overlay sul tema"
 ES = "Inserta un PNG sobre el Tema"
 DE = "Einfügen eines PNGs als Overlay auf dem Thema"
 }
      "Format of main BG image":{
+EN = "Format of main BG image"
 IT = "Formato dello sfondo principale"
 ES = "Formato del fondo de pantalla principal"
 DE = "Format Haupt-Hintergrundbild"
 }
      "Format of history BG image":{
+EN = "Format of history BG image"
 IT = "Formato dello sfondo della history"
 ES = "Formato del fondo de pantalla de Histopria"
 DE = "Format des History Hintergrundbilds"
 }
      "Select if the custom background must be cropped to fill the screen or stretched":{
+EN = "Select if the custom background must be cropped to fill the screen or stretched"
 IT = "Seleziona se il background deve essere tagliato per riempire lo schermo o esteso"
 ES = "Selecciona si el fondo de pantalla debe recortarse o estirarse para llenar la pantalla"
 DE = "Auswählen ob der Hintergrund abgeschnitten, der Bildschirm ausgefüllt oder ob er erweitert werden soll"
 }
      "Crop":{
+EN = "Crop"
 IT = "Tagliato"
 ES = "Cortar"
 DE = "Zuschneiden"
 }
      "Stretch":{
+EN = "Stretch"
 IT = "Esteso"
 ES = "Estirar"
 DE = "Strecken"
 }
      "Custom history BG image":{
+EN = "Custom history BG image"
 IT = "Sfondo della History personalizzato"
 ES = "Personalizar imagen de fondo del Historial"
 BR = "Plano de fundo do History personalizado"
@@ -1548,6 +1829,7 @@ FR = "Fond d'écran personallisé pour page d'histoire."
 DE = "Benutzerdefiniertes History Hintergrundbild"
 }
      "Insert custom background art path for history page (leave blank if the same as main background)":{
+EN = "Insert custom background art path for history page (leave blank if the same as main background)"
 IT = "Inserisce un'immagine personalizzata come sfondo per la pagina History (lasciare vuoto per usare lo stesso sfondo del principale)"
 ES = "Inserta una imagen personalizada como fondo para la pantalla del Historial (si está en blanco usa el fondo principal)"
 BR = "Insira uma imagem personalizada como plano de fundo na página History (deixe em branco para usar o mesmo plano de fundo que o principal)"
@@ -1555,16 +1837,19 @@ FR = "Insérez une image personnalisé comme fond d'écran (laissez vide pour ut
 DE = "Benutzerdefiniertes Bild als Hintergrund für die Historyseite einfügen (leer lassen, um den selben Hintergrund wie den Haupthintergrund zu verwenden)"
 }
      "Per Display background":{
+EN = "Per Display background"
 IT = "Sfondo per ogni display"
 ES = "Fondo de pantalla por sistema"
 DE = "Hintergrund pro Display"
 }
      "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display":{
+EN = "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display"
 IT = "Puoi definire un background diverso per ogni display, metti gli sfondi nelle cartelle menu-art/bgmain e menu-art/bghistory"
 ES = "Puedes tener distinto fondo de pantalla para cada sistema, debes poner tus imagenes en las carpetas menu-art/bgmain y menu-art/bghistory con el nombre del sistema"
 DE = "Für jedes Display kann ein anderer Hintergrund definiert werden, Hintergründe in den Ordnern menu-art/bgmain und menu-art/bgistory ablegen"
 }
      "Background snap":{
+EN = "Background snap"
 IT = "Schermata sullo sfondo"
 ES = "Captura como fondo"
 BR = "Miniatura no plano de fundo"
@@ -1572,6 +1857,7 @@ FR = "Fond de capture miniature"
 DE = "Hintergrund Snaps"
 }
      "Add a faded game snapshot to the background":{
+EN = "Add a faded game snapshot to the background"
 IT = "Aggiunge una schermata del gioco come sfondo dello schermo"
 ES = "Añade una imagen del juego como fondo de pantalla"
 BR = "Adiciona uma captura de tela embaçada como plano de fundo"
@@ -1579,6 +1865,7 @@ FR = "Ajoute une capture miniature qui s'estompe dans le fond d'écran"
 DE = "Fügt einen Screenshot des Spiels als Bildschirmhintergrund hinzu"
 }
      "Animate BG snap":{
+EN = "Animate BG snap"
 IT = "Anima la miniatura sullo sfondo"
 ES = "Animar la imagen del fondo"
 BR = "Plano de fundo animado"
@@ -1586,6 +1873,7 @@ FR = "Animez le fond d'écran"
 DE = "Snap Hintergrund animieren"
 }
      "Animate video on background":{
+EN = "Animate video on background"
 IT = "Inserisce un video animato come sfondo"
 ES = "Añade un video como fondo de pantalla"
 BR = "Insere um animação de vídeo como plano de fundo"
@@ -1593,6 +1881,7 @@ FR = "Insérez un video comme fond d'écran"
 DE = "Animiere Video auf Hintergrund"
 }
      "Delay BG animation":{
+EN = "Delay BG animation"
 IT = "Ritarda l'animazione di sfondo"
 ES = "Retrasar la animación de fondo"
 BR = "Retarda a animação do plano de função"
@@ -1600,6 +1889,7 @@ FR = "Délais d'animation pour fond d'écran"
 DE = "Hintergrundanimation verzögern"
 }
      "Don't load immediately the background video animation":{
+EN = "Don't load immediately the background video animation"
 IT = "Non caricare immediatamente l'animazione dello sfondo"
 ES = "No carga inmediatamente el video del fondo de pantalla"
 BR = "Não carrega imediatamente as animações do plano de fundo"
@@ -1607,6 +1897,7 @@ FR = "Délais de chargement pour les vidéos de fond d'écran"
 DE = "Hintergrundvideoanimation nicht sofort laden"
 }
      "LOGO":{
+EN = "LOGO"
 IT = "LOGO"
 ES = "LOGO"
 BR = "LOGOTIPO"
@@ -1614,12 +1905,14 @@ FR = "LOGO"
 DE = "LOGO"
 }
      "Customize the splash logo at the start of Arcadeflow":{
+EN = "Customize the splash logo at the start of Arcadeflow"
 IT = "Personalizza il logo che viene mostrato all'avvio di Arcadeflow"
 ES = "Personaliza el logo que aparece al inicio de Arcadeflow"
 FR = "Personnalizé le logo montré au chargement d'Arcadeflow"
 DE = "Splash Logo beim Start von Arcadeflow anpassen"
 }
      "Enable splash logo":{
+EN = "Enable splash logo"
 IT = "Abilita il logo iniziale"
 ES = "Activar el logo inicial"
 BR = "Ativa o logotipo ao iniciar"
@@ -1627,6 +1920,7 @@ FR = "Activez le logo de chargement"
 DE = "Aktiviere Splash Logo"
 }
      "Enable or disable the AF start logo":{
+EN = "Enable or disable the AF start logo"
 IT = "Abilita o disabilita il logo AF al lancio del layout"
 ES = "Activa o desactiva el logo AF al iniciar el layout"
 BR = "Ativa ou desativa o logotipo AF ao iniciar"
@@ -1634,6 +1928,7 @@ FR = "Activez ou désactivez le logo au chargement de ArcadeFlow"
 DE = "Aktiviere/Deaktiviere das AF logo beim Start"
 }
      "Custom splash logo":{
+EN = "Custom splash logo"
 IT = "Logo personalizzato"
 ES = "Logo personalizado"
 BR = "Logotipo personalizado"
@@ -1641,6 +1936,7 @@ FR = "Logo personnalisé"
 DE = "Benutzerdefiniertes Splash Logo"
 }
      "Insert the path to a custom AF splash logo (or keep blank for default logo)":{
+EN = "Insert the path to a custom AF splash logo (or keep blank for default logo)"
 IT = "Inserire il percorso di un'immagine per inserire un logo personalizzato (lasciare vuoto per il logo standard)"
 ES = "Indica la dirección de la imagen para el un logo personalizado (dejar en blanco para el logo por defecto)"
 BR = "Defina o local onde está salvo o logotipo de inicialização personalizado (ou deixe em branco para usar o logo padrão)"
@@ -1648,6 +1944,7 @@ FR = "Definissez le chemin vers un logo personnalisé (ou laissez vide pour le d
 DE = "Pfad zu benutzerdefiniertem AF Splash Logo angeben (oder leer für Standard Logo)"
 }
      "ATTRACT MODE":{
+EN = "ATTRACT MODE"
 IT = "ATTRACT MODE"
 ES = "MODO ATTRACT"
 BR = "MODO VINHETA"
@@ -1655,22 +1952,26 @@ FR = "MODE SEDUCTION"
 DE = "ATTRACT MODE"
 }
      "Look & Feel":{
+EN = "Look & Feel"
 IT = "Aspetto"
 ES = "Aspecto"
 DE = "Look & Feel"
 }
      "Sound":{
+EN = "Sound"
 IT = "Suono"
 ES = "Sonido"
 DE = "Sound"
 }
      "Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here":{
+EN = "Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here"
 IT = "Arcadeflow dispone di un proprio salvaschermo attract mode, qui puoi configurare tutte le opzioni"
 ES = "Arcadeflow dispone de su propio salvapantallas que se inicia cuando no hay actividad. Configura las opciones aquí"
 FR = "Arcadeflow est muni de son prope mode séduction qui s'active après un moment d'inactivité. Configurez le ici."
 DE = "Arcadeflow hat seinen eigenen Attract Mode Bildschirmschoner der nach Inaktivität startet. Hier können alle Optionen konfiguriert werden"
 }
      "Enable attract mode":{
+EN = "Enable attract mode"
 IT = "Abilita la modalità ATTRACT"
 ES = "Activar el modo ATTRACT"
 BR = "Ativa o modo VINHETA"
@@ -1678,6 +1979,7 @@ FR = "Activez le mode SEDUCTION"
 DE = "Aktiviere Attract Mode"
 }
      "Enable or disable attract mode at layout startup":{
+EN = "Enable or disable attract mode at layout startup"
 IT = "Abilita o disabilita la modalità ATTRACT al lancio del layout"
 ES = "Activa o desactiva el modo ATTRACT al inicio del layout"
 BR = "Ativa ou desativa o modo VINHETA ao iniciar o layout"
@@ -1685,6 +1987,7 @@ FR = "Activez ou désactivez le mode SEDUCTION au déclanchement"
 DE = "Aktiviere/Deaktiviere Attract Mode beim Layout Start"
 }
      "Background music":{
+EN = "Background music"
 IT = "Musica di fondo"
 ES = "Música de fondo"
 BR = "Música de fundo"
@@ -1692,6 +1995,7 @@ FR = "Musique de fond"
 DE = "Hintergrund Musik"
 }
      "Path to a music file to play in background":{
+EN = "Path to a music file to play in background"
 IT = "Percorso per un file musicale da riprodurre durante la modalità ATTRACT"
 ES = "Indica la dirección del archivo de audio que debe sonar en el modo ATTRACT"
 BR = "Local do aquivo da música de fundo que será tocado durante o modo vinheta (ATTRACT)"
@@ -1699,6 +2003,7 @@ FR = "Chemin vers un fichier de musique de fond durant le mode SEDUCTION"
 DE = "Pfad zu Musikdatei für Hintergrundmusik"
 }
      "Enable game sound":{
+EN = "Enable game sound"
 IT = "Abilita i suoni del gioco"
 ES = "Activar sonido del juego"
 BR = "Ativar som dos jogos"
@@ -1706,6 +2011,7 @@ FR = "Activez le som des jeux"
 DE = "Aktiviere Spielsound"
 }
      "Enable game sounds during attract mode":{
+EN = "Enable game sounds during attract mode"
 IT = "Abilita i suoni del gioco durante la modalità ATTRACT"
 ES = "Activa el sonido del juego durante el modo ATTRACT"
 BR = "Habilita os sons dos jogos durante o modo vinheta (ATTRACT)"
@@ -1713,6 +2019,7 @@ FR = "Activez le som des jeux durant le mode SEDUCTION"
 DE = "Aktiviere Spielsound während Attract Mode"
 }
      "Attract mode timer (s)":{
+EN = "Attract mode timer (s)"
 IT = "Timer per la modalità ATTRACT (sec)"
 ES = "Tiempo para el modo ATTRACT (en segundos)"
 BR = "Tempo para o modo vinheta (seg)"
@@ -1720,6 +2027,7 @@ FR = "Temps pour mode SEDUCTION (sec)"
 DE = "Attract Mode Timer (s)"
 }
      "Inactivity timer before attract mode is enabled":{
+EN = "Inactivity timer before attract mode is enabled"
 IT = "Definisce quanto tempo deve passare prima che la modalità ATTRACT venga attivata"
 ES = "Tiempo de inactividad para activar el modo ATTRACT"
 BR = "Define o intervalo de tempo que de passar antes que o modo vinheta (ATTRACT) seja ativado"
@@ -1727,6 +2035,7 @@ FR = "Définie le temps d'inactivité nécessaire avant que le mode SEDUCTION ne
 DE = "Inaktivitäts Timer bis Attract Mode aktiviert wird"
 }
      "Game change time (s)":{
+EN = "Game change time (s)"
 IT = "Intervallo di cambio del gioco (sec)"
 ES = "Intervalo entre juegos (en segundos)"
 BR = "Tempo para trocar de jogo (seg)"
@@ -1734,6 +2043,7 @@ FR = "Intervalle entre les jeux (sec)"
 DE = "Zeit bis Spielwechsel (s)"
 }
      "Time interval between each game change":{
+EN = "Time interval between each game change"
 IT = "Tempo da attendere prima di cambiare gioco"
 ES = "Intervalo de tiempo entre juego y juego"
 BR = "Intervalo de tempo entre a troca de jogos"
@@ -1741,16 +2051,19 @@ FR = "Intervale de temps entre chaque jeu"
 DE = "Zeitintervall zwischen jedem Spiel"
 }
      "Attract logo":{
+EN = "Attract logo"
 IT = "Logo attract"
 ES = "Logo Attract"
 DE = "Attract Logo"
 }
      "Show Arcadeflow logo during attract mode":{
+EN = "Show Arcadeflow logo during attract mode"
 IT = "Mostra il logo di Arcadeflow durante l'attract mode"
 ES = "Muestra el logo de Arcadeflow durante el Attract Mode"
 DE = "Zeige ArcadeFlow Logo während Attract Mode"
 }
      "Attract message":{
+EN = "Attract message"
 IT = "Messaggio"
 ES = "Mensaje"
 BR = "Mensagem"
@@ -1758,6 +2071,7 @@ FR = "Message de SEDUCTION"
 DE = "Attract Nachricht"
 }
      "Text to show during attract mode":{
+EN = "Text to show during attract mode"
 IT = "Il testo da mostrare durante la modalità ATTRACT"
 ES = "Texto que se muestra durante el modo ATTRACT"
 BR = "Texto a ser exibido durante o modo vinhenta (ATTRACT)"
@@ -1765,38 +2079,47 @@ FR = "Texte qui apparait durant le mode SEDUCTION"
 DE = "Text der während des Attract Mode angezeigt werden soll"
 }
      "RETROARCH INTEGRATION":{
+EN = "RETROARCH INTEGRATION"
 IT = "INTEGRA RETROARCH"
 DE = "RETROARCH INTEGRATION"
 }
      "Assign retroarch cores to emulators":{
+EN = "Assign retroarch cores to emulators"
 IT = "Assegna i core RetroArch ai diversi emulatori"
 DE = "RetroArch Cores für Emulatoren festlegen"
 }
      "Enable RetroArch integration":{
+EN = "Enable RetroArch integration"
 IT = "Abilita integrazione RetroArch"
 DE = "Aktiviere RetroArch Integration"
 }
      "Enable or disable the integration of RetroArch":{
+EN = "Enable or disable the integration of RetroArch"
 IT = "Abilita o disabilita l'integrazione di Retroarch"
 DE = "Aktiviere oder deaktiviere die Integration von RetroArch"
 }
      "Custom executable path":{
+EN = "Custom executable path"
 IT = "Path eseguibile custom"
 DE = "Benutzerdefinierter Ausführungspfad"
 }
      "Enter the path to RetroArch executable if not installed in your OS default location":{
+EN = "Enter the path to RetroArch executable if not installed in your OS default location"
 IT = "Inserisci il percorso all'eseguibile di RetroArch se non usi la directory standard"
 DE = "Gib den Pfad zur ausführbaren Datei von RetroArch ein, wenn diese nicht im Standardverzeichnis des OS installiert ist."
 }
      "Custom Core folder":{
+EN = "Custom Core folder"
 IT = "Directory core custom"
 DE = "Benutzerdefinierter Pfad Cores"
 }
      "Enter a custom folder for RA cores if not using standard locations":{
+EN = "Enter a custom folder for RA cores if not using standard locations"
 IT = "Inserisci il percorso di una cartella dei core se non utilizzi la directory standard"
 DE = "Gib ein benutzerdefiniertes Verzeichnis für RA Cores an, wenn nicht das Standardverzeichnis verwendet wird"
 }
      "SEARCH & FILTERS":{
+EN = "SEARCH & FILTERS"
 IT = "RICERCA E FILTRI"
 ES = "BUSCAR"
 BR = "PESQUISAR"
@@ -1804,16 +2127,19 @@ FR = "RECHERCHE"
 DE = "SUCHE & FILTER"
 }
      "Search and Filters":{
+EN = "Search and Filters"
 IT = "Ricerca e filtri"
 DE = "Suche und Filter"
 }
      "Configure the search page and multifilter options":{
+EN = "Configure the search page and multifilter options"
 IT = "Configura la pagina di ricerca e il multifiltro"
 ES = "Configura la página de búsqueda"
 FR = "Configurez la page de recherche"
 DE = "Konfigurieren der Suchseite und Multifilter Optionen"
 }
      "Immediate search":{
+EN = "Immediate search"
 IT = "Ricerca immediata"
 ES = "Búsqueda inmediata"
 BR = "Pesquisa imediata"
@@ -1821,6 +2147,7 @@ FR = "Recherche instantanée"
 DE = "Sofortsuche"
 }
      "Live update results while searching":{
+EN = "Live update results while searching"
 IT = "Aggiorna in tempo reale i risultati della ricerca"
 ES = "Actualiza los resultados de la búsqueda en tiempo real"
 BR = "Resultados em tempo real durante a pesquisa"
@@ -1828,46 +2155,55 @@ FR = "Resultats instantanée pendant la recherche"
 DE = "Sofortergebnisse während der Suche"
 }
      "Keyboard layout":{
+EN = "Keyboard layout"
 IT = "Layout tastiera"
 ES = "Tipo de teclado"
 DE = "Tastaturlayout"
 }
      "Select the keyboard layout for on-screen keyboard":{
+EN = "Select the keyboard layout for on-screen keyboard"
 IT = "Seleziona il layout di tastiera da utilizzare"
 ES = "Selecciona el tipo de teclado que quieres ver en pantalla"
 DE = "Auswählen des Tastaturlayouts der On-Screen Tastatur"
 }
      "Save Multifilter sessions":{
+EN = "Save Multifilter sessions"
 IT = "Salva le sessioni del Multifiltro"
 ES = "Salvar la sesión del Multifiltro"
 DE = "Speichere Multifilter Sitzungen"
 }
      "Save the Multifilter of each display when exiting Arcadeflow or changing list":{
+EN = "Save the Multifilter of each display when exiting Arcadeflow or changing list"
 IT = "Salva i dati del Multifiltro per ogni display quando esci da Arcadeflow o cambi lista"
 ES = "Salva los datos del Multifiltro por sistema cuando sales de Arcadeflow o cambias de lista"
 DE = "Speichere den Multifilter jedes Displays beim verlassen von ArcadeFlow oder Listenwechsel"
 }
      "Customize Multifilter Menu":{
+EN = "Customize Multifilter Menu"
 IT = "Personalizza il menu Multifiltro"
 ES = "Personalizar el menú Multifiltro"
 DE = "Multifilter Menu anpassen"
 }
      "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item":{
+EN = "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item"
 IT = "Riordina e personalizza il menu Multifiltro: destra/sinistra per spostare gli elementi su e giù, Select per attivare/disattivare"
 ES = "Selecciona y ordena el menú Multifiltro: Derecha/Izquierda  para mover el elemento del menú, Select para activarlo/desactivarlo"
 DE = "Sortieren und auswählen von Multifilter Menüeinträgen: Links/Rechts um Elemente nach oben und unten zu verschieben, auswählen zum Element zu aktivieren/deaktivieren"
 }
      "Reset Multifilter Menu":{
+EN = "Reset Multifilter Menu"
 IT = "Ripristina il Menu multifiltro"
 ES = "Reseterar el menu Multifiltro"
 DE = "Multifilter Menü zurücksetzen"
 }
      "Reset sorting and selection of Multifilter Menu entries":{
+EN = "Reset sorting and selection of Multifilter Menu entries"
 IT = "Ripristina l'ordine e le selezioni del menu Multifiltro"
 ES = "Resetea el órden y las opciones seleccionadas del menú multifiltro"
 DE = "Sortierung und Auswahl von Multifilter Menüeinträgen zurücksetzen"
 }
      "HISTORY PAGE":{
+EN = "HISTORY PAGE"
 IT = "PAGINA HISTORY"
 ES = "HISTORIAL"
 BR = "HISTORY"
@@ -1875,32 +2211,38 @@ FR = "HISTOIRE"
 DE = "HISTORY SEITE"
 }
      "Video Effects":{
+EN = "Video Effects"
 IT = "Effetti video"
 ES = "Efectos de video"
 DE = "Video Effekte"
 }
      "Import MAME Files":{
+EN = "Import MAME Files"
 IT = "Importa file MAME"
 ES = "Importar archivo MAME"
 DE = "Importiere MAME Dateien"
 }
      "Configure the History page where larger thumbnail and game history data are shown":{
+EN = "Configure the History page where larger thumbnail and game history data are shown"
 IT = "Configura la pagina della History dove vengon mostrati schermate più grandi e i dati della storia del gioco"
 ES = "Configura la página del Historial, donde se muestra una imagen más grande y los datos del juego"
 FR = "Configurez la page d'histoire òu un capture miniature plus grande ainsi que l'histoire du jeu sont montrée."
 DE = "Konfigurieren der Historyseite bei der größere Miniaturen und Spieldaten angezeigt werden"
 }
      "CRT deformation":{
+EN = "CRT deformation"
 IT = "Deformazione CRT"
 ES = "Deformación CRT"
 DE = "CRT Deformation"
 }
      "Enable CRT deformation for CRT snaps":{
+EN = "Enable CRT deformation for CRT snaps"
 IT = "Abilita la deformazione per i giochi CRT"
 ES = "Activa la deformación tipo CRT en imagen del juego"
 DE = "Aktiviere CRT Deformation für CRT Snaps"
 }
      "Scanline effect":{
+EN = "Scanline effect"
 IT = "Effetto scanline"
 ES = "Efecto Scanline"
 BR = "Efeito scanline"
@@ -1908,6 +2250,7 @@ FR = "Effet Scanline"
 DE = "Scanline Effekt"
 }
      "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline":{
+EN = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline"
 IT = "Seleziona l'effetto scanline: Scanline = scanline standard, Apertura = aperture mask, Risoluzione dimezzata = dimezza la risoluzione delle scanline per evitare effetti moiree, Nessuno = nessuna scanline"
 ES = "Selecciona el efecto Scanline: Scanlines = scanlines por defecto, Apertura = Máscara de apertura, Resolución a la mitad = reduce la resolución del scanline para evitar el efecto moire, Nada = sin scanlines"
 BR = "Define o efeito das Scanlines: Scanlines = linha de varredura (scanline) padrão, Aperture = máscara de abertura, Half Resolution = reduzir pela metade a resolução da linha de varredura para evitar efeitos ondulados, None = nenhuma linha de varredura"
@@ -1915,6 +2258,7 @@ FR = "Définissez l'effet scanline: Scanlines = scanlines pas défaut, Aperture 
 DE = "Scanline Effekt auswählen: Scanlines = Standard, Blende = Blendenmaske, Halbe Auflösung = reduzierte Scanline Auflösung um Moiree zu vermeiden, Keinen = keine Scanlines"
 }
      "LCD effect":{
+EN = "LCD effect"
 IT = "Effetto LCD"
 ES = "Efecto LCD"
 BR = "Efeito LCD"
@@ -1922,6 +2266,7 @@ FR = "Effet LCD"
 DE = "LCD Effekt"
 }
      "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect":{
+EN = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect"
 IT = "Seleziona l'effetto LCD per i giochi portatili: Matrix = mostra i pixel del display, Half Resolution = mostra i pixel a metà risoluzione, None = nessun effetto"
 ES = "Selecciona el efecto LCD para juegos portátiles: Matriz de puntos = muestra los píxeles en pantalla, Resolución a la mitad = muestra los píxeles a media resolución, Nada = sin efecto"
 BR = "Define o efeito do LCD para jogos portáteis: Matrix = mostra os pixels da tela, Half Resolution = mostra os pixels com meia resolução, None = nenhum efeito"
@@ -1929,36 +2274,43 @@ FR = "Définissez l'éffet LCD pour jeux de poches: Matrice = matrice à point, 
 DE = "LCD Effekt für Handheld Spiele auswählen: Matrix = Dot Matrix anzeigen, Halbe Auflösung = Matrix in halber Auflösung anzeigen, Kein = Kein Effekt"
 }
      "Text panel size":{
+EN = "Text panel size"
 IT = "Dimensione pannello testo"
 ES = "Tamaño del texto del panel"
 DE = "Größe des Textfeldes"
 }
      "Select the size of the history panel at the expense of snapshot area":{
+EN = "Select the size of the history panel at the expense of snapshot area"
 IT = "Seleziona la dimensione del pannello di testo a spese dall'area del video"
 ES = "Selecciona el tamaño del texto del Historial a expensas del modificar el área del video"
 DE = "Größe des Historyfeld auswählen, auf Kosten des Snapshotbereichs"
 }
      "Small":{
+EN = "Small"
 IT = "Piccolo"
 ES = "Pequeño"
 DE = "Klein"
 }
      "Default":{
+EN = "Default"
 IT = "Standard"
 ES = "Por defecto"
 DE = "Standard"
 }
      "Large":{
+EN = "Large"
 IT = "Grande"
 ES = "Grande"
 DE = "Groß"
 }
      "Max snap":{
+EN = "Max snap"
 IT = "Massimo snapshot"
 ES = "Imagen máxima"
 DE = "Maximaler Snap"
 }
      "Text panel style":{
+EN = "Text panel style"
 IT = "Stile pannello testo"
 ES = "Estilo del panel de texto"
 BR = "Estilo do painel de texto"
@@ -1966,6 +2318,7 @@ FR = "Style pour le panneau de texte"
 DE = "Textfeld Stil"
 }
      "Select the look of the history text panel":{
+EN = "Select the look of the history text panel"
 IT = "Seleziona l'aspetto del pannello di testo nella pagina History"
 ES = "Selecciona el aspecto del panel de texto de la pantalla del Historial"
 BR = "Define a aparência do painel de texto na tela do History"
@@ -1973,6 +2326,7 @@ FR = "Choisissez le look du panneu de texte dans l'écran d'histoire"
 DE = "Aussehen des History Textfelds auswählen"
 }
      "Game panel style":{
+EN = "Game panel style"
 IT = "Stile pannello gioco"
 ES = "Estilo del panel de juego"
 BR = "Estilo do painel do jogo"
@@ -1980,6 +2334,7 @@ FR = "Style du panneau de jeu"
 DE = "Game Panel Stil"
 }
      "Select the look of the history game panel":{
+EN = "Select the look of the history game panel"
 IT = "Seleziona l'aspetto del pannello del gioco nella pagina History"
 ES = "Selecciona el aspecto del panel de juego de la pantalla del Historial"
 BR = "Define aa parência do painel do jogo na tela do History"
@@ -1987,38 +2342,46 @@ FR = "Choisissez le look du panneau de jeu dans l'écran d'histoire"
 DE = "Aussehen des History Game Panels auswählen"
 }
      "Detailed game data":{
+EN = "Detailed game data"
 IT = "Dettagli del gioco"
 ES = "Detalles del juego"
 DE = "Detailierte Spieldaten"
 }
      "Show extra data after the game name before the history text":{
+EN = "Show extra data after the game name before the history text"
 IT = "Mostra dettagli extra dopo il titolo del gioco, prima della history"
 ES = "Muestra detalles extra detrás del título del juego, antes de ver el Historial"
 DE = "Zeige zusätzliche Daten nach dem Spielnamen aber vor dem History Text"
 }
      "Control panel overlay":{
+EN = "Control panel overlay"
 IT = "Controlli in sovrimpressione"
 ES = "Panel de control superpuesto"
 DE = "Bedienpanel Overlay"
 }
      "Show controller and buttons overlay on history page":{
+EN = "Show controller and buttons overlay on history page"
 IT = "Mostra pulsanti e controller del gioco in sovrimpressione"
 ES = "Muestra los controles y botones superpuestos en la pagina del Historial"
 DE = "Zeige Controller und Buttons Overlay auf der History Seite"
 }
      "Always":{
+EN = "Always"
 IT = "Sempre"
 DE = "Immer"
 }
      "Never":{
+EN = "Never"
 IT = "Mai"
 DE = "Nie"
 }
      "Arcade only":{
+EN = "Arcade only"
 IT = "Solo Arcade"
 DE = "Nur Arcade"
 }
      "History.dat":{
+EN = "History.dat"
 IT = "History.dat"
 ES = "History.dat"
 BR = "History.dat"
@@ -2026,6 +2389,7 @@ FR = "History.dat"
 DE = "History.dat"
 }
      "History.dat location.":{
+EN = "History.dat location."
 IT = "Percorso completo per il file history.dat"
 ES = "Localización del archivo History.dat"
 BR = "Local do arquivo history.dat"
@@ -2033,6 +2397,7 @@ FR = "Chemin vers History.dat"
 DE = "Pfad zur History.dat"
 }
      "Index clones":{
+EN = "Index clones"
 IT = "Indicizza i cloni"
 ES = "Indexar clones"
 BR = "Índice de clones"
@@ -2040,6 +2405,7 @@ FR = "Index des clones"
 DE = "Index Klone"
 }
      "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger":{
+EN = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger"
 IT = "Imposta se i cloni debbano essere indicizzati. Se abilitato renderà molto più grande il file indice"
 ES = "Indica si los clones deben incluires en el índice. Si está activo el índice será bastante más grande"
 BR = "Define se os clones devem ser incluídos no índice. Ativando isto pode aumentar significamente o tamanho do índice"
@@ -2047,6 +2413,7 @@ FR = "Indiquez si les clones devraient êtres inclus dans l'index. Ceci rend l'i
 DE = "Einstellen ob Einträge für Klone im Index mit aufgenommen werden sollen. Wenn dies aktiviert ist, wird der Index deutlich größer"
 }
      "Generate History index":{
+EN = "Generate History index"
 IT = "Genera l'indice History"
 ES = "Generar índice"
 BR = "Gerar índice"
@@ -2054,6 +2421,7 @@ FR = "Générez l'indice"
 DE = "History Index erstellen"
 }
      "Generate the history.dat index now (this can take some time)":{
+EN = "Generate the history.dat index now (this can take some time)"
 IT = "Genera ora il file indice di history.dat (può impiegare un po' di tempo)"
 ES = "Genera el índice del History.dat (puede tardar un poco)"
 BR = "Gera o índice do history.dat (pode levar alguns minutos)"
@@ -2061,6 +2429,7 @@ FR = "Générez l'index de history.dot maintenant (ceci peut prendre du temps)"
 DE = "History.dat Index jetzt erstellen"
 }
      "Command.dat":{
+EN = "Command.dat"
 IT = "Command.dat"
 ES = "Command.dat"
 BR = "Command.dat"
@@ -2068,6 +2437,7 @@ FR = "Command.dat"
 DE = "Command.dat"
 }
      "Command.dat location.":{
+EN = "Command.dat location."
 IT = "Percorso completo per il file command.dat"
 ES = "Localización del archivo command.dat"
 BR = "Local do arquivo command.dat"
@@ -2075,6 +2445,7 @@ FR = "Chemin vers command.dat"
 DE = "Pfad zur Command.dat"
 }
      "Generate Command index":{
+EN = "Generate Command index"
 IT = "Genera l'indice Command"
 ES = "Generar índice"
 BR = "Gerar índice"
@@ -2082,6 +2453,7 @@ FR = "Générez l'indice"
 DE = "Erstelle Command Index"
 }
      "Generate the command.dat index now (this can take some time)":{
+EN = "Generate the command.dat index now (this can take some time)"
 IT = "Genera ora il file indice di command.dat (può impiegare un po' di tempo)"
 ES = "Genera el índice del command.dat (puede tardar un poco)"
 BR = "Gera o índice do command.dat (pode levar alguns minutos)"
@@ -2089,6 +2461,7 @@ FR = "Générez l'index de command.dat maintenant (ceci peut prendre du temps)"
 DE = "Index der command.dat jetzt erstellen (kann einige Zeit dauern)"
 }
      "AUDIO":{
+EN = "AUDIO"
 IT = "AUDIO"
 ES = "AUDIO"
 BR = "ÁUDIO"
@@ -2096,12 +2469,14 @@ FR = "ÁUDIO"
 DE = "AUDIO"
 }
      "Configure layout sounds and audio options for videos":{
+EN = "Configure layout sounds and audio options for videos"
 IT = "Configura i suoni del layout e le opzioni per l'audio dei video"
 ES = "Configura el sonido del layout y las opciones de audio para los videos"
 FR = "Configurez les sons et les options audio pour les vidéos"
 DE = "Konfigurieren von Layout Sounds und Audio Optionen für Videos"
 }
      "Enable theme sounds":{
+EN = "Enable theme sounds"
 IT = "Suoni del tema"
 ES = "Sonido del tema"
 BR = "Som do tema"
@@ -2109,6 +2484,7 @@ FR = "son pour theme"
 DE = "Aktiviere Theme Sounds"
 }
      "Enable audio sounds when browsing and moving around the theme":{
+EN = "Enable audio sounds when browsing and moving around the theme"
 IT = "Abilita i suoni del tema quando si naviga"
 ES = "Activa el sonido del tema mientras navegas"
 BR = "Ativa sons enquanto navega pelo tema"
@@ -2116,6 +2492,7 @@ FR = "Active les sons durant la navigation."
 DE = "Aktiviere Audio Sounds beim durchblättern der Themes"
 }
      "Audio in videos (thumbs)":{
+EN = "Audio in videos (thumbs)"
 IT = "Audio nei video (miniature)"
 ES = "Audio en los vídeos (miniaturas)"
 BR = "Aúdio nos vídeos (miniaturas)"
@@ -2123,6 +2500,7 @@ FR = "Audio des vidéos (miniatures)"
 DE = "Audio bei Videos (Vorschau)"
 }
      "Select wether you want to play audio in videos on thumbs":{
+EN = "Select wether you want to play audio in videos on thumbs"
 IT = "Abilita la riproduzione dell'audio nelle miniature video"
 ES = "Activa la reproducción de audio en los vídeos en miniatura"
 BR = "Ativa a reprodução de áudio nos vídeos das miniaturas de vídeo"
@@ -2130,6 +2508,7 @@ FR = "Selectionnez si vouz voulez joué le son des vidéos miniatures"
 DE = "Auswählen ob Video-Miniaturen mit Ton abgespielt werden sollen"
 }
      "Audio in videos (history)":{
+EN = "Audio in videos (history)"
 IT = "Audio nei video (history)"
 ES = "Audio en los vídeos (Historial)"
 BR = "Áudio nos vídeos (history)"
@@ -2137,6 +2516,7 @@ FR = "Audio des vidéos (histoire)"
 DE = "Audio in Videos (History)"
 }
      "Select wether you want to play audio in videos on history detail page":{
+EN = "Select wether you want to play audio in videos on history detail page"
 IT = "Abilita la riproduzione dell'audio nella pagina history"
 ES = "Activa la reproducción de audio en la pantalla del Historial"
 BR = "Ativa a reprodução de áudio dos vídeos na tela do history"
@@ -2144,228 +2524,280 @@ FR = "Selectionnez si vouz voulez joué le son des vidéos dans la page histoire
 DE = "Auswählen ob Audio von Videos auf der History Detailseite ausgegeben werden soll"
 }
      "Layout background music":{
+EN = "Layout background music"
 IT = "Musica di fondo del layout"
 ES = "Música de fondo del layout"
 DE = "Layout Hintergrundmusik"
 }
      "Chose a background music file to play while using Arcadeflow":{
+EN = "Chose a background music file to play while using Arcadeflow"
 IT = "Seleziona un file audio da riprodurre mentre si usa Arcadeflow"
 ES = "Selecciona un archivo de audio para reproducir mientras usas Arcadeflow"
 DE = "Datei für Hintergrundmusik auswählen, die während Arcadeflow gespielt werden soll"
 }
      "Randomize background music":{
+EN = "Randomize background music"
 IT = "Musica di fondo casuale"
 DE = "Zufällige Hintergrundmusik"
 }
      "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music":{
+EN = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music"
 IT = "Se abilitato, Arcadeflow riprodurrà casualmente tutti i file mp3 nella cartella della musica di fondo"
 DE = "Wenn dies aktiv ist spielt Arcadeflow ein zufälliges MP3 aus dem ausgewählten Hintergrundmusik Verzeichnis"
 }
      "Stop bg music in attract mode":{
+EN = "Stop bg music in attract mode"
 IT = "Ferma la musica di fondo in attract mode"
 ES = "Parar la música de fondo en el modo ATTRACT"
 DE = "Stoppe Hintergrundmusik während Attract Mode"
 }
      "Stops playing the layout background music during attract mode":{
+EN = "Stops playing the layout background music during attract mode"
 IT = "Blocca la riproduzione della musica di fondo di Arcadeflow quando si abilita la modalità attract"
 ES = "Para la reproducción de la música de fondo cuando Arcadeflow entra en el modo ATTRACT"
 DE = "Stoppt die Hintergrundmusik des Layouts während Attract Mode"
 }
      "UPDATES":{
+EN = "UPDATES"
 IT = "AGGIORNAMENTI"
 ES = "ACTUALIZACIONES"
 DE = "UPDATES"
 }
      "Configure update notifications":{
+EN = "Configure update notifications"
 IT = "Configura le notifiche degli aggiornamenti"
 ES = "Configura las notificaciones de las actualizaciones"
 DE = "Update Benachrichtigungen konfigurieren"
 }
      "Automatically check for updates":{
+EN = "Automatically check for updates"
 IT = "Verifica automatica degli aggiornamenti"
 ES = "Comprueba automáticamente si hay actualizaciones"
 DE = "Automatisch auf Updates prüfen"
 }
      "Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one":{
+EN = "Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one"
 IT = "Effettua la verifica degli aggiornamenti a ogni avvio di AF, a meno che un aggiornamento non venga rifiutato"
 ES = "Comprueba si hay actualizaciones cuando inicias AF, si omites una actualización no te notificará hasta la proxima actualización"
 DE = "Prüft bei jedem AF Start auf Updates, wird ein Update ignoriert erfolgt eine erneute Benachrichtigung erst beim nächsten Update"
 }
      "Install update after download":{
+EN = "Install update after download"
 IT = "Installa l'aggiornamento"
 ES = "Instalar la actualización despues de la descarga"
 DE = "Installiere Update nach Download"
 }
      "Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly":{
+EN = "Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly"
 IT = "Arcadeflow ti permette di scegliere se vuoi solo scaricare l'aggiornamento o anche installarlo direttamente"
 ES = "Arcadeflow te permite sólo descargar la actualización, o tambien instalarla directamente"
 DE = "Arcadeflow kann Updates nur herunterladen oder sie auch direkt installieren"
 }
      "Install after download":{
+EN = "Install after download"
 IT = "Installa dopo il download"
 ES = "Instalar despues de la descarga"
 DE = "Installieren nach Download"
 }
      "Download only":{
+EN = "Download only"
 IT = "Solo download"
 ES = "Descargar solo"
 DE = "Nur Download"
 }
      "SAVE & LOAD":{
+EN = "SAVE & LOAD"
 IT = "SALVA E CARICA"
 ES = "SALVAR Y CARGAR"
 DE = "SPEICHERN & LADEN"
 }
      "Save or reload options configurations":{
+EN = "Save or reload options configurations"
 IT = "Salva o carica set di opzioni"
 ES = "Salva o carga las opciones configuradas"
 DE = "Speichern oder neuladen der Optionen Konfiguration"
 }
      "Save current options":{
+EN = "Save current options"
 IT = "Salva opzioni correnti"
 ES = "Salvar las opciones actuales"
 DE = "Speichere aktelle Optionen"
 }
      "Save the current options configuration in a custom named file":{
+EN = "Save the current options configuration in a custom named file"
 IT = "Salva l'attuale configurazione in un file a scelta"
 ES = "Salva la configuración actual en un archivo personalizado"
 DE = "Speichere aktuelle Optionen Konfiguration in einer benutzerdefinierten Datei"
 }
      "Load options from external file":{
+EN = "Load options from external file"
 IT = "Carica opzioni da un file esterno"
 ES = "Cargar opciones de un archivo externo"
 DE = "Optionen aus externer Datei laden"
 }
      "Restore AF options from a previously saved file":{
+EN = "Restore AF options from a previously saved file"
 IT = "Ripristina le opzioni di AF da un file salvato"
 ES = "Restaura las opciones de AF de un archivo guardado"
 DE = "Zuvor gespeicherte AF Einstellungen wiederherstellen"
 }
      "MULTIPLE MONITOR":{
+EN = "MULTIPLE MONITOR"
 IT = "MONITOR MULTIPLI"
 DE = "MEHRERE BILDSCHIRME"
 }
      "Configure the appearence of a second monitor":{
+EN = "Configure the appearence of a second monitor"
 IT = "Configura l'aspetto di un secondo monitor"
 DE = "Konfiguriere das Aussehen eines zweiten Bildschirms"
 }
      "Enable multiple monitor":{
+EN = "Enable multiple monitor"
 IT = "Abilita monitor multipli"
 DE = "Aktiviere mehrere Bildschirme"
 }
      "Enable Arcadeflow multiple monitor suport":{
+EN = "Enable Arcadeflow multiple monitor suport"
 IT = "Abilita il supporto per monitor multipli in Arcadeflow"
 DE = "Aktiviere die Arcadeflow Unterstützung für mehrere Bildschirme"
 }
      "Monitor identifier":{
+EN = "Monitor identifier"
 IT = "Identificatore monitor"
 DE = "Bildschirm Indentifikation"
 }
      "Select the identification number for the external monitor":{
+EN = "Select the identification number for the external monitor"
 IT = "Seleziona il numero identificatore per il monitor esterno"
 DE = "Wähle die Identifikationsnummer für den externen Bildschirm"
 }
      "Correct aspect ratio":{
+EN = "Correct aspect ratio"
 IT = "Correggi rapporto di forma"
 DE = "Seitenverhältnis korrigieren"
 }
      "Select if the image on the second monitor should be stretched or not":{
+EN = "Select if the image on the second monitor should be stretched or not"
 IT = "Scegli se l'immagine sul secondo monitor deve essere stirata o mantenere il rapporto corretto"
 DE = "Wähle aus ob das Bild auf dem zweiten Bildschirm gestreckt werden soll oder nicht"
 }
      "Main media source":{
+EN = "Main media source"
 IT = "Fonte principale"
 DE = "Hauptquelle für Medien"
 }
      "Select the artwork source to be used on secondary monitor":{
+EN = "Select the artwork source to be used on secondary monitor"
 IT = "Seleziona la fonte principale delle immagini da mostrare sul secondo monitor"
 DE = "Wähle die Artwork Quelle aus die für den zweiten Bildschirm genutzt werden soll"
 }
      "Alternate media source":{
+EN = "Alternate media source"
 IT = "Fonte alternativa"
 DE = "Alternative Medien Quelle"
 }
      "Select the artwork source to be used on secondary monitor in case first one is not present":{
+EN = "Select the artwork source to be used on secondary monitor in case first one is not present"
 IT = "Selezione la fonte delle immagini da usare nel caso non sia disponibile la prima"
 DE = "Wähle die Artwork Quelle für den zweiten Bildschirm für den Fall das die Erste nicht verfügbar ist"
 }
      "COLOR CYCLE":{
+EN = "COLOR CYCLE"
 IT = "CICLATURA COLORI"
 DE = "FARBWECHSEL"
 }
      "Enable and edit color cycling animation of tile highlight border":{
+EN = "Enable and edit color cycling animation of tile highlight border"
 IT = "Attiva e configura l'animazione di ciclatura colori per il bordo evidenziato"
 DE = "Aktivieren und Bearbeiten der Farbwechsel-Animation des Titel-Highlight-Rahmens"
 }
      "Enable color cycle":{
+EN = "Enable color cycle"
 IT = "Abilita ciclatura colori"
 DE = "Aktiviere Farbwechsel"
 }
      "Enable/disable color cycling of the tile higlight border":{
+EN = "Enable/disable color cycling of the tile higlight border"
 IT = "Attiva o disattiva l'effetto di ciclatura del colore del bordo della miniatura selezionata"
 DE = "Aktivieren/Deaktivieren der Farbwechsel-Animation des Titel-Highlight-Rahmens"
 }
      "Cycle Options":{
+EN = "Cycle Options"
 IT = "Opzioni ciclatura"
 DE = "Wechsel-Einstellungen"
 }
      "Cycle speed":{
+EN = "Cycle speed"
 IT = "Velocità di ciclatura"
 DE = "Wechsel-Geschwindigkeit"
 }
      "Select the speed of color cycle":{
+EN = "Select the speed of color cycle"
 IT = "Seleziona la velocità con cui ciclano i colori"
 DE = "Auswählen der Wechsel-Geschwindigkeit"
 }
      "Slow":{
+EN = "Slow"
 IT = "Lento"
 DE = "Langsam"
 }
      "Medium":{
+EN = "Medium"
 IT = "Medio"
 DE = "Mittel"
 }
      "Fast":{
+EN = "Fast"
 IT = "Veloce"
 DE = "Schnell"
 }
      "Cycle color":{
+EN = "Cycle color"
 IT = "Colore della ciclatura"
 DE = "Wechsel Farbe"
 }
      "Select a color intensity preset for the cycle":{
+EN = "Select a color intensity preset for the cycle"
 IT = "Seleziona l'intensità del colore"
 DE = "Auswählen der Farbintensivität des Farbwechsels"
 }
      "Popping":{
+EN = "Popping"
 IT = "Sgargiante"
 DE = "Aufspringen"
 }
      "Ping Pong effect":{
+EN = "Ping Pong effect"
 IT = "Effetto Ping Pong"
 DE = "Ping-Pong Effekt"
 }
      "Enable this if you want the cycle to revert once finished instead of restarting":{
+EN = "Enable this if you want the cycle to revert once finished instead of restarting"
 IT = "Abilita questo effetto per far ritornare indietro il colore a ogni ciclo"
 DE = "Aktivieren wenn der Wechsel nach Beendigung umzukehren statt von vorne zu starten"
 }
      "Start hue":{
+EN = "Start hue"
 IT = "Tinta di partenza"
 DE = "Start Farbton"
 }
      "Define the start value of the hue cycle (0 - 359)":{
+EN = "Define the start value of the hue cycle (0 - 359)"
 IT = "Definici la tinta da cui parte la ciclatura (0 - 359)"
 DE = "Definieren des Start Werts des Farbton Wechsels (0 - 359)"
 }
      "Stop hue":{
+EN = "Stop hue"
 IT = "Tinta di fine"
 DE = "Stop Farbton"
 }
      "Define the stop value of the hue cycle (0 - 359)":{
+EN = "Define the stop value of the hue cycle (0 - 359)"
 IT = "Definisce l'ultima tinta della ciclatura (0 - 359)"
 DE = "Definieren des Stop Werts des Farbton Wechsels (0 - 359)"
 }
      "DEBUG":{
+EN = "DEBUG"
 IT = "DEBUG"
 ES = "DEPURACIÓN"
 BR = "DEBUG"
@@ -2373,12 +2805,14 @@ FR = "DEBUG"
 DE = "DEBUG"
 }
      "This section is for debug purposes only":{
+EN = "This section is for debug purposes only"
 IT = "Questa sezione è solo per funzionalità di debug"
 ES = "Esta sección es sólo para la función de depuración"
 FR = "Cette section est pour fin de déboguage seulement"
 DE = "Dieser Abschnitt ist nur für DEBUG-Zwecke"
 }
      "FPS counter":{
+EN = "FPS counter"
 IT = "Contatore FPS"
 ES = "Contador FPS"
 BR = "Contador de FPS"
@@ -2386,6 +2820,7 @@ FR = "Conteur FPS"
 DE = "FPS ZÄHLER"
 }
      "DEBUG FPS COUNTER":{
+EN = "DEBUG FPS COUNTER"
 IT = "CONTATORE FPS DEBUG"
 ES = "DEPURACIÓN CONTADOR FPS"
 BR = "CONTADOR DE FPS DO DEBUG"
@@ -2393,33 +2828,39 @@ FR = "DEBUG CONTEUR FPS"
 DE = "DEBUG FPS ZÄHLER"
 }
      "DEBUG mode":{
+EN = "DEBUG mode"
 IT = "Modalità DEBUG"
 ES = "Modo DEBUG"
 FR = "mode DEBUG"
 DE = "DEBUG Modus"
 }
      "Enter DEBUG mode, increased output logging":{
+EN = "Enter DEBUG mode, increased output logging"
 IT = "Entra in modalità DEBUG, mostra più informazioni nel log"
 ES = "Entra en modo DEBUG, crea un registro con la información"
 FR = "Entrez dans le mode DEBUG, ceci augmente l'écriture au fichiers log"
 DE = "Wechselt in den DEBUG-Modus, zeigt weitere Informationen im Log an"
 }
      "AM options page":{
+EN = "AM options page"
 IT = "Pagina opzioni AM"
 ES = "Página de opciones de AM"
 DE = "AM Optionen Seite"
 }
      "Shows the default Attract-Mode options page":{
+EN = "Shows the default Attract-Mode options page"
 IT = "Mostra la pagina standard delle opzioni di Attract-Mode"
 ES = "Muestra la pantalla de opciones por defecto de Attract-Mode"
 DE = "Anzeige der Standard Attract-Mode Optionen Seite"
 }
      "Reset all options":{
+EN = "Reset all options"
 IT = "Ripristina opzioni"
 ES = "Resetear todas las opciones"
 DE = "Alle Optionen zurücksetzen"
 }
      "Restore default settings for all layout options, erase sorting options, language options and thumbnail options":{
+EN = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options"
 IT = "Riporta tutte le opzioni del layout ai valori predefiniti, cancella le opzioni di ordinamento, di lingua e di miniature"
 ES = "Restaura las opciones por defecto: borra las opciones de organización, de lenguaje y de miniaturas"
 DE = "Standard Einstellungen für alle Layout Optionen wiederherstellen, löschen der Sortier-, Sprach- und Vorschaubildoptionen"
@@ -2428,6 +2869,7 @@ DE = "Standard Einstellungen für alle Layout Optionen wiederherstellen, lösche
 // VARIOUS ERROR MESSAGES
 
      "Arcadeflow requires at least Attract Mode v2.5.0":{
+EN = "Arcadeflow requires at least Attract Mode v2.5.0"
 IT = "Arcadeflow richiede almeno Attract Mode v2.5.0"
 ES = "Arcadeflow necesita al menos la versión 2.5.0 de Attract Mode"
 BR = "Arcadeflow requer pelo menos o Attract Mode v2.5.0"
@@ -2435,6 +2877,7 @@ FR = "Arcadeflow nécessite au moins Attract Mode v2.5.0"
 DE = "Arcadeflow benötigt mindestens Attract Mode v2.5.0"
 }
      "Wrong syntax in screen resolution":{
+EN = "Wrong syntax in screen resolution"
 IT = "Sintassi errata nella risoluzione dello schermo"
 ES = "Valor incorrecto en la resolución de pantalla"
 BR = "Dados inválidos para a resolução da tela"
@@ -2445,6 +2888,7 @@ DE = "Falscher Syntax bei Bildschirmauflösung"
 // MENU HEADINGS
 
      "DISPLAYS":{
+EN = "DISPLAYS"
 IT = "DISPLAY"
 ES = "DISPLAY"
 BR = "DISPLAY"
@@ -2452,6 +2896,7 @@ FR = "DISPLAY"
 DE = "DISPLAYS"
 }
      "FILTERS":{
+EN = "FILTERS"
 IT = "FILTRI"
 ES = "FILTRO"
 BR = "FILTROS"
@@ -2459,6 +2904,7 @@ FR = "FILTERS"
 DE = "FILTER"
 }
      "TAGS":{
+EN = "TAGS"
 IT = "TAG"
 ES = "ETIQUETA"
 BR = "RÓTULOS"
@@ -2466,6 +2912,7 @@ FR = "TAGS"
 DE = "TAGS"
 }
      "FAVOURITES":{
+EN = "FAVOURITES"
 IT = "PREFERITI"
 ES = "FAVORITOS"
 BR = "FAVORITOS"
@@ -2473,6 +2920,7 @@ FR = "FAVORIS"
 DE = "FAVORITEN"
 }
      "EXIT ATTRACT MODE?":{
+EN = "EXIT ATTRACT MODE?"
 IT = "CHIUDI ATTRACT MODE?"
 ES = "¿SALIR DE ATTRACT MODE?"
 BR = "SAIR DO ATTRACT MODE?"
@@ -2480,6 +2928,7 @@ FR = "QUITTER ATTRACT MODE?"
 DE = "ATTRACT MODE VERLASSEN?"
 }
      "EXIT ARCADEFLOW?":{
+EN = "EXIT ARCADEFLOW?"
 IT = "CHIUDI ARCADEFLOW?"
 ES = "¿SALIR DE ARCADEFLOW?"
 BR = "SAIR DO ARCADEFLOW?"
@@ -2487,6 +2936,7 @@ FR = "QUITTER ARCADEFLOW?"
 DE = "ARCADEFLOW VERLASSEN?"
 }
      "EXIT ARCADEFLOW":{
+EN = "EXIT ARCADEFLOW"
 IT = "CHIUDI ARCADEFLOW"
 ES = "SALIR DE ARCADEFLOW"
 BR = "SAIR DO ARCADEFLOW"
@@ -2497,26 +2947,31 @@ DE = "ARCADEFLOW VERLASSEN"
 // TAGS MENU
 
      "Hide Hidden":{
+EN = "Hide Hidden"
 IT = "Nascondi nascosti"
 ES = "Ocultar"
 DE = "Versteckte ausblenden"
 }
      "Show Hidden":{
+EN = "Show Hidden"
 IT = "Mostra nascosti"
 ES = "Mostrar oculto"
 DE = "Versteckte einblenden"
 }
      "New Tag":{
+EN = "New Tag"
 IT = "Nuovo Tag"
 ES = "Nueva Etiqueta"
 DE = "Neuer Tag"
 }
      "Create New Tag":{
+EN = "Create New Tag"
 IT = "Crea un nuovo tag"
 ES = "Crea una nueva etiqueta"
 DE = "Neuen Tag erstellen"
 }
      "Back":{
+EN = "Back"
 IT = "Indietro"
 ES = "Volver"
 DE = "Zurück"
@@ -2525,16 +2980,19 @@ DE = "Zurück"
 // FAVOURITES MENU
 
      "Add Favourite":{
+EN = "Add Favourite"
 IT = "Aggiungi ai preferiti"
 ES = "Añadir a Favoritos"
 DE = "Favorit hinzufügen"
 }
      "Remove Favourite":{
+EN = "Remove Favourite"
 IT = "Rimuovi dai preferiti"
 ES = "Borrar de Favoritos"
 DE = "Favorit entfernen"
 }
      "Cancel":{
+EN = "Cancel"
 IT = "Annulla"
 ES = "Cancelar"
 DE = "Abbrechen"
@@ -2543,38 +3001,46 @@ DE = "Abbrechen"
 // UTILITY MENU
 
      "Sort and Filter":{
+EN = "Sort and Filter"
 IT = "Ordina e filtra"
 ES = "Ordenar y filtrar"
 DE = "Sortieren und filtern"
 }
      "Screensaver":{
+EN = "Screensaver"
 IT = "Salva schermo"
 ES = "Salvapantallas"
 DE = "Bildschirmschoner"
 }
      "Visuals":{
+EN = "Visuals"
 IT = "Aspetto"
 ES = "Aspecto"
 DE = "Erscheinungsbild"
 }
      "Jump to":{
+EN = "Jump to"
 IT = "Salta a"
 ES = "Salta a"
 DE = "Springe zu"
 }
      "Favourites Filter":{
+EN = "Favourites Filter"
 IT = "Filtro preferiti"
 DE = "Favortiten Filter"
 }
      "FAVOURITES":{
+EN = "FAVOURITES"
 IT = "PREFERITI"
 DE = "FAVORITEN"
 }
      "ALL GAMES":{
+EN = "ALL GAMES"
 IT = "TUTTI I GIOCHI"
 DE = "ALLE SPIELE"
 }
      "Utility Menu":{
+EN = "Utility Menu"
 IT = "Utility Menu"
 ES = "Menú de utilidades"
 BR = "Utility Menu"
@@ -2582,6 +3048,7 @@ FR = "Menu Utilitaire"
 DE = "Utility Menü"
 }
      "Sort by":{
+EN = "Sort by"
 IT = "Ordina per"
 ES = "Ordenar por"
 BR = "Ordenar por"
@@ -2589,6 +3056,7 @@ FR = "Trier par"
 DE = "Sortiere nach"
 }
      "Filters":{
+EN = "Filters"
 IT = "Filtri"
 ES = "Filtro"
 BR = "Filtros"
@@ -2596,6 +3064,7 @@ FR = "Filtres"
 DE = "Filter"
 }
      "Displays":{
+EN = "Displays"
 IT = "Display"
 ES = "Display"
 BR = "Display"
@@ -2603,6 +3072,7 @@ FR = "Displays"
 DE = "Displays"
 }
      "Search for":{
+EN = "Search for"
 IT = "Cerca per"
 ES = "Buscar por"
 BR = "Pesquisar por"
@@ -2610,10 +3080,12 @@ FR = "Chercher pour"
 DE = "Suche nach"
 }
      "NO SEARCH":{
+EN = "NO SEARCH"
 IT = "NESSUNA"
 DE = "KEINE SUCHE"
 }
      "Search":{
+EN = "Search"
 IT = "Cerca"
 ES = "Buscar"
 BR = "Pesquisar"
@@ -2621,6 +3093,7 @@ FR = "Chercher"
 DE = "Suche"
 }
      "Layout options":{
+EN = "Layout options"
 IT = "Opzioni layout"
 ES = "Opciones del layout"
 BR = "Opções do layout"
@@ -2628,6 +3101,7 @@ FR = "Options du layout"
 DE = "Layout Optionen"
 }
      "Attract mode":{
+EN = "Attract mode"
 IT = "Attract mode"
 ES = "Modo ATTRACT"
 BR = "Modo vinheta"
@@ -2635,6 +3109,7 @@ FR = "mode séduction"
 DE = "Attract Mode"
 }
      "Snaps tiles":{
+EN = "Snaps tiles"
 IT = "Mostra Snap"
 ES = "Mostrar Snap"
 BR = "Mostrar Capturas"
@@ -2642,6 +3117,7 @@ FR = "Montrez Captures Miniatures"
 DE = "Snap Kacheln"
 }
      "Box-Art tiles":{
+EN = "Box-Art tiles"
 IT = "Mostra Box-Art"
 ES = "Mostrar Box-Art"
 BR = "Exibir Arte da Caixa"
@@ -2649,11 +3125,13 @@ FR = "Montrez les Images de Boites"
 DE = "Box-Art Kacheln"
 }
      "Snaps or Box-Art":{
+EN = "Snaps or Box-Art"
 IT = "Snap o Box-Art"
 ES = "Snap o Box-Art"
 DE = "Snaps oder Box-Art"
 }
      "Reset Box Art":{
+EN = "Reset Box Art"
 IT = "Reset Box Art"
 ES = "Reiniciar Box Art"
 BR = "Resetar Arte da Caixa"
@@ -2661,46 +3139,55 @@ FR = "Reinitialisez les Images de Boites"
 DE = "Box-Art zurücksetzen"
 }
      "Check for updates":{
+EN = "Check for updates"
 IT = "Verifica aggiornamenti"
 ES = "Comprobar actualizaciones"
 DE = "Auf Updates prüfen"
 }
      "No update available":{
+EN = "No update available"
 IT = "Nessun aggiornamento"
 ES = "No hay actualizaciones"
 DE = "Kein Update vorhanden"
 }
      "Download new version":{
+EN = "Download new version"
 IT = "Scarica nuova versione"
 ES = "Descargar nueva versión"
 DE = "Neue Version herunterladen"
 }
      "Download and install new version":{
+EN = "Download and install new version"
 IT = "Scarica e installa nuova versione"
 ES = "Descargar e instalar nueva versión"
 DE = "Neue Version herunterladen und installieren"
 }
      "Dismiss this update":{
+EN = "Dismiss this update"
 IT = "Ignora aggiornamento"
 ES = "Ignorar actualización"
 DE = "Update ignorieren"
 }
      "New version:":{
+EN = "New version:"
 IT = "Nuova versione:"
 ES = "Nueva versión:"
 DE = "Neue Version:"
 }
      "Arcadeflow updated to":{
+EN = "Arcadeflow updated to"
 IT = "Arcadeflow aggiornato a"
 ES = "Arcadeflow actualizado a"
 DE = "Arcadeflow aktualisiert auf"
 }
      "Quit":{
+EN = "Quit"
 IT = "Esci"
 ES = "Salir"
 DE = "Verlassen"
 }
      "Language":{
+EN = "Language"
 IT = "Lingua"
 ES = "Lenguaje"
 BR = "Idioma"
@@ -2708,43 +3195,53 @@ FR = "Langue"
 DE = "Sprache"
 }
      "Categories":{
+EN = "Categories"
 IT = "Categorie"
 ES = "Categorias"
 DE = "Kategorien"
 }
      "RetroArch Integration":{
+EN = "RetroArch Integration"
 IT = "Integrazione RetroArch"
 DE = "RetroArch Integration"
 }
      "DISABLED":{
+EN = "DISABLED"
 IT = "DISABILITATO"
 DE = "DEAKTIVIERT"
 }
      "Discard changes":{
+EN = "Discard changes"
 IT = "Annulla modifiche"
 DE = "Änderungen verwerfen"
 }
      "Apply changes":{
+EN = "Apply changes"
 IT = "Applica modifiche"
 DE = "Änderungen anwenden"
 }
      "Assigned cores":{
+EN = "Assigned cores"
 IT = "Core assegnati"
 DE = "Zugewiesene Cores"
 }
      "Select core":{
+EN = "Select core"
 IT = "Seleziona core"
 DE = "Core auswählen"
 }
      "Select emulator":{
+EN = "Select emulator"
 IT = "Seleziona emulatore"
 DE = "Emulator auswählen"
 }
      "Apply RA core":{
+EN = "Apply RA core"
 IT = "Applica un core RA"
 DE = "RA Core anwenden"
 }
      "Change core assignment":{
+EN = "Change core assignment"
 IT = "Modifica assegnazione core"
 DE = "Ändere Core Zuweisung"
 }
@@ -2752,6 +3249,7 @@ DE = "Ändere Core Zuweisung"
 // SORT, SEARCH AND MULTIFILTER MENU
 
      "Search":{
+EN = "Search"
 IT = "Cerca"
 ES = "Buscar"
 BR = "Pesquisar"
@@ -2759,86 +3257,104 @@ FR = "Recherche"
 DE = "Suche"
 }
      "CLEAR":{
+EN = "CLEAR"
 IT = "AZZERA"
 ES = "BORRAR"
 DE = "LÖSCHEN"
 }
      "ALL":{
+EN = "ALL"
 IT = "TUTTO"
 ES = "TODO"
 DE = "ALLE"
 }
      "Multifilter":{
+EN = "Multifilter"
 IT = "Multifiltro"
 ES = "Multifiltro"
 DE = "Multifilter"
 }
      "Players":{
+EN = "Players"
 IT = "Giocatori"
 ES = "Jugadores"
 DE = "Spieler"
 }
      "Rotation":{
+EN = "Rotation"
 IT = "Orientamento"
 DE = "Rotation"
 }
      "Favourite":{
+EN = "Favourite"
 IT = "Preferito"
 ES = "Favorito"
 DE = "Favoriten"
 }
      "Not Favourite":{
+EN = "Not Favourite"
 IT = "Non preferito"
 ES = "No Favorito"
 DE = "Kein Favorit"
 }
      "Buttons":{
+EN = "Buttons"
 IT = "Pulsanti"
 ES = "Botones"
 DE = "Buttons"
 }
      "Region":{
+EN = "Region"
 IT = "Regione"
 DE = "Region"
 }
      "Rating":{
+EN = "Rating"
 IT = "Voto"
 DE = "Wertung"
 }
      "Series":{
+EN = "Series"
 IT = "Serie"
 DE = "Serie"
 }
      "Arcade System":{
+EN = "Arcade System"
 IT = "Sistema Arcade"
 DE = "Arcade System"
 }
      "Controls":{
+EN = "Controls"
 IT = "Controlli"
 ES = "Controles"
 DE = "Steuerung"
 }
      "Played":{
+EN = "Played"
 IT = "Giocato"
 ES = "Jugado"
 DE = "Gespielt"
 }
      "Not Played":{
+EN = "Not Played"
 IT = "Non giocato"
 ES = "No jugado"
 DE = "Nicht gespielt"
 }
      "Horizontal":{
+EN = "Horizontal"
 IT = "Orizzontale"
 ES = "Horizontal"
 DE = "Horizontal"
 }
      "Vertical":{
+EN = "Vertical"
 IT = "Verticale"
 ES = "Vertical"
 DE = "Vertikal"
 }
      "Title":{
+EN = "Title"
 IT = "Titolo"
 ES = "Título"
 BR = "Título"
@@ -2846,6 +3362,7 @@ FR = "Titre"
 DE = "Titel"
 }
      "Manufacturer":{
+EN = "Manufacturer"
 IT = "Sviluppatore"
 ES = "Fabricante"
 BR = "Fabricante"
@@ -2853,6 +3370,7 @@ FR = "Fabriquant"
 DE = "Hersteller"
 }
      "Year":{
+EN = "Year"
 IT = "Anno"
 ES = "Año"
 BR = "Ano"
@@ -2860,6 +3378,7 @@ FR = "Année"
 DE = "Jahr"
 }
      "Category":{
+EN = "Category"
 IT = "Categoria"
 ES = "Categoría"
 BR = "Categoria"
@@ -2867,6 +3386,7 @@ FR = "Catégorie"
 DE = "Kategorie"
 }
      "System":{
+EN = "System"
 IT = "Sistema"
 ES = "Sistema"
 BR = "Sistema"
@@ -2874,6 +3394,7 @@ FR = "Système"
 DE = "System"
 }
      "Tags":{
+EN = "Tags"
 IT = "Tag"
 ES = "Etiqueta"
 BR = "Rótulos"
@@ -2881,16 +3402,19 @@ FR = "Tags"
 DE = "Tags"
 }
      "Last Played":{
+EN = "Last Played"
 IT = "Ultimi giocati"
 ES = "Último jugado"
 DE = "Zuletzt gespielt"
 }
      "Last Favourite":{
+EN = "Last Favourite"
 IT = "Ultimi preferiti"
 ES = "Último Favorito"
 DE = "Letzer Favorit"
 }
      "RESET (KEEP FOCUS)":{
+EN = "RESET (KEEP FOCUS)"
 IT = "AZZERA (MANTIENI SELEZIONE)"
 ES = "REINICIAR (MANTENER SELECCIÓN)"
 BR = "LIMPAR (MANTÉM SELEÇÃO)"
@@ -2898,6 +3422,7 @@ FR = "REINITIALISÉ (GARDEZ LE FOCUS)"
 DE = "ZURÜCKSETZEN (AUSWAHL BEIBEHALTEN)"
 }
      "RESET":{
+EN = "RESET"
 IT = "AZZERA"
 ES = "REINICIAR"
 BR = "LIMPAR"
@@ -2908,6 +3433,7 @@ DE = "Zurücksetzen"
 // SHORT SORT TABLE
 
      "_System":{
+EN = "_System"
 IT = "_Sistema"
 ES = "_Sistema"
 BR = "_Sistema"
@@ -2915,6 +3441,7 @@ FR = "_Système"
 DE = "_System"
 }
      "_Name":{
+EN = "_Name"
 IT = "_Nome"
 ES = "_Nombre"
 BR = "_Nome"
@@ -2922,6 +3449,7 @@ FR = "_Nom"
 DE = "_Name"
 }
      "_Title":{
+EN = "_Title"
 IT = "_Titolo"
 ES = "_Título"
 BR = "_Título"
@@ -2929,6 +3457,7 @@ FR = "_Titre"
 DE = "_Titel"
 }
      "_Emul":{
+EN = "_Emul"
 IT = "_Emul"
 ES = "_Emul"
 BR = "_Emul"
@@ -2936,6 +3465,7 @@ FR = "_Emul"
 DE = "_Emul"
 }
      "_Clone":{
+EN = "_Clone"
 IT = "_Clone"
 ES = "_Clon"
 BR = "_Clone"
@@ -2943,6 +3473,7 @@ FR = "_Clone"
 DE = "_Klon"
 }
      "_Year":{
+EN = "_Year"
 IT = "_Anno"
 ES = "_Año"
 BR = "_Ano"
@@ -2950,6 +3481,7 @@ FR = "_Année"
 DE = "_Jahr"
 }
      "_Manuf":{
+EN = "_Manuf"
 IT = "_Svilup"
 ES = "_Fabric"
 BR = "_Fabric"
@@ -2957,6 +3489,7 @@ FR = "_Fabric"
 DE = "_Hersteller"
 }
      "_Categ":{
+EN = "_Categ"
 IT = "_Categ"
 ES = "_Categ"
 BR = "_Categ"
@@ -2964,6 +3497,7 @@ FR = "_Categ"
 DE = "_Kateg"
 }
      "_Players":{
+EN = "_Players"
 IT = "_Giocat"
 ES = "_Jugad"
 BR = "_Jogad"
@@ -2971,6 +3505,7 @@ FR = "_Joueurs"
 DE = "_Spieler"
 }
      "_Rot":{
+EN = "_Rot"
 IT = "_Rot"
 ES = "_Rot"
 IT = "_Ori"
@@ -2978,6 +3513,7 @@ FR = "_Ori"
 DE = "_Ori"
 }
      "_Cntrl":{
+EN = "_Cntrl"
 IT = "_Cntrl"
 ES = "_Cntrl"
 BR = "_Cntrl"
@@ -2985,6 +3521,7 @@ FR = "_Cntrl"
 DE = "_Cntrl"
 }
      "_Status":{
+EN = "_Status"
 IT = "_Stato"
 ES = "_Estado"
 BR = "_Status"
@@ -2992,6 +3529,7 @@ FR = "_Status"
 DE = "_Status"
 }
      "_DispCt":{
+EN = "_DispCt"
 IT = "_DispNum"
 ES = "_DispNum"
 BR = "_NumDisp"
@@ -2999,6 +3537,7 @@ FR = "_NumEcr"
 DE = "_DispZahl"
 }
      "_DispTp":{
+EN = "_DispTp"
 IT = "_DispTp"
 ES = "_DispTp"
 BR = "_DispTp"
@@ -3006,6 +3545,7 @@ FR = "_DispTp"
 DE = "_DispTp"
 }
      "_AltRomn":{
+EN = "_AltRomn"
 IT = "_RomnAlt"
 ES = "_RomnAlt"
 BR = "_NomRomAlt"
@@ -3013,6 +3553,7 @@ FR = "_NomRomalt"
 DE = "_RomNAlt"
 }
      "_AltTitle":{
+EN = "_AltTitle"
 IT = "_TitoloAlt"
 ES = "_TituloAlt"
 BR = "_TítuloAlt"
@@ -3020,6 +3561,7 @@ FR = "_TitreAlt"
 DE = "_TitelAlt"
 }
      "_Extra":{
+EN = "_Extra"
 IT = "_Extra"
 ES = "_Extra"
 BR = "_Extra"
@@ -3027,6 +3569,7 @@ FR = "_Extra"
 DE = "_Extra"
 }
      "_Fav":{
+EN = "_Fav"
 IT = "_Pref"
 ES = "_Fav"
 BR = "_Fav"
@@ -3034,6 +3577,7 @@ FR = "_Fav"
 DE = "_Fav"
 }
      "_Tags":{
+EN = "_Tags"
 IT = "_Tag"
 ES = "_Etiq"
 BR = "_Rót"
@@ -3041,6 +3585,7 @@ FR = "_Tags"
 DE = "_Tags"
 }
      "_PlCount":{
+EN = "_PlCount"
 IT = "_NumGioc"
 ES = "_NumJug"
 BR = "_NúmJog"
@@ -3048,6 +3593,7 @@ FR = "_NumJoueurs"
 DE = "_AnzSpieler"
 }
      "_PlTime":{
+EN = "_PlTime"
 IT = "_TempGioc"
 ES = "_Tiempojug"
 BR = "_TempdeJog"
@@ -3055,6 +3601,7 @@ FR = "_TempsJeu"
 DE = "_AnzGespielt"
 }
      "_Avail":{
+EN = "_Avail"
 IT = "_Dispon"
 ES = "_Dispon"
 BR = "_Dispon"
@@ -3062,21 +3609,26 @@ FR = "_Dispo"
 DE = "_Vorhanden"
 }
      "_Run":{
+EN = "_Run"
 IT = "_Data"
 }
      "_FavDt":{
+EN = "_FavDt"
 IT = "_PrefDt"
 }
      "_Rate":{
+EN = "_Rate"
 IT = "_Voto"
 }
      "_Series":{
+EN = "_Series"
 IT = "_Serie"
 }
 
 // MORE OF THE SAME SUBMENU
 
      "More of the same":{
+EN = "More of the same"
 IT = "Altri dello stesso"
 ES = "Más de lo mismo"
 BR = "Outros como este"
@@ -3084,6 +3636,7 @@ FR = "Encore et encore"
 DE = "Ähnliche"
 }
      "Decade":{
+EN = "Decade"
 IT = "Decennio"
 ES = "Década"
 BR = "Década"
@@ -3091,6 +3644,7 @@ FR = "Décénnie"
 DE = "Jahrzehnt"
 }
      "Main Category":{
+EN = "Main Category"
 IT = "Categoria principale"
 ES = "Categoría Principal"
 BR = "Categoria principal"
@@ -3098,6 +3652,7 @@ FR = "Catégorie principale"
 DE = "Hauptkategorie"
 }
      "Sub Category":{
+EN = "Sub Category"
 IT = "Categoria secondaria"
 ES = "Categoría Secundaria"
 BR = "Categoria secundária"
@@ -3105,6 +3660,7 @@ FR = "Sous catégorie"
 DE = "Unterkategorie"
 }
      "Orientation":{
+EN = "Orientation"
 IT = "Orientamento"
 ES = "Orientación"
 BR = "Orientação"
@@ -3112,6 +3668,7 @@ FR = "Orientation"
 DE = "Orientierung"
 }
      "Favourite state":{
+EN = "Favourite state"
 IT = "Stato preferiti"
 ES = "Estado preferido"
 BR = "Status favorito"
@@ -3122,226 +3679,265 @@ DE = "Bevorzugter Zustand"
 // OPTIONS RESPONSES
 
      "Yes":{
+EN = "Yes"
 IT = "Si"
 ES = "Si"
 FR = "Oui"
 DE = "Ja"
 }
      "No":{
+EN = "No"
 IT = "No"
 ES = "No"
 FR = "Non"
 DE = "Nein"
 }
      "Disabled":{
+EN = "Disabled"
 IT = "Disabilitato"
 ES = "Desactivado"
 FR = "Désactiqué"
 DE = "Deaktiviert"
 }
      "1-Small":{
+EN = "1-Small"
 IT = "1-Piccola"
 ES = "1-Pequeña"
 FR = "1-Petit"
 DE = "1-Klein"
 }
      "Up":{
+EN = "Up"
 IT = "Alto"
 ES = "Arriba"
 FR = "Haut"
 DE = "Hoch"
 }
      "None":{
+EN = "None"
 IT = "Nessuno"
 ES = "Nada"
 FR = "Rien"
 DE = "Keine"
 }
      "Timeline":{
+EN = "Timeline"
 IT = "Linea temporale"
 ES = "Línea temporal"
 FR = "Chronologie"
 DE = "Zeitleiste"
 }
      "Scrollbar":{
+EN = "Scrollbar"
 IT = "Barra di scorrimento"
 ES = "Barra de desplazamiento"
 FR = "Barre de défilement"
 DE = "Bildlaufleiste"
 }
      "Label List":{
+EN = "Label List"
 IT = "Lista etichette"
 ES = "Listar por letra"
 FR = "Liste d'étiquette"
 DE = "Labelliste"
 }
      "Left":{
+EN = "Left"
 IT = "Sinistra"
 ES = "Izquierda"
 FR = "Gauche"
 DE = "Links"
 }
      "Right":{
+EN = "Right"
 IT = "Destra"
 ES = "Derecha"
 FR = "Droite"
 DE = "Rechts"
 }
      "Flip":{
+EN = "Flip"
 IT = "Ribalta"
 ES = "Invertir"
 FR = "Retourner"
 DE = "Umdrehen"
 }
      "List":{
+EN = "List"
 IT = "Lista"
 ES = "Lista"
 FR = "Liste"
 DE = "Liste"
 }
      "List with artwork":{
+EN = "List with artwork"
 IT = "Lista con immagini"
 ES = "Lista con imagen"
 FR = "Liste avec images"
 DE = "Liste mit Artwork"
 }
      "list with walls":{
+EN = "list with walls"
 IT = "Lista con sfondi"
 DE = "Liste mit Walls"
 }
      "Adaptive":{
+EN = "Adaptive"
 IT = "Adattato"
 ES = "Adaptado"
 FR = "Adaptif"
 DE = "Adaptiv"
 }
      "Square":{
+EN = "Square"
 IT = "Quadrato"
 ES = "Cuadrado"
 FR = "Carré"
 DE = "Quadratisch"
 }
      "Basic":{
+EN = "Basic"
 IT = "Semplice"
 ES = "Simple"
 FR = "Simple"
 DE = "Einfach"
 }
      "Dark":{
+EN = "Dark"
 IT = "Scuro"
 ES = "Oscuro"
 FR = "Foncé"
 DE = "Dunkel"
 }
      "Light":{
+EN = "Light"
 IT = "Chiaro"
 ES = "Claro"
 FR = "Clair"
 DE = "Klar"
 }
      "Pop":{
+EN = "Pop"
 IT = "Intenso"
 ES = "Intenso"
 FR = "Intense"
 DE = "Knallig"
 }
      "From start":{
+EN = "From start"
 IT = "All'avvio"
 ES = "Al iniciar"
 FR = "Du début"
 DE = "Beim Start"
 }
      "Inactivity only":{
+EN = "Inactivity only"
 IT = "Quando inattivo"
 ES = "Cuando está inactivo"
 FR = "Inactivité seulement"
 DE = "Nur bei Inaktivität"
 }
      "Disabled":{
+EN = "Disabled"
 IT = "Disabilitato"
 ES = "Desactivado"
 FR = "Désactivé"
 DE = "Deaktiviert"
 }
      "Scanlines":{
+EN = "Scanlines"
 IT = "Scanline"
 ES = "Scanlines"
 FR = "Scanlines"
 DE = "Scanlines"
 }
      "Half Resolution":{
+EN = "Half Resolution"
 IT = "Risoluzione dimezzata"
 ES = "Resolución a la mitad"
 FR = "Demi Resolution"
 DE = "Halbe Auflösung"
 }
      "Aperture":{
+EN = "Aperture"
 IT = "Apertura"
 ES = "Apertura"
 FR = "Aperture"
 DE = "Blende"
 }
      "matrix":{
+EN = "matrix"
 IT = "Matrice di punti"
 ES = "Matriz de puntos"
 FR = "Matrice"
 DE = "Matrix"
 }
      "White panel":{
+EN = "White panel"
 IT = "Pannello chiaro"
 ES = "Panel claro"
 FR = "Panneau blanc"
 DE = "Weißes Panel"
 }
      "Background":{
+EN = "Background"
 IT = "Sfondo"
 ES = "Fondo"
 FR = "Fond"
 DE = "Hintergrund"
 }
      "Standard":{
+EN = "Standard"
 IT = "Standard"
 ES = "Estándar"
 FR = "Standard"
 DE = "Standard"
 }
      "Keyboard":{
+EN = "Keyboard"
 IT = "Tastiera"
 ES = "Teclado"
 FR = "Clavier"
 DE = "Tastatur"
 }
      "Screen keys":{
+EN = "Screen keys"
 IT = "Tasti su schermo"
 ES = "Teclas en pantalla"
 DE = "Bildschirmtasten"
 }
      "Attract Folder":{
+EN = "Attract Folder"
 IT = "Cartella Attract"
 ES = "Directorio de Attract"
 DE = "Attract Ordner"
 }
      "Arcadeflow Folder":{
+EN = "Arcadeflow Folder"
 IT = "Cartella Arcadeflow"
 ES = "Directorio de Arcadeflow"
 DE = "Arcadflow Ordner"
 }
      "DEFAULT":{
+EN = "DEFAULT"
 IT = "PREDEFINITO"
 ES = "PREDEFINIDO"
 DE = "STANDARD"
 }
      "BY BRAND":{
+EN = "BY BRAND"
 IT = "PER MARCA"
 ES = "POR MARCA"
 DE = "NACH MARKE"
 }
      "BY BRAND, YEAR":{
+EN = "BY BRAND, YEAR"
 IT = "PER MARCA, ANNO"
 ES = "POR MARCA, AÑO"
 DE = "NACH MARKE, JAHR"
 }
      "BY YEAR":{
+EN = "BY YEAR"
 IT = "PER ANNO"
 ES = "POR AÑO"
 DE = "NACH JAHR"
@@ -3350,18 +3946,22 @@ DE = "NACH JAHR"
 // POWER MENU
 
      "Power":{
+EN = "Power"
 IT = "Arresto"
 DE = "Power"
 }
      "Shutdown":{
+EN = "Shutdown"
 IT = "Spegni"
 DE = "Herunterfahren"
 }
      "Restart":{
+EN = "Restart"
 IT = "Riavvia"
 DE = "Neustart"
 }
      "Sleep":{
+EN = "Sleep"
 IT = "Sospendi"
 DE = "Ruhezustand"
 }
@@ -3369,18 +3969,22 @@ DE = "Ruhezustand"
 // METADATA EDITOR
 
      "Game Metadata":{
+EN = "Game Metadata"
 IT = "Metadati del Gioco"
 DE = "Metadaten Spiel"
 }
      "Original":{
+EN = "Original"
 IT = "Originale"
 DE = "Original"
 }
      "Values":{
+EN = "Values"
 IT = "Valori"
 DE = "Werte"
 }
      "Manual entry":{
+EN = "Manual entry"
 IT = "Inserisci"
 DE = "Manueller Eintrag"
 }
@@ -3388,38 +3992,47 @@ DE = "Manueller Eintrag"
 // OVERMENU
 
      "Game Menu":{
+EN = "Game Menu"
 IT = "Menu Gioco"
 DE = "Spiel Menü"
 }
      "More of the same...":{
+EN = "More of the same..."
 IT = "Altri dello stesso..."
 DE = "Mehr davon..."
 }
      "Similar Games":{
+EN = "Similar Games"
 IT = "Giochi simili"
 DE = "Ähnliche Spiele"
 }
      "Scrape selected game":{
+EN = "Scrape selected game"
 IT = "Scrape questo gioco"
 DE = "Scrape ausgewähltes Spiel"
 }
      "Edit metadata":{
+EN = "Edit metadata"
 IT = "Modifica metadati"
 DE = "Metadaten bearbeiten"
 }
      "CAUTION!":{
+EN = "CAUTION!"
 IT = "ATTENZIONE!"
 DE = "ACHTUNG!"
 }
      "Delete ROM":{
+EN = "Delete ROM"
 IT = "Cancella ROM"
 DE = "ROM löschen"
 }
      "ROM Management":{
+EN = "ROM Management"
 IT = "Gestione ROM"
 DE = "ROM Verwaltung"
 }
      "Delete":{
+EN = "Delete"
 IT = "Elimina"
 DE = "Löschen"
 }
@@ -3427,18 +4040,22 @@ DE = "Löschen"
 // SLIDER CONTROLS
 
      "ACTIONS":{
+EN = "ACTIONS"
 IT = "AZIONI"
 DE = "AKTIONEN"
 }
      "APPLY":{
+EN = "APPLY"
 IT = "APPLICA"
 DE = "ANWENDEN"
 }
      "RGB Color":{
+EN = "RGB Color"
 IT = "Colore RGB"
 DE = "RGB Farbe"
 }
      "HUE Value":{
+EN = "HUE Value"
 IT = "Valore HUE"
 DE = "HUE Wert"
 }
