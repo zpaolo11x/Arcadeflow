@@ -7580,7 +7580,7 @@ function maincategorydispl(offset) {
 function categorycolor(offset, index) {
 	//index = 2 or 3 : first or second color
 	local sout = ""
-	local sout = maincategory(offset) // parsecategory(fe.game_info(Info.Category, offset))
+	local sout = maincategory(offset)
 
 	if (sout == "") return ([0.5, 0.5, 0.5])
 
