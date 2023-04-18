@@ -4751,7 +4751,7 @@ local metadata = {
 				"Series",
 				"Arcade System"
 				]
-	sub =	["string",
+	sub =	[	"string",
 				yearnames,
 				"string",
 				catnames,
@@ -5177,7 +5177,7 @@ P2_JOYSTICK:Black:
 function parsecategory(categoryname) {
 	local out = ""
 	// Clean up silly name in RetroPie XML
-	categoryname = subst_replace (categoryname, "Puzzle-Game", "Puzzle")
+	categoryname = subst_replace (categoryname, "Puzzle-Game", "Puzzle Game")
 	categoryname = subst_replace (categoryname, "Whac-A-Mole", "Whac A Mole")
 	categoryname = subst_replace (categoryname, "Mini-Games", "Mini Games")
 	categoryname = subst_replace (categoryname, "Tree - Plant", "Tree Plant")
@@ -7477,6 +7477,7 @@ categorytable["RACE"] <- ["RACE", "RACE", [200, 0, 0]]//
 categorytable["MAZE"] <- ["MAZE", "MAZE", [100, 200, 0]]//
 
 categorytable["PUZZLE"] <- ["PUZZL", "PUZZLE", [150, 120, 200]]
+categorytable["PUZZLE GAME"] <- ["PUZZL", "PUZZLE", [150, 120, 200]]
 
 //blue
 categorytable["SHOOTEMUP"] <- ["SHOOT", "SHOOT", [0, 120, 250]]//
