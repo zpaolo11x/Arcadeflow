@@ -16624,7 +16624,10 @@ function buildcategorytable() {
 
 	for (local i = 0; i < fe.list.size; i++) {
 		cat0 = parsecategory(z_list.boot[i].z_category)
-
+		
+		testpr(z_list.boot[i].z_category+"\n")
+		testpr(cat0+"\n\n")
+		
 		if (cat0 == "") cat0 = "Unknown"
 		local catarray = split (cat0, "/")
 		cat1 = strip(catarray[0])
