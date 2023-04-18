@@ -8488,7 +8488,7 @@ impulse2.flow = 0.5
 
 /// No list blanker ///
 
-nolist_blanker = fl.surf.add_text(ltxt("LIST EMPTY",AF.LNG), 0, 0, fl.w, fl.h)
+nolist_blanker = fl.surf.add_text("LIST EMPTY", 0, 0, fl.w, fl.h)
 nolist_blanker.set_bg_rgb(120, 120, 120)
 nolist_blanker.set_rgb(110, 110, 110)
 nolist_blanker.char_size = fl.h * 0.1
