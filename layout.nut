@@ -221,7 +221,7 @@ local zmenu = null
 
 // Load language file
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too.
-fe.do_nut("nut_language.nut")
+fe.do_nut("nut_language2.nut")
 AF.LNG = "EN"
 try {AF.LNG = loadlanguage()} catch(err) {}
 
