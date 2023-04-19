@@ -5439,12 +5439,6 @@ multifilterz.l0["Category"] <- {
 			// Return data when no category is selected
 			if (v == "") return {l1val = "Unknown", l1array = false,  l1name = "Unknown", sub = false, l2val = null, l2name = null}
 
-			/*
-			local v2 = split (v, "/")
-			local v3 = split (v, ",-")
-			local match = !((catnames.data.find(v) == null) && (catnames_SS.data.find(v) == null))
-			*/
-
 			local pcat = processcategory(v)
 
 			return(pcat.map(function(val){
@@ -5465,45 +5459,6 @@ multifilterz.l0["Category"] <- {
 					l2name = strip(val[1])					
 				}) 
 			}))
-/*
-			if (!match && (v2.len() == 1) && (v3.len() > 1)) { //Array of values
-				for (local i = 0; i < v3.len(); i++) {
-					v3[i] = strip (v3[i])
-				}
-				return (v3.map(function(val){
-					return ({
-						l1val = v3
-						l1array = true
-						l1name = v3
-						sub = false
-						l2val = null
-						l2name = null
-					})
-				}))
-			}
-			else { // not an array!
-				if (v2.len() > 1) { //Cascaded values
-					return ([{
-						l1val = strip(v2[0]) + "/"
-						l1array = false
-						l1name = strip(v2[0]) + "..."
-						sub = true
-						l2val = strip(v2[0]) + "/" + strip(v2[1])
-						l2name = strip(v2[1])
-					}])
-				}
-				else { //Single value
-					return ([{
-						l1val = v
-						l1array = false
-						l1name = v
-						sub = false
-						l2val = null
-						l2name = null
-					}])
-				}
-			}
-			*/
 			return (out)
 		}
 	}
