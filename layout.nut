@@ -16715,7 +16715,7 @@ local selectcat = 0 //TEST160 TOGLIERE
 			else {
 				search.catg = [maincategory, catmenu2[result].value]
 			}
-			
+			print_variable(search.catg,"","search.catg")
 			local currentname = z_list.gametable[z_list.index].z_name
 			local currentsystem = z_list.gametable[z_list.index].z_system
 
