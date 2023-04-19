@@ -16695,7 +16695,9 @@ function subcategorymenu(maincategory, subcategory) {
 local selectcat = 0 //TEST160 TOGLIERE
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
-		if (result == -1) maincategorymenu(maincategory)
+		if (result == -1) {
+			maincategorymenu([[maincategory,""]])
+		}
 
 		else {
 			if (result == 0) {
@@ -16728,13 +16730,15 @@ local selectcat = 0 //TEST160 TOGLIERE
 }
 
 function maincategorymenu(currentcategories) {
+	testpr((typeof currentcategories)+"\n")
+	print_variable(currentcategories,"","currentcategories")
 	local catmenu1 = []
 
 	local i = 0
 	foreach(item, val in cat) {
 		catmenu1.push({
 			text = item,
-			note = val.num
+			note = val.num,
 		})
 	}
 	print_variable(catmenu1,"","CATMENU1")
@@ -16742,13 +16746,21 @@ function maincategorymenu(currentcategories) {
 	
 	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
 
-	local currentcat = (search.catg[0] == "") ? 0 : 0 //TEST160 RIMETTERLO!!! catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
+	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
 	catmenu1[currentcat].rawset ("glyph", 0xea10)
 
-	local startcat = catmenu1.map(function(value){return(value.text)}).find(maincategory)
-	if (startcat == null) startcat = 0 //TEST160 RIMUOVERE
+	local startcat = 0
+	foreach (iv, itemv in currentcategories){
+		testpr(iv+" *"+itemv+"*\n")
+		print_variable(catmenu1,"","catmenu1")
+		startcat = catmenu1.map(function(value){return(value.text)}).find(itemv[0])
+		if (startcat != null) break
+	}
+testpr("A\n")
+	//catmenu1.map(function(value){return(value.text)}).find(maincategory)
+	//if (startcat == null) startcat = 0 //TEST160 RIMUOVERE
 	frostshow()
-
+testpr("B\n")
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
 	function(result) {
 		if (result == -1) {
@@ -16770,7 +16782,7 @@ function maincategorymenu(currentcategories) {
 		}
 		else {
 			testpr("calling menu with maincat, subcat:"+catmenu1[result].text+"|||"+((catmenu1[result].text == maincategory) ? subcategory : "")+"\n")
-			subcategorymenu(catmenu1[result].text, 0)//TEST160 RIMETTERE CORRETTO (catmenu1[result].text == maincategory) ? subcategory : "")
+			subcategorymenu(catmenu1[result].text, "")//TEST160 RIMETTERE CORRETTO (catmenu1[result].text == maincategory) ? subcategory : "")
 		}
 	})
 }
