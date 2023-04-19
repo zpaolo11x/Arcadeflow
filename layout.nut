@@ -6568,11 +6568,12 @@ function z_listsearch(index) {
 function z_catfilter(index) {
 	if (search.catg[0] == "") return true
 
-	local nowcat = stripcat(index)
+	local nowcat = processcategory(z_list.boot[index + fe.list.index].z_category)
 
-	if ((search.catg[1] == "*") && (search.catg[0] == nowcat[0])) return true
-	if ((search.catg[0] == nowcat[0]) && (search.catg[1] == nowcat[1])) return true
-
+	foreach (indexv, arrayv in nowcat){
+		if ((search.catg[1] == "*") && (search.catg[0] == arrayv[0])) return true
+		if ((search.catg[0] == nowcat[0]) && (search.catg[1] == arrayv[1])) return true
+	}
 	return false
 }
 
@@ -16709,16 +16710,18 @@ local selectcat = 0 //TEST160 TOGLIERE
 					search.catg = [maincategory, "*"]
 				}
 			}
-			else if (result == 1) {
+			else if ((result == 1) && (catmenu2[1].text == maincategory)) {
 				search.catg = [maincategory, ""]
 			}
 			else {
 				search.catg = [maincategory, catmenu2[result].value]
 			}
 			print_variable(search.catg,"","search.catg")
+			//TEST160 A COSA SERVE QUESTA PARTE CHE HO TOLTO???
+			/*
 			local currentname = z_list.gametable[z_list.index].z_name
 			local currentsystem = z_list.gametable[z_list.index].z_system
-
+			*/
 			updatesearchdatamsg()
 
 			mfz_apply(false)
@@ -17833,9 +17836,11 @@ function on_signal(sig) {
 						}
 						// GOOD
 						if (hidemenu && (result != numtag) && (result != -1) && (search.mots[1] != "")) {
-
+							//TEST160 A COSA SERVE QUESTO???
+							/*
 							local currentname = z_list.gametable[z_list.index].z_name
 							local currentsystem = z_list.gametable[z_list.index].z_system
+							*/
 							if (backs.index == -1) {
 								backs.index = fe.list.index
 							}
