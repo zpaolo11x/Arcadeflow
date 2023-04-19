@@ -5439,10 +5439,33 @@ multifilterz.l0["Category"] <- {
 			// Return data when no category is selected
 			if (v == "") return {l1val = "Unknown", l1array = false,  l1name = "Unknown", sub = false, l2val = null, l2name = null}
 
+			/*
 			local v2 = split (v, "/")
 			local v3 = split (v, ",-")
 			local match = !((catnames.data.find(v) == null) && (catnames_SS.data.find(v) == null))
+			*/
 
+			local pcat = processcategory(v)
+
+			return(pcat.map(function(val){
+				if (val[1] == "") return({
+					l1val = val[0]
+					l1array = false
+					l1name = val[0]
+					sub = false
+					l2val = null
+					l2name = null					
+				}) 
+				else return({
+					l1val = strip(val[0]) + "/"
+					l1array = false
+					l1name = strip(val[0]) + "..."
+					sub = true
+					l2val = strip(val[0]) + "/" + strip(val[1])
+					l2name = strip(val[1])					
+				}) 
+			}))
+/*
 			if (!match && (v2.len() == 1) && (v3.len() > 1)) { //Array of values
 				for (local i = 0; i < v3.len(); i++) {
 					v3[i] = strip (v3[i])
@@ -5480,6 +5503,7 @@ multifilterz.l0["Category"] <- {
 					}])
 				}
 			}
+			*/
 			return (out)
 		}
 	}
@@ -5842,6 +5866,7 @@ function mfz_num() {
 }
 
 function mfz_build(reset) {
+	testpr("MFZ_BUILD\n")
 	timestart("mfz_build")
 	debugpr("mfz_build reset:" + reset + "\n")
 
@@ -5858,12 +5883,14 @@ function mfz_build(reset) {
 
 	// Scan the whole romlist
 	for (local i = 0; i < fe.list.size; i++) {
-		
+		testpr("\nGAME:"+i+"\n")
 		foreach (id0, table0 in multifilterz.l0) { // Scan throught the "items" ("Year", "Category" etc) in the multifilter,
+			testpr(id0+"\n")
 			local vals = table0.levcheck(i - fe.list.index)
-
+			print((typeof vals)+"\n")
 			// Check if level 1 value is an ARRAY!
 			foreach (ix, val_ix in vals) {
+				testpr(ix+" "+val_ix.l1name+"\n")
 				try {
 					table0.menu[val_ix.l1name].num ++
 				}
