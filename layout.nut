@@ -5494,6 +5494,11 @@ multifilterz.l0["Category"] <- {
 		}
 	}
 
+//TEST160
+local puppo = 3
+if (typeof puppo != "array") puppo = [puppo]
+foreach (i, item in puppo) print (item+"\n")
+
 multifilterz.l0["Year"] <- {
 		label = ""
 		filtered = false
