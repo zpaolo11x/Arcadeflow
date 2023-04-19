@@ -6162,7 +6162,7 @@ function ztestz() {
 //ztestz()
 
 function mfz_refreshnum(catin) {
-	return //TEST160
+	//return //TEST160
 	timestart("mfz_refreshnum")
 	debugpr("mfz_refreshnum "+ catin + "\n")
 	//	return
@@ -6196,21 +6196,10 @@ function mfz_refreshnum(catin) {
 					}
 				}
 			}
-			//if ((z_list.boot[i].z_inmfz || (id0 == catin)) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
 			if (inmfz && (z_list.boot[i].z_infav && z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
-			//if (mfz_checkin(i - fe.list.index, catin) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
-				if ((vals.l1array)) {
-					foreach (i2, item2 in vals.l1name) {
-						table0.menu[item2].num ++
-					}
-				}
-				else { // level1 value is not an ARRAY
-					// Populate or update level1 menu
-					table0.menu[vals.l1name].num ++
-					if (vals.sub) { //submenu is present
-						// Populate or update level 2 menu
-						table0.menu[vals.l1name].submenu[vals.l2name].num ++
-					}
+				foreach (vindex, vtable in vals){
+					table0.menu[vtable.l1name].num ++
+					if (vtable.sub) table0.menu[vtable.l1name].submenu[vtable.l2name].num ++
 				}
 			}
 
