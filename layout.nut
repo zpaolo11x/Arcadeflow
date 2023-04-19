@@ -5429,13 +5429,6 @@ multifilterz.l0["Category"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_category
 
-			/* 
-			In this multifilter category is analysed based on three factors:
-			A - matching of screenscraper or mame category (can't be an array even if it contains "," or "-")
-			B - presence of "/" as a category hierarchy separator
-			C - presence of "," or "-" as a multiple category separator
-			*/
-			
 			// Return data when no category is selected
 			if (v == "") return {l1val = "Unknown", l1array = false,  l1name = "Unknown", sub = false, l2val = null, l2name = null}
 
@@ -5876,6 +5869,11 @@ function mfz_build(reset) {
 		}
 	}
 	timestop("mfz_build")
+	foreach (item, tabl in multifilterz.l0){
+		testpr(item+"\n")
+		print_variable(tabl.menu,"","")
+		print("\n")
+	}
 }
 
 // mfz_build (true)
@@ -5977,6 +5975,13 @@ function mfz_checkin(index) {
 			if (multifilterz.filter[id0].len() > 0) { //Filter is applied on this category
 				vtemp = table0.levcheck(index)
 				foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
+					foreach (vitem, vtable in vtemp){
+						if ((value == vtable.l1val) || (value == vtable.l2val)){
+							outOR = true
+							break
+						}
+					}
+					/*
 					if (vtemp.l1array) {
 						for (local i = 0; i < vtemp.l1val.len(); i++) {
 							if ((value == vtemp.l1val[i])) {
@@ -5991,6 +5996,7 @@ function mfz_checkin(index) {
 							break
 						}
 					}
+					*/
 				} // foreach is broken if one match inside the category is true
 
 				// metafilter is populated with the outOR value for current id0
@@ -6156,6 +6162,7 @@ function ztestz() {
 //ztestz()
 
 function mfz_refreshnum(catin) {
+	return //TEST160
 	timestart("mfz_refreshnum")
 	debugpr("mfz_refreshnum "+ catin + "\n")
 	//	return
@@ -6285,6 +6292,7 @@ function mfz_menu1(presel) {
 	local valcurrent = null
 
 	if (z_list.size > 0) valcurrent = multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+	// valcurrent is the array of entries for the current game and current mf.cat0
 
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu, 1, multifilterz.l0[mf.cat0].translate, multifilterz.l0[mf.cat0].sort)
 	local namearray = mfzdat.names
@@ -6303,8 +6311,8 @@ function mfz_menu1(presel) {
 	}
 
 	if (presel == -1) {
-		if ((valcurrent != null) && !(valcurrent.l1array)) {
-			presel = indexarray.find(valcurrent.l1name)
+		if ((valcurrent != null)) {
+			presel = indexarray.find(valcurrent[0].l1name)
 		}
 		else {
 			presel = 0
