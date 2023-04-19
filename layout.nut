@@ -4724,7 +4724,7 @@ local focusindex = {
 local catnames = getcatnames()
 local catnames_SS = getcatnames_SS()
 local yearnames = getyears()
-print_variable(catnames_SS,"","")
+
 local metadata = {
 	path = null
 	ids = [	"z_title",
@@ -5412,7 +5412,6 @@ function processcategory(categoryname){
 	if (catmatch) {
 		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
 	} 
-	testpr(catarray.len()+"\n")
 	foreach (i, item in catarray){
 		cathierarchy = split (item, "/")
 		if (cathierarchy.len() == 1) out.push ([strip(cathierarchy[0]),""]) else out.push (cathierarchy.map(function(val){return(strip(val))})) 
@@ -5420,17 +5419,6 @@ function processcategory(categoryname){
 	return out
 
 }
-
-print_variable(processcategory("RPG - Action, Adventure"),"","")
-print ("\n")
-print_variable(processcategory("Adventures"),"","")
-print ("\n")
-print_variable(processcategory("Adventure, sports / RPG"),"","")
-print ("\n")
-print_variable(processcategory("Whac-A-Mole/Gun"),"","")
-print ("\n")
-print_variable(processcategory(""),"","")
-print ("\n")
 
 multifilterz.l0["Category"] <- {
 		label = ""
@@ -5459,35 +5447,37 @@ multifilterz.l0["Category"] <- {
 				for (local i = 0; i < v3.len(); i++) {
 					v3[i] = strip (v3[i])
 				}
-				return ({
-					l1val = v3
-					l1array = true
-					l1name = v3
-					sub = false
-					l2val = null
-					l2name = null
-				})
+				return (v3.map(function(val){
+					return ({
+						l1val = v3
+						l1array = true
+						l1name = v3
+						sub = false
+						l2val = null
+						l2name = null
+					})
+				}))
 			}
 			else { // not an array!
 				if (v2.len() > 1) { //Cascaded values
-					return ({
+					return ([{
 						l1val = strip(v2[0]) + "/"
 						l1array = false
 						l1name = strip(v2[0]) + "..."
 						sub = true
 						l2val = strip(v2[0]) + "/" + strip(v2[1])
 						l2name = strip(v2[1])
-					})
+					}])
 				}
 				else { //Single value
-					return ({
+					return ([{
 						l1val = v
 						l1array = false
 						l1name = v
 						sub = false
 						l2val = null
 						l2name = null
-					})
+					}])
 				}
 			}
 			return (out)
@@ -5509,12 +5499,12 @@ multifilterz.l0["Year"] <- {
 			local v = z_list.boot[index + fe.list.index].z_year
 
 			// Return data when no category is selected
-			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return {l1val = "Unknown", l1array = false, l1name = "Unknown", sub = false, l2val = null, l2name = null}
-			if (v == "[unreleased]") return {l1val = "Unreleased", l1array = false, l1name = "Unreleased", sub = false, l2val = null, l2name = null}
-			if (v == "19??") return {l1val = "19??", l1array = false, l1name = "19??", sub = false, l2val = null, l2name = null}
+			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1array = false, l1name = "Unknown", sub = false, l2val = null, l2name = null}]
+			if (v == "[unreleased]") return [{l1val = "Unreleased", l1array = false, l1name = "Unreleased", sub = false, l2val = null, l2name = null}]
+			if (v == "19??") return [{l1val = "19??", l1array = false, l1name = "19??", sub = false, l2val = null, l2name = null}]
 			local v2 = v.slice(0, 3) + "x"
 
-			return ({
+			return ([{
 				l1val = v2
 				l1val = v2
 				l1array = false
@@ -5522,7 +5512,7 @@ multifilterz.l0["Year"] <- {
 				sub = true
 				l2val = v
 				l2name = v
-			})
+			}])
 		}
 	}
 
@@ -5536,22 +5526,22 @@ multifilterz.l0["Manufacturer"] <- {
 			local v = z_list.boot[index + fe.list.index].z_manufacturer.tolower()
 
 			// Return data when no category is selected
-			if ((v == "") || (v == "<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
+			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}]
 			v = split(v, "_")[0]
 
 			if (v.len() >= 7) {
-				if ((v.slice(0, 7) == "bootleg")) return {l1val = "? bootleg", l1array = false, l1name = "? bootleg", sub = false, l2val = null, l2name = null}
+				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1array = false, l1name = "? bootleg", sub = false, l2val = null, l2name = null}]
 			}
 			local v2 = v.slice(0, 1)
 
-			return ({
+			return ([{
 				l1val = v2
 				l1array = false
 				l1name = v2 + "..."
 				sub = true
 				l2val = v
 				l2name = v
-			})
+			}])
 
 			return (out)
 		}
@@ -5566,14 +5556,14 @@ multifilterz.l0["Favourite"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot2[index + fe.list.index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite, index)
 
-			return ({
+			return ([{
 				l1val = (v ? "1 - Favourite" : "2 - Not Favourite")
 				l1array = false
 				l1name = (v ? "Favourite" : "Not Favourite")
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 			return (out)
 		}
 	}
@@ -5590,14 +5580,14 @@ multifilterz.l0["Buttons"] <- {
 			if (v == "") v = "??"
 			if (v.len() == 1) v = " " + v
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5614,14 +5604,14 @@ multifilterz.l0["Players"] <- {
 			if (v == "") v = " ?"
 			if (v.len() == 1) v = " " + v
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5635,14 +5625,14 @@ multifilterz.l0["Played"] <- {
 		sort = false
 		levcheck = function(index) {
 			local v = z_list.boot2[index + fe.list.index].z_playedcount
-			return ({
+			return ([{
 				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
 				l1array = false
 				l1name = (v == 0 ? "Not Played" : "Played")
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5658,14 +5648,14 @@ multifilterz.l0["Orientation"] <- {
 			local v = z_list.boot[index + fe.list.index].z_rotation
 			local vcheck = ((v == "0") || (v == "180") || (v == "Horizontal") || (v == "horizontal") || (v == ""))
 
-			return ({
+			return ([{
 				l1val = vcheck ? "1 - Horizontal" : "2 - Vertical"
 				l1array = false
 				l1name = vcheck ? "Horizontal" : "Vertical"
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5680,7 +5670,7 @@ multifilterz.l0["Controls"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_control
 
-			if (v == "") return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
+			if (v == "") return [{l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}]
 
 			local v2 = [null]
 
@@ -5699,14 +5689,14 @@ multifilterz.l0["Controls"] <- {
 				}
 			}
 
-			return ({
+			return ([{
 				l1val = v2
 				l1array = false
 				l1name = v2
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5730,14 +5720,14 @@ multifilterz.l0["Rating"] <- {
 			local v3 = v
 			//if (v.len() == 1) v = " " + v
 
-			return ({
+			return ([{
 				l1val = v2
 				l1array = false
 				l1name = v3
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5753,14 +5743,14 @@ multifilterz.l0["Series"] <- {
 			local v = z_list.boot[index + fe.list.index].z_series
 			if (v == "") v = " ?? "
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5776,14 +5766,14 @@ multifilterz.l0["Scraped"] <- {
 			local v = z_list.boot[index + fe.list.index].z_scrapestatus
 			if (v == "") v = "?"
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5810,14 +5800,14 @@ multifilterz.l0["Region"] <- {
 			// Return data when no category is selected
 			//if (v.len() == 0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 			return (out)
 		}
@@ -5856,6 +5846,7 @@ function mfz_build(reset) {
 	debugpr("mfz_build reset:" + reset + "\n")
 
 	// Reset all menu data
+	//TEST160 DA CONTROLLARE PER L'ARRAY
 	foreach (item, table in multifilterz.l0) {
 		if (reset) {
 			if (multifilterz.filter.rawin(item)) multifilterz.filter[item] = []
@@ -5867,55 +5858,39 @@ function mfz_build(reset) {
 
 	// Scan the whole romlist
 	for (local i = 0; i < fe.list.size; i++) {
-		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
-		foreach (id0, table0 in multifilterz.l0) {
+		
+		foreach (id0, table0 in multifilterz.l0) { // Scan throught the "items" ("Year", "Category" etc) in the multifilter,
 			local vals = table0.levcheck(i - fe.list.index)
 
 			// Check if level 1 value is an ARRAY!
-			if ((vals.l1array)) {
-				for (local i = 0; i < vals.l1name.len(); i++) {
-					try {
-						table0.menu[vals.l1name[i]].num ++
-					}
-					catch(err) {
-						table0.menu[vals.l1name[i]] <- {
-							num = 1
-							filtered = false
-							filtervalue = vals.l1val[i]
-							submenu = null
-						}
-					}
-				}
-			}
-			else { // level1 value is not an ARRAY
-			// Populate or update level1 menu
+			foreach (ix, val_ix in vals) {
 				try {
-					table0.menu[vals.l1name].num ++
+					table0.menu[val_ix.l1name].num ++
 				}
 				catch(err) {
-					table0.menu[vals.l1name] <- {
+					table0.menu[val_ix.l1name] <- {
 						num = 1
 						filtered = false
-						filtervalue = vals.l1val
+						filtervalue = val_ix.l1val
 						submenu = null
 					}
 				}
 
-				if (vals.sub) { //submenu is present
+				if (val_ix.sub) { //submenu is present
 					// Populate or update level 2 menu
 					try {
-						table0.menu[vals.l1name].submenu[vals.l2name].num ++
+						table0.menu[val_ix.l1name].submenu[val_ix.l2name].num ++
 					}
 					catch(err) {
-						if (table0.menu[vals.l1name].submenu == null) table0.menu[vals.l1name].submenu = {}
-						table0.menu[vals.l1name].submenu[vals.l2name] <- {
+						if (table0.menu[val_ix.l1name].submenu == null) table0.menu[val_ix.l1name].submenu = {}
+						table0.menu[val_ix.l1name].submenu[val_ix.l2name] <- {
 							num = 1
 							filtered = false
-							filtervalue = vals.l2val
+							filtervalue = val_ix.l2val
 						}
 					}
 				}
-			}
+			}						
 		}
 	}
 	timestop("mfz_build")
@@ -16672,10 +16647,7 @@ function buildcategorytable() {
 
 	for (local i = 0; i < fe.list.size; i++) {
 		cat0 = parsecategory(z_list.boot[i].z_category)
-		
-		testpr(z_list.boot[i].z_category+"\n")
-		testpr(cat0+"\n\n")
-		
+
 		if (cat0 == "") cat0 = "Unknown"
 		local catarray = split (cat0, "/")
 		cat1 = strip(catarray[0])
@@ -16796,9 +16768,7 @@ function maincategorymenu(maincategory, subcategory) {
 	local startcat = catmenu1.map(function(value){return(value.text)}).find(maincategory)
 	//if (startcat == null) startcat = 0
 	frostshow()
-print_variable(catmenu1,"","")
-testpr(startcat+"\n")
-testpr(maincategory+"\n")
+
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
 	function(result) {
 		if (result == -1) {
