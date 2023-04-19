@@ -39,7 +39,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -5813,7 +5813,6 @@ function mfz_num() {
 }
 
 function mfz_build(reset) {
-	testpr("MFZ_BUILD\n")
 	timestart("mfz_build")
 	debugpr("mfz_build reset:" + reset + "\n")
 
@@ -5830,14 +5829,10 @@ function mfz_build(reset) {
 
 	// Scan the whole romlist
 	for (local i = 0; i < fe.list.size; i++) {
-		testpr("\nGAME:"+i+"\n")
 		foreach (id0, table0 in multifilterz.l0) { // Scan throught the "items" ("Year", "Category" etc) in the multifilter,
-			testpr(id0+"\n")
 			local vals = table0.levcheck(i - fe.list.index)
-			print((typeof vals)+"\n")
 			// Check if level 1 value is an ARRAY!
 			foreach (ix, val_ix in vals) {
-				testpr(ix+" "+val_ix.l1name+"\n")
 				try {
 					table0.menu[val_ix.l1name].num ++
 				}
@@ -5868,11 +5863,6 @@ function mfz_build(reset) {
 		}
 	}
 	timestop("mfz_build")
-	foreach (item, tabl in multifilterz.l0){
-		testpr(item+"\n")
-		print_variable(tabl.menu,"","")
-		print("\n")
-	}
 }
 
 // mfz_build (true)
@@ -7555,7 +7545,6 @@ function categorylabel(input, index) {
 }
 
 function maincategory(offset) {
-	testpr("PROCESS:***"+processcategory(z_list.boot[offset].z_category)[0][0].toupper()+"***\n")
 	return (processcategory(z_list.boot[offset].z_category)[0][0].toupper())
 }
 
@@ -16681,13 +16670,16 @@ function subcategorymenu(maincategory, subcategory) {
 	local i = 0
 	foreach(item, val in cat[maincategory].subcats) {
 		catmenu2.push({
-			text = item,
+			text = (item == "") ? "" : maincategory+" / "+item,
+			value = item,
 			note = cat[maincategory].subcats[item]
 		})
 	}
+		print_variable(catmenu2,"","CATMENU2")
+
 	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 
-	catmenu2[0].text = maincategory
+	if (catmenu2[0].text == "") catmenu2[0].text = catmenu2[0].value = maincategory
 	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG) })
 
 	local currentcat = 0
@@ -16700,10 +16692,10 @@ function subcategorymenu(maincategory, subcategory) {
 	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
 
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(value){return(value.text)}).find(subcategory)
-
+local selectcat = 0 //TEST160 TOGLIERE
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
-		if (result == -1) maincategorymenu(maincategory, subcategory)
+		if (result == -1) maincategorymenu(maincategory)
 
 		else {
 			if (result == 0) {
@@ -16735,7 +16727,7 @@ function subcategorymenu(maincategory, subcategory) {
 	})
 }
 
-function maincategorymenu(maincategory, subcategory) {
+function maincategorymenu(currentcategories) {
 	local catmenu1 = []
 
 	local i = 0
@@ -16745,15 +16737,16 @@ function maincategorymenu(maincategory, subcategory) {
 			note = val.num
 		})
 	}
+	print_variable(catmenu1,"","CATMENU1")
 	catmenu1.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 	
 	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
 
-	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
+	local currentcat = (search.catg[0] == "") ? 0 : 0 //TEST160 RIMETTERLO!!! catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
 	catmenu1[currentcat].rawset ("glyph", 0xea10)
 
 	local startcat = catmenu1.map(function(value){return(value.text)}).find(maincategory)
-	//if (startcat == null) startcat = 0
+	if (startcat == null) startcat = 0 //TEST160 RIMUOVERE
 	frostshow()
 
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
@@ -16776,15 +16769,16 @@ function maincategorymenu(maincategory, subcategory) {
 			zmenuhide()
 		}
 		else {
-			subcategorymenu(catmenu1[result].text, (catmenu1[result].text == maincategory) ? subcategory : "")
+			testpr("calling menu with maincat, subcat:"+catmenu1[result].text+"|||"+((catmenu1[result].text == maincategory) ? subcategory : "")+"\n")
+			subcategorymenu(catmenu1[result].text, 0)//TEST160 RIMETTERE CORRETTO (catmenu1[result].text == maincategory) ? subcategory : "")
 		}
 	})
 }
 
 function categorymenu() {
 	// Detect current main category
-	local currentcat = stripcat(0) //TEST160 usare anche altrove!
-	maincategorymenu(currentcat[0], currentcat[1])
+	local currentcat = processcategory(z_list.boot[fe.list.index].z_category) //TEST160 usare anche altrove!
+	maincategorymenu(currentcat)
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
