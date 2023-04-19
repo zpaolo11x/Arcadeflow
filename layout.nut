@@ -5432,8 +5432,6 @@ print ("\n")
 print_variable(processcategory(""),"","")
 print ("\n")
 
-pappo = 0
-
 multifilterz.l0["Category"] <- {
 		label = ""
 		filtered = false
