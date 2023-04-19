@@ -6565,6 +6565,7 @@ function z_listsearch(index) {
 	return false
 }
 
+
 function z_catfilter(index) {
 	if (search.catg[0] == "") return true
 
