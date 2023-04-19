@@ -5397,12 +5397,12 @@ multifilterz.l0["Tags"] <- {
 		}
 	}
 
-function processcategory(categoryname){
-	/*
-	Returns an array of all the combinations of categories in a game
-	when category matches mame or ss it's returned as is, if it's a comma separated or "-" 
-	separated list, each element of the array is that
-	*/
+
+	// Returns an array of all the categories of a game, each array entry is an array with main and sub category
+	// When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
+	// of the array is one of the categories. If one of these is "/" separated, this is taken into account.
+	
+	function processcategory(categoryname){
 	local out = []
 	if (categoryname == "") return ([["Unknown", ""]])
 	local cathierarchy = split (categoryname, "/")
@@ -5417,7 +5417,6 @@ function processcategory(categoryname){
 		if (cathierarchy.len() == 1) out.push ([strip(cathierarchy[0]),""]) else out.push (cathierarchy.map(function(val){return(strip(val))})) 
 	}
 	return out
-
 }
 
 multifilterz.l0["Category"] <- {
@@ -7556,20 +7555,8 @@ function categorylabel(input, index) {
 }
 
 function maincategory(offset) {
-	local sout = ""
-	local s0 = parsecategory(z_list.boot[offset].z_category)
-
-	if (s0 == "") return ""
-
-	local s = split(s0, "/")
-	if (s.len() > 1) {
-		sout = strip(s[0]).toupper()
-	}
-	else {
-		local s1 = split (s0, comma)
-		sout = strip(s1[0]).toupper()
-	}
-	return (sout)
+	testpr("PROCESS:***"+processcategory(z_list.boot[offset].z_category)[0][0].toupper()+"***\n")
+	return (processcategory(z_list.boot[offset].z_category)[0][0].toupper())
 }
 
 //MAGIC TOKEN
@@ -16625,8 +16612,31 @@ function buildcategorytable() {
 	local cat2 = ""
 
 	for (local i = 0; i < fe.list.size; i++) {
-		cat0 = parsecategory(z_list.boot[i].z_category)
+		cat0 = processcategory(z_list.boot[i].z_category)
 
+		foreach (vindex, vtable in cat0){
+			
+			try {
+				cat[vtable[0]].num ++
+			}
+			catch(err){
+				cat[vtable[0]] <- {
+					num = 1
+					subcats = {}
+				}				
+			}
+
+			try {
+				cat[vtable[0]].subcats[vtable[1]] ++
+			}
+			catch(err) {
+				cat[vtable[0]].subcats[vtable[1]] <- 1
+			}
+			
+		}
+	}
+	print_variable(cat,"","*** CATEGORY TABLE ***")
+/*
 		if (cat0 == "") cat0 = "Unknown"
 		local catarray = split (cat0, "/")
 		cat1 = strip(catarray[0])
@@ -16648,10 +16658,8 @@ function buildcategorytable() {
 		catch(err) {
 			cat[cat1].subcats[cat2] <- 1
 		}
-
 	}
-
-	local cat1array = []
+	*/
 }
 
 function stripcat(offset) {
