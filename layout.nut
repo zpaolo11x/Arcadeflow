@@ -5337,14 +5337,14 @@ multifilterz.l0["System"] <- {
 			local v = z_list.boot[index + fe.list.index].z_system
 			if (v == "") v = "?"
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 //			return (out)
 		}
@@ -5360,14 +5360,14 @@ multifilterz.l0["Arcade"] <- {
 			local v = z_list.boot[index + fe.list.index].z_arcadesystem
 			if (v == "") v = "?"
 
-			return ({
+			return ([{
 				l1val = v
 				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
 				l2name = null
-			})
+			}])
 
 //			return (out)
 		}
@@ -5382,18 +5382,18 @@ multifilterz.l0["Tags"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot2[index + fe.list.index].z_tags // z_gettags(index, false)
 			// Return data when no category is selected
-			if (v.len() == 0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
+			if (v.len() == 0) return [{l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}]
 
-			return ({
-				l1val = v
-				l1array = true
-				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
-			})
-
-			return (out)
+			return (v.map(function(val){
+				return({
+					l1val = val
+					l1array = true
+					l1name = val
+					sub = false
+					l2val = null
+					l2name = null
+				})
+			}))
 		}
 	}
 
