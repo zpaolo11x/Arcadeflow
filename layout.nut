@@ -6572,7 +6572,7 @@ function z_catfilter(index) {
 
 	foreach (indexv, arrayv in nowcat){
 		if ((search.catg[1] == "*") && (search.catg[0] == arrayv[0])) return true
-		if ((search.catg[0] == nowcat[0]) && (search.catg[1] == arrayv[1])) return true
+		if ((search.catg[0] == arrayv[0]) && (search.catg[1] == arrayv[1])) return true
 	}
 	return false
 }
@@ -16621,48 +16621,9 @@ function buildcategorytable() {
 			}
 			catch(err) {
 				cat[vtable[0]].subcats[vtable[1]] <- 1
-			}
-			
+			}	
 		}
 	}
-	print_variable(cat,"","*** CATEGORY TABLE ***")
-/*
-		if (cat0 == "") cat0 = "Unknown"
-		local catarray = split (cat0, "/")
-		cat1 = strip(catarray[0])
-		if (catarray.len() > 1) cat2 = strip(catarray[1]) else cat2 = ""
-
-		try {
-			cat[cat1].num ++
-		}
-		catch(err) {
-			cat[cat1] <- {
-				num = 1
-				subcats = {}
-			}
-		}
-
-		try {
-			cat[cat1].subcats[cat2] ++
-		}
-		catch(err) {
-			cat[cat1].subcats[cat2] <- 1
-		}
-	}
-	*/
-}
-
-function stripcat(offset) {
-	local cat = z_list.boot[offset + fe.list.index].z_category
-	if (cat == "") return (["Unknown", ""])
-
-	local catarray = split (cat, "/")
-	for (local i = 0; i < catarray.len(); i++) {
-		catarray[i] = strip(catarray[i])
-	}
-
-	if (catarray.len() > 1) return (catarray)
-	else return ([catarray[0], ""])
 }
 
 function subcategorymenu(maincategory, subcategory) {
@@ -16676,7 +16637,6 @@ function subcategorymenu(maincategory, subcategory) {
 			note = cat[maincategory].subcats[item]
 		})
 	}
-		print_variable(catmenu2,"","CATMENU2")
 
 	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 
@@ -16692,8 +16652,8 @@ function subcategorymenu(maincategory, subcategory) {
 
 	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
 
-	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(value){return(value.text)}).find(subcategory)
-local selectcat = 0 //TEST160 TOGLIERE
+	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(param){return(param.text)}).find(subcategory)
+//local selectcat = 0 //TEST160 TOGLIERE CONTROLLARE CHE SOPRA FUNZIOni aNCHE CON I MULTIPLI
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
 		if (result == -1) {
