@@ -16641,14 +16641,14 @@ function subcategorymenu(maincategory, subcategory) {
 	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 
 	if (catmenu2[0].text == "") catmenu2[0].text = catmenu2[0].value = maincategory
-	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG) })
+	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG), value =  ltxt("ALL", AF.LNG)})
 
 	local currentcat = 0
 	
 	if (search.catg[0] == "") currentcat = null
 	else if (search.catg[1] == "*") currentcat = 0
-	else if ((search.catg[1] == "") && (search.catg[0] == catmenu2[1].text)) currentcat = 1
-	else currentcat = catmenu2.map(function(value){return(value.text)}).find(search.catg[1])
+	else if ((search.catg[1] == "") && (search.catg[0] == catmenu2[1].value)) currentcat = 1
+	else currentcat = catmenu2.map(function(pram){return(pram.value)}).find(search.catg[1])
 
 	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
 
