@@ -16752,7 +16752,7 @@ testpr("B\n")
 
 function categorymenu() {
 	// Detect current main category
-	local currentcat = processcategory(z_list.boot[fe.list.index].z_category) //TEST160 usare anche altrove!
+	local currentcat = processcategory(z_list.boot[fe.list.index].z_category)
 	maincategorymenu(currentcat)
 }
 
