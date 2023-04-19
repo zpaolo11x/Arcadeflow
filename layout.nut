@@ -16713,7 +16713,7 @@ local selectcat = 0 //TEST160 TOGLIERE
 				search.catg = [maincategory, ""]
 			}
 			else {
-				search.catg = [maincategory, catmenu2[result].text]
+				search.catg = [maincategory, catmenu2[result].value]
 			}
 			
 			local currentname = z_list.gametable[z_list.index].z_name
