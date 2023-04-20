@@ -16673,6 +16673,7 @@ testpr("SUBCATEGORYMENU:"+maincategory+","+subcategory+"\n")
 	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 
 	if (catmenu2[0].text == "") catmenu2[0].text = catmenu2[0].value = maincategory
+	catmenu2.insert(0,{ liner = true, text = "", value = ""})
 	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG), value =  ltxt("ALL", AF.LNG)})
 
 	local currentcat = 0
@@ -16703,7 +16704,7 @@ print_variable(catmenu2,"","carmenu2")
 					search.catg = [maincategory, "*"]
 				}
 			}
-			else if ((result == 1) && (catmenu2[1].text == maincategory)) {
+			else if ((result == 2) && (catmenu2[2].text == maincategory)) {
 				search.catg = [maincategory, ""]
 			}
 			else {
@@ -16740,6 +16741,7 @@ function maincategorymenu(currentcategories) {
 	print_variable(catmenu1,"","CATMENU1")
 	catmenu1.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 	
+	catmenu1.insert (0,{liner = true, text = ""})
 	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
 
 	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
@@ -16755,11 +16757,10 @@ function maincategorymenu(currentcategories) {
 		testpr("YYY:*"+subcategory+"*\n")
 		if (startcat != null) break
 	}
-testpr("A\n")
 	//catmenu1.map(function(value){return(value.text)}).find(maincategory)
 	//if (startcat == null) startcat = 0 //TEST160 RIMUOVERE
 	frostshow()
-testpr("B\n")
+
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
 	function(result) {
 		if (result == -1) {
