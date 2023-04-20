@@ -6,36 +6,6 @@
 
 // Load file nut
 
-function testtime(){
-	local size = 100
-	local checks = 1000000
-
-	local varr = []
-	local vtab = {}
-
-	for (local i = 0; i < size; i++){
-		varr.push(i)
-		vtab.rawset(i,0)
-	}
-
-	local checker = 0
-	local time0 = fe.layout.time
-	for (local i = 0; i < checks ; i++){
-		checker = varr.find(i)
-	}
-	print (fe.layout.time - time0+"\n")
-
-	local checker = 0
-	local time0 = fe.layout.time
-	for (local i = 0; i < checks ; i++){
-		checker = vtab.rawin(i)
-	}
-	print (fe.layout.time - time0+"\n")
-
-}
-
-testtime()
-
 fe.do_nut("nut_file.nut")
 
 local ap = '"'.tochar()
@@ -5353,7 +5323,6 @@ multifilterz.l0["System"] <- {
 
 			return ([{
 				l1val = v
-				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
@@ -5376,7 +5345,6 @@ multifilterz.l0["Arcade"] <- {
 
 			return ([{
 				l1val = v
-				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
@@ -5396,12 +5364,11 @@ multifilterz.l0["Tags"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot2[index + fe.list.index].z_tags // z_gettags(index, false)
 			// Return data when no category is selected
-			if (v.len() == 0) return [{l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}]
+			if (v.len() == 0) return [{l1val = "None", l1name = "None", sub = false, l2val = null, l2name = null}]
 
 			return (v.map(function(val){
 				return({
 					l1val = val
-					l1array = true
 					l1name = val
 					sub = false
 					l2val = null
@@ -5422,14 +5389,13 @@ multifilterz.l0["Category"] <- {
 			local v = z_list.boot[index + fe.list.index].z_category
 
 			// Return data when no category is selected
-			if (v == "") return {l1val = "Unknown", l1array = false,  l1name = "Unknown", sub = false, l2val = null, l2name = null}
+			if (v == "") return {l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}
 
 			local pcat = processcategory(v)
 
 			return(pcat.map(function(val){
 				if (val[1] == "") return({
 					l1val = val[0]
-					l1array = false
 					l1name = val[0]
 					sub = false
 					l2val = null
@@ -5437,7 +5403,6 @@ multifilterz.l0["Category"] <- {
 				}) 
 				else return({
 					l1val = strip(val[0]) + "/"
-					l1array = false
 					l1name = strip(val[0]) + "..."
 					sub = true
 					l2val = strip(val[0]) + "/" + strip(val[1])
@@ -5458,15 +5423,13 @@ multifilterz.l0["Year"] <- {
 			local v = z_list.boot[index + fe.list.index].z_year
 
 			// Return data when no category is selected
-			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1array = false, l1name = "Unknown", sub = false, l2val = null, l2name = null}]
-			if (v == "[unreleased]") return [{l1val = "Unreleased", l1array = false, l1name = "Unreleased", sub = false, l2val = null, l2name = null}]
-			if (v == "19??") return [{l1val = "19??", l1array = false, l1name = "19??", sub = false, l2val = null, l2name = null}]
+			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}]
+			if (v == "[unreleased]") return [{l1val = "Unreleased", l1name = "Unreleased", sub = false, l2val = null, l2name = null}]
+			if (v == "19??") return [{l1val = "19??", l1name = "19??", sub = false, l2val = null, l2name = null}]
 			local v2 = v.slice(0, 3) + "x"
 
 			return ([{
 				l1val = v2
-				l1val = v2
-				l1array = false
 				l1name = v2 +"..."
 				sub = true
 				l2val = v
@@ -5485,17 +5448,16 @@ multifilterz.l0["Manufacturer"] <- {
 			local v = z_list.boot[index + fe.list.index].z_manufacturer.tolower()
 
 			// Return data when no category is selected
-			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}]
+			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1name = "?", sub = false, l2val = null, l2name = null}]
 			v = split(v, "_")[0]
 
 			if (v.len() >= 7) {
-				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1array = false, l1name = "? bootleg", sub = false, l2val = null, l2name = null}]
+				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1name = "? bootleg", sub = false, l2val = null, l2name = null}]
 			}
 			local v2 = v.slice(0, 1)
 
 			return ([{
 				l1val = v2
-				l1array = false
 				l1name = v2 + "..."
 				sub = true
 				l2val = v
@@ -5517,7 +5479,6 @@ multifilterz.l0["Favourite"] <- {
 
 			return ([{
 				l1val = (v ? "1 - Favourite" : "2 - Not Favourite")
-				l1array = false
 				l1name = (v ? "Favourite" : "Not Favourite")
 				sub = false
 				l2val = null
@@ -5541,7 +5502,6 @@ multifilterz.l0["Buttons"] <- {
 
 			return ([{
 				l1val = v
-				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
@@ -5565,7 +5525,6 @@ multifilterz.l0["Players"] <- {
 
 			return ([{
 				l1val = v
-				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
@@ -5586,7 +5545,6 @@ multifilterz.l0["Played"] <- {
 			local v = z_list.boot2[index + fe.list.index].z_playedcount
 			return ([{
 				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
-				l1array = false
 				l1name = (v == 0 ? "Not Played" : "Played")
 				sub = false
 				l2val = null
@@ -5609,7 +5567,6 @@ multifilterz.l0["Orientation"] <- {
 
 			return ([{
 				l1val = vcheck ? "1 - Horizontal" : "2 - Vertical"
-				l1array = false
 				l1name = vcheck ? "Horizontal" : "Vertical"
 				sub = false
 				l2val = null
@@ -5629,7 +5586,7 @@ multifilterz.l0["Controls"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_control
 
-			if (v == "") return [{l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}]
+			if (v == "") return [{l1val = "?", l1name = "?", sub = false, l2val = null, l2name = null}]
 
 			local v2 = [null]
 
@@ -5650,7 +5607,6 @@ multifilterz.l0["Controls"] <- {
 
 			return ([{
 				l1val = v2
-				l1array = false
 				l1name = v2
 				sub = false
 				l2val = null
@@ -5681,7 +5637,6 @@ multifilterz.l0["Rating"] <- {
 
 			return ([{
 				l1val = v2
-				l1array = false
 				l1name = v3
 				sub = false
 				l2val = null
@@ -5704,7 +5659,6 @@ multifilterz.l0["Series"] <- {
 
 			return ([{
 				l1val = v
-				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
@@ -5727,7 +5681,6 @@ multifilterz.l0["Scraped"] <- {
 
 			return ([{
 				l1val = v
-				l1array = false
 				l1name = v
 				sub = false
 				l2val = null
@@ -5742,31 +5695,24 @@ multifilterz.l0["Region"] <- {
 		label = ""
 		filtered = false
 		translate = false
-		sort = true
+		sort = false
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_region
-			// ALTERNATIVE MODE: splits all and adds the complete, ATTENTION: turn l1array to true
-			/*
-			local v0 = z_list.boot[index + fe.list.index].z_region
-			if (v0 == "") v0 = "None"
-			local v = split_complete(v0, comma) // z_gettags(index, false)
-			if (v.len() != 0) v.insert(0, v0) else v = [v0]
-			*/
 
-			if (v == "") v = "None"
+			if (v == "") v = "ZZ"
+			local v = split(v, comma)
+print_variable(v,"",index)
 
-			// Return data when no category is selected
-			//if (v.len() == 0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
-
-			return ([{
-				l1val = v
-				l1array = false
-				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
-			}])
+			return(v.map(function(val){
+				return ({
+					l1val = strip(val).tolower()
+					l1name = (val == "ZZ") ? "None" : strip(val).tolower()
+					sub = false
+					l2val = null
+					l2name = null
+				})
+			}))
 
 			return (out)
 		}
@@ -5957,22 +5903,6 @@ function mfz_checkin(index) {
 							break
 						}
 					}
-					/*
-					if (vtemp.l1array) {
-						for (local i = 0; i < vtemp.l1val.len(); i++) {
-							if ((value == vtemp.l1val[i])) {
-								outOR = true
-								break
-							}
-						}
-					}
-					else {
-						if ((value == vtemp.l1val) || (value == vtemp.l2val)) {
-							outOR = true
-							break
-						}
-					}
-					*/
 				} // foreach is broken if one match inside the category is true
 
 				// metafilter is populated with the outOR value for current id0
