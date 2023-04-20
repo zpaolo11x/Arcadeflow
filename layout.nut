@@ -5487,11 +5487,6 @@ multifilterz.l0["Category"] <- {
 		}
 	}
 
-//TEST160
-local puppo = 3
-if (typeof puppo != "array") puppo = [puppo]
-foreach (i, item in puppo) print (item+"\n")
-
 multifilterz.l0["Year"] <- {
 		label = ""
 		filtered = false
@@ -6183,7 +6178,6 @@ function ztestz() {
 //ztestz()
 
 function mfz_refreshnum(catin) {
-	//return //TEST160
 	timestart("mfz_refreshnum")
 	debugpr("mfz_refreshnum "+ catin + "\n")
 	//	return
@@ -16687,7 +16681,7 @@ testpr("SUBCATEGORYMENU:"+maincategory+","+subcategory+"\n")
 print_variable(catmenu2,"","carmenu2")
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(param){return(param.value)}).find(subcategory)
 	testpr("selectcat:"+selectcat+"\n")
-//local selectcat = 0 //TEST160 TOGLIERE CONTROLLARE CHE SOPRA FUNZIOni aNCHE CON I MULTIPLI
+
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
 		if (result == -1) {
@@ -16711,11 +16705,7 @@ print_variable(catmenu2,"","carmenu2")
 				search.catg = [maincategory, catmenu2[result].value]
 			}
 			print_variable(search.catg,"","search.catg")
-			//TEST160 A COSA SERVE QUESTA PARTE CHE HO TOLTO???
-			/*
-			local currentname = z_list.gametable[z_list.index].z_name
-			local currentsystem = z_list.gametable[z_list.index].z_system
-			*/
+
 			updatesearchdatamsg()
 
 			mfz_apply(false)
@@ -16757,8 +16747,6 @@ function maincategorymenu(currentcategories) {
 		testpr("YYY:*"+subcategory+"*\n")
 		if (startcat != null) break
 	}
-	//catmenu1.map(function(value){return(value.text)}).find(maincategory)
-	//if (startcat == null) startcat = 0 //TEST160 RIMUOVERE
 	frostshow()
 
 	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
@@ -17832,11 +17820,6 @@ function on_signal(sig) {
 						}
 						// GOOD
 						if (hidemenu && (result != numtag) && (result != -1) && (search.mots[1] != "")) {
-							//TEST160 A COSA SERVE QUESTO???
-							/*
-							local currentname = z_list.gametable[z_list.index].z_name
-							local currentsystem = z_list.gametable[z_list.index].z_system
-							*/
 							if (backs.index == -1) {
 								backs.index = fe.list.index
 							}
