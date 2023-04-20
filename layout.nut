@@ -5805,7 +5805,6 @@ function mfz_build(reset) {
 	debugpr("mfz_build reset:" + reset + "\n")
 
 	// Reset all menu data
-	//TEST160 DA CONTROLLARE PER L'ARRAY
 	foreach (item, table in multifilterz.l0) {
 		if (reset) {
 			if (multifilterz.filter.rawin(item)) multifilterz.filter[item] = []
@@ -16721,7 +16720,7 @@ function maincategorymenu(currentcategories) {
 			zmenuhide()
 		}
 		else {
-			subcategorymenu(catmenu1[result].text, subcategory)//TEST160 RIMETTERE CORRETTO (catmenu1[result].text == maincategory) ? subcategory : "")
+			subcategorymenu(catmenu1[result].text, subcategory)// was (catmenu1[result].text == maincategory) ? subcategory : ""), not needed anymore
 		}
 	})
 }
