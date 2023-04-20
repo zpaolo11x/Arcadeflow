@@ -6,6 +6,36 @@
 
 // Load file nut
 
+function testtime(){
+	local size = 100
+	local checks = 1000000
+
+	local varr = []
+	local vtab = {}
+
+	for (local i = 0; i < size; i++){
+		varr.push(i)
+		vtab.rawset(i,0)
+	}
+
+	local checker = 0
+	local time0 = fe.layout.time
+	for (local i = 0; i < checks ; i++){
+		checker = varr.find(i)
+	}
+	print (fe.layout.time - time0+"\n")
+
+	local checker = 0
+	local time0 = fe.layout.time
+	for (local i = 0; i < checks ; i++){
+		checker = vtab.rawin(i)
+	}
+	print (fe.layout.time - time0+"\n")
+
+}
+
+testtime()
+
 fe.do_nut("nut_file.nut")
 
 local ap = '"'.tochar()
@@ -5407,7 +5437,7 @@ multifilterz.l0["Tags"] <- {
 	if (categoryname == "") return ([["Unknown", ""]])
 	local cathierarchy = split (categoryname, "/")
 	local catarray = split (categoryname, ",-")
-	local catmatch = !((catnames.data.find(categoryname) == null) && (catnames_SS.data.find(categoryname) == null))
+	local catmatch = ((catnames.finder.rawin(categoryname)) || (catnames_SS.finder.rawin(categoryname)))
 
 	if (catmatch) {
 		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
