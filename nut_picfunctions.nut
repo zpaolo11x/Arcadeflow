@@ -762,7 +762,6 @@ function categorynamepurge(cat){
 		sout = sout.tolower()
 	}
 	else sout = strip(s0).tolower()
-	print ("CAT:*"+cat[0]+"*"+cat[1]+"* CATCLEANED:*"+sout+"*\n")
 	return sout
 }
 

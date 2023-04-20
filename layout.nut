@@ -16615,7 +16615,7 @@ function buildcategorytable() {
 
 function subcategorymenu(maincategory, subcategory) {
 	local catmenu2 = []
-testpr("SUBCATEGORYMENU:"+maincategory+","+subcategory+"\n")
+
 	local i = 0
 	foreach(item, val in cat[maincategory].subcats) {
 		catmenu2.push({
@@ -16639,9 +16639,7 @@ testpr("SUBCATEGORYMENU:"+maincategory+","+subcategory+"\n")
 	else currentcat = catmenu2.map(function(pram){return(pram.value)}).find(search.catg[1])
 
 	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
-print_variable(catmenu2,"","carmenu2")
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(param){return(param.value)}).find(subcategory)
-	testpr("selectcat:"+selectcat+"\n")
 
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
@@ -16665,7 +16663,6 @@ print_variable(catmenu2,"","carmenu2")
 			else {
 				search.catg = [maincategory, catmenu2[result].value]
 			}
-			print_variable(search.catg,"","search.catg")
 
 			updatesearchdatamsg()
 
@@ -16678,8 +16675,6 @@ print_variable(catmenu2,"","carmenu2")
 }
 
 function maincategorymenu(currentcategories) {
-	testpr((typeof currentcategories)+"\n")
-	print_variable(currentcategories,"","currentcategories")
 	local catmenu1 = []
 
 	local i = 0
@@ -16689,7 +16684,6 @@ function maincategorymenu(currentcategories) {
 			note = val.num,
 		})
 	}
-	print_variable(catmenu1,"","CATMENU1")
 	catmenu1.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
 	
 	catmenu1.insert (0,{liner = true, text = ""})
@@ -16701,11 +16695,8 @@ function maincategorymenu(currentcategories) {
 	local startcat = 0
 	local subcategory = ""
 	foreach (iv, itemv in currentcategories){
-		testpr(iv+" *"+itemv+"*\n")
-		print_variable(catmenu1,"","catmenu1")
 		startcat = catmenu1.map(function(value){return(value.text)}).find(itemv[0])
 		subcategory = itemv[1]
-		testpr("YYY:*"+subcategory+"*\n")
 		if (startcat != null) break
 	}
 	frostshow()
