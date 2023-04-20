@@ -5201,45 +5201,6 @@ P2_BUTTON4:Blue:
 P2_JOYSTICK:Black:
 */
 
-// This function takes a category text string and parses it to produce an
-// array variable like [maincategoryname, subcategoryname], if multiple categories
-// are present, maincategoryname is an array.
-function parsecategory(categoryname) {
-	local out = ""
-	// Clean up silly name in RetroPie XML
-	categoryname = subst_replace (categoryname, "Puzzle-Game", "Puzzle Game")
-	categoryname = subst_replace (categoryname, "Whac-A-Mole", "Whac A Mole")
-	categoryname = subst_replace (categoryname, "Mini-Games", "Mini Games")
-	categoryname = subst_replace (categoryname, "Tree - Plant", "Tree Plant")
-	categoryname = subst_replace (categoryname, "Versus Co-op", "Versus Co op")
-	categoryname = subst_replace (categoryname, "Othello - Reversi", "Othello Reversi")
-	categoryname = subst_replace (categoryname, "Hot-air Balloon", "Hot air Balloon")
-	categoryname = subst_replace (categoryname, "Run, Jump & Scrolling", "Run Jump & Scrolling")
-	if (categoryname == "") categoryname = "Unknown"
-	// Split main to subcategory
-	local catarray = split (categoryname, "/")
-	// There is a main/sub category, so we get rid of all other categories
-	if (catarray.len() > 1) {
-		catarray[0] = strip(catarray[0])
-		catarray[1] = strip(catarray[1])
-
-		local mainarray = split(catarray[0], ",-")
-		if (mainarray.len() > 1) catarray[0] = strip(mainarray[mainarray.len() - 1])
-		local subarray = split(catarray[1], ",-")
-		if (subarray.len() > 1) catarray[1] = strip(subarray[0])
-
-		out = catarray[0] + " / " + catarray[1]
-	}
-	if (catarray.len() == 1) {
-		local multiarray = split(catarray[0], ",-")
-		foreach (i, item in multiarray) {
-			out = out + strip(item) + (i < multiarray.len() - 1 ? comma : "")
-		}
-	}
-	return (out)
-}
-
-
 // Returns an array of all the categories of a game, each array entry is an array with main and sub category
 // When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
 // of the array is one of the categories. If one of these is "/" separated, this is taken into account.
@@ -6455,7 +6416,7 @@ function z_list_updategamedata(index) {
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
-	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (z_list.boot[index].z_category)
+	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 	dat.but_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/buttons/" + z_list.boot[index].z_buttons + "button.png")
 	dat.ply_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/players/players_" + z_list.boot[index].z_players + ".png")
@@ -13831,7 +13792,7 @@ function updatebgsnap(index) {
 		// Check if boxart file is present otherwise load category pic and set proper coloring
 		if (bgs.bgpic_array[bgs.stacksize - 1].texture_width == 0) {
 
-			bgs.bgpic_array[bgs.stacksize - 1].file_name = category_pic_name (z_list.gametable[tilez[index].index].z_category)
+			bgs.bgpic_array[bgs.stacksize - 1].file_name = category_pic_name (processcategory(z_list.gametable[tilez[index].index].z_category)[0])
 
 			bgs.bgpic_array[bgs.stacksize - 1].shader = colormapper["BOXART"].shad
 			local col1 = categorycolor(z_list.gametable[tilez[index].index].z_felistindex, 2)
@@ -13983,7 +13944,7 @@ function update_snapcrop(i, var, indexoffsetvar, indexvar, aspect, cropaspect) {
 	//TEST87 TO DO SPOSTARE QUESTO DOVE VENGONO CARICATI I DATI DELL'IMMAGINE E NON IN CROPSNAP!
 	if (prf.BOXARTMODE && (tilez[i].gr_snapz.texture_width == 0)) {
 		noboxart = true
-		tilez[i].gr_snapz.file_name = category_pic_10_name (z_list.gametable[indexvar].z_category)
+		tilez[i].gr_snapz.file_name = category_pic_10_name (processcategory(z_list.gametable[indexvar].z_category)[0])
 
 		if (tilez[i].gr_snapz.texture_width == 0) tilez[i].gr_snapz.file_name = "metapics/category10/grey.png"
 

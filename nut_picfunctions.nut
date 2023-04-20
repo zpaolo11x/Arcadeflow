@@ -751,8 +751,8 @@ function getcatnames(){
    return (catnames)
 }
 
-function categorynamepurge(catname){
-   local s0 = split (parsecategory(catname), ",")[0]
+function categorynamepurge(cat){
+   local s0 = cat[0] + cat[1]
    local s2 = split( s0, "*_/: .()-,<>?&+'" )
 	local sout =""
 	if ( s2.len() > 1 ) {
@@ -762,16 +762,17 @@ function categorynamepurge(catname){
 		sout = sout.tolower()
 	}
 	else sout = strip(s0).tolower()
+	print ("CAT:*"+cat[0]+"*"+cat[1]+"* CATCLEANED:*"+sout+"*\n")
 	return sout
 }
 
-function category_pic_name(name){
-   local sout = categorynamepurge(name)
+function category_pic_name(cat){
+   local sout = categorynamepurge(cat)
 	return "metapics/category/"+sout+".png"
 }
 
-function category_pic_10_name(name){
-   local sout = categorynamepurge(name)
+function category_pic_10_name(cat){
+   local sout = categorynamepurge(cat)
 	return "metapics/category10/"+sout+".png"
 }
 
