@@ -5201,9 +5201,49 @@ P2_BUTTON4:Blue:
 P2_JOYSTICK:Black:
 */
 
+// This function takes a category text string and parses it to produce an
+// array variable like [maincategoryname, subcategoryname], if multiple categories
+// are present, maincategoryname is an array.
+function parsecategory(categoryname) {
+	local out = ""
+	// Clean up silly name in RetroPie XML
+	categoryname = subst_replace (categoryname, "Puzzle-Game", "Puzzle Game")
+	categoryname = subst_replace (categoryname, "Whac-A-Mole", "Whac A Mole")
+	categoryname = subst_replace (categoryname, "Mini-Games", "Mini Games")
+	categoryname = subst_replace (categoryname, "Tree - Plant", "Tree Plant")
+	categoryname = subst_replace (categoryname, "Versus Co-op", "Versus Co op")
+	categoryname = subst_replace (categoryname, "Othello - Reversi", "Othello Reversi")
+	categoryname = subst_replace (categoryname, "Hot-air Balloon", "Hot air Balloon")
+	categoryname = subst_replace (categoryname, "Run, Jump & Scrolling", "Run Jump & Scrolling")
+	if (categoryname == "") categoryname = "Unknown"
+	// Split main to subcategory
+	local catarray = split (categoryname, "/")
+	// There is a main/sub category, so we get rid of all other categories
+	if (catarray.len() > 1) {
+		catarray[0] = strip(catarray[0])
+		catarray[1] = strip(catarray[1])
+
+		local mainarray = split(catarray[0], ",-")
+		if (mainarray.len() > 1) catarray[0] = strip(mainarray[mainarray.len() - 1])
+		local subarray = split(catarray[1], ",-")
+		if (subarray.len() > 1) catarray[1] = strip(subarray[0])
+
+		out = catarray[0] + " / " + catarray[1]
+	}
+	if (catarray.len() == 1) {
+		local multiarray = split(catarray[0], ",-")
+		foreach (i, item in multiarray) {
+			out = out + strip(item) + (i < multiarray.len() - 1 ? comma : "")
+		}
+	}
+	return (out)
+}
+
+
 // Returns an array of all the categories of a game, each array entry is an array with main and sub category
 // When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
 // of the array is one of the categories. If one of these is "/" separated, this is taken into account.
+	
 function processcategory(categoryname){
 	local out = []
 	if (categoryname == "") return ([["Unknown", ""]])
