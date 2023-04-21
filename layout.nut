@@ -55,7 +55,7 @@ function timestop(name) {
 	print("    " + name + " STOP: " + (elapse.t2 - elapse.timetable[name]) + "\n")
 }
 
-local IDX = array(100000)
+local IDX = array(300000)
 
 // Support array for quick sort
 foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
