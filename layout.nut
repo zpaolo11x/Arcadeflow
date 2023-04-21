@@ -5328,8 +5328,6 @@ multifilterz.l0["System"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-//			return (out)
 		}
 	}
 
@@ -5341,6 +5339,7 @@ multifilterz.l0["Arcade"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_arcadesystem
+
 			if (v == "") v = "?"
 
 			return ([{
@@ -5350,8 +5349,6 @@ multifilterz.l0["Arcade"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-//			return (out)
 		}
 	}
 
@@ -5363,7 +5360,7 @@ multifilterz.l0["Tags"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot2[index + fe.list.index].z_tags // z_gettags(index, false)
-			// Return data when no category is selected
+
 			if (v.len() == 0) return [{l1val = "None", l1name = "None", sub = false, l2val = null, l2name = null}]
 
 			return (v.map(function(val){
@@ -5388,7 +5385,6 @@ multifilterz.l0["Category"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_category
 
-			// Return data when no category is selected
 			if (v == "") return [{l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}]
 
 			local pcat = processcategory(v)
@@ -5409,7 +5405,6 @@ multifilterz.l0["Category"] <- {
 					l2name = strip(val[1])					
 				}) 
 			}))
-			return (out)
 		}
 	}
 
@@ -5447,15 +5442,14 @@ multifilterz.l0["Manufacturer"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_manufacturer.tolower()
 
-			// Return data when no category is selected
 			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1name = "?", sub = false, l2val = null, l2name = null}]
-			v = split(v, "_")[0]
 
+			v = split(v, "_")[0]
 			if (v.len() >= 7) {
 				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1name = "? bootleg", sub = false, l2val = null, l2name = null}]
 			}
-			local v2 = v.slice(0, 1)
 
+			local v2 = v.slice(0, 1)
 			return ([{
 				l1val = v2
 				l1name = v2 + "..."
@@ -5463,8 +5457,6 @@ multifilterz.l0["Manufacturer"] <- {
 				l2val = v
 				l2name = v
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5484,7 +5476,6 @@ multifilterz.l0["Favourite"] <- {
 				l2val = null
 				l2name = null
 			}])
-			return (out)
 		}
 	}
 
@@ -5507,8 +5498,6 @@ multifilterz.l0["Buttons"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5530,8 +5519,6 @@ multifilterz.l0["Players"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5550,8 +5537,6 @@ multifilterz.l0["Played"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5572,8 +5557,6 @@ multifilterz.l0["Orientation"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5612,8 +5595,6 @@ multifilterz.l0["Controls"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5633,7 +5614,6 @@ multifilterz.l0["Rating"] <- {
 				try {v2 = format ("%05.1f", v.tofloat())} catch(err) {}
 			}
 			local v3 = v
-			//if (v.len() == 1) v = " " + v
 
 			return ([{
 				l1val = v2
@@ -5642,8 +5622,6 @@ multifilterz.l0["Rating"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5664,8 +5642,6 @@ multifilterz.l0["Series"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5686,8 +5662,6 @@ multifilterz.l0["Scraped"] <- {
 				l2val = null
 				l2name = null
 			}])
-
-			return (out)
 		}
 	}
 
@@ -5712,8 +5686,6 @@ multifilterz.l0["Region"] <- {
 					l2name = null
 				})
 			}))
-
-			return (out)
 		}
 	}
 
