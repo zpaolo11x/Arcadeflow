@@ -456,7 +456,7 @@ function parseconfig() {
 					case "romlist":
 					case "in_cycle":
 					case "in_menu":
-						displaytable[id].rawset(split(inline, "\t ")[0], inline.slice(21))
+						displaytable[id].rawset(split(inline, "\t ")[0], strip(inline).slice(21))
 						break
 					case "filter":
 					case "sort_by":
@@ -483,6 +483,7 @@ function parseconfig() {
 	local warning = false
 	local tempval = null
 	foreach(i, item in postdisplays) {
+		print(i+" "+item+"\n")
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
@@ -611,7 +612,7 @@ function buildconfig(allgames, tempprf) {
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				filters = tempprf.MASTERLIST ? ["global_filter", "rule                 FileIsAvailable equals 1", "filter               All", "filter               Favourites", "rule                 Favourite equals 1"] : ["filter               All", "filter               Favourites", "rule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
 			})
 		}
 	}
@@ -630,7 +631,7 @@ function buildconfig(allgames, tempprf) {
 		cfgfile.write_line ("\tin_cycle             " + value.in_cycle + "\n")
 		cfgfile.write_line ("\tin_menu              " + value.in_menu + "\n")
 		foreach (item2, val2 in value.filters) {
-			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "\t" + val2 + "\n" : "\t\t" + val2 + "\n")
+			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "\t" + val2 + "\n" : val2 + "\n")
 		}
 		cfgfile.write_line("\n")
 	}
@@ -2907,7 +2908,7 @@ function parseXML(inputpath) {
 	local ingame = false
 
 	while (!inputfile.eos()) {
-		line = inputfile.read_line()
+		line = strip(inputfile.read_line())
 
 		line = clean_desc(line)
 
@@ -3022,7 +3023,7 @@ function getemulatordata(emulatorname) {
 	local stop = 0
 
 	while (!infile.eos()) {
-		inline = infile.read_line()
+		inline = strip(infile.read_line())
 		if (inline.find("executable") == 0) {
 			executable = strip(inline.slice(10))
 			executable = fe.path_expand(executable)
@@ -3292,7 +3293,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
 	local linein = null
 	while (!jsfilein.eos()) {
-		linein = jsfilein.read_line()
+		linein = strip(jsfilein.read_line())
 		jsarray.push(linein)
 		/*
 		if (jsarray[(jsarray.len() - 1)][0].tochar() == "<") {
@@ -3383,7 +3384,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json.nut"))
 	local linein = null
 	while (!jsfilein.eos()) {
-		linein = jsfilein.read_line()
+		linein = strip(jsfilein.read_line())
 		jsarray.push(linein)
 		if (jsarray[(jsarray.len() - 1)][0].tochar() == "<") {
 			dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -16790,7 +16791,7 @@ function ra_init() {
 		coreinfofile = ReadTextFile (fe.path_expand(ra.infopath + item + "_libretro.info"))
 
 		while (stringline[0].tochar() == "#") {
-			stringline = coreinfofile.read_line()
+			stringline = strip(coreinfofile.read_line())
 		}
 		ra.coretable[item].rawset("shortname", item)
 		ra.coretable[item].rawset("displayname", stringline.slice(stringline.find(ap) + 1, -1))

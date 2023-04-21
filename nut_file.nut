@@ -134,8 +134,29 @@ class ReadTextFile
 			{
 				char = _blb.readn( 'b' );
 				if ( char == '\n' )
-					return strip( line );
+					return ( line );
+				line += char.tochar();
+			}
+		}
 
+		return line;
+	}
+
+	function read_line2()
+	{
+		local line="";
+		local char;
+
+		while ( !eos() )
+		{
+			if ( _blb.eos() && _f && !_f.eos() )
+				_blb = _f.readblob( _readsize );
+
+			while ( !_blb.eos() )
+			{
+				char = _blb.readn( 'b' );
+				if ( char == '\n' )
+					return ( line );
 				line += char.tochar();
 			}
 		}
