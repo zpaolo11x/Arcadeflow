@@ -7883,7 +7883,6 @@ function update_z_disp() {
 			try {z_disp[i].group = system_data[item.cleanname.tolower()].group} catch(err) {}
 		}
 	}
-	print_variable(z_disp,"","")
 }
 update_z_disp()
 
