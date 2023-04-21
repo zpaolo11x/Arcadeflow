@@ -5389,7 +5389,7 @@ multifilterz.l0["Category"] <- {
 			local v = z_list.boot[index + fe.list.index].z_category
 
 			// Return data when no category is selected
-			if (v == "") return {l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}
+			if (v == "") return [{l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}]
 
 			local pcat = processcategory(v)
 
@@ -5702,7 +5702,6 @@ multifilterz.l0["Region"] <- {
 
 			if (v == "") v = "ZZ"
 			local v = split(v, comma)
-print_variable(v,"",index)
 
 			return(v.map(function(val){
 				return ({
