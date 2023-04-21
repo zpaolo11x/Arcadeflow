@@ -5324,9 +5324,6 @@ multifilterz.l0["System"] <- {
 			return ([{
 				l1val = v
 				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5345,9 +5342,6 @@ multifilterz.l0["Arcade"] <- {
 			return ([{
 				l1val = v
 				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5361,15 +5355,12 @@ multifilterz.l0["Tags"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot2[index + fe.list.index].z_tags // z_gettags(index, false)
 
-			if (v.len() == 0) return [{l1val = "None", l1name = "None", sub = false, l2val = null, l2name = null}]
+			if (v.len() == 0) return [{l1val = "None", l1name = "None"}]
 
 			return (v.map(function(val){
 				return({
 					l1val = val
 					l1name = val
-					sub = false
-					l2val = null
-					l2name = null
 				})
 			}))
 		}
@@ -5385,7 +5376,7 @@ multifilterz.l0["Category"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_category
 
-			if (v == "") return [{l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}]
+			if (v == "") return [{l1val = "Unknown", l1name = "Unknown"}]
 
 			local pcat = processcategory(v)
 
@@ -5393,14 +5384,10 @@ multifilterz.l0["Category"] <- {
 				if (val[1] == "") return({
 					l1val = val[0]
 					l1name = val[0]
-					sub = false
-					l2val = null
-					l2name = null					
 				}) 
 				else return({
 					l1val = strip(val[0]) + "/"
 					l1name = strip(val[0]) + "..."
-					sub = true
 					l2val = strip(val[0]) + "/" + strip(val[1])
 					l2name = strip(val[1])					
 				}) 
@@ -5418,15 +5405,14 @@ multifilterz.l0["Year"] <- {
 			local v = z_list.boot[index + fe.list.index].z_year
 
 			// Return data when no category is selected
-			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1name = "Unknown", sub = false, l2val = null, l2name = null}]
-			if (v == "[unreleased]") return [{l1val = "Unreleased", l1name = "Unreleased", sub = false, l2val = null, l2name = null}]
-			if (v == "19??") return [{l1val = "19??", l1name = "19??", sub = false, l2val = null, l2name = null}]
+			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1name = "Unknown"}]
+			if (v == "[unreleased]") return [{l1val = "Unreleased", l1name = "Unreleased"}]
+			if (v == "19??") return [{l1val = "19??", l1name = "19??"}]
 			local v2 = v.slice(0, 3) + "x"
 
 			return ([{
 				l1val = v2
 				l1name = v2 +"..."
-				sub = true
 				l2val = v
 				l2name = v
 			}])
@@ -5442,18 +5428,17 @@ multifilterz.l0["Manufacturer"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_manufacturer.tolower()
 
-			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1name = "?", sub = false, l2val = null, l2name = null}]
+			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1name = "?"}]
 
 			v = split(v, "_")[0]
 			if (v.len() >= 7) {
-				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1name = "? bootleg", sub = false, l2val = null, l2name = null}]
+				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1name = "? bootleg"}]
 			}
 
 			local v2 = v.slice(0, 1)
 			return ([{
 				l1val = v2
 				l1name = v2 + "..."
-				sub = true
 				l2val = v
 				l2name = v
 			}])
@@ -5472,9 +5457,6 @@ multifilterz.l0["Favourite"] <- {
 			return ([{
 				l1val = (v ? "1 - Favourite" : "2 - Not Favourite")
 				l1name = (v ? "Favourite" : "Not Favourite")
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5494,9 +5476,6 @@ multifilterz.l0["Buttons"] <- {
 			return ([{
 				l1val = v
 				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5515,9 +5494,6 @@ multifilterz.l0["Players"] <- {
 			return ([{
 				l1val = v
 				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5533,9 +5509,6 @@ multifilterz.l0["Played"] <- {
 			return ([{
 				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
 				l1name = (v == 0 ? "Not Played" : "Played")
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5553,9 +5526,6 @@ multifilterz.l0["Orientation"] <- {
 			return ([{
 				l1val = vcheck ? "1 - Horizontal" : "2 - Vertical"
 				l1name = vcheck ? "Horizontal" : "Vertical"
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5569,7 +5539,7 @@ multifilterz.l0["Controls"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index + fe.list.index].z_control
 
-			if (v == "") return [{l1val = "?", l1name = "?", sub = false, l2val = null, l2name = null}]
+			if (v == "") return [{l1val = "?", l1name = "?"}]
 
 			local v2 = [null]
 
@@ -5591,9 +5561,6 @@ multifilterz.l0["Controls"] <- {
 			return ([{
 				l1val = v2
 				l1name = v2
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5618,9 +5585,6 @@ multifilterz.l0["Rating"] <- {
 			return ([{
 				l1val = v2
 				l1name = v3
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5638,9 +5602,6 @@ multifilterz.l0["Series"] <- {
 			return ([{
 				l1val = v
 				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5658,9 +5619,6 @@ multifilterz.l0["Scraped"] <- {
 			return ([{
 				l1val = v
 				l1name = v
-				sub = false
-				l2val = null
-				l2name = null
 			}])
 		}
 	}
@@ -5681,9 +5639,6 @@ multifilterz.l0["Region"] <- {
 				return ({
 					l1val = strip(val).tolower()
 					l1name = (val == "ZZ") ? "None" : strip(val).tolower()
-					sub = false
-					l2val = null
-					l2name = null
 				})
 			}))
 		}
@@ -5749,13 +5704,14 @@ function mfz_build(reset) {
 					}
 				}
 
-				if (val_ix.sub) { //submenu is present
+				if (val_ix.rawin("l2val")) { //submenu is present
 					// Populate or update level 2 menu
 					try {
 						table0.menu[val_ix.l1name].submenu[val_ix.l2name].num ++
 					}
 					catch(err) {
 						if (table0.menu[val_ix.l1name].submenu == null) table0.menu[val_ix.l1name].submenu = {}
+						testpr(val_ix.l1name+" "+val_ix.l2name+"\n")
 						table0.menu[val_ix.l1name].submenu[val_ix.l2name] <- {
 							num = 1
 							filtered = false
@@ -5869,7 +5825,7 @@ function mfz_checkin(index) {
 				vtemp = table0.levcheck(index)
 				foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
 					foreach (vitem, vtable in vtemp){
-						if ((value == vtable.l1val) || (value == vtable.l2val)){
+						if ((value == vtable.l1val) || (vtable.rawin("l2val") && (value == vtable.l2val))){
 							outOR = true
 							break
 						}
@@ -6075,7 +6031,7 @@ function mfz_refreshnum(catin) {
 			if (inmfz && (z_list.boot[i].z_infav && z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
 				foreach (vindex, vtable in vals){
 					table0.menu[vtable.l1name].num ++
-					if (vtable.sub) table0.menu[vtable.l1name].submenu[vtable.l2name].num ++
+					if (vtable.rawin("l2val")) table0.menu[vtable.l1name].submenu[vtable.l2name].num ++
 				}
 			}
 
