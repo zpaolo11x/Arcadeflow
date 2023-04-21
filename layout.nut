@@ -39,7 +39,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
+	timer = true
 	timetable = {}
 }
 
@@ -5320,7 +5320,6 @@ multifilterz.l0["System"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			testpr("zipzap\n")
 			local v = z_list.boot[index].z_system
 			if (v == "") v = "?"
 
