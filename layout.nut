@@ -7829,8 +7829,9 @@ function update_z_disp() {
 			brand = "ZZZZ"
 			year = "9999"
 		})
-		// data from af_collections is purged from the displays table because they
-		// are managed in a different way
+		// data from af_collections is managed in its own table, collections are in display list but
+		// with the in_menu flag set to false so they are managed in a different way when
+		// the display menu is created
 		if (z_af_collections.tab.rawin(z_disp[i].dispname)) {
 			z_af_collections.tab[z_disp[i].dispname].rawset("display_id", i)
 		}
@@ -7882,6 +7883,7 @@ function update_z_disp() {
 			try {z_disp[i].group = system_data[item.cleanname.tolower()].group} catch(err) {}
 		}
 	}
+	print_variable(z_disp,"","")
 }
 update_z_disp()
 
@@ -8477,8 +8479,11 @@ function bgs_freeze(status) {
 	bglay.surf_1.redraw = bglay.surf_1.clear = !status
 }
 
-function displaynamelogo(offset) {
-	return systemfont(z_disp[fe.list.display_index].cleanname, false)
+function displaynamelogo(cleanname) {
+	if (z_af_collections.tab.rawin(cleanname))
+		return z_af_collections.tab[cleanname].ungroupedname
+	else
+		return systemfont(cleanname, false)
 }
 
 local displaynamesurf = {
@@ -15190,7 +15195,7 @@ function on_transition(ttype, var0, ttime) {
 	// DISPLAY CHANGE REACTION
 	if ((ttype == Transition.ToNewList) && (fe.list.display_index != displaystore)) {
 		// fade.display = fade.displayzoom = 1
-		displayname.msg = displaynamelogo(0)
+		displayname.msg = displaynamelogo(z_disp[fe.list.display_index].cleanname)
 
 		flowT.alphadisplay = startfade(flowT.alphadisplay, 0.04, -2.0)
 		displaynamesurf.surf.redraw = true
