@@ -266,7 +266,6 @@ function splash_update(command) {
 		return
 	}
 	if (command == AF.bar.stop) {
-		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
@@ -483,7 +482,7 @@ function parseconfig() {
 	local warning = false
 	local tempval = null
 	foreach(i, item in postdisplays) {
-		print(i+" "+item+"\n")
+		item = strip(item) //Remove leading tabs
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
@@ -5712,7 +5711,6 @@ function mfz_build(reset) {
 					}
 					catch(err) {
 						if (table0.menu[val_ix.l1name].submenu == null) table0.menu[val_ix.l1name].submenu = {}
-						testpr(val_ix.l1name+" "+val_ix.l2name+"\n")
 						table0.menu[val_ix.l1name].submenu[val_ix.l2name] <- {
 							num = 1
 							filtered = false
