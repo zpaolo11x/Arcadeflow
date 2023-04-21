@@ -3292,14 +3292,9 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
 	local linein = null
 	while (!jsfilein.eos()) {
+		if (linein == "") continue
 		linein = strip(jsfilein.read_line())
 		jsarray.push(linein)
-		/*
-		if (jsarray[(jsarray.len() - 1)][0].tochar() == "<") {
-			dispatcher[scrapeid].jsonstatus = "ERROR"
-			return
-		}
-		*/
 	}
 
 	if (!file_exist(AF.folder + "json/" + scrapeid + "jsonA.nut")) {
@@ -3384,6 +3379,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	local linein = null
 	while (!jsfilein.eos()) {
 		linein = strip(jsfilein.read_line())
+		if (linein == "") continue
 		jsarray.push(linein)
 		if (jsarray[(jsarray.len() - 1)][0].tochar() == "<") {
 			dispatcher[scrapeid].jsonstatus = "ERROR"
