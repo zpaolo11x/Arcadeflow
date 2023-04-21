@@ -3767,6 +3767,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 
 // Define the new list data
 local z_list = {
+	levchecks = []
+
 	boot = []
 	boot2 = []
 	db1 = {}
@@ -5318,7 +5320,8 @@ multifilterz.l0["System"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_system
+			testpr("zipzap\n")
+			local v = z_list.boot[index].z_system
 			if (v == "") v = "?"
 
 			return ([{
@@ -5335,7 +5338,7 @@ multifilterz.l0["Arcade"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_arcadesystem
+			local v = z_list.boot[index].z_arcadesystem
 
 			if (v == "") v = "?"
 
@@ -5353,7 +5356,7 @@ multifilterz.l0["Tags"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot2[index + fe.list.index].z_tags // z_gettags(index, false)
+			local v = z_list.boot2[index].z_tags // z_gettags(index, false)
 
 			if (v.len() == 0) return [{l1val = "None", l1name = "None"}]
 
@@ -5374,7 +5377,7 @@ multifilterz.l0["Category"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_category
+			local v = z_list.boot[index].z_category
 
 			if (v == "") return [{l1val = "Unknown", l1name = "Unknown"}]
 
@@ -5402,7 +5405,7 @@ multifilterz.l0["Year"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_year
+			local v = z_list.boot[index].z_year
 
 			// Return data when no category is selected
 			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1name = "Unknown"}]
@@ -5426,7 +5429,7 @@ multifilterz.l0["Manufacturer"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_manufacturer.tolower()
+			local v = z_list.boot[index].z_manufacturer.tolower()
 
 			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1name = "?"}]
 
@@ -5452,7 +5455,7 @@ multifilterz.l0["Favourite"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot2[index + fe.list.index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite, index)
+			local v = z_list.boot2[index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite, index)
 
 			return ([{
 				l1val = (v ? "1 - Favourite" : "2 - Not Favourite")
@@ -5468,7 +5471,7 @@ multifilterz.l0["Buttons"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_buttons
+			local v = z_list.boot[index].z_buttons
 
 			if (v == "") v = "??"
 			if (v.len() == 1) v = " " + v
@@ -5487,7 +5490,7 @@ multifilterz.l0["Players"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_players
+			local v = z_list.boot[index].z_players
 			if (v == "") v = " ?"
 			if (v.len() == 1) v = " " + v
 
@@ -5505,7 +5508,7 @@ multifilterz.l0["Played"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot2[index + fe.list.index].z_playedcount
+			local v = z_list.boot2[index].z_playedcount
 			return ([{
 				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
 				l1name = (v == 0 ? "Not Played" : "Played")
@@ -5520,7 +5523,7 @@ multifilterz.l0["Orientation"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_rotation
+			local v = z_list.boot[index].z_rotation
 			local vcheck = ((v == "0") || (v == "180") || (v == "Horizontal") || (v == "horizontal") || (v == ""))
 
 			return ([{
@@ -5537,7 +5540,7 @@ multifilterz.l0["Controls"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_control
+			local v = z_list.boot[index].z_control
 
 			if (v == "") return [{l1val = "?", l1name = "?"}]
 
@@ -5572,7 +5575,7 @@ multifilterz.l0["Rating"] <- {
 		translate = false
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_rating
+			local v = z_list.boot[index].z_rating
 			local v2 = "??"
 			if (v == "") {
 				v = "??"
@@ -5596,7 +5599,7 @@ multifilterz.l0["Series"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_series
+			local v = z_list.boot[index].z_series
 			if (v == "") v = " ?? "
 
 			return ([{
@@ -5613,7 +5616,7 @@ multifilterz.l0["Scraped"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_scrapestatus
+			local v = z_list.boot[index].z_scrapestatus
 			if (v == "") v = "?"
 
 			return ([{
@@ -5630,7 +5633,7 @@ multifilterz.l0["Region"] <- {
 		sort = false
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index + fe.list.index].z_region
+			local v = z_list.boot[index].z_region
 
 			if (v == "") v = "ZZ"
 			local v = split(v, comma)
@@ -5688,8 +5691,10 @@ function mfz_build(reset) {
 
 	// Scan the whole romlist
 	for (local i = 0; i < fe.list.size; i++) {
+		z_list.levchecks.push({})
 		foreach (id0, table0 in multifilterz.l0) { // Scan throught the "items" ("Year", "Category" etc) in the multifilter,
-			local vals = table0.levcheck(i - fe.list.index)
+			local vals = table0.levcheck(i)
+			z_list.levchecks[i].rawset(table0, vals)
 			// Check if level 1 value is an ARRAY!
 			foreach (ix, val_ix in vals) {
 				try {
@@ -5811,6 +5816,15 @@ local mf = {
 local multifilterglyph = null // This is the layout object that turns on when a multifilter is active
 
 function mfz_checkin(index) {
+	// This function checks if the game at index is or not "multifiltered"
+	// The process analyses the multifilter.filterz section by section, and for each section requires
+	// the levcheck values of current game. 
+	// If one of the filter values is equal to the levcheck value then the specific section is set to true in 
+	// the meta field. outOR is true if the game has one of the filtered properties
+	// All entries of metafilter are checked one with the other, if they are ALL true than the game is actually
+	// in filter. 
+
+	// meta is used for calculation purposes, inmfz is used for filtering check
 	local outOR = false
 	local outAND = true
 	local vtemp = null
@@ -5821,7 +5835,7 @@ function mfz_checkin(index) {
 		metafilter.rawset(id0, outOR)
 		if (multifilterz.filter.rawin(id0)) {
 			if (multifilterz.filter[id0].len() > 0) { //Filter is applied on this category
-				vtemp = table0.levcheck(index)
+				vtemp = z_list.levchecks[index][table0] //table0.levcheck(index) //TEST160 Quante volte viene richiamato levcheck nella vita del layout? magari si può fare un baking!
 				foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
 					foreach (vitem, vtable in vtemp){
 						if ((value == vtable.l1val) || (vtable.rawin("l2val") && (value == vtable.l2val))){
@@ -5837,11 +5851,6 @@ function mfz_checkin(index) {
 				// This substitutes the outAND check: if at least one outOR is not true,
 				// then the outAND is obviously false and the item is not "infilter"
 				// but this stops the sweep of id0 for this game!
-				/*
-				if (outOR == false) {
-					return (false)
-				}
-				*/
 				outAND = outAND && outOR
 			}
 		}
@@ -5850,6 +5859,7 @@ function mfz_checkin(index) {
 		inmfz = outAND
 		meta = metafilter
 	}
+	//TEST160 print_variable(outtable,"","outtable")
 	return (outtable)
 }
 
@@ -6017,7 +6027,7 @@ function mfz_refreshnum(catin) {
 
 		foreach (id0, table0 in multifilterz.l0) {
 			// Call the function that return the menu entry for the current game
-			local vals = table0.levcheck(i - fe.list.index)
+			local vals = z_list.levchecks[i][table0] //table0.levcheck(i - fe.list.index)
 			local inmfz = true
 			if (typeof z_list.boot[i].z_inmfz.meta == "table") {
 				foreach (item, val in z_list.boot[i].z_inmfz.meta) {
@@ -6040,10 +6050,12 @@ function mfz_refreshnum(catin) {
 }
 
 function mfz_menu2(presel) {
+	testpr("XXXXXXXXX\n")
 	//2nd level menu is never translated and is always sorted by value
 	local valcurrent = null
 
-	if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+	//TEST160 ERA USATO PER VALCURRENT???
+	//TEST160 RIMOSSO if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
 
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu[mf.cat1].submenu, 2, false, true)
 	local namearray = mfzdat.names
@@ -6111,7 +6123,7 @@ function mfz_menu2(presel) {
 function mfz_menu1(presel) {
 	local valcurrent = null
 
-	if (z_list.size > 0) valcurrent = multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+	if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
 	// valcurrent is the array of entries for the current game and current mf.cat0
 
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu, 1, multifilterz.l0[mf.cat0].translate, multifilterz.l0[mf.cat0].sort)
@@ -6646,7 +6658,7 @@ function z_listcreate() {
 		local checkmeta = null
 		local mfz_status = {inmfz = true, meta = true}
 		if (mfz_on()) {
-			mfz_status = mfz_checkin(ifeindex)
+			mfz_status = mfz_checkin(i)
 			checkfilter = mfz_status.inmfz
 		}
 		//if (mfz_on()) checkfilter = mfz_checkin(ifeindex).inmfz
@@ -6924,7 +6936,7 @@ function z_filteredlistupdateindex(reindex) {
 		return
 	}
 
-	if (!mfz_checkin(0).inmfz || !z_favfilter(0) || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN)) {
+	if (!mfz_checkin(fe.list.index).inmfz || !z_favfilter(0) || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN)) {
 		z_list.index = 0
 		z_list.newindex = 0
 
