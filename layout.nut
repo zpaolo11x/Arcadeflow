@@ -88,6 +88,7 @@ function testz(){
 
 }
 testz()
+
 //pappo = 0
 local IDX = array(300000)
 
@@ -5678,14 +5679,16 @@ multifilterz.l0["Region"] <- {
 
 // Add the filter values to the multifilter in a separate table
 
+multifilterz.hasfilters <- {}
 multifilterz.filter <- {}
 foreach (item, table in multifilterz.l0) {
 	multifilterz.filter[item] <- []
+	multifilterz.hasfilters[item] <- false
 }
 
 savetabletofile(multifilterz.filter, "pref_mf_0.txt")
 
-function mfz_on() {
+function mfz_on() {//TEST160 cambiar con hasfilters
 	foreach (item, table in multifilterz.l0) {
 		if (multifilterz.filter.rawin(item)) {
 			if (multifilterz.filter[item].len() > 0) return true
@@ -5694,7 +5697,7 @@ function mfz_on() {
 	return false
 }
 
-function mfz_num() {
+function mfz_num() {//TEST160 cambiar con hasfilters
 	local out = 0
 	foreach (item, table in multifilterz.l0) {
 		if (multifilterz.filter.rawin(item)) {
@@ -5711,8 +5714,8 @@ function mfz_build(reset) {
 	// Reset all menu data
 	foreach (item, table in multifilterz.l0) {
 		if (reset) {
-			if (multifilterz.filter.rawin(item)) multifilterz.filter[item] = []
-			else multifilterz.filter.rawset(item, [])
+			multifilterz.filter.rawset(item, [])
+			multifilterz.hasfilters.rawset(item, false)
 		}
 		try {table.menu.clear()} catch(err) {print("\nERROR!\n")}
 		multifilterz.l0[item].label = ltxt(item, AF.LNG)
@@ -5755,6 +5758,7 @@ function mfz_build(reset) {
 			}						
 		}
 	}
+	print_variable(multifilterz.filter,"","mfz_build multifilterz.filter")
 	timestop("mfz_build")
 }
 
@@ -5790,15 +5794,17 @@ function mfz_printfilter() {
 function mfz_populate() {
 	debugpr("mfz_populate\n")
 	foreach (id0, table0 in multifilterz.l0) {
-		if (multifilterz.filter.rawin(id0)) multifilterz.filter[id0] = []
-		else multifilterz.filter.rawset(id0, [])
+		multifilterz.filter.rawset(id0, [])
 		foreach (id1, table1 in table0.menu) {
-			if (table1.filtered) multifilterz.filter[id0].push(table1.filtervalue)
+			if (table1.filtered) {
+				multifilterz.filter[id0].push(table1.filtervalue)
+			}
 			if (table1.submenu != null) {
 				foreach (id2, table2 in table1.submenu) {
 					if (table2.filtered) multifilterz.filter[id0].push(table2.filtervalue)
 				}
 			}
+			multifilterz.hasfilters[id0] = (multifilterz.filter[id0].len()>0)
 		}
 	}
 }
@@ -5862,26 +5868,24 @@ function mfz_checkin(index) {
 	foreach (id0, table0 in multifilterz.l0) {
 		outOR = false
 		metafilter.rawset(id0, outOR)
-		if (multifilterz.filter.rawin(id0)) {
-			if (multifilterz.filter[id0].len() > 0) { //Filter is applied on this category
-				vtemp = z_list.levchecks[index][table0] //table0.levcheck(index) //TEST160 Quante volte viene richiamato levcheck nella vita del layout? magari si può fare un baking!
-				foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
-					foreach (vitem, vtable in vtemp){
-						if ((value == vtable.l1val) || (vtable.rawin("l2val") && (value == vtable.l2val))){
-							outOR = true
-							break
-						}
+		if (multifilterz.hasfilters[id0]) { //Filter is applied on this category
+			vtemp = z_list.levchecks[index][table0] //table0.levcheck(index) //TEST160 Quante volte viene richiamato levcheck nella vita del layout? magari si può fare un baking!
+			foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
+				foreach (vitem, vtable in vtemp){
+					if ((value == vtable.l1val) || (vtable.rawin("l2val") && (value == vtable.l2val))){
+						outOR = true
+						break
 					}
-				} // foreach is broken if one match inside the category is true
+				}
+			} // foreach is broken if one match inside the category is true
 
-				// metafilter is populated with the outOR value for current id0
-				metafilter.rawset(id0, outOR)
+			// metafilter is populated with the outOR value for current id0
+			metafilter.rawset(id0, outOR)
 
-				// This substitutes the outAND check: if at least one outOR is not true,
-				// then the outAND is obviously false and the item is not "infilter"
-				// but this stops the sweep of id0 for this game!
-				outAND = outAND && outOR
-			}
+			// This substitutes the outAND check: if at least one outOR is not true,
+			// then the outAND is obviously false and the item is not "infilter"
+			// but this stops the sweep of id0 for this game!
+			outAND = outAND && outOR
 		}
 	}
 	local outtable = {
@@ -6067,12 +6071,10 @@ function mfz_refreshnum(catin) {
 				local inmfz = true
 
 				foreach (item, val in z_list.boot[i].z_inmfz.meta) {
-					if (multifilterz.filter.rawin(item)) {
-						if ((multifilterz.filter[item].len() > 0) && (item != catin))
-							inmfz = inmfz && val
-					}
+					if ((multifilterz.hasfilters[item]) && (item != catin))
+						inmfz = inmfz && val
 				}
-				
+
 				if (inmfz) {
 					foreach (vindex, vtable in vals){
 						table0.menu[vtable.l1name].num ++
@@ -6305,6 +6307,8 @@ function mfz_save() {
 }
 
 function mfz_load() {
+	debugpr("mfz_load\n")
+	local tempfilter = null
 	local tempresult = loadtablefromfile("pref_mf_"+ aggregatedisplayfilter() +".txt", true)
 	local defresult = loadtablefromfile("mf_"+ aggregatedisplayfilter() +".txt", true)
 
@@ -6315,6 +6319,9 @@ function mfz_load() {
 	}
 	else {
 		multifilterz.filter = tempresult
+	}
+	foreach (item, value in multifilterz.filter){
+		multifilterz.hasfilters[item] = (value.len() > 0)
 	}
 }
 
@@ -6477,6 +6484,7 @@ function z_favfilter(index) {
 }
 
 function z_mots2filter(index) {
+	print_variable(search.mots,"","")
 	if (search.mots[0] == "") return true
 	local currentval = ""
 
@@ -15482,6 +15490,10 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
+	//TEST160
+	//foreach(item,val in multifilterz.hasfilters) testpr(item+(val?1:0)+" ")
+	//testpr("\n")
+	//print_variable(multifilterz.filter,"","")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
