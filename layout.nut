@@ -17566,9 +17566,9 @@ function on_signal(sig) {
 						skip = (z_list.gametable[z_list.index].z_manufacturer == "")						
 					},{
 						text = ltxt("Main Category", AF.LNG),
-						note = split(z_list.gametable[z_list.index].z_category, "/")[0],
-						fade = (split(z_list.gametable[z_list.index].z_category, "/")[0] == ""),
-						skip = (split(z_list.gametable[z_list.index].z_category, "/")[0] == "")							
+						note = processcategory(z_list.gametable[z_list.index].z_category)[0][0],
+						fade = (processcategory(z_list.gametable[z_list.index].z_category)[0][0] == "Unknown"),
+						skip = (processcategory(z_list.gametable[z_list.index].z_category)[0][0] == "Unknown"),							
 					},{
 						text = ltxt("Sub Category", AF.LNG),
 						note = z_list.gametable[z_list.index].z_category
