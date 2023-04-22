@@ -6,6 +6,8 @@
 
 // Load file nut
 
+
+
 fe.do_nut("nut_file.nut")
 
 local ap = '"'.tochar()
@@ -55,6 +57,38 @@ function timestop(name) {
 	print("    " + name + " STOP: " + (elapse.t2 - elapse.timetable[name]) + "\n")
 }
 
+function testz(){
+
+	local arr1 = []
+	local arr2 = []
+	local arr3 = []
+	for (local i = 1000000; i < 1500000; i++){
+		arr1.push(i.tostring())
+		arr2.push(i.tostring())
+		arr3.push(i.tostring())
+	}
+	
+	timestart("apply")
+	arr1.apply(function(value){
+		return (typeof value.slice(-5).tostring())
+	})
+	timestop("apply")
+
+	timestart("map")
+	local arr2bis = arr2.map(function(value){
+			return (typeof value.slice(-5).tostring())
+	})
+	timestop("map")
+
+	timestart("foreach")
+	foreach (i, value in arr3){
+			arr3[i] = (typeof value.slice(-5).tostring())
+	}
+	timestop("foreach")
+
+}
+testz()
+//pappo = 0
 local IDX = array(300000)
 
 // Support array for quick sort
@@ -6020,24 +6054,25 @@ function mfz_refreshnum(catin) {
 	//for (local i = 0; i < fe.list.size; i++) {
 
 	timestart("    step2")
+	local in_other_searches = false
 	foreach (i, item in z_list.boot) {
 		bar_progress_update(i, 0, z_list.boot.len())
 
-		local in_other_searches = (z_list.boot[i].z_infav && z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2)
+		in_other_searches = (z_list.boot[i].z_infav && z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2)
 		// Iterate the check with all the multifilter categories (title, cat, players etc)
 		if (in_other_searches){
 			foreach (id0, table0 in multifilterz.l0) {
 				// Call the function that return the menu entry for the current game (BAKED in AF160)
 				local vals = z_list.levchecks[i][table0]
 				local inmfz = true
-				if (typeof z_list.boot[i].z_inmfz.meta == "table") {
-					foreach (item, val in z_list.boot[i].z_inmfz.meta) {
-						if (multifilterz.filter.rawin(item)) {
-							if ((multifilterz.filter[item].len() > 0) && (item != catin))
-								inmfz = inmfz && val
-						}
+
+				foreach (item, val in z_list.boot[i].z_inmfz.meta) {
+					if (multifilterz.filter.rawin(item)) {
+						if ((multifilterz.filter[item].len() > 0) && (item != catin))
+							inmfz = inmfz && val
 					}
 				}
+				
 				if (inmfz) {
 					foreach (vindex, vtable in vals){
 						table0.menu[vtable.l1name].num ++
@@ -6660,7 +6695,7 @@ function z_listcreate() {
 		local ifeindex = i - fe.list.index
 		local checkfilter = true
 		local checkmeta = null
-		local mfz_status = {inmfz = true, meta = true}
+		local mfz_status = {inmfz = true, meta = {}}
 		if (mfz_on()) {
 			mfz_status = mfz_checkin(i)
 			checkfilter = mfz_status.inmfz
