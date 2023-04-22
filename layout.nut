@@ -6003,6 +6003,7 @@ function mfz_refreshnum(catin) {
 	debugpr("mfz_refreshnum "+ catin + "\n")
 	//	return
 	// Reset menu numbers (not menu values!)
+	timestart("    step1")
 	foreach (id0, table0 in multifilterz.l0) {
 		foreach (id1, table1 in table0.menu) {
 			table1.num = 0
@@ -6013,34 +6014,42 @@ function mfz_refreshnum(catin) {
 			}
 		}
 	}
+	timestop("    step1")
 
 	// Scan the whole romlist
 	//for (local i = 0; i < fe.list.size; i++) {
 
+	timestart("    step2")
 	foreach (i, item in z_list.boot) {
 		bar_progress_update(i, 0, z_list.boot.len())
 
-		foreach (id0, table0 in multifilterz.l0) {
-			// Call the function that return the menu entry for the current game
-			local vals = z_list.levchecks[i][table0] //table0.levcheck(i - fe.list.index)
-			local inmfz = true
-			if (typeof z_list.boot[i].z_inmfz.meta == "table") {
-				foreach (item, val in z_list.boot[i].z_inmfz.meta) {
-					if (multifilterz.filter.rawin(item)) {
-						if ((multifilterz.filter[item].len() > 0) && (item != catin))
-							inmfz = inmfz && val
+		local in_other_searches = (z_list.boot[i].z_infav && z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2)
+		// Iterate the check with all the multifilter categories (title, cat, players etc)
+		if (in_other_searches){
+			foreach (id0, table0 in multifilterz.l0) {
+				// Call the function that return the menu entry for the current game (BAKED in AF160)
+				local vals = z_list.levchecks[i][table0]
+				local inmfz = true
+				if (typeof z_list.boot[i].z_inmfz.meta == "table") {
+					foreach (item, val in z_list.boot[i].z_inmfz.meta) {
+						if (multifilterz.filter.rawin(item)) {
+							if ((multifilterz.filter[item].len() > 0) && (item != catin))
+								inmfz = inmfz && val
+						}
 					}
 				}
-			}
-			if (inmfz && (z_list.boot[i].z_infav && z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
-				foreach (vindex, vtable in vals){
-					table0.menu[vtable.l1name].num ++
-					if (vtable.rawin("l2val")) table0.menu[vtable.l1name].submenu[vtable.l2name].num ++
+				if (inmfz) {
+					foreach (vindex, vtable in vals){
+						table0.menu[vtable.l1name].num ++
+						if (vtable.rawin("l2val")) table0.menu[vtable.l1name].submenu[vtable.l2name].num ++
+					}
 				}
-			}
 
+			}
 		}
 	}
+	timestop("    step2")
+
 	timestop("mfz_refreshnum")
 }
 
@@ -6556,7 +6565,7 @@ function z_listboot() {
 	debugpr("z_listboot\n")
 	z_list.allromlists = allromlists()
 	local romlistboot = fe.displays[fe.list.display_index].name
-	z_updatetagstable()
+	//TEST160 RIMOSSO z_updatetagstable()
 
 	z_list.boot = []
 	z_list.boot2 = []
