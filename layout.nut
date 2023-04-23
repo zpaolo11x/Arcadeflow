@@ -2773,6 +2773,9 @@ function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
 		sortlist2.push(arr2_in[value])
 	}
 
+	// Reversing a sort is not easy as just reversing the sorted array, because reverse sort
+	// means the main sorting key is reversed (e.g. year), but the secondary sorting keys 
+	// (e.g. game name, system ecc) needs to keep the previous ordering
 	if (reverse)  {
 		local packetarray = []
 		local packetarray2 = []
