@@ -90,7 +90,7 @@ function testz(){
 testz()
 
 //pappo = 0
-local IDX = array(300000)
+local IDX = array(100000)
 
 // Support array for quick sort
 foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
