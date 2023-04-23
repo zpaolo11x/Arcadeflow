@@ -5208,7 +5208,6 @@ P2_JOYSTICK:Black:
 // Returns an array of all the categories of a game, each array entry is an array with main and sub category
 // When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
 // of the array is one of the categories. If one of these is "/" separated, this is taken into account.
-	
 function processcategory(categoryname){
 	local out = []
 	if (categoryname == "") return ([["Unknown", ""]])
@@ -5759,7 +5758,6 @@ function mfz_build(reset) {
 			}						
 		}
 	}
-	print_variable(multifilterz.filter,"","mfz_build multifilterz.filter")
 	timestop("mfz_build")
 }
 
@@ -5893,7 +5891,6 @@ function mfz_checkin(index) {
 		inmfz = outAND
 		meta = metafilter
 	}
-	//TEST160 print_variable(outtable,"","outtable")
 	return (outtable)
 }
 
@@ -6092,7 +6089,6 @@ function mfz_refreshnum(catin) {
 }
 
 function mfz_menu2(presel) {
-	testpr("XXXXXXXXX\n")
 	//2nd level menu is never translated and is always sorted by value
 	local valcurrent = null
 
@@ -6485,7 +6481,6 @@ function z_favfilter(index) {
 }
 
 function z_mots2filter(index) {
-	print_variable(search.mots,"","")
 	if (search.mots[0] == "") return true
 	local currentval = ""
 
@@ -6779,7 +6774,7 @@ function z_listsort(orderby, reverse) {
 	z_list.reverse = reverse
 
 	local z_tempsort = []
-
+	timestart("        pt1")
 	switch (orderby) {
 		case z_info.z_title.id:
 			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
@@ -6848,7 +6843,10 @@ function z_listsort(orderby, reverse) {
 			reverse)
 		break
 	}
-	
+		timestop("        pt1")
+
+	timestart("        pt2")
+
 	z_list.gametable = z_tempsort[0]
 	z_list.gametable2 = z_tempsort[1]
 
@@ -6856,6 +6854,8 @@ function z_listsort(orderby, reverse) {
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby, reverse]
 		savetabletofile(SORTTABLE, "pref_sortorder.txt")
 	}
+		timestop("        pt2")
+
 	timestop("    z_listsort")
 }
 
