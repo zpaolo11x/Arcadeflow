@@ -6,12 +6,6 @@
 
 // Load file nut
 
-local pippo = "\tppp\n"
-print (pippo[0]+" "+pippo[pippo.len()-1]+"\n")
-pippo = strip(pippo)
-print (pippo[0]+" "+pippo[pippo.len()-1]+"\n")
-pappo = 0
-
 fe.do_nut("nut_file.nut")
 
 local ap = '"'.tochar()
@@ -471,22 +465,22 @@ function parseconfig() {
 	local af_collections = false
 	local exitcommand = null
 
-	inline = cfgfile.read_line()
+	inline = cfgfile.read_line_wtab()
 	while (inline[0].tochar() == "#") {
 		if (inline.find("# Enable AF Collections") == 0) af_collections = true
 		else predisplays.push(inline)
-		inline = cfgfile.read_line()
+		inline = cfgfile.read_line_wtab()
 	}
 	while (inline.find("display\t") != 0) {
 		predisplays.push(inline)
-		inline = cfgfile.read_line()
+		inline = cfgfile.read_line_wtab()
 	}
 	while (!cfgfile.eos()) {
 		//inline = cfgfile.read_line()
 		if (inline.find("display\t") == 0) {
 			displayname = split(inline, "\t")[1]
 			displaytable.push({"display": displayname})
-			inline = cfgfile.read_line()
+			inline = cfgfile.read_line_wtab()
 			displaytable[id].rawset("filters", [])
 			while (inline != "") {
 				switch (split(inline, "\t ")[0]) {
@@ -505,14 +499,14 @@ function parseconfig() {
 						displaytable[id].filters.push(inline)
 						break
 				}
-				inline = cfgfile.read_line()
+				inline = cfgfile.read_line_wtab()
 			}
 			id ++
-			inline = cfgfile.read_line()
+			inline = cfgfile.read_line_wtab()
 		}
 		else {
 			postdisplays.push(inline)
-			inline = cfgfile.read_line()
+			inline = cfgfile.read_line_wtab()
 		}
 	}
 	//Add last read line from stream, which for sure is not a "display"

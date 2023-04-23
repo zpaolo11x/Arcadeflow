@@ -134,7 +134,7 @@ class ReadTextFile
 			{
 				char = _blb.readn( 'b' );
 				if ( char == '\n' )
-					return ( line );
+					return strip( line );
 				line += char.tochar();
 			}
 		}
@@ -142,7 +142,7 @@ class ReadTextFile
 		return line;
 	}
 
-	function read_line2()
+	function read_line_wtab()
 	{
 		local line="";
 		local char;
@@ -156,7 +156,7 @@ class ReadTextFile
 			{
 				char = _blb.readn( 'b' );
 				if ( char == '\n' )
-					return ( line );
+					return rstrip( line );
 				line += char.tochar();
 			}
 		}
