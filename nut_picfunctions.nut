@@ -106,7 +106,6 @@ function manufacturer_vec_name(name,year){
 
    local valueout = ""
    if(manufdata.rawin(sout)){
-		testpr("ISIN\n")
       foreach (item, val in manufdata[sout]){
          if ((year >= val.dmin) && (year <= val.dmax)) {
             valueout = manufvector[val.logo]
