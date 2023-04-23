@@ -5734,18 +5734,6 @@ function mfz_build(reset) {
 			z_list.levchecks[i].rawset(table0, vals) // Updates levchecks bakig variable
 			// Check if level 1 value is an ARRAY!
 			foreach (ix, val_ix in vals) {
-				if (table0.menu.rawin(val_ix.l1name)){
-					table0.menu[val_ix.l1name].num ++
-				}
-				else {
-					table0.menu.rawset(val_ix.l1name, {
-						num = 1
-						filtered = false
-						filtervalue = val_ix.l1val
-						submenu = null
-					})
-				}
-				/*
 				try {
 					table0.menu[val_ix.l1name].num ++
 				}
@@ -5757,21 +5745,9 @@ function mfz_build(reset) {
 						submenu = null
 					}
 				}
-				*/
+
 				if (val_ix.rawin("l2val")) { //submenu is present
 					// Populate or update level 2 menu
-					if (table0.menu[val_ix.l1name].submenu == null) table0.menu[val_ix.l1name].submenu = {}
-					if ((table0.menu[val_ix.l1name].submenu).rawin(val_ix.l2name)){
-						table0.menu[val_ix.l1name].submenu[val_ix.l2name].num ++
-					}
-					else {
-						table0.menu[val_ix.l1name].submenu.rawset(val_ix.l2name, {
-							num = 1
-							filtered = false
-							filtervalue = val_ix.l2val
-						})
-					}
-					/*
 					try {
 						table0.menu[val_ix.l1name].submenu[val_ix.l2name].num ++
 					}
@@ -5783,7 +5759,6 @@ function mfz_build(reset) {
 							filtervalue = val_ix.l2val
 						}
 					}
-					*/
 				}
 			}						
 		}
