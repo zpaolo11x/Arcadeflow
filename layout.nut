@@ -6774,75 +6774,79 @@ function z_listsort(orderby, reverse) {
 	z_list.reverse = reverse
 
 	local z_tempsort = []
+	local tval1 = []
+	local tval2 = []
 	timestart("        pt1")
 	switch (orderby) {
 		case z_info.z_title.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (nameclean(a.z_title).tolower() + blanker)}),
-			z_list.gametable.map(function(a) {return ("|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(nameclean(a.z_title).tolower() + blanker)
+				tval2.push("|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_year.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (format("%010s", sortclean(a.z_year).tolower()))}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(format("%010s", sortclean(a.z_year).tolower()))
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_manufacturer.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (sortclean(a.z_manufacturer).tolower())}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(sortclean(a.z_manufacturer).tolower())
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_playedcount.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable2.map(function(a) {return (format("%010s", a.z_playedcount.tostring().tolower()))}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(format("%010s", z_list.gametable2[i].z_playedcount.tostring().tolower()))
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_category.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (sortclean(a.z_category).tolower() + blanker)}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(sortclean(a.z_category).tolower() + blanker)
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_players.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (a.z_players.tolower())}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(a.z_players.tolower())
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_system.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (a.z_system.tolower() + blanker)}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(a.z_system.tolower() + blanker)
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker)
+			}
 		break
 		case z_info.z_rundate.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable2.map(function(a) {return (a.z_rundate)}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(z_list.gametable2[i].z_rundate)
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker)
+			}
 		break
 		case z_info.z_favdate.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable2.map(function(a) {return (a.z_favdate + a.z_favourite)}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(z_list.gametable2[i].z_favdate + z_list.gametable2[i].z_favourite)
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker)
+			}
 		break
 		case z_info.z_series.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return (a.z_series.tolower())}),
-			z_list.gametable.map(function(a) {return ((format("%010s", sortclean(a.z_year).tolower())) + "|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push(a.z_series.tolower())
+				tval2.push(format("%010s", sortclean(a.z_year).tolower()) + "|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 		case z_info.z_rating.id:
-			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
-			z_list.gametable.map(function(a) {return ((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))}),
-			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
-			reverse)
+			foreach(i, a in z_list.gametable) {
+				tval1.push((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))
+				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
+			}
 		break
 	}
+	z_tempsort = afsortdual(z_list.gametable, z_list.gametable2, tval1, tval2, reverse)
+
 		timestop("        pt1")
 
 	timestart("        pt2")
