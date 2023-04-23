@@ -2762,17 +2762,18 @@ function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
 	arr_extval.sort()
 
 	// this functions creates a vector of sort indexes to use in reverse
-	local sortedindex = arr_extval.map(function(value) {
-			return (value.slice(-5)).tointeger()
-		})
+	local sortedindex = []
+	foreach (i, value in arr_extval){
+		sortedindex.push((value.slice(-5)).tointeger())
+	}
 
 	// this function restructures arr_extval to be the correct arr_in with sorting
-	local sortlist1 = sortedindex.map(function(value) {
-			return (arr_in[value])
-		})
-	local sortlist2 = sortedindex.map(function(value) {
-			return (arr2_in[value])
-		})
+	local sortlist1 = []
+	local sortlist2 = []
+	foreach (i, value in sortedindex){
+		sortlist1.push(arr_in[value])
+		sortlist2.push(arr2_in[value])
+	}
 
 	if (reverse)  {
 		local packetarray = []
