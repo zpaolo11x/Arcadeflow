@@ -6943,21 +6943,23 @@ function z_liststops() {
 		else if (z_list.orderby == z_info.z_rating.id) temp.push(z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
 	}
 
-	for (local i = 0; i < z_list.size; i++) {
+	// Scans the list and for every valye of "i" it does:
+	// update the key of the selected entry
+	// sets the starting value of the item in position "i", by checking if it changes
+	// sets the stopping value of the item at the end - i, by checking the list backwards
+	z_list.jumptable[0].key = temp[0]
+	z_list.jumptable[0].start = 0
+	z_list.jumptable[z_list.size - 1].stop = z_list.size - 1
+	for (local i = 1; i < z_list.size; i++) {
 		z_list.jumptable[i].key = temp[i]
-		if (i == 0) {
-			z_list.jumptable[i].start = 0
-			z_list.jumptable[z_list.size - 1 - i].stop = z_list.size - 1
-		}
+		
+		if (temp[i] == temp[i - 1]) z_list.jumptable[i].start = z_list.jumptable[i - 1].start
 		else {
-			if (temp[i] == temp[i - 1]) z_list.jumptable[i].start = z_list.jumptable[i - 1].start
-			else {
-				z_list.jumptable[i].start = i
-			}
-			if (temp[z_list.size - 1 - i] == temp[z_list.size - i]) z_list.jumptable[z_list.size - 1 - i].stop = z_list.jumptable[z_list.size - i].stop
-			else{
-				z_list.jumptable[z_list.size - 1 - i].stop = z_list.size - 1 - i
-			}
+			z_list.jumptable[i].start = i
+		}
+		if (temp[z_list.size - 1 - i] == temp[z_list.size - i]) z_list.jumptable[z_list.size - 1 - i].stop = z_list.jumptable[z_list.size - i].stop
+		else{
+			z_list.jumptable[z_list.size - 1 - i].stop = z_list.size - 1 - i
 		}
 	}
 
