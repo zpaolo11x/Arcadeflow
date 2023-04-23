@@ -13,11 +13,11 @@ local comma = ','.tochar()
 
 function split_complete(str_in, separator) {
 	local outarray = []
-	local index = 0
-	while (str_in.find(separator) != null) {
-		index = str_in.find(separator)
+	local index = str_in.find(separator)
+	while (index != null) {
 		outarray.push(str_in.slice(0, index))
 		str_in = str_in.slice(index + separator.len())
+		index = str_in.find(separator)
 	}
 	outarray.push(str_in)
 	return outarray
@@ -39,7 +39,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
+	timer = true
 	timetable = {}
 }
 
@@ -5396,7 +5396,7 @@ multifilterz.l0["Tags"] <- {
 					l1val = val
 					l1name = val
 				})
-			}))
+			}))			
 		}
 	}
 
