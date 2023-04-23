@@ -41,7 +41,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -761,7 +761,7 @@ function loadtablefromfile(file_name, textonly) {
 	local tempfile = ReadTextFile (fe.path_expand(AF.folder + file_name))
 	local table = {}
 	while (!tempfile.eos()) {
-		local templine = tempfile.read_line()
+		local templine = strip(tempfile.read_line())
 		local temparray = split(templine, "|")
 		local outarray = []
 		for (local i = 1; i < temparray.len(); i++) {
@@ -1235,9 +1235,9 @@ function historytext() {
 	while (scanver > 10) {
 		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
 			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
-			history.push("*v" + verfile.read_line() + "*" + "\n\n")
+			history.push("*v" + strip(verfile.read_line()) + "*" + "\n\n")
 			while (!verfile.eos()) {
-				history.push("- " + verfile.read_line() + "\n")
+				history.push("- " + strip(verfile.read_line()) + "\n")
 			}
 			history.push("\n")
 		}
@@ -1245,7 +1245,7 @@ function historytext() {
 	}
 	verfile = ReadTextFile (AF.folder + "history/10.txt")
 	while (!verfile.eos()) {
-		history.push(verfile.read_line() + "\n")
+		history.push(strip(verfile.read_line())+ "\n")
 	}
 	return history
 }
@@ -1258,18 +1258,18 @@ function buildreadme() {
 	readme.push("\n")
 
 	infile = ReadTextFile (AF.folder + "history/00_intro.txt")
-	while (!infile.eos()) readme.push(infile.read_line() + "\n")
+	while (!infile.eos()) readme.push(strip(infile.read_line()) + "\n")
 	readme.push("\n")
 	readme.push("## What's new in v " + AF.version + " #" + "\n")
 	readme.push("\n")
 
 	infile = ReadTextFile (AF.folder + "history/" + AF.vernum + ".txt")
 	infile.read_line()
-	while (!infile.eos()) readme.push("- " + infile.read_line() + "\n")
+	while (!infile.eos()) readme.push("- " + strip(infile.read_line()) + "\n")
 	readme.push("\n")
 
 	infile = ReadTextFile (AF.folder + "history/00_presentation.txt")
-	while (!infile.eos()) readme.push(infile.read_line() + "\n")
+	while (!infile.eos()) readme.push(strip(infile.read_line()) + "\n")
 	readme.push("\n")
 
 	readme.extend(abouttext())
@@ -1362,7 +1362,7 @@ function readprefdata(target) {
 	local ss_prffile = ReadTextFile (ss_prfpath)
 	local ptable = {}
 	local version = ""
-	try {version = prffile.read_line()} catch(err) {
+	try {version = strip(prffile.read_line())} catch(err) {
 		z_splash_message ("Error reading prefs file, resetting to default")
 		return false
 	}
@@ -1373,7 +1373,7 @@ function readprefdata(target) {
 	local tempdat = null
 
 	while (!prffile.eos()) {
-		templine = prffile.read_line()
+		templine = strip(prffile.read_line())
 		z = split (templine, "|")
 
 		for (local i = 0; i < AF.prefs.l0.len(); i++) {
@@ -1397,7 +1397,7 @@ function readprefdata(target) {
 	local ss_z = null
 	local ss_tempdat = null
 	while (!ss_prffile.eos()) {
-		ss_templine = ss_prffile.read_line()
+		ss_templine = strip(ss_prffile.read_line())
 		ss_z = split (ss_templine, "|")
 		for (local i = 0; i < AF.prefs.l0.len(); i++) {
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
@@ -1435,7 +1435,7 @@ function loaddate() {
 	local datepath = fe.path_expand(AF.folder + "pref_checkdate.txt")
 	if (!(file_exist(datepath))) return ("000000")
 	local datefile = ReadTextFile (datepath)
-	return (datefile.read_line ())
+	return (strip(datefile.read_line ()))
 }
 
 /// Layout start ///
@@ -1537,7 +1537,7 @@ prf.MAXLINE <- false
 // up again until next launch, unless you "Dismiss" from the menu
 prf.UPDATECHECKED <- false
 prf.UPDATEDISMISSVER <- 0.0
-if (file_exist(fe.path_expand(AF.folder + "pref_update.txt"))) prf.UPDATEDISMISSVER = (ReadTextFile (fe.path_expand(AF.folder + "pref_update.txt")).read_line())
+if (file_exist(fe.path_expand(AF.folder + "pref_update.txt"))) prf.UPDATEDISMISSVER = strip(ReadTextFile (fe.path_expand(AF.folder + "pref_update.txt")).read_line())
 
 // Set and save debug mode
 DBGON = prf.DEBUGMODE
@@ -2622,19 +2622,19 @@ function parsecommanddat() {
 	local outfile = WriteTextFile(outpath)
 	outfile.write_line("return ({\n")
 	while (!datfile.eos()) {
-		newline = datfile.read_line()
+		newline = strip(datfile.read_line())
 		if (newline.find("$info=")!= null) {
 			i ++
 			romsarray = split(split(newline, "=")[1], comma)
 			newline = ""
 			while ((newline != "- CONTROLS -") && (newline !="«Buttons»")) {
-				newline = datfile.read_line()
+				newline = strip(datfile.read_line())
 			}
-			newline = datfile.read_line() //skip separator
-			newline = datfile.read_line() //first button
+			newline = strip(datfile.read_line()) //skip separator
+			newline = strip(datfile.read_line()) //first button
 			while (newline != "") {
 				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
-				newline = datfile.read_line()
+				newline = strip(datfile.read_line())
 			}
 			commandstring = "[" + ap + commandsarray[0] + ap
 			for (local ii = 1; ii < commandsarray.len(); ii++) {
@@ -2683,19 +2683,19 @@ function extradatatable(inputfile) {
 
 	//skip to root folder
 	while (out != "[ROOT_FOLDER]") {
-		out = inputfile.read_line()
+		out = strip(inputfile.read_line())
 	}
 
 	local out = "_"
 	while (!inputfile.eos()) {
 		while ((out[0].tochar() != "[")) {
-			out = inputfile.read_line()
+			out = strip(inputfile.read_line())
 			if (out == "") out = "_"
 		}
 		value = out.slice(1, -1)
 		out = "_"
 		while ((out[0].tochar() != "[") && (!inputfile.eos())) {
-			out = inputfile.read_line()
+			out = strip(inputfile.read_line())
 			if ((out != "") && (out[0].tochar() != "[")) datatable[out] <- value
 			if (out == "") out = "_"
 		}
@@ -3945,7 +3945,7 @@ function XMLtoAM2(prefst, current) {
 
 			// Build the list of emulators in the romlist
 			while (!filein.eos()) {
-				local inline = filein.read_line()
+				local inline = strip(filein.read_line())
 				local dataline = split(inline, ";")
 				if ((dataline.len() >= 3) && (dataline[2]!="@") && (dataline[2]!="Emulator")) {
 					try {
@@ -3960,7 +3960,7 @@ function XMLtoAM2(prefst, current) {
 				local listfilepath = AF.romlistfolder + romlistid + ".txt"
 				local listfile = ReadTextFile (listfilepath)
 				while (!listfile.eos()) {
-					local inline = listfile.read_line()
+					local inline = strip(listfile.read_line())
 					fileout.write_line(inline + "\n")
 				}
 			}
@@ -4461,7 +4461,7 @@ function refreshromlist(romlist, fulllist, updateromlist = true) {
 	if (!z_list.db2.rawin(romlist)) z_list.db2.rawset(romlist, {})
 
 	while (!listfile.eos()) {
-		listline = listfile.read_line()
+		listline = strip(listfile.read_line())
 		listfields = splitlistline(listline)
 		gamename = listfields[0]
 
@@ -4492,7 +4492,7 @@ function buildfavtable(romlist){
 	local favtable = {}
 	local favfile = ReadTextFile(AF.romlistfolder + romlist + ".tag")
 	while (!favfile.eos()) {
-		favtable.rawset(favfile.read_line(), true)
+		favtable.rawset(strip(favfile.read_line()), true)
 	}
 	return favtable
 }
@@ -4504,7 +4504,7 @@ function buildplayctable(romlist){
 		local playcount = 0
 		local playcgamename = split(item, ".")[0]
 		local statfile = ReadTextFile(fe.path_expand(FeConfigDirectory + "stats/" + romlist + "/" + item))
-		try {playcount = statfile.read_line().tointeger()} catch(err) {}
+		try {playcount = strip(statfile.read_line()).tointeger()} catch(err) {}
 		playctable.rawset(playcgamename, playcount)
 	}
 	return playctable
@@ -4519,7 +4519,7 @@ function buildtagtable(romlist){
 		local tagname = split(item, ".")[0]
 		local tagfile = ReadTextFile (AF.romlistfolder + romlist + "/" + item)
 		while (!tagfile.eos()) {
-			local taggame = tagfile.read_line()
+			local taggame = strip(tagfile.read_line())
 			if (tagname == "COMPLETED") completedtable.rawset(taggame, true)
 			else if (tagname == "HIDDEN") hiddentable.rawset(taggame, true)
 			else {
@@ -4554,7 +4554,7 @@ function portromlist(romlist) {
 	local listfields = []
 	while (!listfile.eos()) {
 
-		listline = listfile.read_line()
+		listline = strip(listfile.read_line())
 		if ((listline == "") || (listline[0].tochar() == "#")) {
 			print("")
 			continue
@@ -4614,7 +4614,7 @@ function portgame(romlist, emulator, gamename) {
 	local foundgame = false
 
 	while (!(listfile.eos() || foundgame)) {
-		listline = listfile.read_line()
+		listline = strip(listfile.read_line())
 		if ((listline == "") || (listline[0].tochar() == "#")) {
 			print("")
 			continue
@@ -5156,7 +5156,7 @@ function z_initfavsfromfiles() {
 		local filein = ReadTextFile(favfile)
 
 		while (!filein.eos()) {
-			tempval = filein.read_line()
+			tempval = strip(filein.read_line())
 			z_list.favsarray.push(romlistid + " " + tempval)
 		}
 	}
@@ -11629,13 +11629,13 @@ function update_allgames_collections(verbose, tempprf) {
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
 		local listfile = ReadTextFile(prf.MASTERPATH)
-		local listline = listfile.read_line()
+		local listline = strip(listfile.read_line())
 		local listfields = []
 		local outfiles = {}
 		local sysname = ""
 		local cursysname = ""
 		while (!listfile.eos()) {
-			listline = listfile.read_line()
+			listline = strip(listfile.read_line())
 			if ((listline == "") || (listline[0].tochar() == "#")) {
 				print("")
 				continue
@@ -14558,7 +14558,7 @@ function buildutilitymenu() {
 			local aboutmenu = []
 
 			while (!aboutfile.eos()) {
-				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
+				aboutmenu.push({ text = strip(aboutfile.read_line()),glyph = 0xea08 })
 			}
 			aboutmenu[0] = {text = "What's New"}
 
@@ -16719,7 +16719,7 @@ function deletecurrentrom() {
 		if (item == ".m3u") {
 			local readm3u = ReadTextFile(rompath + gamepath + item)
 			while (!readm3u.eos()) {
-				local inm3uline = readm3u.read_line()
+				local inm3uline = strip(readm3u.read_line())
 				local frompath = ap + rompath + inm3uline + ap
 				local topath = ap + rompath + "deleted/" + inm3uline + ap
 				try {
@@ -16876,7 +16876,7 @@ function ra_updatecfg(emulator, core) {
 	local filearray = []
 	local emufile = ReadTextFile(FeConfigDirectory + "emulators/" + emulator + ".cfg")
 	while (!emufile.eos()) {
-		filearray.push(emufile.read_line())
+		filearray.push(strip(emufile.read_line()))
 	}
 	foreach (i, item in filearray) {
 		if (item.find("executable") == 0) {

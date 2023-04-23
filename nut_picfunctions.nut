@@ -27,7 +27,7 @@ local logoserie = ""
 while ( !manufile.eos() ) {
    datemin = 0
    datemax = 10000
-   instr = manufile.read_line()
+   instr = strip(manufile.read_line())
    datasplit = split(instr,"|")
 
    if (datasplit.len()>1){
@@ -85,7 +85,7 @@ function manufacturer_parser(inputstring){
 
 function manufacturer_vec(s){
    local sout = manufacturer_parser (s)
-
+print("XXX"+sout+"\n")
    local valueout = ""
    try {
       valueout = manufvector[manufdata[sout]]
@@ -103,9 +103,10 @@ function manufacturer_vec_name(name,year){
    if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
 
    local sout = manufacturer_parser (s)
-
+print ("XXXX"+sout+"\n")
    local valueout = ""
    if(manufdata.rawin(sout)){
+		testpr("ISIN\n")
       foreach (item, val in manufdata[sout]){
          if ((year >= val.dmin) && (year <= val.dmax)) {
             valueout = manufvector[val.logo]
