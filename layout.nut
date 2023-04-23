@@ -5713,6 +5713,7 @@ function mfz_build(reset) {
 	debugpr("mfz_build reset:" + reset + "\n")
 
 	// Reset all menu data
+	timestart("    pt1")
 	foreach (item, table in multifilterz.l0) {
 		if (reset) {
 			multifilterz.filter.rawset(item, [])
@@ -5721,6 +5722,7 @@ function mfz_build(reset) {
 		try {table.menu.clear()} catch(err) {print("\nERROR!\n")}
 		multifilterz.l0[item].label = ltxt(item, AF.LNG)
 	}
+	timestop("    pt1")
 
 	// Scan the whole romlist
 	for (local i = 0; i < fe.list.size; i++) {
