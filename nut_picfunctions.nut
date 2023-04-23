@@ -85,7 +85,7 @@ function manufacturer_parser(inputstring){
 
 function manufacturer_vec(s){
    local sout = manufacturer_parser (s)
-print("XXX"+sout+"\n")
+
    local valueout = ""
    try {
       valueout = manufvector[manufdata[sout]]
@@ -103,7 +103,7 @@ function manufacturer_vec_name(name,year){
    if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
 
    local sout = manufacturer_parser (s)
-print ("XXXX"+sout+"\n")
+
    local valueout = ""
    if(manufdata.rawin(sout)){
 		testpr("ISIN\n")
