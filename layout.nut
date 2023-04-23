@@ -6871,7 +6871,7 @@ function z_listsort(orderby, reverse) {
 // Creates an array for prev-next jump
 function z_liststops() {
 	timestart("    z_liststops")
-		local temp = []
+	local temp = []
 
 	for (local i = 0; i < z_list.size; i++) {
 
