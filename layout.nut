@@ -39,7 +39,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -55,39 +55,6 @@ function timestop(name) {
 	print("    " + name + " STOP: " + (elapse.t2 - elapse.timetable[name]) + "\n")
 }
 
-function testz(){
-
-	local arr1 = []
-	local arr2 = []
-	local arr3 = []
-	for (local i = 1000000; i < 1500000; i++){
-		arr1.push(i.tostring())
-		arr2.push(i.tostring())
-		arr3.push(i.tostring())
-	}
-	
-	timestart("apply")
-	arr1.apply(function(value){
-		return (typeof value.slice(-5).tostring())
-	})
-	timestop("apply")
-
-	timestart("map")
-	local arr2bis = arr2.map(function(value){
-			return (typeof value.slice(-5).tostring())
-	})
-	timestop("map")
-
-	timestart("foreach")
-	foreach (i, value in arr3){
-			arr3[i] = (typeof value.slice(-5).tostring())
-	}
-	timestop("foreach")
-
-}
-testz()
-
-//pappo = 0
 local IDX = array(100000)
 
 // Support array for quick sort
@@ -5666,7 +5633,6 @@ function mfz_build(reset) {
 	debugpr("mfz_build reset:" + reset + "\n")
 
 	// Reset all menu data
-	timestart("    pt1")
 	foreach (item, table in multifilterz.l0) {
 		if (reset) {
 			multifilterz.filter.rawset(item, [])
@@ -5675,7 +5641,6 @@ function mfz_build(reset) {
 		try {table.menu.clear()} catch(err) {print("\nERROR!\n")}
 		multifilterz.l0[item].label = ltxt(item, AF.LNG)
 	}
-	timestop("    pt1")
 
 	// Scan the whole romlist
 	z_list.levchecks = []
@@ -5997,7 +5962,6 @@ function mfz_refreshnum(catin) {
 	debugpr("mfz_refreshnum "+ catin + "\n")
 	//	return
 	// Reset menu numbers (not menu values!)
-	timestart("    step1")
 	foreach (id0, table0 in multifilterz.l0) {
 		foreach (id1, table1 in table0.menu) {
 			table1.num = 0
@@ -6008,12 +5972,10 @@ function mfz_refreshnum(catin) {
 			}
 		}
 	}
-	timestop("    step1")
 
 	// Scan the whole romlist
 	//for (local i = 0; i < fe.list.size; i++) {
 
-	timestart("    step2")
 	local in_other_searches = false
 	foreach (i, item in z_list.boot) {
 		bar_progress_update(i, 0, z_list.boot.len())
@@ -6041,7 +6003,6 @@ function mfz_refreshnum(catin) {
 			}
 		}
 	}
-	timestop("    step2")
 
 	timestop("mfz_refreshnum")
 }
@@ -6567,7 +6528,7 @@ function z_listboot() {
 	z_list.boot = []
 	z_list.boot2 = []
 
-	timestart("    boot")
+	timestart("boot")
 	// Update listboot with zdb data
 	local ifeindex = 0
 	local currentsystem = ""
@@ -6611,11 +6572,9 @@ function z_listboot() {
 		}
 	}
 
-	timestop("    boot")
+	timestop("boot")
 
 	z_updatetagstable()
-
-	timestart("    meta")
 
 	//apply metadata customisation
 	for (local i = 0; i < fe.list.size; i++) {
@@ -6630,7 +6589,6 @@ function z_listboot() {
 			}
 		}
 	}
-	timestop("    meta")
 
 	timestop("z_listboot")
 
@@ -6737,7 +6695,7 @@ function z_listsort(orderby, reverse) {
 	local z_tempsort = []
 	local tval1 = []
 	local tval2 = []
-	timestart("        pt1")
+
 	switch (orderby) {
 		case z_info.z_title.id:
 			foreach(i, a in z_list.gametable) {
@@ -6808,10 +6766,6 @@ function z_listsort(orderby, reverse) {
 	}
 	z_tempsort = afsortdual(z_list.gametable, z_list.gametable2, tval1, tval2, reverse)
 
-		timestop("        pt1")
-
-	timestart("        pt2")
-
 	z_list.gametable = z_tempsort[0]
 	z_list.gametable2 = z_tempsort[1]
 
@@ -6819,7 +6773,6 @@ function z_listsort(orderby, reverse) {
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby, reverse]
 		savetabletofile(SORTTABLE, "pref_sortorder.txt")
 	}
-		timestop("        pt2")
 
 	timestop("    z_listsort")
 }
