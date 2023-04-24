@@ -5540,7 +5540,7 @@ multifilterz.l0["Controls"] <- {
 			local v2 = [null]
 
 			local varray = split (v, comma)
-			v2 = varray[0]
+			if (varray.len() == 1) v2 = varray[0]
 			else {
 				local outarray = []
 				outarray.push(varray[0])
