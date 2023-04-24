@@ -16506,6 +16506,7 @@ function buildcategorytable() {
 }
 
 function subcategorymenu(maincategory, subcategory) {
+	testpr("MCSC:"+maincategory+" "+subcategory+"\n")
 	local catmenu2 = []
 
 	local i = 0
@@ -16532,7 +16533,8 @@ function subcategorymenu(maincategory, subcategory) {
 
 	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(param){return(param.value)}).find(subcategory)
-
+	testpr("SELECTCAT:"+selectcat+"\n")
+	if (selectcat == null) selectcat = 1
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
 		if (result == -1) {
@@ -16567,6 +16569,7 @@ function subcategorymenu(maincategory, subcategory) {
 }
 
 function maincategorymenu(currentcategories) {
+	print_variable(currentcategories,"","currentcats")
 	local catmenu1 = []
 
 	local i = 0
