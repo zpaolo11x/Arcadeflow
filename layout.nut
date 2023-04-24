@@ -5353,12 +5353,7 @@ multifilterz.l0["System"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_system
-			if (v == "") v = "?"
-
-			return ([{
-				l1val = v
-				l1name = v
-			}])
+			return ( (v == "") ? [{l1val = "?",l1name = "?"}] : [{l1val = v,l1name = v}])
 		}
 	}
 
@@ -5370,13 +5365,7 @@ multifilterz.l0["Arcade"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_arcadesystem
-
-			if (v == "") v = "?"
-
-			return ([{
-				l1val = v
-				l1name = v
-			}])
+			return ( (v == "") ? [{l1val = "?",l1name = "?"}] : [{l1val = v,l1name = v}])
 		}
 	}
 
@@ -5388,15 +5377,7 @@ multifilterz.l0["Tags"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot2[index].z_tags // z_gettags(index, false)
-
-			if (v.len() == 0) return [{l1val = "None", l1name = "None"}]
-
-			return (v.map(function(val){
-				return({
-					l1val = val
-					l1name = val
-				})
-			}))			
+			return ( (v.len == 0) ? [{l1val = "None",l1name = "None"}] : [{l1val = v,l1name = v}])		
 		}
 	}
 
@@ -5486,12 +5467,10 @@ multifilterz.l0["Favourite"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot2[index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite, index)
+			local v = z_list.boot2[index].z_favourite
 
-			return ([{
-				l1val = (v ? "1 - Favourite" : "2 - Not Favourite")
-				l1name = (v ? "Favourite" : "Not Favourite")
-			}])
+			return (v ? [{l1val = "1 - Favourite", l1name = "Favourite"}] : [{l1val = "2 - Not Favourite", l1name = "Not Favourite"}] )
+
 		}
 	}
 
@@ -5732,7 +5711,7 @@ function mfz_build(reset) {
 		foreach (id0, table0 in multifilterz.l0) { 
 			local vals = table0.levcheck(i)
 			z_list.levchecks[i].rawset(table0, vals) // Updates levchecks bakig variable
-			// Check if level 1 value is an ARRAY!
+
 			foreach (ix, val_ix in vals) {
 				try {
 					table0.menu[val_ix.l1name].num ++
@@ -6614,7 +6593,7 @@ function z_listboot() {
 	z_list.boot = []
 	z_list.boot2 = []
 
-	timestart("boot")
+	timestart("    boot")
 	// Update listboot with zdb data
 	local ifeindex = 0
 	local currentsystem = ""
@@ -6658,9 +6637,11 @@ function z_listboot() {
 		}
 	}
 
-	timestop("boot")
+	timestop("    boot")
 
 	z_updatetagstable()
+
+	timestart("    meta")
 
 	//apply metadata customisation
 	for (local i = 0; i < fe.list.size; i++) {
@@ -6675,6 +6656,7 @@ function z_listboot() {
 			}
 		}
 	}
+	timestop("    meta")
 
 	timestop("z_listboot")
 
