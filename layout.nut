@@ -5508,10 +5508,7 @@ multifilterz.l0["Played"] <- {
 		sort = false
 		levcheck = function(index) {
 			local v = z_list.boot2[index].z_playedcount
-			return ([{
-				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
-				l1name = (v == 0 ? "Not Played" : "Played")
-			}])
+			return ((v == 0) ? [{l1val = "2 - Not Played", l1name = "Not Played"}] : [{l1val = "1 - Played", l1name = "Played"}])
 		}
 	}
 
@@ -5525,10 +5522,7 @@ multifilterz.l0["Orientation"] <- {
 			local v = z_list.boot[index].z_rotation
 			local vcheck = ((v == "0") || (v == "180") || (v == "Horizontal") || (v == "horizontal") || (v == ""))
 
-			return ([{
-				l1val = vcheck ? "1 - Horizontal" : "2 - Vertical"
-				l1name = vcheck ? "Horizontal" : "Vertical"
-			}])
+			return ((vcheck) ? [{l1val = "1 - Horizontal", l1name = "Horizontal"}] : [{l1val = "2 - Vertical", l1name = "Vertical"}])
 		}
 	}
 
@@ -5546,7 +5540,7 @@ multifilterz.l0["Controls"] <- {
 			local v2 = [null]
 
 			local varray = split (v, comma)
-			if (varray.len() == 1) v2 = varray[0]
+			v2 = varray[0]
 			else {
 				local outarray = []
 				outarray.push(varray[0])
@@ -5599,12 +5593,8 @@ multifilterz.l0["Series"] <- {
 		sort = true
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_series
-			if (v == "") v = " ?? "
 
-			return ([{
-				l1val = v
-				l1name = v
-			}])
+			return ((v == "") ? [{l1val = " ?? ", l1name = " ?? "}] : [{l1val = v, l1name = v}])
 		}
 	}
 
@@ -5617,11 +5607,7 @@ multifilterz.l0["Scraped"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_scrapestatus
 			if (v == "") v = "?"
-
-			return ([{
-				l1val = v
-				l1name = v
-			}])
+			return ( (v == "") ? [{l1val = "?",l1name = "?"}] : [{l1val = v,l1name = v}])
 		}
 	}
 
