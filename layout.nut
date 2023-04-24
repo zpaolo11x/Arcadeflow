@@ -5482,14 +5482,8 @@ multifilterz.l0["Buttons"] <- {
 		sort = true
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_buttons
-
-			if (v == "") v = "??"
-			if (v.len() == 1) v = " " + v
-
-			return ([{
-				l1val = v
-				l1name = v
-			}])
+			v = (v == "") ? "??" : format("%2s",v)
+			return ([{l1val = v, l1name = v}])
 		}
 	}
 
@@ -5501,13 +5495,8 @@ multifilterz.l0["Players"] <- {
 		sort = true
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_players
-			if (v == "") v = " ?"
-			if (v.len() == 1) v = " " + v
-
-			return ([{
-				l1val = v
-				l1name = v
-			}])
+			v = (v == "") ? " ?" : format("%2s",v)
+			return ([{l1val = v, l1name = v}])
 		}
 	}
 
@@ -5645,8 +5634,7 @@ multifilterz.l0["Region"] <- {
 		levcheck = function(index) {
 			local v = z_list.boot[index].z_region
 
-			if (v == "") v = "ZZ"
-			local v = split(v, comma)
+			v = split((v == "") ? "ZZ" : v, comma)
 
 			return(v.map(function(val){
 				return ({
