@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.0
+// Arcadeflow - v 15.9
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -13,11 +13,11 @@ local comma = ','.tochar()
 
 function split_complete(str_in, separator) {
 	local outarray = []
-	local index = str_in.find(separator)
-	while (index != null) {
+	local index = 0
+	while (str_in.find(separator) != null) {
+		index = str_in.find(separator)
 		outarray.push(str_in.slice(0, index))
 		str_in = str_in.slice(index + separator.len())
-		index = str_in.find(separator)
 	}
 	outarray.push(str_in)
 	return outarray
@@ -39,7 +39,7 @@ local elapse = {
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = true
+	timer = false
 	timetable = {}
 }
 
@@ -55,39 +55,6 @@ function timestop(name) {
 	print("    " + name + " STOP: " + (elapse.t2 - elapse.timetable[name]) + "\n")
 }
 
-function testz(){
-
-	local arr1 = []
-	local arr2 = []
-	local arr3 = []
-	for (local i = 1000000; i < 1500000; i++){
-		arr1.push(i.tostring())
-		arr2.push(i.tostring())
-		arr3.push(i.tostring())
-	}
-	
-	timestart("apply")
-	arr1.apply(function(value){
-		return (typeof value.slice(-5).tostring())
-	})
-	timestop("apply")
-
-	timestart("map")
-	local arr2bis = arr2.map(function(value){
-			return (typeof value.slice(-5).tostring())
-	})
-	timestop("map")
-
-	timestart("foreach")
-	foreach (i, value in arr3){
-			arr3[i] = (typeof value.slice(-5).tostring())
-	}
-	timestop("foreach")
-
-}
-testz()
-
-//pappo = 0
 local IDX = array(100000)
 
 // Support array for quick sort
@@ -103,17 +70,15 @@ function returngly() {
 
 // General AF data table
 local AF = {
-	version = "16.0"
-	vernum = 0
-
-	LNG = ""
 
 	dat_freeze = true
 	dat_freezecount = 0
+
 	bgs_freezecount = 0
 
 	uniglyphs = returngly()
-
+	version = "15.9"
+	vernum = 0
 	folder = fe.script_dir
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
@@ -159,6 +124,8 @@ local AF = {
 	scrape = null
 
 	emulatordata = {}
+
+	LNG = ""
 
 	bar = {
 		time0 = 0
@@ -254,7 +221,7 @@ local zmenu = null
 
 // Load language file
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too.
-fe.do_nut("nut_language2.nut")
+fe.do_nut("nut_language.nut")
 AF.LNG = "EN"
 try {AF.LNG = loadlanguage()} catch(err) {}
 
@@ -299,6 +266,7 @@ function splash_update(command) {
 		return
 	}
 	if (command == AF.bar.stop) {
+		//print("INIT\n")
 		AF.bar.time0 = 0
 		AF.bar.time1 = 0
 		AF.bar.progress = 0
@@ -465,22 +433,22 @@ function parseconfig() {
 	local af_collections = false
 	local exitcommand = null
 
-	inline = cfgfile.read_line_wtab()
+	inline = cfgfile.read_line()
 	while (inline[0].tochar() == "#") {
 		if (inline.find("# Enable AF Collections") == 0) af_collections = true
 		else predisplays.push(inline)
-		inline = cfgfile.read_line_wtab()
+		inline = cfgfile.read_line()
 	}
 	while (inline.find("display\t") != 0) {
 		predisplays.push(inline)
-		inline = cfgfile.read_line_wtab()
+		inline = cfgfile.read_line()
 	}
 	while (!cfgfile.eos()) {
 		//inline = cfgfile.read_line()
 		if (inline.find("display\t") == 0) {
 			displayname = split(inline, "\t")[1]
 			displaytable.push({"display": displayname})
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile.read_line()
 			displaytable[id].rawset("filters", [])
 			while (inline != "") {
 				switch (split(inline, "\t ")[0]) {
@@ -488,7 +456,7 @@ function parseconfig() {
 					case "romlist":
 					case "in_cycle":
 					case "in_menu":
-						displaytable[id].rawset(split(inline, "\t ")[0], strip(inline).slice(21))
+						displaytable[id].rawset(split(inline, "\t ")[0], inline.slice(21))
 						break
 					case "filter":
 					case "sort_by":
@@ -499,14 +467,14 @@ function parseconfig() {
 						displaytable[id].filters.push(inline)
 						break
 				}
-				inline = cfgfile.read_line_wtab()
+				inline = cfgfile.read_line()
 			}
 			id ++
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile.read_line()
 		}
 		else {
 			postdisplays.push(inline)
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile.read_line()
 		}
 	}
 	//Add last read line from stream, which for sure is not a "display"
@@ -515,7 +483,6 @@ function parseconfig() {
 	local warning = false
 	local tempval = null
 	foreach(i, item in postdisplays) {
-		item = strip(item) //Remove leading tabs
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
@@ -644,7 +611,7 @@ function buildconfig(allgames, tempprf) {
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["global_filter", "rule                 FileIsAvailable equals 1", "filter               All", "filter               Favourites", "rule                 Favourite equals 1"] : ["filter               All", "filter               Favourites", "rule                 Favourite equals 1"]
 			})
 		}
 	}
@@ -663,7 +630,7 @@ function buildconfig(allgames, tempprf) {
 		cfgfile.write_line ("\tin_cycle             " + value.in_cycle + "\n")
 		cfgfile.write_line ("\tin_menu              " + value.in_menu + "\n")
 		foreach (item2, val2 in value.filters) {
-			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "\t" + val2 + "\n" : val2 + "\n")
+			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "\t" + val2 + "\n" : "\t\t" + val2 + "\n")
 		}
 		cfgfile.write_line("\n")
 	}
@@ -697,7 +664,6 @@ try {DBGON = loaddebug()} catch(err) {}
 function debugpr(instring) {
 	if (DBGON) print(instring)
 }
-
 local dispatcher = []
 local dispatchernum = 0
 
@@ -860,8 +826,8 @@ AF.prefs.l1.push([
 {v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout", options = languagearray(), values = languagetokenarray(), selection = 1, picsel = languageflags(), pic = "flags.jpg"},
 {v = 10.5, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rows1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
-{v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4, picsel = ["rowsv1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
+{v = 7.2, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Small", "1", "2", "3"], values = [-1, 1, 2, 3], selection = 2, picsel = ["rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
+{v = 15.5, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Small", "1", "2", "3"], values = [-1, 1, 2, 3], selection = 3, picsel = ["rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["cleanyes" + AF.prefs.imgext, "cleanno" + AF.prefs.imgext], pic = "cleanyes" + AF.prefs.imgext},
 {v = 7.2, varname = "LOWRES", glyph = 0xe997, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
@@ -884,7 +850,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "CROPSNAPS", glyph = 0xea57, title = "Aspect ratio", help = "Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation", options = ["Adaptive", "Square"], values = [false, true], selection = 0, picsel= ["aradaptive" + AF.prefs.imgext, "arsquare" + AF.prefs.imgext], pic = "arsquare" + AF.prefs.imgext},
 {v = 8.7, varname = "MORPHASPECT", glyph = 0xea57, title = "Morph snap ratio", help = "Chose if you want the box to morph into the actual game video or if it must be cropped", options = ["Morph video", "Crop video"], values = [true, false], selection = 0},
 {v = 10.9, varname = "FIX169", glyph = 0xea57, title = "Optimize vertical arcade", help = "Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 16.0, varname = "TILEZOOM", glyph = 0xea57, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Increased", "Standard", "Reduced", "None"], values = [3, 2, 1, 0], selection = 1},
+{v = 10.4, varname = "TILEZOOM", glyph = 0xea57, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Standard", "Reduced", "None"], values = [2, 1, 0], selection = 0},
 {v = 10.7, varname = "LOGOSONLY", glyph = 0xea6d, title = "Show only logos", help = "If enabled, only game title logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = AF.req.liner},
 {v = 8.8, varname = "TITLEART", glyph = 0xe915, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
@@ -1083,7 +1049,6 @@ AF.prefs.l1.push([
 {v = 10.0, varname = "MEDIASCRAPE", glyph = 0xe90d, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping", options = ["Overwrite media", "Only missing", "No media scrape"], values= ["ALL_MEDIA", "MISSING_MEDIA", "NO_MEDIA"], selection = 1},
 {v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference", options = function() {return (AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
 {v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
-{v = 16.0, varname = "SCRAPETIMEOUT", glyph = 0xe94e, title = "Scrape Timeout", help = "Set the number of seconds to wait for each scrape operation to complete", options = [5, 120, 10], values = 10, selection = AF.req.slideint},
 {v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = AF.req.liner},
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
@@ -1196,7 +1161,7 @@ for (local i = 0; i < AF.prefs.l1.len(); i ++) {
 		local isnew = (AF.prefs.l1[i][j].v.tofloat() == AF.version.tofloat())
 		AF.prefs.l1[i][j].title = (isnew ? "❗ " : "") + ltxt(AF.prefs.l1[i][j].title, AF.LNG) + (isnew ? " ❗" : "")
 		if ((AF.prefs.l1[i][j].selection != AF.req.liner)) AF.prefs.l1[i][j].help = ltxt(AF.prefs.l1[i][j].help, AF.LNG)
-		if ((AF.prefs.l1[i][j].selection != AF.req.menusort) && (AF.prefs.l1[i][j].selection != AF.req.liner)) AF.prefs.l1[i][j].options = ltxt(AF.prefs.l1[i][j].options, AF.LNG)
+		if ((AF.prefs.l1[i][j].selection != AF.req.menusort) && (AF.prefs.l1[i][j].selection != AF.req.liner)) AF.prefs.l1[i][j].options = ltxtarray(AF.prefs.l1[i][j].options, AF.LNG)
 		if (isnew) isnewparent = true
 	}
 	AF.prefs.l0[i].label = (isnewparent ? "❗ " : "") + ltxt(AF.prefs.l0[i].label, AF.LNG) + (isnewparent ? " ❗" : "")
@@ -1243,7 +1208,7 @@ function historytext() {
 	}
 	verfile = ReadTextFile (AF.folder + "history/10.txt")
 	while (!verfile.eos()) {
-		history.push(verfile.read_line()+ "\n")
+		history.push(verfile.read_line() + "\n")
 	}
 	return history
 }
@@ -1433,7 +1398,7 @@ function loaddate() {
 	local datepath = fe.path_expand(AF.folder + "pref_checkdate.txt")
 	if (!(file_exist(datepath))) return ("000000")
 	local datefile = ReadTextFile (datepath)
-	return (strip(datefile.read_line ()))
+	return (datefile.read_line ())
 }
 
 /// Layout start ///
@@ -1526,7 +1491,6 @@ prf.AMSTART <- (prf.AMENABLE == "From start")
 prf.AMENABLE = (prf.AMENABLE != "Disabled")
 
 prf.SLIMLINE <- false
-prf.MAXLINE <- false
 
 // Update version dismiss: prf.UPDATEDIMISSVER gets the value of the latest "dismissed" revision,
 // checkforupdates downloads the latest version info and checks versus this one, if it's not newer than this
@@ -1535,7 +1499,7 @@ prf.MAXLINE <- false
 // up again until next launch, unless you "Dismiss" from the menu
 prf.UPDATECHECKED <- false
 prf.UPDATEDISMISSVER <- 0.0
-if (file_exist(fe.path_expand(AF.folder + "pref_update.txt"))) prf.UPDATEDISMISSVER = ReadTextFile (fe.path_expand(AF.folder + "pref_update.txt")).read_line()
+if (file_exist(fe.path_expand(AF.folder + "pref_update.txt"))) prf.UPDATEDISMISSVER = (ReadTextFile (fe.path_expand(AF.folder + "pref_update.txt")).read_line())
 
 // Set and save debug mode
 DBGON = prf.DEBUGMODE
@@ -2060,10 +2024,9 @@ local count = {
 	forceright = false
 	forceup = false
 	forcedown = false
-
-	noteforce = false
-	noteskipdown = 0
-	noteskipup = 0
+	skipup = 0
+	skipdown = 0
+	mfskipdown = 0
 }
 
 count.movestep = count.movestepslow
@@ -2119,6 +2082,7 @@ local colormapper = {
 		remap = 0.0
 		hsv = [0.0, 0.0, 0.0]
 	}
+
 	"LCDGBC": {
 		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
 		a = hsl2rgb(103.0, 0.95, 0.15)
@@ -2167,6 +2131,7 @@ local colormapper = {
 		remap = 1.0
 		hsv = [0.0, 0.0, 0.0]
 	}
+
 	"8BIT": {
 		shad = fe.add_shader (Shader.Fragment, "glsl/colormapper.glsl")
 		a = hsl2rgb(0, 0.0, 0.0)
@@ -2214,15 +2179,10 @@ local gbrgb = {
 if (prf.HORIZONTALROWS == -1) {
 	prf.HORIZONTALROWS = 1
 	prf.SLIMLINE = true
-	prf.MAXLINE = false
-} else if (prf.HORIZONTALROWS == -2) {
-	prf.HORIZONTALROWS = 1
-	prf.SLIMLINE = false
-	prf.MAXLINE = true
-} else {
+}
+else {
 	prf.HORIZONTALROWS = prf.HORIZONTALROWS.tointeger()
 	prf.SLIMLINE = false
-	prf.MAXLINE = false
 }
 
 // layout preferences
@@ -2378,12 +2338,8 @@ if (UI.vertical) {
 	if (prf.VERTICALROWS == -1) {
 		prf.VERTICALROWS = 1
 		prf.SLIMLINE = true
-		prf.MAXLINE = false
-	} else if (prf.VERTICALROWS == -2) {
-		prf.VERTICALROWS = 1
-		prf.SLIMLINE = false
-		prf.MAXLINE = true
-	} else {
+	}
+	else {
 		prf.VERTICALROWS = prf.VERTICALROWS.tointeger()
 		prf.SLIMLINE = false
 	}
@@ -2405,6 +2361,7 @@ UI.scalerate = (UI.vertical ? fl.w : fl.h) / 1200.0
 // Changed header spacer from 200 to 220 better centering
 UI.header.h = floor(prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate) // content
 UI.header.h2 = floor(prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)) //spacer
+
 // Changed header spacer from 100 to 90 better centering
 UI.footer.h = floor(prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate) // content
 UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
@@ -2413,9 +2370,6 @@ UI.footer.h2 = floor(prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf
 // If slimline is enabled the label row is raised from the bottom
 // but footer.h3 is used to keep track of old value to size menus
 UI.footer.h3 = UI.footer.h
-
-if (prf.MAXLINE) UI.header.h2 = UI.footer.h2 = UI.footer.h3 = (UI.vertical ? 230 : 100) * UI.scalerate
-
 if (prf.SLIMLINE) UI.footer.h = floor(UI.footer.h * 1.4)
 
 UI.space = fl.h - UI.header.h2 - UI.footer.h2
@@ -2469,22 +2423,8 @@ local carrierT = {
 // Changed zoomscale from 1.5 to 1.45 in default zoom
 // selector and zooming data
 
-// UI.zoomscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45))))
+UI.zoomscale = (prf.TILEZOOM == 0 ? 1.0 : (prf.TILEZOOM == 1 ? 1.15 : (UI.rows == 1 ? (UI.vertical ? 1.15 : 1.45) : ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45))))
 
-if (prf.TILEZOOM == 0) {
-	UI.zoomscale = 1.0	// No zoom in any case
-} else if (prf.TILEZOOM == 1) {
-	UI.zoomscale = 1.25	// Reduced zoom in any case (was 1.15)
-} else if (prf.TILEZOOM == 2) {
-	if ((UI.rows == 1) && (!prf.SLIMLINE)){	// Zoom when single line with large tiles
-		UI.zoomscale = (UI.vertical ? 1.15 : 1.45) // Horizontal vs Vertical
-	} else {
-		UI.zoomscale = ((prf.SCROLLERTYPE == "labellist") ? 1.4 : 1.45) // Zoom in any case with 2+ rows or 1 slimline
-	}
-} else if (prf.TILEZOOM == 3) {
-	UI.zoomscale = 1.8	// Large zoom in any case
-}
-if (prf.MAXLINE) UI.zoomscale = UI.vertical ? 1.9 : 2.2//ARTZOOM
 UI.whiteborder = 0.15
 
 if (prf.PIXELACCURATE) {
@@ -2509,7 +2449,7 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 
 // correction data for non-centered first tiles
 // deltacol are the marginal columns with respect to center one
-local deltacol = prf.MAXLINE ? 0 : (UI.cols - 3) / 2
+local deltacol = (UI.cols - 3) / 2
 
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
@@ -2715,6 +2655,7 @@ ratetonumber["80 to 90 (Very Good)"] <- "9.0"
 ratetonumber["90 to 100 (Best Games)"] <- "10.0"
 
 function afsort(arr_in, arr_mixval) {
+
 	foreach (i, item in arr_in) {
 		arr_mixval[i] = arr_mixval[i] + IDX[i]
 	}
@@ -2749,6 +2690,7 @@ function afsort(arr_in, arr_mixval) {
 */
 
 function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
+
 	local arr_extval2 = []
 	// scans the arr_in (just to get the # of items) and populate extval
 	// creting a sortable array
@@ -2760,22 +2702,18 @@ function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
 	arr_extval.sort()
 
 	// this functions creates a vector of sort indexes to use in reverse
-	local sortedindex = []
-	foreach (i, value in arr_extval){
-		sortedindex.push((value.slice(-5)).tointeger())
-	}
+	local sortedindex = arr_extval.map(function(value) {
+			return (value.slice(-5)).tointeger()
+		})
 
 	// this function restructures arr_extval to be the correct arr_in with sorting
-	local sortlist1 = []
-	local sortlist2 = []
-	foreach (i, value in sortedindex){
-		sortlist1.push(arr_in[value])
-		sortlist2.push(arr2_in[value])
-	}
+	local sortlist1 = sortedindex.map(function(value) {
+			return (arr_in[value])
+		})
+	local sortlist2 = sortedindex.map(function(value) {
+			return (arr2_in[value])
+		})
 
-	// Reversing a sort is not easy as just reversing the sorted array, because reverse sort
-	// means the main sorting key is reversed (e.g. year), but the secondary sorting keys 
-	// (e.g. game name, system ecc) needs to keep the previous ordering
 	if (reverse)  {
 		local packetarray = []
 		local packetarray2 = []
@@ -2827,6 +2765,7 @@ function afsortdual(arr_in, arr2_in, arr_keyval, arr_extval, reverse) {
 */
 
 function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
+
 	// scans the arr_in (just to get the # of items) and populate extval
 	// creting a sortable array
 	foreach (i, item in arr_in) {
@@ -3329,9 +3268,14 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
 	local linein = null
 	while (!jsfilein.eos()) {
-		if (linein == "") continue
 		linein = jsfilein.read_line()
 		jsarray.push(linein)
+		/*
+		if (jsarray[(jsarray.len() - 1)][0].tochar() == "<") {
+			dispatcher[scrapeid].jsonstatus = "ERROR"
+			return
+		}
+		*/
 	}
 
 	if (!file_exist(AF.folder + "json/" + scrapeid + "jsonA.nut")) {
@@ -3416,7 +3360,6 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	local linein = null
 	while (!jsfilein.eos()) {
 		linein = jsfilein.read_line()
-		if (linein == "") continue
 		jsarray.push(linein)
 		if (jsarray[(jsarray.len() - 1)][0].tochar() == "<") {
 			dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -3681,7 +3624,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				//listline = gname + ";" //Name
 				inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
 				inputitem.z_title = subst_replace(inputitem.z_title, ap, "'")
-
+				//listline += AF.scrape.romlist + ";" //Emulator
+				//listline += ";" //Clone
 				inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
 				inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
 				inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, ap, "'")
@@ -3690,16 +3634,20 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
 				inputitem.z_rotation = isarcade ? dispatcher[scrapeid].gamedata.adb_screenorientation : dispatcher[scrapeid].gamedata.a_rotation //Rotation
 				inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
-
+				//listline += isarcade ? dispatcher[scrapeid].gamedata.adb_status + ";" : ";" //Status
+				//listline += ";" //DisplayCount
+				//listline += ";" //DisplayType
+				//listline += ";" //AltRomname
+				//listline += ";" //AltTitle
 				inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
 				inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
 				inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
 				inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
 				inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
-
+				//listline += "‖ " + dispatcher[scrapeid].gamedata.scrapestatus +" ‖ "+ dispatcher[scrapeid].gamedata.synopsis + " ‖ " + (isarcade ? split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0] : dispatcher[scrapeid].gamedata.a_resolution) + " ‖ " + dispatcher[scrapeid].gamedata.a_system + " ‖ " + (isarcade ? dispatcher[scrapeid].gamedata.adb_buttonscolors : "") + " ‖" + ";" //Extra
 				inputitem.z_buttons = isarcade ? dispatcher[scrapeid].gamedata.adb_inputbuttons.tostring() : dispatcher[scrapeid].gamedata.a_buttons.tostring()
 				inputitem.z_series = isarcade ? dispatcher[scrapeid].gamedata.adb_serie : dispatcher[scrapeid].gamedata.series //Series
-
+				//listline += ";" // Language
 				inputitem.z_region = isarcade ? "" : dispatcher[scrapeid].gamedata.regions //Region
 				inputitem.z_rating = dispatcher[scrapeid].gamedata.rating.tostring() //Rating
 			}
@@ -3800,8 +3748,6 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 
 // Define the new list data
 local z_list = {
-	levchecks = []
-
 	boot = []
 	boot2 = []
 	db1 = {}
@@ -4330,6 +4276,7 @@ function refreshselectedromlists(tempprf) {
 }
 
 function regionsfromfile(title) {
+
 	local filenameregions = ""
 	local filenameregionsarray = []
 	local regionnames = ["World", "USA", "Europe", "Japan", "Italy", "France", "Germany", "Spain", "Korea", "Taiwan", "Asia", "Australia", "Brazil", "Canada", "China", "Denmark", "Finland", "Netherlands", "Portugal", "United Kingdom", "Russia", "Sweden", "Turkey"]
@@ -4353,6 +4300,7 @@ function regionsfromfile(title) {
 }
 
 function splitlistline(str_in) {
+
 	local intoken = false
 	local i = 0
 	local str_char = ""
@@ -4421,12 +4369,12 @@ function splitlistline(str_in) {
 function listfields_to_db1(listfields) {
 	local target = clone (z_fields1)
 	target.z_title = subst_replace(listfields[1], ap, "'")
-	try {target.z_year = listfields[4]} catch(err) {}
-	try {target.z_manufacturer = subst_replace(listfields[5], ap, "'")} catch(err) {}
-	try {target.z_category = listfields[6]} catch(err) {}
-	try {target.z_players = listfields[7]} catch(err) {}
-	try {target.z_rotation = listfields[8]} catch(err) {}
-	try {target.z_control = listfields[9]} catch(err) {}
+	target.z_year = listfields[4]
+	target.z_manufacturer = subst_replace(listfields[5], ap, "'")
+	target.z_category = listfields[6]
+	target.z_players = listfields[7]
+	target.z_rotation = listfields[8]
+	target.z_control = listfields[9]
 	try {target.z_buttons = subst_replace(listfields[16], ap, "'")} catch(err) {}
 	try {target.z_series = subst_replace(listfields[17], ap, "'")} catch(err) {}
 	try {target.z_region = listfields[19]} catch(err) {}
@@ -4489,16 +4437,16 @@ function refreshromlist(romlist, fulllist, updateromlist = true) {
 	saveromdb2(romlist, z_list.db2[romlist])
 }
 
-function buildfavtable(romlist){
+// This function scans the current AM romlist and creates a dedicated db1 and db2 from the fields
+// note that this must be run on a non-filtered romlist at the moment.
+function portromlist(romlist) {
+
 	local favtable = {}
 	local favfile = ReadTextFile(AF.romlistfolder + romlist + ".tag")
 	while (!favfile.eos()) {
 		favtable.rawset(favfile.read_line(), true)
 	}
-	return favtable
-}
 
-function buildplayctable(romlist){
 	local playctable = {}
 	local playclist = DirectoryListing (fe.path_expand(FeConfigDirectory + "stats/" + romlist), false).results
 	foreach (id, item in playclist) {
@@ -4508,10 +4456,7 @@ function buildplayctable(romlist){
 		try {playcount = statfile.read_line().tointeger()} catch(err) {}
 		playctable.rawset(playcgamename, playcount)
 	}
-	return playctable
-}
 
-function buildtagtable(romlist){
 	local tagtable = {}
 	local completedtable = {}
 	local hiddentable = {}
@@ -4529,20 +4474,10 @@ function buildtagtable(romlist){
 			}
 		}
 	}
-	return ([tagtable, completedtable, hiddentable])
-}
-
-// This function scans the current AM romlist and creates a dedicated db1 and db2 from the fields
-// note that this must be run on a non-filtered romlist at the moment.
-// This function only works on single emulator romlists, by default multi-emulator romlists are not
-// processed this way but through MASTERLIST options or fixed at runtime with single game port!
-function portromlist(romlist) {
-	local favtable = buildfavtable(romlist)
-	local playctable = buildplayctable(romlist)
-	local tagtable = buildtagtable(romlist)
-	local completedtable = tagtable[1]
-	local hiddentable = tagtable[2]
-	local tagtable = tagtable[0]
+	//ReadTextFile(AF.romlistfolder + romlist + ".tag"))
+	//while (!favfile.eos()) {
+		//favtable.rawset(favfile.read_line(), true)
+	//}
 
 	local cleanromlist = {}
 	local cleanromlist2 = {}
@@ -4585,78 +4520,9 @@ function portromlist(romlist) {
 		cleanromlist2[listfields[0]].z_emulator = romlist
 
 	}
-	saveromdb1(romlist, cleanromlist)
+
+	saveromdb1 (romlist, cleanromlist)
 	saveromdb2(romlist, cleanromlist2)
-}
-
-function portgame(romlist, emulator, gamename) {
-	local favtable = buildfavtable(romlist)
-	local playctable = buildplayctable(romlist)
-	local tagtable = buildtagtable(romlist)
-	local completedtable = tagtable[1]
-	local hiddentable = tagtable[2]
-	local tagtable = tagtable[0]
-	
-	//ReadTextFile(AF.romlistfolder + romlist + ".tag"))
-	//while (!favfile.eos()) {
-		//favtable.rawset(favfile.read_line(), true)
-	//}
-
-	local gamedb1 = {}
-	local gamedb2 = {}
-	local listpath = AF.romlistfolder + romlist + ".txt"
-
-	if (prf.MASTERLIST) listpath = prf.MASTERPATH
-
-	local listfile = ReadTextFile(listpath)
-	local listline = listfile.read_line() //skip beginning headers
-	local listfields = []
-
-	local foundgame = false
-
-	while (!(listfile.eos() || foundgame)) {
-		listline = listfile.read_line()
-		if ((listline == "") || (listline[0].tochar() == "#")) {
-			print("")
-			continue
-		}
-
-		listfields = splitlistline(listline)
-		listfields[0] = strip(listfields[0])
-		if ((listfields[0] == gamename) && (listfields[2] == emulator)) foundgame = true
-	}
-
-	if (foundgame) {
-		gamedb1 = {}
-		gamedb1 = listfields_to_db1(listfields)
-
-		gamedb1.z_system = AF.emulatordata[emulator].mainsysname
-		gamedb1.z_emulator = emulator
-
-		gamedb2 = {}
-		gamedb2 = clone (z_fields2)
-		gamedb2.z_favourite = favtable.rawin(listfields[0])
-		gamedb2.z_playedcount = playctable.rawin(listfields[0]) ? playctable[listfields[0]] : 0
-		gamedb2.z_completed = completedtable.rawin(listfields[0])
-		gamedb2.z_hidden = hiddentable.rawin(listfields[0])
-		if (tagtable.rawin(listfields[0])) gamedb2.z_tags = tagtable[listfields[0]]
-
-		gamedb2.z_name = listfields[0]
-		gamedb2.z_system = AF.emulatordata[emulator].mainsysname
-		gamedb2.z_emulator = emulator
-
-		local romdb1 = dofile(AF.romlistfolder + emulator + ".db1")
-		local romdb2 = dofile(AF.romlistfolder + emulator + ".db2")
-
-		romdb1.rawset(listfields[0], gamedb1)
-		romdb2.rawset(listfields[0], gamedb2)
-
-		z_list.db1[emulator].rawset(listfields[0], gamedb1)
-		z_list.db2[emulator].rawset(listfields[0], gamedb2)
-
-		saveromdb1 (emulator, romdb1)
-		saveromdb2(emulator, romdb2)
-	}
 }
 
 // Creates an empty romlist from current romlist
@@ -4691,6 +4557,7 @@ function resetromlist() {
 }
 
 function cleandatabase(temppref) {
+
 	if (temppref.MASTERLIST) {
 		z_edit_dialog("Not possible when master romlist is enabled", "")
 		return
@@ -4749,6 +4616,24 @@ function cleandatabase(temppref) {
 	//restartAM()
 }
 
+// Routine that returns an emty copy of the game data table
+// the result can be applied with rawset
+// this might be corrected with reference to the emulator and
+// update of the emulator field...
+// NOT USED!
+function creategametable() {
+	timestart("creategametable")
+	local out = {}
+	foreach (item, val in z_fields1) {
+		out.rawset (item, val)
+	}
+	foreach (item, val in z_fields2) {
+		out.rawset (item, val)
+	}
+	timestop("creategametable")
+	return out
+}
+
 local focusindex = {
 	new = 0
 	old = 0
@@ -4786,7 +4671,7 @@ local metadata = {
 				"Series",
 				"Arcade System"
 				]
-	sub =	[	"string",
+	sub =	["string",
 				yearnames,
 				"string",
 				catnames,
@@ -4800,7 +4685,7 @@ local metadata = {
 				]
 }
 
-metadata.names = ltxt(metadata.names, AF.LNG)
+metadata.names = ltxtarray(metadata.names, AF.LNG)
 
 local meta_edited = {}
 local meta_original = {}
@@ -4919,8 +4804,6 @@ function metamenu(starter) {
 	local gamename = z_list.gametable[z_list.index].z_name
 	local romlist = z_list.gametable[z_list.index].z_emulator
 
-	local metamenudat = []
-
 	foreach (id, item in metadata.ids) {
 		metavals.push(z_list.gametable[z_list.index][item])
 		try {metavals[id] = z_list.dboriginal[romlist][gamename][item]} catch(err) {}
@@ -4936,17 +4819,9 @@ function metamenu(starter) {
 		} catch(err) {}
 		metanotes.push(metavals[id])
 	}
-
-	foreach (i, item in metadata.names){
-		metamenudat.push ({
-			text = metadata.names[i]
-			glyph = metaglyphs[i]
-			note = metanotes[i]
-		})
-	}
-
-	zmenudraw3(metamenudat, ltxt("Game Metadata", AF.LNG), 0xe906, starter, {},
+	zmenudraw(metadata.names, metaglyphs, metanotes, ltxt("Game Metadata", AF.LNG), 0xe906, starter, false, false, false, false, false,
 	function(result) {
+
 		if (result != -1) {
 			local meta_unedited = ""
 			try {meta_unedited = z_list.dboriginal[romlist][gamename][metadata.ids[result]]} catch(err) {
@@ -4961,16 +4836,24 @@ function metamenu(starter) {
 
 				local current_index = metadata.sub[result].find(metavals[result])
 				if (current_index != null) current_index = current_index + 2 else current_index = 0
+				local metaarray = []
+				local metanotes = []
+				local metaglyphs = []
 
-				local metamenu1 = [
-					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited},
-					{text = ltxt("Values", AF.LNG), liner = true},
-				]
+				metaarray.push(ltxt("Original", AF.LNG))
+				metanotes.push(meta_unedited)
+				metaglyphs.push(0xe965)
+
+				metaarray.push(ltxt("Values", AF.LNG))
+				metanotes.push("")
+				metaglyphs.push(-1)
+
 				foreach (i, item in metadata.sub[result]) {
-					metamenu1.push({text = metadata.sub[result][i]})
+					metaarray.push(metadata.sub[result][i])
+					metanotes.push("")
+					metaglyphs.push(0)
 				}
-
-				zmenudraw3(metamenu1, metadata.names[result], 0xe906, current_index, {},
+				zmenudraw(metaarray, metaglyphs, metanotes, metadata.names[result], 0xe906, current_index, false, false, false, false, false,
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -4986,18 +4869,29 @@ function metamenu(starter) {
 				})
 			}
 			else if (typeof metadata.sub[result] == "table") {
+				local metaarray = []
+				local metanotes = []
+				local metaglyphs = []
 
-				local metamenu2 = [
-					{text = ltxt("Original", AF.LNG), glyph = 0xe965, note = meta_unedited},
-					{text = ltxt("Manual entry", AF.LNG), glyph = 0xe955},
-					{text = ltxt("Values", AF.LNG), liner = true},
-				]				
+				metaarray.push(ltxt("Original", AF.LNG))
+				metanotes.push(meta_unedited)
+				metaglyphs.push(0xe965)
+
+				metaarray.push(ltxt("Manual entry", AF.LNG))
+				metanotes.push("")
+				metaglyphs.push(0xe955)
+
+				metaarray.push(ltxt("Values", AF.LNG))
+				metanotes.push("")
+				metaglyphs.push(-1)
 
 				foreach (i, item in metadata.sub[result].names) {
-					metamenu2.push({text = metadata.sub[result].names[i], note = metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":""})
+					metaarray.push(metadata.sub[result].names[i])
+					metanotes.push(metadata.sub[result].table[metadata.sub[result].names[i]].len() > 1 ? "...":"")
+					metaglyphs.push(0)
 				}
 
-				zmenudraw3(metamenu2, metadata.names[result], 0xe906, 0, {},
+				zmenudraw(metaarray, metaglyphs, metanotes, metadata.names[result], 0xe906, 0, false, false, false, false, false,
 				function(result2) {
 					if (result2 == -1) {
 						metamenu (result)
@@ -5019,21 +4913,23 @@ function metamenu(starter) {
 								metachanger (gamename, romlist, meta_new, metavals, metaflag, result)
 						}
 						else {
-							local metamenu3 = [{text = tempname}]
+							local metaarray2 = []
+							metaarray2.push(tempname)
 							foreach (i, item in temparray) {
-								metamenu3.push({text = temparray[i]})
+								metaarray2.push(temparray[i])
 							}
-							zmenudraw3(metamenu3, metadata.names[result], 0xe906, 0, {},
+							zmenudraw(metaarray2, null, null, metadata.names[result], 0xe906, 0, false, false, false, false, false,
 							function(result3) {
 								if (result3 == -1) {
 									metamenu (result)
 								}
 								else {
-									meta_new = metamenu3[result3].text
+									meta_new = metaarray2[result3]
 									metachanger (gamename, romlist, meta_new, metavals, metaflag, result)
 								}
 							})
 						}
+
 					}
 				})
 
@@ -5137,6 +5033,45 @@ function z_updatetagstable() {
 			}
 		}
 	}
+	/*
+	foreach (romlistid, val in z_list.allromlists) {
+		local tagsarray = []
+		local tagsnamesarray = []
+
+		local romdir = (FeConfigDirectory + "romlists/" + romlistid)
+		local romdirpresent = (fe.path_test(romdir, PathTest.IsDirectory))
+
+		// No tags at all are present
+		if (!romdirpresent) continue
+
+		// Rom dir is present
+		// List all possible tags
+		tagsarray = DirectoryListing(romdir, false).results
+		if (tagsarray.len() == 0) continue // If there are no tags files, return clear table
+
+		// Scan all to create tags names
+		for (local i = 0; i < tagsarray.len();i++) {
+			if (tagsarray[i][0].tochar()!=".") {
+				tagsnamesarray.push(tagsarray[i].slice(0, tagsarray[i].len()-4))
+			}
+		}
+
+		local tempval = null
+		// Now scan all the files to populate the tags lists with rom names
+		foreach (item in tagsnamesarray) {
+			local temparray = []
+			local filein = ReadTextFile(romdir + "/" + item + ".tag")
+			while (!filein.eos()) {
+				tempval = filein.read_line()
+				temparray.push(romlistid + " " + tempval)
+			}
+			if (temparray.len() >= 1) {
+				z_list.tagstable[item] <- temparray
+			}
+		}
+
+	}
+	*/
 	timestop ("    z_updatetagstable")
 }
 
@@ -5206,26 +5141,43 @@ P2_BUTTON4:Blue:
 P2_JOYSTICK:Black:
 */
 
-// Returns an array of all the categories of a game, each array entry is an array with main and sub category
-// When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
-// of the array is one of the categories. If one of these is "/" separated, this is taken into account.
-function processcategory(categoryname){
-	local out = []
-	if (categoryname == "") return ([["Unknown", ""]])
-	local cathierarchy = split (categoryname, "/")
-	local catarray = split (categoryname, ",-")
-	local catmatch = ((catnames.finder.rawin(categoryname)) || (catnames_SS.finder.rawin(categoryname)))
+// This function takes a category text string and parses it to produce an
+// array variable like [maincategoryname, subcategoryname], if multiple categories
+// are present, maincategoryname is an array.
+function parsecategory(categoryname) {
+	local out = ""
+	// Clean up silly name in RetroPie XML
+	categoryname = subst_replace (categoryname, "Puzzle-Game", "Puzzle")
+	categoryname = subst_replace (categoryname, "Whac-A-Mole", "Whac A Mole")
+	categoryname = subst_replace (categoryname, "Mini-Games", "Mini Games")
+	categoryname = subst_replace (categoryname, "Tree - Plant", "Tree Plant")
+	categoryname = subst_replace (categoryname, "Versus Co-op", "Versus Co op")
+	categoryname = subst_replace (categoryname, "Othello - Reversi", "Othello Reversi")
+	categoryname = subst_replace (categoryname, "Hot-air Balloon", "Hot air Balloon")
+	categoryname = subst_replace (categoryname, "Run, Jump & Scrolling", "Run Jump & Scrolling")
+	if (categoryname == "") categoryname = "Unknown"
+	// Split main to subcategory
+	local catarray = split (categoryname, "/")
+	// There is a main/sub category, so we get rid of all other categories
+	if (catarray.len() > 1) {
+		catarray[0] = strip(catarray[0])
+		catarray[1] = strip(catarray[1])
 
-	if (catmatch) {
-		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
-	} 
-	foreach (i, item in catarray){
-		cathierarchy = split (item, "/")
-		if (cathierarchy.len() == 1) out.push ([strip(cathierarchy[0]),""]) else out.push (cathierarchy.map(function(val){return(strip(val))})) 
+		local mainarray = split(catarray[0], ",-")
+		if (mainarray.len() > 1) catarray[0] = strip(mainarray[mainarray.len() - 1])
+		local subarray = split(catarray[1], ",-")
+		if (subarray.len() > 1) catarray[1] = strip(subarray[0])
+
+		out = catarray[0] + " / " + catarray[1]
 	}
-	return out
+	if (catarray.len() == 1) {
+		local multiarray = split(catarray[0], ",-")
+		foreach (i, item in multiarray) {
+			out = out + strip(item) + (i < multiarray.len() - 1 ? comma : "")
+		}
+	}
+	return (out)
 }
-
 
 /// Multifilter definition ///
 
@@ -5352,8 +5304,21 @@ multifilterz.l0["System"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_system
-			return ( (v == "") ? [{l1val = "?",l1name = "?"}] : [{l1val = v,l1name = v}])
+			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
+
+			local v = z_list.boot[index + fe.list.index].z_system
+			if (v == "") v = "?"
+
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+//			return (out)
 		}
 	}
 
@@ -5364,8 +5329,21 @@ multifilterz.l0["Arcade"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_arcadesystem
-			return ( (v == "") ? [{l1val = "?",l1name = "?"}] : [{l1val = v,l1name = v}])
+			//local out = {l1val = null, l1array = false, l1name = null, sub = null, l2val = null, l2name = null}
+
+			local v = z_list.boot[index + fe.list.index].z_arcadesystem
+			if (v == "") v = "?"
+
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+//			return (out)
 		}
 	}
 
@@ -5376,11 +5354,22 @@ multifilterz.l0["Tags"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot2[index].z_tags // z_gettags(index, false)
-			return ( (v.len == 0) ? [{l1val = "None",l1name = "None"}] : [{l1val = v,l1name = v}])		
+			local v = z_list.boot2[index + fe.list.index].z_tags // z_gettags(index, false)
+			// Return data when no category is selected
+			if (v.len() == 0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
+
+			return ({
+				l1val = v
+				l1array = true
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
-
 
 multifilterz.l0["Category"] <- {
 		label = ""
@@ -5389,24 +5378,50 @@ multifilterz.l0["Category"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_category
+			local v = z_list.boot[index + fe.list.index].z_category
 
-			if (v == "") return [{l1val = "Unknown", l1name = "Unknown"}]
+			// Return data when no category is selected
+			if (v == "") return {l1val = "Unknown", l1array = false,  l1name = "Unknown", sub = false, l2val = null, l2name = null}
 
-			local pcat = processcategory(v)
+			local v2 = split (v, "/")
+			local v3 = split (v, comma)
 
-			return(pcat.map(function(val){
-				if (val[1] == "") return({
-					l1val = val[0]
-					l1name = val[0]
-				}) 
-				else return({
-					l1val = strip(val[0]) + "/"
-					l1name = strip(val[0]) + "..."
-					l2val = strip(val[0]) + "/" + strip(val[1])
-					l2name = strip(val[1])					
-				}) 
-			}))
+			if ((v2.len() == 1) && (v3.len() > 1)) { //Array of values
+				for (local i = 0; i < v3.len(); i++) {
+					v3[i] = strip (v3[i])
+				}
+				return ({
+					l1val = v3
+					l1array = true
+					l1name = v3
+					sub = false
+					l2val = null
+					l2name = null
+				})
+			}
+			else { // not an array!
+				if (v2.len() > 1) { //Cascaded values
+					return ({
+						l1val = strip(v2[0]) + "/"
+						l1array = false
+						l1name = strip(v2[0]) + "..."
+						sub = true
+						l2val = strip(v2[0]) + "/" + strip(v2[1])
+						l2name = strip(v2[1])
+					})
+				}
+				else { //Single value
+					return ({
+						l1val = v
+						l1array = false
+						l1name = v
+						sub = false
+						l2val = null
+						l2name = null
+					})
+				}
+			}
+			return (out)
 		}
 	}
 
@@ -5417,20 +5432,23 @@ multifilterz.l0["Year"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_year
+			local v = z_list.boot[index + fe.list.index].z_year
 
 			// Return data when no category is selected
-			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return [{l1val = "Unknown", l1name = "Unknown"}]
-			if (v == "[unreleased]") return [{l1val = "Unreleased", l1name = "Unreleased"}]
-			if (v == "19??") return [{l1val = "19??", l1name = "19??"}]
+			if ((v == "") || (v  == "0") || (v == "?") || (v == "1")) return {l1val = "Unknown", l1array = false, l1name = "Unknown", sub = false, l2val = null, l2name = null}
+			if (v == "[unreleased]") return {l1val = "Unreleased", l1array = false, l1name = "Unreleased", sub = false, l2val = null, l2name = null}
+			if (v == "19??") return {l1val = "19??", l1array = false, l1name = "19??", sub = false, l2val = null, l2name = null}
 			local v2 = v.slice(0, 3) + "x"
 
-			return ([{
+			return ({
 				l1val = v2
+				l1val = v2
+				l1array = false
 				l1name = v2 +"..."
+				sub = true
 				l2val = v
 				l2name = v
-			}])
+			})
 		}
 	}
 
@@ -5441,22 +5459,27 @@ multifilterz.l0["Manufacturer"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_manufacturer.tolower()
+			local v = z_list.boot[index + fe.list.index].z_manufacturer.tolower()
 
-			if ((v == "") || (v == "<unknown>")) return [{l1val = "?", l1name = "?"}]
-
+			// Return data when no category is selected
+			if ((v == "") || (v == "<unknown>")) return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
 			v = split(v, "_")[0]
-			if (v.len() >= 7) {
-				if ((v.slice(0, 7) == "bootleg")) return [{l1val = "? bootleg", l1name = "? bootleg"}]
-			}
 
+			if (v.len() >= 7) {
+				if ((v.slice(0, 7) == "bootleg")) return {l1val = "? bootleg", l1array = false, l1name = "? bootleg", sub = false, l2val = null, l2name = null}
+			}
 			local v2 = v.slice(0, 1)
-			return ([{
+
+			return ({
 				l1val = v2
+				l1array = false
 				l1name = v2 + "..."
+				sub = true
 				l2val = v
 				l2name = v
-			}])
+			})
+
+			return (out)
 		}
 	}
 
@@ -5467,10 +5490,17 @@ multifilterz.l0["Favourite"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot2[index].z_favourite
+			local v = z_list.boot2[index + fe.list.index].z_favourite//z_getfavs(index) //fe.game_info(Info.Favourite, index)
 
-			return (v ? [{l1val = "1 - Favourite", l1name = "Favourite"}] : [{l1val = "2 - Not Favourite", l1name = "Not Favourite"}] )
-
+			return ({
+				l1val = (v ? "1 - Favourite" : "2 - Not Favourite")
+				l1array = false
+				l1name = (v ? "Favourite" : "Not Favourite")
+				sub = false
+				l2val = null
+				l2name = null
+			})
+			return (out)
 		}
 	}
 
@@ -5481,9 +5511,22 @@ multifilterz.l0["Buttons"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_buttons
-			v = (v == "") ? "??" : format("%2s",v)
-			return ([{l1val = v, l1name = v}])
+
+			local v = z_list.boot[index + fe.list.index].z_buttons
+
+			if (v == "") v = "??"
+			if (v.len() == 1) v = " " + v
+
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5494,9 +5537,20 @@ multifilterz.l0["Players"] <- {
 		translate = true
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_players
-			v = (v == "") ? " ?" : format("%2s",v)
-			return ([{l1val = v, l1name = v}])
+			local v = z_list.boot[index + fe.list.index].z_players
+			if (v == "") v = " ?"
+			if (v.len() == 1) v = " " + v
+
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5507,8 +5561,17 @@ multifilterz.l0["Played"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot2[index].z_playedcount
-			return ((v == 0) ? [{l1val = "2 - Not Played", l1name = "Not Played"}] : [{l1val = "1 - Played", l1name = "Played"}])
+			local v = z_list.boot2[index + fe.list.index].z_playedcount
+			return ({
+				l1val = (v == 0 ? "2 - Not Played" : "1 - Played")
+				l1array = false
+				l1name = (v == 0 ? "Not Played" : "Played")
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5519,10 +5582,19 @@ multifilterz.l0["Orientation"] <- {
 		translate = true
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_rotation
+			local v = z_list.boot[index + fe.list.index].z_rotation
 			local vcheck = ((v == "0") || (v == "180") || (v == "Horizontal") || (v == "horizontal") || (v == ""))
 
-			return ((vcheck) ? [{l1val = "1 - Horizontal", l1name = "Horizontal"}] : [{l1val = "2 - Vertical", l1name = "Vertical"}])
+			return ({
+				l1val = vcheck ? "1 - Horizontal" : "2 - Vertical"
+				l1array = false
+				l1name = vcheck ? "Horizontal" : "Vertical"
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5533,9 +5605,9 @@ multifilterz.l0["Controls"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_control
+			local v = z_list.boot[index + fe.list.index].z_control
 
-			if (v == "") return [{l1val = "?", l1name = "?"}]
+			if (v == "") return {l1val = "?", l1array = false, l1name = "?", sub = false, l2val = null, l2name = null}
 
 			local v2 = [null]
 
@@ -5554,10 +5626,16 @@ multifilterz.l0["Controls"] <- {
 				}
 			}
 
-			return ([{
+			return ({
 				l1val = v2
+				l1array = false
 				l1name = v2
-			}])
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5568,7 +5646,7 @@ multifilterz.l0["Rating"] <- {
 		translate = false
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_rating
+			local v = z_list.boot[index + fe.list.index].z_rating
 			local v2 = "??"
 			if (v == "") {
 				v = "??"
@@ -5577,11 +5655,18 @@ multifilterz.l0["Rating"] <- {
 				try {v2 = format ("%05.1f", v.tofloat())} catch(err) {}
 			}
 			local v3 = v
+			//if (v.len() == 1) v = " " + v
 
-			return ([{
+			return ({
 				l1val = v2
+				l1array = false
 				l1name = v3
-			}])
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5592,9 +5677,19 @@ multifilterz.l0["Series"] <- {
 		translate = false
 		sort = true
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_series
+			local v = z_list.boot[index + fe.list.index].z_series
+			if (v == "") v = " ?? "
 
-			return ((v == "") ? [{l1val = " ?? ", l1name = " ?? "}] : [{l1val = v, l1name = v}])
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5605,9 +5700,19 @@ multifilterz.l0["Scraped"] <- {
 		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_scrapestatus
+			local v = z_list.boot[index + fe.list.index].z_scrapestatus
 			if (v == "") v = "?"
-			return ( (v == "") ? [{l1val = "?",l1name = "?"}] : [{l1val = v,l1name = v}])
+
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
@@ -5615,34 +5720,46 @@ multifilterz.l0["Region"] <- {
 		label = ""
 		filtered = false
 		translate = false
-		sort = false
+		sort = true
 		menu = {}
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_region
+			local v = z_list.boot[index + fe.list.index].z_region
+			// ALTERNATIVE MODE: splits all and adds the complete, ATTENTION: turn l1array to true
+			/*
+			local v0 = z_list.boot[index + fe.list.index].z_region
+			if (v0 == "") v0 = "None"
+			local v = split_complete(v0, comma) // z_gettags(index, false)
+			if (v.len() != 0) v.insert(0, v0) else v = [v0]
+			*/
 
-			v = split((v == "") ? "ZZ" : v, comma)
+			if (v == "") v = "None"
 
-			return(v.map(function(val){
-				return ({
-					l1val = strip(val).tolower()
-					l1name = (val == "ZZ") ? "None" : strip(val).tolower()
-				})
-			}))
+			// Return data when no category is selected
+			//if (v.len() == 0) return {l1val = "None", l1array = false, l1name = "None", sub = false, l2val = null, l2name = null}
+
+			return ({
+				l1val = v
+				l1array = false
+				l1name = v
+				sub = false
+				l2val = null
+				l2name = null
+			})
+
+			return (out)
 		}
 	}
 
 // Add the filter values to the multifilter in a separate table
 
-multifilterz.hasfilters <- {}
 multifilterz.filter <- {}
 foreach (item, table in multifilterz.l0) {
 	multifilterz.filter[item] <- []
-	multifilterz.hasfilters[item] <- false
 }
 
 savetabletofile(multifilterz.filter, "pref_mf_0.txt")
 
-function mfz_on() {//TEST160 cambiar con hasfilters
+function mfz_on() {
 	foreach (item, table in multifilterz.l0) {
 		if (multifilterz.filter.rawin(item)) {
 			if (multifilterz.filter[item].len() > 0) return true
@@ -5651,7 +5768,7 @@ function mfz_on() {//TEST160 cambiar con hasfilters
 	return false
 }
 
-function mfz_num() {//TEST160 cambiar con hasfilters
+function mfz_num() {
 	local out = 0
 	foreach (item, table in multifilterz.l0) {
 		if (multifilterz.filter.rawin(item)) {
@@ -5666,56 +5783,69 @@ function mfz_build(reset) {
 	debugpr("mfz_build reset:" + reset + "\n")
 
 	// Reset all menu data
-	timestart("    pt1")
 	foreach (item, table in multifilterz.l0) {
 		if (reset) {
-			multifilterz.filter.rawset(item, [])
-			multifilterz.hasfilters.rawset(item, false)
+			if (multifilterz.filter.rawin(item)) multifilterz.filter[item] = []
+			else multifilterz.filter.rawset(item, [])
 		}
 		try {table.menu.clear()} catch(err) {print("\nERROR!\n")}
 		multifilterz.l0[item].label = ltxt(item, AF.LNG)
 	}
-	timestop("    pt1")
 
 	// Scan the whole romlist
-	z_list.levchecks = []
 	for (local i = 0; i < fe.list.size; i++) {
-		z_list.levchecks.push({})
-		// Scan throught the "items" ("Year", "Category" etc) in the multifilter
-		foreach (id0, table0 in multifilterz.l0) { 
-			local vals = table0.levcheck(i)
-			z_list.levchecks[i].rawset(table0, vals) // Updates levchecks bakig variable
+		// Scan throught the "items" ("Year", "Category" etc) in the multifilter,
+		foreach (id0, table0 in multifilterz.l0) {
+			local vals = table0.levcheck(i - fe.list.index)
 
-			foreach (ix, val_ix in vals) {
+			// Check if level 1 value is an ARRAY!
+			if ((vals.l1array)) {
+				for (local i = 0; i < vals.l1name.len(); i++) {
+					try {
+						table0.menu[vals.l1name[i]].num ++
+					}
+					catch(err) {
+						table0.menu[vals.l1name[i]] <- {
+							num = 1
+							filtered = false
+							filtervalue = vals.l1val[i]
+							submenu = null
+						}
+					}
+				}
+			}
+			else { // level1 value is not an ARRAY
+			// Populate or update level1 menu
 				try {
-					table0.menu[val_ix.l1name].num ++
+					table0.menu[vals.l1name].num ++
 				}
 				catch(err) {
-					table0.menu[val_ix.l1name] <- {
+					table0.menu[vals.l1name] <- {
 						num = 1
 						filtered = false
-						filtervalue = val_ix.l1val
+						filtervalue = vals.l1val
 						submenu = null
 					}
 				}
 
-				if (val_ix.rawin("l2val")) { //submenu is present
+				if (vals.sub) { //submenu is present
 					// Populate or update level 2 menu
 					try {
-						table0.menu[val_ix.l1name].submenu[val_ix.l2name].num ++
+						table0.menu[vals.l1name].submenu[vals.l2name].num ++
 					}
 					catch(err) {
-						if (table0.menu[val_ix.l1name].submenu == null) table0.menu[val_ix.l1name].submenu = {}
-						table0.menu[val_ix.l1name].submenu[val_ix.l2name] <- {
+						if (table0.menu[vals.l1name].submenu == null) table0.menu[vals.l1name].submenu = {}
+						table0.menu[vals.l1name].submenu[vals.l2name] <- {
 							num = 1
 							filtered = false
-							filtervalue = val_ix.l2val
+							filtervalue = vals.l2val
 						}
 					}
 				}
-			}						
+			}
 		}
 	}
+	//mfz_print()
 	timestop("mfz_build")
 }
 
@@ -5751,17 +5881,15 @@ function mfz_printfilter() {
 function mfz_populate() {
 	debugpr("mfz_populate\n")
 	foreach (id0, table0 in multifilterz.l0) {
-		multifilterz.filter.rawset(id0, [])
+		if (multifilterz.filter.rawin(id0)) multifilterz.filter[id0] = []
+		else multifilterz.filter.rawset(id0, [])
 		foreach (id1, table1 in table0.menu) {
-			if (table1.filtered) {
-				multifilterz.filter[id0].push(table1.filtervalue)
-			}
+			if (table1.filtered) multifilterz.filter[id0].push(table1.filtervalue)
 			if (table1.submenu != null) {
 				foreach (id2, table2 in table1.submenu) {
 					if (table2.filtered) multifilterz.filter[id0].push(table2.filtervalue)
 				}
 			}
-			multifilterz.hasfilters[id0] = (multifilterz.filter[id0].len()>0)
 		}
 	}
 }
@@ -5808,15 +5936,7 @@ local mf = {
 local multifilterglyph = null // This is the layout object that turns on when a multifilter is active
 
 function mfz_checkin(index) {
-	// This function checks if the game at index is or not "multifiltered"
-	// The process analyses the multifilter.filterz section by section, and for each section requires
-	// the levcheck values of current game. 
-	// If one of the filter values is equal to the levcheck value then the specific section is set to true in 
-	// the meta field. outOR is true if the game has one of the filtered properties
-	// All entries of metafilter are checked one with the other, if they are ALL true than the game is actually
-	// in filter. 
 
-	// meta is used for calculation purposes, inmfz is used for filtering check
 	local outOR = false
 	local outAND = true
 	local vtemp = null
@@ -5825,24 +5945,39 @@ function mfz_checkin(index) {
 	foreach (id0, table0 in multifilterz.l0) {
 		outOR = false
 		metafilter.rawset(id0, outOR)
-		if (multifilterz.hasfilters[id0]) { //Filter is applied on this category
-			vtemp = z_list.levchecks[index][table0] //table0.levcheck(index) //TEST160 Quante volte viene richiamato levcheck nella vita del layout? magari si può fare un baking!
-			foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
-				foreach (vitem, vtable in vtemp){
-					if ((value == vtable.l1val) || (vtable.rawin("l2val") && (value == vtable.l2val))){
-						outOR = true
-						break
+		if (multifilterz.filter.rawin(id0)) {
+			if (multifilterz.filter[id0].len() > 0) { //Filter is applied on this category
+				vtemp = table0.levcheck(index)
+				foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
+					if (vtemp.l1array) {
+						for (local i = 0; i < vtemp.l1val.len(); i++) {
+							if ((value == vtemp.l1val[i])) {
+								outOR = true
+								break
+							}
+						}
 					}
+					else {
+						if ((value == vtemp.l1val) || (value == vtemp.l2val)) {
+							outOR = true
+							break
+						}
+					}
+				} // foreach is broken if one match inside the category is true
+
+				// metafilter is populated with the outOR value for current id0
+				metafilter.rawset(id0, outOR)
+
+				// This substitutes the outAND check: if at least one outOR is not true,
+				// then the outAND is obviously false and the item is not "infilter"
+				// but this stops the sweep of id0 for this game!
+				/*
+				if (outOR == false) {
+					return (false)
 				}
-			} // foreach is broken if one match inside the category is true
-
-			// metafilter is populated with the outOR value for current id0
-			metafilter.rawset(id0, outOR)
-
-			// This substitutes the outAND check: if at least one outOR is not true,
-			// then the outAND is obviously false and the item is not "infilter"
-			// but this stops the sweep of id0 for this game!
-			outAND = outAND && outOR
+				*/
+				outAND = outAND && outOR
+			}
 		}
 	}
 	local outtable = {
@@ -5853,6 +5988,7 @@ function mfz_checkin(index) {
 }
 
 function mfz_menudata(inputtable, level, translate, sort) {
+
 	// Translate translates names and keep everything sorted by translated name
 	// Sort means that menu items are sort by (eventually translated)
 	// name value, otherwise they get sorted by filter value (to force sorting)
@@ -5981,6 +6117,7 @@ lo sono in parte allora metto "quadrato vuoto".
 */
 
 function ztestz() {
+
 	local test ={}
 
 	test["Filter"] <- "CIAO"
@@ -5997,7 +6134,6 @@ function mfz_refreshnum(catin) {
 	debugpr("mfz_refreshnum "+ catin + "\n")
 	//	return
 	// Reset menu numbers (not menu values!)
-	timestart("    step1")
 	foreach (id0, table0 in multifilterz.l0) {
 		foreach (id1, table1 in table0.menu) {
 			table1.num = 0
@@ -6008,41 +6144,45 @@ function mfz_refreshnum(catin) {
 			}
 		}
 	}
-	timestop("    step1")
 
 	// Scan the whole romlist
 	//for (local i = 0; i < fe.list.size; i++) {
 
-	timestart("    step2")
-	local in_other_searches = false
 	foreach (i, item in z_list.boot) {
 		bar_progress_update(i, 0, z_list.boot.len())
 
-		in_other_searches = (z_list.boot[i].z_infav && z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2)
-		// Iterate the check with all the multifilter categories (title, cat, players etc)
-		if (in_other_searches){
-			foreach (id0, table0 in multifilterz.l0) {
-				// Call the function that return the menu entry for the current game (BAKED in AF160)
-				local vals = z_list.levchecks[i][table0]
-				local inmfz = true
-
+		foreach (id0, table0 in multifilterz.l0) {
+			// Call the function that return the menu entry for the current game
+			local vals = table0.levcheck(i - fe.list.index)
+			local inmfz = true
+			if (typeof z_list.boot[i].z_inmfz.meta == "table") {
 				foreach (item, val in z_list.boot[i].z_inmfz.meta) {
-					if ((multifilterz.hasfilters[item]) && (item != catin))
-						inmfz = inmfz && val
-				}
-
-				if (inmfz) {
-					foreach (vindex, vtable in vals){
-						table0.menu[vtable.l1name].num ++
-						if (vtable.rawin("l2val")) table0.menu[vtable.l1name].submenu[vtable.l2name].num ++
+					if (multifilterz.filter.rawin(item)) {
+						if ((multifilterz.filter[item].len() > 0) && (item != catin))
+							inmfz = inmfz && val
 					}
 				}
-
 			}
+			//if ((z_list.boot[i].z_inmfz || (id0 == catin)) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
+			if (inmfz && (z_list.boot[i].z_infav && z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
+			//if (mfz_checkin(i - fe.list.index, catin) && (z_list.boot[i].z_insearch) && (z_list.boot[i].z_incat) && (z_list.boot[i].z_inmots2)) {
+				if ((vals.l1array)) {
+					foreach (i2, item2 in vals.l1name) {
+						table0.menu[item2].num ++
+					}
+				}
+				else { // level1 value is not an ARRAY
+					// Populate or update level1 menu
+					table0.menu[vals.l1name].num ++
+					if (vals.sub) { //submenu is present
+						// Populate or update level 2 menu
+						table0.menu[vals.l1name].submenu[vals.l2name].num ++
+					}
+				}
+			}
+
 		}
 	}
-	timestop("    step2")
-
 	timestop("mfz_refreshnum")
 }
 
@@ -6050,8 +6190,7 @@ function mfz_menu2(presel) {
 	//2nd level menu is never translated and is always sorted by value
 	local valcurrent = null
 
-	//TEST160 ERA USATO PER VALCURRENT???
-	//TEST160 RIMOSSO if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+	if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
 
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu[mf.cat1].submenu, 2, false, true)
 	local namearray = mfzdat.names
@@ -6071,16 +6210,11 @@ function mfz_menu2(presel) {
 	numberarray.insert(0, "")
 	numberarray.insert(0, "")
 
-	local mfzmenu2 = []
-	foreach (i, item in namearray){
-		mfzmenu2.push({text = namearray[i], glyph = filterarray[i], note = numberarray[i], fade = (numberarray[i] == "(0)"), liner = false, skip = (numberarray[i] == "(0)")})
-	}
-
 	if (valcurrent != null) {
 		if ((valcurrent.l1name == mf.cat1) && (presel == 0)) presel = indexarray.find(valcurrent.l2name)
 	}
 
-	zmenudraw3(mfzmenu2, mf.cat1, 0xeaed, presel, {},
+	zmenudraw(namearray, filterarray, numberarray, mf.cat1, 0xeaed, presel, false, false, false, false, false,
 	function(out) {
 
 		if (out == -1) {
@@ -6117,10 +6251,10 @@ function mfz_menu2(presel) {
 }
 
 function mfz_menu1(presel) {
+
 	local valcurrent = null
 
-	if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
-	// valcurrent is the array of entries for the current game and current mf.cat0
+	if (z_list.size > 0) valcurrent = multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
 
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu, 1, multifilterz.l0[mf.cat0].translate, multifilterz.l0[mf.cat0].sort)
 	local namearray = mfzdat.names
@@ -6133,21 +6267,25 @@ function mfz_menu1(presel) {
 	filterarray.insert(0, 0xea0f)
 	numberarray.insert(0, "")
 
-	local mfzmenu1 = []
-	foreach (i, item in namearray){
-		mfzmenu1.push({text = namearray[i], glyph = filterarray[i], note = numberarray[i], fade = (numberarray[i] == "(0)"), liner = false, skip = (numberarray[i] == "(0)")})
-	}
-
 	if (presel == -1) {
-		if ((valcurrent != null)) {
-			presel = indexarray.find(valcurrent[0].l1name)
+		if ((valcurrent != null) && !(valcurrent.l1array)) {
+			presel = indexarray.find(valcurrent.l1name)
 		}
 		else {
 			presel = 0
 		}
 	}
 
-	zmenudraw3(mfzmenu1, multifilterz.l0[mf.cat0].label, 0xeaed, presel, {},
+/*
+	if (valcurrent == null) {
+		if (presel == -1) presel = 0
+	}
+	else {
+		if ((presel == -1) && !(valcurrent.l1array)) presel = indexarray.find(valcurrent.l1name)
+		else if (presel == -1) presel = 0
+	}
+*/
+	zmenudraw(namearray, filterarray, numberarray, multifilterz.l0[mf.cat0].label, 0xeaed, presel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			mf.sel1 = -1
@@ -6199,9 +6337,6 @@ function mfz_menu0(presel) {
  	zmenu.mfm = true
 
 	local mfzdat = mfz_menudata(multifilterz.l0, 0, true, true)
-
-	local mfzmenu0 = []
-	
 	local namearray = mfzdat.names
 	local indexarray = mfzdat.index
 	local filterarray = mfzdat.glyph
@@ -6210,11 +6345,7 @@ function mfz_menu0(presel) {
 	indexarray.insert(0, 0)
 	filterarray.insert(0, 0xea0f)
 
-	foreach (i, item in namearray){
-		mfzmenu0.push({text = namearray[i], glyph = filterarray[i]})
-	}
-
-	zmenudraw3(mfzmenu0, ltxt("Multifilter", AF.LNG), 0xeaed, presel, {},
+	zmenudraw(namearray, filterarray, null, ltxt("Multifilter", AF.LNG), 0xeaed, presel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) { // Exit from multifilter menu
 			if (!umvisible) {
@@ -6262,8 +6393,6 @@ function mfz_save() {
 }
 
 function mfz_load() {
-	debugpr("mfz_load\n")
-	local tempfilter = null
 	local tempresult = loadtablefromfile("pref_mf_"+ aggregatedisplayfilter() +".txt", true)
 	local defresult = loadtablefromfile("mf_"+ aggregatedisplayfilter() +".txt", true)
 
@@ -6275,16 +6404,14 @@ function mfz_load() {
 	else {
 		multifilterz.filter = tempresult
 	}
-	foreach (item, value in multifilterz.filter){
-		multifilterz.hasfilters[item] = (value.len() > 0)
-	}
 }
 
 function z_list_updategamedata(index) {
+
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
-	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
+	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (z_list.boot[index].z_category)
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 	dat.but_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/buttons/" + z_list.boot[index].z_buttons + "button.png")
 	dat.ply_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/players/players_" + z_list.boot[index].z_players + ".png")
@@ -6377,8 +6504,8 @@ local searchdata = null
 local	search = {
 	smart = "" // This is the main search field for smart search
 	catg = ["", ""] // This is the search field from category menu
-	mots = ["", ""] // This is the search field from "more of the same" menu
-	mots2string = [""] // Descriptive string for MotS
+	mots = ["", ""]
+	mots2string = [""]
 	fav = false // This is true if favourite filter is on
 }
 
@@ -6421,24 +6548,26 @@ function z_listsearch(index) {
 }
 
 function z_catfilter(index) {
+
 	if (search.catg[0] == "") return true
 
-	local nowcat = processcategory(z_list.boot[index + fe.list.index].z_category)
+	local nowcat = stripcat(index)
 
-	foreach (indexv, arrayv in nowcat){
-		if ((search.catg[1] == "*") && (search.catg[0] == arrayv[0])) return true
-		if ((search.catg[0] == arrayv[0]) && (search.catg[1] == arrayv[1])) return true
-	}
+	if ((search.catg[1] == "*") && (search.catg[0] == nowcat[0])) return true
+	if ((search.catg[0] == nowcat[0]) && (search.catg[1] == nowcat[1])) return true
+
 	return false
 }
 
 function z_favfilter(index) {
+
 	if (!search.fav) return true
 
 	return (z_list.boot2[index + fe.list.index].z_favourite)
 }
 
 function z_mots2filter(index) {
+
 	if (search.mots[0] == "") return true
 	local currentval = ""
 
@@ -6477,6 +6606,7 @@ function getallgamesdb(logopic) {
 		textobj = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
 		textobj.char_size = text_charsize
 		textobj.font = uifonts.mono
+		//textobj.set_bg_rgb(255, 0, 0)
 		textobj.word_wrap = true
 	}
 
@@ -6494,24 +6624,8 @@ function getallgamesdb(logopic) {
 			itemname = item.slice(0, -4)
 			AF.emulatordata.rawset(itemname, getemulatordata(item))
 
-
-			//TEST160 MAYBE MOVE THE CREATION OF MULTI EMULATOR DB FILE HERE AND NOT IN BOOTLIST CREATION?
-			if (!prf.MASTERLIST && !file_exist(AF.romlistfolder + itemname + ".txt") && !file_exist(AF.romlistfolder + itemname + ".db1")){ //TEST160
-				// Create empty db for emulators that don't have a romlist
-				refreshromlist (itemname, false, false)
-				/*
-				if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
-				else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
-				else system ("attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)	
-				*/
-			}
-
-			// The emulator has a self named romlist or a db1 for that emulator already exists
-			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST || file_exist(AF.romlistfolder + itemname + ".db1")) {
-				// If there's no db1, the portromlist function is used to build it.
-				//TEST160 Maybe I can do the fix HERE in the portromlist, not in the bootlist creation
-				//TEST160 if done this way, it doesn't risk to happen during collection. 
-				//TEST160 But what happens if the emulator doesn't have a reference romlist?
+			// The emulator has a self named romlist
+			if (file_exist(AF.romlistfolder + itemname + ".txt") || prf.MASTERLIST) {
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
 				z_splash_message("")//("\n\n\n\n\n\n\n" + "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
@@ -6561,61 +6675,40 @@ function z_listboot() {
 	timestart("z_listboot")
 	debugpr("z_listboot\n")
 	z_list.allromlists = allromlists()
-	local romlistboot = fe.displays[fe.list.display_index].name
-	//TEST160 RIMOSSO z_updatetagstable()
+
+	z_updatetagstable()
 
 	z_list.boot = []
 	z_list.boot2 = []
 
-	timestart("    boot")
+	timestart("boot")
 	// Update listboot with zdb data
 	local ifeindex = 0
 	local currentsystem = ""
 	for (local i = 0; i < fe.list.size; i++) {
 		ifeindex = i - fe.list.index
-		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
-			// This is a proper game from a real romlist
-			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
-				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
-				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
-			}
-			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-			z_list.boot[i].z_felistindex = i
-			z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
-			currentsystem = z_list.boot[i].z_system.tolower()
 
-			//insert here system overrides, for example change controller and numbuttons using system data fields
-			if (system_data.rawin(currentsystem)) {
-				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
-				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
-			}
+		if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex)))
+			refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 
-			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
-		} else {
-			// This is a redirection entry to a different display
-			z_list.boot.push(clone (z_fields1))
-			z_list.boot2.push(clone (z_fields2))
-			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
+		z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+		z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+		z_list.boot[i].z_felistindex = i
+		z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
+		currentsystem = z_list.boot[i].z_system.tolower()
 
-			currentsystem = z_list.boot[i].z_name.tolower()
-			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
-			z_list.boot[i].z_felistindex = i
-			z_list.boot[i].z_category = "display"
-			z_list.boot[i].z_fileisavailable = true
-			if (system_data.rawin(currentsystem)){
-				z_list.boot[i].z_category = system_data[currentsystem].group+" sys"
-				z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
-				z_list.boot[i].z_year = system_data[currentsystem].year
-			}
+		//insert here system overrides, for example change controller and numbuttons using system data fields
+		if (system_data.rawin(currentsystem)) {
+			if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
+			if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
 		}
+
+		if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 	}
 
-	timestop("    boot")
+	timestop("boot")
 
 	z_updatetagstable()
-
-	timestart("    meta")
 
 	//apply metadata customisation
 	for (local i = 0; i < fe.list.size; i++) {
@@ -6630,7 +6723,6 @@ function z_listboot() {
 			}
 		}
 	}
-	timestop("    meta")
 
 	timestop("z_listboot")
 
@@ -6655,14 +6747,15 @@ function z_listcreate() {
 	local felist = array(fe.list.size)
 
 	foreach (i, item in z_list.boot) {
+
 		//bar_update(i, 0, z_list.boot.len())
 
 		local ifeindex = i - fe.list.index
 		local checkfilter = true
 		local checkmeta = null
-		local mfz_status = {inmfz = true, meta = {}}
+		local mfz_status = {inmfz = true, meta = true}
 		if (mfz_on()) {
-			mfz_status = mfz_checkin(i)
+			mfz_status = mfz_checkin(ifeindex)
 			checkfilter = mfz_status.inmfz
 		}
 		//if (mfz_on()) checkfilter = mfz_checkin(ifeindex).inmfz
@@ -6735,83 +6828,76 @@ function z_listsort(orderby, reverse) {
 	z_list.reverse = reverse
 
 	local z_tempsort = []
-	local tval1 = []
-	local tval2 = []
-	timestart("        pt1")
+
 	switch (orderby) {
 		case z_info.z_title.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(nameclean(a.z_title).tolower() + blanker)
-				tval2.push("|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (nameclean(a.z_title).tolower() + blanker)}),
+			z_list.gametable.map(function(a) {return ("|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_year.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(format("%010s", sortclean(a.z_year).tolower()))
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (format("%010s", sortclean(a.z_year).tolower()))}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_manufacturer.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(sortclean(a.z_manufacturer).tolower())
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (sortclean(a.z_manufacturer).tolower())}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_playedcount.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(format("%010s", z_list.gametable2[i].z_playedcount.tostring().tolower()))
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable2.map(function(a) {return (format("%010s", a.z_playedcount.tostring().tolower()))}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_category.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(sortclean(a.z_category).tolower() + blanker)
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (sortclean(a.z_category).tolower() + blanker)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_players.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(a.z_players.tolower())
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (a.z_players.tolower())}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_system.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(a.z_system.tolower() + blanker)
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (a.z_system.tolower() + blanker)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_rundate.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(z_list.gametable2[i].z_rundate)
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable2.map(function(a) {return (a.z_rundate)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_favdate.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(z_list.gametable2[i].z_favdate + z_list.gametable2[i].z_favourite)
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable2.map(function(a) {return (a.z_favdate + a.z_favourite)}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_series.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push(a.z_series.tolower())
-				tval2.push(format("%010s", sortclean(a.z_year).tolower()) + "|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return (a.z_series.tolower())}),
+			z_list.gametable.map(function(a) {return ((format("%010s", sortclean(a.z_year).tolower())) + "|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 		case z_info.z_rating.id:
-			foreach(i, a in z_list.gametable) {
-				tval1.push((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))
-				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
-			}
+			z_tempsort = afsortdual(z_list.gametable, z_list.gametable2,
+			z_list.gametable.map(function(a) {return ((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))}),
+			z_list.gametable.map(function(a) {return ("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)}),
+			reverse)
 		break
 	}
-	z_tempsort = afsortdual(z_list.gametable, z_list.gametable2, tval1, tval2, reverse)
-
-		timestop("        pt1")
-
-	timestart("        pt2")
-
+	
 	z_list.gametable = z_tempsort[0]
 	z_list.gametable2 = z_tempsort[1]
 
@@ -6819,15 +6905,13 @@ function z_listsort(orderby, reverse) {
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby, reverse]
 		savetabletofile(SORTTABLE, "pref_sortorder.txt")
 	}
-		timestop("        pt2")
-
 	timestop("    z_listsort")
 }
 
 // Creates an array for prev-next jump
 function z_liststops() {
 	timestart("    z_liststops")
-	local temp = []
+		local temp = []
 
 	for (local i = 0; i < z_list.size; i++) {
 
@@ -6899,25 +6983,21 @@ function z_liststops() {
 		else if (z_list.orderby == z_info.z_rating.id) temp.push(z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
 	}
 
-	// Scans the list and for every valye of "i" it does:
-	// update the key of the selected entry
-	// sets the starting value of the item in position "i", by checking if it changes
-	// sets the stopping value of the item at the end - i, by checking the list backwards
-	if (z_list.size > 0) {
-		z_list.jumptable[0].key = temp[0]
-		z_list.jumptable[0].start = 0
-		z_list.jumptable[z_list.size - 1].stop = z_list.size - 1
-	}
-	for (local i = 1; i < z_list.size; i++) {
+	for (local i = 0; i < z_list.size; i++) {
 		z_list.jumptable[i].key = temp[i]
-		
-		if (temp[i] == temp[i - 1]) z_list.jumptable[i].start = z_list.jumptable[i - 1].start
-		else {
-			z_list.jumptable[i].start = i
+		if (i == 0) {
+			z_list.jumptable[i].start = 0
+			z_list.jumptable[z_list.size - 1 - i].stop = z_list.size - 1
 		}
-		if (temp[z_list.size - 1 - i] == temp[z_list.size - i]) z_list.jumptable[z_list.size - 1 - i].stop = z_list.jumptable[z_list.size - i].stop
-		else{
-			z_list.jumptable[z_list.size - 1 - i].stop = z_list.size - 1 - i
+		else {
+			if (temp[i] == temp[i - 1]) z_list.jumptable[i].start = z_list.jumptable[i - 1].start
+			else {
+				z_list.jumptable[i].start = i
+			}
+			if (temp[z_list.size - 1 - i] == temp[z_list.size - i]) z_list.jumptable[z_list.size - 1 - i].stop = z_list.jumptable[z_list.size - i].stop
+			else{
+				z_list.jumptable[z_list.size - 1 - i].stop = z_list.size - 1 - i
+			}
 		}
 	}
 
@@ -6953,7 +7033,7 @@ function z_filteredlistupdateindex(reindex) {
 		return
 	}
 
-	if (!mfz_checkin(fe.list.index).inmfz || !z_favfilter(0) || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN)) {
+	if (!mfz_checkin(0).inmfz || !z_favfilter(0) || !z_listsearch(0) || !z_catfilter(0) || (z_checkhidden(0) && !prf.SHOWHIDDEN)) {
 		z_list.index = 0
 		z_list.newindex = 0
 
@@ -6968,10 +7048,16 @@ function z_filteredlistupdateindex(reindex) {
 
 // Function to apply a change to the z_list
 function z_list_indexchange(newindex) {
+
 	z_var = newindex - z_list.index
 	z_list.newindex = newindex
 	if (z_list.size != 0) fe.list.index = z_list.gametable[modwrap((newindex), z_list.size)].z_felistindex
 	z_updatefilternumbers(z_list.newindex)
+}
+
+local regsys = {
+	LCD = regexp(@"([Pp][Cc]\s*[Ee]ngine\s*[Gg][Tt])|([Vv]ita)|([Dd][Ss])|(3[Dd][Ss])|(PSP\s*Go)|([Gg]ame\s*[Bb]oy)|([Gg]ame\s*[Gg]ear)|([Ll]ynx)|([Tt]urbo\s*[Ee]xpress)|([Gg]amate)|([Ss]upervision)|([Nn]omad)|([Nn]eo\s*[Gg]eo\s*[Pp]ocket)|([Ww]onder\s*[Ss]wan)|([Pp]lay\s*[Ss]tation\s*[Pp]ortable)")
+	MONO = regexp(@"([Gg]ame\s*[Bb]oy$)|([Gg]ame\s*[Bb]oy\s*[Pp]ocket$)")
 }
 
 function systemSSname(sysname) {
@@ -7029,6 +7115,21 @@ function systemAR(offset, var) {
 	return 0.0
 }
 
+function screentype(offset, var) {
+	local name = null
+	local output = null
+	if ((z_list.size > 0)) {
+		name = z_list.gametable[modwrap(z_list.index + offset + var, z_list.size)].z_system
+		if (name == "") return "CRT"
+
+		name = split(name, ";")
+		try {output = system_data[name[0].tolower()].screen}
+		catch(err) {return "CRT"}
+		return output
+	}
+	return "CRT"
+}
+
 function recolorise(offset, var) {
 	local value = null
 	local output = null
@@ -7061,6 +7162,26 @@ function islcd(offset, var) {
 		return (output == "LCD")
 	}
 	return false
+}
+
+function screenrecolor(lcdtype) {
+
+	local out = "NONE"
+
+	// CASE 1: It's a gameboy
+	local isgb = ((lcdtype == "LCDGBC") || (lcdtype == "LCDGBP") || (lcdtype == "LCDGBL"))
+	if (isgb) {
+		if (prf.GBRECOLOR == "AUTO") return (lcdtype) else return (prf.GBRECOLOR)
+	}
+
+	// CASE 2: It's a recolored system
+	local isrecolor = ((lcdtype == "LCDBW") || (lcdtype == "LCDGBA"))
+	if (isrecolor) {
+		return lcdtype
+	}
+
+	// CASE 3: It's everything else
+	return ("NONE")
 }
 
 /// Misc functions ///
@@ -7154,6 +7275,7 @@ function gamename2(offset) {
 }
 
 function wrapme(testo, lim_col, lim_row) {
+
 	// INITIALIZE OUTPUT VARIABLE
 	local out = {
 		text = ""
@@ -7265,6 +7387,15 @@ function gamemanufacturer(offset) {
 	}
 }
 
+//MAGIC TOKEN
+function gameplaycount(offset) {
+	local s = fe.game_info(Info.PlayedCount, offset)
+	if (s.len() > 0) {
+		return s[0]
+	}
+	return ""
+}
+
 // MAGIC TOKEN gets the second part of the game name, after the "("
 function gamesubname(offset) {
 	local system = split (z_list.boot[offset].z_system, ";")
@@ -7340,7 +7471,6 @@ categorytable["RACE"] <- ["RACE", "RACE", [200, 0, 0]]//
 categorytable["MAZE"] <- ["MAZE", "MAZE", [100, 200, 0]]//
 
 categorytable["PUZZLE"] <- ["PUZZL", "PUZZLE", [150, 120, 200]]
-categorytable["PUZZLE GAME"] <- ["PUZZL", "PUZZLE", [150, 120, 200]]
 
 //blue
 categorytable["SHOOTEMUP"] <- ["SHOOT", "SHOOT", [0, 120, 250]]//
@@ -7379,13 +7509,6 @@ categorytable["GUN"] <- ["GUN", "GUN", [0, 250, 200]]//
 //pure red
 categorytable["PINBALL"] <- ["PBALL", "PBALL", [255, 0, 0]]//
 
-categorytable["CONSOLE SYS"] <- ["CONS", "CONS", [255, 0, 0]]//
-categorytable["ARCADE SYS"] <- ["ARCD", "ARCD", [255, 0, 0]]//
-categorytable["COMPUTER SYS"] <- ["COMP", "COMP", [255, 0, 0]]//
-categorytable["HANDHELD SYS"] <- ["HHELD", "HHELD", [255, 0, 0]]//
-categorytable["PINBALL SYS"] <- ["PBALL", "PBALL", [255, 0, 0]]//
-
-
 function systemlabel(input) {
 	local sout = input.tolower()
 	try {
@@ -7417,11 +7540,25 @@ function categorylabel(input, index) {
 }
 
 function maincategory(offset) {
-	return (processcategory(z_list.boot[offset].z_category)[0][0].toupper())
+	local sout = ""
+	local s0 = parsecategory(z_list.boot[offset].z_category)
+
+	if (s0 == "") return ""
+
+	local s = split(s0, "/")
+	if (s.len() > 1) {
+		sout = strip(s[0]).toupper()
+	}
+	else {
+		local s1 = split (s0, comma)
+		sout = strip(s1[0]).toupper()
+	}
+	return (sout)
 }
 
 //MAGIC TOKEN
 function maincategorydispl(offset) {
+
 	local s2 = categorylabel(maincategory(offset), 1)
 
 	return (s2)
@@ -7430,7 +7567,7 @@ function maincategorydispl(offset) {
 function categorycolor(offset, index) {
 	//index = 2 or 3 : first or second color
 	local sout = ""
-	local sout = maincategory(offset)
+	local sout = maincategory(offset) // parsecategory(fe.game_info(Info.Category, offset))
 
 	if (sout == "") return ([0.5, 0.5, 0.5])
 
@@ -7471,7 +7608,7 @@ local overlay = {
 	label = null
 	sidelabel = null
 	glyph = null
-	shadows = []
+	shad = []
 	wline = null
 	filterbg = null
 
@@ -7704,6 +7841,7 @@ bglay.pixelgrid = null
 bglay.bgvidsize = 90.0
 
 function squarebgtop() {
+
 	local ilast = bgs.stacksize - 1
 	local remapcolor = bgs.bg_mono[ilast]
 	//bgs.bgpic_top.shader = colormapper[remapcolor].shad
@@ -7729,6 +7867,7 @@ function squarebgtop() {
 }
 
 function squarebg() {
+
 	for (local i = 0; i < bgs.stacksize; i++) {
 		if ((!prf.BOXARTMODE) || ((prf.BOXARTMODE) && (prf.LAYERSNAP))) {
 
@@ -7794,6 +7933,20 @@ if ((prf.LAYERSNAP) || (prf.LAYERVIDEO)) {
 			local bgvid = null
 
 			bgvid = bgvidsurf.add_clone(bgs.bgpic_array[i])
+			/*
+			if (i == bgs.stacksize - 1) {
+				if (prf.LAYERVIDELAY) {
+					bgvid = bgvidsurf.add_image("white", 0, 0, bglay.bgvidsize, bglay.bgvidsize)
+					bgvid.video_flags = Vid.NoAudio
+					bgvid.alpha = 0
+				}
+				else {
+					bgvid = bgvidsurf.add_artwork("snap", 0, 0, bglay.bgvidsize, bglay.bgvidsize)
+					bgvid.video_flags = Vid.NoAudio
+				}
+			}
+			*/
+
 			bgvid.set_pos(0, 0, bglay.bgvidsize, bglay.bgvidsize)
 			bgvid.preserve_aspect_ratio = false
 			bgvid.trigger = Transition.EndNavigation
@@ -7858,9 +8011,8 @@ function update_z_disp() {
 			brand = "ZZZZ"
 			year = "9999"
 		})
-		// data from af_collections is managed in its own table, collections are in display list but
-		// with the in_menu flag set to false so they are managed in a different way when
-		// the display menu is created
+		// data from af_collections is purged from the displays table because they
+		// are managed in a different way
 		if (z_af_collections.tab.rawin(z_disp[i].dispname)) {
 			z_af_collections.tab[z_disp[i].dispname].rawset("display_id", i)
 		}
@@ -8118,6 +8270,8 @@ for (local i = 0; i < tiles.total; i++) {
 	txbox.line_spacing = logo.txtlinespacing
 	txbox.char_spacing = logo.txtcharspacing
 	txbox.set_rgb (255, 255, 255)
+	//txbox.set_bg_rgb(255, 0, 0)
+	//txbox.bg_alpha = 128
 
 	snap_glow.push(null)
 
@@ -8144,19 +8298,19 @@ for (local i = 0; i < tiles.total; i++) {
 	if (!prf.SNAPGRADIENT) gr_vidsz.visible = false
 	// if (!prf.AUDIOVIDSNAPS) vidsz.video_flags = Vid.NoAudio
 
+	//local nw_mx = obj.add_image("pics/decor/new.png", selectorscale * padding, selectorscale * (padding - verticalshift + height * 6.0/8.0), width * selectorscale/8.0, height * selectorscale/8.0)
+	//local tg_mx = obj.add_image("pics/decor/tag.png", 0, 0, width * selectorscale/6.0, height * selectorscale/6.0)
+
 	local nw_mx = obj.add_image("pics/decor/new.png", 0, 0, UI.zoomedcorewidth / 8.0, UI.zoomedcoreheight / 8.0)
-	if (prf.MAXLINE) nw_mx.width = nw_mx.height = UI.zoomedcoreheight / 12.0
 	nw_mx.visible = false
 	nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 
 	local tg_mx = obj.add_image("pics/decor/tag.png", 0, 0, UI.zoomedcorewidth / 6.0, UI.zoomedcoreheight / 6.0)
-	if (prf.MAXLINE) tg_mx.width = tg_mx.height = UI.zoomedcoreheight / 9.0
 	tg_mx.visible = false
 	tg_mx.mipmap = true
 	tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
 
 	local donez = obj.add_image("pics/decor/completed.png", UI.zoomedpadding, UI.zoomedpadding - UI.zoomedvshift, UI.zoomedcorewidth, UI.zoomedcoreheight)
-	if (prf.MAXLINE) donez.set_pos (UI.zoomedpadding + UI.zoomedcorewidth * 0.1, UI.zoomedpadding - UI.zoomedvshift + UI.zoomedcorewidth * 0.5, UI.zoomedcorewidth * 0.5, UI.zoomedcoreheight * 0.5)
 	donez.visible = false
 	donez.preserve_aspect_ratio = false
 	donez.mipmap = true
@@ -8170,16 +8324,6 @@ for (local i = 0; i < tiles.total; i++) {
 	availz.alpha = 150
 
 	local favez = obj.add_image("pics/decor/starred.png", UI.zoomedpadding + UI.zoomedcorewidth / 2, UI.zoomedpadding + UI.zoomedcoreheight / 2 - UI.zoomedvshift, UI.zoomedcorewidth / 2, UI.zoomedcoreheight / 2)
-	if (prf.MAXLINE && !UI.vertical) favez.set_pos(	UI.zoomedpadding + UI.zoomedcorewidth * 3.0 / 4.0, 
-																	UI.zoomedpadding + UI.zoomedcoreheight / 2 - UI.zoomedvshift, 
-																	UI.zoomedcorewidth * 1.0 / 4.0, 
-																	UI.zoomedcoreheight * 1.0 / 4.0)
-
-	if (prf.MAXLINE && UI.vertical) favez.set_pos(	UI.zoomedpadding + UI.zoomedcorewidth * 5.0 / 8.0, 
-																	UI.zoomedpadding + (UI.zoomedcoreheight * 2.2 / 4.0) - UI.zoomedvshift, 
-																	UI.zoomedcorewidth * 1.0 / 4.0, 
-																	UI.zoomedcoreheight * 1.0 / 4.0)
-
 	favez.visible = false
 	favez.preserve_aspect_ratio = false
 
@@ -8255,6 +8399,8 @@ for (local i = 0; i < tiles.total; i++) {
 	txt1z.margin = logo.txtmargin
 	txt1z.line_spacing = logo.txtlinespacing
 	txt1z.char_spacing = logo.txtcharspacing
+	//txt1z.set_bg_rgb(200, 0, 0)
+	//txt1z.bg_alpha = 50
 
 	loshz.alpha = 150
 	loshz.preserve_aspect_ratio = true
@@ -8431,6 +8577,7 @@ filterdata.char_size = (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI
 filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+//filterdata.set_bg_rgb (200, 10, 10)
 pixelizefont(filterdata, (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local filternumbers = data_surface.add_text((prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"), fl.x + fl.w - UI.footermargin, fl.y + fl.h - UI.footer.h, UI.footermargin, UI.footer.h)
@@ -8452,6 +8599,7 @@ multifilterglyph = data_surface.add_text("X", fl.x + fl.w - UI.footermargin, fl.
 multifilterglyph.margin = 0
 multifilterglyph.char_size = UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
+// multifilterglyph.set_bg_rgb (100, 0, 0)
 multifilterglyph.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 multifilterglyph.word_wrap = true
 multifilterglyph.msg = ""
@@ -8507,11 +8655,8 @@ function bgs_freeze(status) {
 	bglay.surf_1.redraw = bglay.surf_1.clear = !status
 }
 
-function displaynamelogo(cleanname) {
-	if (z_af_collections.tab.rawin(cleanname))
-		return z_af_collections.tab[cleanname].ungroupedname
-	else
-		return systemfont(cleanname, false)
+function displaynamelogo(offset) {
+	return systemfont(z_disp[fe.list.display_index].cleanname, false)
 }
 
 local displaynamesurf = {
@@ -8711,6 +8856,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_maincat.alpha = 255
 	game_maincat.margin = 0
 	game_maincat.line_spacing = 0.8
+	//	game_maincat.set_bg_rgb (255, 0, 0)
 	pixelizefont(game_maincat, floor((gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel) - 1, null, null, true)
 
 	local game_mainname = data_surface.add_text("", fl.x + gamed.mainnameT.x, fl.y + gamed.mainnameT.y, gamed.mainnameT.w, gamed.mainnameT.h)
@@ -8722,6 +8868,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_mainname.margin = 0
 	game_mainname.font = uifonts.gui
 	game_mainname.alpha = 255
+	// game_mainname.set_bg_rgb(200, 0, 0)
 	game_mainname.visible = true
 
 	local game_subname = data_surface.add_text("", fl.x + (prf.CLEANLAYOUT ? gamed.mainnameT.x : gamed.subnameT.x), fl.y + gamed.subnameT.y, gamed.subnameT.w, gamed.subnameT.h)
@@ -8732,6 +8879,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_subname.font = uifonts.gui
 	game_subname.alpha = 255
 	game_subname.margin = 0
+	//	game_subname.set_bg_rgb(200, 100, 0)
 
 	local game_manufacturerpic = data_surface.add_text("", fl.x + gamed.manufacturerpicT.x, fl.y + gamed.manufacturerpicT.y, gamed.manufacturerpicT.w, gamed.manufacturerpicT.h)
 
@@ -8744,6 +8892,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "fonts/font_manufacturers_2.ttf"
+	//game_manufacturerpic.set_bg_rgb(255, 0, 0)
 
 	local game_manufacturername = data_surface.add_text("", fl.x + gamed.manufacturerpicT.x, fl.y + gamed.manufacturerpicT.y, gamed.manufacturerpicT.w, gamed.manufacturerpicT.h)
 	// game_manufacturerpic.mipmap = 1
@@ -8765,6 +8914,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_year.font = uifonts.gui
 	game_year.margin = 0
 	game_year.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	// game_year.set_bg_rgb(200, 000, 100)
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
 
 	if (prf.CLEANLAYOUT) {
@@ -8796,8 +8946,7 @@ fl.surf3.set_pos(0, 0, fl.w_os * 0.2, fl.h_os * 0.2)
 
 //local overmenuwidth = (vertical ? fl.w_os * 0.7 : fl.h_os * 0.7)
 local overmenuwidth = UI.zoomedwidth * 0.9
-if (((UI.rows == 1) && UI.vertical) || (!UI.vertical && (UI.rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM >= 2))) overmenuwidth = UI.zoomedwidth * 0.6
-if (prf.MAXLINE) overmenuwidth = UI.zoomedwidth * 0.35
+if (((UI.rows == 1) && UI.vertical) || (!UI.vertical && (UI.rows == 1) && (prf.SLIMLINE == false) && (prf.TILEZOOM == 2))) overmenuwidth = UI.zoomedwidth * 0.6
 local overmenu = fl.surf.add_image("pics/ui/overmenu4.png", fl.x + fl.w * 0.5 - overmenuwidth * 0.5, fl.y + fl.h * 0.5 - overmenuwidth * 0.5, overmenuwidth, overmenuwidth)
 overmenu.visible = false
 overmenu.alpha = 0
@@ -8818,6 +8967,7 @@ function overmenu_show() {
 }
 
 function overmenu_hide(strict) {
+
 	if (strict) {
 		overmenu.alpha = 0
 		overmenu.visible = false
@@ -8833,6 +8983,7 @@ function overmenu_hide(strict) {
 // Overlay area background
 overlay.background = fe.add_rectangle(overlay.x, overlay.y, overlay.w, overlay.h)
 overlay.background.set_rgb(themeT.listboxbg, themeT.listboxbg, themeT.listboxbg)
+//overlay.background.set_bg_rgb(255, 0, 0)
 overlay.background.alpha = themeT.listboxalpha
 
 overlay.listbox = fe.add_listbox(overlay.x, overlay.y + overlay.labelheight, overlay.w, overlay.menuheight)
@@ -8840,7 +8991,7 @@ overlay.listbox.rows = overlay.rows
 overlay.listbox.char_size = overlay.charsize
 overlay.listbox.bg_alpha = 0
 overlay.listbox.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
-overlay.listbox.set_bg_rgb(0, 0, 0) //TEST160 ???
+overlay.listbox.set_bg_rgb(0, 0, 0)
 overlay.listbox.set_sel_rgb(themeT.listboxseltext, themeT.listboxseltext, themeT.listboxseltext)
 overlay.listbox.set_selbg_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.listbox.selbg_alpha = 255
@@ -8853,7 +9004,7 @@ overlay.label.char_size = overlay.labelcharsize
 overlay.label.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.label.align = Align.MiddleCentre
 overlay.label.font = uifonts.gui
-overlay.label.set_bg_rgb(0, 200, 0) //TEST160 ???
+overlay.label.set_bg_rgb(0, 200, 0)
 overlay.label.bg_alpha = 0
 
 overlay.sidelabel = fe.add_text("", overlay.x, overlay.y, overlay.w, overlay.labelheight)
@@ -8861,7 +9012,7 @@ overlay.sidelabel.char_size = overlay.labelcharsize * 0.6
 overlay.sidelabel.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.sidelabel.align = Align.MiddleRight
 overlay.sidelabel.font = uifonts.lite
-overlay.sidelabel.set_bg_rgb(0, 200, 0) //TEST160 ???
+overlay.sidelabel.set_bg_rgb(0, 200, 0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 pixelizefont (overlay.sidelabel, overlay.labelcharsize * 0.6, 2)
@@ -8871,18 +9022,19 @@ overlay.glyph.font = uifonts.glyphs
 overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize*1.25
 overlay.glyph.align = Align.MiddleCentre
+//overlay.glyph.set_bg_rgb (100, 0, 0)
 overlay.glyph.bg_alpha = 0
 overlay.glyph.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x, overlay.y + overlay.labelheight - 2, overlay.w, 2)
 
-overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h - UI.footer.h3 + overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
-overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientTb.png", overlay.x, overlay.y - floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
-overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientLb.png", overlay.x - floor(50 * UI.scalerate), overlay.y, floor(50 * UI.scalerate), overlay.h))
-overlay.shadows.push(fe.add_image(AF.folder + "pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
+overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientBb.png", overlay.x, fl.y + fl.h - UI.footer.h3 + overlay.ex_bottom, overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientTb.png", overlay.x, overlay.y - floor(50 * UI.scalerate), overlay.w, floor(50 * UI.scalerate)))
+overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientLb.png", overlay.x - floor(50 * UI.scalerate), overlay.y, floor(50 * UI.scalerate), overlay.h))
+overlay.shad.push(fe.add_image(AF.folder + "pics/grads/wgradientRb.png", overlay.x + overlay.w, overlay.y, floor(50 * UI.scalerate), overlay.h))
 
-foreach (item in overlay.shadows) {
+foreach (item in overlay.shad) {
 	item.alpha = 0
 	item.set_rgb(0, 0, 0)
 }
@@ -8892,7 +9044,7 @@ overlay.wline.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.t
 
 //overlay.filterbg.visible = overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
 overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
-foreach (item in overlay.shadows) item.visible = false
+foreach (item in overlay.shad) item.visible = false
 fe.overlay.set_custom_controls(overlay.label, overlay.listbox)
 
 function mfmbgshow() {
@@ -8905,6 +9057,7 @@ function mfmbghide() {
 }
 
 function frostshow() {
+
 	if (overmenu_visible()) overmenu_hide(false)
 
 	frostshaders(true)
@@ -8920,13 +9073,16 @@ function frosthide() {
 }
 
 function frostshaders(turnon) {
+
 	if (turnon) {
+	//	frost.top.shader = flipshader
 		frost.surf_rt.visible = true
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
 		frost.surf_1.shader = shader_fr.h
 		frost.pic.shader = shader_fr.v
 	}
 	else{
+	//	frost.top.shader = noshader
 		frost.surf_rt.visible = false
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 		frost.surf_1.shader = noshader
@@ -8958,6 +9114,7 @@ function overlay_visible() {
 }
 
 function overlay_show(var0) {
+
 	if (overmenu_visible()) overmenu_hide(false)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
@@ -8970,7 +9127,7 @@ function overlay_show(var0) {
 	overlay.listbox.visible = true
 	overlay.glyph.visible = false
 	overlay.background.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.wline.visible = true
-	foreach (item in overlay.shadows) item.visible = true
+	foreach (item in overlay.shad) item.visible = true
 	flowT.zmenutx = startfade(flowT.zmenutx, 0.05, 0.0)
 	flowT.zmenush = startfade(flowT.zmenush, 0.05, 0.0)
 }
@@ -8984,39 +9141,42 @@ function overlay_hide() {
 	frosthide()
 
 	overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
-	foreach (item in overlay.shadows) item.visible = false
+	foreach (item in overlay.shad) item.visible = false
 }
 
 /// Preferences overlay ///
 
-function getsubmenunotes(index, i) {		
-	local selection = AF.prefs.l1[index][i].selection
-	
-	if (selection == AF.req.keyboard) return("⌨")
-	else if ((selection == AF.req.executef) || (selection == AF.req.exenoret)) return("⏩")
-	else if (selection == AF.req.filereqs) return("⏏")
-	else if (selection == AF.req.menusort) return("☰")
-	else if (selection == AF.req.slideint) return(AF.prefs.l1[index][i].values)
-	else if (selection < 0) return("")
-	else return(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
-	
-}
-
-function getsubmenudata(index) {
+function getsubmenu(index) {
 	local out = []
 	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
-		out.push({
-			text = AF.prefs.l1[index][i].title,
-			glyph = AF.prefs.l1[index][i].glyph,
-			note = getsubmenunotes(index, i),
-			fade = false,
-			liner = (AF.prefs.l1[index][i].glyph == -1),
-			skip = false
-		})
+		out.push(AF.prefs.l1[index][i].title)
 	}
 	return out
 }
 
+function getsubmenuglyphs(index) {
+	local out = []
+	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
+		out.push(AF.prefs.l1[index][i].glyph)
+	}
+	return out
+}
+
+function getsubmenunotes(index) {
+	local out = []
+	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
+
+		local selection = AF.prefs.l1[index][i].selection
+		if 	  (selection == AF.req.keyboard) out.push("⌨")
+		else if ((selection == AF.req.executef) || (selection == AF.req.exenoret))out.push("⏩")
+		else if (selection == AF.req.filereqs) out.push("⏏")
+		else if (selection == AF.req.menusort) out.push("☰")
+		else if (selection == AF.req.slideint) out.push(AF.prefs.l1[index][i].values)
+		else if (selection < 0) out.push("")
+		else out.push(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
+	}
+	return out
+}
 
 local prfmenu = {
 	res0 = 0
@@ -9045,12 +9205,15 @@ prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) 
 prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 prfmenu.picrateh = prfmenu.picratew
 
+//prfmenu.description.set_bg_rgb(100, 0, 0)
 prfmenu.description.char_size = 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
 prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
 prfmenu.description.margin = 0
 prfmenu.description.set_rgb (themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+//overlay.listbox.set_bg_rgb(80, 0, 0)
+//overlay.listbox.bg_alpha = 128
 pixelizefont(prfmenu.description, 48 * UI.scalerate - 1)
 
 prfmenu.helppic.preserve_aspect_ratio = true
@@ -9074,6 +9237,7 @@ function buildselectarray(options, selection) {
 }
 
 function updatemenu(level, var) {
+
 	if (level == 1) {
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
 		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
@@ -9115,15 +9279,7 @@ function optionsmenu_lev3() {
 	updatemenu(prfmenu.level, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection)
 	if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection >= 0) {
 		// MULTIPLE CHOICE OPTION (selection >= 0)
-
-		local menu_lev3 = []
-		foreach (i, item in AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options){
-			menu_lev3.push({
-				text = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options[i],
-				glyph = (i == AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection ? 0xea10 : 0),
-			})
-		}
-		zmenudraw3(menu_lev3, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, {center = true},
+		zmenudraw(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options, buildselectarray(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection), null, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title, 0xe991, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection, false, false, true, false, false,
 		function(prfmenures2) {
 			prfmenu.res2 = prfmenures2
 			if (prfmenu.res2 != -1) {
@@ -9220,12 +9376,13 @@ function optionsmenu_lev3() {
 
 //Second menu level
 function optionsmenu_lev2() {
+
 	prfmenu.level = 2
 	zmenu.selected = prfmenu.outres1
 
 	updatemenu(prfmenu.level, prfmenu.outres1)
 
-	zmenudraw3(getsubmenudata(prfmenu.outres0), AF.prefs.l0[prfmenu.outres0].label, AF.prefs.l0[prfmenu.outres0].glyph, prfmenu.outres1, {},
+	zmenudraw(getsubmenu(prfmenu.outres0), getsubmenuglyphs(prfmenu.outres0), getsubmenunotes(prfmenu.outres0), AF.prefs.l0[prfmenu.outres0].label, AF.prefs.l0[prfmenu.outres0].glyph, prfmenu.outres1, false, false, false, false, false,
 	function(prfmenures1) {
 		prfmenu.res1 = prfmenures1
 		// EXIT FROM SUBMENU 1
@@ -9311,17 +9468,8 @@ function optionsmenu_lev1() {
 	prfmenu.level = 1
 	updatemenu(prfmenu.level, prfmenu.outres0)
 
-	local menu_lev1 = []
-	foreach (i, value in AF.prefs.a0){
-		menu_lev1.push ({
-			text = AF.prefs.a0[i],
-			glyph = AF.prefs.gl0[i],
-			liner = (AF.prefs.gl0[i] == -1),
-		})
-	}
-
 	// First level menu
-	zmenudraw3(menu_lev1, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, {},
+	zmenudraw(AF.prefs.a0, AF.prefs.gl0, null, ltxt("Layout options", AF.LNG), 0xe991, prfmenu.outres0, false, false, false, false, false,
 	function(prfmenures0) {
 		// EXIT FROM OPTIONSMENU
 		prfmenu.res0 = prfmenures0
@@ -9379,15 +9527,18 @@ function optionsmenu_lev1() {
 	null,
 	function() {
 		for (local i = zmenu.selected; i < items.len(); i++) {
-			if (zmenu.data[i].liner) {
+			if (zmenu.strikelines[i].visible) {
 				zmenu.selected = i + 1
 				break
 			}
 		}
+		//zmenu.selected = 5
+		//optionsmenu_lev1()
 	})
 }
 
 function optionsmenu_boot() {
+
 	prfmenu.res0 = prfmenu.res1 = prfmenu.res2 = prfmenu.outres0 = prfmenu.outres1 = prfmenu.outres2 = prfmenu.level = 0
 	prfmenu.showing = true
 
@@ -9421,12 +9572,14 @@ function savecurrentoptions() {
 			local prffile = WriteTextFile(savefilepath)
 
 			saveprefdata (current_selection, savefilepath)
+
 		}
 
 		prfmenu.res2 = -1
 		optionsmenu_lev2()
 		return
-	})
+	}
+	)
 }
 
 function restoreoptions() {
@@ -9434,24 +9587,26 @@ function restoreoptions() {
 	local optionsfiles = DirectoryListing(optionsdir, false).results
 	local optionsnames = []
 	foreach (id, item in optionsfiles) {
-		if (item[0].tochar() != ".") optionsnames.push({text = item.slice(0, -4)})
+		if (item[0].tochar() != ".") optionsnames.push(item.slice(0, -4))
 	}
-
 	if (optionsnames.len() > 0) {
-		zmenudraw3(optionsnames, "Options files", null, 0, {},
+		zmenudraw(optionsnames, null, null, "Options files", null, 0, false, false, false, false, false,
 		function(out) {
 			if (out == -1) {
 				optionsmenu_lev2()
 			}
 			else {
-				local prefsfilepath = fe.path_expand(AF.folder + "options/" + optionsnames[out].text + ".txt")
+				local prefsfilepath = fe.path_expand(AF.folder + "options/" + optionsnames.results[out] + ".txt")
 				readprefdata(prefsfilepath)
 				local outprefs = generateselectiontable()
 				saveprefdata(outprefs, null)
 				fe.signal("reload")
 
 			}
-		})
+		},
+		function() {},
+		function() {}
+		)
 	}
 }
 
@@ -9473,16 +9628,9 @@ function rgbselector(rgb, sel, old, start) {
 	if (rgb.len() == 0) rgb = [255, 255, 255]
 	prfmenu.helppic.set_rgb(rgb[0], rgb[1], rgb[2])
 
-	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
+	local spaces = zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)
 
-	zmenudraw3([
-		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[0]}, 
-		{ text = "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[1]},
-		{ text = "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[2]}, 
-		{ text = ltxt("ACTIONS", AF.LNG), liner = true}, 
-		{ text = ltxt("APPLY", AF.LNG)}, 
-		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965, note = ""}],
-		ltxt("RGB Color", AF.LNG), 0xe992, sel, {},
+	zmenudraw(["R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), "G:  " + textrate(rgb[1], 255, spaces, "Ⓞ ", "Ⓟ "), "B:  " + textrate(rgb[2], 255, spaces, "Ⓞ ", "Ⓟ "), ltxt("ACTIONS", AF.LNG), ltxt("APPLY", AF.LNG), ltxt("DEFAULT", AF.LNG)], [0, 0, 0, -1, 0, (start && (old == "")) ? 0xea10 : 0xe965], [rgb[0], rgb[1], rgb[2], "", "", ""], ltxt("RGB Color", AF.LNG), 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9531,6 +9679,7 @@ function rgbselector(rgb, sel, old, start) {
 /// HUE Selector ///
 
 function hueselector(hue, sel, old, start) {
+
 	if (start) prfmenu.helppic.file_name = "pics/white.png"
 	prfmenu.rgbshowing = true
 
@@ -9542,12 +9691,7 @@ function hueselector(hue, sel, old, start) {
 
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
 
-	zmenudraw3([
-		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), note = hue}, 
-		{ text = ltxt("ACTIONS", AF.LNG), liner = true}, 
-		{ text = ltxt("APPLY", AF.LNG)},
-		{ text = ltxt("DEFAULT", AF.LNG), glyph = (start && (old == "")) ? 0xea10 : 0xe965}],
-		ltxt("HUE Value", AF.LNG), 0xe992, sel, {},
+	zmenudraw(["HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), ltxt("ACTIONS", AF.LNG), ltxt("APPLY", AF.LNG), ltxt("DEFAULT", AF.LNG)], [0, -1, 0, (start && (old == "")) ? 0xea10 : 0xe965], [hue, "", "", ""], ltxt("HUE Value", AF.LNG), 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			prfmenu.rgbshowing = false
@@ -9571,6 +9715,7 @@ function hueselector(hue, sel, old, start) {
 		}
 	}
 	function() {
+
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.left)) && (hue > 0)) {
 				hue = hue - 1 - round(count.left / 5, 1)
@@ -9582,6 +9727,7 @@ function hueselector(hue, sel, old, start) {
 
 	}
 	function() {
+
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.right)) && (hue < 359)) {
 				hue = hue + 1 + round(count.right / 5, 1)
@@ -9595,6 +9741,7 @@ function hueselector(hue, sel, old, start) {
 }
 
 function sliderval(name, val, sel, old, start, vmin, vmax, def) {
+
 	// val: current value during the edit process
 	// sel: selected entity
 	// old: previous selected value when entering the menu
@@ -9609,14 +9756,16 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 
 	if (start) val = old
 
+	/*
+	if (val == "") {
+		val = def
+	} else {
+		val = val.tointeger()
+	}
+*/
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
-	zmenudraw3([
-		{ text = vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, note = val},
-		{ text = ltxt("ACTIONS", AF.LNG), liner = true},
-		{ text = ltxt("APPLY", AF.LNG)},
-		{ text = ltxt("DEFAULT", AF.LNG), glyph = (val == def) ? 0xea10 : 0xe965}
-		], name, 0xe992, sel, {},
+	zmenudraw([vmin +" "+ textrate(val - vmin, vmax - vmin, spaces, "Ⓞ ", "Ⓟ ") + vmax, ltxt("ACTIONS", AF.LNG), ltxt("APPLY", AF.LNG), ltxt("DEFAULT", AF.LNG)], [0, -1, 0, (val == def) ? 0xea10 : 0xe965], [val, "", "", ""], name, 0xe992, sel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = old
@@ -9639,6 +9788,7 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 		}
 	}
 	function() {
+
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.left)) && (val > vmin)) {
 				val = val - 1 - round(count.left / 5, 1)
@@ -9649,6 +9799,7 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 		}
 	}
 	function() {
+
 		if (zmenu.selected == 0) {
 			if ((checkrepeat (count.right)) && (val < vmax)) {
 				val = val + 1 + round(count.right / 5, 1)
@@ -9657,7 +9808,8 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 				count.right ++
 			}
 		}
-	})
+	}
+	)
 }
 
 /// File Browser ///
@@ -9705,26 +9857,33 @@ function filebrowser1(file0) {
 		".ttf"	: 0xea5c
 		".otf"	: 0xea5c
 	}
-	local browsemenu = [
-		{text = ltxt("DEFAULT", AF.LNG)},
-		{text = ltxt("Attract Folder", AF.LNG)},
-		{text = ltxt("Arcadeflow Folder", AF.LNG)},
-		{text = ".."}
-	]
+	local lastname = []
+	local folderappend = []
+
+	lastname.push(ltxt ("DEFAULT", AF.LNG))
+	lastname.push(ltxt ("Attract Folder", AF.LNG))
+	lastname.push(ltxt ("Arcadeflow Folder", AF.LNG))
+	lastname.push("..")
+
+	folderappend.push(0)
+	folderappend.push(0)
+	folderappend.push(0)
+	folderappend.push(0)
 
 	for (local i = 4; i < fb.sortdir.len(); i++) {
 		local isfile = !fe.path_test(fb.sortdir[i], PathTest.IsDirectory)
 		local lastnametemp = split(fb.sortdir[i], "\\/")
 		lastnametemp = (lastnametemp[lastnametemp.len() - 1])
+		lastname.push(lastnametemp)
 		local extemp = ""
 		if (isfile) {
 			extemp = lastnametemp.slice(lastnametemp.len() - 4, lastnametemp.len())
 			try {extemp = extensions[extemp.tolower()]} catch(err) {extemp = ""}
 		}
-		browsemenu.push({text = lastnametemp, glyph = (isfile ? extemp : 0xe92f)})
+		folderappend.push(isfile ? extemp : 0xe92f)
 	}
-	
-	zmenudraw3(browsemenu, fb.startdir, 0xe930, 4 + fb.select0, {},
+
+	zmenudraw(lastname, folderappend, null, fb.startdir, 0xe930, 4 + fb.select0, false, false, false, false, false,
 	function(out) {
 		fb.file00 = fb.startdir
 
@@ -9935,6 +10094,7 @@ foreach(letter in kb.rt_stringkeys) {
 local keyboard_text = null
 
 function keyboard_show(text_base, entrytext, f_type, f_back, f_done) {
+
 	keyboard_surface.visible = true
 	keyboard_surface.redraw = true
 
@@ -10004,6 +10164,7 @@ function keyboard_type(c) {
 }
 
 function keyboard_draw() {
+
 	//draw the search surface bg
 	local bg = keyboard_surface.add_image("pics/ui/kbg2.png", 0, 0, keyboard_surface.width, keyboard_surface.height)
 	bg.alpha = 230
@@ -10098,6 +10259,7 @@ function search_update_rule() {
 }
 
 function keyboard_search() {
+
 	keyboard_select (0, UI.vertical ? 1 : 0)
 
 	keyboard_show("🔍", search.smart,
@@ -10130,45 +10292,66 @@ prf.SHOWHIDDEN <- false
 
 // Gets the list of tags for the current romlist directly from Attract Mode folders
 function tags_menu() {
-	local tagsmenu = []
 
+	local tagsarray = []
+	local tagstatus = []
+	local tagsnotes = []
 	foreach (item, array in z_list.tagstableglobal) {
-		tagsmenu.push({text = item, note = z_list.tagstable.rawin(item) ? "" : "not here"})
+		//if ((item != "COMPLETED") && (item != "HIDDEN")) {
+			tagsarray.push(item)
+			tagstatus.push(0)
+		//}
 	}
-	tagsmenu.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
+	tagsarray.sort(@(a, b) a.tolower() <=> b.tolower())
 
-	tagsmenu.insert (0, {text = "USER TAGS", liner = true})
+	foreach (i, item in tagsarray) {
+		tagsnotes.push(z_list.tagstable.rawin(item) ? "" : "not here")
+	}
+
+	tagsarray.insert(0, "USER TAGS")
+	tagstatus.insert(0, -1)
+	tagsnotes.insert(0, "")
 
 	if (prf.ENABLEHIDDEN) {
-		tagsmenu.insert (0, {text = "HIDDEN", glyph = (z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)})
+		tagsarray.insert(0, "HIDDEN")
+		tagstatus.insert(0, z_list.boot2[fe.list.index].z_hidden ? 0xea0b : 0xea0a)
+		tagsnotes.insert(0, "")
 	}
 
-	tagsmenu.insert(0, {text = "COMPLETED", glyph = (z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a)})
+	tagsarray.insert(0, "COMPLETED")
+	tagstatus.insert(0, z_list.boot2[fe.list.index].z_completed ? 0xea0b : 0xea0a)
+	tagsnotes.insert(0, "")
 
-	for (local i = (prf.ENABLEHIDDEN ? 3 : 2); i < tagsmenu.len(); i++) {
-		tagsmenu[i].rawset ("glyph", (z_list.gametable2[z_list.index].z_tags.find(tagsmenu[i].text) == null) ? 0xea0a : 0xea0b)
+	for (local i = (prf.ENABLEHIDDEN ? 3 : 2); i < tagsarray.len(); i++) {
+		tagstatus[i] = (z_list.gametable2[z_list.index].z_tags.find(tagsarray[i]) == null) ? 0xea0a : 0xea0b
 	}
 
-	tagsmenu.push({ liner = true})
+	tagsarray.push("")
+	tagstatus.push(-1)
+	tagsnotes.push("")
 
 	if (prf.ENABLEHIDDEN) {
-		tagsmenu.push({text = prf.SHOWHIDDEN ? ltxt("Hide Hidden", AF.LNG) : ltxt("Show Hidden", AF.LNG), glyph = 0, note = 0, fade = false, liner = false, skip = false})
+		tagsarray.push(prf.SHOWHIDDEN ? ltxt("Hide Hidden", AF.LNG) : ltxt("Show Hidden", AF.LNG))
+		tagstatus.push(0)
+		tagsnotes.push("")
 	}
-	tagsmenu.push({text = ltxt("New Tag", AF.LNG), glyph = 0xeaee})
+	tagsarray.push(ltxt("New Tag", AF.LNG))
+	tagstatus.push(0xeaee)
+	tagsnotes.push("")
 
-	zmenudraw3(tagsmenu, ltxt("TAGS", AF.LNG), 0xeaef, 0, {center = true},
+	zmenudraw(tagsarray, tagstatus, tagsnotes, ltxt("TAGS", AF.LNG), 0xeaef, 0, false, false, true, false, false,
 	function(out) {
 		if (out == -1) { //BACK
 			frosthide()
 			zmenuhide()
 		}
-		else if ((out == tagsmenu.len() - 2) && (prf.ENABLEHIDDEN)) { //CHANGE HIDDEN STATUS
+		else if ((out == tagsarray.len() - 2) && (prf.ENABLEHIDDEN)) { //CHANGE HIDDEN STATUS
 			zmenuhide()
 			frosthide()
 			prf.SHOWHIDDEN = !prf.SHOWHIDDEN
 			mfz_apply(false)
 		}
-		else if (out == tagsmenu.len() - 1) { //ADD NEW TAG
+		else if (out == tagsarray.len() - 1) { //ADD NEW TAG
 			zmenuhide()
 			flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.2, 0.0)
 			add_new_tag()
@@ -10178,11 +10361,13 @@ function tags_menu() {
 			if (out == 0) z_list.boot2[fe.list.index].z_completed = !z_list.boot2[fe.list.index].z_completed
 			else if ((out == 1) && (prf.ENABLEHIDDEN)) z_list.boot2[fe.list.index].z_hidden = !z_list.boot2[fe.list.index].z_hidden
 			else {
-				if (tagsmenu[out].glyph == 0xea0a) {
-					z_list.boot2[fe.list.index].z_tags.push(tagsmenu[out].text)
+				if (tagstatus[out] == 0xea0a) {
+					z_list.boot2[fe.list.index].z_tags.push(tagsarray[out])
+					//add_tag (tagsarray[out])
 				}
 				else {
-					z_list.boot2[fe.list.index].z_tags.remove(z_list.boot2[fe.list.index].z_tags.find(tagsmenu[out].text))
+					z_list.boot2[fe.list.index].z_tags.remove(z_list.boot2[fe.list.index].z_tags.find(tagsarray[out]))
+					//remove_tag (tagsarray[out])
 				}
 			}
 			z_updatetagstable() //TEST141 sposta sopra e fallo solo se il tag non era nella tagstable :O
@@ -10838,6 +11023,8 @@ foreach (item in hist_text) {
 		item.visible = true
 		item.align = Align.MiddleLeft
 		item.margin = -1
+		//item.set_bg_rgb(0, 0, 0)
+		//item.bg_alpha = 250.0 * (item.y / hist_textT.linesize) / 10.0
 		pixelizefont(item, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize))
 	}
 }
@@ -11048,10 +11235,13 @@ if (prf.CONTROLOVERLAY != "never") {
 		hist_over.btsh[i].alpha = 80
 		pixelizefont(hist_over.btsh[i], 22 * hist_over.picscale, 0, 0.5)
 		pixelizefont(hist_over.bt[i], 22 * hist_over.picscale, 0, 0.5)
+
+	//	hist_over.bt[i].set_bg_rgb(200, 0, 0)
 	}
 }
 
 function history_updateoverlay() {
+
 	if ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE")) {
 		hist_over.surface.visible = false
 	} else {
@@ -11641,52 +11831,14 @@ function update_allgames_collections(verbose, tempprf) {
 /// Zmenu definition ///
 
 zmenu = {
-	data = []				// main array for menu entries
+	items = []
+	tilew = overlay.w
+	tileh = floor(overlay.menuheight / overlay.rows)
+	pos0 = []
 
-	defdata = {				// Default menu data structure
-		text = ""			// Menu item label
-		glyph = 0			// menu item glyph
-		note = ""			// side note for options etc
-		liner = false		// turns the menu into a strikeline
-		skip = false		// add the entry to alwaysskip list
-		fade = false		// fades the entry color
-	}
-
-	defopts = { 					// These are the options that define the behavior of the menu, passed as arguments to zmenudraw
-		shrink = false,		// The menu is compressed to the left half of the panel
-		dmpart = false,		// flag to enable showing artwork in the display menu page
-		center = false,		// centers the items in the menu
-		midscroll = false,	// selected item is always at center of list
-		singleline = false,	// all menu items are shown in a single line (e.g. volume control)
-		alwaysskip = false	// items marked "skip" are skipped by default. In some cases it's useful to have the option to skip them or not
-	}
-
-	shown = 0 				// Number of entry in the list
-	selected = 0 			// Index of the selected entry
-	firstitem = 0			// Index of the menu first item
-	target = []				// array of target values {up, down, upforce, downforce}
-
-	midscroll = false 	// Proxies of the call parameters, used outside of the menu creation routine
-	singleline = false
-	alwaysskip = false		
-
-	showing = false 		// Boolean to tell the layout that menu is showing
-
-	items = []				// Objects used to draw the menu
-	glyphs = []
-	noteitems = []
-	strikelines = []
-	
-	pos0 = []				// Scroll control items
 	xstart = 0
 	xstop = 0
 	speed = null
-
-	tilew = overlay.w
-	tileh0 = floor(overlay.menuheight / overlay.rows)
-	strikeh0 = floor(0.6 * overlay.menuheight / overlay.rows)
-	tileh = 0
-	strikeh = 0
 
 	pad = floor(overlay.padding)
 	width = overlay.w
@@ -11694,24 +11846,33 @@ zmenu = {
 	height = overlay.menuheight
 	x = overlay.x
 	y = overlay.y + overlay.labelheight
-
+	shown = 0 // Number of entry in the list
+	selected = 0 // Index of the selected entry
+	glyphs = []
+	notes = []
+	noteitems = []
 	glyphw = floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
-	glyphh = 0
+	glyphh = floor(overlay.menuheight / overlay.rows)
 	midoffset = 0
 	virtualheight = 0
 	blanker = null
+	singleline = false
 
 	overlaymsg = ""
 	selectedbar = null
 	sidelabel = null
+	strikelines = []
+	showing = false // Boolean to tell the layout that menu is showing
 
 	reactfunction = null // Response function
 	reactleft = null
 	reactright = null
 
-	similar = null			// Array of similar games entries
+	midscroll = false // True if the menu scroll needs to be centered vertically
 
-	simbg = null			// Items used in similar games menu
+	similar = null
+
+	simbg = null
 	simpicbg = null
 	simpic = null
 	simvid = null
@@ -11809,6 +11970,7 @@ zmenu.sidelabel.margin = 2
 zmenu.sidelabel.set_rgb(0, 0, 0)
 zmenu.sidelabel.align = Align.BottomRight
 zmenu.sidelabel.font = uifonts.lite
+zmenu.sidelabel.set_bg_rgb(0, 200, 0)
 zmenu.sidelabel.bg_alpha = 0
 zmenu.sidelabel.word_wrap = true
 pixelizefont (zmenu.sidelabel, overlay.labelcharsize * 0.8, 2)
@@ -11818,132 +11980,41 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-function cleanupmenudata(menudata){
-	foreach (i, item in menudata){
-		foreach (item, val in zmenu.defdata){
-			if (!menudata[i].rawin(item)) menudata[i].rawset(item,val)
-		}
-	}
-	return menudata
-}
-
-function cleanmenuopts(menuopts){
-	foreach (item, val in zmenu.defopts){
-		if (!menuopts.rawin(item)) menuopts.rawset(item, val)
-	}
-	return menuopts
-}
-
-function getxstop(){
-	local xstop = 0
-	local menucorrect = 0
-	
-	// Lower portion
-	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
-		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
-	}
-
-	// Upper portion
-	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
-		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
-	}
-
-	if (zmenu.midscroll) menucorrect = 0
-	xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
-	
-	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
-	
-	return xstop
-}
-
-function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
-	menudata = cleanupmenudata(menudata)
-	opts = cleanmenuopts(opts)
-	
-	zmenu.data = menudata
-	zmenu.singleline = opts.singleline
-	zmenu.midscroll = opts.midscroll
-	zmenu.shown = menudata.len()
-	zmenu.alwaysskip = opts.alwaysskip
-	zmenu.pos0 = []
-
-	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
-	// user defined skip values
-	zmenu.target = []
-	foreach (i, item in zmenu.data){
-		zmenu.target.push({up = 0, down = 0, upforce = 0, downforce = 0 })
-	}
-	foreach(i, item in menudata){
-		local targetdown = i + 1
-		while (targetdown < 2 * zmenu.shown){
-			if (menudata[targetdown % zmenu.shown].liner){
-				targetdown ++
-			}
-			else {
-				zmenu.target[i].down = targetdown % zmenu.shown
-				break
-			}
-		}
-		local targetup = (zmenu.shown + i - 1)
-		while (targetup >= 0){
-			if (menudata[targetup % zmenu.shown].liner){
-				targetup --
-			}
-			else {
-				zmenu.target[i].up = targetup % zmenu.shown
-				break
-			}
-		}
-		local targetdownforce = i + 1
-		while (targetdownforce < 2 * zmenu.shown){
-			if (menudata[targetdownforce % zmenu.shown].skip || menudata[targetdownforce % zmenu.shown].liner){
-				targetdownforce ++
-			}
-			else {
-				zmenu.target[i].downforce = targetdownforce % zmenu.shown
-				break
-			}
-		}
-		local targetupforce = (zmenu.shown + i - 1)
-		while (targetupforce >= 0){
-			if (menudata[targetupforce % zmenu.shown].skip || menudata[targetupforce % zmenu.shown].liner){
-				targetupforce --
-			}
-			else {
-				zmenu.target[i].upforce = targetupforce % zmenu.shown
-				break
-			}
-		}	
-	}
-
-	// Update first item index if the first item is a liner or a skippable item.
-	zmenu.firstitem = 0
-	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
-	else if (zmenu.alwaysskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
+function zmenudraw(menuarray, glypharray, sidearray, title, titleglyph, presel, shrink, dmpart, center, midscroll, singleline, response, left = null, right = null) {
+	zmenu.singleline = singleline
 
 	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
 
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
 
+	count.skipup = 0
+	count.skipdown = count.mfskipdown = menuarray.len() - 1
 	count.forceup = false
 	count.forcedown = false
 
-	// Unhide overlay drop shadows and start fading of menu elements
-	foreach (item in overlay.shadows) item.visible = true
+	zmenu.midscroll = midscroll
+
+	foreach (item in overlay.shad) item.visible = true
 	flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.08, 0.0)
+
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
-	foreach (i, item in zmenu.data) try {zmenu.data[i].note = zmenu.data[i].note.toupper()} catch(err) {}
+	if (sidearray == null) {
+		sidearray = array(menuarray.len(), "")
+	}
+
+	zmenu.notes = sidearray
+
+	foreach (i, item in zmenu.notes) try {zmenu.notes[i] = zmenu.notes[i].toupper()} catch(err) {}
 	foreach (item in disp.images) {
 		item.file_name = AF.folder + "pics/transparent.png"
 	}
 
-	// Cleanup the layout elements
-	
-	// Hide overmenu if it's visible
 	if (overmenu_visible()) overmenu_hide(false)
+
 	// silence snap video sound
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
+
 	// Stops video thumb playback
 	if (prf.THUMBVIDEO) videosnap_hide()
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
@@ -11964,18 +12035,22 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Change menu height if options menu is visible
 	if (prfmenu.showing) {
-		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = ((prfmenu.bg.y - zmenu.y) / overlay.rows) //TEST160 CHECK PIXEL PERFECT
+		zmenu.glyphh = zmenu.tileh = ((prfmenu.bg.y - zmenu.y) / overlay.rows)
 		zmenu.height = prfmenu.bg.y - zmenu.y
-		zmenu.strikeh = floor(zmenu.strikeh * 0.7)
 	}
 	else {
-		zmenu.glyphh = zmenu.tileh = zmenu.tileh0
-		zmenu.strikeh = zmenu.strikeh0
+		zmenu.glyphh = zmenu.tileh = (overlay.menuheight / overlay.rows)
 		zmenu.height = overlay.menuheight
 	}
 
-	// Zmenu is officially showing, now populate the various elements
 	zmenu.showing = true
+
+	if (glypharray == null) {
+		glypharray = []
+		for (local i = 0; i < menuarray.len(); i++) {
+			glypharray.push(" ")
+		}
+	}
 
 	local artname = ""
 	local filename = ""
@@ -11988,11 +12063,10 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	local fontscaler = 0.7
 	local iindex = 0
 
-	// shrink compresses the menu on the left to let, used for dmp or for similar games
-	local items_x = opts.shrink ? 0 : zmenu.glyphw
-	local items_w = opts.shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
+	local items_x = shrink ? 0 : zmenu.glyphw
+	local items_w = shrink ? zmenu.tilew - 1.0 * disp.width : zmenu.tilew - 2 * zmenu.glyphw
 	local noteitems_x = 0
-	local noteitems_w = opts.shrink ? zmenu.tilew - disp.width : zmenu.tilew - zmenu.pad
+	local noteitems_w = shrink ? zmenu.tilew - disp.width : zmenu.tilew - zmenu.pad
 
 	// Hide excess items from menu display
 	for (local i = 0; i < zmenu.items.len(); i++) {
@@ -12002,28 +12076,17 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.noteitems[i].visible = false
 		zmenu.strikelines[i].visible = false
 	}
-
-	zmenu.virtualheight = 0
-	
-	foreach (item, val in zmenu.data) {
-		zmenu.virtualheight = zmenu.virtualheight + (val.liner ? zmenu.strikeh : zmenu.tileh)
-	}
-	//zmenu.virtualheight = zmenu.tileh * menudata.len()
-	//MO zmenu.midoffset = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+	zmenu.virtualheight = zmenu.tileh * menuarray.len()
+	zmenu.midoffset = zmenu.height * 0.5 - zmenu.virtualheight * 0.5
 
 	// Generate items for menu display
 	local iskip = 0
-	local scanpos = 0 //MO zmenu.midoffset
-
-	for (local i = 0; i < menudata.len(); i++) {
+	for (local i = 0; i < menuarray.len(); i++) {
 		if (i >= zmenu.items.len()) {
 			zmenu.strikelines.push(null)
 			zmenu.strikelines[i] = zmenu_surface.add_rectangle(0, 0, 1, 1)
 		}
-		zmenu.strikelines[i].set_pos( opts.shrink ? 0 : zmenu.pad, 
-												scanpos + 0.5 * zmenu.strikeh, 
-												zmenu.tilew -2 * (opts.shrink ? 0 : zmenu.pad) + (opts.shrink ? -1.0 * disp.width : 0), 
-												1)
+		zmenu.strikelines[i].set_pos(shrink ? 0 : zmenu.pad, floor(zmenu.tileh * 0.5) + zmenu.midoffset + i * zmenu.tileh, zmenu.tilew -2 * (shrink ? 0 : zmenu.pad) + (shrink ? -1.0* disp.width : 0), 1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255, 255, 255)
 		zmenu.strikelines[i].alpha = 128
@@ -12032,9 +12095,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.noteitems.push(null)
 			zmenu.noteitems[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
-		zmenu.noteitems[i].set_pos(noteitems_x, scanpos, noteitems_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh)
+		zmenu.noteitems[i].set_pos(noteitems_x, zmenu.midoffset + i * zmenu.tileh, noteitems_w, zmenu.tileh)
 		zmenu.noteitems[i].visible = true
-		zmenu.noteitems[i].msg = zmenu.data[i].note
+		zmenu.noteitems[i].msg = zmenu.notes[i]
 		zmenu.noteitems[i].font = uifonts.gui
 		zmenu.noteitems[i].char_size = overlay.charsize
 		zmenu.noteitems[i].word_wrap = true
@@ -12049,191 +12112,195 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.glyphs[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
 		zmenu.glyphs[i].set_pos (0, zmenu.height * 0.5 - zmenu.tileh * 0.5 + i * zmenu.tileh, zmenu.glyphw, zmenu.glyphh)
+
 		zmenu.glyphs[i].font = uifonts.glyphs
 		zmenu.glyphs[i].margin = 0
 		zmenu.glyphs[i].char_size = overlay.charsize * 1.25
 		zmenu.glyphs[i].align = Align.MiddleCentre
-		zmenu.glyphs[i].msg = gly(menudata[i].glyph)
+		zmenu.glyphs[i].msg = (glypharray[i] == -1) ? "" : gly(glypharray[i])
+		//zmenu.glyphs[i].set_bg_rgb (100, 0, 0)
 		zmenu.glyphs[i].bg_alpha = 0
 		zmenu.glyphs[i].set_rgb(255, 255, 255)
 		zmenu.glyphs[i].visible = true
+		//zmenu.glyphs[i].set_bg_rgb(200, 0, 0)
 
 		//Y obj_item = zmenu_surface.add_text(" ", pad, zmenu.height * 0.5 - zmenu.tileh * 0.5 + i * zmenu.tileh, zmenu.tilew - 2.0 * pad, zmenu.tileh)
 		if (i >= zmenu.items.len()) {
 			zmenu.items.push(null)
 			zmenu.items[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
-		zmenu.items[i].set_pos(items_x, scanpos, items_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh)
-		zmenu.items[i].msg = menudata[i].text
+		zmenu.items[i].set_pos(items_x, zmenu.midoffset + i * zmenu.tileh, items_w, zmenu.tileh)
+		zmenu.items[i].msg = menuarray[i]
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW", AF.LNG)
 		zmenu.items[i].font = uifonts.gui
 		zmenu.items[i].char_size = overlay.charsize
 		zmenu.items[i].word_wrap = true
 		zmenu.items[i].visible = true
 		zmenu.items[i].margin = 0
-		zmenu.items[i].align = (opts.center ? Align.MiddleCentre : Align.MiddleLeft)
+		zmenu.items[i].align = (center ? Align.MiddleCentre : Align.MiddleLeft)
 		zmenu.items[i].bg_alpha = 0
 		zmenu.items[i].line_spacing = 0.8//1.0
 		zmenu.items[i].set_rgb(255, 255, 255)
+		//zmenu.items[i].set_bg_rgb(100, 0, 0)
 
-		if ((zmenu.data[i].fade)) {
+		if ((zmenu.mfm) && (zmenu.noteitems[i].msg == "(0)")) {
 			zmenu.items[i].set_rgb	(81, 81, 81)
 			zmenu.noteitems[i].set_rgb (81, 81, 81)
 		}
 
 		if (zmenu.dmp || zmenu.sim) zmenu.noteitems[i].visible = false
 
-		if (menudata[i].liner) {
+		if (glypharray[i] == -1) {
 			zmenu.items[i].msg = zmenu.items[i].msg.toupper()
-			zmenu.items[i].char_size = overlay.charsize * 0.9
 			zmenu.items[i].font = uifonts.lite
 			zmenu.items[i].align = Align.MiddleCentre
 			zmenu.items[i].set_bg_rgb (0, 0, 0)
 			zmenu.items[i].bg_alpha = 255
-			zmenu.items[i].x = floor((opts.shrink ? zmenu.tilew - disp.width : zmenu.tilew) * 0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
-			zmenu.items[i].width = zmenu.items[i].msg_width + 2 * zmenu.pad
+			zmenu.items[i].x = floor((shrink ? zmenu.tilew - disp.width : zmenu.tilew) * 0.5 - zmenu.items[i].msg_width * 0.5 - zmenu.pad)
+			zmenu.items[i].width = zmenu.items[i].msg_width + 2 *zmenu.pad
 			zmenu.items[i].visible = zmenu.items[i].msg != ""
 			zmenu.strikelines[i].visible = true
-			pixelizefont(zmenu.items[i],overlay.charsize * 0.9)
 		}
 
-		// Check if there's space for item _and_ notes in non-centered mode
-		if (!opts.center) {
+		// Check if there's space for item _and_ notes
+		if (!center) {
 			if (zmenu.noteitems[i].msg_width > 0.45 * items_w + items_x + items_w - noteitems_w) {
 				zmenu.noteitems[i].x = items_x + items_w * 0.55
 				zmenu.noteitems[i].width = noteitems_w - zmenu.noteitems[i].x
 				zmenu.items[i].width = items_w * 0.55 + zmenu.noteitems[i].width - zmenu.noteitems[i].msg_width - zmenu.pad
 			}
-			else if (!menudata[i].liner) {
-				zmenu.items[i].width = items_w + zmenu.glyphw - zmenu.noteitems[i].msg_width - 2 * zmenu.pad
+			else if (glypharray[i] != -1) {
+				zmenu.items[i].width = items_w - zmenu.noteitems[i].msg_width - zmenu.pad - items_x
 			}
 		}
 
-		if (zmenu.dmp){
+		if (zmenu.dmp && prf.ALLGAMES) {
+			if (z_af_collections.tab.rawin(menuarray[i])) {
+				zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menuarray[i]].groupedname : z_af_collections.tab[menuarray[i]].ungroupedname
+			}
+		}
+
+		if ((prf.DMPIMAGES != null) && zmenu.dmp) {
+			artname = FeConfigDirectory + "menu-art/snap/" + menuarray[i]
+			filename = ""
+
+			local system_art = ""
+			if (prf.DMPGENERATELOGO) {
+				try {system_art = system_data[menuarray[i].tolower()].sysname}
+				catch(err) {/*print("system data error")*/}
+			}
+
 			if (prf.ALLGAMES) {
-				if (z_af_collections.tab.rawin(menudata[i].text)) {
-					zmenu.items[i].msg = prf.DMPGROUPED ? z_af_collections.tab[menudata[i].text].groupedname : z_af_collections.tab[menudata[i].text].ungroupedname
+				if (z_af_collections.tab.rawin(menuarray[i])) {
+					system_art = z_af_collections.tab[menuarray[i]].filename
 				}
 			}
 
-			if (prf.DMPIMAGES != null) {
-				artname = FeConfigDirectory + "menu-art/snap/" + menudata[i].text
-				filename = ""
+			local af_art = null
+			local ma_art = null
+			if (prf.DMPIMAGES == "ARTWORK") {
+				if (file_exist (AF.folder+ "system_images/" + system_art + ".png")) af_art = AF.folder + "system_images/" + system_art + ".png"
+			}
+			else if (prf.DMPIMAGES == "WALLS") {
+				if (file_exist (AF.folder+ "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
+				else if (file_exist (AF.folder+ "system_bgs/" + menuarray[i] + ".jpg")) af_art = AF.folder + "system_bgs/" + menuarray[i] + ".jpg"
+			}
 
-				local system_art = ""
-				if (prf.DMPGENERATELOGO) {
-					try {system_art = system_data[menudata[i].text.tolower()].sysname}
-					catch(err) {/*print("system data error")*/}
-				}
+			if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
+			if (file_exist (artname + ".png")) ma_art = artname + ".png"
+			if (file_exist (artname + ".mp4")) ma_art = artname + ".mp4"
+			if (file_exist (artname + ".mkv")) ma_art = artname + ".mkv"
+			if (file_exist (artname + ".avi")) ma_art = artname + ".avi"
 
-				if (prf.ALLGAMES) {
-					if (z_af_collections.tab.rawin(menudata[i].text)) {
-						system_art = z_af_collections.tab[menudata[i].text].filename
-					}
-				}
+			if (prf.DMART == "AF_ONLY") filename = af_art
+			else if (prf.DMART == "MA_ONLY") filename = ma_art
+			else if (prf.DMART == "AF_MA") filename = (af_art == null ? ma_art : af_art)
+			else if (prf.DMART == "MA_AF") filename = (ma_art == null ? af_art : ma_art)
 
-				local af_art = null
-				local ma_art = null
+			if (filename == null) filename = ""
+			if (!dmpart) filename = ""
+
+		  if (glypharray[i] == -1) filename = AF.folder + "pics/transparent.png"
+
+			if (glypharray[i] != -1) iskip = iskip + 1.0 else iskip = iskip + 0.0
+
+			if (i >= disp.images.len()) {
+				disp.noskip.push(null)
+			}
+
+			disp.noskip[i] = iskip
+
+			// Create new image slots if needed
+			if (i >= disp.images.len()) {
+
+				disp.images.push(null)
+				disp.pos0.push(null)
+				// Create the image item and apply all default values to that
 				if (prf.DMPIMAGES == "ARTWORK") {
-					if (file_exist (AF.folder+ "system_images/" + system_art + ".png")) af_art = AF.folder + "system_images/" + system_art + ".png"
+					disp.images[i] = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing, disp.tilew - 2.0 * pad, disp.tileh - 2.0 * pad)
 				}
 				else if (prf.DMPIMAGES == "WALLS") {
-					if (file_exist (AF.folder+ "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
-					else if (file_exist (AF.folder+ "system_bgs/" + menudata[i].text + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].text + ".jpg"
+					disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
 				}
+				disp.images[i].preserve_aspect_ratio = true
+				disp.images[i].video_flags = Vid.NoAudio
+				disp.images[i].mipmap = 1
+			}
 
-				if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
-				if (file_exist (artname + ".png")) ma_art = artname + ".png"
-				if (file_exist (artname + ".mp4")) ma_art = artname + ".mp4"
-				if (file_exist (artname + ".mkv")) ma_art = artname + ".mkv"
-				if (file_exist (artname + ".avi")) ma_art = artname + ".avi"
+			// Reposition the tiles and apply parameters that can change when a slot is already present
+			if (prf.DMPIMAGES == "ARTWORK") {
+				disp.images[i].set_pos(disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing)
+			}
+			else if (prf.DMPIMAGES == "WALLS") {
+				disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
+			}
+			disp.images[i].file_name = filename
+			disp.images[i].visible = true
+			disp.images[i].zorder = 100
 
-				if (prf.DMART == "AF_ONLY") filename = af_art
-				else if (prf.DMART == "MA_ONLY") filename = ma_art
-				else if (prf.DMART == "AF_MA") filename = (af_art == null ? ma_art : af_art)
-				else if (prf.DMART == "MA_AF") filename = (ma_art == null ? af_art : ma_art)
+			if (z_af_collections.tab.rawin(menuarray[i])) disp.images[i].blend_mode = BlendMode.Premultiplied
+				else disp.images[i].blend_mode = 0
 
-				if (filename == null) filename = ""
-				if (!opts.dmpart) filename = ""
+			disp.pos0[i] = disp.images[i].y + ((prf.DMPIMAGES == "WALLS") ? (zmenu.height - disp.bgtileh) * 0.5 : 0)
 
-			if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
-
-				if (!menudata[i].liner) iskip = iskip + 1.0 else iskip = iskip + 0.0
-
-				if (i >= disp.images.len()) {
-					disp.noskip.push(null)
-				}
-
-				disp.noskip[i] = iskip
-
-				// Create new image slots if needed
-				if (i >= disp.images.len()) {
-
-					disp.images.push(null)
-					disp.pos0.push(null)
-					// Create the image item and apply all default values to that
-					if (prf.DMPIMAGES == "ARTWORK") {
-						disp.images[i] = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing, disp.tilew - 2.0 * pad, disp.tileh - 2.0 * pad)
-					}
-					else if (prf.DMPIMAGES == "WALLS") {
-						disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
-					}
-					disp.images[i].preserve_aspect_ratio = true
-					disp.images[i].video_flags = Vid.NoAudio
-					disp.images[i].mipmap = 1
-				}
-
-				// Reposition the tiles and apply parameters that can change when a slot is already present
-				if (prf.DMPIMAGES == "ARTWORK") {
-					disp.images[i].set_pos(disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 +pad + disp.noskip[i] * disp.spacing)
-				}
-				else if (prf.DMPIMAGES == "WALLS") {
-					disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
-				}
-				disp.images[i].file_name = filename
-				disp.images[i].visible = true
-				disp.images[i].zorder = 100
-
-				if (z_af_collections.tab.rawin(menudata[i].text)) disp.images[i].blend_mode = BlendMode.Premultiplied
-					else disp.images[i].blend_mode = 0
-
-				disp.pos0[i] = disp.images[i].y + ((prf.DMPIMAGES == "WALLS") ? (zmenu.height - disp.bgtileh) * 0.5 : 0)
-
-				// Crop display artwork
-				local extension = disp.images[i].file_name.slice(disp.images[i].file_name.len() - 3, disp.images[i].file_name.len())
-				if ((extension.tolower() == "jpg") && (prf.DMPIMAGES == "ARTWORK")) {
-					local sizew = min(disp.images[i].texture_width, disp.images[i].texture_height)
-					disp.images[i].subimg_width = sizew
-					disp.images[i].subimg_height = sizew
-					disp.images[i].subimg_x = (disp.images[i].texture_width - sizew ) * 0.5
-					disp.images[i].subimg_y = (disp.images[i].texture_height - sizew ) * 0.5
-				}
+			// Crop display artwork
+			local extension = disp.images[i].file_name.slice(disp.images[i].file_name.len() - 3, disp.images[i].file_name.len())
+			if ((extension.tolower() == "jpg") && (prf.DMPIMAGES == "ARTWORK")) {
+				local sizew = min(disp.images[i].texture_width, disp.images[i].texture_height)
+				disp.images[i].subimg_width = sizew
+				disp.images[i].subimg_height = sizew
+				disp.images[i].subimg_x = (disp.images[i].texture_width - sizew ) * 0.5
+				disp.images[i].subimg_y = (disp.images[i].texture_height - sizew ) * 0.5
 			}
 		}
 
-		try {zmenu.pos0 [i] = scanpos} catch(err) {zmenu.pos0.push(scanpos)}
-		scanpos += zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh
+		try {zmenu.pos0 [i] = zmenu.items[i].y} catch(err) {zmenu.pos0.push(zmenu.items[i].y)}
 	}
 
-	// Centering glyph reposition
-	if (opts.center) {
+	//Centering
+	if (center) {
 		local maxwidth = 0
-		for (local i = 0; i < menudata.len(); i++) {
+		for (local i = 0; i < glypharray.len(); i++) {
 			if (zmenu.items[i].msg_width > maxwidth) maxwidth = zmenu.items[i].msg_width
 		}
 
-		for (local i = 0; i < menudata.len(); i++) {
-			zmenu.glyphs[i].x = floor(max((zmenu.width * 0.5 - 0.5 * maxwidth - zmenu.glyphs[i].width), 0))
-			if (opts.shrink) zmenu.glyphs[i].x = zmenu.pad * 0.5
+		for (local i = 0; i < glypharray.len(); i++) {
+			zmenu.glyphs[i].x = max((zmenu.width * 0.5 - 0.5 * maxwidth - zmenu.glyphs[i].width), 0)
+			if (shrink) zmenu.glyphs[i].x = zmenu.pad * 0.5
 		}
 	}
-	// Define the current selection, skipping if it's a liner
+
+	zmenu.shown = menuarray.len()
 	zmenu.selected = presel
-	if (!zmenu.alwaysskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
-	else if (zmenu.alwaysskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
+	while (zmenu.strikelines[zmenu.selected].visible) {
+		zmenu.selected ++
+		if (zmenu.selected == zmenu.shown) {
+			zmenu.selected = 0
+		}
+	}
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
-	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
+	if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
 		disp.xstart = disp.xstop
 		foreach (id, item in disp.images) {
@@ -12244,7 +12311,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 	}
 
-	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
+	zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
 	zmenu.sidelabel.visible = zmenu.dmp || zmenu.sim
 
 	zmenu.items[zmenu.selected].set_rgb(0, 0, 0)
@@ -12253,14 +12320,14 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	zmenu.selectedbar.height = zmenu.items[zmenu.selected].height
-	//zmenu.selectedbar.width = zmenu.tilew + ((opts.shrink && zmenu.sim) ? -1 * disp.width : 0)
+	//zmenu.selectedbar.width = zmenu.tilew + ((shrink && zmenu.sim) ? -1 * disp.width : 0)
 
 	//this substitutes the row above to have shorter bar
-	zmenu.selectedbar.width = zmenu.tilew + (opts.shrink ? -1 * disp.width : 0)
-	zmenu.simbg.visible = opts.shrink
+	zmenu.selectedbar.width = zmenu.tilew + (shrink ? -1 * disp.width : 0)
+	zmenu.simbg.visible = shrink
 
-	zmenu.sidelabel.x = opts.shrink ? 0 : zmenu.pad
-	zmenu.sidelabel.width = opts.shrink ? zmenu.width - disp.width : zmenu.width - 2 * zmenu.pad
+	zmenu.sidelabel.x = shrink ? 0 : zmenu.pad
+	zmenu.sidelabel.width = shrink ? zmenu.width - disp.width : zmenu.width - 2 * zmenu.pad
 
 	//TEST123 CHECK IF THIS CAN BE MOVED OUTSIDE OF THE CREATION
 	if (prfmenu.showing) {
@@ -12275,15 +12342,23 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
-	
-	zmenu.xstart = zmenu.xstop = getxstop()
+
+	local menucorrect = 0
+	if (zmenu.shown - 1 - zmenu.selected < (overlay.rows - 1) / 2) menucorrect = (overlay.rows - 1) / 2 - zmenu.shown +1 + zmenu.selected
+	if (zmenu.selected < (overlay.rows - 1) / 2)  menucorrect = - (overlay.rows - 1) / 2 + zmenu.selected
+
+	if (zmenu.midscroll) menucorrect = 0
+
+	zmenu.xstop = menucorrect * zmenu.tileh - zmenu.midoffset - zmenu.selected * zmenu.tileh + (zmenu.height - zmenu.tileh) * 0.5
+	if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
+	zmenu.xstart = zmenu.xstop
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
 		zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
 		zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
+		zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh * 0.5) + zmenu.xstop
 	}
 
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -12291,7 +12366,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.items[i].set_rgb (255, 255, 255)
 			zmenu.noteitems[i].set_rgb (255, 255, 255)
 			zmenu.glyphs[i].set_rgb (255, 255, 255)
-			if ((zmenu.data[i].fade)) {
+			if ((zmenu.mfm) && (zmenu.notes[i] == "(0)")) {
 				zmenu.items[i].set_rgb(81, 81, 81)
 			 	zmenu.noteitems[i].set_rgb(81, 81, 81)
 			}
@@ -12320,7 +12395,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 		if (prf.DMPGENERATELOGO) {
 			for (local i = 0; i < ((prf.DMPEXITAF && (zmenu.jumplevel == 0)) ? zmenu.shown - 1 : zmenu.shown); i++) {
-				if (!menudata[i].liner) {
+				if (glypharray[i] != -1) {
 					zmenu.items[i].font = uifonts.gui
 					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.LOWRES?0.65:0.7))
 					zmenu.items[i].align = Align.MiddleCentre
@@ -12344,9 +12419,17 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			}
 		}
 	}
+
+	// After building menu define skipup limits
+	local i = 0
+	while (((zmenu.strikelines[i].visible)) && (i < zmenu.shown)) {
+		count.skipup ++
+		i++
+	}
 }
 
 function zmenuhide() {
+
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 	foreach (item in disp.images) item.file_name = AF.folder + "pics/transparent.png"
@@ -12363,40 +12446,77 @@ function zmenuhide() {
 	zmenu.showing = false
 }
 
-function zmenunavigate_up(signal, alwaysskip = false) {
-	local tvalue = alwaysskip ? "upforce" : "up"
+function zmenunavigate_up(signal) {
+	if (zmenu.selected > count.skipup) {
+		zmenu.selected = zmenu.selected - 1
 
-	if (zmenu.selected - zmenu.target[zmenu.selected][tvalue] > 0){
-		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
+		while ((zmenu.strikelines[zmenu.selected].visible)) {
+			if (zmenu.selected > count.skipup) {
+				zmenu.selected = zmenu.selected - 1
+			}
+			else {
+				zmenu.selected = zmenu.selected + 1
+				count.skipup = zmenu.selected
+			}
+		}
 	}
-	else if (count[signal] == 0){
-		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
+	else if ((count[signal] == 0)) {
+		zmenu.selected = zmenu.shown - 1
+
+		while ((zmenu.strikelines[zmenu.selected].visible)) {
+			if (zmenu.selected > count.skipup) {
+				zmenu.selected = zmenu.selected - 1
+			}
+		}
 		count.forceup = false
-	 }
+		//return true
+	}
 	else if ((!count.forceup) && (count[signal] != 0)) {
 		count.forceup = true
+		//return true
 	}
-	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
-	count[signal] ++ 
-
+	zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
+	count[signal] ++
 }
 
-function zmenunavigate_down(signal, alwaysskip = false) {
-	local tvalue = alwaysskip ? "downforce" : "down"
+function zmenunavigate_down(signal, mfskip = false) {
+	if ((!mfskip && (zmenu.selected < count.skipdown)) || (mfskip && (zmenu.selected < count.mfskipdown))) {
+		zmenu.selected = zmenu.selected + 1
 
-	if (zmenu.target[zmenu.selected][tvalue] - zmenu.selected > 0){
-		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
+		while ((zmenu.strikelines[zmenu.selected].visible) || (mfskip && (zmenu.notes[zmenu.selected] == "(0)"))) {
+			if ((!mfskip && (zmenu.selected < count.skipdown)) || (mfskip && (zmenu.selected < count.mfskipdown))) {
+				zmenu.selected = zmenu.selected + 1
+			}
+			else {
+				zmenu.selected = zmenu.selected - 1
+				if (!mfskip) count.skipdown = zmenu.selected
+				else count.mfskipdown = zmenu.selected
+			}
+		}
 	}
-	else if (count[signal] == 0){
-		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
+	else if (count[signal] == 0) {
+		zmenu.selected = 0
+		//No need to add mfskip check here because mf menu never has first line "(0)"
+		while ((zmenu.strikelines[zmenu.selected].visible)) {
+			if (zmenu.selected < count.skipdown) {
+				zmenu.selected = zmenu.selected + 1
+			}
+		}
 		count.forcedown = false
-	 }
+		//return true
+	}
 	else if ((!count.forcedown) && (count[signal] != 0)) {
 		count.forcedown = true
+		//return true
 	}
-	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
-	count[signal] ++ 
-	
+	/*
+	while (zmenu.strikelines[zmenu.selected].visible) {
+		if (zmenu.selected < zmenu.shown -1) zmenu.selected = zmenu.selected + 1
+		else zmenu.selected = 0
+	}
+	*/
+	zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
+	count[signal] ++
 }
 
 zmenu.xstop = 0
@@ -12431,6 +12551,7 @@ function gh_releaselist(op) {
 }
 
 function gh_latestdata(op) {
+
 	if (op.find(ap + "tag_name" + ap) != null) {
 		gh.latest_version = split(op, ap)[3]
 	}
@@ -12533,7 +12654,7 @@ function afinstall(zipball, afname) {
 	AF.updatechecking = false
 	bar_cycle_update(AF.bar.stop)
 	frostshow()
-	zmenudraw3([{text = ltxt("Restart", AF.LNG)}], ltxt("Arcadeflow updated to", AF.LNG) + " "+ zipball, 0xe91c, 0, {center = true},
+	zmenudraw([ltxt("Restart", AF.LNG)], null, null, ltxt("Arcadeflow updated to", AF.LNG) + " "+ zipball, 0xe91c, 0, false, false, true, false, false,
 	function(out) {
 		zmenuhide()
 		frosthide()
@@ -12543,15 +12664,11 @@ function afinstall(zipball, afname) {
 
 function gh_menu(presel) {
 	//frostshow()
-	zmenudraw3([
-		{ text = ltxt("Install branch", AF.LNG), glyph = 0xe9bc},
-		{ text = ltxt("Install release", AF.LNG), glyph = 0xe94e}
-		], ltxt("Install from repository", AF.LNG), 0xe9c2, presel, {},
+	zmenudraw(ltxtarray(["Install branch", "Install release"], AF.LNG), [0xe9bc, 0xe94e], null, "Install from repository", 0xe9c2, presel, false, false, false, false, false,
 	function(out) {
 		if (out == 0) {
 			gh.branchlist = []
 			gh.commitlist = []
-	
 			bar_cycle_update(AF.bar.start)
 			fe.plugin_command("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches", "gh_branchlist")
 			bar_cycle_update(AF.bar.stop)
@@ -12559,16 +12676,7 @@ function gh_menu(presel) {
 				gh_menu(0)
 				return
 			}
-
-			local ghmenu = []
-			foreach (i, item in gh.branchlist){
-				ghmenu.push({
-					text = gh.branchlist[i],
-					note = gh.commitlist[i],
-				})
-			}
-
-			zmenudraw3(ghmenu, ltxt("Install branch", AF.LNG), 0xe9bc, 0, {center = true},
+			zmenudraw(gh.branchlist, null, gh.commitlist, "Install Branch", 0xe9bc, 0, false, false, true, false, false,
 			function(out0) {
 				if (out0 == -1) gh_menu(0)
 				else afinstall(gh.branchlist[out0], "Arcadeflow_" + gh.branchlist[out0] + "_" + strip(gh.commitlist[out0]))
@@ -12584,14 +12692,7 @@ function gh_menu(presel) {
 				gh_menu(1)
 				return
 			}
-			local ghmenu = []
-			foreach (i, item in gh.taglist){
-				ghmenu.push({
-					text = gh.taglist[i],
-					note = gh.releasedatelist[i],
-				})
-			}
-			zmenudraw3(ghmenu, ltxt("Install release", AF.LNG), 0xe94e, 0, {center = true},
+			zmenudraw(gh.taglist, null, gh.releasedatelist, "Install Release", 0xe94e, 0, false, false, true, false, false,
 			function(out1) {
 				if (out1 == -1) gh_menu(1)
 				else afinstall(gh.taglist[out1], "Arcadeflow_" + (gh.taglist[out1].tofloat() * 10).tointeger())
@@ -12605,6 +12706,7 @@ function gh_menu(presel) {
 }
 
 function checkforupdates(force) {
+
 	if (!force && (currentdate().tointeger() <= loaddate().tointeger())) return
 
 	savedate()
@@ -12623,7 +12725,7 @@ function checkforupdates(force) {
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
 	if (ver_in.tofloat() <= AF.version.tofloat()) {
 		if (force) {
-			zmenudraw3([{text = "Ok"}], ltxt("No update available", AF.LNG), 0xe91c, 0, {center = true},
+			zmenudraw(["Ok"], null, null, ltxt("No update available", AF.LNG), 0xe91c, 0, false, false, true, false, false,
 			function(out) {
 				zmenuhide()
 				frosthide()
@@ -12634,21 +12736,29 @@ function checkforupdates(force) {
 
 	frostshow()
 	// Get the latest updates
-	local updatemenu = []
-	foreach (i, item in gh.release_notes) {
-		updatemenu.push({text = item,	glyph = 0xea08})
-	}
-	updatemenu.push({text = ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG), glyph = 0xea36})
-	updatemenu.push({text = ltxt("Dismiss this update", AF.LNG), glyph = 0xea0f})
 
-	zmenudraw3(updatemenu, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, {},
+	local textarray = []
+	local glypharray = []
+
+	foreach (i, item in gh.release_notes) {
+		textarray.push(item)
+		glypharray.push(0xea08)
+	}
+
+	textarray.push(ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG))
+	glypharray.push(0xea36)
+
+	textarray.push(ltxt("Dismiss this update", AF.LNG))
+	glypharray.push(0xea0f)
+
+	zmenudraw(textarray, glypharray, null, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			zmenuhide()
 			frosthide()
 		}
 
-		if (out == updatemenu.len() - 2) {
+		if (out == textarray.len() - 2) {
 
 			// Download latest layout
 			local newafname = "Arcadeflow_" + (ver_in.tofloat() * 10).tointeger()
@@ -12665,7 +12775,7 @@ function checkforupdates(force) {
 				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
-				zmenudraw3([{text = "Ok"}], newafname + ".zip downloaded", 0xe91c, 0, {center = true},
+				zmenudraw(["Ok"], null, null, newafname + ".zip downloaded", 0xe91c, 0, false, false, true, false, false,
 				function(out) {
 					zmenuhide()
 					frosthide()
@@ -12676,7 +12786,7 @@ function checkforupdates(force) {
 			}
 		}
 
-		if (out == updatemenu.len() - 1) {
+		if (out == textarray.len() - 1) {
 
 			// Dismiss auto updates
 			local updpath = fe.path_expand(AF.folder + "pref_update.txt")
@@ -12698,28 +12808,6 @@ function jumptodisplay(targetdisplay) {
 	zmenuhide()
 }
 
-function powermenu(parsefunction){
-	zmenudraw3(prf.POWERMENU ? [
-		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-		{text = ltxt("Power", AF.LNG), liner = true},
-		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
-		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
-		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
-	] : [
-		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
-		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
-	], 
-	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
-	function(result) {
-		if (result == 0) fe.signal("exit_to_desktop")
-		else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
-		else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
-		else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
-		else { parsefunction() }
-	})
-}
-
 function displayungrouped() {
 	zmenu.dmp = true
 	zmenu.jumplevel = 0
@@ -12731,26 +12819,34 @@ function displayungrouped() {
 			menuarray.push(z_disp[i])
 		}
 	}
+
 	if (prf.DMPSORT != "false") {
 		menuarray.sort(@(a, b) a.sortkey <=> b.sortkey)
 	}
 
 	// Define menu display arrays
-	local ungroupmenu = []
+	local showarray = []
+	local dispnotes = []
+	local groupnotes = []
+
 	foreach (i, item in menuarray) {
-		ungroupmenu.push({
-			text = item.cleanname
-			note = item.notes
-		})
+		showarray.push(item.cleanname)
+		dispnotes.push(item.notes)
+		groupnotes.push(item.groupnotes)
 	}
 
+	local dispglyphs = array (showarray.len(), 0)
 	local currentnote = ""
 	local i = 0
 	if (prf.DMPSEPARATORS) {
-		while (i < menuarray.len()) {
-			if ((currentnote != menuarray[i].groupnotes) && (!menuarray[i].ontop)){
-				currentnote = menuarray[i].groupnotes
-				ungroupmenu.insert (i, {text = currentnote, liner = true})
+		while (i < showarray.len()) {
+
+			if ((groupnotes[i] != currentnote) && (!menuarray[i].ontop)) {
+				currentnote = groupnotes[i]
+				showarray.insert(i, groupnotes[i])
+				dispnotes.insert(i, "")
+				groupnotes.insert(i, "")
+				dispglyphs.insert(i, -1)
 				menuarray.insert(i, null)
 				i++
 			}
@@ -12759,17 +12855,26 @@ function displayungrouped() {
 	}
 
 	if (prf.ALLGAMES) {
-		for(local i = 0; i < z_af_collections.arr.len(); i++) {
-			ungroupmenu.insert(i, {text = z_af_collections.arr[i].id})
-			menuarray.insert(i, z_disp[z_af_collections.arr[i].display_id])
+		foreach (item, val in z_af_collections.arr) {
+			showarray.insert(0, val.id)
+			dispnotes.insert(0, "")
+			groupnotes.insert(0, "")
+			dispglyphs.insert(0, 0)
+			menuarray.insert(0, z_disp[val.display_id])
 		}
 	}
 
 	if (prf.DMPEXITAF && prf.DMPENABLED) {
-		ungroupmenu.push({text = ltxt("SYSTEM", AF.LNG), liner = true})
+		showarray.push("SYSTEM") //Will be translated by zmenu drawing
+		dispnotes.push(ltxt("", AF.LNG))
+		groupnotes.push("")
+		dispglyphs.push(-1)
 		menuarray.push(null)
 
-		ungroupmenu.push({text = ltxt("EXIT ARCADEFLOW", AF.LNG), liner = true})
+		showarray.push("EXIT ARCADEFLOW") //Will be translated by zmenu drawing
+		dispnotes.push(ltxt("", AF.LNG))
+		groupnotes.push("")
+		dispglyphs.push(0)
 		menuarray.push(null)
 	}
 
@@ -12778,19 +12883,28 @@ function displayungrouped() {
 		if (item != null) if (item.dispindex == fe.list.display_index) currentdisplay = i
 	}
 
-	zmenudraw3(ungroupmenu, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, {shrink = (prf.DMPIMAGES != null), dmpart = true, center = true, midscroll = (prf.DMPIMAGES != null)} ,
+	zmenudraw(showarray, dispglyphs, dispnotes, ltxt("DISPLAYS", AF.LNG), 0xe912, currentdisplay, (prf.DMPIMAGES != null), true, true, (prf.DMPIMAGES != null), false,
 	function(displayout) {
+
 		if (((displayout == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (displayout == menuarray.len() - 1))) {
 
 			zmenu.dmp = false
-			powermenu(function(){
-				zmenu.dmp = true
-				if (prf.DMPOUTEXITAF) {
-					//fe.signal("displays_menu")
-					displayungrouped()
-				}
+			zmenudraw(ltxtarray(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			function(result) {
+				if (result == 0) fe.signal("exit_to_desktop")
+				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
+				else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
+				else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
 				else {
-					displayungrouped()
+					zmenu.dmp = true
+					if (prf.DMPOUTEXITAF) {
+						//fe.signal("displays_menu")
+						displayungrouped()
+					}
+					else {
+						displayungrouped()
+					}
+
 				}
 			})
 
@@ -12802,8 +12916,13 @@ function displayungrouped() {
 			frosthide()
 			zmenuhide()
 			if (prf.DMPATSTART) {
+				/*
+				flowT.fg = startfade(flowT.fg, -0.02, -1.0)
+				flowT.data = startfade(flowT.data, 0.02, -1.0)
+				*/
 				flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 			}
+			//local targetdisplay = displaysindex[displaysarray[displayout]]
 			local targetdisplay = menuarray[displayout].dispindex
 
 			jumptodisplay(targetdisplay)
@@ -12814,9 +12933,14 @@ function displayungrouped() {
 				frosthide()
 				zmenuhide()
 				if (prf.DMPATSTART) {
+					/*
+					flowT.fg = startfade(flowT.fg, -0.02, -1.0)
+					flowT.data = startfade(flowT.data, 0.02, -1.0)
+					*/
 					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 				}
-			} else {
+			}
+			else {
 				utilitymenu (umpresel)
 			}
 		}
@@ -12828,18 +12952,39 @@ function displaygrouped1() {
 	zmenu.jumplevel = 0
 
 	// Displays the group menu
-	zmenudraw3(disp.groupname.map(function(val){return({text = val})}), ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, {shrink = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, dmpart = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, center = true, midscroll = (prf.DMPIMAGES != null) && prf.DMCATEGORYART},
+	zmenudraw(disp.groupname, null, null, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, true, (prf.DMPIMAGES != null) && prf.DMCATEGORYART, false,
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
+		// COLLECTIONS!
+		/*
+		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1) - 2) && prf.ALLGAMES) {
+			jumptodisplay(z_af_collections.tab["AF All Games"].display_id)
+			return
+		}
+		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1) - 1) && prf.ALLGAMES) {
+			jumptodisplay(z_af_collections.tab["AF Favourites"].display_id)
+			return
+		}
+		if ((disp.gmenu0 == disp.groupname.len() - (prf.DMPEXITAF?2:1)) && prf.ALLGAMES) {
+			jumptodisplay(z_af_collections.tab["AF Last Played"].display_id)
+			return
+		}
+		else */
 		if (disp.gmenu0 != -1) disp.gmenu0out = disp.gmenu0
 
 		// Code when "ESC" is pressed in Displays Menu page
 		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1))) {
 
 			zmenu.dmp = false
-			powermenu(function(){
-				displaygrouped1()
+			zmenudraw(ltxtarray(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			function(result) {
+				if (result == 0) fe.signal("exit_to_desktop")
+				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
+				else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
+				else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
+
+				else displaygrouped1()
 			})
 		}
 
@@ -12859,23 +13004,31 @@ function displaygrouped1() {
 
 			zmenu.jumplevel = 1
 
-			// Array structure for the menu
-			local dmenu1 = []
+			// Define menu display arrays
+			local showarray = []
+			local dispnotes = []
 			local groupnotes = []
+
+			// At this point all the entries are sorted and ready to be populated
 			foreach (i, item in menuarray) {
-				dmenu1.push({text = item.cleanname, note = item.notes})
+				showarray.push(item.cleanname)
+				dispnotes.push(item.notes)
 				groupnotes.push(item.groupnotes)
 			}
 
 			// Add separators when the note is different from the previous one
+			local dispglyphs = array (showarray.len(), 0)
 			local currentnote = ""
 			local i = 0
 			if (prf.DMPSEPARATORS) {
-				while (i < dmenu1.len()) {
+				while (i < showarray.len()) {
+
 					if ((groupnotes[i] != currentnote) && (!menuarray[i].ontop)) {
 						currentnote = groupnotes[i]
-						dmenu1.insert(i, {text = groupnotes[i], liner = true})
+						showarray.insert(i, groupnotes[i])
+						dispnotes.insert(i, "")
 						groupnotes.insert(i, "")
+						dispglyphs.insert(i, -1)
 						menuarray.insert(i, null)
 						i++
 					}
@@ -12886,14 +13039,16 @@ function displaygrouped1() {
 			// Now it's the right moment to add code for AF Collecitons
 			if (prf.ALLGAMES) {
 				local itemcount = 0
-				dmenu1 = cleanupmenudata(dmenu1)
-				foreach (ic, itemc in dmenu1) {
-					if (!itemc.liner) itemcount ++
+				foreach (ic, itemc in dispglyphs) {
+					if (itemc != -1) itemcount ++
 				}
 				foreach (item, val in z_af_collections.arr) {
 					// Only collection category and categories with more than 1 display show "all games"
 					if (((itemcount > 1) || (val.group == "COLLECTIONS")) && (val.group == disp.grouplabel[disp.gmenu0])) {
-						dmenu1.insert(0, {text = val.id})						
+						showarray.insert(0, val.id)
+						dispnotes.insert(0, "")
+						groupnotes.insert(0, "")
+						dispglyphs.insert(0, 0)
 						menuarray.insert(0, z_disp[val.display_id])
 					}
 				}
@@ -12903,10 +13058,15 @@ function displaygrouped1() {
 			foreach (i, item in menuarray) {
 				if (item != null) if (item.dispindex == fe.list.display_index) disp.gmenu1in = i
 			}
-			zmenudraw3(dmenu1, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, {shrink = (prf.DMPIMAGES != null), dmpart = (prf.DMPIMAGES != null), center = true, midscroll = (prf.DMPIMAGES != null)}, 
+
+			zmenudraw(showarray, dispglyphs, dispnotes, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, (prf.DMPIMAGES != null), (prf.DMPIMAGES != null), true, (prf.DMPIMAGES != null), false,
 			function(gmenu1) {
 				if (gmenu1 != -1) {
 					if (prf.DMPATSTART) {
+						/*
+						flowT.fg = startfade(flowT.fg, -0.02, -1.0)
+						flowT.data = startfade(flowT.data, 0.02, -1.0)
+						*/
 						flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 					}
 					//local targetdisplay = disp.structure[disp.grouplabel[disp.gmenu0]].disps[temparray[gmenu1]].index
@@ -12927,7 +13087,12 @@ function displaygrouped1() {
 				frosthide()
 				zmenuhide()
 				if (prf.DMPATSTART) {
+					/*
+					flowT.fg = startfade(flowT.fg, -0.02, -1.0)
+					flowT.data = startfade(flowT.data, 0.02, -1.0)
+					*/
 					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+
 				}
 			}
 			else {
@@ -13034,6 +13199,7 @@ function hideallbutbg() {
 }
 
 function layoutfadein() {
+
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
 
 	if (prf.SPLASHON) {
@@ -13109,6 +13275,7 @@ local attractitem = {
 }
 
 function attractkick() {
+
 	if (!prf.AMENABLE) return
 
 	if (zmenu.sim) return true
@@ -13379,6 +13546,7 @@ zmenu.simsys.word_wrap = true
 zmenu.simsys.align = Align.TopRight
 zmenu.simsys.font = uifonts.gui
 zmenu.simsys.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+//zmenu.simsys.set_bg_rgb(200, 0, 0)
 
 zmenu.simtxt = zmenu_surface_container.add_text("",
 										zmenu.simbg.x,
@@ -13400,6 +13568,7 @@ function zmenusimvisible(visibility) {
 zmenusimvisible(false)
 
 function simtitle(in1, in2) {
+
 	local in1array = split(in1.tolower(), " ")
 	local in2array = split(in2.tolower(), " ")
 
@@ -13496,13 +13665,18 @@ function similarmenu() {
 	zmenu.simsys.msg = zmenu.similar[0].syslogo
 
 	frostshow()
-	zmenudraw3(namearray.map(function(value){return({text = value})}), ltxt("Similar Games", AF.LNG), 0xeaf7, 0, {shrink = true, center = true},
+	zmenudraw(namearray, null, null, ltxt("Similar Games", AF.LNG), 0xeaf7, 0, true, false, true, false, false,
 		function(out) {
 			if (out != -1) z_list_indexchange (zmenu.similar[zmenu.selected].index)
 
 			zmenu.sim = false
 			zmenusimvisible(false)
 			zmenu.simpic.file_name = zmenu.simvid.file_name = AF.folder + "pics/transparent.png"
+			/*
+			prfmenu.bg.visible = prfmenu.description.visible = prfmenu.helppic.visible = false
+			prfmenu.description.msg = ""
+			prfmenu.helppic.file_name = AF.folder + "pics/transparent.png"
+			*/
 			zmenuhide()
 			frosthide()
 			zmenu.simpic.shader = zmenu.simvid.shader = noshader
@@ -13680,7 +13854,7 @@ function updatebgsnap(index) {
 		// Check if boxart file is present otherwise load category pic and set proper coloring
 		if (bgs.bgpic_array[bgs.stacksize - 1].texture_width == 0) {
 
-			bgs.bgpic_array[bgs.stacksize - 1].file_name = category_pic_name (processcategory(z_list.gametable[tilez[index].index].z_category)[0])
+			bgs.bgpic_array[bgs.stacksize - 1].file_name = category_pic_name (z_list.gametable[tilez[index].index].z_category)
 
 			bgs.bgpic_array[bgs.stacksize - 1].shader = colormapper["BOXART"].shad
 			local col1 = categorycolor(z_list.gametable[tilez[index].index].z_felistindex, 2)
@@ -13832,7 +14006,7 @@ function update_snapcrop(i, var, indexoffsetvar, indexvar, aspect, cropaspect) {
 	//TEST87 TO DO SPOSTARE QUESTO DOVE VENGONO CARICATI I DATI DELL'IMMAGINE E NON IN CROPSNAP!
 	if (prf.BOXARTMODE && (tilez[i].gr_snapz.texture_width == 0)) {
 		noboxart = true
-		tilez[i].gr_snapz.file_name = category_pic_10_name (processcategory(z_list.gametable[indexvar].z_category)[0])
+		tilez[i].gr_snapz.file_name = category_pic_10_name (z_list.gametable[indexvar].z_category)
 
 		if (tilez[i].gr_snapz.texture_width == 0) tilez[i].gr_snapz.file_name = "metapics/category10/grey.png"
 
@@ -14012,8 +14186,7 @@ function update_thumbdecor(i, var, aspect) {
 	tilez[i].sh_mx.visible = true
 
 	tilez[i].nw_mx.set_pos (tilez[i].snapz.x, tilez[i].snapz.y + tilez[i].snapz.height - tilez[i].nw_mx.height)
-	tilez[i].tg_mx.set_pos (tilez[i].snapz.x + tilez[i].snapz.width - UI.zoomedcoreheight / 8.0, tilez[i].snapz.y + tilez[i].snapz.height - UI.zoomedcoreheight / 10.0  - (prf.MAXLINE ? tilez[i].snapz.height * 0.1 : 0))
-
+	tilez[i].tg_mx.set_pos (tilez[i].snapz.x + tilez[i].snapz.width - UI.zoomedcoreheight / 8.0, tilez[i].snapz.y + tilez[i].snapz.height - UI.zoomedcoreheight / 10.0)
 }
 
 function switchmode() {
@@ -14098,10 +14271,10 @@ function sortarrays() {
 }
 
 function buildutilitymenu() {
+
 	umtable.push({
 		label = ltxt("Sort and Filter", AF.LNG)
-		glyph = 0
-		liner = true
+		glyph = -1
 		visible = true
 		order = 0
 		id = 0
@@ -14112,7 +14285,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Sort by", AF.LNG)
 		glyph = 0xea4c
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14126,15 +14298,7 @@ function buildutilitymenu() {
 			// switcharray, glypharray and nowsort moved out of this function so it's available to sidenote
 			local dat = sortarrays()
 
-			local menusort = []
-			foreach (i, item in dat.switcharray_sort){
-				menusort.push({
-					text = dat.switcharray_sort[i],
-					glyph = dat.glypharray_sort[i],
-				})
-			}
-
-			zmenudraw3(menusort, "  " + ltxt("Sort by", AF.LNG) + "...", 0xea4c, dat.nowsort, {},
+			zmenudraw(dat.switcharray_sort, dat.glypharray_sort, null, "  " + ltxt("Sort by", AF.LNG) + "...", 0xea4c, dat.nowsort, false, false, false, false, false,
 			function(result2) {
 				local result_sort = []
 				if 	  (result2 == 0) result_sort = [z_info.z_title.id, false]
@@ -14181,9 +14345,8 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt("Jump to", AF.LNG)
+		label = ltxt ("Jump to", AF.LNG)
 		glyph = 0xea22
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14193,18 +14356,16 @@ function buildutilitymenu() {
 		command = function() {
 			if (z_list.size == 0) return
 			local currentkey = z_list.jumptable[z_list.index].key
-			local currentindex = 0
-			
-			local jumptomenu = []
-			foreach (i, item in labelorder){
-				if (currentkey == item) currentindex = i
-				jumptomenu.push({
-					text = item,
-					glyph = (currentkey == item ? 0xea10 : 0),
-				})
-			}
 
-			zmenudraw3(jumptomenu, ltxt("Jump to", AF.LNG), 0xea22, currentindex, {},
+			local textarray = []
+			foreach (i, item in labelorder) textarray.push(item)
+
+			local currentindex = textarray.find(currentkey)
+
+			local glypharray = []
+			foreach (i, item in textarray) glypharray.push(i == currentindex ? 0xea10 : 0)
+
+			zmenudraw(textarray, glypharray, null, "Jump To", 0xea22, currentindex, false, false, false, false, false,
 			function(out) {
 				if (out == -1) {
 					utilitymenu(umpresel)
@@ -14232,7 +14393,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Favourites Filter", AF.LNG)
 		glyph = 0xe9d9
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14249,7 +14409,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Multifilter", AF.LNG)
 		glyph = 0xeaed
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14267,7 +14426,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Filters", AF.LNG)
 		glyph = 0xea5b
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14282,7 +14440,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Displays", AF.LNG)
 		glyph = 0xe912
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14313,7 +14470,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Categories", AF.LNG)
 		glyph = 0xe916
-		liner = false
 		visible = true
 		order = 0
 		id = 0
@@ -14328,7 +14484,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Search", AF.LNG)
 		glyph = 0xe986
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14342,8 +14497,7 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("Screensaver", AF.LNG)
-		glyph = 0
-		liner = true
+		glyph = -1
 		visible = true
 		order = 0
 		id = 0
@@ -14354,7 +14508,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Attract mode", AF.LNG)
 		glyph = 0xe9a5
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14369,8 +14522,7 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("Visuals", AF.LNG)
-		glyph = 0
-		liner = true
+		glyph = -1
 		visible = true
 		order = 0
 		id = 0
@@ -14381,7 +14533,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Snaps or Box-Art", AF.LNG)
 		glyph = 0xeaf3
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14403,7 +14554,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Reset Box Art", AF.LNG)
 		glyph = 0xe965
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14421,8 +14571,7 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("RetroArch Integration", AF.LNG)
-		glyph = 0
-		liner = true		
+		glyph = -1
 		visible = true
 		order = 0
 		id = 0
@@ -14431,9 +14580,8 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt("Change core assignment", AF.LNG)
+		label = ltxt ("Change core assignment", AF.LNG)
 		glyph = 0xeafa
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14449,8 +14597,7 @@ function buildutilitymenu() {
 
 	umtable.push({
 		label = ltxt("System", AF.LNG)
-		glyph = 0
-		liner = true
+		glyph = -1
 		visible = true
 		order = 0
 		id = 0
@@ -14461,7 +14608,6 @@ function buildutilitymenu() {
 	umtable.push({
 		label = ltxt("Layout options", AF.LNG)
 		glyph = 0xe991
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14475,9 +14621,8 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt("Check for updates", AF.LNG)
+		label = ltxt ("Check for updates", AF.LNG)
 		glyph = 0xe91c
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14491,9 +14636,8 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt("Install from repository", AF.LNG)
+		label = ltxt ("Install from repository", AF.LNG)
 		glyph = 0xe9c2
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14507,9 +14651,8 @@ function buildutilitymenu() {
 	})
 
 	umtable.push({
-		label = ltxt("About Arcadeflow", AF.LNG)
+		label = ltxt ("About Arcadeflow", AF.LNG)
 		glyph = 0xea09
-		liner = false
 		visible = true
 		id = 0
 		order = 0
@@ -14520,14 +14663,18 @@ function buildutilitymenu() {
 			local aboutpath = fe.path_expand(AF.folder + "history/" + (AF.version.tofloat() * 10).tostring() + ".txt")
 			local aboutfile = ReadTextFile (aboutpath)
 
-			local aboutmenu = []
+			local textarray = []
+			local glypharray = []
 
 			while (!aboutfile.eos()) {
-				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
+				textarray.push(aboutfile.read_line())
+				glypharray.push(0xea08)
 			}
-			aboutmenu[0] = {text = "What's New"}
 
-			zmenudraw3(aboutmenu, "Arcadeflow " + AF.version, 0xea09, 0, {},
+			textarray[0] = "What's New"
+			glypharray[0] = 0
+
+			zmenudraw(textarray, glypharray, null, "Arcadeflow " + AF.version, 0xea09, 0, false, false, false, false, false,
 			function(out) {
 				if (out == -1) {
 					utilitymenu (umpresel)
@@ -14555,32 +14702,29 @@ buildutilitymenu()
 function utilitymenu(presel) {
 	umvisible = true
 
+	local switcharray1 = []
+	local glypharray1 = []
 	local posarray1 = []
 	local idarray1 = []
-	local umdata = []
+	local sidearray1 = []
 
 	local i_pos = 0
 	local i_id = 0
 
 	foreach (item in umtable) {
 		if (item.visible) {
-
-			umdata.push({
-				text = item.label
-				glyph = item.glyph
-				note = item.sidenote()
-				liner = item.liner
-			})
-
+			switcharray1.push(item.label)
+			glypharray1.push(item.glyph)
 			posarray1.push(i_pos)
 			idarray1.push(i_id)
+			sidearray1.push(item.sidenote())
 			i_pos++
 		}
 		i_id++
 	}
 
 	frostshow()
-	zmenudraw3(umdata, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, {alwaysskip = true},
+	zmenudraw(switcharray1, glypharray1, sidearray1, (ltxt("Utility Menu", AF.LNG)), 0xe9bd, presel, false, false, false, false, false,
 	function(result1) {
 		if (result1 == -1) {
 			umvisible = false
@@ -14700,6 +14844,7 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
+
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15107,8 +15252,12 @@ print("\n")
 /// On Transition ///
 
 function on_transition(ttype, var0, ttime) {
+
 	if (ttype == Transition.FromGame) {
 		if (prf.RPI) fe.set_display(fe.list.display_index)
+
+		z_list.gametable2[z_list.index].z_playedcount ++
+		saveromdb2(z_list.gametable[z_list.index].z_emulator, z_list.db2[z_list.gametable[z_list.index].z_emulator])
 
 		update_thumbdecor (focusindex.new, 0, tilez[focusindex.new].AR.current)
 
@@ -15125,7 +15274,6 @@ function on_transition(ttype, var0, ttime) {
 
 	if (ttype == Transition.ToGame) {
 		z_list.gametable2[z_list.index].z_rundate = get_date_string()
-		z_list.gametable2[z_list.index].z_playedcount ++
 		saveromdb2(z_list.gametable[z_list.index].z_emulator, z_list.db2[z_list.gametable[z_list.index].z_emulator])
 	}
 
@@ -15223,7 +15371,7 @@ function on_transition(ttype, var0, ttime) {
 	// DISPLAY CHANGE REACTION
 	if ((ttype == Transition.ToNewList) && (fe.list.display_index != displaystore)) {
 		// fade.display = fade.displayzoom = 1
-		displayname.msg = displaynamelogo(z_disp[fe.list.display_index].cleanname)
+		displayname.msg = displaynamelogo(0)
 
 		flowT.alphadisplay = startfade(flowT.alphadisplay, 0.04, -2.0)
 		displaynamesurf.surf.redraw = true
@@ -15460,10 +15608,7 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-	//TEST160
-	//foreach(item,val in multifilterz.hasfilters) testpr(item+(val?1:0)+" ")
-	//testpr("\n")
-	//print_variable(multifilterz.filter,"","")
+
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -15650,7 +15795,7 @@ function tick(tick_time) {
 					item.getromdata.wakeup()
 					scraprt("ID" + i + " main end first check\n")
 				}
-				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= prf.SCRAPETIMEOUT * 1000)) {
+				else if ((item.time0 != -1) && (fe.layout.time - item.time0 >= 10000)) {
 					AF.scrape.timeoutroms.push(item.rominputitem) //pushes the timeout item in the list
 					scraprt("ID" + i + " TIMEOUT\n")
 
@@ -15773,7 +15918,7 @@ function tick(tick_time) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstart + zmenu.speed
+				zmenu.strikelines[i].y = zmenu.pos0[i] + floor(zmenu.tileh * 0.5) + zmenu.xstart + zmenu.speed
 			}
 			zmenu.xstart = zmenu.xstart + zmenu.speed
 		}
@@ -15784,7 +15929,7 @@ function tick(tick_time) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
+				zmenu.strikelines[i].y = zmenu.pos0[i] +floor(zmenu.tileh * 0.5) + zmenu.xstop
 			}
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
@@ -16217,9 +16362,9 @@ function tick(tick_time) {
 	if (checkfade (flowT.zmenudecoration)) {
 		flowT.zmenudecoration = fadeupdate(flowT.zmenudecoration)
 		if (endfade (flowT.zmenudecoration) == 0) {
-			foreach (item in overlay.shadows) item.visible = false
+			foreach (item in overlay.shad) item.visible = false
 		}
-		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
+		foreach (item in overlay.shad) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
 	if (checkfade (flowT.zmenubg)) {
@@ -16462,6 +16607,7 @@ function tick(tick_time) {
 local cat = {}
 
 function cleancat(str) {
+
 	while (str.find("(") != null) {
 		local ind = str.find("(")
 		str = str.slice(0, ind) + "." + str.slice(ind + 1, str.len())
@@ -16481,63 +16627,84 @@ function buildcategorytable() {
 	local cat2 = ""
 
 	for (local i = 0; i < fe.list.size; i++) {
-		cat0 = processcategory(z_list.boot[i].z_category)
+		cat0 = parsecategory(z_list.boot[i].z_category)
 
-		foreach (vindex, vtable in cat0){
-			
-			try {
-				cat[vtable[0]].num ++
-			}
-			catch(err){
-				cat[vtable[0]] <- {
-					num = 1
-					subcats = {}
-				}				
-			}
+		if (cat0 == "") cat0 = "Unknown"
+		local catarray = split (cat0, "/")
+		cat1 = strip(catarray[0])
+		if (catarray.len() > 1) cat2 = strip(catarray[1]) else cat2 = ""
 
-			try {
-				cat[vtable[0]].subcats[vtable[1]] ++
-			}
-			catch(err) {
-				cat[vtable[0]].subcats[vtable[1]] <- 1
-			}	
+		try {
+			cat[cat1].num ++
 		}
+		catch(err) {
+			cat[cat1] <- {
+				num = 1
+				subcats = {}
+			}
+		}
+
+		try {
+			cat[cat1].subcats[cat2] ++
+		}
+		catch(err) {
+			cat[cat1].subcats[cat2] <- 1
+		}
+
 	}
+
+	local cat1array = []
+}
+
+function stripcat(offset) {
+	local cat = z_list.boot[offset + fe.list.index].z_category
+	if (cat == "") return (["Unknown", ""])
+
+	local catarray = split (cat, "/")
+	for (local i = 0; i < catarray.len(); i++) {
+		catarray[i] = strip(catarray[i])
+	}
+
+	if (catarray.len() > 1) return (catarray)
+	else return ([catarray[0], ""])
 }
 
 function subcategorymenu(maincategory, subcategory) {
-	local catmenu2 = []
+	local categories = {}
+	local ctgarray = []
+	local ctgarray2 = []
+	local ctgarraynum = []
+	local ctgarrayglyph = []
+	local cat0 = ""
+	local cat1 = ""
+	local cat2 = ""
 
 	local i = 0
 	foreach(item, val in cat[maincategory].subcats) {
-		catmenu2.push({
-			text = (item == "") ? "" : maincategory+" / "+item,
-			value = item,
-			note = cat[maincategory].subcats[item]
-		})
+		ctgarray.push(item)
+	}
+	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
+
+	for (local i = 0; i < ctgarray.len(); i++) {
+		ctgarraynum.push(cat[maincategory].subcats[ctgarray[i]])
+	}
+	//local currentcat = (search.catg[1] == "") ? 0 : ctgarray.find(search.catg[1])
+
+	for (local i = 0; i < ctgarray.len(); i++) {
+		ctgarray2.push((ctgarray[i] == "" ? maincategory : ctgarray[i]))
 	}
 
-	catmenu2.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
+	ctgarray.insert(0, ltxt("ALL", AF.LNG))
+	ctgarray2.insert(0, ltxt("ALL", AF.LNG))
+	ctgarraynum.insert(0, "")
 
-	if (catmenu2[0].text == "") catmenu2[0].text = catmenu2[0].value = maincategory
-	catmenu2.insert(0,{ liner = true, text = "", value = ""})
-	catmenu2.insert(0,{ text = ltxt("ALL", AF.LNG), value =  ltxt("ALL", AF.LNG)})
+	local currentcat = (search.catg[1] == "*") ? 0 : ctgarray.find(search.catg[1])
 
-	local currentcat = 0
-	
-	if (search.catg[0] == "") currentcat = null
-	else if (search.catg[1] == "*") currentcat = 0
-	else if ((search.catg[1] == "") && (search.catg[0] == catmenu2[1].value)) currentcat = 1
-	else currentcat = catmenu2.map(function(pram){return(pram.value)}).find(search.catg[1])
+	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
 
-	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
-	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(param){return(param.value)}).find(subcategory)
-
-	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
+	zmenudraw(ctgarray2, ctgarrayglyph, ctgarraynum, maincategory, 0xe916,  subcategory == "" ? 0 : ctgarray.find(subcategory), false, false,  false, false, false,
 	function(result) {
-		if (result == -1) {
-			maincategorymenu([[maincategory,""]])
-		}
+		if (result == -1) maincategorymenu(maincategory, subcategory)
 
 		else {
 			if (result == 0) {
@@ -16549,12 +16716,17 @@ function subcategorymenu(maincategory, subcategory) {
 					search.catg = [maincategory, "*"]
 				}
 			}
-			else if ((result == 2) && (catmenu2[2].text == maincategory)) {
-				search.catg = [maincategory, ""]
-			}
 			else {
-				search.catg = [maincategory, catmenu2[result].value]
+				if (ctgarray[result] == "") {
+					search.catg = [maincategory, ""]
+				}
+				else {
+					search.catg = [maincategory, ctgarray[result]]
+				}
 			}
+
+			local currentname = z_list.gametable[z_list.index].z_name
+			local currentsystem = z_list.gametable[z_list.index].z_system
 
 			updatesearchdatamsg()
 
@@ -16566,34 +16738,33 @@ function subcategorymenu(maincategory, subcategory) {
 	})
 }
 
-function maincategorymenu(currentcategories) {
-	local catmenu1 = []
+function maincategorymenu(maincategory, subcategory) {
+	local categories = {}
+	local ctgarray = []
+	local ctgarraynum = []
+	local ctgarrayglyph = []
+	local cat0 = ""
+	local cat1 = ""
 
 	local i = 0
 	foreach(item, val in cat) {
-		catmenu1.push({
-			text = item,
-			note = val.num,
-		})
+		ctgarray.push(item)
 	}
-	catmenu1.sort(@(a, b) a.text.tolower() <=> b.text.tolower())
-	
-	catmenu1.insert (0,{liner = true, text = ""})
-	catmenu1.insert (0,{text = ltxt("ALL", AF.LNG)})
+	ctgarray.sort(@(a, b) a.tolower() <=> b.tolower())
 
-	local currentcat = (search.catg[0] == "") ? 0 : catmenu1.map(function(value){return(value.text)}).find(search.catg[0])
-	catmenu1[currentcat].rawset ("glyph", 0xea10)
-
-	local startcat = 0
-	local subcategory = ""
-	foreach (iv, itemv in currentcategories){
-		startcat = catmenu1.map(function(value){return(value.text)}).find(itemv[0])
-		subcategory = itemv[1]
-		if (startcat != null) break
+	for (local i = 0; i < ctgarray.len(); i++) {
+		ctgarraynum.push(cat[ctgarray[i]].num)
 	}
+
+	ctgarray.insert(0, ltxt("ALL", AF.LNG))
+	ctgarraynum.insert(0, "")
+	local currentcat = (search.catg[0] == "") ? 0 : ctgarray.find(search.catg[0])
+
+	foreach (i, item in ctgarray) ctgarrayglyph.push(i == currentcat ? 0xea10 : 0)
+
 	frostshow()
 
-	zmenudraw3(catmenu1, ltxt("Categories", AF.LNG), 0xe916, startcat, {},
+	zmenudraw(ctgarray, ctgarrayglyph, ctgarraynum, ltxt("Categories", AF.LNG), 0xe916, ctgarray.find(maincategory), false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			if (umvisible) {
@@ -16613,24 +16784,26 @@ function maincategorymenu(currentcategories) {
 			zmenuhide()
 		}
 		else {
-			subcategorymenu(catmenu1[result].text, subcategory)// was (catmenu1[result].text == maincategory) ? subcategory : ""), not needed anymore
+			subcategorymenu(ctgarray[result], (ctgarray[result] == maincategory) ? subcategory : "")
 		}
 	})
 }
 
 function categorymenu() {
 	// Detect current main category
-	local currentcat = processcategory(z_list.boot[fe.list.index].z_category)
-	maincategorymenu(currentcat)
+	local currentcat = stripcat(0)
+	maincategorymenu(currentcat[0], currentcat[1])
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
-	local sortmenu = []
+	local labelvector = []
+	local glyphvector = []
 	for (local i = 0; i < namevector.len(); i++) {
-		sortmenu.push({text = namevector[abs(vector[i]) - 1], glyph = (vector[i] > 0 ? 0xea52 : 0)})
+		labelvector.push(namevector[abs(vector[i]) - 1])
+		glyphvector.push(vector[i] > 0 ? 0xea52 : 0)
 	}
 
-	zmenudraw3(sortmenu, title, glyph, presel, {},
+	zmenudraw(labelvector, glyphvector, null, title, glyph, presel, false, false, false, false, false,
 	function(out) {
 		if (out == -1) {
 			local v0 = ""
@@ -16778,6 +16951,7 @@ function parsevolume(op) {
 // ra_init initialise the ra table with data regarding RA and cores
 local ra = {}
 function ra_init() {
+
 	ra.todolist <- {}
 
 	if (OS == "Windows") {
@@ -16861,23 +17035,27 @@ function ra_updatecfg(emulator, core) {
 function ra_applychanges() {
 	local emuarray = []
 	local corearray = []
-	local applymenu = []
-
+	local menuarray = []
+	local glypharray = []
 	foreach (item, val in ra.todolist) {
 		emuarray.push(item)
 		corearray.push(val)
-		applymenu.push({text = item + ": " + val})
+		menuarray.push(item + ": " + val)
+		glypharray.push(0)
 	}
-
-	if (applymenu.len() == 0){
+	if (emuarray.len() == 0) {
 		frosthide()
 		zmenuhide()
 	} else {
-		applymenu.insert(0, {liner = true})
-		applymenu.insert(0, {text = ltxt("Discard changes", AF.LNG), glyph = 0xea0f})
-		applymenu.insert(0, {text = ltxt("Apply changes", AF.LNG), glyph = 0xea10})
-	
-		zmenudraw3(applymenu, ltxt("Assigned cores", AF.LNG), 0xeafa, 0, {},
+		menuarray.insert(0, "")
+		menuarray.insert(0, ltxt("Discard changes", AF.LNG))
+		menuarray.insert(0, ltxt("Apply changes", AF.LNG))
+
+		glypharray.insert(0, -1)
+		glypharray.insert(0, 0xea0f)
+		glypharray.insert(0, 0xea10)
+
+		zmenudraw(menuarray, glypharray, null, ltxt("Assigned cores", AF.LNG), 0xeafa, 0, false, false, false, false, false,
 		function(result) {
 			if ((result == -1) || (result == 1)) {
 				ra.todolist = {}
@@ -16903,16 +17081,19 @@ function ra_selectcore(startemu) {
 	local startpos = newcore == "" ? ra.corelist.find(oldcore) : ra.corelist.find(newcore)
 	if (startpos == null) startpos = 0
 
-	local coremenu = []
+	local coremenulist = []
+	local coreglyphs = []
 	foreach (i, item in ra.corelist) {
-		coremenu.push({
-			text = ra.coretable[item].displayname,
-			glyph = (oldcore == newcore) || (newcore == "") ? (i == ra.corelist.find(oldcore) ? 0xea10 : 0) : (i == ra.corelist.find(oldcore) ? 0xea11 : (ra.corelist.find(newcore) == i ? 0xea10 : 0))
-		})
+		coremenulist.push(ra.coretable[item].displayname)
+		if ((oldcore == newcore) || (newcore == "")) {
+			coreglyphs.push(i == ra.corelist.find(oldcore) ? 0xea10 : 0)
+		}
+		else {
+			coreglyphs.push(i == ra.corelist.find(oldcore) ? 0xea11 : (ra.corelist.find(newcore) == i ? 0xea10 : 0))
+		}
 	}
-
 	frostshow()
-	zmenudraw3(coremenu, ltxt("Select core", AF.LNG), 0xeafa, startpos, {},
+	zmenudraw(coremenulist, coreglyphs, null, ltxt("Select core", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			ra_selectemu(startemu)
@@ -16926,23 +17107,10 @@ function ra_selectcore(startemu) {
 }
 
 function ra_selectemu(startemu) {
+
 	local startpos = 0
 	local currentemu = startemu
 
-	local emumenu = []
-	
-	foreach (item, val in AF.emulatordata) {
-		emumenu.push({
-			text = item,
-			note = ((val.racore == "") && (!ra.todolist.rawin(item))) ? "" : "("+ (ra.todolist.rawin(item) ? ra.todolist[item]: val.racore) +")"
-			glyph = (ra.todolist.rawin(item)) ? 0xe905 : 0
-		})
-
-	}
-
-	emumenu.sort(@(a, b) a.text <=> b.text)
-	startpos = emumenu.map(function(value){return(value.text)}).find(currentemu)
-/*
 	local emulist = []
 	local corelist = []
 	local todoglyph = []
@@ -16957,29 +17125,26 @@ function ra_selectemu(startemu) {
 		corelist.push(((AF.emulatordata[val].racore == "") && (!ra.todolist.rawin(val))) ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) +")")
 		todoglyph.push((ra.todolist.rawin(val)) ? 0xe905 : 0)
 	}
-*/
+
 	frostshow()
-	zmenudraw3(emumenu, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, {},
+	zmenudraw(emulist, todoglyph, corelist, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, false, false, false, false, false,
 	function(result) {
 		if (result == -1) {
 			ra_applychanges()
 		}
 		else {
-			if (AF.emulatordata[emumenu[result].text].racore == "") {
-				zmenudraw3([
-					{ text = ltxt("Yes"), glyph = 0xea10},
-					{ text = ltxt("No"), glyph = 0xea0f}
-				], ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, {center = true},
+			if (AF.emulatordata[emulist[result]].racore == "") {
+				zmenudraw(ltxtarray(["Yes", "No"], AF.LNG), [0xea10, 0xea0f], null, ltxt("Apply RA core", AF.LNG) + "?", 0xeafa, 0, false, false, true, false, false,
 				function(result2) {
-					if (result2 == 0) ra_selectcore(emumenu[result].text)
+					if (result2 == 0) ra_selectcore(emulist[result])
 					else if (result2 == 1) {
-						ra.todolist.rawdelete(emumenu[result].text)
+						ra.todolist.rawdelete(emulist[result])
 						ra_selectemu(startemu)
 					}
 					else ra_selectemu(startemu)
 				})
 			}
-			else ra_selectcore(emumenu[result].text)
+			else ra_selectcore(emulist[result])
 
 		}
 	})
@@ -17160,15 +17325,12 @@ function on_signal(sig) {
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
 		local volarray = []
-		local amparray = [0xea26, 0xea26, 0xea26, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
 		for (local i = 0; i <= 10; i++) {
-			volarray.push(
-				{text = textrate(10 - i, 10, 40, "Ⓞ ", "Ⓟ "),
-				glyph = amparray[i]}
-			)
+			volarray.push(textrate(10 - i, 10, 40, "Ⓞ ", "Ⓟ "))
 		}
+		local amparray = [0xea26, 0xea26, 0xea26, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
 		frostshow()
-		zmenudraw3(volarray, "Volume", 0xea26, 10 - AF.soundvolume, {center = true, midscroll = true, singleline = true},
+		zmenudraw(volarray, amparray, null, "Volume", 0xea26, 10 - AF.soundvolume, false, false, true, true, true,
 			function(out) {
 				if (out != -1) {
 					AF.soundvolume = 10 - out
@@ -17233,18 +17395,18 @@ function on_signal(sig) {
 		if (prfmenu.showing || zmenu.dmp) return true
 		if (keyboard_visible()) return true
 
-		local filtermenu = []
-
+		local filterarray = []
+		local filterglyphs = []
+		local filternotes = []
+		local filterindex = 0
 		for (local i = 0; i < fe.filters.len(); i++) {
-			filtermenu.push({
-				text = fe.filters[i].name,
-				note = fe.filters[i].size,
-				glyph = fe.filters[i].name == fe.list.filter ? 0xea10 : 0
-			})
+			filterarray.push(fe.filters[i].name)
+			filternotes.push(fe.filters[i].size)
+			filterglyphs.push(fe.filters[i].name == fe.list.filter ? 0xea10 : 0)
 		}
 
 		frostshow()
-		zmenudraw3(filtermenu, ltxt("FILTERS", AF.LNG), 0xea5b, (fe.filters.len() != 0 ? fe.list.filter_index : 0), {},
+		zmenudraw(filterarray, filterglyphs, filternotes, ltxt("FILTERS", AF.LNG), 0xea5b, (fe.filters.len() != 0 ? fe.list.filter_index : 0), false, false, false, false, false,
 		function(result) {
 			if (result != -1) {
 				fe.list.filter_index = result
@@ -17271,14 +17433,14 @@ function on_signal(sig) {
 
 		if (sig == "up") {
 			if (checkrepeat(count.up)) {
-				zmenunavigate_up("up", zmenu.alwaysskip)
+				zmenunavigate_up("up")
 			}
 			else return true
 		}
 
 		if (sig == "down") {
 			if (checkrepeat (count.down)) {
-				zmenunavigate_down("down", zmenu.alwaysskip)
+				zmenunavigate_down("down")
 			}
 			else return true
 		}
@@ -17286,8 +17448,8 @@ function on_signal(sig) {
 		if (sig == "left") {
 			if (checkrepeat(count.left)) {
 				if (zmenu.reactleft == null) {
-					zmenu.selected = zmenu.firstitem
-					zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
+					zmenu.selected = count.skipup
+					zmenu.sidelabel.msg = zmenu.notes[zmenu.selected]
 				}
 				else zmenu.reactleft()
 				count.left ++
@@ -17324,7 +17486,15 @@ function on_signal(sig) {
 				prfmenu.helppic.file_name = prfmenu.browserdir[zmenu.selected]
 			}
 
-			zmenu.xstop = getxstop()
+			local menucorrect = 0
+
+			if (zmenu.shown - 1 - zmenu.selected < (overlay.rows - 1) / 2) menucorrect = (overlay.rows - 1) / 2 - zmenu.shown +1 + zmenu.selected
+			if (zmenu.selected < (overlay.rows - 1) / 2) menucorrect = - (overlay.rows - 1) / 2 + zmenu.selected
+
+			if (zmenu.midscroll) menucorrect = 0
+
+			zmenu.xstop = menucorrect * zmenu.tileh - zmenu.midoffset - zmenu.selected * zmenu.tileh + (zmenu.height - zmenu.tileh) * 0.5
+			if ((zmenu.shown <= overlay.rows) && !zmenu.midscroll) zmenu.xstop = 0
 
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
@@ -17337,7 +17507,7 @@ function on_signal(sig) {
 					zmenu.noteitems[i].set_rgb (0, 0, 0)
 					zmenu.glyphs[i].set_rgb (0, 0, 0)
 				}
-				if ((zmenu.data[i].fade)) {
+				if ((zmenu.mfm) && (zmenu.notes[i] == "(0)")) {
 					zmenu.items[i].set_rgb(81, 81, 81)
 					zmenu.noteitems[i].set_rgb(81, 81, 81)
 				}
@@ -17373,9 +17543,16 @@ function on_signal(sig) {
 	if (sig == "exit") {
 		if (!prf.DMPIFEXITAF) {
 			frostshow()
-			powermenu(function(){
-				frosthide()
-				zmenuhide()
+			zmenudraw(ltxtarray(prf.POWERMENU ? ["Yes", "No", "Power", "Shutdown", "Restart", "Sleep"]:["Yes", "No"], AF.LNG), prf.POWERMENU ? [0xea10, 0xea0f, -1, 0xe9b6, 0xe984, 0xeaf6]:[0xea10, 0xea0f], null, ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, false, false, true, false, false,
+			function(result) {
+				if (result == 0) 	fe.signal("exit_to_desktop")
+				else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
+				else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
+				else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
+				else {
+					frosthide()
+					zmenuhide()
+				}
 			})
 		}
 		else if (prf.DMPENABLED) {
@@ -17502,122 +17679,75 @@ function on_signal(sig) {
 			frostshow()
 			overmenu_hide(false)
 
-
-
-			zmenudraw3([
-				{text = ltxt("More of the same...",AF.LNG), glyph = 0xe987},
-				{text = ltxt("Similar Games",AF.LNG), glyph = 0xeaf7},
-				{text = ltxt("Scrape selected game",AF.LNG), glyph = 0xe9c2},
-				{text = ltxt("Edit metadata",AF.LNG), glyph = 0xe906},
-				{text = ltxt("CAUTION!",AF.LNG), liner = true},
-				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe906, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)}],
-			ltxt("Game Menu", AF.LNG), 0xe916, 0, {},
+			zmenudraw(ltxtarray(["More of the same...", "Similar Games", "Scrape selected game", "Edit metadata", "CAUTION!", "Delete ROM"], AF.LNG), [0xe987, 0xeaf7, 0xe9c2, 0xe906, -1, 0xe9ac], ["", "", "", "", "", prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)], ltxt("Game Menu", AF.LNG), 0xe916, 0, false, false, false, false, false,
 			function(result) {
 				if (result == 0) {
 					local taglist = z_list.gametable2[z_list.index].z_tags
 					local switcharray = []
 					local switchnotes = []
-					local switchglyph = []
+					switcharray.push(ltxt("Year", AF.LNG))
+					switcharray.push(ltxt("Decade", AF.LNG))
+					switcharray.push(ltxt("Manufacturer", AF.LNG))
+					switcharray.push(ltxt("Main Category", AF.LNG))
+					switcharray.push(ltxt("Sub Category", AF.LNG))
+					switcharray.push(ltxt("Orientation", AF.LNG))
+					switcharray.push(ltxt("Favourite state", AF.LNG))
+					switcharray.push(ltxt("Series", AF.LNG))
+					switcharray.push(ltxt("Rating", AF.LNG))
+					switcharray.push(ltxt("Arcade System", AF.LNG))
 
-					local motsdata = [{
-						text = ltxt("Year", AF.LNG),
-						note = z_list.gametable[z_list.index].z_year
-						fade = (z_list.gametable[z_list.index].z_year == "")
-						skip = (z_list.gametable[z_list.index].z_year == "")
-					},{
-						text = ltxt("Decade", AF.LNG),
-						note = (z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0, 3) : "") + "x"
-						fade = (z_list.gametable[z_list.index].z_year == "")
-						skip = (z_list.gametable[z_list.index].z_year == "")
-					},{
-						text = ltxt("Manufacturer", AF.LNG),
-						note = z_list.gametable[z_list.index].z_manufacturer
-						fade = (z_list.gametable[z_list.index].z_manufacturer == "")
-						skip = (z_list.gametable[z_list.index].z_manufacturer == "")						
-					},{
-						text = ltxt("Main Category", AF.LNG),
-						note = processcategory(z_list.gametable[z_list.index].z_category)[0][0],
-						fade = (processcategory(z_list.gametable[z_list.index].z_category)[0][0] == "Unknown"),
-						skip = (processcategory(z_list.gametable[z_list.index].z_category)[0][0] == "Unknown"),							
-					},{
-						text = ltxt("Sub Category", AF.LNG),
-						note = z_list.gametable[z_list.index].z_category
-						fade = (z_list.gametable[z_list.index].z_category == "")
-						skip = (z_list.gametable[z_list.index].z_category == "")							
-					},{
-						text = ltxt("Orientation", AF.LNG),
-						note = z_list.gametable[z_list.index].z_rotation
-						fade = (z_list.gametable[z_list.index].z_rotation == "")
-						skip = (z_list.gametable[z_list.index].z_rotation == "")	
-					},{
-						text = ltxt("Favourite state", AF.LNG),
-						note = z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes", AF.LNG) : ltxt("No", AF.LNG)
-					},{
-						text = ltxt("Series", AF.LNG),
-						note = z_list.gametable[z_list.index].z_series
-						fade = (z_list.gametable[z_list.index].z_series == "")
-						skip = (z_list.gametable[z_list.index].z_series == "")							
-					},{
-						text = ltxt("Rating", AF.LNG),
-						note = z_list.gametable[z_list.index].z_rating
-						fade = (z_list.gametable[z_list.index].z_rating == "")
-						skip = (z_list.gametable[z_list.index].z_rating == "")							
-					},{
-						text = ltxt("Arcade System", AF.LNG),
-						note = z_list.gametable[z_list.index].z_arcadesystem
-						fade = (z_list.gametable[z_list.index].z_arcadesystem == "")
-						skip = (z_list.gametable[z_list.index].z_arcadesystem == "")							
-					}]
+					switchnotes.push(z_list.gametable[z_list.index].z_year)
+					switchnotes.push((z_list.gametable[z_list.index].z_year.len() > 3 ? z_list.gametable[z_list.index].z_year.slice(0, 3) : "") + "x")
+					switchnotes.push(z_list.gametable[z_list.index].z_manufacturer)
+					try {
+						switchnotes.push(split(z_list.gametable[z_list.index].z_category, "/")[0])
+					}
+					catch(err) {
+						switchnotes.push("?")
+					}
+					switchnotes.push(z_list.gametable[z_list.index].z_category)
+					switchnotes.push(z_list.gametable[z_list.index].z_rotation)
+					switchnotes.push((z_list.gametable2[z_list.index].z_favourite ? ltxt("Yes", AF.LNG) : ltxt("No", AF.LNG)))
+					switchnotes.push(z_list.gametable[z_list.index].z_series)
+					switchnotes.push(z_list.gametable[z_list.index].z_rating)
+					switchnotes.push(z_list.gametable[z_list.index].z_arcadesystem)
 
-					local numset = motsdata.len()
+					local numset = switcharray.len()
 
-					motsdata.extend(taglist.map(function(value) {return ({
-						text = "🏷 " + value
-					})}))
+					switcharray.extend(taglist.map(function(value) {return ("🏷 " + value)}))
+					foreach(i, item in switcharray) switchnotes.push("")
 
-					local numtag = motsdata.len()
-					
-					motsdata.push({
-						liner = true
-					})
-					motsdata.push({
-						text = ltxt("RESET", AF.LNG)
-						glyph = 0xea0f
-					})
+					local numtag = switcharray.len()
+					//switcharray.push(ltxt("RESET (KEEP FOCUS)", AF.LNG))
+					switcharray.push(ltxt("RESET", AF.LNG))
 
-					local hidemenu = false
-					
 					frostshow()
-					zmenudraw3(motsdata, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, {alwaysskip = true},
+					zmenudraw(switcharray, null, switchnotes, "  " + ltxt("More of the same", AF.LNG) + "...", 0xe987, 0, false, false, false, false, false,
 					function(result) {
-						if (result == numtag+1) {
+						if (result == numtag) {
 							search.mots2string = ""
 							search.mots = ["", ""]
 							updatesearchdatamsg()
 							mfz_apply(false)
-							hidemenu = true
 						}
 						if (result == -1) {
 							frosthide()
 							zmenuhide()
 						}
-						if ((result == 0) && (z_list.gametable[z_list.index].z_year != "")){
+						if (result == 0) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year]
 							search.mots2string = ltxt("Year", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
-						if ((result == 1) && (z_list.gametable[z_list.index].z_year != "")) {
+						if (result == 1) {
 							search.mots = ["z_year", z_list.gametable[z_list.index].z_year.slice(0, 3)]
 							search.mots2string = ltxt("Year", AF.LNG) + ":" + search.mots[1] + "x"
-							hidemenu = true
 						}
-						if ((result == 2) && (z_list.gametable[z_list.index].z_manufacturer != "")) {
+						if (result == 2) {
 							search.mots = ["z_manufacturer", z_list.gametable[z_list.index].z_manufacturer]
 							if (search.mots[1] != "") search.mots[1] = split(search.mots[1], "_")[0]
  							search.mots2string = ltxt("Manufacturer", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
-						if ((result == 3) && (z_list.gametable[z_list.index].z_category != "")) {
+						if (result == 3) {
 							try {
 								local s = z_list.gametable[z_list.index].z_category
 								local s2 = split(s, "/")
@@ -17625,56 +17755,51 @@ function on_signal(sig) {
 								search.mots2string = ltxt("Category", AF.LNG) + ":" + s2[0]
 							}
 							catch(err) {}
-							hidemenu = true
 						}
-						if ((result == 4) && (z_list.gametable[z_list.index].z_category != "")) {
+						if (result == 4) {
 							search.mots = ["z_category", z_list.gametable[z_list.index].z_category]
 							search.mots2string = ltxt("Category", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
+
 						}
-						if ((result == 5) && (z_list.gametable[z_list.index].z_rotation != "")) {
+						if (result == 5) {
 							search.mots = ["z_rotation", z_list.gametable[z_list.index].z_rotation]
 							search.mots2string = ltxt("Rotation", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
-						if ((result == 6) && (z_list.gametable2[z_list.index].z_favourite != "")) {
+						if (result == 6) {
 							search.mots = ["z_favourite", z_list.gametable2[z_list.index].z_favourite.tostring()]
 							search.mots2string = ltxt("Favourite", AF.LNG) + ":" + (search.mots[1])
-							hidemenu = true
 						}
-						if ((result == 7) && (z_list.gametable[z_list.index].z_series != "")){
+						if (result == 7) {
 							search.mots = ["z_series", z_list.gametable[z_list.index].z_series]
 							search.mots2string = ltxt("Series", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
-						if ((result == 8) && (z_list.gametable[z_list.index].z_rating != "")) {
+						if (result == 8) {
 							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
 							search.mots2string = ltxt("Rating", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
-						if ((result == 9) && (z_list.gametable[z_list.index].z_arcadesystem != "")) {
+						if (result == 9) {
 							search.mots = ["z_arcadesystem", z_list.gametable[z_list.index].z_arcadesystem]
 							search.mots2string = ltxt("Arcade Sys", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
 						if ((result >= numset) && (result < numtag)) {
 							search.mots = ["z_tags", taglist[result - numset]]
 							search.mots2string = ltxt("Tags", AF.LNG) + ":" + search.mots[1]
-							hidemenu = true
 						}
 						// GOOD
-						if (hidemenu && (result != numtag) && (result != -1) && (search.mots[1] != "")) {
+						if ((result != numtag) && (result != -1) && (search.mots[1] != "")) {
+
+							local currentname = z_list.gametable[z_list.index].z_name
+							local currentsystem = z_list.gametable[z_list.index].z_system
 							if (backs.index == -1) {
 								backs.index = fe.list.index
 							}
 							updatesearchdatamsg()
+
 							mfz_apply(false)
 						}
-						if (hidemenu){
-							hidemenu = false
-							frosthide()
-							zmenuhide()
-						}
+
+						frosthide()
+						zmenuhide()
 					})
 				} // Here ends the first entry of the menu
 				if (result == 1) { //similar games menu
@@ -17688,10 +17813,7 @@ function on_signal(sig) {
 					metamenu(0)
 				}
 				if (result == 5) { // Delete ROM
-					zmenudraw3([
-						{text = ltxt("Delete", AF.LNG), glyph = 0xea10},
-						{text = ltxt("Cancel", AF.LNG), glyph = 0xea0f}
-					], "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, {center = true},
+					zmenudraw(ltxtarray(["Delete", "Cancel"], AF.LNG), [0xea10, 0xea0f], null, "Delete " + fe.game_info(Info.Name) + "?", 0xe9ac, 1, false, false, true, false, false,
 					function(result) {
 						if (result == 0) {
 							deletecurrentrom()
