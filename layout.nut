@@ -364,6 +364,9 @@ function bar_progress_update(i, init, max) {
 	}
 }
 
+//TEST160
+if (FeVersionNum < 300) z_edit_dialog("Arcadeflow requires AM+ 3.0.0+","")
+
 /// Config management ///
 
 /* Principles of ALLGAMES collections:
