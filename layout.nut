@@ -16584,12 +16584,12 @@ function categorymenu() {
 }
 
 function sortmenu(vector, namevector, presel, glyph, title) {
-	local sortmenu = []
+	local sortmenuarray = []
 	for (local i = 0; i < namevector.len(); i++) {
-		sortmenu.push({text = namevector[abs(vector[i]) - 1], glyph = (vector[i] > 0 ? 0xea52 : 0)})
+		sortmenuarray.push({text = namevector[abs(vector[i]) - 1], glyph = (vector[i] > 0 ? 0xea52 : 0)})
 	}
 
-	zmenudraw3(sortmenu, title, glyph, presel, {},
+	zmenudraw3(sortmenuarray, title, glyph, presel, {},
 	function(out) {
 		if (out == -1) {
 			local v0 = ""
