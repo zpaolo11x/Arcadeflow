@@ -11989,7 +11989,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 												1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255, 255, 255)
-		zmenu.strikelines[i].alpha = 128
+		zmenu.strikelines[i].alpha = 180 //TEST160 was 128
 
 		if (i >= zmenu.items.len()) {
 			zmenu.noteitems.push(null)
