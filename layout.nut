@@ -7446,41 +7446,42 @@ local overlay = {
 
 // Define overlay charsize in integer multiple of 2
 overlay.charsize = (prf.LOWRES ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
-overlay.charsize = overlay.charsize + overlay.charsize%2.0
+overlay.charsize = overlay.charsize //+ overlay.charsize%2.0
 
 // First calculation of row size in integer value based on char size
-overlay.rowsize = (prf.LOWRES ? (overlay.charsize * 2.5) : (overlay.charsize * 3.0))
-overlay.rowsize = floor(overlay.rowsize)
-overlay.labelheight = overlay.rowsize * overlay.labelscaler //TEST160 era 1
+overlay.rowsize = (prf.LOWRES ? (overlay.charsize * 2.5) : (overlay.charsize * 2.5))
 overlay.labelcharsize = overlay.charsize * 1
+overlay.labelheight = floor(overlay.charsize * 2.5) //TEST160
+overlay.rowsize = floor(overlay.rowsize)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
-overlay.menuheight = fl.h - UI.header.h - UI.footer.h3 - overlay.labelheight + overlay.ex_top + overlay.ex_bottom
-overlay.fullwidth = ((overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 : (fl.w - 2 * overlay.in_side))
-
-// Integer conversion and fullwidth is even
-overlay.menuheight = floor(overlay.menuheight)
-overlay.fullwidth = floor(overlay.fullwidth)
-overlay.fullwidth = overlay.fullwidth + overlay.fullwidth%2.0
+overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
+overlay.menuheight = overlay.fullheight - overlay.labelheight
 
 // Calculation of number of rows, always odd
-overlay.rows = ceil(overlay.menuheight / overlay.rowsize)
+testpr((overlay.menuheight / overlay.rowsize)+"\n")
+overlay.rows = round(overlay.menuheight / overlay.rowsize, 1)
+testpr(overlay.rows+"\n")
 if (floor(overlay.rows / 2.0) * 2.0 == overlay.rows) overlay.rows ++
 
 // Recalculation of menuheight based on integer row size and rearrangement of label size
 // Maybe this is overcomplicated, better to simplify the part before?
-
-overlay.fullheight = floor(fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom)
 overlay.allrows = overlay.rows + overlay.labelscaler //TEST160
-/*
+testpr(overlay.rows+"\n")
 // OPTION ONE, FULL ROWS CLEAN FIT
+/*
 overlay.rowsize_temp = round(overlay.fullheight * 1.0 / overlay.allrows, 1)
 overlay.labelheight = overlay.fullheight - overlay.rows * overlay.rowsize_temp
 overlay.rowsize = overlay.rowsize_temp
 */
 // OPTION TWO, NOT CLEAN FIT
+/*
 overlay.rowsize = round(overlay.menuheight * 1.0 / overlay.rows, 1)
 overlay.labelheight = round(overlay.labelscaler * (overlay.fullheight * 1.0 / overlay.allrows), 1)
+*/
+overlay.fullwidth = ((overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 : (fl.w - 2 * overlay.in_side))
+overlay.fullwidth = floor(overlay.fullwidth)
+overlay.fullwidth = overlay.fullwidth + overlay.fullwidth % 2.0
 
 overlay.padding = floor(0.6 * overlay.charsize)
 
@@ -7489,7 +7490,10 @@ overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
 
-testpr(overlay.rowsize+" "+overlay.labelheight+"\n")
+testpr("menuheight:"+overlay.menuheight+"\n")
+testpr("fullheight:"+overlay.fullheight+"\n")
+testpr("rowsize:"+overlay.rowsize+"\n")
+testpr("labelheight:"+overlay.labelheight+"\n")
 
 /// Frosted glass surface ///
 
@@ -9011,9 +9015,9 @@ local prfmenu = {
 }
 
 // First calculation of bottom panel
-prfmenu.picratew = prfmenu.picrateh = (overlay.menuheight * 1.0 / overlay.rows) * 2.0 - overlay.padding * 0.5
-prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
-prfmenu.picrateh = prfmenu.picratew
+prfmenu.picratew = prfmenu.picrateh = overlay.rowsize * 2.0 - overlay.padding * 0.5
+//prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
+//prfmenu.picrateh = prfmenu.picratew
 
 prfmenu.description.char_size = 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
@@ -11934,7 +11938,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Change menu height if options menu is visible
 	if (prfmenu.showing) {
-		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = ((prfmenu.bg.y - zmenu.y) / overlay.rows) //TEST160 CHECK PIXEL PERFECT
+		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = floor(zmenu.tileh0 * 0.75)//((prfmenu.bg.y - zmenu.y) / overlay.rows) //TEST160 CHECK PIXEL PERFECT
 		zmenu.height = prfmenu.bg.y - zmenu.y
 		zmenu.strikeh = floor(zmenu.strikeh * 0.7)
 	}
