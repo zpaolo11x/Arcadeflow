@@ -7469,11 +7469,18 @@ if (floor(overlay.rows / 2.0) * 2.0 == overlay.rows) overlay.rows ++
 
 // Recalculation of menuheight based on integer row size and rearrangement of label size
 // Maybe this is overcomplicated, better to simplify the part before?
+
 overlay.fullheight = floor(fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom)
 overlay.allrows = overlay.rows + overlay.labelscaler //TEST160
+/*
+// OPTION ONE, FULL ROWS CLEAN FIT
 overlay.rowsize_temp = round(overlay.fullheight * 1.0 / overlay.allrows, 1)
 overlay.labelheight = overlay.fullheight - overlay.rows * overlay.rowsize_temp
 overlay.rowsize = overlay.rowsize_temp
+*/
+// OPTION TWO, NOT CLEAN FIT
+overlay.rowsize = round(overlay.menuheight * 1.0 / overlay.rows, 1)
+overlay.labelheight = round(overlay.labelscaler * (overlay.fullheight * 1.0 / overlay.allrows), 1)
 
 overlay.padding = floor(0.6 * overlay.charsize)
 
@@ -11646,12 +11653,12 @@ zmenu = {
 	speed = null
 
 	tilew = overlay.w
-	tileh0 = floor(overlay.menuheight / overlay.rows)
-	strikeh0 = floor(0.6 * overlay.menuheight / overlay.rows)
+	tileh0 = overlay.rowsize //TEST160 was floor(overlay.menuheight / overlay.rows)
+	strikeh0 = floor (0.6 * overlay.rowsize) //floor(0.6 * overlay.menuheight / overlay.rows)
 	tileh = 0
 	strikeh = 0
 
-	pad = floor(overlay.padding)
+	pad = overlay.padding
 	width = overlay.w
 	fullwidth = overlay.w
 	height = overlay.menuheight
