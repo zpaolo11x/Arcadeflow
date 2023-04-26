@@ -7415,10 +7415,13 @@ fl.surf.redraw = true
 local overlay = {
 	charsize = null
 	rowsize = null
+	rowsize_temp = null
 	labelheight = null
 	labelcharsize = null
 	rows = null
+	allrows = null
 	fullwidth = null
+	fullheight = null
 	menuheight = null
 	menuheight_temp = null
 	padding = null
@@ -7430,6 +7433,7 @@ local overlay = {
 	shadows = []
 	wline = null
 	filterbg = null
+	labelscaler = 1.1
 
 	ex_top = floor(UI.header.h * 0.6)
 	ex_bottom = floor(UI.footer.h3 * 0.5)
@@ -7447,7 +7451,7 @@ overlay.charsize = overlay.charsize + overlay.charsize%2.0
 // First calculation of row size in integer value based on char size
 overlay.rowsize = (prf.LOWRES ? (overlay.charsize * 2.5) : (overlay.charsize * 3.0))
 overlay.rowsize = floor(overlay.rowsize)
-overlay.labelheight = overlay.rowsize * 1.0 //TEST160 era 1
+overlay.labelheight = overlay.rowsize * overlay.labelscaler //TEST160 era 1
 overlay.labelcharsize = overlay.charsize * 1
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
@@ -7465,10 +7469,11 @@ if (floor(overlay.rows / 2.0) * 2.0 == overlay.rows) overlay.rows ++
 
 // Recalculation of menuheight based on integer row size and rearrangement of label size
 // Maybe this is overcomplicated, better to simplify the part before?
-overlay.menuheight_temp = overlay.menuheight
-overlay.menuheight = overlay.rows * floor(overlay.menuheight * 1.0 / overlay.rows)
-overlay.labelheight = overlay.labelheight + overlay.menuheight_temp - overlay.menuheight
-overlay.rowsize = overlay.menuheight * 1.0 / overlay.rows
+overlay.fullheight = floor(fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom)
+overlay.allrows = overlay.rows + overlay.labelscaler //TEST160
+overlay.rowsize_temp = round(overlay.fullheight * 1.0 / overlay.allrows, 1)
+overlay.labelheight = overlay.fullheight - overlay.rows * overlay.rowsize_temp
+overlay.rowsize = overlay.rowsize_temp
 
 overlay.padding = floor(0.6 * overlay.charsize)
 
@@ -7476,6 +7481,8 @@ overlay.x = fl.x + 0.5 * (fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
+
+testpr(overlay.rowsize+" "+overlay.labelheight+"\n")
 
 /// Frosted glass surface ///
 
