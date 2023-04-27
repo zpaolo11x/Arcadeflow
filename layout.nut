@@ -8594,7 +8594,10 @@ gamed.maincatT = {
 	w = gamed.plypicT.x - 2 * floor(20 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
-
+print_variable(gamed.catpicT,"","cat")
+print_variable(gamed.plypicT,"","ply")
+print_variable(gamed.ctlpicT,"","ctl")
+print_variable(gamed.butpicT,"","but")
 // right side: manufacturer and year
 gamed.manufacturerpicT = {
 	x = fl.w - 2 * blsize.manu - floor(30 * UI.scalerate + 0.5),
