@@ -8994,6 +8994,9 @@ function getsubmenudata(index) {
 	return out
 }
 
+function prfitemshow(show){
+	prfmenu.
+}
 
 local prfmenu = {
 	res0 = 0
@@ -9004,6 +9007,7 @@ local prfmenu = {
 	outres2 = 0
 	level = 0
 	bg = fe.add_rectangle(0, 0, 0, 0)
+	shadow1 = fe.add_image(AF.folder + "pics/grads/wgradientBb.png",0,0,0,0)
 	description = fe.add_text("", 0, 0, 100, 100)
 	helppic = fe.add_image(AF.folder + "pics/transparent.png", 0, fl.h_os * 0.5, fl.h_os * 0.5, fl.h_os * 0.5)
 	showing = false
@@ -9036,6 +9040,9 @@ prfmenu.bg.set_rgb (themeT.optionspanelrgb, themeT.optionspanelrgb, themeT.optio
 prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh, overlay.fullwidth, prfmenu.picrateh)
+prfmenu.shadow1.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh, overlay.fullwidth, prfmenu.picrateh*0.4)
+prfmenu.shadow1.alpha = 60
+prfmenu.shadow1.set_rgb(0,0,0)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew, prfmenu.picrateh)
 
 prfmenu.description.set_pos (prfmenu.bg.x + overlay.padding + prfmenu.picratew, prfmenu.bg.y, overlay.fullwidth - prfmenu.picratew - 2 * overlay.padding, prfmenu.picrateh)
