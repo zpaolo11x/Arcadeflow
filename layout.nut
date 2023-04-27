@@ -7451,7 +7451,7 @@ overlay.charsize = overlay.charsize //+ overlay.charsize%2.0
 // First calculation of row size in integer value based on char size
 overlay.rowsize = (prf.LOWRES ? (overlay.charsize * 2.5) : (overlay.charsize * 2.5))
 overlay.labelcharsize = overlay.charsize * 1
-overlay.labelheight = floor(overlay.charsize * 2.5) //TEST160
+overlay.labelheight = floor(overlay.charsize * 2.8) //TEST160
 overlay.rowsize = floor(overlay.rowsize)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
