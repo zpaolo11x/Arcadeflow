@@ -364,7 +364,6 @@ function bar_progress_update(i, init, max) {
 	}
 }
 
-//TEST160
 if (FeVersionNum < 300) z_edit_dialog("Arcadeflow requires AM+ 3.0.0+","")
 
 /// Config management ///
@@ -5612,22 +5611,33 @@ foreach (item, table in multifilterz.l0) {
 
 savetabletofile(multifilterz.filter, "pref_mf_0.txt")
 
-function mfz_on() {//TEST160 cambiar con hasfilters
+function mfz_on() {//TEST160 changed with hasfilters
+	foreach(item, value in multifilterz.hasfilters){
+		if (value) return true
+	}
+	return false
+	/*
 	foreach (item, table in multifilterz.l0) {
 		if (multifilterz.filter.rawin(item)) {
 			if (multifilterz.filter[item].len() > 0) return true
 		}
 	}
 	return false
+	*/
 }
 
-function mfz_num() {//TEST160 cambiar con hasfilters
+function mfz_num() {//TEST160 changed with hasfilters
 	local out = 0
+	foreach(item, value in multifilterz.hasfilters){
+		if (value) out ++
+	}
+	/*
 	foreach (item, table in multifilterz.l0) {
 		if (multifilterz.filter.rawin(item)) {
 			if (multifilterz.filter[item].len() > 0) out ++
 		}
 	}
+	*/
 	return out
 }
 
@@ -7459,15 +7469,12 @@ overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overla
 overlay.menuheight = overlay.fullheight - overlay.labelheight
 
 // Calculation of number of rows, always odd
-testpr((overlay.menuheight / overlay.rowsize)+"\n")
 overlay.rows = round(overlay.menuheight / overlay.rowsize, 1)
-testpr(overlay.rows+"\n")
 if (floor(overlay.rows / 2.0) * 2.0 == overlay.rows) overlay.rows ++
 
 // Recalculation of menuheight based on integer row size and rearrangement of label size
 // Maybe this is overcomplicated, better to simplify the part before?
 overlay.allrows = overlay.rows + overlay.labelscaler //TEST160
-testpr(overlay.rows+"\n")
 // OPTION ONE, FULL ROWS CLEAN FIT
 /*
 overlay.rowsize_temp = round(overlay.fullheight * 1.0 / overlay.allrows, 1)
@@ -7489,11 +7496,6 @@ overlay.x = fl.x + 0.5 * (fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
-
-testpr("menuheight:"+overlay.menuheight+"\n")
-testpr("fullheight:"+overlay.fullheight+"\n")
-testpr("rowsize:"+overlay.rowsize+"\n")
-testpr("labelheight:"+overlay.labelheight+"\n")
 
 /// Frosted glass surface ///
 
@@ -8594,10 +8596,7 @@ gamed.maincatT = {
 	w = gamed.plypicT.x - 2 * floor(20 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
-print_variable(gamed.catpicT,"","cat")
-print_variable(gamed.plypicT,"","ply")
-print_variable(gamed.ctlpicT,"","ctl")
-print_variable(gamed.butpicT,"","but")
+
 // right side: manufacturer and year
 gamed.manufacturerpicT = {
 	x = fl.w - 2 * blsize.manu - floor(30 * UI.scalerate + 0.5),
@@ -8817,7 +8816,7 @@ overlay.listbox.rows = overlay.rows
 overlay.listbox.char_size = overlay.charsize
 overlay.listbox.bg_alpha = 0
 overlay.listbox.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
-overlay.listbox.set_bg_rgb(0, 0, 0) //TEST160 ???
+overlay.listbox.set_bg_rgb(0, 0, 0)
 overlay.listbox.set_sel_rgb(themeT.listboxseltext, themeT.listboxseltext, themeT.listboxseltext)
 overlay.listbox.set_selbg_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.listbox.selbg_alpha = 255
@@ -8830,7 +8829,7 @@ overlay.label.char_size = overlay.labelcharsize
 overlay.label.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.label.align = Align.MiddleCentre
 overlay.label.font = uifonts.gui
-overlay.label.set_bg_rgb(0, 200, 0) //TEST160 ???
+overlay.label.set_bg_rgb(0, 200, 0)
 overlay.label.bg_alpha = 0
 
 overlay.sidelabel = fe.add_text("", overlay.x, overlay.y, overlay.w, overlay.labelheight)
@@ -8838,7 +8837,7 @@ overlay.sidelabel.char_size = overlay.labelcharsize * 0.6
 overlay.sidelabel.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
 overlay.sidelabel.align = Align.MiddleRight
 overlay.sidelabel.font = uifonts.lite
-overlay.sidelabel.set_bg_rgb(0, 200, 0) //TEST160 ???
+overlay.sidelabel.set_bg_rgb(0, 200, 0)
 overlay.sidelabel.bg_alpha = 0
 overlay.sidelabel.word_wrap = true
 pixelizefont (overlay.sidelabel, overlay.labelcharsize * 0.6, 2)
@@ -11668,8 +11667,8 @@ zmenu = {
 	speed = null
 
 	tilew = overlay.w
-	tileh0 = overlay.rowsize //TEST160 was floor(overlay.menuheight / overlay.rows)
-	strikeh0 = floor (0.6 * overlay.rowsize) //floor(0.6 * overlay.menuheight / overlay.rows)
+	tileh0 = overlay.rowsize
+	strikeh0 = floor (0.6 * overlay.rowsize)
 	tileh = 0
 	strikeh = 0
 
@@ -11949,7 +11948,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Change menu height if options menu is visible
 	if (prfmenu.showing) {
-		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = floor(zmenu.tileh0 * 0.75)//((prfmenu.bg.y - zmenu.y) / overlay.rows) //TEST160 CHECK PIXEL PERFECT
+		zmenu.glyphh = zmenu.tileh = zmenu.strikeh = floor(zmenu.tileh0 * 0.75)
 		zmenu.height = prfmenu.bg.y - zmenu.y
 		zmenu.strikeh = floor(zmenu.strikeh * 0.7)
 	}
@@ -12011,7 +12010,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 												1)
 		zmenu.strikelines[i].visible = false
 		zmenu.strikelines[i].set_rgb(255, 255, 255)
-		zmenu.strikelines[i].alpha = 180 //TEST160 was 128
+		zmenu.strikelines[i].alpha = 180
 
 		if (i >= zmenu.items.len()) {
 			zmenu.noteitems.push(null)
@@ -15445,10 +15444,6 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-	//TEST160
-	//foreach(item,val in multifilterz.hasfilters) testpr(item+(val?1:0)+" ")
-	//testpr("\n")
-	//print_variable(multifilterz.filter,"","")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16492,7 +16487,6 @@ function buildcategorytable() {
 }
 
 function subcategorymenu(maincategory, subcategory) {
-	testpr("MCSC:"+maincategory+" "+subcategory+"\n")
 	local catmenu2 = []
 
 	local i = 0
@@ -16519,7 +16513,6 @@ function subcategorymenu(maincategory, subcategory) {
 
 	if (currentcat != null) catmenu2[currentcat].rawset ("glyph", 0xea10)
 	local selectcat = (subcategory == "") ? 1 : catmenu2.map(function(param){return(param.value)}).find(subcategory)
-	testpr("SELECTCAT:"+selectcat+"\n")
 	if (selectcat == null) selectcat = 1
 	zmenudraw3(catmenu2, maincategory, 0xe916,  selectcat, {},
 	function(result) {
@@ -16555,7 +16548,6 @@ function subcategorymenu(maincategory, subcategory) {
 }
 
 function maincategorymenu(currentcategories) {
-	print_variable(currentcategories,"","currentcats")
 	local catmenu1 = []
 
 	local i = 0
