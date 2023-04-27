@@ -9015,7 +9015,7 @@ local prfmenu = {
 }
 
 // First calculation of bottom panel
-prfmenu.picratew = prfmenu.picrateh = overlay.rowsize * 2.0 - overlay.padding * 0.5
+prfmenu.picratew = prfmenu.picrateh = floor(overlay.rowsize * 2.0 - overlay.padding * 0.5)
 //prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 //prfmenu.picrateh = prfmenu.picratew
 
