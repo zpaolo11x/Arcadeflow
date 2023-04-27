@@ -9005,7 +9005,7 @@ local prfmenu = {
 	level = 0
 	bg = fe.add_rectangle(0, 0, 0, 0)
 	helppic = fe.add_image(AF.folder + "pics/transparent.png", 0, fl.h_os * 0.5, fl.h_os * 0.5, fl.h_os * 0.5)
-	shadow1 = fe.add_image(AF.folder + "pics/grads/wgradientBb.png",0,0,0,0)
+	dropshadow = fe.add_image(AF.folder + "pics/grads/wgradientBb.png",0,0,0,0)
 	description = fe.add_text("", 0, 0, 100, 100)
 	showing = false
 	browsershowing = false
@@ -9019,7 +9019,7 @@ local prfmenu = {
 }
 
 function prfitemsvisible(visibility){
-	prfmenu.helppic.visible = prfmenu.bg.visible = prfmenu.description.visible = prfmenu.shadow1.visible = visibility
+	prfmenu.helppic.visible = prfmenu.bg.visible = prfmenu.description.visible = prfmenu.dropshadow.visible = visibility
 }
 
 // First calculation of bottom panel
@@ -9041,9 +9041,9 @@ prfmenu.bg.set_rgb (themeT.optionspanelrgb, themeT.optionspanelrgb, themeT.optio
 prfmenu.bg.alpha = themeT.optionspanelalpha
 
 prfmenu.bg.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh, overlay.fullwidth, prfmenu.picrateh)
-prfmenu.shadow1.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh, overlay.fullwidth, floor(prfmenu.picrateh*0.3))
-prfmenu.shadow1.alpha = 40
-prfmenu.shadow1.set_rgb(0,0,0)
+prfmenu.dropshadow.set_pos(overlay.x, overlay.y + overlay.labelheight + overlay.menuheight - prfmenu.picrateh, overlay.fullwidth, floor(prfmenu.picrateh*0.3))
+prfmenu.dropshadow.alpha = 40
+prfmenu.dropshadow.set_rgb(0,0,0)
 prfmenu.helppic.set_pos (prfmenu.bg.x, prfmenu.bg.y, prfmenu.picratew, prfmenu.picrateh)
 
 prfmenu.description.set_pos (prfmenu.bg.x + overlay.padding + prfmenu.picratew, prfmenu.bg.y, overlay.fullwidth - prfmenu.picratew - 2 * overlay.padding, prfmenu.picrateh)
@@ -16262,7 +16262,7 @@ function tick(tick_time) {
 		zmenu_surface_container.alpha = 255 * (flowT.zmenutx[1])
 		prfmenu.helppic.alpha = 255 * (flowT.zmenutx[1])
 		prfmenu.description.alpha = 255 * (flowT.zmenutx[1])
-		prfmenu.shadow1.alpha = 40 * (flowT.zmenutx[1])
+		prfmenu.dropshadow.alpha = 40 * (flowT.zmenutx[1])
 	}
 
 	if (checkfade (flowT.historyblack)) {
