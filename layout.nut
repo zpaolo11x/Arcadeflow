@@ -7456,7 +7456,7 @@ local overlay = {
 
 // Define overlay charsize in integer multiple of 2
 overlay.charsize = (prf.LOWRES ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
-overlay.charsize = overlay.charsize //+ overlay.charsize%2.0
+overlay.charsize = overlay.charsize //TEST160 + overlay.charsize%2.0
 
 // First calculation of row size in integer value based on char size
 overlay.rowsize = (prf.LOWRES ? (overlay.charsize * 2.5) : (overlay.charsize * 2.5))
@@ -7496,7 +7496,7 @@ overlay.x = fl.x + 0.5 * (fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
-
+print_variable(overlay,"","OVER")
 /// Frosted glass surface ///
 
 local frostpic = {
@@ -11833,10 +11833,10 @@ function getxstop(){
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
-	xstop = menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected]
+	xstop = floor(menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected])
 	
 	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
-	
+	testpr(xstop+"\n")
 	return xstop
 }
 
@@ -11850,7 +11850,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu.shown = menudata.len()
 	zmenu.alwaysskip = opts.alwaysskip
 	zmenu.pos0 = []
-
+print_variable(zmenu,"","ZMENU")
 	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
 	// user defined skip values
 	zmenu.target = []
@@ -12328,6 +12328,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			}
 		}
 	}
+				foreach (i, item in zmenu.items) testpr(item.y+" ");testpr("\n")
+
 }
 
 function zmenuhide() {
@@ -15766,6 +15768,8 @@ function tick(tick_time) {
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
 			}
+			foreach (i, item in zmenu.items) testpr(item.y+" ");testpr("\n")
+
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	}
