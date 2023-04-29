@@ -7496,7 +7496,7 @@ overlay.x = fl.x + 0.5 * (fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
-print_variable(overlay,"","OVER")
+
 /// Frosted glass surface ///
 
 local frostpic = {
@@ -11836,7 +11836,6 @@ function getxstop(){
 	xstop = floor(menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected])
 	
 	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
-	testpr(xstop+"\n")
 	return xstop
 }
 
@@ -11850,7 +11849,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu.shown = menudata.len()
 	zmenu.alwaysskip = opts.alwaysskip
 	zmenu.pos0 = []
-print_variable(zmenu,"","ZMENU")
+
 	// Build target and forcetarget array, the first for strikelines, the second for strikelines and
 	// user defined skip values
 	zmenu.target = []
@@ -12328,8 +12327,6 @@ print_variable(zmenu,"","ZMENU")
 			}
 		}
 	}
-				foreach (i, item in zmenu.items) testpr(item.y+" ");testpr("\n")
-
 }
 
 function zmenuhide() {
@@ -12730,6 +12727,11 @@ function displayungrouped() {
 		})
 	}
 
+	for (local i = 1; i < ungroupmenu.len(); i++) {
+		testpr(menuarray[i].groupnotes+"\n")
+		if (menuarray[i].groupnotes == menuarray[i-1].groupnotes) ungroupmenu[i].rawset("skip", true)
+	}	
+
 	local currentnote = ""
 	local i = 0
 	if (prf.DMPSEPARATORS) {
@@ -12806,8 +12808,12 @@ function displayungrouped() {
 				utilitymenu (umpresel)
 			}
 		}
-	})
-}
+	},
+	null,
+	function(){
+		zmenunavigate_down("right", true)
+	}
+	)}
 
 function displaygrouped1() {
 	zmenu.dmp = true
@@ -12852,7 +12858,9 @@ function displaygrouped1() {
 				dmenu1.push({text = item.cleanname, note = item.notes})
 				groupnotes.push(item.groupnotes)
 			}
-
+			for (local i = 1; i < dmenu1.len(); i++) {
+				if (groupnotes[i] == groupnotes[i-1]) dmenu1[i].rawset("skip", true)
+			}
 			// Add separators when the note is different from the previous one
 			local currentnote = ""
 			local i = 0
@@ -12889,6 +12897,7 @@ function displaygrouped1() {
 			foreach (i, item in menuarray) {
 				if (item != null) if (item.dispindex == fe.list.display_index) disp.gmenu1in = i
 			}
+
 			zmenudraw3(dmenu1, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, {shrink = (prf.DMPIMAGES != null), dmpart = (prf.DMPIMAGES != null), center = true, midscroll = (prf.DMPIMAGES != null)}, 
 			function(gmenu1) {
 				if (gmenu1 != -1) {
@@ -12903,6 +12912,10 @@ function displaygrouped1() {
 				else {
 					displaygrouped1()
 				}
+			},
+			null,
+			function(){
+				zmenunavigate_down("right", true)
 			})
 		}
 
@@ -15768,8 +15781,6 @@ function tick(tick_time) {
 				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
 				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
 			}
-			foreach (i, item in zmenu.items) testpr(item.y+" ");testpr("\n")
-
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	}
