@@ -12139,7 +12139,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				if (filename == null) filename = ""
 				if (!opts.dmpart) filename = ""
 
-			if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
+				if (menudata[i].liner) filename = AF.folder + "pics/transparent.png"
 
 				if (!menudata[i].liner) iskip = iskip + 1.0 else iskip = iskip + 0.0
 
@@ -12305,7 +12305,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			for (local i = 0; i < ((prf.DMPEXITAF && (zmenu.jumplevel == 0)) ? zmenu.shown - 1 : zmenu.shown); i++) {
 				if (!menudata[i].liner) {
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.LOWRES?0.65:0.7))
+					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.LOWRES ? 0.65 : 0.7))
 					zmenu.items[i].align = Align.MiddleCentre
 
 					local renamer = systemfont(zmenu.items[i].msg, true)

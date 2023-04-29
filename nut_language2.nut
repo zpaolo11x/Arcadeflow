@@ -44,7 +44,7 @@ function savelanguage(savecode){
 
 function ltxt(inputitem,languagestring) {
    local out = inputitem
-	if (languagestring == "EN") return (inputitem)
+	if ((languagestring == "EN") || (languagestring == "")) return (inputitem)
 
 	if (typeof inputitem != "array"){
 		return (languagetable.rawin(inputitem) ? languagetable[inputitem][languagestring] : inputitem)
