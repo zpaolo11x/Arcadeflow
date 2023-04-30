@@ -11492,8 +11492,8 @@ local disp = {
 	bgshadowt = null
 	bgshadowb = null
 
-	tilew = ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
-	tileh = ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
+	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
+	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	xstart = 0
 	xstop = 0
 	bgtileh = 0
@@ -11521,7 +11521,7 @@ disp.width = disp.tilew
 disp.speed = disp.tileh * 0.1
 disp.spacing = disp0.h
 disp.x = overlay.w - disp.tilew
-disp.bgtileh = disp.tilew * 9.0 / 16.0
+disp.bgtileh = floor(disp.tilew * 9.0 / 16.0)
 if (prf.DMPIMAGES == "WALLS") disp.spacing = disp.bgtileh
 
 function update_allgames_collections(verbose, tempprf) {
