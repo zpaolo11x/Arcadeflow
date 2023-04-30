@@ -7424,8 +7424,7 @@ fl.surf.redraw = true
 
 local overlay = {
 	charsize = null
-	rowsize = null
-	rowsize_temp = null
+	rowheight = null
 	labelheight = null
 	labelcharsize = null
 	rows = null
@@ -7456,7 +7455,7 @@ local overlay = {
 overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
 overlay.labelcharsize = floor(overlay.charsize * 1.1)
 
-overlay.rowsize = floor(130 * UI.scalerate)
+overlay.rowheight = floor(130 * UI.scalerate)
 overlay.labelheight = floor(160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
@@ -7464,7 +7463,7 @@ overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overla
 overlay.menuheight = overlay.fullheight - overlay.labelheight
 
 // Calculation of number of rows, always odd
-overlay.rows = round(overlay.menuheight / overlay.rowsize, 1)
+overlay.rows = round(overlay.menuheight / overlay.rowheight, 1)
 overlay.rows = overlay.rows + 1.0 - overlay.rows % 2.0 //Force even number of rows
 
 overlay.fullwidth = floor(1600 * UI.scalerate) + floor(1600 * UI.scalerate) % 2.0
@@ -9002,7 +9001,7 @@ function prfitemsvisible(visibility){
 }
 
 // First calculation of bottom panel
-prfmenu.picratew = prfmenu.picrateh = floor(overlay.rowsize * 2.0 - overlay.padding * 0.5)
+prfmenu.picratew = prfmenu.picrateh = floor(overlay.rowheight * 2.0 - overlay.padding * 0.5)
 //prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 //prfmenu.picrateh = prfmenu.picratew
 
@@ -11647,7 +11646,7 @@ zmenu = {
 	speed = null
 
 	tilew = overlay.w
-	tileh0 = overlay.rowsize
+	tileh0 = overlay.rowheight
 	strikeh0 = floor(80 * UI.scalerate)
 	tileh = 0
 	strikeh = 0
