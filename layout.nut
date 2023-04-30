@@ -7429,7 +7429,6 @@ local overlay = {
 	labelheight = null
 	labelcharsize = null
 	rows = null
-	allrows = null
 	fullwidth = null
 	fullheight = null
 	menuheight = null
@@ -7443,7 +7442,6 @@ local overlay = {
 	shadows = []
 	wline = null
 	filterbg = null
-	labelscaler = 1.1
 
 	ex_top = floor(UI.header.h * 0.6)
 	ex_bottom = floor(UI.footer.h3 * 0.5)
@@ -7454,10 +7452,10 @@ local overlay = {
 	h = 0
 }
 
-// Define overlay charsize in integer multiple of 2
+// Define overlay charsize (in integer multiple of 2???)
 overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
 overlay.labelcharsize = floor(overlay.charsize * 1.1)
-// First calculation of row size in integer value based on char size
+
 overlay.rowsize = floor(130 * UI.scalerate)
 overlay.labelheight = floor(160 * UI.scalerate)
 
@@ -7467,25 +7465,10 @@ overlay.menuheight = overlay.fullheight - overlay.labelheight
 
 // Calculation of number of rows, always odd
 overlay.rows = round(overlay.menuheight / overlay.rowsize, 1)
-if (floor(overlay.rows / 2.0) * 2.0 == overlay.rows) overlay.rows ++
+overlay.rows = overlay.rows + 1.0 - overlay.rows % 2.0 //Force even number of rows
 
-// Recalculation of menuheight based on integer row size and rearrangement of label size
-// Maybe this is overcomplicated, better to simplify the part before?
-overlay.allrows = overlay.rows + overlay.labelscaler //TEST160
-// OPTION ONE, FULL ROWS CLEAN FIT
-/*
-overlay.rowsize_temp = round(overlay.fullheight * 1.0 / overlay.allrows, 1)
-overlay.labelheight = overlay.fullheight - overlay.rows * overlay.rowsize_temp
-overlay.rowsize = overlay.rowsize_temp
-*/
-// OPTION TWO, NOT CLEAN FIT
-/*
-overlay.rowsize = round(overlay.menuheight * 1.0 / overlay.rows, 1)
-overlay.labelheight = round(overlay.labelscaler * (overlay.fullheight * 1.0 / overlay.allrows), 1)
-*/
-overlay.fullwidth = ((overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 < (fl.w - 2 * overlay.in_side) ? (overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 : (fl.w - 2 * overlay.in_side))
-overlay.fullwidth = floor(overlay.fullwidth)
-overlay.fullwidth = overlay.fullwidth + overlay.fullwidth % 2.0
+overlay.fullwidth = floor(1600 * UI.scalerate) + floor(1600 * UI.scalerate) % 2.0
+overlay.fullwidth = min(overlay.fullwidth, fl.w - 2 * overlay.in_side) 
 
 overlay.padding = floor(30 * UI.scalerate)
 
