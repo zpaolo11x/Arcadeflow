@@ -832,7 +832,7 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rows1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4, picsel = ["rowsv1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["cleanyes" + AF.prefs.imgext, "cleanno" + AF.prefs.imgext], pic = "cleanyes" + AF.prefs.imgext},
-{v = 7.2, varname = "LOWRES", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
+{v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0, picsel = ["subdefaultname" + AF.prefs.imgext, "subnosubname" + AF.prefs.imgext]},
@@ -2359,7 +2359,7 @@ if (UI.vertical) {
 }
 if (UI.vertical) UI.rows = prf.VERTICALROWS
 
-UI.rows = (prf.LOWRES ? 1 : UI.rows)
+UI.rows = (prf.SMALLSCREEN ? 1 : UI.rows)
 
 fe.layout.width = fl.w_os
 fe.layout.height = fl.h_os
@@ -2372,12 +2372,12 @@ prf.PIXELACCURATE <- true
 UI.scalerate = (UI.vertical ? fl.w : fl.h) / 1200.0
 
 // Changed header spacer from 200 to 220 better centering
-UI.header.h = floor(prf.LOWRES ? 260 * UI.scalerate : 200 * UI.scalerate) // content
-UI.header.h2 = floor(prf.LOWRES ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)) //spacer
+UI.header.h = floor(prf.SMALLSCREEN ? 260 * UI.scalerate : 200 * UI.scalerate) // content
+UI.header.h2 = floor(prf.SMALLSCREEN ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)) //spacer
 // Changed header spacer from 100 to 90 better centering
-UI.footer.h = floor(prf.LOWRES ? 150 * UI.scalerate : 100 * UI.scalerate) // content
+UI.footer.h = floor(prf.SMALLSCREEN ? 150 * UI.scalerate : 100 * UI.scalerate) // content
 UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
-UI.footer.h2 = floor(prf.LOWRES ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
+UI.footer.h2 = floor(prf.SMALLSCREEN ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
 
 // If slimline is enabled the label row is raised from the bottom
 // but footer.h3 is used to keep track of old value to size menus
@@ -7455,7 +7455,7 @@ local overlay = {
 }
 
 // Define overlay charsize in integer multiple of 2
-overlay.charsize = (prf.LOWRES ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
+overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
 overlay.labelcharsize = floor(overlay.charsize * 1.1)
 // First calculation of row size in integer value based on char size
 overlay.rowsize = floor(130 * UI.scalerate)
@@ -8400,22 +8400,22 @@ filterdata.align = Align.MiddleCentre
 filterdata.margin = 0
 filterdata.set_rgb(255, 255, 255)
 filterdata.word_wrap = true
-filterdata.char_size = (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
+filterdata.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
 filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-pixelizefont(filterdata, (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
+pixelizefont(filterdata, (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local filternumbers = data_surface.add_text((prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"), fl.x + fl.w - UI.footermargin, fl.y + fl.h - UI.footer.h, UI.footermargin, UI.footer.h)
 filternumbers.align = Align.MiddleCentre
 filternumbers.margin = 0
 filternumbers.set_rgb(255, 255, 255)
 filternumbers.word_wrap = true
-filternumbers.char_size = (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
+filternumbers.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-pixelizefont(filternumbers, (prf.LOWRES ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
+pixelizefont(filternumbers, (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local separatorline = data_surface.add_rectangle(fl.x + fl.w - UI.footermargin + UI.footermargin * 0.3, fl.y + fl.h - UI.footer.h + UI.footer.h * 0.5, UI.footermargin * 0.4, 1)
 separatorline.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
@@ -8533,7 +8533,7 @@ local blsize = {
 	dath = floor(25 * UI.scalerate + 0.5)
 }
 
-if (prf.LOWRES) {
+if (prf.SMALLSCREEN) {
 	blsize = {
 		mini = 60 * UI.scalerate,
 		catp = 150 * UI.scalerate,
@@ -8597,7 +8597,7 @@ gamed.maincatT = {
 // right side: manufacturer and year
 gamed.manufacturerpicT = {
 	x = fl.w - 2 * blsize.manu - floor(30 * UI.scalerate + 0.5),
-	y = (prf.LOWRES ? floor(20 * UI.scalerate +0.5) : floor(10 * UI.scalerate + 0.5)),
+	y = (prf.SMALLSCREEN ? floor(20 * UI.scalerate +0.5) : floor(10 * UI.scalerate + 0.5)),
 	w = 2 * blsize.manu,
 	h = blsize.manu
 }
@@ -10651,13 +10651,13 @@ shader_lcd.set_param ("lcdcolor", 0.0)
 local hist_text_surf = history_surface.add_surface(hist_textT.w, hist_textT.h)
 hist_text_surf.set_pos (hist_textT.x, hist_textT.y)
 
-hist_textT.charsize = (prf.LOWRES ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
+hist_textT.charsize = (prf.SMALLSCREEN ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
 hist_textT.linesize = hist_textT.charsize * 1.5
 hist_textT.col2 = hist_textT.charsize * 5 * 0.88
 
 local hist_text = null
 
-if (!prf.LOWRES) {
+if (!prf.SMALLSCREEN) {
 	if (!UI.vertical) { // HORIZONTAL SCREEN
 		if (hist.panel_ar <= 0.6) { //SMALL PANEL
 			hist_text = {
@@ -10850,7 +10850,7 @@ function hist_text_alpha(a) {
 	}
 }
 
-if (!prf.LOWRES) {
+if (!prf.SMALLSCREEN) {
 
 	if (!UI.vertical) {
 		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate, hist_text.title.y + hist_text.title.height, hist_text.title.width - 40 * UI.scalerate, 1)
@@ -11229,7 +11229,7 @@ function history_updatetext() {
 	if (prf.HISTMININAME) {
 		hist_text_tempmessage = ("\n"+ gamename1(z_list.gametable[z_list.index].z_title) + "\n")
 	}
-	else if (prf.LOWRES) {
+	else if (prf.SMALLSCREEN) {
 		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
 		hist_text.descr.msg = hist_text.descr.msg + "©" + z_list.gametable[z_list.index].z_year + " " + gly(0xe906) + z_list.gametable[z_list.index].z_manufacturer
 		hist_text.descr.msg = hist_text.descr.msg + gly(0xe90b) + z_list.gametable[z_list.index].z_system + "\n"
@@ -11303,7 +11303,7 @@ function history_updatetext() {
 		tempdesc = tempdesc2 + "\n\n"
 	}
 
-	if (prf.LOWRES) tempdesc = hist_text.descr.msg + "\n" + tempdesc
+	if (prf.SMALLSCREEN) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
 	hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
 	hist_text.descr.align = Align.TopCentre
@@ -12302,7 +12302,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			for (local i = 0; i < ((prf.DMPEXITAF && (zmenu.jumplevel == 0)) ? zmenu.shown - 1 : zmenu.shown); i++) {
 				if (!menudata[i].liner) {
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.LOWRES ? 0.65 : 0.7))
+					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
 					zmenu.items[i].align = Align.MiddleCentre
 
 					local renamer = systemfont(zmenu.items[i].msg, true)
@@ -14888,7 +14888,7 @@ function z_listrefreshtiles() {
 			font = 30 * UI.scalerate
 		}
 
-		if (prf.LOWRES) {
+		if (prf.SMALLSCREEN) {
 			label = {
 				w = 150 * UI.scalerate,
 				h = 70 * UI.scalerate,
