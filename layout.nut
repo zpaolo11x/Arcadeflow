@@ -12284,9 +12284,15 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		if (prf.DMPGENERATELOGO) {
 			for (local i = 0; i < ((prf.DMPEXITAF && (zmenu.jumplevel == 0)) ? zmenu.shown - 1 : zmenu.shown); i++) {
 				if (!menudata[i].liner) {
+
+					local chartemp = zmenu.items[i].width * 30.0 / 240.0
+					if (chartemp >= zmenu.tileh) chartemp = zmenu.tileh * 0.5
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = ((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
+					zmenu.items[i].char_size = chartemp//((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
 					zmenu.items[i].align = Align.MiddleCentre
+
+					// Check if the logo is larger than the available space
+					// if ((zmenu.items[i].char_size * 200.0 / 30.0) > zmenu.items[i].width) zmenu.items[i].char_size = zmenu.items[i].width * 30.0 / 220.0
 
 					local renamer = systemfont(zmenu.items[i].msg, true)
 
