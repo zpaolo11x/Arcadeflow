@@ -11884,7 +11884,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
 	else if (zmenu.alwaysskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
 
-	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && (prf.DMPIMAGES == "WALLS")
+	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && opts.dmpart && (prf.DMPIMAGES == "WALLS")
 
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
 
