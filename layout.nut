@@ -11708,13 +11708,11 @@ local zmenu_sh = {
 	surf_1 = null
 }
 
-zmenu_sh.surf_clamp = fe.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
-zmenu_sh.surf_clamp.set_pos(zmenu.x, zmenu.y, zmenu.width, zmenu.height)
-zmenu_sh.surf_rt = zmenu_sh.surf_clamp.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
+zmenu_sh.surf_rt = fe.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
 zmenu_sh.surf_2 = zmenu_sh.surf_rt.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
 zmenu_sh.surf_1 = zmenu_sh.surf_2.add_clone(zmenu_surface_container)
 
-zmenu_sh.surf_1.set_pos (0, 0, zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
+zmenu_sh.surf_1.set_pos (4 * UI.scalerate * sh_scale.r2, 8 * UI.scalerate * sh_scale.r2, zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
 
 //zmenu_sh.set_rgb(0, 0, 0)
 zmenu_sh.surf_1.set_rgb(0, 0, 0)
@@ -11730,11 +11728,11 @@ gaussshader(shader_tx2.v, 9.0, 3.0, 0.0, 1.0 / (fl.h * sh_scale.r2))
 zmenu_sh.surf_2.shader = noshader
 zmenu_sh.surf_1.shader = noshader
 
-zmenu_sh.surf_clamp.alpha = themeT.menushadow
+zmenu_sh.surf_rt.alpha = themeT.menushadow
 
-zmenu_sh.surf_clamp.zorder = 9
+zmenu_sh.surf_rt.zorder = 9
 
-zmenu_sh.surf_rt.set_pos(4 * UI.scalerate * sh_scale.r2, 8 * UI.scalerate * sh_scale.r2)//, zmenu_surface_container.width, zmenu_surface_container.height)
+zmenu_sh.surf_rt.set_pos(zmenu_surface_container.x, zmenu_surface_container.y, zmenu_surface_container.width, zmenu_surface_container.height)
 
 zmenu.simbg = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientRa.png",
 										zmenu.tilew -1.0 * disp.width,
@@ -12238,8 +12236,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_sh.surf_2.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.v : noshader)
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
 
-	zmenu_surface_container.visible = zmenu_sh.surf_clamp.visible = true
-	zmenu_surface_container.redraw = zmenu_surface.redraw =  zmenu_sh.surf_clamp.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
+	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
+	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 	
 	zmenu.xstart = zmenu.xstop = getxstop()
 
@@ -12366,8 +12364,8 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 
 zmenu.xstop = 0
 
-zmenu_surface_container.redraw = zmenu_surface.redraw =  zmenu_sh.surf_clamp.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
-zmenu_surface_container.visible = zmenu_sh.surf_clamp.visible = false
+zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 function gh_branchlist(op) {
 	if (op.find(ap + "name" + ap) != null) {
@@ -15273,8 +15271,8 @@ function on_transition(ttype, var0, ttime) {
 
 	if (ttype == Transition.HideOverlay) {
 
-		zmenu_surface_container.redraw = zmenu_surface.redraw =  zmenu_sh.surf_clamp.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
-		zmenu_surface_container.visible = zmenu_sh.surf_clamp.visible = false
+		zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 		//overlay.listbox.width = overlay.fullwidth
 		zmenu_sh.surf_2.shader = noshader
@@ -16232,10 +16230,10 @@ function tick(tick_time) {
 	if (checkfade (flowT.zmenush)) {
 		flowT.zmenush = fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
-			zmenu_sh.surf_rt.redraw =  zmenu_sh.surf_clamp.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
-			zmenu_sh.surf_clamp.visible = false
+			zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+			zmenu_sh.surf_rt.visible = false
 		}
-		zmenu_sh.surf_clamp.alpha = themeT.menushadow * (flowT.zmenush[1])
+		zmenu_sh.surf_rt.alpha = themeT.menushadow * (flowT.zmenush[1])
 		prfmenu.bg.alpha = themeT.optionspanelalpha * (flowT.zmenush[1])
 	}
 
