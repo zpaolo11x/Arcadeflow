@@ -11708,8 +11708,8 @@ local zmenu_sh = {
 	surf_1 = null
 }
 
-zmenu_sh.surf_clamp = fe.add_surface(zmenu.width, zmenu.height)
-zmenu_sh.surf_clamp.set_pos(zmenu.x, zmenu.y)
+zmenu_sh.surf_clamp = fe.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
+zmenu_sh.surf_clamp.set_pos(zmenu.x, zmenu.y, zmenu.width, zmenu.height)
 zmenu_sh.surf_rt = zmenu_sh.surf_clamp.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
 zmenu_sh.surf_2 = zmenu_sh.surf_rt.add_surface(zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
 zmenu_sh.surf_1 = zmenu_sh.surf_2.add_clone(zmenu_surface_container)
@@ -11734,7 +11734,7 @@ zmenu_sh.surf_clamp.alpha = themeT.menushadow
 
 zmenu_sh.surf_clamp.zorder = 9
 
-zmenu_sh.surf_rt.set_pos(4 * UI.scalerate, 8 * UI.scalerate, zmenu_surface_container.width, zmenu_surface_container.height)
+zmenu_sh.surf_rt.set_pos(4 * UI.scalerate * sh_scale.r2, 8 * UI.scalerate * sh_scale.r2)//, zmenu_surface_container.width, zmenu_surface_container.height)
 
 zmenu.simbg = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientRa.png",
 										zmenu.tilew -1.0 * disp.width,
