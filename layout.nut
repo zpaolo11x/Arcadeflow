@@ -829,7 +829,7 @@ AF.prefs.l1.push([
 {v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout", options = languagearray(), values = languagetokenarray(), selection = 1, picsel = languageflags(), pic = "flags.jpg"},
 {v = 10.5, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rows1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
+{v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rows1max" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4, picsel = ["rowsv1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["cleanyes" + AF.prefs.imgext, "cleanno" + AF.prefs.imgext], pic = "cleanyes" + AF.prefs.imgext},
 {v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
@@ -9059,6 +9059,10 @@ function updatemenu(level, var) {
 
 	else if (level == 3) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
+		testpr()
+		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname+"_"+var+".jpg"
+		//TEST160 CHECK
+		/*
 		try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].picsel[var]}
 		catch(err) {
 			try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].pic}
@@ -9067,6 +9071,7 @@ function updatemenu(level, var) {
 				prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 			}
 		}
+		*/
 	}
 }
 
