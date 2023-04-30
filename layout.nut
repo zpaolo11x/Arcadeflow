@@ -832,7 +832,7 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3, picsel = ["rows1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rows1" + AF.prefs.imgext, "rows2" + AF.prefs.imgext, "rows3" + AF.prefs.imgext], pic = "rows2" + AF.prefs.imgext},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4, picsel = ["rowsv1" + AF.prefs.imgext, "rows1mini" + AF.prefs.imgext, "rowsv1" + AF.prefs.imgext, "rowsv2" + AF.prefs.imgext, "rowsv3" + AF.prefs.imgext], pic = "rowsv3" + AF.prefs.imgext},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["cleanyes" + AF.prefs.imgext, "cleanno" + AF.prefs.imgext], pic = "cleanyes" + AF.prefs.imgext},
-{v = 7.2, varname = "LOWRES", glyph = 0xe997, title = "Low resolution", help = "Optimize theme for low resolution screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
+{v = 7.2, varname = "LOWRES", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1, picsel = ["lowreson" + AF.prefs.imgext, "lowresoff" + AF.prefs.imgext], pic = "lowreson" + AF.prefs.imgext},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0, picsel = ["subdefaultname" + AF.prefs.imgext, "subnosubname" + AF.prefs.imgext]},
@@ -7456,8 +7456,7 @@ local overlay = {
 
 // Define overlay charsize in integer multiple of 2
 overlay.charsize = (prf.LOWRES ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
-overlay.charsize = overlay.labelcharsize = overlay.charsize //TEST160 + overlay.charsize%2.0
-
+overlay.labelcharsize = floor(overlay.charsize * 1.1)
 // First calculation of row size in integer value based on char size
 overlay.rowsize = floor(130 * UI.scalerate)
 overlay.labelheight = floor(160 * UI.scalerate)

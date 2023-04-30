@@ -304,6 +304,12 @@ BR = "Otimiza o tema para telas de baixa resolução, forçando o layout de uma 
 FR = "Optimize ce theme pour résolutions basses. Agencement à une ligne forcé, police plus grande et agencement plus simple."
 DE = "Optimierung des Themes für Bildschirme mit geringer Auflösung, 1-Zeilen Layout erzwungen, Schriftgröße erhöht und sauberers Layout"
 }
+     "Small screen":{
+IT = "Schermo piccolo"
+}
+     "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout":{
+IT = "Ottimizza il tema per schermi di piccole dimensioni, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout"
+}
      "Custom color":{
 IT = "Colore personalizzato"
 DE = "Benutzerdefinierte Farbe"
