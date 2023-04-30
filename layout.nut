@@ -12285,10 +12285,10 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			for (local i = 0; i < ((prf.DMPEXITAF && (zmenu.jumplevel == 0)) ? zmenu.shown - 1 : zmenu.shown); i++) {
 				if (!menudata[i].liner) {
 
-					local chartemp = zmenu.items[i].width * 30.0 / 240.0
-					if (chartemp >= zmenu.tileh) chartemp = zmenu.tileh * 0.5
+					local char_temp = zmenu.items[i].width * 30.0 / 240.0
+					if (char_temp >= zmenu.tileh) char_temp = zmenu.tileh * 0.5
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = chartemp//((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
+					zmenu.items[i].char_size = char_temp//((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
 					zmenu.items[i].align = Align.MiddleCentre
 
 					// Check if the logo is larger than the available space
