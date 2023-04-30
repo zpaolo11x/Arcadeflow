@@ -7456,13 +7456,11 @@ local overlay = {
 
 // Define overlay charsize in integer multiple of 2
 overlay.charsize = (prf.LOWRES ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
-overlay.charsize = overlay.charsize //TEST160 + overlay.charsize%2.0
+overlay.charsize = overlay.labelcharsize = overlay.charsize //TEST160 + overlay.charsize%2.0
 
 // First calculation of row size in integer value based on char size
-overlay.rowsize = (prf.LOWRES ? (overlay.charsize * 2.5) : (overlay.charsize * 2.5))
-overlay.labelcharsize = overlay.charsize * 1
-overlay.labelheight = floor(overlay.charsize * 2.8) //TEST160
-overlay.rowsize = floor(overlay.rowsize)
+overlay.rowsize = floor(130 * UI.scalerate)
+overlay.labelheight = floor(160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
 overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
@@ -7490,7 +7488,7 @@ overlay.fullwidth = ((overlay.menuheight + overlay.labelheight) * 3.0 / 2.0 < (f
 overlay.fullwidth = floor(overlay.fullwidth)
 overlay.fullwidth = overlay.fullwidth + overlay.fullwidth % 2.0
 
-overlay.padding = floor(0.6 * overlay.charsize)
+overlay.padding = floor(30 * UI.scalerate)
 
 overlay.x = fl.x + 0.5 * (fl.w - overlay.fullwidth)
 overlay.y = fl.y + UI.header.h - overlay.ex_top
@@ -11668,7 +11666,7 @@ zmenu = {
 
 	tilew = overlay.w
 	tileh0 = overlay.rowsize
-	strikeh0 = floor (0.6 * overlay.rowsize)
+	strikeh0 = floor(80 * UI.scalerate)
 	tileh = 0
 	strikeh = 0
 
@@ -11679,7 +11677,7 @@ zmenu = {
 	x = overlay.x
 	y = overlay.y + overlay.labelheight
 
-	glyphw = floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
+	glyphw = floor (140 * UI.scalerate)//floor(overlay.padding * 4.75)//was floor(overlay.menuheight / overlay.rows)
 	glyphh = 0
 	midoffset = 0
 	virtualheight = 0
@@ -11712,7 +11710,7 @@ zmenu = {
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
 }
-
+testpr("GLYPHW"+zmenu.glyphw+"\n")
 zmenu.speed = zmenu.tileh * 0.1
 
 local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
