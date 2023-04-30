@@ -11691,7 +11691,6 @@ zmenu = {
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
 }
-testpr("GLYPHW"+zmenu.glyphw+"\n")
 zmenu.speed = zmenu.tileh * 0.1
 
 local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
@@ -12712,7 +12711,6 @@ function displayungrouped() {
 	}
 
 	for (local i = 1; i < ungroupmenu.len(); i++) {
-		testpr(menuarray[i].groupnotes+"\n")
 		if (menuarray[i].groupnotes == menuarray[i-1].groupnotes) ungroupmenu[i].rawset("skip", true)
 	}	
 
