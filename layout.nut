@@ -12630,21 +12630,21 @@ function checkforupdates(force) {
 
 	frostshow()
 	// Get the latest updates
-	local updatemenu = []
+	local ghupdatemenu = []
 	foreach (i, item in gh.release_notes) {
-		updatemenu.push({text = item,	glyph = 0xea08})
+		ghupdatemenu.push({text = item,	glyph = 0xea08})
 	}
-	updatemenu.push({text = ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG), glyph = 0xea36})
-	updatemenu.push({text = ltxt("Dismiss this update", AF.LNG), glyph = 0xea0f})
+	ghupdatemenu.push({text = ltxt(prf.AUTOINSTALL ? "Download & install new version" : "Download new version", AF.LNG), glyph = 0xea36})
+	ghupdatemenu.push({text = ltxt("Dismiss this update", AF.LNG), glyph = 0xea0f})
 
-	zmenudraw3(updatemenu, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, {},
+	zmenudraw3(ghupdatemenu, ltxt("New version:", AF.LNG) + " Arcadeflow " + ver_in, 0xe91c, 0, {},
 	function(out) {
 		if (out == -1) {
 			zmenuhide()
 			frosthide()
 		}
 
-		if (out == updatemenu.len() - 2) {
+		if (out == ghupdatemenu.len() - 2) {
 
 			// Download latest layout
 			local newafname = "Arcadeflow_" + (ver_in.tofloat() * 10).tointeger()
@@ -12672,7 +12672,7 @@ function checkforupdates(force) {
 			}
 		}
 
-		if (out == updatemenu.len() - 1) {
+		if (out == ghupdatemenu.len() - 1) {
 
 			// Dismiss auto updates
 			local updpath = fe.path_expand(AF.folder + "pref_update.txt")
@@ -17277,8 +17277,10 @@ function on_signal(sig) {
 		if (sig == "screenshot") return false
 		if (sig == "reload") return false
 
+		local menucheck = false
 		if (sig == "up") {
 			if (checkrepeat(count.up)) {
+				menucheck = true
 				zmenunavigate_up("up", zmenu.alwaysskip)
 			}
 			else return true
@@ -17286,6 +17288,7 @@ function on_signal(sig) {
 
 		if (sig == "down") {
 			if (checkrepeat (count.down)) {
+				menucheck = true
 				zmenunavigate_down("down", zmenu.alwaysskip)
 			}
 			else return true
@@ -17293,6 +17296,7 @@ function on_signal(sig) {
 
 		if (sig == "left") {
 			if (checkrepeat(count.left)) {
+				menucheck = true
 				if (zmenu.reactleft == null) {
 					zmenu.selected = zmenu.firstitem
 					zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
@@ -17304,13 +17308,13 @@ function on_signal(sig) {
 
 		if (sig == "right") {
 			if (checkrepeat(count.right)) {
+				menucheck = true
 				if (zmenu.reactright != null) zmenu.reactright()
 				count.right ++
 			}
 		}
 
-		if ((sig == "up") || (sig == "down") || (sig == "left") || (sig == "right")) {
-
+		if (menucheck && ((sig == "up") || (sig == "down") || (sig == "left") || (sig == "right"))) {
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
