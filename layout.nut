@@ -9036,6 +9036,21 @@ function buildselectarray(options, selection) {
 	return (out)
 }
 
+function menupic(main, opt){
+	local picpath = AF.folder + AF.prefs.imgpath + main+"_"+opt+".jpg"
+	testpr(picpath+"\n")
+	if (file_exist(picpath)){
+		testpr("A\n")
+		prfmenu.helppic.set_rgb(255, 255, 255)
+		prfmenu.helppic.file_name = picpath
+	}
+	else {
+		testpr("B\n")
+		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
+		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	}
+}
+
 function updatemenu(level, var) {
 	if (level == 1) {
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
@@ -9045,6 +9060,9 @@ function updatemenu(level, var) {
 	else if (level == 2) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
 
+		menupic (AF.prefs.l1[prfmenu.outres0][zmenu.selected].varname, AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection)
+		//TEST160 CHECK
+		/*
 		try {
 			prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][zmenu.selected].picsel[AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection]
 		}
@@ -9055,12 +9073,13 @@ function updatemenu(level, var) {
 				prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 			}
 		}
+		*/
 	}
 
 	else if (level == 3) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
-		testpr()
-		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname+"_"+var+".jpg"
+
+		menupic(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname, var)
 		//TEST160 CHECK
 		/*
 		try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].picsel[var]}
