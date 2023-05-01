@@ -999,7 +999,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "AMTIMER", glyph = 0xe94e, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = ["Timer"], values ="120", selection = AF.req.keyboard},
 {v = 7.2, varname = "AMCHANGETIMER", glyph = 0xe94e, title = "Game change time (s)", help = "Time interval between each game change", options = ["Interval"], values = "10", selection = AF.req.keyboard},
 {v = 9.1, varname = "AMSHOWLOGO", glyph = 0xea6d, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes", "No"], values = [true, false], selection = 0},
-{v = 7.2, varname = "AMMESSAGE", glyph = 0xea6d, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = " - PRESS ANY KEY - ", selection = AF.req.keyboard, pic = "attractmode" + AF.prefs.imgext},
+{v = 7.2, varname = "AMMESSAGE", glyph = 0xea6d, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = "PRESS ANY KEY", selection = AF.req.keyboard, pic = "attractmode" + AF.prefs.imgext},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
 {v = 7.2, varname = "AMTUNE", glyph = 0xe911, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
 {v = 7.2, varname = "AMSOUND", glyph = 0xea27, title = "Enable game sound", help = "Enable game sounds during attract mode", options = ["Yes", "No"], values = [true, false], selection = 0},
