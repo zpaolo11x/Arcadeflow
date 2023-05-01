@@ -9041,17 +9041,14 @@ function menupic(level, main, opt){
 	local picpath = AF.folder + AF.prefs.imgpath + main + "_" + opt + ".jpg"
 
 	if ((level == 2) && file_exist(picpath0)) {
-		testpr("A\n")
 		prfmenu.helppic.set_rgb(255, 255, 255)
 		prfmenu.helppic.file_name = picpath0
 	}
 	else if (file_exist(picpath)){
-		testpr("B\n")
 		prfmenu.helppic.set_rgb(255, 255, 255)
 		prfmenu.helppic.file_name = picpath
 	}
 	else {
-		testpr("C\n")
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
 		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 	}
