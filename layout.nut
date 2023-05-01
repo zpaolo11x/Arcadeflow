@@ -10669,7 +10669,7 @@ hist_textT.col2 = hist_textT.charsize * 5 * 0.88
 
 local hist_text = null
 
-if (!prf.SMALLSCREEN) {
+if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 	if (!UI.vertical) { // HORIZONTAL SCREEN
 		if (hist.panel_ar <= 0.6) { //SMALL PANEL
 			hist_text = {
@@ -10862,7 +10862,7 @@ function hist_text_alpha(a) {
 	}
 }
 
-if (!prf.SMALLSCREEN) {
+if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)) {
 
 	if (!UI.vertical) {
 		hist_text["line_title_bot"] <- hist_text_surf.add_rectangle(20 * UI.scalerate, hist_text.title.y + hist_text.title.height, hist_text.title.width - 40 * UI.scalerate, 1)
@@ -11239,7 +11239,7 @@ function history_updatetext() {
 	local packstring = ""
 
 	if (prf.HISTMININAME) {
-		hist_text_tempmessage = ("\n"+ gamename1(z_list.gametable[z_list.index].z_title) + "\n")
+		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
 	}
 	else if (prf.SMALLSCREEN) {
 		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
@@ -11315,7 +11315,7 @@ function history_updatetext() {
 		tempdesc = tempdesc2 + "\n\n"
 	}
 
-	if (prf.SMALLSCREEN) tempdesc = hist_text.descr.msg + "\n" + tempdesc
+	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
 	hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
 	hist_text.descr.align = Align.TopCentre
