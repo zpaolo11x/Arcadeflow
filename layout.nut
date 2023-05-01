@@ -9036,16 +9036,22 @@ function buildselectarray(options, selection) {
 	return (out)
 }
 
-function menupic(main, opt){
-	local picpath = AF.folder + AF.prefs.imgpath + main+"_"+opt+".jpg"
-	testpr(picpath+"\n")
-	if (file_exist(picpath)){
+function menupic(level, main, opt){
+	local picpath0 = AF.folder + AF.prefs.imgpath + main + ".jpg"
+	local picpath = AF.folder + AF.prefs.imgpath + main + "_" + opt + ".jpg"
+
+	if ((level == 2) && file_exist(picpath0)) {
 		testpr("A\n")
+		prfmenu.helppic.set_rgb(255, 255, 255)
+		prfmenu.helppic.file_name = picpath0
+	}
+	else if (file_exist(picpath)){
+		testpr("B\n")
 		prfmenu.helppic.set_rgb(255, 255, 255)
 		prfmenu.helppic.file_name = picpath
 	}
 	else {
-		testpr("B\n")
+		testpr("C\n")
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
 		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 	}
@@ -9060,7 +9066,7 @@ function updatemenu(level, var) {
 	else if (level == 2) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
 
-		menupic (AF.prefs.l1[prfmenu.outres0][zmenu.selected].varname, AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection)
+		menupic (level, AF.prefs.l1[prfmenu.outres0][zmenu.selected].varname, AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection)
 		//TEST160 CHECK
 		/*
 		try {
@@ -9079,7 +9085,7 @@ function updatemenu(level, var) {
 	else if (level == 3) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
 
-		menupic(AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname, var)
+		menupic(level, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname, var)
 		//TEST160 CHECK
 		/*
 		try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].picsel[var]}
