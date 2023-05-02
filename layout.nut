@@ -5,6 +5,49 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
+function int_to_utf8_OLD(number){
+    if (number <= 0x7f)
+        return number.tochar()
+    else if (number <= 0x7ff) {
+        local byte1 = 0xc0 | number >> 6
+        local byte2 = 0x80 | number & 0x3f
+        return (byte1.tochar() + byte2.tochar())
+	 }
+    else if (number <= 0xffff) {
+        local byte1 = 0xe0 | number >> 12
+        local byte2 = 0x80 | (number >> 6) & 0x3f
+        local byte3 = 0x80 | number & 0x3f
+        return (byte1.tochar() + byte2.tochar() + byte3.tochar())
+	 }
+    else if (number <= 0x10ffff) {
+        local byte1 = 0xf0 | number >> 18
+        local byte2 = 0x80 | (number >> 12) & 0x3f
+        local byte3 = 0x80 | (number >> 6) & 0x3f
+        local byte4 = 0x80 | number & 0x3f
+        return (byte1.tochar() + byte2.tochar() + byte3.tochar() + byte4.tochar())
+	 }
+}
+
+
+function int_to_utf8(number){
+	local byte1 = 0xf0 | number >> 18
+	local byte2 = 0x80 | (number >> 12) & 0x3f
+	local byte3 = 0x80 | (number >> 6) & 0x3f
+	local byte4 = 0x80 | number & 0x3f
+	return (byte1.tochar() + byte2.tochar() + byte3.tochar() + byte4.tochar())
+}
+
+local charv = int_to_utf8(0xe901)
+local textv = fe.add_text(charv,0,0,400,100)
+textv.font = "fonts/font_Roboto-Allcaps-EXT4X.ttf"
+
+//pappo = 0
+local number = 128522
+local code = format("\\u{%X}", number)
+print (code+"\n")
+print ("\xE2\x98\xA0")
+print("\n")
+//pappo = 0
 /*
 local ustr = "😊A"
 ustr = "¡~"
@@ -231,9 +274,25 @@ local gh = {
 	commitlist = []
 }
 
+/*
 function gly(index) {
+	print ("I:"+index+"\n")
 	local unizero = 0xe900
-	try {return (AF.uniglyphs[index - unizero + 1])} catch(err) {return ""}
+	try {return (AF.uniglyphs[index - unizero + 1])} catch(err) {
+		print ("O:blank\n")
+		return ""
+	}
+}
+*/
+
+function gly(number){
+	if ((number == null) || (number <= 0)) return ""
+
+	local byte1 = 0xf0 | number >> 18
+	local byte2 = 0x80 | (number >> 12) & 0x3f
+	local byte3 = 0x80 | (number >> 6) & 0x3f
+	local byte4 = 0x80 | number & 0x3f
+	return (byte1.tochar() + byte2.tochar() + byte3.tochar() + byte4.tochar())
 }
 
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
