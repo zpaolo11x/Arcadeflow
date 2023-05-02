@@ -5,7 +5,28 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
+/*
+local ustr = "😊A"
+ustr = "¡~"
+ustr = "AAAA"
+ustr[0] = -62
+ustr[1] = -95
+foreach (i, item in ustr){
+	print (i+" "+ustr[i]+"\n")
+}
+pappo = 1
 
+local num = 128522  // The number to be converted
+local char = blob(2)
+//char.writen(num,'w')
+char.writen(num & 0xff, 'b')
+char.writen((num >> 8) & 0xff, 'b')
+char.seek(0)
+print (char.readn('b')+"\n")
+print (char.readn('b')+"\n")
+
+pappo = 1
+*/
 fe.do_nut("nut_file.nut")
 
 local ap = '"'.tochar()
