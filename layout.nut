@@ -8,7 +8,6 @@
 
 fe.do_nut("nut_file.nut")
 
-local ap = '"'.tochar()
 local comma = ','.tochar()
 
 function split_complete(str_in, separator) {
@@ -686,13 +685,13 @@ function unzipfile(zipfilepath, outputpath, updatecycle = false) {
 	local fout = null
 
 	// Create output folder if needed
-	system ("mkdir " + ap + outputpath + ap)
+	system ("mkdir \"" + outputpath + "\"")
 
 	foreach (id, item in zipdir) {
 		if (updatecycle) bar_cycle_update(null)
 		// Item is a folder, create it
 		if ((item.slice(-1) == "/") && (!(split(item, "/")[split(item, "/").len() - 1].slice(0, 1) == "."))) {
-			system ("mkdir " + ap + outputpath + item + ap)
+			system ("mkdir \"" + outputpath + item + "\"")
 		}
 
 		// Item is a file, unpack it to the proper folder
@@ -2600,13 +2599,13 @@ function parsecommanddat() {
 				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
 				newline = datfile.read_line()
 			}
-			commandstring = "[" + ap + commandsarray[0] + ap
+			commandstring = "[\"" + commandsarray[0] + "\""
 			for (local ii = 1; ii < commandsarray.len(); ii++) {
-				commandstring = commandstring + comma + ap + commandsarray[ii] + ap
+				commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
 			}
 			commandstring += "]"
 			foreach (id, item in romsarray) {
-				outfile.write_line(ap + item + ap + " : " + commandstring + "\n")
+				outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
 			}
 			commandsarray = []
 			commandstring = ""
@@ -2619,17 +2618,17 @@ function parsecommanddat() {
 
 function powerman(action) {
 	if (action == "SHUTDOWN") {
-		if (OS == "OSX") system ("osascript -e 'tell app " + ap + "System Events" + ap + " to shut down'")
+		if (OS == "OSX") system ("osascript -e 'tell app \"System Events\" to shut down'")
 		else if (OS == "Windows") system ("shutdown /s /t 0")
 		else system ("sudo shutdown -h now")
 	}
 	if (action == "REBOOT") {
-		if (OS == "OSX") system ("osascript -e 'tell app " + ap + "System Events" + ap + " to restart'")
+		if (OS == "OSX") system ("osascript -e 'tell app \"System Events\" to restart'")
 		else if (OS == "Windows") system ("shutdown /r /t 0")
 		else system ("sudo reboot")
 	}
 	if (action == "SUSPEND") {
-		if (OS == "OSX") system ("osascript -e 'tell app " + ap + "System Events" + ap + " to sleep'")
+		if (OS == "OSX") system ("osascript -e 'tell app \"System Events\" to sleep'")
 		else if (OS == "Windows") system ("shutdown /h")
 		else system ("sudo pm-hibernate")
 	}
@@ -3267,7 +3266,7 @@ dispatcher = []
 dispatchernum = 0
 
 function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
-	scraprt("ID" + scrapeid + "             createjsonA START" + "\n")
+	scraprt("ID" + scrapeid + "             createjsonA START\n")
 	local unicorrect = unicorrect()
 
 	try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
@@ -3275,14 +3274,14 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs" + " " + ap + "http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
-		execss += "&use_parent=1" + ap + " " + ap + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "jsonA.nut" + ap + " " + ap + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "jsonA.txt" + ap
+		execss += "&use_parent=1\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "jsonA.nut\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "jsonA.txt\""
 	}
 	else {
-		execss = "curl -s " + ap + "http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = "curl -s \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
-		execss += "&use_parent=1" + ap + " -o " + ap + AF.folder + "json/" + scrapeid + "jsonA.nut" + ap + "&& echo ok > " + ap + AF.folder + "json/" + scrapeid + "jsonA.txt" + ap + " &"
+		execss += "&use_parent=1\" -o \"" + AF.folder + "json/" + scrapeid + "jsonA.nut\"&& echo ok > \"" + AF.folder + "json/" + scrapeid + "jsonA.txt\" &"
 	}
 
 	system (execss)
@@ -3307,7 +3306,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
   	if (jsarray[0].slice(0, 1) != "{") {
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
-		echoprint("*" + jsarray[0] + "*" + "\n")
+		echoprint("*" + jsarray[0] + "*\n")
 		dispatcher[scrapeid].jsonstatus = "ERROR"
 		return
 	}
@@ -3331,7 +3330,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 }
 
 function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
-	scraprt("ID" + scrapeid + "             createjson START" + "\n")
+	scraprt("ID" + scrapeid + "             createjson START\n")
 	local unicorrect = unicorrect()
 
 	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
@@ -3348,7 +3347,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs" + " " + ap + "https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
 		if (romcrc != null) execss += "&crc=" + romcrc
@@ -3356,10 +3355,10 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
-		execss += ap + " " + ap + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "json.nut" + ap + " "+ ap + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "json.txt" + ap
+		execss += "\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "json.nut\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "json.txt\""
 	}
 	else {
-		execss = "curl -s " + ap + "https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss = "curl -s \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
 		if (romcrc != null) execss += "&crc=" + romcrc
@@ -3367,7 +3366,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
-		execss += ap + " -o " + ap + AF.folder + "json/" + scrapeid + "json.nut" + ap + " && echo ok > " + ap + AF.folder + "json/" + scrapeid + "json.txt" + ap + " &"
+		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
 
 	system (execss)
@@ -3397,7 +3396,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
   	if (jsarray[0].slice(0, 1) != "{") {
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
-		echoprint("*" + jsarray[0] + "*" + "\n")
+		echoprint("*" + jsarray[0] + "*\n")
 		dispatcher[scrapeid].jsonstatus = "ERROR"
 		if (jsarray[0] == "The maximum threads is already used  ") {
 			echoprint("RETRY\n")
@@ -3646,11 +3645,11 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 
 				//listline = gname + ";" //Name
 				inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
-				inputitem.z_title = subst_replace(inputitem.z_title, ap, "'")
+				inputitem.z_title = subst_replace(inputitem.z_title, "\"", "'")
 
 				inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
 				inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
-				inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, ap, "'")
+				inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, "\"", "'")
 
 				inputitem.z_category = isarcade ? dispatcher[scrapeid].gamedata.adb_genre : dispatcher[scrapeid].gamedata.genre //Category
 				inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
@@ -3733,19 +3732,19 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			if (tempdataA != null) {
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext)))) {
 					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs " + ap + tempdataA.url + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap)
+						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdataA.url + "\" \"" + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + "\"")
 					}
 					else {
-						system ("curl -f --create-dirs -s " + ap + tempdataA.url + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + ap+ (emuartcat == "wheel" ? "": " &"))
+						system ("curl -f --create-dirs -s \"" + tempdataA.url + "\" -o \"" + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext + "\"" + (emuartcat == "wheel" ? "": " &"))
 					}
 				}
 
 				if  (!(AF.scrape.forcemedia == "NO_MEDIA") && ((tempdata.len() > 0) && (emuartcat == "wheel") && ( !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdataA.ext))))) {
 					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + "\"")
 					}
 					else {
-						system ("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap + " &")
+						system ("curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + "\" &")
 					}
 				}
 
@@ -3753,10 +3752,10 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			else if (tempdata.len() > 0) {
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension)))) {
 					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs " + ap + tempdata[0].path + ap + " " + ap + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap)
+						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + "\"")
 					}
 					else {
-						system ("curl --create-dirs -s " + ap + tempdata[0].path + ap + " -o " + ap + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + ap + " &")
+						system ("curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/"+ dispatcher[scrapeid].gamedata.name +"."+ tempdata[0].extension + "\" &")
 					}
 				}
 			}
@@ -4197,7 +4196,7 @@ function saveromdb(romlist, zdb, dbext) {
 	local templine = ""
 	dbfile.write_line("return({\n")
 	foreach (item, value in zdb) {
-		dbfile.write_line("   " + ap + item + ap + " : {\n")
+		dbfile.write_line("   \"" + item + "\" : {\n")
 
 		foreach (item2, value2 in value) {
 			if ((typeof value2 == "table") || (item2 == "z_inmfz")) {
@@ -4206,12 +4205,12 @@ function saveromdb(romlist, zdb, dbext) {
 			else if ((typeof value2 == "array")) {
 				templine = ("      " + item2 + " = [")
 				foreach (arrayid, arrayval in value2) {
-					templine += ap + arrayval + ap
+					templine += "\"" + arrayval + "\""
 					if (arrayid != value2.len() - 1) templine += (comma)
 				}
 				templine += ("]\n")
 			}
-			else templine = "      " + item2 + " = " + (typeof value2 == "string" ? ap + value2 + ap : value2) + "\n"
+			else templine = "      " + item2 + " = " + (typeof value2 == "string" ? "\"" + value2 + "\"" : value2) + "\n"
 			dbfile.write_line(templine)
 		}
 
@@ -4334,7 +4333,7 @@ function splitlistline(str_in) {
 			continue
 		}
 
-		if ((str_char == ap) && (intoken)) {
+		if ((str_char == "\"") && (intoken)) {
 			if (i == str_len - 1) {
 				intoken = false
 				i++
@@ -4352,13 +4351,13 @@ function splitlistline(str_in) {
 			}
 		}
 
-		if ((str_char == ap) && (i == 0)) {
+		if ((str_char == "\"") && (i == 0)) {
 			intoken = true
 			i++
 			continue
 		}
 
-		if ((str_char == ap) && (!intoken)) {
+		if ((str_char == "\"") && (!intoken)) {
 			if (str_in[i - 1].tochar() == ";") {
 				intoken = true
 				i++
@@ -4386,15 +4385,15 @@ function splitlistline(str_in) {
 
 function listfields_to_db1(listfields) {
 	local target = clone (z_fields1)
-	target.z_title = subst_replace(listfields[1], ap, "'")
+	target.z_title = subst_replace(listfields[1], "\"", "'")
 	try {target.z_year = listfields[4]} catch(err) {}
-	try {target.z_manufacturer = subst_replace(listfields[5], ap, "'")} catch(err) {}
+	try {target.z_manufacturer = subst_replace(listfields[5], "\"", "'")} catch(err) {}
 	try {target.z_category = listfields[6]} catch(err) {}
 	try {target.z_players = listfields[7]} catch(err) {}
 	try {target.z_rotation = listfields[8]} catch(err) {}
 	try {target.z_control = listfields[9]} catch(err) {}
-	try {target.z_buttons = subst_replace(listfields[16], ap, "'")} catch(err) {}
-	try {target.z_series = subst_replace(listfields[17], ap, "'")} catch(err) {}
+	try {target.z_buttons = subst_replace(listfields[16], "\"", "'")} catch(err) {}
+	try {target.z_series = subst_replace(listfields[17], "\"", "'")} catch(err) {}
 	try {target.z_region = listfields[19]} catch(err) {}
 	try {target.z_rating = listfields[20]} catch(err) {}
 	target.z_name = listfields[0]
@@ -4412,9 +4411,9 @@ function refreshromlist(romlist, fulllist, updateromlist = true) {
 
 	// Update romlist using AM
 	if (updateromlist) {
-		if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
-		else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
-		else system ("attractplus --build-romlist "+ ap + romlist + ap + " -o "+ ap + romlist + ap)
+		if (OS == "Windows") system ("attractplus-console.exe --build-romlist \"" + romlist + "\" -o \"" + romlist + "\"")
+		else if (OS == "OSX") system ("./attractplus --build-romlist \"" + romlist + "\" -o \"" + romlist + "\"")
+		else system ("attractplus --build-romlist \"" + romlist + "\" -o \"" + romlist + "\"")
 	}
 
 	// Rescan romlist file to complete database entries
@@ -5016,9 +5015,9 @@ function metamenu(starter) {
 
 			if (z_list.dbmeta.rawin(romlist)) {
 				foreach (item, val in z_list.dbmeta[romlist]) {
-					outfile.write_line("   " + ap + item + ap + " : {\n")
+					outfile.write_line("   \"" + item + "\" : {\n")
 					foreach (item2, val2 in val) {
-						outfile.write_line ("      " + item2 + " = " + ap + val2 + ap + "\n")
+						outfile.write_line ("      " + item2 + " = \"" + val2 + "\"\n")
 					}
 					outfile.write_line("   }\n")
 				}
@@ -6471,9 +6470,9 @@ function getallgamesdb(logopic) {
 				// Create empty db for emulators that don't have a romlist
 				refreshromlist (itemname, false, false)
 				/*
-				if (OS == "Windows") system ("attractplus-console.exe --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
-				else if (OS == "OSX") system ("./attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)
-				else system ("attractplus --build-romlist "+ ap + itemname + ap + " -o "+ ap + itemname + ap)	
+				if (OS == "Windows") system ("attractplus-console.exe --build-romlist \"" + itemname + "\" -o \"" + itemname + "\"")
+				else if (OS == "OSX") system ("./attractplus --build-romlist \"" + itemname + "\" -o \"" + itemname + "\"")
+				else system ("attractplus --build-romlist \"" + itemname + "\" -o \"" + itemname + "\"")	
 				*/
 			}
 
@@ -6484,7 +6483,7 @@ function getallgamesdb(logopic) {
 				//TEST160 if done this way, it doesn't risk to happen during collection. 
 				//TEST160 But what happens if the emulator doesn't have a reference romlist?
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
-				z_splash_message("")//("\n\n\n\n\n\n\n" + "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
+				z_splash_message("")//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
 
 				if (prf.SPLASHON) {
@@ -11568,15 +11567,15 @@ function update_allgames_collections(verbose, tempprf) {
 				local strline = ""
 
 				// Add the group romlist to the all games romlsit list
-				allgamesromlist += " " + ap + AF.romlistfolder + item + ".txt" + ap
+				allgamesromlist += " \"" + AF.romlistfolder + item + ".txt\""
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if (val2.inmenu) {
 						if (verbose)z_splash_message ("Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
-						strline += " " + ap + AF.romlistfolder + val2.romlist + ".txt" + ap
+						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 					}
 				}
-				system ((OS == "Windows" ? "type" : "cat") + strline + " > " + ap + filename + ap)
+				system ((OS == "Windows" ? "type" : "cat") + strline + " > \"" + filename + "\"")
 			}
 		}
 	}
@@ -11618,10 +11617,10 @@ function update_allgames_collections(verbose, tempprf) {
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
 	// existing groups
-	if (tempprf.MASTERLIST) allgamesromlist = " " + ap + fe.path_expand(tempprf.MASTERPATH) + ap //if master romlist is used, just copy that as all games romlist
-	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF All Games.txt" + ap)
-	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Favourites.txt" + ap)
-	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > " + ap + AF.romlistfolder + "AF Last Played.txt" + ap)
+	if (tempprf.MASTERLIST) allgamesromlist = " \"" + fe.path_expand(tempprf.MASTERPATH) + "\"" //if master romlist is used, just copy that as all games romlist
+	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > \"" + AF.romlistfolder + "AF All Games.txt\"")
+	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > \"" + AF.romlistfolder + "AF Favourites.txt\"")
+	system ((OS == "Windows" ? "type" : "cat") + allgamesromlist + " > \"" + AF.romlistfolder + "AF Last Played.txt\"")
 
 	//fe.set_display(fe.list.display_index)
 }
@@ -12397,37 +12396,37 @@ zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw 
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 function gh_branchlist(op) {
-	if (op.find(ap + "name" + ap) != null) {
-		gh.branchlist.push(split(op, ap)[3])
+	if (op.find("\"name\"") != null) {
+		gh.branchlist.push(split(op, "\"")[3])
 	}
-	if (op.find(ap + "sha" + ap) != null) {
-		gh.commitlist.push(split(op, ap)[3].slice(0, 7) + " ")
+	if (op.find("\"sha\"") != null) {
+		gh.commitlist.push(split(op, "\"")[3].slice(0, 7) + " ")
 	}
 }
 
 function gh_taglist(op) {
 	bar_cycle_update(null)
-	if (op.find(ap + "name" + ap) != null) {
-		gh.taglist.push(split(op, ap)[3])
+	if (op.find("\"name\"") != null) {
+		gh.taglist.push(split(op, "\"")[3])
 	}
 }
 
 function gh_releaselist(op) {
 	bar_cycle_update(null)
-	if (op.find(ap + "tag_name" + ap) != null) {
-		gh.taglist.push(split(op, ap)[3])
+	if (op.find("\"tag_name\"") != null) {
+		gh.taglist.push(split(op, "\"")[3])
 	}
-	if (op.find(ap + "published_at" + ap) != null) {
-		gh.releasedatelist.push(split(op, ap + "T")[3] + " ")
+	if (op.find("\"published_at\"") != null) {
+		gh.releasedatelist.push(split(op, "\"T")[3] + " ")
 	}
 }
 
 function gh_latestdata(op) {
-	if (op.find(ap + "tag_name" + ap) != null) {
-		gh.latest_version = split(op, ap)[3]
+	if (op.find("\"tag_name\"") != null) {
+		gh.latest_version = split(op, "\"")[3]
 	}
-	else if (op.find(ap + "body" + ap) != null) {
-		gh.release_notes = split(op, ap)[3]
+	else if (op.find("\"body\"") != null) {
+		gh.release_notes = split(op, "\"")[3]
 		gh.release_notes = split_complete (gh.release_notes, "\\r\\n")
 	}
 }
@@ -12451,16 +12450,16 @@ function afinstall(zipball, afname) {
 
 	AF.bar.splashmessage = "Downloading"
 	bar_cycle_update(AF.bar.start)
-	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o " + ap + fe.path_expand(AF.folder) + afname + ".zip" + ap + " --trace-ascii -", "bar_cycle_update")
+	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + fe.path_expand(AF.folder) + afname + ".zip\" --trace-ascii -", "bar_cycle_update")
 	bar_cycle_update(AF.bar.stop)
 
 	// Create target directory
 	AF.bar.splashmessage = "Installing"
 	bar_cycle_update(AF.bar.start)
 	bar_cycle_update(null)
-	system ("mkdir "+ ap + newaffolderTEMP + ap)
+	system ("mkdir \"" + newaffolderTEMP + "\"")
 	bar_cycle_update(null)
-	system ("mkdir "+ ap + newaffolder + ap)
+	system ("mkdir \"" + newaffolder + "\"")
 
 	// Unpack layout
 	unzipfile (AF.folder + afname +".zip", newaffolderTEMP, true)
@@ -12471,12 +12470,12 @@ function afinstall(zipball, afname) {
 		foreach (item2 in ghfolder2.results) {
 			bar_cycle_update(null)
 			system (OS == "Windows" ?
-				"move " + char_replace(ap + item2 + ap, "/", "\\") + " " + char_replace(ap + newaffolder + ap, "/", "\\") :
-				"mv " + ap + item2 + ap + " " + ap + newaffolder + ap)
+				"move " + char_replace("\"" + item2 + "\"", "/", "\\") + " " + char_replace("\"" + newaffolder + "\"", "/", "\\") :
+				"mv \"" + item2 + "\" \"" + newaffolder + "\"")
 		}
 	}
 
-	system (OS == "Windows" ? "rmdir /q /s " + char_replace(ap + newaffolderTEMP + ap, "/", "\\")  : "rm -R " + ap + newaffolderTEMP + ap)
+	system (OS == "Windows" ? "rmdir /q /s " + char_replace("\"" + newaffolderTEMP + "\"", "/", "\\")  : "rm -R \"" + newaffolderTEMP + "\"")
 
 	// Transfer preferences
 	local dir = DirectoryListing(AF.folder)
@@ -12484,7 +12483,7 @@ function afinstall(zipball, afname) {
 		bar_cycle_update(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"), item.len())
-			system ((OS == "Windows" ? "copy " : "cp ") + ap + fe.path_expand(AF.folder) + basename + ap + " " + ap + fe.path_expand(newaffolder) + basename + ap)
+			system ((OS == "Windows" ? "copy " : "cp ") + "\"" + fe.path_expand(AF.folder) + basename + "\" \"" + fe.path_expand(newaffolder) + basename + "\"")
 		}
 	}
 	// Remove downloaded file
@@ -12653,7 +12652,7 @@ function checkforupdates(force) {
 				AF.updatechecking = true
 				AF.bar.splashmessage = "Downloading"
 				bar_cycle_update(AF.bar.start)
-				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o " + ap + fe.path_expand(AF.folder) + newafname + ".zip" + ap + " --trace-ascii -", "bar_cycle_update")
+				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + fe.path_expand(AF.folder) + newafname + ".zip\" --trace-ascii -", "bar_cycle_update")
 				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
@@ -13613,7 +13612,7 @@ if (prf.FPSON) {
 
 function monitortick(tick_time) {
 //X fps.monitor.msg =" var:" + var + " zvar:" + z_var + " offs:" + column.offset + " start:" + column.start + " stop:" + column.stop +" ccval:" +centercorr.val + " ccsh:" +centercorr.shift
-//X fps.monitor.msg = fps.monitor.msg + "\n" + "cols:" + cols + " cczero:" + centercorr.zero + "\n"
+//X fps.monitor.msg = fps.monitor.msg + "\ncols:" + cols + " cczero:" + centercorr.zero + "\n"
 	fps.monitor2.x ++
 	if (fps.monitor2.x - fps.x0 == fps.tickinterval) {
 		fps.monitor.msg = (fps.tickinterval * 1000 / (tick_time - fps.tick000)) + " " + 60.0 / AF.tsc +" " + AF.tsc
@@ -15538,14 +15537,14 @@ function tick(tick_time) {
 			endreport += "SCRAPE STATUS REPORT\n"
 
 			if (AF.scrape.timeoutroms.len() > 0) {
-				endreport += ("TIMEOUT" + ":" + AF.scrape.timeoutroms.len() + " ")
+				endreport += ("TIMEOUT:" + AF.scrape.timeoutroms.len() + " ")
 			}
 			foreach (item, content in AF.scrape.report) {
 				endreport += (item + ":" + content.tot + " ")
 			}
 
 			endreport += ("\n")
-			if (AF.scrape.timeoutroms.len() > 0) endreport += (AF.scrape.separator1 + "\n" + "TIMEOUT" + "\n")
+			if (AF.scrape.timeoutroms.len() > 0) endreport += (AF.scrape.separator1 + "\nTIMEOUT\n")
 			foreach(ix, itemx in AF.scrape.timeoutroms) {
 				endreport += ("- " + itemx.z_name + "\n")
 			}
@@ -15553,7 +15552,7 @@ function tick(tick_time) {
 					foreach (item, content in AF.scrape.report) {
 				endreport += (AF.scrape.separator1 + "\n" + item + "\n")
 				foreach (i2, item2 in content.names) {
-					endreport += ("- " + item2 + "\n" + " [" + content.matches[i2] + "]\n")
+					endreport += ("- " + item2 + "\n [" + content.matches[i2] + "]\n")
 				}
 			}
 
@@ -16682,15 +16681,15 @@ function deletecurrentrom() {
 	foreach (i, item in AF.emulatordata[emulatorname].romextarray) {
 		print("Deleting " + gamepath + item + "\n")
 		try {
-			system ("mkdir " + ap + rompath + "deleted" + ap)
+			system ("mkdir \"" + rompath + "deleted\"")
 		} catch(err) {}
 
 		if (item == ".m3u") {
 			local readm3u = ReadTextFile(rompath + gamepath + item)
 			while (!readm3u.eos()) {
 				local inm3uline = readm3u.read_line()
-				local frompath = ap + rompath + inm3uline + ap
-				local topath = ap + rompath + "deleted/" + inm3uline + ap
+				local frompath = "\"" + rompath + inm3uline + "\""
+				local topath = "\"" + rompath + "deleted/" + inm3uline + "\""
 				try {
 					system (OS == "Windows" ?
 						"move " + char_replace(frompath, "/", "\\") + " " + char_replace(topath, "/", "\\") :
@@ -16701,8 +16700,8 @@ function deletecurrentrom() {
 
 		try {
 			system (OS == "Windows" ?
-			"move "+ ap + char_replace(rompath, "/", "\\") + "\\" + gamepath + item + ap + " " + ap + char_replace(rompath, "/", "\\") + "\\deleted\\" +gamepath + item + ap :
-			"mv " + ap + rompath + gamepath + item + ap + " " + ap + rompath + "deleted/" +gamepath + item + ap)
+			"move \"" + char_replace(rompath, "/", "\\") + "\\" + gamepath + item + "\" \"" + char_replace(rompath, "/", "\\") + "\\deleted\\" +gamepath + item + "\"" :
+			"mv \"" + rompath + gamepath + item + "\" \"" + rompath + "deleted/" +gamepath + item + "\"")
 		} catch(err) {print("skipped\n")}
 	}
 
@@ -16833,7 +16832,7 @@ function ra_init() {
 			stringline = coreinfofile.read_line()
 		}
 		ra.coretable[item].rawset("shortname", item)
-		ra.coretable[item].rawset("displayname", stringline.slice(stringline.find(ap) + 1, -1))
+		ra.coretable[item].rawset("displayname", stringline.slice(stringline.find("\"") + 1, -1))
 	}
 
 	ra.corelist.sort(@(a, b) ra.coretable[a].displayname <=> ra.coretable[b].displayname)
@@ -16852,7 +16851,7 @@ function ra_updatecfg(emulator, core) {
 			filearray[i] = "executable           " + ra.binpath
 		}
 		else if (item.find("args") == 0) {
-			filearray[i] = "args                 -L " + core + " " + ap + "[romfilename]" + ap
+			filearray[i] = "args                 -L " + core + " \"[romfilename]\""
 		}
 	}
 	local emuoutfile = WriteTextFile(FeConfigDirectory + "emulators/" + emulator + ".cfg")
@@ -17159,7 +17158,7 @@ function on_signal(sig) {
 	// Button press: volume editor
 	if ((sig == prf.VOLUMEBUTTON) && !zmenu.showing) {
 		local currvol = 0
-		if (OS == "OSX") fe.plugin_command ("osascript", "-e " + ap + "get volume settings " + ap, "parsevolume")
+		if (OS == "OSX") fe.plugin_command ("osascript", "-e \"get volume settings\"", "parsevolume")
 		else if (OS == "Windows") fe.plugin_command (char_replace(AF.folder, "/", "\\") + "\\SetVol.exe", "report", "parsevolume")
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
@@ -17176,8 +17175,8 @@ function on_signal(sig) {
 			function(out) {
 				if (out != -1) {
 					AF.soundvolume = 10 - out
-					if (OS == "OSX") system ("osascript -e " + ap + "Set Volume " + (0.7 * AF.soundvolume) + ap)
-					else if (OS == "Windows") system (ap + char_replace(AF.folder, "/", "\\") + "\\SetVol.exe" + ap + " " + AF.soundvolume * 10 + " unmute")
+					if (OS == "OSX") system ("osascript -e \"Set Volume " + (0.7 * AF.soundvolume) + "\"")
+					else if (OS == "Windows") system ("\"" + char_replace(AF.folder, "/", "\\") + "\\SetVol.exe\" " + AF.soundvolume * 10 + " unmute")
 					else system ("amixer set Master " + AF.soundvolume * 10 + "%")
 				}
 				zmenuhide()

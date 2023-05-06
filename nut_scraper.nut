@@ -42,8 +42,6 @@ local actionfile = false
 
 local affolder = fe.script_dir
 
-local ap = '"'.tochar()
-
 function cleanWHDL(inputname){
    local outputname = ""
    local vstart = inputname.find("_v")
