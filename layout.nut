@@ -9708,6 +9708,7 @@ function filebrowser1(file0) {
 			extemp = lastnametemp.slice(lastnametemp.len() - 4, lastnametemp.len())
 			try {extemp = extensions[extemp.tolower()]} catch(err) {extemp = ""}
 		}
+		if (extemp == "") extemp = 0
 		browsemenu.push({text = lastnametemp, glyph = (isfile ? extemp : 0xe92f)})
 	}
 	
@@ -12039,6 +12040,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.glyphs[i].margin = 0
 		zmenu.glyphs[i].char_size = overlay.charsize * 1.25
 		zmenu.glyphs[i].align = Align.MiddleCentre
+		testpr(i+"*"+menudata[i].glyph+"*\n")
 		zmenu.glyphs[i].msg = gly(menudata[i].glyph)
 		zmenu.glyphs[i].bg_alpha = 0
 		zmenu.glyphs[i].set_rgb(255, 255, 255)
