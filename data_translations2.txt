@@ -1483,19 +1483,11 @@ ES = "Elige un tema para el fondo del layout, o personaliza el fondo tanto en la
 FR = "Choisissez le fond d'écran pour la page principale et la page d'histoire, ou selectionnez un fond d'écran personsalisé"
 DE = "Auswählen des Layout Hintergrunds der Hauptseite und der History, oder benutzerdefinierte Hintergründe"
 }
-     "Overlay color":{
-IT = "Effetto in sovrapposizione"
-ES = "Color superpuesto"
-BR = "Efeito de sobreposição de camada"
-FR = "Couleur superposée"
-DE = "Overlay Farbe"
+     "Color theme":{
+IT = "Tema colore"
 }
-     "Setup theme luminosity overlay, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered":{
-IT = "Seleziona la luminosità del layout: Basic è leggermente ridotta, Dark ha un effetto più scuro, Light usa un fondo chiaro con testo scuro, Pop mantiene inalterati i colori dello sfondo"
-ES = "Selecciona la iluminación del layout: Simple es ligeramente opaco, Oscuro para oscurecer, Claro para aumentar la iluminación del fondo y resaltar el texto oscuro, Intenso para dejar la iluminación original"
-BR = "Define o brilho do layout: Basic é ligeiramente opaco, Dark tem um efeito mais escurecido, Light usa um fundo claro com texto escuro, Pop mantém as cores de fundo inalteradas"
-FR = "Choisissez la luminosité du theme. Basic est semi sombre, Dark est Sombre, Light est du text foncée sur fond blanc, Pop laisse les couleurs intouchées"
-DE = "Auswählen der Overlay Helligkeit, Basic ist leicht gedämpft, Dark ist dunkler, Light hat ein weißes Overlay und dunklen Text, Pop behält die Farben unverändert bei"
+     "Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered":{
+IT = "Seleziona il tema colore dello sfondo: Basic è leggermente ridotta, Dark ha un effetto più scuro, Light usa un fondo chiaro con testo scuro, Pop mantiene inalterati i colori dello sfondo"
 }
      "Custom main BG image":{
 IT = "Sfondo principale personalizzato"
