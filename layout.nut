@@ -10464,7 +10464,7 @@ histgr.black.set_rgb (0, 0, 0)
 histgr.g1.set_rgb (0, 0, 0)
 histgr.g2.set_rgb (0, 0, 0)
 
-histgr.g1.alpha = histgr.g2.alpha = (prf.DARKPANEL == null ? 0 : 150)
+histgr.g1.alpha = histgr.g2.alpha = (prf.DARKPANEL == null ? 5 : 150)
 histgr.black.alpha = (prf.DARKPANEL == null ? 0 : (prf.DARKPANEL == true ? 180 : 50))
 
 local hist_white = null
