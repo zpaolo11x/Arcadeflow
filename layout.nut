@@ -2353,9 +2353,11 @@ if (UI.vertical) {
 		prf.SLIMLINE = false
 	}
 }
+
 if (UI.vertical) UI.rows = prf.VERTICALROWS
 
 UI.rows = (prf.SMALLSCREEN ? 1 : UI.rows)
+if (prf.SMALLSCREEN) prf.SLIMLINE = prf.MAXLINE = false
 
 fe.layout.width = fl.w_os
 fe.layout.height = fl.h_os
