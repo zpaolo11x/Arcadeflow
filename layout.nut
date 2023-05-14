@@ -1694,9 +1694,7 @@ local dat = {
 	stacksize = (prf.LOWSPECMODE ? 3 : 5)
 	var_array = []
 	cat_array = []
-	but_array = []
-	ctl_array = []
-	ply_array = []
+	meta_array = []
 	mainctg_array = []
 	manufacturer_array = []
 	manufacturername_array = []
@@ -6261,9 +6259,12 @@ function z_list_updategamedata(index) {
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 
+	dat.meta_array[dat.stacksize - 1].msg = metastring(index)
+	/*
 	dat.ply_array[dat.stacksize - 1].msg = players_vec(z_list.boot[index].z_players)
 	dat.but_array[dat.stacksize - 1].msg = buttons_vec(z_list.boot[index].z_buttons)
 	dat.ctl_array[dat.stacksize - 1].msg = controller_vec (z_list.boot[index].z_control)
+	*/
 	dat.mainctg_array[dat.stacksize - 1].msg = maincategorydispl(index)
 	dat.gamename_array[dat.stacksize - 1].msg = gamename2(index)
 
@@ -7117,6 +7118,16 @@ function gamename2(offset) {
 	}
 	else
 		return ""
+}
+
+function metastring(index){
+	local out = players_vec (z_list.boot[index].z_players)
+	out += ">>"
+	out += controller_vec (z_list.boot[index].z_control)
+	out += ">>"
+	out += buttons_vec (z_list.boot[index].z_buttons)
+
+	return (out)
 }
 
 function wrapme(testo, lim_col, lim_row) {
@@ -8528,6 +8539,7 @@ if (prf.SMALLSCREEN) {
 
 local gamed = {
 	catpicT = {}
+	metapicT = {}
 	plypicT = {}
 	ctlpicT = {}
 	butpicT = {}
@@ -8547,6 +8559,13 @@ gamed.catpicT = {
 }
 
 // players image, controller image, button image
+gamed.metapicT = {
+	x = blsize.catp + 2.0 * gamed.catpicT.x,
+	y = blsize.posy,
+	w = blsize.mini * 3.8,
+	h = blsize.mini
+}
+
 gamed.plypicT = {
 	x = blsize.catp + 2.0 * gamed.catpicT.x,
 	y = blsize.posy,
@@ -8572,7 +8591,7 @@ gamed.butpicT = {
 gamed.maincatT = {
 	x = floor(20 * UI.scalerate + 0.5),
 	y = UI.header.h - floor(20 * UI.scalerate + 0.5)- blsize.subt,
-	w = gamed.plypicT.x - 2 * floor(20 * UI.scalerate + 0.5),
+	w = gamed.metapicT.x - 2 * floor(20 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
 
@@ -8592,9 +8611,9 @@ gamed.yearT = {
 
 // game main name and subname
 gamed.mainnameT = {
-	x = gamed.plypicT.x,
+	x = gamed.metapicT.x,
 	y = gamed.catpicT.y,
-	w = fl.w - gamed.plypicT.x - gamed.manufacturerpicT.w - floor(30 * UI.scalerate + 0.5) - floor(5 * UI.scalerate + 0.5),
+	w = fl.w - gamed.metapicT.x - gamed.manufacturerpicT.w - floor(30 * UI.scalerate + 0.5) - floor(5 * UI.scalerate + 0.5),
 	h = gamed.catpicT.h
 }
 
@@ -8636,27 +8655,12 @@ for (local i = 0; i < dat.stacksize; i++) {
 		game_catpic.y = fl.y + floor(gamed.catpicT.y + 0.5 * gamed.catpicT.h) - floor(0.5 * game_catpic.width)
 	}
 
-	local game_butpic = data_surface.add_text("0", fl.x + gamed.butpicT.x, fl.y + gamed.butpicT.y, gamed.butpicT.w, gamed.butpicT.h)
-	game_butpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	game_butpic.font = uifonts.metapics
-	game_butpic.align = Align.MiddleCentre
-	game_butpic.margin = 0
-	game_butpic.char_size = gamed.butpicT.h
-
-	local game_plypic = data_surface.add_text("A", fl.x + gamed.plypicT.x, fl.y + gamed.plypicT.y, gamed.plypicT.w, gamed.plypicT.h)
+	local game_metapic = data_surface.add_text("Aa0", fl.x + gamed.metapicT.x, fl.y + gamed.metapicT.y, gamed.metapicT.w, gamed.metapicT.h)
 	//game_ctlpic.set_bg_rgb(120,0,0)
-	game_plypic.font = uifonts.metapics
-	game_plypic.align = Align.MiddleCentre
-	game_plypic.margin = 0
-	game_plypic.char_size = gamed.plypicT.h
-
-	local game_ctlpic = data_surface.add_text("a", fl.x + gamed.ctlpicT.x, fl.y + gamed.ctlpicT.y, gamed.ctlpicT.w, gamed.ctlpicT.h)
-	game_ctlpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	//game_ctlpic.set_bg_rgb(120,0,0)
-	game_ctlpic.font = uifonts.metapics
-	game_ctlpic.align = Align.MiddleCentre
-	game_ctlpic.margin = 0
-	game_ctlpic.char_size = gamed.ctlpicT.h
+	game_metapic.font = uifonts.metapics
+	game_metapic.align = Align.MiddleCentre
+	game_metapic.margin = 0
+	game_metapic.char_size = gamed.metapicT.h
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
@@ -8724,15 +8728,13 @@ for (local i = 0; i < dat.stacksize; i++) {
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
 
 	if (prf.CLEANLAYOUT) {
-		game_manufacturerpic.visible = game_maincat.visible = game_year.visible = game_manufacturername.visible = game_catpic.visible = game_butpic.visible = game_ctlpic.visible = game_plypic.visible = false
+		game_manufacturerpic.visible = game_maincat.visible = game_year.visible = game_manufacturername.visible = game_catpic.visible = game_metapic.visible = false
 	}
 
 	dat.var_array.push(0)
 	dat.alphapos.push(1)
 	dat.cat_array.push(game_catpic)
-	dat.but_array.push(game_butpic)
-	dat.ply_array.push(game_plypic)
-	dat.ctl_array.push(game_ctlpic)
+	dat.meta_array.push(game_metapic)
 	dat.mainctg_array.push(game_maincat)
 	dat.manufacturer_array.push(game_manufacturerpic)
 	dat.manufacturername_array.push(game_manufacturername)
@@ -15425,9 +15427,12 @@ function on_transition(ttype, var0, ttime) {
 			dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
 
 			dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
+			dat.meta_array[i].msg = metastring(dat.var_array[i])
+			/*
 			dat.ctl_array[i].msg = controller_vec (z_list.boot[dat.var_array[i]].z_control) //TEST160 togliere z_list.boot ecc
 			dat.but_array[i].msg = buttons_vec (z_list.boot[dat.var_array[i]].z_buttons) //TEST160 togliere z_list.boot ecc
 			dat.ply_array[i].msg = players_vec (z_list.boot[dat.var_array[i]].z_players) //TEST160 togliere z_list.boot ecc
+			*/
 		}
 
 		for (local i = 0; i < dat.stacksize - 1; i++) {
@@ -16038,13 +16043,13 @@ function tick(tick_time) {
 
 			if (i != dat.stacksize - 1) {
 				dat.alphapos[i] = dat.alphapos[i] * spdT.dataspeedout
-				dat.ply_array[i].alpha = dat.ctl_array[i].alpha = dat.but_array[i].alpha = dat.cat_array[i].alpha = dat.mainctg_array[i].alpha = dat.manufacturer_array[i].alpha = dat.gamename_array[i].alpha = dat.gamesubname_array[i].alpha = dat.manufacturername_array[i].alpha = dat.gameyear_array[i].alpha = 255 * (dat.alphapos[i]) * 1.0
-				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.ply_array[i].alpha
+				dat.meta_array[i].alpha = dat.cat_array[i].alpha = dat.mainctg_array[i].alpha = dat.manufacturer_array[i].alpha = dat.gamename_array[i].alpha = dat.gamesubname_array[i].alpha = dat.manufacturername_array[i].alpha = dat.gameyear_array[i].alpha = 255 * (dat.alphapos[i]) * 1.0
+				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.meta_array[i].alpha
 			}
 			else {
 				dat.alphapos[dat.stacksize - 1] = dat.alphapos[dat.stacksize - 1] * spdT.dataspeedin
-				dat.ply_array[i].alpha = dat.ctl_array[i].alpha = dat.but_array[dat.stacksize - 1].alpha = dat.cat_array[dat.stacksize - 1].alpha = dat.mainctg_array[dat.stacksize - 1].alpha = dat.manufacturer_array[dat.stacksize - 1].alpha = dat.gamename_array[dat.stacksize - 1].alpha = dat.gamesubname_array[dat.stacksize - 1].alpha = dat.manufacturername_array[dat.stacksize - 1].alpha = dat.gameyear_array[dat.stacksize - 1].alpha = 255 * (1.0 - dat.alphapos[dat.stacksize - 1]) * 1.0
-				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.ply_array[i].alpha
+				dat.meta_array[i].alpha = dat.cat_array[dat.stacksize - 1].alpha = dat.mainctg_array[dat.stacksize - 1].alpha = dat.manufacturer_array[dat.stacksize - 1].alpha = dat.gamename_array[dat.stacksize - 1].alpha = dat.gamesubname_array[dat.stacksize - 1].alpha = dat.manufacturername_array[dat.stacksize - 1].alpha = dat.gameyear_array[dat.stacksize - 1].alpha = 255 * (1.0 - dat.alphapos[dat.stacksize - 1]) * 1.0
+				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.meta_array[i].alpha
 			}
 		}
 		if (dat.alphapos[i] != 0) AF.dat_freeze = false
