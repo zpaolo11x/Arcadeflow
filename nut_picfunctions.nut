@@ -116,6 +116,113 @@ function manufacturer_vec_name(name,year){
 	return  ( (sout == "") ? "" : valueout)
 }
 
+
+local controllerfont = {
+   "joystick (8-way)" : "e",
+   "joystick (8-way),joystick (8-way)" : "e",
+   "joystick (8-way),joystick (8-way),joystick (8-way)" : "e",
+   "joystick (8-way),joystick (8-way),joystick (8-way),joystick (8-way)" : "e",
+   "8-way Joystick" : "e",
+   "Joystick 8 ways" : "e",
+   "8-way Top-Fire Joystick" : "e",
+   "8-way Triggerstick" : "e",
+
+   "joystick (8-way),dial" : "e",
+   "joystick (8-way),dial,joystick (8-way),dial" : "e",
+   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),dial" : "e",
+   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),joystick (8-way)" : "e",
+   "Joystick 8 ways, Dial" : "e",
+
+   "joystick (8-way),paddle,joystick (8-way)" : "e",
+   "joystick (8-way),paddle" : "e",
+   "joystick (8-way),paddle,joystick (8-way),paddle" : "e",
+   "joystick (8-way),paddle,joystick (8-way),paddle,joystick (8-way),paddle" : "e",
+
+   "joystick (8-way),joystick (analog)" : "h",
+   "joystick (8-way),joystick (analog),joystick (8-way),joystick (analog)" : "h",
+
+   "joystick (2-way),joystick (analog)" : "g",
+
+   "joystick (8-way),trackball" : "o",
+   "joystick (8-way),trackball,joystick (8-way),trackball" : "o",
+
+   "joystick (8-way),positional" : "e",
+   "joystick (8-way),positional,joystick (8-way),positional" : "e",
+   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way),positional" : "e",
+   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way)positional,joystick (8-way)positional" : "e",
+   "joystick (5 (half8)-way),joystick (5 (half8)-way)" : "e",
+   "joystick (5 (half8)-way)" : "e",
+   "Joystick 8 ways, Positional" : "e",
+
+   "joystick (4-way)" : "d",
+   "joystick (4-way),joystick (4-way)" : "d",
+   "joystick (4-way),joystick (4-way),joystick (4-way),joystick (4-way)" : "d",
+   "joystick (3 (half4)-way),joystick (3 (half4)-way)" : "d",
+   "joystick (3 (half4)-way)" : "d",
+   "4-way Joystick" : "d",
+   "Joystick 4 ways" : "d",
+
+   "joystick (2-way)" : "c",
+   "joystick (vertical2-way)" : "c",
+   "joystick (2-way),joystick (2-way)" : "c",
+   "joystick (2-way),joystick (2-way),joystick (2-way),joystick (2-way)" : "c",
+   "2-way Joystick (Horizontal)" : "c",
+   "2-way Joystick (Vertical)" : "c",
+   "Joystick 2 ways (horizontal)" : "c",
+   "Joystick 2 ways (vertical)" : "c",
+
+   "paddle,pedal" : "n",
+   "paddle,pedal,paddle,pedal" : "n",
+   "Paddle, Pedal" : "n",
+
+   "dial,pedal" : "n",
+   "dial,pedal,dial,pedal" : "n",
+   "dial,pedal,dial,pedal,dial,pedal" : "n",
+   "dial,pedal,dial,pedal,dial,pedal,dial,pedal" : "n",
+
+   "dial,paddle,pedal" : "n",
+
+   "joystick (analog)" : "f",
+   "joystick (analog),joystick (analog)" : "f",
+   "Analog Stick" : "f",
+
+   "trackball" : "m",
+   "trackball,trackball" : "m",
+   "trackball,trackball,trackball" : "m",
+   "Trackball" : "m",
+
+   "paddle" : "l",
+   "paddle,paddle" : "l",
+
+   "dial" : "l",
+   "dial,dial" : "l",
+
+   "only_buttons" : "j",
+   "only_buttons,only_buttons" : "j",
+   "only_buttons,only_buttons,only_buttons,only_buttons" : "j",
+   "Buttons only" : "j",
+   "Just Buttons" : "j",
+
+   "double joystick" : "i",
+   "double joystick,double joystick" : "i",
+   "Dual 8-way Joysticks" : "i",
+
+   "lightgun" : "k",
+   "lightgun,lightgun" : "k",
+   "Analog Gun" : "k",
+   "Lightgun" : "k",
+}
+function controller_vec(s){
+   //local s = fe.game_info( Info.Control, offset )
+  // print (s+"\n\n")
+   try {
+      return (controllerfont[s])
+   }
+   catch ( err ) {
+      return ("a")
+   }
+}
+
 local controllertable = {
    "joystick (8-way)" : "control_joystick_8way.png",
    "joystick (8-way),joystick (8-way)" : "control_joystick_8way.png",

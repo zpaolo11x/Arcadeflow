@@ -234,7 +234,6 @@ local uifonts = {
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 	title = "fonts/Figtree-Bold.ttf"
-	metapics = "fonts/font_metapics.ttf"
 }
 
 /// Splash functions ///
@@ -6262,7 +6261,7 @@ function z_list_updategamedata(index) {
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 	dat.but_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/buttons/" + z_list.boot[index].z_buttons + "button.png")
 	dat.ply_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/players/players_" + z_list.boot[index].z_players + ".png")
-	dat.ctl_array[dat.stacksize - 1].msg = controller_vec (z_list.boot[index].z_control)
+	dat.ctl_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/controller/" + controller_pic (z_list.boot[index].z_control))
 
 	dat.mainctg_array[dat.stacksize - 1].msg = maincategorydispl(index)
 	dat.gamename_array[dat.stacksize - 1].msg = gamename2(index)
@@ -8650,13 +8649,12 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_plypic.shader = bwtoalpha
 	game_plypic.mipmap = 1
 
-	local game_ctlpic = data_surface.add_text("a", fl.x + gamed.ctlpicT.x, fl.y + gamed.ctlpicT.y, gamed.ctlpicT.w, gamed.ctlpicT.h)
+	local game_ctlpic = data_surface.add_image(AF.folder + "pics/white.png", fl.x + gamed.ctlpicT.x, fl.y + gamed.ctlpicT.y, gamed.ctlpicT.w, gamed.ctlpicT.h)
+	game_ctlpic.smooth = (gamed.ctlpicT.h > 10)
+	game_ctlpic.preserve_aspect_ratio = true
 	game_ctlpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	//game_ctlpic.set_bg_rgb(120,0,0)
-	game_ctlpic.font = uifonts.metapics
-	game_ctlpic.align = Align.MiddleCentre
-	game_ctlpic.margin = 0
-	game_ctlpic.char_size = gamed.ctlpicT.h
+	game_ctlpic.shader = bwtoalpha
+	game_ctlpic.mipmap = 1
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
