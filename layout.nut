@@ -8949,7 +8949,8 @@ function getsubmenunotes(index, i) {
 	local selection = AF.prefs.l1[index][i].selection
 	
 	if (selection == AF.req.keyboard) return("⌨")
-	//else if (selection == AF.req.huevalue) return (AF.prefs.l1[index][i].values)
+	else if (selection == AF.req.huevalue) return (AF.prefs.l1[index][i].values)
+	else if (selection == AF.req.rgbvalue) return (AF.prefs.l1[index][i].values)
 	else if ((selection == AF.req.executef) || (selection == AF.req.exenoret)) return("⏩")
 	else if (selection == AF.req.filereqs) return("⏏")
 	else if (selection == AF.req.menusort) return("☰")
@@ -9526,8 +9527,13 @@ function hueselector(hue, sel, old, start) {
 	if (start) prfmenu.helppic.file_name = "pics/white.png"
 	prfmenu.rgbshowing = true
 
+	if (hue == "") hue = 0
+	if (old == "") old = 0
+	if (typeof hue == "string") hue = hue.tointeger()
+	if (typeof old == "string") old = old.tointeger()
+
 	if (start) hue = old
-	if (hue == "") hue = 0 else hue = hue.tointeger()
+//	if (hue == "") hue = 0 else hue = hue.tointeger()
 	local rgbval = hsl2rgb(hue, 1.0, 0.5)
 
 	prfmenu.helppic.set_rgb(rgbval.R * 255, rgbval.G * 255, rgbval.B * 255)
@@ -9547,7 +9553,7 @@ function hueselector(hue, sel, old, start) {
 			optionsmenu_lev2()
 			return
 		}
-		else if (out == 5) {
+		else if (out == 3) {
 			//SET DEFAULT
 			prfmenu.rgbshowing = false
 			AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].values = ""
