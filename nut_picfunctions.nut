@@ -116,6 +116,97 @@ function manufacturer_vec_name(name,year){
 	return  ( (sout == "") ? "" : valueout)
 }
 
+local playersfont = {
+	"players_" : "A",
+
+	"players_1" : "B",
+	"players_1P" : "B",
+	
+	"players_2" : "C",
+	"players_1-2" : "C",
+	"players_2P" : "C",
+	"players_2P sim" : "C",
+	
+	"players_3" : "D",
+	"players_1-3" : "D",
+	"players_2-3" : "D",
+	"players_3P sim" : "D",
+	"players_3P" : "D",
+	
+	"players_4" : "E",
+	"players_1-4" : "E",
+	"players_2-4" : "E",
+	"players_4P sim" : "E",
+	"players_4P" : "E",
+
+	"players_5" : "F",
+	"players_2-5" : "F",
+	"players_5P alt" : "F",
+	"players_5P" : "F",
+
+	"players_6" : "G",
+	"players_2-6" : "G",
+	"players_6P alt" : "G",
+	"players_6P" : "G",
+
+	"players_7" : "H",
+	"players_2-7" : "H",
+	"players_7P alt" : "H",
+	"players_7P" : "H",
+
+	"players_8" : "I",
+	"players_2-8" : "I",
+	"players_8P alt" : "I",
+	"players_8P" : "I",
+
+	"players_9" : "J",
+	"players_2-9" : "J",
+	"players_9P alt" : "J",
+	"players_9P" : "J",
+
+	"players_2P alt" : "K",
+
+	"players_3P alt" : "L",
+
+	"players_4P alt" : "M",
+
+}
+
+function players_vec(s){
+   //local s = fe.game_info( Info.Control, offset )
+  // print (s+"\n\n")
+   try {
+      return (playersfont[s])
+   }
+   catch ( err ) {
+      return ("A")
+   }
+}
+
+local buottonsfont = {
+	"0button" : "0",
+	"button" : "0",
+
+	"1button" : "1",
+	"2button" : "2",
+	"3button" : "3",
+	"4button" : "4",
+	"5button" : "5",
+	"6button" : "6",
+	"8button" : "7",
+	"13utton" : "8"
+}
+
+function buttons_vec(s){
+   //local s = fe.game_info( Info.Control, offset )
+  // print (s+"\n\n")
+   try {
+      return (buottonsfont[s])
+   }
+   catch ( err ) {
+      return ("0")
+   }
+}
 
 local controllerfont = {
    "joystick (8-way)" : "e",

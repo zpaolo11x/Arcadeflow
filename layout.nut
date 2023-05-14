@@ -6260,10 +6260,10 @@ function z_list_updategamedata(index) {
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
-	dat.but_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/buttons/" + z_list.boot[index].z_buttons + "button.png")
-	dat.ply_array[dat.stacksize - 1].file_name = (AF.folder + "metapics/players/players_" + z_list.boot[index].z_players + ".png")
-	dat.ctl_array[dat.stacksize - 1].msg = controller_vec (z_list.boot[index].z_control)
 
+	dat.ply_array[dat.stacksize - 1].msg = players_vec("players_" + z_list.boot[index].z_players)
+	dat.but_array[dat.stacksize - 1].msg = buttons_vec(z_list.boot[index].z_buttons + "button")
+	dat.ctl_array[dat.stacksize - 1].msg = controller_vec (z_list.boot[index].z_control)
 	dat.mainctg_array[dat.stacksize - 1].msg = maincategorydispl(index)
 	dat.gamename_array[dat.stacksize - 1].msg = gamename2(index)
 
@@ -8636,19 +8636,19 @@ for (local i = 0; i < dat.stacksize; i++) {
 		game_catpic.y = fl.y + floor(gamed.catpicT.y + 0.5 * gamed.catpicT.h) - floor(0.5 * game_catpic.width)
 	}
 
-	local game_butpic = data_surface.add_image(AF.folder + "pics/white.png", fl.x + gamed.butpicT.x, fl.y + gamed.butpicT.y, gamed.butpicT.w, gamed.butpicT.h)
-	game_butpic.smooth = (gamed.butpicT.h > 10)
-	game_butpic.preserve_aspect_ratio = true
+	local game_butpic = data_surface.add_text("0", fl.x + gamed.butpicT.x, fl.y + gamed.butpicT.y, gamed.butpicT.w, gamed.butpicT.h)
 	game_butpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	game_butpic.shader = bwtoalpha
-	game_butpic.mipmap = 1
+	game_butpic.font = uifonts.metapics
+	game_butpic.align = Align.MiddleCentre
+	game_butpic.margin = 0
+	game_butpic.char_size = gamed.butpicT.h
 
-	local game_plypic = data_surface.add_image(AF.folder + "pics/white.png", fl.x + gamed.plypicT.x, fl.y + gamed.plypicT.y, gamed.plypicT.w, gamed.plypicT.h)
-	game_plypic.smooth = (gamed.plypicT.h > 10)
-	game_plypic.preserve_aspect_ratio = true
-	game_plypic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	game_plypic.shader = bwtoalpha
-	game_plypic.mipmap = 1
+	local game_plypic = data_surface.add_text("A", fl.x + gamed.plypicT.x, fl.y + gamed.plypicT.y, gamed.plypicT.w, gamed.plypicT.h)
+	//game_ctlpic.set_bg_rgb(120,0,0)
+	game_plypic.font = uifonts.metapics
+	game_plypic.align = Align.MiddleCentre
+	game_plypic.margin = 0
+	game_plypic.char_size = gamed.plypicT.h
 
 	local game_ctlpic = data_surface.add_text("a", fl.x + gamed.ctlpicT.x, fl.y + gamed.ctlpicT.y, gamed.ctlpicT.w, gamed.ctlpicT.h)
 	game_ctlpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
@@ -15423,6 +15423,9 @@ function on_transition(ttype, var0, ttime) {
 			dat.gamesubname_array[i].msg = gamesubname(dat.var_array[i])
 			dat.gameyear_array[i].msg = gameyearstring (dat.var_array[i])
 			dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
+			dat.ctl_array[i].msg = controller_vec (z_list.boot[dat.var_array[i]].z_control) //TEST160 togliere z_list.boot ecc
+			dat.but_array[i].msg = buttons_vec (z_list.boot[dat.var_array[i]].z_buttons+"button") //TEST160 togliere z_list.boot ecc
+			dat.ply_array[i].msg = players_vec ("players_" + z_list.boot[dat.var_array[i]].z_players) //TEST160 togliere z_list.boot ecc
 		}
 
 		for (local i = 0; i< dat.stacksize - 1; i++) {
@@ -15432,9 +15435,9 @@ function on_transition(ttype, var0, ttime) {
 			dat.manufacturer_array[i].msg = dat.manufacturer_array[i + 1].msg
 			dat.manufacturer_array[i + 1].msg = msgtemp
 			dat.cat_array[i].swap (dat.cat_array[i + 1])
-			dat.but_array[i].swap (dat.but_array[i + 1])
-			dat.ply_array[i].swap (dat.ply_array[i + 1])
-			dat.ctl_array[i].swap (dat.ctl_array[i + 1])
+			//dat.but_array[i].swap (dat.but_array[i + 1])
+			//dat.ply_array[i].swap (dat.ply_array[i + 1])
+			//dat.ctl_array[i].swap (dat.ctl_array[i + 1])
 
 			//varoffset = z_list.gametable[modwrap(z_list.newindex + dat.var_array[i], z_list.size)].z_felistindex - z_list.gametable[modwrap(z_list.newindex, z_list.size)].z_felistindex
 
