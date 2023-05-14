@@ -15417,23 +15417,27 @@ function on_transition(ttype, var0, ttime) {
 
 		local varoffset = 0
 
-		for (local i = 0; i< dat.stacksize; i++) {
+		for (local i = 0; i < dat.stacksize; i++) {
 			dat.mainctg_array[i].msg = maincategorydispl(dat.var_array[i])
 			dat.gamename_array[i].msg = gamename2(dat.var_array[i])
 			dat.gamesubname_array[i].msg = gamesubname(dat.var_array[i])
 			dat.gameyear_array[i].msg = gameyearstring (dat.var_array[i])
 			dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
+			dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
+
 			dat.ctl_array[i].msg = controller_vec (z_list.boot[dat.var_array[i]].z_control) //TEST160 togliere z_list.boot ecc
 			dat.but_array[i].msg = buttons_vec (z_list.boot[dat.var_array[i]].z_buttons+"button") //TEST160 togliere z_list.boot ecc
 			dat.ply_array[i].msg = players_vec ("players_" + z_list.boot[dat.var_array[i]].z_players) //TEST160 togliere z_list.boot ecc
 		}
 
-		for (local i = 0; i< dat.stacksize - 1; i++) {
+		for (local i = 0; i < dat.stacksize - 1; i++) {
 			// dat.manufacturer_array[i].rawset_index_offset(dat.var_array[i])
 			// dat.cat_array[i].rawset_index_offset(dat.var_array[i])
+			/*
 			local msgtemp = dat.manufacturer_array[i].msg
 			dat.manufacturer_array[i].msg = dat.manufacturer_array[i + 1].msg
 			dat.manufacturer_array[i + 1].msg = msgtemp
+			*/
 			dat.cat_array[i].swap (dat.cat_array[i + 1])
 			//dat.but_array[i].swap (dat.but_array[i + 1])
 			//dat.ply_array[i].swap (dat.ply_array[i + 1])
