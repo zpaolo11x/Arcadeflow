@@ -8540,9 +8540,6 @@ if (prf.SMALLSCREEN) {
 local gamed = {
 	catpicT = {}
 	metapicT = {}
-	plypicT = {}
-	ctlpicT = {}
-	butpicT = {}
 	maincatT = {}
 	manufacturerpicT = {}
 	yearT = {}
@@ -8563,27 +8560,6 @@ gamed.metapicT = {
 	x = blsize.catp + 2.0 * gamed.catpicT.x,
 	y = blsize.posy,
 	w = blsize.mini * 3.8,
-	h = blsize.mini
-}
-
-gamed.plypicT = {
-	x = blsize.catp + 2.0 * gamed.catpicT.x,
-	y = blsize.posy,
-	w = blsize.mini,
-	h = blsize.mini
-}
-
-gamed.ctlpicT = {
-	x = gamed.plypicT.x + blsize.mini + floor(10 * UI.scalerate + 0.5),
-	y = gamed.plypicT.y,
-	w = blsize.mini,
-	h = blsize.mini
-}
-
-gamed.butpicT = {
-	x = gamed.plypicT.x + 2 * (blsize.mini + floor(10 * UI.scalerate + 0.5)),
-	y = gamed.plypicT.y,
-	w = floor(blsize.mini * 1.25 + 0.5),
 	h = blsize.mini
 }
 
@@ -8618,9 +8594,9 @@ gamed.mainnameT = {
 }
 
 gamed.subnameT = {
-	x = gamed.butpicT.x + gamed.butpicT.w + floor(15 * UI.scalerate + 0.5),
+	x = gamed.metapicT.x + gamed.metapicT.w + floor(15 * UI.scalerate + 0.5),
 	y = gamed.maincatT.y,
-	w = fl.w - gamed.butpicT.x - gamed.butpicT.w - floor(15  * UI.scalerate + 0.5) - gamed.manufacturerpicT.w - floor(30 * UI.scalerate + 0.5) - floor(5 * UI.scalerate + 0.5),
+	w = fl.w - gamed.metapicT.x - gamed.metapicT.w - floor(15  * UI.scalerate + 0.5) - gamed.manufacturerpicT.w - floor(30 * UI.scalerate + 0.5) - floor(5 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
 
