@@ -6261,8 +6261,8 @@ function z_list_updategamedata(index) {
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 
-	dat.ply_array[dat.stacksize - 1].msg = players_vec("players_" + z_list.boot[index].z_players)
-	dat.but_array[dat.stacksize - 1].msg = buttons_vec(z_list.boot[index].z_buttons + "button")
+	dat.ply_array[dat.stacksize - 1].msg = players_vec(z_list.boot[index].z_players)
+	dat.but_array[dat.stacksize - 1].msg = buttons_vec(z_list.boot[index].z_buttons)
 	dat.ctl_array[dat.stacksize - 1].msg = controller_vec (z_list.boot[index].z_control)
 	dat.mainctg_array[dat.stacksize - 1].msg = maincategorydispl(index)
 	dat.gamename_array[dat.stacksize - 1].msg = gamename2(index)
@@ -15423,27 +15423,15 @@ function on_transition(ttype, var0, ttime) {
 			dat.gamesubname_array[i].msg = gamesubname(dat.var_array[i])
 			dat.gameyear_array[i].msg = gameyearstring (dat.var_array[i])
 			dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
-			dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
 
+			dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
 			dat.ctl_array[i].msg = controller_vec (z_list.boot[dat.var_array[i]].z_control) //TEST160 togliere z_list.boot ecc
-			dat.but_array[i].msg = buttons_vec (z_list.boot[dat.var_array[i]].z_buttons+"button") //TEST160 togliere z_list.boot ecc
-			dat.ply_array[i].msg = players_vec ("players_" + z_list.boot[dat.var_array[i]].z_players) //TEST160 togliere z_list.boot ecc
+			dat.but_array[i].msg = buttons_vec (z_list.boot[dat.var_array[i]].z_buttons) //TEST160 togliere z_list.boot ecc
+			dat.ply_array[i].msg = players_vec (z_list.boot[dat.var_array[i]].z_players) //TEST160 togliere z_list.boot ecc
 		}
 
 		for (local i = 0; i < dat.stacksize - 1; i++) {
-			// dat.manufacturer_array[i].rawset_index_offset(dat.var_array[i])
-			// dat.cat_array[i].rawset_index_offset(dat.var_array[i])
-			/*
-			local msgtemp = dat.manufacturer_array[i].msg
-			dat.manufacturer_array[i].msg = dat.manufacturer_array[i + 1].msg
-			dat.manufacturer_array[i + 1].msg = msgtemp
-			*/
 			dat.cat_array[i].swap (dat.cat_array[i + 1])
-			//dat.but_array[i].swap (dat.but_array[i + 1])
-			//dat.ply_array[i].swap (dat.ply_array[i + 1])
-			//dat.ctl_array[i].swap (dat.ctl_array[i + 1])
-
-			//varoffset = z_list.gametable[modwrap(z_list.newindex + dat.var_array[i], z_list.size)].z_felistindex - z_list.gametable[modwrap(z_list.newindex, z_list.size)].z_felistindex
 
 			if (!prf.CLEANLAYOUT) dat.manufacturername_array[i].visible = (dat.manufacturer_array[i].msg == "")
 

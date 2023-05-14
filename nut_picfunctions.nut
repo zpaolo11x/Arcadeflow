@@ -173,14 +173,10 @@ local playersfont = {
 }
 
 function players_vec(s){
-   //local s = fe.game_info( Info.Control, offset )
-  // print (s+"\n\n")
-   try {
-      return (playersfont[s])
-   }
-   catch ( err ) {
-      return ("A")
-   }
+   if (playersfont.rawin("players_" + s)) 
+		return playersfont["players_" + s]
+	else
+		return ("A")
 }
 
 local buottonsfont = {
@@ -198,14 +194,10 @@ local buottonsfont = {
 }
 
 function buttons_vec(s){
-   //local s = fe.game_info( Info.Control, offset )
-  // print (s+"\n\n")
-   try {
-      return (buottonsfont[s])
-   }
-   catch ( err ) {
-      return ("0")
-   }
+   if (buottonsfont.rawin(s + "button")) 
+		return buottonsfont[s + "button"]
+	else
+		return ("0")
 }
 
 local controllerfont = {
@@ -304,14 +296,10 @@ local controllerfont = {
    "Lightgun" : "k",
 }
 function controller_vec(s){
-   //local s = fe.game_info( Info.Control, offset )
-  // print (s+"\n\n")
-   try {
-      return (controllerfont[s])
-   }
-   catch ( err ) {
-      return ("a")
-   }
+    if (controllerfont.rawin(s)) 
+		return controllerfont[s]
+	else
+		return ("a") 
 }
 
 local controllertable = {
