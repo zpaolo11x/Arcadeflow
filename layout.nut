@@ -8948,16 +8948,27 @@ function overlay_hide() {
 function getsubmenunotes(index, i) {		
 	local selection = AF.prefs.l1[index][i].selection
 	
-	if (selection == AF.req.keyboard) return("⌨")
-	else if (selection == AF.req.huevalue) return (AF.prefs.l1[index][i].values)
-	else if (selection == AF.req.rgbvalue) return (AF.prefs.l1[index][i].values)
-	else if ((selection == AF.req.executef) || (selection == AF.req.exenoret)) return("⏩")
-	else if (selection == AF.req.filereqs) return("⏏")
-	else if (selection == AF.req.menusort) return("☰")
-	else if (selection == AF.req.slideint) return(AF.prefs.l1[index][i].values)
-	else if (selection < 0) return("")
-	else return(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
-	
+	switch (selection){
+		case AF.req.keyboard:
+			return("⌨")
+
+		case AF.req.huevalue:
+		case AF.req.rgbvalue:
+		case AF.req.slideint:
+			return (AF.prefs.l1[index][i].values)
+		
+		case AF.req.executef:
+		case AF.req.exenoret:
+			return("⏩")
+		
+		case AF.req.filereqs:
+			return("⏏")
+		
+		case AF.req.menusort:
+			return("☰")
+	}
+	if (selection < 0) return("")
+	return(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
 }
 
 function getsubmenudata(index) {
