@@ -233,6 +233,7 @@ local uifonts = {
 	mono = "fonts/font_RobotoMono-VariableFont_wght.ttf"
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
+	title = "fonts/Figtree-Bold.ttf"
 }
 
 /// Splash functions ///
@@ -7105,13 +7106,13 @@ function gamename2(offset) {
 
 			local s1 = split(s0, "/")
 			if (s1.len() > 1) {
-				return strip(s1[0]) + "\n" + strip(s1[1])
+				return (strip(s1[0]) + "\n" + strip(s1[1])).toupper()
 			}
 			else {
-				return s0
+				return s0.toupper()
 			}
 		}
-		else return (s0)
+		else return s0.toupper()
 	}
 	else
 		return ""
@@ -8673,7 +8674,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_mainname.char_size = (gamed.mainnameT.h - 10 * UI.scalerate) * 0.5 / uifonts.pixel
 	game_mainname.line_spacing = 0.670000068
 	game_mainname.margin = 0
-	game_mainname.font = uifonts.gui
+	game_mainname.font = uifonts.title//uifonts.gui
 	game_mainname.alpha = 255
 	game_mainname.visible = true
 
