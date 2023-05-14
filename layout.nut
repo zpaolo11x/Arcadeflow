@@ -235,8 +235,8 @@ local uifonts = {
 	pixel = 0.711
 }
 
-uifonts.gui = uifonts.general = "fonts/Figtree-SemiBold.ttf"
-uifonts.lite = "fonts/Figtree-Light.ttf"
+uifonts.gui = uifonts.general = "fonts/Figtree-Bold.ttf"
+uifonts.lite = "fonts/Figtree-Regular.ttf"
 
 /// Splash functions ///
 
