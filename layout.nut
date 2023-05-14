@@ -234,10 +234,7 @@ local uifonts = {
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 }
-/*
-uifonts.gui = uifonts.general = "fonts/Figtree-Bold.ttf"
-uifonts.lite = "fonts/Figtree-Regular.ttf"
-*/
+
 /// Splash functions ///
 
 // Custom splash message wrappers with AF custom fonts
@@ -7108,13 +7105,13 @@ function gamename2(offset) {
 
 			local s1 = split(s0, "/")
 			if (s1.len() > 1) {
-				return (strip(s1[0]) + "\n" + strip(s1[1])).toupper()
+				return strip(s1[0]) + "\n" + strip(s1[1])
 			}
 			else {
-				return s0.toupper()
+				return s0
 			}
 		}
-		else return (s0.toupper())
+		else return (s0)
 	}
 	else
 		return ""
@@ -7263,9 +7260,9 @@ function gamesubname(offset) {
 			s3 = s3 + " " + s2[0]
 		}
 		s3 = s3 + " " + amy_str
-		return (((system2 == "") || (!prf.SHOWSYSNAME)) ? strip(s3) : (prf.SHOWSYSART ?  systemfont(system2, false) : system2) + " - " + strip(s3)).toupper()
+		return (((system2 == "") || (!prf.SHOWSYSNAME)) ? strip(s3) : (prf.SHOWSYSART ?  systemfont(system2, false) : system2) + " - " + strip(s3))
 	}
-	return (((system2 == "") || (!prf.SHOWSYSNAME)) ? "" : (prf.SHOWSYSART ?  systemfont(system2, false) : system2)).toupper()
+	return (((system2 == "") || (!prf.SHOWSYSNAME)) ? "" : (prf.SHOWSYSART ?  systemfont(system2, false) : system2))
 }
 
 local categorytable = {}
@@ -11962,7 +11959,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu.reactfunction = response
 	zmenu.reactleft = left
 	zmenu.reactright = right
-	overlay.label.msg = title.toupper()
+	overlay.label.msg = title
 	overlay.glyph.msg = gly(titleglyph)
 	overlay.glyph.x = fl.x + fl.w * 0.5 - overlay.label.msg_width * 0.5 - overlay.labelheight
 
@@ -12043,7 +12040,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 		zmenu.noteitems[i].set_pos(noteitems_x, scanpos, noteitems_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh)
 		zmenu.noteitems[i].visible = true
-		zmenu.noteitems[i].msg = typeof zmenu.data[i].note == "string" ? zmenu.data[i].note.toupper() : zmenu.data[i].note
+		zmenu.noteitems[i].msg = zmenu.data[i].note
 		zmenu.noteitems[i].font = uifonts.gui
 		zmenu.noteitems[i].char_size = overlay.charsize
 		zmenu.noteitems[i].word_wrap = true
@@ -12074,7 +12071,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			zmenu.items[i] = zmenu_surface.add_text(" ", 0, 0, 1, 1)
 		}
 		zmenu.items[i].set_pos(items_x, scanpos, items_w, zmenu.data[i].liner ? zmenu.strikeh : zmenu.tileh)
-		zmenu.items[i].msg = menudata[i].text.toupper()
+		zmenu.items[i].msg = menudata[i].text
 		if (zmenu.items[i].msg == "EXIT ARCADEFLOW") zmenu.items[i].msg = ltxt("EXIT ARCADEFLOW", AF.LNG)
 		zmenu.items[i].font = uifonts.gui
 		zmenu.items[i].char_size = overlay.charsize
@@ -14870,7 +14867,7 @@ function z_listrefreshtiles() {
 	function z_listrefreshlabels() {
 		timestart("    z_listrefreshlabels")
 		// Clean old ticks and labels
-	filterdata.msg = (prf.CLEANLAYOUT ? "" : (((fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name + "\n") + gamelistorder(0))).toupper()
+	filterdata.msg = (prf.CLEANLAYOUT ? "" : (((fe.filters.len() == 0) ? "" : fe.filters[fe.list.filter_index].name + "\n") + gamelistorder(0)))
 
 	try {
 		foreach (label in sortlabels) {
