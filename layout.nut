@@ -234,10 +234,10 @@ local uifonts = {
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 }
-
+/*
 uifonts.gui = uifonts.general = "fonts/Figtree-Bold.ttf"
 uifonts.lite = "fonts/Figtree-Regular.ttf"
-
+*/
 /// Splash functions ///
 
 // Custom splash message wrappers with AF custom fonts
