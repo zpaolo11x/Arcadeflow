@@ -11857,9 +11857,9 @@ function getxstop(){
 	}
 
 	zmenu.scroller.height = (zmenu.height / zmenu.virtualheight) * zmenu.height
-	zmenu.scroller.y = (-1*xstop/zmenu.virtualheight) * zmenu.height
+	zmenu.scroller.y = (-1 * xstop/zmenu.virtualheight) * zmenu.height
 	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
-	testpr("X\n")
+
 	return xstop
 }
 
