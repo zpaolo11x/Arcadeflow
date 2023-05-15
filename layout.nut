@@ -7453,7 +7453,7 @@ local overlay = {
 	wline = null
 	filterbg = null
 
-	
+
 	ex_top = floor(UI.header.h * 0.6)
 	ex_bottom = floor(UI.footer.h3 * 0.5)
 	in_side = UI.vertical ? floor(UI.footer.h3 * 0.5) : floor(UI.footer.h3 * 0.65)
@@ -11666,6 +11666,9 @@ zmenu = {
 	noteitems = []
 	strikelines = []
 	
+	uparrow = null
+	downarrow = null
+
 	pos0 = []				// Scroll control items
 	xstart = 0
 	xstop = 0
@@ -11806,6 +11809,9 @@ zmenu.blanker = zmenu_surface.add_rectangle(0, 0, 1, 1)
 zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
+
+zmenu.uparrow = zmenu_surface.add_text("O", zmenu.width - 40 * UI.scalerate, 0, 40 * UI.scalerate, 40 * UI.scalerate)
+zmenu.downarrow = zmenu_surface.add_text("O", zmenu.width - 40 * UI.scalerate, zmenu.height - 40 * UI.scalerate, 40 * UI.scalerate, 40 * UI.scalerate)
 
 function cleanupmenudata(menudata){
 	foreach (i, item in menudata){
