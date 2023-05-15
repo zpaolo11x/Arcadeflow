@@ -1750,7 +1750,7 @@ local flowT = {
 	alphadisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zoomdisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
 
-	scroller = [0.0, 1.0, 0.0, 0.0, 0.0]
+	scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
 
 }
 
@@ -12375,7 +12375,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			}
 		}
 	}
-	flowT.scroller = [0.0, 1.0, 0.0, 0.0, 0.0]
+	flowT.scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenu.scroller.alpha = 0
 	flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 
@@ -16252,8 +16252,10 @@ function tick(tick_time) {
 
 	if (checkfade(flowT.scroller)){
 		flowT.scroller = fadeupdate(flowT.scroller)
-		if (endfade (flowT.scroller) == 0) {
-			startfade(flowT.scroller, -0.1, 0.0)
+		testpr("ef:"+endfade(flowT.scroller+"\n"))
+		if (endfade (flowT.scroller) == 1) {
+			testpr("B\n")
+			flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
 		}
 		zmenu.scroller.alpha = (255 * flowT.scroller[1])
 		testpr(zmenu.scroller.alpha+"\n")
