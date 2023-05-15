@@ -7453,6 +7453,7 @@ local overlay = {
 	wline = null
 	filterbg = null
 
+	
 	ex_top = floor(UI.header.h * 0.6)
 	ex_bottom = floor(UI.footer.h3 * 0.5)
 	in_side = UI.vertical ? floor(UI.footer.h3 * 0.5) : floor(UI.footer.h3 * 0.65)
