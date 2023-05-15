@@ -11830,7 +11830,7 @@ zmenu.uparrowl.margin = zmenu.downarrowl.margin = zmenu.uparrowr.margin = zmenu.
 zmenu.uparrowl.align = zmenu.downarrowl.align = zmenu.uparrowr.align = zmenu.downarrowr.align = Align.MiddleCentre
 zmenu.uparrowl.alpha = zmenu.downarrowl.alpha = zmenu.uparrowr.alpha = zmenu.downarrowr.alpha = zmenu.arrowalpha
 
-zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 1, 0, 1, zmenu.arrowsize)
+zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 2, 0, 2, zmenu.arrowsize)
 zmenu.scroller.set_rgb(255,255,255)
 zmenu.scroller.alpha = 0
 
@@ -11877,7 +11877,7 @@ function getxstop(){
 
 	zmenu.scroller.height = (zmenu.height / zmenu.virtualheight) * zmenu.height
 	zmenu.scroller.y = (-1*xstop/zmenu.virtualheight) * zmenu.height
-	flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
+	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 	testpr("X\n")
 	return xstop
 }
@@ -12377,7 +12377,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	}
 	flowT.scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenu.scroller.alpha = 0
-	flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
+	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 
 }
 
@@ -15823,7 +15823,7 @@ function tick(tick_time) {
 		}
 		else {
 			zmenu.xstart = zmenu.xstop
-			flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
+			//flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
 			zmenu.speed = 0
 			for (local i = 0; i < zmenu.shown; i++) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
@@ -16255,7 +16255,7 @@ function tick(tick_time) {
 		testpr("ef:"+endfade(flowT.scroller+"\n"))
 		if (endfade (flowT.scroller) == 1) {
 			testpr("B\n")
-			flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
+			flowT.scroller = startfade(flowT.scroller, -0.05, 5.0)
 		}
 		zmenu.scroller.alpha = (255 * flowT.scroller[1])
 		testpr(zmenu.scroller.alpha+"\n")
