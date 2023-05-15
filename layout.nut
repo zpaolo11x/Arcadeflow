@@ -1749,6 +1749,9 @@ local flowT = {
 	zoomletter = [0.0, 0.0, 0.0, 0.0, 0.0]
 	alphadisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zoomdisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
+
+	scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
+
 }
 
 local noshader = fe.add_shader(Shader.Empty)
@@ -11666,8 +11669,14 @@ zmenu = {
 	noteitems = []
 	strikelines = []
 	
-	uparrow = null
-	downarrow = null
+	uparrowl = null
+	downarrowl = null
+	uparrowr = null
+	downarrowr = null
+	arrowsize = floor (40 * UI.scalerate)
+	arrowalpha = 200
+	scroller = null
+	scrolleroffset = floor (10* UI.scalerate)
 
 	pos0 = []				// Scroll control items
 	xstart = 0
@@ -11810,13 +11819,19 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-zmenu.uparrow = zmenu_surface.add_text("△", zmenu.width - 40 * UI.scalerate, 0, 40 * UI.scalerate, 40 * UI.scalerate)
-zmenu.downarrow = zmenu_surface.add_text("▽", zmenu.width - 40 * UI.scalerate, zmenu.height - 40 * UI.scalerate, 40 * UI.scalerate, 40 * UI.scalerate)
-zmenu.uparrow.char_size = zmenu.downarrow.char_size = 40 * UI.scalerate
-zmenu.uparrow.font = zmenu.downarrow.font = uifonts.gui
-zmenu.uparrow.margin = zmenu.downarrow.margin = 0
-zmenu.uparrow.align = zmenu.downarrow.align = Align.MiddleCentre
+zmenu.uparrowr = zmenu_surface.add_text("△", zmenu.width - zmenu.arrowsize, 0, zmenu.arrowsize, zmenu.arrowsize)
+zmenu.downarrowr = zmenu_surface.add_text("▽", zmenu.width - zmenu.arrowsize, zmenu.height - zmenu.arrowsize, zmenu.arrowsize, zmenu.arrowsize)
+zmenu.uparrowl = zmenu_surface.add_text("△", 0, 0, zmenu.arrowsize, zmenu.arrowsize)
+zmenu.downarrowl = zmenu_surface.add_text("▽", 0, zmenu.height - zmenu.arrowsize, zmenu.arrowsize, zmenu.arrowsize)
 
+zmenu.uparrowl.char_size = zmenu.downarrowl.char_size = zmenu.uparrowr.char_size = zmenu.downarrowr.char_size = zmenu.arrowsize
+zmenu.uparrowl.font = zmenu.downarrowl.font = zmenu.uparrowr.font = zmenu.downarrowr.font = uifonts.gui
+zmenu.uparrowl.margin = zmenu.downarrowl.margin = zmenu.uparrowr.margin = zmenu.downarrowr.margin = 0
+zmenu.uparrowl.align = zmenu.downarrowl.align = zmenu.uparrowr.align = zmenu.downarrowr.align = Align.MiddleCentre
+zmenu.uparrowl.alpha = zmenu.downarrowl.alpha = zmenu.uparrowr.alpha = zmenu.downarrowr.alpha = zmenu.arrowalpha
+
+zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 1, 0, 1, zmenu.arrowsize)
+zmenu.scroller.set_rgb(255,255,255)
 
 function cleanupmenudata(menudata){
 	foreach (i, item in menudata){
@@ -11838,18 +11853,18 @@ function getxstop(){
 	local xstop = 0
 	local menucorrect = 0
 
-	zmenu.uparrow.visible = zmenu.downarrow.visible = !(zmenu.virtualheight <= zmenu.height)
+	zmenu.uparrowr.visible = zmenu.downarrowr.visible = zmenu.uparrowl.visible = zmenu.downarrowl.visible = !(zmenu.virtualheight <= zmenu.height)
 
 	// Lower portion
 	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
-		zmenu.downarrow.visible = false
+		zmenu.downarrowl.visible = zmenu.downarrowr.visible = false
 	}
 
 	// Upper portion
 	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
-		zmenu.uparrow.visible = false
+		zmenu.uparrowl.visible = zmenu.uparrowr.visible = false
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
@@ -11858,6 +11873,11 @@ function getxstop(){
 	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) {
 		xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
 	}
+
+	zmenu.scroller.height = (zmenu.height / zmenu.virtualheight) * zmenu.height
+	zmenu.scroller.y = (-1*xstop/zmenu.virtualheight) * zmenu.height
+	flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
+	testpr("X\n")
 	return xstop
 }
 
@@ -15798,6 +15818,7 @@ function tick(tick_time) {
 		}
 		else {
 			zmenu.xstart = zmenu.xstop
+			flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
 			zmenu.speed = 0
 			for (local i = 0; i < zmenu.shown; i++) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
@@ -16222,6 +16243,12 @@ function tick(tick_time) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
 		}
+	}
+
+	if (checkfade(flowT.scroller)){
+		flowT.scroller = fadeupdate(flowT.scroller)
+		zmenu.scroller.alpha = (255 * flowT.scroller[1])
+		testpr(zmenu.scroller.alpha+"\n")
 	}
 
 	if (checkfade (flowT.keyboard)) {
