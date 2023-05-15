@@ -11836,11 +11836,15 @@ function getxstop(){
 	// Lower portion
 	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
+		zmenu.uparrow.visible = true
+		zmenu.downarrow.visible = false
 	}
 
 	// Upper portion
 	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
+		zmenu.uparrow.visible = false
+		zmenu.downarrow.visible = true
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
