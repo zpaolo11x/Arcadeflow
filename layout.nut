@@ -11674,6 +11674,7 @@ zmenu = {
 	scrolleralpha = 200
 	scrollerstart = 0
 	scrollerstop = 0
+	scrollerpos = 0
 
 	pos0 = []				// Scroll control items
 	xstart = 0
@@ -11852,6 +11853,7 @@ function getxstop(){
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
+	
 	xstop = floor(menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected])
 	
 	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) {
@@ -12364,6 +12366,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu.scroller.alpha = 0
 	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
+	zmenu.scrollerpos = opts.shrink ? zmenu.width - disp.width : zmenu.width
 }
 
 function zmenuhide() {
@@ -16248,7 +16251,7 @@ function tick(tick_time) {
 		}
 		zmenu.scroller.alpha = (zmenu.scrolleralpha * flowT.scroller[1])
 		zmenu.scroller.width = 2 * flowT.scroller[1] * zmenu.scrollerside + 1
-		zmenu.scroller.x = zmenu.width - zmenu.scrollerside - flowT.scroller[1] * zmenu.scrollerside - 1//zmenu.scroller.width
+		zmenu.scroller.x = zmenu.scrollerpos - zmenu.scrollerside - flowT.scroller[1] * zmenu.scrollerside - 1//zmenu.scroller.width
 		testpr(zmenu.scroller.alpha+"\n")
 	}
 
