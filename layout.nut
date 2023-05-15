@@ -11672,6 +11672,8 @@ zmenu = {
 	scroller = null
 	scrollerside = floor(4 * UI.scalerate) == 0 ? 1 : floor(4 * UI.scalerate)
 	scrolleralpha = 200
+	scrollerstart = 0
+	scrollerstop = 0
 
 	pos0 = []				// Scroll control items
 	xstart = 0
@@ -11857,7 +11859,7 @@ function getxstop(){
 	}
 
 	zmenu.scroller.height = (zmenu.height / zmenu.virtualheight) * zmenu.height
-	zmenu.scroller.y = (-1 * xstop/zmenu.virtualheight) * zmenu.height
+	//zmenu.scroller.y = (-1 * xstop/zmenu.virtualheight) * zmenu.height
 	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 
 	return xstop
@@ -12285,6 +12287,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 	
 	zmenu.xstart = zmenu.xstop = getxstop()
+	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
+	zmenu.scroller.y = zmenu.scrollerstop
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -12359,7 +12363,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	flowT.scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenu.scroller.alpha = 0
 	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
-
+	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 }
 
 function zmenuhide() {
@@ -15801,9 +15805,13 @@ function tick(tick_time) {
 				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstart + zmenu.speed
 			}
 			zmenu.xstart = zmenu.xstart + zmenu.speed
+			zmenu.scrollerstart =  (-1 * zmenu.xstart / zmenu.virtualheight) * zmenu.height
+			zmenu.scroller.y = zmenu.scrollerstart
 		}
 		else {
 			zmenu.xstart = zmenu.xstop
+			zmenu.scrollerstart = zmenu.scrollerstop
+			zmenu.scroller.y = zmenu.scrollerstart
 			//flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
 			zmenu.speed = 0
 			for (local i = 0; i < zmenu.shown; i++) {
@@ -17369,6 +17377,7 @@ function on_signal(sig) {
 			}
 
 			zmenu.xstop = getxstop()
+			zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
