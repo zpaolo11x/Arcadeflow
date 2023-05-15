@@ -11669,12 +11669,6 @@ zmenu = {
 	noteitems = []
 	strikelines = []
 	
-	uparrowl = null
-	downarrowl = null
-	uparrowr = null
-	downarrowr = null
-	arrowsize = floor (40 * UI.scalerate)
-	arrowalpha = 200
 	scroller = null
 	scrolleroffset = floor (10* UI.scalerate)
 
@@ -11819,18 +11813,7 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-zmenu.uparrowr = zmenu_surface.add_text("△", zmenu.width - zmenu.arrowsize, 0, zmenu.arrowsize, zmenu.arrowsize)
-zmenu.downarrowr = zmenu_surface.add_text("▽", zmenu.width - zmenu.arrowsize, zmenu.height - zmenu.arrowsize, zmenu.arrowsize, zmenu.arrowsize)
-zmenu.uparrowl = zmenu_surface.add_text("△", 0, 0, zmenu.arrowsize, zmenu.arrowsize)
-zmenu.downarrowl = zmenu_surface.add_text("▽", 0, zmenu.height - zmenu.arrowsize, zmenu.arrowsize, zmenu.arrowsize)
-
-zmenu.uparrowl.char_size = zmenu.downarrowl.char_size = zmenu.uparrowr.char_size = zmenu.downarrowr.char_size = zmenu.arrowsize
-zmenu.uparrowl.font = zmenu.downarrowl.font = zmenu.uparrowr.font = zmenu.downarrowr.font = uifonts.gui
-zmenu.uparrowl.margin = zmenu.downarrowl.margin = zmenu.uparrowr.margin = zmenu.downarrowr.margin = 0
-zmenu.uparrowl.align = zmenu.downarrowl.align = zmenu.uparrowr.align = zmenu.downarrowr.align = Align.MiddleCentre
-zmenu.uparrowl.alpha = zmenu.downarrowl.alpha = zmenu.uparrowr.alpha = zmenu.downarrowr.alpha = zmenu.arrowalpha
-
-zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 2, 0, 2, zmenu.arrowsize)
+zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 2, 0, 2, 1)
 zmenu.scroller.set_rgb(255,255,255)
 zmenu.scroller.alpha = 0
 
@@ -11854,18 +11837,14 @@ function getxstop(){
 	local xstop = 0
 	local menucorrect = 0
 
-	zmenu.uparrowr.visible = zmenu.downarrowr.visible = zmenu.uparrowl.visible = zmenu.downarrowl.visible = !(zmenu.virtualheight <= zmenu.height)
-
 	// Lower portion
 	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
-		zmenu.downarrowl.visible = zmenu.downarrowr.visible = false
 	}
 
 	// Upper portion
 	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
-		zmenu.uparrowl.visible = zmenu.uparrowr.visible = false
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
