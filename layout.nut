@@ -11670,7 +11670,8 @@ zmenu = {
 	strikelines = []
 	
 	scroller = null
-	scrolleroffset = floor (10* UI.scalerate)
+	scrollerside = floor(4 * UI.scalerate) == 0 ? 1 : floor(4 * UI.scalerate)
+	scrolleralpha = 200
 
 	pos0 = []				// Scroll control items
 	xstart = 0
@@ -11813,7 +11814,8 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 2, 0, 2, 1)
+zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 1 , 0, 1, 1)
+testpr("width:"+zmenu.scroller.width+"\n")
 zmenu.scroller.set_rgb(255,255,255)
 zmenu.scroller.alpha = 0
 
@@ -16234,9 +16236,11 @@ function tick(tick_time) {
 		testpr("ef:"+endfade(flowT.scroller+"\n"))
 		if (endfade (flowT.scroller) == 1) {
 			testpr("B\n")
-			flowT.scroller = startfade(flowT.scroller, -0.05, 5.0)
+			flowT.scroller = startfade(flowT.scroller, -0.02, 5.0)
 		}
-		zmenu.scroller.alpha = (255 * flowT.scroller[1])
+		zmenu.scroller.alpha = (zmenu.scrolleralpha * flowT.scroller[1])
+		zmenu.scroller.width = 2 * flowT.scroller[1] * zmenu.scrollerside + 1
+		zmenu.scroller.x = zmenu.width - zmenu.scrollerside - flowT.scroller[1] * zmenu.scrollerside - 1//zmenu.scroller.width
 		testpr(zmenu.scroller.alpha+"\n")
 	}
 
