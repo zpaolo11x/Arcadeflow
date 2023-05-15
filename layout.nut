@@ -11810,8 +11810,13 @@ zmenu.blanker.set_rgb(0, 0, 0)
 zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
-zmenu.uparrow = zmenu_surface.add_text("O", zmenu.width - 40 * UI.scalerate, 0, 40 * UI.scalerate, 40 * UI.scalerate)
-zmenu.downarrow = zmenu_surface.add_text("O", zmenu.width - 40 * UI.scalerate, zmenu.height - 40 * UI.scalerate, 40 * UI.scalerate, 40 * UI.scalerate)
+zmenu.uparrow = zmenu_surface.add_text("△", zmenu.width - 40 * UI.scalerate, 0, 40 * UI.scalerate, 40 * UI.scalerate)
+zmenu.downarrow = zmenu_surface.add_text("▽", zmenu.width - 40 * UI.scalerate, zmenu.height - 40 * UI.scalerate, 40 * UI.scalerate, 40 * UI.scalerate)
+zmenu.uparrow.char_size = zmenu.downarrow.char_size = 40 * UI.scalerate
+zmenu.uparrow.font = zmenu.downarrow.font = uifonts.gui
+zmenu.uparrow.margin = zmenu.downarrow.margin = 0
+zmenu.uparrow.align = zmenu.downarrow.align = Align.MiddleCentre
+
 
 function cleanupmenudata(menudata){
 	foreach (i, item in menudata){
@@ -11832,11 +11837,12 @@ function cleanmenuopts(menuopts){
 function getxstop(){
 	local xstop = 0
 	local menucorrect = 0
-	
+
+	zmenu.uparrow.visible = zmenu.downarrow.visible = !(zmenu.virtualheight <= zmenu.height)
+
 	// Lower portion
 	if (zmenu.virtualheight - zmenu.pos0[zmenu.selected] - zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = zmenu.height * 0.5 + zmenu.tileh * 0.5 - (zmenu.virtualheight - zmenu.pos0[zmenu.selected])
-		zmenu.uparrow.visible = true
 		zmenu.downarrow.visible = false
 	}
 
@@ -11844,13 +11850,14 @@ function getxstop(){
 	if (zmenu.pos0[zmenu.selected] + zmenu.tileh * 0.5 < zmenu.height * 0.5){
 		menucorrect = -(zmenu.height * 0.5 - zmenu.tileh * 0.5 - zmenu.pos0[zmenu.selected])
 		zmenu.uparrow.visible = false
-		zmenu.downarrow.visible = true
 	}
 
 	if (zmenu.midscroll) menucorrect = 0
 	xstop = floor(menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected])
 	
-	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) {
+		xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+	}
 	return xstop
 }
 
