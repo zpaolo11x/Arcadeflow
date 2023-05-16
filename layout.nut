@@ -17394,7 +17394,7 @@ function on_signal(sig) {
 			}
 
 			zmenu.xstop = getxstop()
-			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && ((sig == "right") || (sig == "left"))))
+			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && (prfmenu.level == 2) && ((sig == "right") || (sig == "left"))))
 			
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
