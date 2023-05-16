@@ -9238,6 +9238,7 @@ function optionsmenu_lev2() {
 				AF.prefs.l1[prfmenu.outres0][zmenu.selected].values = AF.prefs.l1[prfmenu.outres0][zmenu.selected].options[0]
 
 			prfmenu.outres1 = zmenu.selected
+			zmenu.scrollerupdate = false
 			optionsmenu_lev2()
 			return
 		}
@@ -9249,6 +9250,7 @@ function optionsmenu_lev2() {
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection = AF.prefs.l1[prfmenu.outres0][zmenu.selected].values.len() - 1
 			prfmenu.outres1 = zmenu.selected
+			zmenu.scrollerupdate = false
 			optionsmenu_lev2()
 			return
 		}
@@ -9257,6 +9259,7 @@ function optionsmenu_lev2() {
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection --
 			prfmenu.outres1 = zmenu.selected
+			zmenu.scrollerupdate = false
 			optionsmenu_lev2()
 			return
 		}
@@ -9270,6 +9273,7 @@ function optionsmenu_lev2() {
 				AF.prefs.l1[prfmenu.outres0][zmenu.selected].values = AF.prefs.l1[prfmenu.outres0][zmenu.selected].options[1]
 
 			prfmenu.outres1 = zmenu.selected
+			zmenu.scrollerupdate = false
 			optionsmenu_lev2()
 			return
 		}
@@ -9281,6 +9285,7 @@ function optionsmenu_lev2() {
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection = 0
 			prfmenu.outres1 = zmenu.selected
+			zmenu.scrollerupdate = false
 			optionsmenu_lev2()
 
 			return
@@ -9290,6 +9295,7 @@ function optionsmenu_lev2() {
 
 			AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection ++
 			prfmenu.outres1 = zmenu.selected
+			zmenu.scrollerupdate = false
 			optionsmenu_lev2()
 		}
 	})
@@ -11679,6 +11685,7 @@ zmenu = {
 	scrollerstart = 0
 	scrollerstop = 0
 	scrollerpos = 0
+	scrollerupdate = true
 
 	pos0 = []				// Scroll control items
 	xstart = 0
@@ -11865,9 +11872,14 @@ function getxstop(){
 
 	zmenu.scroller.height = (zmenu.height / zmenu.virtualheight) * zmenu.height
 	//zmenu.scroller.y = (-1 * xstop/zmenu.virtualheight) * zmenu.height
-	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 
 	return xstop
+}
+
+function getscrollerstop(fade = true){
+	testpr ("HOT:"+fade+"\n")
+	if (fade && (zmenu.height < zmenu.virtualheight)) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
+	return (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 }
 
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
@@ -12292,8 +12304,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 	
 	zmenu.xstart = zmenu.xstop = getxstop()
-	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
-	zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -12367,8 +12377,11 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	}
 	flowT.scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenu.scroller.alpha = 0
-	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
-	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
+	zmenu.scrollerstart = zmenu.scrollerstop = getscrollerstop(zmenu.scrollerupdate)
+	zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
+	zmenu.scrollerupdate = true
+	//if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
+	//zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 	zmenu.scrollerpos = opts.shrink ? zmenu.width - disp.width : zmenu.width
 	zmenu.scroller.zorder = 200
 }
@@ -17381,8 +17394,8 @@ function on_signal(sig) {
 			}
 
 			zmenu.xstop = getxstop()
-			zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
-
+			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && ((sig == "right") || (sig == "left"))))
+			
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
 					zmenu.items[i].set_rgb (255, 255, 255)
