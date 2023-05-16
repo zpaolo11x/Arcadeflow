@@ -11877,7 +11877,6 @@ function getxstop(){
 }
 
 function getscrollerstop(fade = true){
-	testpr ("HOT:"+fade+"\n")
 	if (fade && (zmenu.height < zmenu.virtualheight)) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 	return (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 }
