@@ -1894,6 +1894,10 @@ function round(x, y) {
 	return (x.tofloat() / y + (x > 0 ? 0.5 : -0.5)).tointeger() * y
 }
 
+function clamp(x, min, max){
+	return (x < min ? min : (x > max ? max : x))
+}
+
 function max(x, y) {
 	return (x > y ? x : y)
 }
@@ -12290,7 +12294,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	
 	zmenu.xstart = zmenu.xstop = getxstop()
 	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
-	zmenu.scroller.y = zmenu.scrollerstop
+	zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -15809,12 +15813,12 @@ function tick(tick_time) {
 			}
 			zmenu.xstart = zmenu.xstart + zmenu.speed
 			zmenu.scrollerstart =  (-1 * zmenu.xstart / zmenu.virtualheight) * zmenu.height
-			zmenu.scroller.y = zmenu.scrollerstart
+			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
 		}
 		else {
 			zmenu.xstart = zmenu.xstop
 			zmenu.scrollerstart = zmenu.scrollerstop
-			zmenu.scroller.y = zmenu.scrollerstart
+			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
 			//flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
 			zmenu.speed = 0
 			for (local i = 0; i < zmenu.shown; i++) {
