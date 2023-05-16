@@ -11822,7 +11822,6 @@ zmenu.blanker.visible = false
 zmenu_surface.shader = txtoalpha
 
 zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 1 , 0, 1, 1)
-testpr("width:"+zmenu.scroller.width+"\n")
 zmenu.scroller.set_rgb(255,255,255)
 zmenu.scroller.alpha = 0
 
@@ -12371,6 +12370,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
 	zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 	zmenu.scrollerpos = opts.shrink ? zmenu.width - disp.width : zmenu.width
+	zmenu.scroller.zorder = 200
 }
 
 function zmenuhide() {
@@ -16248,15 +16248,12 @@ function tick(tick_time) {
 
 	if (checkfade(flowT.scroller)){
 		flowT.scroller = fadeupdate(flowT.scroller)
-		testpr("ef:"+endfade(flowT.scroller+"\n"))
 		if (endfade (flowT.scroller) == 1) {
-			testpr("B\n")
 			flowT.scroller = startfade(flowT.scroller, -0.02, 5.0)
 		}
 		zmenu.scroller.alpha = (zmenu.scrolleralpha * flowT.scroller[1])
 		zmenu.scroller.width = 2 * flowT.scroller[1] * zmenu.scrollerside + 1
 		zmenu.scroller.x = zmenu.scrollerpos - zmenu.scrollerside - flowT.scroller[1] * zmenu.scrollerside - 1//zmenu.scroller.width
-		testpr(zmenu.scroller.alpha+"\n")
 	}
 
 	if (checkfade (flowT.keyboard)) {
