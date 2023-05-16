@@ -17998,6 +17998,7 @@ function on_signal(sig) {
 				return true
 
 				case prf.OVERMENUBUTTON:
+					if (scroll.jump || scroll.sortjump) return true
 					if (z_list.size == 0) return true
 					if (z_list.gametable[z_list.index].z_system == "") {
 						debugpr("No system defined, is this a display link?\n")
