@@ -7511,9 +7511,9 @@ local frostpic = {
 	sigma = 0
 }
 
-frostpic.matrix = floor(frostpic.size * (11.0 / 64.0))
+frostpic.matrix = floor(frostpic.size * (17.0 / 64.0)) //was 11.0 / 64.0 ALT 19.0
 frostpic.matrix = frostpic.matrix + 1 - frostpic.matrix % 2.0
-frostpic.sigma = frostpic.size * (2.5 / 64.0)
+frostpic.sigma = frostpic.size * (4.5 / 64.0) //was 2.5 / 64.0 ALT 4.5
 
 if (!UI.vertical) {
 	frostpic.w = frostpic.size
