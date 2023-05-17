@@ -18015,7 +18015,19 @@ function on_signal(sig) {
 				case "left":
 				if (checkrepeat(count.left)) {
 					if (scroll.sortjump) {
-						fe.signal("prev_letter")
+						if (z_list.jumptable[z_list.index].prev - z_list.index < 0) {
+							fe.signal("prev_letter")
+						}
+						else if ((count.left == 0)) {
+							fe.signal("prev_letter")
+							count.forceleft = false
+							count.left++
+							return true							
+						}
+						else if ((!count.forceleft) && (count.left != 0)) {
+							count.forceleft = true
+							return true						
+						}
 					}
 					else {
 						if (z_list.index > scroll.step - 1) {
@@ -18025,6 +18037,7 @@ function on_signal(sig) {
 						else if ((count.left == 0)) {
 							z_list_indexchange (z_list.size - 1)
 							count.forceleft = false
+							count.left++
 							return true
 						}
 						else if ((!count.forceleft) && (count.left != 0)) {
@@ -18041,7 +18054,19 @@ function on_signal(sig) {
 				case "right":
 				if (checkrepeat(count.right)) {
 					if (scroll.sortjump) {
-						fe.signal("next_letter")
+						if (z_list.jumptable[z_list.index].next - z_list.index > 0) {
+							fe.signal("next_letter")
+						}
+						else if ((count.right == 0)) {
+							fe.signal("next_letter")
+							count.forceright = false
+							count.right++
+							return true							
+						}
+						else if ((!count.forceright) && (count.right != 0)) {
+							count.forceright = true
+							return true						
+						}
 					}
 					else {
 						if ((z_list.index < z_list.size - scroll.step)) {
@@ -18055,6 +18080,7 @@ function on_signal(sig) {
 							// Pressing this will jump to the beginning of the list and restore forceright
 							z_list_indexchange (0)
 							count.forceright = false
+							count.right++
 							return true
 						}
 						else if ((!count.forceright) && (count.right != 0)) {
