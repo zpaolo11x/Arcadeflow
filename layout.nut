@@ -840,6 +840,7 @@ AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Scroll & Sort", selection = AF.req.liner},
 {v = 10.3, varname = "SCROLLAMOUNT", glyph = 0xea45, title = "Page jump size", help = "Page jumps are one screen by default, you can increase it if you want to jump faster", options = ["1 Screen", "2 Screens", "3 Screens"], values = [1, 2, 3], selection = 0},
 {v = 7.2, varname = "SCROLLERTYPE", glyph = 0xea45, title = "Scrollbar style", help = "Select how the scrollbar should look", options = ["Timeline", "Scrollbar", "Label List"], values = ["timeline", "scrollbar", "labellist"], selection = 0},
+{v = 16.0, varname = "LIVEJUMP", glyph = 0xea45, title = "Scroll updates", help = "Immediately updates the tiles while you scroll", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "STRIPARTICLE", glyph = 0xea4c, title = "Strip article from sort", help = "When sorting by Title ignore articles", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 10.9, varname = "ENABLESORT", glyph = 0xea4c, title = "Enable sorting", help = "Enable custom realtime sorting, diable to keep romlist sort order", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "SORTSAVE", glyph = 0xea4c, title = "Save sort order", help = "Custom sort order is saved through Arcadeflow sessions", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -1603,8 +1604,6 @@ try {prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err) {
 	print("Error on monitor number\n")
 	prf.MONITORNUMBER = 0
 }
-
-prf.LIVEJUMP <- false
 
 // End prf setup
 
