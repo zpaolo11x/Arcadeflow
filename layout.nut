@@ -4737,7 +4737,6 @@ local focusindex = {
 /// Metadata initialisation and functions ///
 
 local catnames = getcatnames()
-print_variable(catnames,"","")
 local catnames_SS = getcatnames_SS()
 local yearnames = getyears()
 
@@ -5196,8 +5195,6 @@ function processcategory(categoryname){
 	local cathierarchy = split (categoryname, "/")
 	local catarray = split (categoryname, ",-")
 	local catmatch = ((catnames.finder.rawin(categoryname)) || (catnames_SS.finder.rawin(categoryname)))
-
-	testpr("name:"+categoryname+" catmatch:"+catmatch+"\n")
 
 	if (catmatch) {
 		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
@@ -6272,7 +6269,6 @@ function z_list_updategamedata(index) {
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
-			print_variable(processcategory(z_list.boot[index].z_category)[0],"","")
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 
@@ -6952,7 +6948,6 @@ function z_filteredlistupdateindex(reindex) {
 
 // Function to apply a change to the z_list
 function z_list_indexchange(newindex) {
-	testpr("ZLIC:"+newindex+"\n")
 	z_var = newindex - z_list.index
 	z_list.newindex = newindex
 	if (z_list.size != 0) fe.list.index = z_list.gametable[modwrap((newindex), z_list.size)].z_felistindex
@@ -13729,7 +13724,6 @@ local labelcounter = {}
 // since it must run in the on_tick routine
 
 function updatebgsnap(index) {
-	testpr("upbgsnap\n")
 	// index è l'indice di riferimento della tilez
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
@@ -14671,7 +14665,6 @@ function z_resetthumbvideo(index) {
 }
 
 function updatescrollerposition() {
-	testpr("scrupd\n")
 	scroller.x = fl.x + UI.footermargin + ((z_list.index / UI.rows) * UI.rows * 1.0 / (z_list.size - 1)) * (fl.w - 2.0 * UI.footermargin - scrollersize)
 	scroller2.x = scroller.x - scrollersize * 0.5
 }
@@ -15187,10 +15180,8 @@ function on_transition(ttype, var0, ttime) {
 		} catch(err) {}
 		mfz_apply(false)
 	}
-	//TEST160 
-	testpr ("\nTr:" + transdata[ttype] + " var0:" + var0 + "\n")
+
 	//DBGON transition
-	debugpr("\nTr:" + transdata[ttype] + " var0:" + var0 + "\n")
 
 	if (ttype == Transition.ToGame) {
 		z_list.gametable2[z_list.index].z_rundate = get_date_string()
@@ -15526,9 +15517,6 @@ local timescale = {
 /// On Tick ///
 function tick(tick_time) {
 
-	//TEST160
-	//testpr("fade:"+flowT.alphaletter[1]+" let_rd:"+letterobjsurf.surf.redraw+" dat_rd:"+data_surface.redraw+" fc:"+AF.dat_freezecount+"\n")
-	//testpr (scroll.jump+" "+scroll.sortjump+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16100,7 +16088,6 @@ function tick(tick_time) {
 		if (dat.alphapos[i] != 0) AF.dat_freeze = false
 	}
 	if (AF.dat_freeze && data_surface.redraw && (displayname.alpha == 0) && (letterobj.alpha == 0)) {
-		testpr("ZIP\n")
 		AF.dat_freezecount = 1
 	}
 
