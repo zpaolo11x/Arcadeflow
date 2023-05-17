@@ -4737,6 +4737,7 @@ local focusindex = {
 /// Metadata initialisation and functions ///
 
 local catnames = getcatnames()
+print_variable(catnames,"","")
 local catnames_SS = getcatnames_SS()
 local yearnames = getyears()
 
@@ -5195,6 +5196,8 @@ function processcategory(categoryname){
 	local cathierarchy = split (categoryname, "/")
 	local catarray = split (categoryname, ",-")
 	local catmatch = ((catnames.finder.rawin(categoryname)) || (catnames_SS.finder.rawin(categoryname)))
+
+	testpr("name:"+categoryname+" catmatch:"+catmatch+"\n")
 
 	if (catmatch) {
 		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
@@ -6269,6 +6272,7 @@ function z_list_updategamedata(index) {
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
+			print_variable(processcategory(z_list.boot[index].z_category)[0],"","")
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 

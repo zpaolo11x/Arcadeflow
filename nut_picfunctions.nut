@@ -638,9 +638,9 @@ function getcatnames_SS(){
 	]
 
    foreach (id, item in catnamesdata){
-		catnames.finder.rawset(item, null)
       local vecn = split(item,"/")
       if (vecn.len() == 2){
+			catnames.finder.rawset(vecn[0]+" / "+vecn[1], null)
          if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
          else {
             catnames.names.push (vecn[0])
@@ -648,6 +648,7 @@ function getcatnames_SS(){
             catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
          }
       } else {
+			catnames.finder.rawset(vecn[0], null)
          if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0])
          else {
             catnames.names.push (vecn[0])
@@ -923,9 +924,13 @@ function getcatnames(){
 	]
 
    foreach (id, item in catnamesdata){
-      catnames.finder.rawset(item,null)
 		local vecn = split(item,"/")
-      if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
+      
+		catnames.finder.rawset(vecn[0]+" / "+vecn[1],null)
+
+      if (catnames.table.rawin(vecn[0])) {
+			catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
+		}
       else {
          catnames.names.push (vecn[0])
          catnames.table[vecn[0]] <- []
