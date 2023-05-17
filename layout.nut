@@ -18019,9 +18019,9 @@ function on_signal(sig) {
 					}
 					else {
 						if (z_list.index > scroll.step - 1) {
-								z_list_indexchange (z_list.index - scroll.step)
-								if (prf.THEMEAUDIO) snd.plingsound.playing = true
-							}
+							z_list_indexchange (z_list.index - scroll.step)
+							if (prf.THEMEAUDIO) snd.plingsound.playing = true
+						}
 						else if ((count.left == 0)) {
 							z_list_indexchange (z_list.size - 1)
 							count.forceleft = false
