@@ -1604,6 +1604,8 @@ try {prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err) {
 	prf.MONITORNUMBER = 0
 }
 
+prf.LIVEJUMP <- false
+
 // End prf setup
 
 function readsystemdata() {
@@ -2545,6 +2547,11 @@ local scroll = {
 	jump = false
 	step = UI.rows
 	sortjump = false
+}
+
+function checklivejump(){
+	return (prf.LIVEJUMP || (!scroll.jump && !scroll.sortjump) )
+	//return (!(!prf.LIVEJUMP && scroll.jump))
 }
 
 // Capslocked keyboard also adds special characters:
@@ -6942,6 +6949,7 @@ function z_filteredlistupdateindex(reindex) {
 
 // Function to apply a change to the z_list
 function z_list_indexchange(newindex) {
+	testpr("ZLIC:"+newindex+"\n")
 	z_var = newindex - z_list.index
 	z_list.newindex = newindex
 	if (z_list.size != 0) fe.list.index = z_list.gametable[modwrap((newindex), z_list.size)].z_felistindex
@@ -13717,6 +13725,7 @@ local labelcounter = {}
 // since it must run in the on_tick routine
 
 function updatebgsnap(index) {
+	testpr("upbgsnap\n")
 	// index è l'indice di riferimento della tilez
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
@@ -14658,6 +14667,7 @@ function z_resetthumbvideo(index) {
 }
 
 function updatescrollerposition() {
+	testpr("scrupd\n")
 	scroller.x = fl.x + UI.footermargin + ((z_list.index / UI.rows) * UI.rows * 1.0 / (z_list.size - 1)) * (fl.w - 2.0 * UI.footermargin - scrollersize)
 	scroller2.x = scroller.x - scrollersize * 0.5
 }
@@ -15173,7 +15183,8 @@ function on_transition(ttype, var0, ttime) {
 		} catch(err) {}
 		mfz_apply(false)
 	}
-
+	//TEST160 
+	testpr ("\nTr:" + transdata[ttype] + " var0:" + var0 + "\n")
 	//DBGON transition
 	debugpr("\nTr:" + transdata[ttype] + " var0:" + var0 + "\n")
 
@@ -15336,7 +15347,7 @@ function on_transition(ttype, var0, ttime) {
 
 	// UPDATE TILES FROM OLD SELECTION
 	if (ttype == Transition.FromOldSelection) {
-		updatebgsnap (focusindex.new)
+		if (checklivejump()) updatebgsnap(focusindex.new) //TEST160
 	}
 
 	// some fixes for the tags menu
@@ -15373,7 +15384,7 @@ function on_transition(ttype, var0, ttime) {
 	// UPDATE TILES DATA AND POSITION
 	if (((ttype == Transition.ToNewList) || (ttype == Transition.ToNewSelection))) {
 
-		if (z_list.size > 0) {
+		if ((z_list.size > 0) && (checklivejump())) {
 			debugpr("TRANSBLOCK 2 - TNL TNS - UPDATE TILES \n")
 
 			updatetiles()
@@ -15401,7 +15412,7 @@ function on_transition(ttype, var0, ttime) {
 
 	// if the transition is to a new selection initialize crossfade, scrolling and srfpos.Pos
 	if ((ttype == Transition.ToNewSelection)) {
-
+		//TEST160 con il live scroll disabilitato, come gestire queste?
 		if (!data_surface.redraw) data_freeze(false)
 		if (!bglay.surf_1.redraw) bgs_freeze(false)
 
@@ -15420,83 +15431,81 @@ function on_transition(ttype, var0, ttime) {
 		}
 
 		//bgs.bgpic_array[0].file_name = fe.get_art((prf.BOXARTMODE ? "flyer" : "snap"), tilez[focusindex.new].loshz.index_offset + var, 0, Art.ImagesOnly)
+		//TEST160
+		if (checklivejump()){
+			for (local i = 0; i < bgs.stacksize - 1; i++) {
+				bgs.bgpic_array[i].swap(bgs.bgpic_array[i + 1])
+				bgs.flowalpha[i] = bgs.flowalpha[i + 1]
+				bgs.bg_lcd[i] = bgs.bg_lcd[i + 1]
+				bgs.bg_mono[i] = bgs.bg_mono[i + 1]
+				bgs.bg_aspect[i] = bgs.bg_aspect[i + 1]
+				bgs.bg_box[i] = bgs.bg_box[i + 1]
+				bgs.bg_index[i] = bgs.bg_index[i + 1]
 
-		for (local i = 0; i < bgs.stacksize - 1; i++) {
-			bgs.bgpic_array[i].swap(bgs.bgpic_array[i + 1])
-			bgs.flowalpha[i] = bgs.flowalpha[i + 1]
-			bgs.bg_lcd[i] = bgs.bg_lcd[i + 1]
-			bgs.bg_mono[i] = bgs.bg_mono[i + 1]
-			bgs.bg_aspect[i] = bgs.bg_aspect[i + 1]
-			bgs.bg_box[i] = bgs.bg_box[i + 1]
-			bgs.bg_index[i] = bgs.bg_index[i + 1]
+				if (prf.MULTIMON) mon2.pic_array[i].swap(mon2.pic_array[i + 1])
+			}
+		
 
-			if (prf.MULTIMON) mon2.pic_array[i].swap(mon2.pic_array[i + 1])
+			for (local i = 0; i < dat.stacksize - 2; i++) {
+				dat.var_array[i] = dat.var_array[i + 1]
+			}
+
+			dat.var_array [dat.stacksize - 1] = z_list.gametable[z_list.newindex].z_felistindex
+			dat.var_array [dat.stacksize - 2] = z_list.gametable[z_list.index].z_felistindex
+
+			local varoffset = 0
+
+			for (local i = 0; i < dat.stacksize; i++) {
+				dat.mainctg_array[i].msg = maincategorydispl(dat.var_array[i])
+				dat.gamename_array[i].msg = gamename2(dat.var_array[i])
+				dat.gamesubname_array[i].msg = gamesubname(dat.var_array[i])
+				dat.gameyear_array[i].msg = gameyearstring (dat.var_array[i])
+				dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
+
+				dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
+				dat.meta_array[i].msg = metastring(dat.var_array[i])
+			}
+
+			for (local i = 0; i < dat.stacksize - 1; i++) {
+				dat.cat_array[i].swap (dat.cat_array[i + 1])
+
+				if (!prf.CLEANLAYOUT) dat.manufacturername_array[i].visible = (dat.manufacturer_array[i].msg == "")
+
+				if (i != dat.stacksize -2)
+					dat.alphapos[i] = dat.alphapos[i + 1]
+				else
+					dat.alphapos[i] = 1.0 - dat.alphapos[i + 1]
+			}
+
+			varoffset = z_list.gametable[modwrap(z_list.newindex, z_list.size)].z_felistindex - z_list.gametable[modwrap(z_list.index, z_list.size)].z_felistindex
+
+			z_list_updategamedata(z_list.gametable[z_list.newindex].z_felistindex)
+
+			dat.alphapos [dat.stacksize - 1] = 1
+			z_updatefilternumbers(z_list.newindex)
+
+			//bgs.flowalpha [bgs.stacksize - 1] = 255
+
+			bgs.flowalpha[bgs.stacksize - 1] = [0, 0, 0.0, 0.0, 0.0, 0.0]
+			bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1], 0.015, -4.0)
+
+			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
+			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
+			surfacePos += (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
+
+			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
+			impulse2.filtern = 1
+			if (impulse2.delta > impulse2.maxoffset) {
+				impulse2.filtern = 0
+				impulse2.delta = impulse2.maxoffset
+			}
+			if (impulse2.delta < -impulse2.maxoffset) {
+				impulse2.filtern = 0
+				impulse2.delta = -impulse2.maxoffset
+			}
+
+			impulse2.step += impulse2.delta
 		}
-
-		for (local i = 0; i < dat.stacksize - 2; i++) {
-			dat.var_array[i] = dat.var_array[i + 1]
-		}
-
-		dat.var_array [dat.stacksize - 1] = z_list.gametable[z_list.newindex].z_felistindex
-		dat.var_array [dat.stacksize - 2] = z_list.gametable[z_list.index].z_felistindex
-
-		local varoffset = 0
-
-		for (local i = 0; i < dat.stacksize; i++) {
-			dat.mainctg_array[i].msg = maincategorydispl(dat.var_array[i])
-			dat.gamename_array[i].msg = gamename2(dat.var_array[i])
-			dat.gamesubname_array[i].msg = gamesubname(dat.var_array[i])
-			dat.gameyear_array[i].msg = gameyearstring (dat.var_array[i])
-			dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
-
-			dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
-			dat.meta_array[i].msg = metastring(dat.var_array[i])
-			/*
-			dat.ctl_array[i].msg = controller_vec (z_list.boot[dat.var_array[i]].z_control) //TEST160 togliere z_list.boot ecc
-			dat.but_array[i].msg = buttons_vec (z_list.boot[dat.var_array[i]].z_buttons) //TEST160 togliere z_list.boot ecc
-			dat.ply_array[i].msg = players_vec (z_list.boot[dat.var_array[i]].z_players) //TEST160 togliere z_list.boot ecc
-			*/
-		}
-
-		for (local i = 0; i < dat.stacksize - 1; i++) {
-			dat.cat_array[i].swap (dat.cat_array[i + 1])
-
-			if (!prf.CLEANLAYOUT) dat.manufacturername_array[i].visible = (dat.manufacturer_array[i].msg == "")
-
-			if (i != dat.stacksize -2)
-				dat.alphapos[i] = dat.alphapos[i + 1]
-			else
-				dat.alphapos[i] = 1.0 - dat.alphapos[i + 1]
-		}
-
-		varoffset = z_list.gametable[modwrap(z_list.newindex, z_list.size)].z_felistindex - z_list.gametable[modwrap(z_list.index, z_list.size)].z_felistindex
-
-		z_list_updategamedata(z_list.gametable[z_list.newindex].z_felistindex)
-
-		dat.alphapos [dat.stacksize - 1] = 1
-		z_updatefilternumbers(z_list.newindex)
-
-		//bgs.flowalpha [bgs.stacksize - 1] = 255
-
-		bgs.flowalpha[bgs.stacksize - 1] = [0, 0, 0.0, 0.0, 0.0, 0.0]
-		bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1], 0.015, -4.0)
-
-		// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
-		// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
-		surfacePos += (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
-
-		impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
-		impulse2.filtern = 1
-		if (impulse2.delta > impulse2.maxoffset) {
-			impulse2.filtern = 0
-			impulse2.delta = impulse2.maxoffset
-		}
-		if (impulse2.delta < -impulse2.maxoffset) {
-			impulse2.filtern = 0
-			impulse2.delta = -impulse2.maxoffset
-		}
-
-		impulse2.step += impulse2.delta
 	}
 
 	return false
@@ -15512,6 +15521,10 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
+
+	//TEST160
+	//testpr("fade:"+flowT.alphaletter[1]+" let_rd:"+letterobjsurf.surf.redraw+" dat_rd:"+data_surface.redraw+" fc:"+AF.dat_freezecount+"\n")
+	//testpr (scroll.jump+" "+scroll.sortjump+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16082,7 +16095,8 @@ function tick(tick_time) {
 		}
 		if (dat.alphapos[i] != 0) AF.dat_freeze = false
 	}
-	if (AF.dat_freeze && data_surface.redraw && (displayname.alpha == 0)) {
+	if (AF.dat_freeze && data_surface.redraw && (displayname.alpha == 0) && (letterobj.alpha == 0)) {
+		testpr("ZIP\n")
 		AF.dat_freezecount = 1
 	}
 
@@ -18076,9 +18090,14 @@ function on_signal(sig) {
 					}
 					else if (scroll.jump == true) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
+						scroll.jump = false
+						if (!prf.LIVEJUMP) {
+							z_listrefreshtiles()
+							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
+							updatebgsnap(focusindex.new)
+						} 
 						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
-						scroll.jump = false
 						scroll.step = UI.rows
 						scroller2.visible = scrollineglow.visible = false
 					}
@@ -18088,6 +18107,11 @@ function on_signal(sig) {
 						if (prf.SCROLLERTYPE == "labellist") tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 						scroll.sortjump = false
+						if ((!prf.LIVEJUMP) && (prf.SCROLLERTYPE == "labellist")){
+							z_listrefreshtiles()
+							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
+							updatebgsnap(focusindex.new)
+						} 
 						labelstrip.visible = false
 						if (prf.SCROLLERTYPE != "labellist") {
 							scroll.jump = true
