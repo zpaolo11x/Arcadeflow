@@ -7504,7 +7504,7 @@ overlay.h = overlay.menuheight + overlay.labelheight
 /// Frosted glass surface ///
 
 local frostpic = {
-	size = 64.0 * 0 + 320.0
+	size = 64.0 * 0 + 240.0 //was 320.0
 	w = null
 	h = null
 	matrix = 0
