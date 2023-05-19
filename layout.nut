@@ -15529,6 +15529,9 @@ local timescale = {
 }
 
 local surfarr = []
+local surfdebug = false
+local debugoverlay = null
+
 function buildarraysurf(){
 	surfarr.push(fl.surf)
 
@@ -15587,19 +15590,22 @@ function printsrufaces(){
 	testpr("\n")
 }
 
-buildarraysurf()
-printsrufaces()
-local debugoverlay=fe.add_text("",0,0,fl.w,fl.h)
-debugoverlay.char_size = fl.h/40.0
-debugoverlay.font = uifonts.mono
-debugoverlay.word_wrap = true
-debugoverlay.bg_alpha = 128
-debugoverlay.align = Align.Left
+if (surfdebug) {
+	buildarraysurf()
+	printsrufaces()
+
+	debugoverlay=fe.add_text("",0,0,fl.w,fl.h)
+	debugoverlay.char_size = fl.h/40.0
+	debugoverlay.font = uifonts.mono
+	debugoverlay.word_wrap = true
+	debugoverlay.bg_alpha = 128
+	debugoverlay.align = Align.Left
+}
 
 /// On Tick ///
 function tick(tick_time) {
 	
-printsrufaces()
+	if (surfdebug) printsrufaces()
 
 	/*
 	foreach (i, item in fe.obj){
