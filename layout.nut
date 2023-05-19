@@ -8882,6 +8882,12 @@ function frostshaders(turnon) {
 	}
 }
 
+function frost_freeze(status){
+	frost.surf_rt.redraw = frost.surf_rt.clear = !status
+	frost.surf_2.redraw = frost.surf_2.clear = !status
+	frost.surf_1.redraw = frost.surf_1.clear = !status
+}
+
 function videosnap_hide() {
 	for (local i = 0; i < tiles.total; i++) {
 		gr_vidszTableFade[i] = startfade(gr_vidszTableFade[i], -0.1, 1.0)
@@ -16296,6 +16302,10 @@ testpr(frost.surf_rt.redraw+"\n")
 			overlay.background.visible = false
 			frost.surf_rt.alpha = 0
 			frostshaders(false)
+		}
+		
+		if (endfade (flowT.zmenubg) == 1) {
+			testpr("MENUEND\n")
 		}
 
 		frost.surf_rt.alpha = 255 //In frosted glass case we don't fade the surface but the blur radius
