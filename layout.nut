@@ -15523,7 +15523,7 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-testpr(frost.surf_rt.redraw+"\n")
+testpr("sfpos:"+surfacePos+" freezable:"+frost.canfreeze+" redraw:"+frost.surf_rt.redraw+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16297,6 +16297,10 @@ testpr(frost.surf_rt.redraw+"\n")
 		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
+	if (frost.canfreeze && (surfacePos == 0)){
+		frost_freeze(true)
+	}
+
 	if (checkfade (flowT.zmenubg)) {
 		if (!frost.surf_rt.redraw) {
 			frost_freeze(false)
@@ -16307,10 +16311,11 @@ testpr(frost.surf_rt.redraw+"\n")
 			overlay.background.visible = false
 			frost.surf_rt.alpha = 0
 			frostshaders(false)
+			//TEST160 cosa fare qui con canfreeze?
 		}
 		
 		if (endfade (flowT.zmenubg) == 1) {
-			frost_freeze(true)
+			frost.canfreeze = true
 			testpr("MENUEND\n")
 		}
 
