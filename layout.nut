@@ -15424,7 +15424,7 @@ function on_transition(ttype, var0, ttime) {
 		//TEST160 con il live scroll disabilitato, come gestire queste?
 		if (!data_surface.redraw) data_freeze(false)
 		if (!bglay.surf_1.redraw) bgs_freeze(false)
-		testpr("\nTO NEW SELECTION JUMP\n\n")
+
 		debugpr("TRANSBLOCK 3.0 - TNS - TRANSITION TO NEW SELECTION ONLY \n")
 
 		local l1 = z_list.jumptable[z_list.index].key
@@ -17089,8 +17089,26 @@ function ra_selectemu(startemu) {
 	})
 }
 
+//TEST160
+local SLOWINPUT = true
+local sigzero = 0
+local sigcount = 0
+local sigtime = fe.layout.time
+
 /// On Signal ///
 function on_signal(sig) {
+	
+	//TEST160
+	if (SLOWINPUT){
+		if ((sigzero != sig) || (fe.layout.time - sigtime >= 50)){
+			sigzero = sig
+			sigcount = 1
+			sigtime = fe.layout.time
+		} else {
+			sigcount ++
+		}
+		if (sigcount != 1) return true
+	}
 
 	//TEST160
 	if (sig=="custom1"){
