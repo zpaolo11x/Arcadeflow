@@ -15607,15 +15607,6 @@ function tick(tick_time) {
 	
 	if (surfdebug) printsrufaces()
 
-	/*
-	foreach (i, item in fe.obj){
-		try{
-			testpr(" " + (item.redraw ? "Y" : "N"))
-			testpr(" " + (item.clear ? "Y" : "N"))
-		}catch(err){}
-	}
-	testpr("\n")
-	*/
 	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
