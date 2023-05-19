@@ -71,7 +71,8 @@ local AF = {
 	dat_freeze = true
 	dat_freezecount = 0
 	bgs_freezecount = 0
-
+	frost_freezecount = 0
+	
 	folder = fe.script_dir
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
@@ -202,7 +203,7 @@ local gh = {
 }
 
 function gly(number){
-	if ((number == null) || (number <= 0)) return ""
+	if ((number == null) || (number <= 0) || (number == "")) return ""
 
 	local byte1 = 0xf0 | number >> 18
 	local byte2 = 0x80 | (number >> 12) & 0x3f
@@ -214,6 +215,7 @@ function gly(number){
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
 
 local zmenu = null
+local frost = null
 
 // Load language file
 // Language is first taken from file if present. If it's not present "EN" is used. After settings the language is updated and file is updated too.
@@ -354,7 +356,7 @@ function bar_progress_update(i, init, max) {
 		}
 		if (floor(11 * i * 1.0 / max) != AF.bar.progress) {
 			AF.bar.progress = floor(11 * i * 1.0 / max)
-			AF.bar.pic.msg = gly(0xeafb + AF.bar.progress)
+			AF.bar.pic.msg = gly((0xeafb + AF.bar.progress).tointeger())
 			redraw = true
 		}
 		AF.bar.time0 = AF.bar.time1
@@ -6352,6 +6354,7 @@ function mfz_apply(startlist) {
 
 	z_updatefilternumbers(z_list.index)
 	data_freeze(false)
+	//frost.canfreeze = true
 	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
 	/*
 			z_listrefreshtiles()
@@ -7524,7 +7527,7 @@ else {
 	frostpic.h = frostpic.size
 }
 
-local frost = {
+frost = {
 	surf_1 = null
 	surf_2 = null
 	pic = null
@@ -7535,6 +7538,7 @@ local frost = {
 	mfm = null
 	picT = null
 	canfreeze = false
+	freezecount = 0
 }
 
 frost.picT = {
@@ -15175,6 +15179,7 @@ print("\n")
 /// On Transition ///
 
 function on_transition(ttype, var0, ttime) {
+	
 	if (ttype == Transition.FromGame) {
 		if (prf.RPI) fe.set_display(fe.list.display_index)
 
@@ -15417,7 +15422,7 @@ function on_transition(ttype, var0, ttime) {
 		//TEST160 con il live scroll disabilitato, come gestire queste?
 		if (!data_surface.redraw) data_freeze(false)
 		if (!bglay.surf_1.redraw) bgs_freeze(false)
-
+		testpr("\nTO NEW SELECTION JUMP\n\n")
 		debugpr("TRANSBLOCK 3.0 - TNS - TRANSITION TO NEW SELECTION ONLY \n")
 
 		local l1 = z_list.jumptable[z_list.index].key
@@ -15523,7 +15528,7 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-testpr("sfpos:"+surfacePos+" freezable:"+frost.canfreeze+" redraw:"+frost.surf_rt.redraw+"\n")
+testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16297,8 +16302,15 @@ testpr("sfpos:"+surfacePos+" freezable:"+frost.canfreeze+" redraw:"+frost.surf_r
 		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
-	if (frost.canfreeze && (surfacePos == 0)){
+	if (frost.canfreeze && (surfacePos == 0) && !bglay.surf_1.redraw && !data_surface.redraw){
 		frost_freeze(true)
+		frost.canfreeze = false
+	}
+
+	// menu showing, frost not redrawing, and some items are moving or have moved
+	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || (surfacePos != 0))){
+		frost_freeze(false)
+		frost.canfreeze = true
 	}
 
 	if (checkfade (flowT.zmenubg)) {
