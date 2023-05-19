@@ -205,6 +205,8 @@ local gh = {
 function gly(number){
 	if ((number == null) || (number <= 0) || (number == "")) return ""
 
+	number = number.tointeger()
+
 	local byte1 = 0xf0 | number >> 18
 	local byte2 = 0x80 | (number >> 12) & 0x3f
 	local byte3 = 0x80 | (number >> 6) & 0x3f
@@ -356,7 +358,7 @@ function bar_progress_update(i, init, max) {
 		}
 		if (floor(11 * i * 1.0 / max) != AF.bar.progress) {
 			AF.bar.progress = floor(11 * i * 1.0 / max)
-			AF.bar.pic.msg = gly((0xeafb + AF.bar.progress).tointeger())
+			AF.bar.pic.msg = gly(0xeafb + AF.bar.progress)
 			redraw = true
 		}
 		AF.bar.time0 = AF.bar.time1
