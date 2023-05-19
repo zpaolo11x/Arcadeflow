@@ -17089,27 +17089,9 @@ function ra_selectemu(startemu) {
 	})
 }
 
-//TEST160
-local SLOWINPUT = true
-local sigzero = 0
-local sigcount = 0
-local sigtime = fe.layout.time
-
 /// On Signal ///
 function on_signal(sig) {
 	
-	//TEST160
-	if (SLOWINPUT){
-		if ((sigzero != sig) || (fe.layout.time - sigtime >= 50)){
-			sigzero = sig
-			sigcount = 1
-			sigtime = fe.layout.time
-		} else {
-			sigcount ++
-		}
-		if (sigcount != 1) return true
-	}
-
 	//TEST160
 	if (sig=="custom1"){
 		frost.surf_rt.clear = frost.surf_2.clear = frost.surf_1.clear = false
