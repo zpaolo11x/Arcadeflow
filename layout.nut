@@ -15528,8 +15528,88 @@ local timescale = {
 	delay = 15
 }
 
+local surfarr = []
+function buildarraysurf(){
+	surfarr.push(fl.surf)
+
+	surfarr.push(frost.surf_rt)
+	surfarr.push(frost.surf_2)
+	surfarr.push(frost.surf_1)
+
+	surfarr.push(bglay.surf_rt)
+	surfarr.push(bglay.surf_2)
+	surfarr.push(bglay.surf_1)
+
+	surfarr.push(data_surface)
+
+	surfarr.push(data_surface_sh_rt)
+	surfarr.push(data_surface_sh_2)
+	surfarr.push(data_surface_sh_1)
+
+	surfarr.push(labelsurf)
+
+	surfarr.push(displaynamesurf.surf)
+	surfarr.push(letterobjsurf.surf)
+
+	surfarr.push(keyboard_surface)
+	surfarr.push(history_surface)
+	surfarr.push(hist_text_surf)
+
+	surfarr.push(shadowsurf_rt)
+	surfarr.push(shadowsurf_2)
+	surfarr.push(shadowsurf_1)
+
+	surfarr.push(hist_screensurf)
+	surfarr.push(hist_over.surface)
+
+	surfarr.push(zmenu_surface_container)
+	surfarr.push(zmenu_sh.surf_rt)
+	surfarr.push(zmenu_sh.surf_2)
+	surfarr.push(zmenu_sh.surf_1)
+	surfarr.push(zmenu_surface)
+
+	surfarr.push(attractitem.surface)
+
+	foreach (i, item in tilez){
+		surfarr.push(item.obj)
+		surfarr.push(item.snapz)
+		surfarr.push(item.loshz)
+		surfarr.push(item.gr_vidsz)
+		surfarr.push(item.vidsz)
+		surfarr.push(item.gr_snapz)
+	}
+
+}
+function printsrufaces(){
+	foreach(i, item in surfarr){
+		testpr((item.redraw ? "Y" : "N") )
+	}
+	testpr("\n")
+}
+
+buildarraysurf()
+printsrufaces()
+local debugoverlay=fe.add_text("",0,0,fl.w,fl.h)
+debugoverlay.char_size = fl.h/40.0
+debugoverlay.font = uifonts.mono
+debugoverlay.word_wrap = true
+debugoverlay.bg_alpha = 128
+debugoverlay.align = Align.Left
+
 /// On Tick ///
 function tick(tick_time) {
+	
+printsrufaces()
+
+	/*
+	foreach (i, item in fe.obj){
+		try{
+			testpr(" " + (item.redraw ? "Y" : "N"))
+			testpr(" " + (item.clear ? "Y" : "N"))
+		}catch(err){}
+	}
+	testpr("\n")
+	*/
 	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
@@ -16330,7 +16410,6 @@ function tick(tick_time) {
 		
 		if (endfade (flowT.zmenubg) == 1) {
 			frost.canfreeze = true
-			testpr("MENUEND\n")
 		}
 
 		frost.surf_rt.alpha = 255 //In frosted glass case we don't fade the surface but the blur radius
@@ -17094,8 +17173,12 @@ function on_signal(sig) {
 	
 	//TEST160
 	if (sig=="custom1"){
-		frost.surf_rt.clear = frost.surf_2.clear = frost.surf_1.clear = false
-		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
+		foreach (i,item in surfarr){
+			item.clear = false
+			item.redraw = false
+		}
+		//frost.surf_rt.clear = frost.surf_2.clear = frost.surf_1.clear = false
+		//frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 	}
 	debugpr("\n Si:" + sig)
 
