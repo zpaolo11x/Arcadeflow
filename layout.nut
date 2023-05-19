@@ -7534,6 +7534,7 @@ local frost = {
 	picnofrost = null
 	mfm = null
 	picT = null
+	canfreeze = false
 }
 
 frost.picT = {
@@ -16297,6 +16298,10 @@ testpr(frost.surf_rt.redraw+"\n")
 	}
 
 	if (checkfade (flowT.zmenubg)) {
+		if (!frost.surf_rt.redraw) {
+			frost_freeze(false)
+			frost.canfreeze = false
+		}
 		flowT.zmenubg = fadeupdate(flowT.zmenubg)
 		if (endfade (flowT.zmenubg) == 0) {
 			overlay.background.visible = false
@@ -16305,6 +16310,7 @@ testpr(frost.surf_rt.redraw+"\n")
 		}
 		
 		if (endfade (flowT.zmenubg) == 1) {
+			frost_freeze(true)
 			testpr("MENUEND\n")
 		}
 
