@@ -15516,7 +15516,7 @@ local timescale = {
 
 /// On Tick ///
 function tick(tick_time) {
-
+testpr(frost.surf_rt.redraw+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -17056,6 +17056,12 @@ function ra_selectemu(startemu) {
 
 /// On Signal ///
 function on_signal(sig) {
+
+	//TEST160
+	if (sig=="custom1"){
+		frost.surf_rt.clear = frost.surf_2.clear = frost.surf_1.clear = false
+		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
+	}
 	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
