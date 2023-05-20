@@ -11809,8 +11809,8 @@ local shader_tx2 = {
 	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 }
 
-gaussshader(shader_tx2.h, 9.0, 3.0, 1.0 / (zmenu.width * sh_scale.r2), 0.0)
-gaussshader(shader_tx2.v, 9.0, 3.0, 0.0, 1.0 / (zmenu.height * sh_scale.r2))
+gaussshader(shader_tx2.h, 9.0, 2.0, 1.0 / (zmenu.width * sh_scale.r2), 0.0)
+gaussshader(shader_tx2.v, 9.0, 2.0, 0.0, 1.0 / (zmenu.height * sh_scale.r2))
 
 zmenu_sh.surf_2.shader = noshader
 zmenu_sh.surf_1.shader = noshader
