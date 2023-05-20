@@ -16970,6 +16970,7 @@ function parsevolume(op) {
 
 // ra_init initialise the ra table with data regarding RA and cores
 local ra = {}
+
 function ra_init() {
 	ra.todolist <- {}
 
@@ -17182,11 +17183,11 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 	
 	//TEST160
-	if (sig=="custom1"){
+	if (sig=="custom1"){		
 		foreach (i,item in surfarr){
 			item.clear = false
 			item.redraw = false
-		}
+		}		
 		//frost.surf_rt.clear = frost.surf_2.clear = frost.surf_1.clear = false
 		//frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
 	}
