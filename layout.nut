@@ -8492,6 +8492,9 @@ function bgs_freeze(status) {
 	bglay.surf_rt.redraw = bglay.surf_rt.clear = !status
 	bglay.surf_2.redraw = bglay.surf_2.clear = !status
 	bglay.surf_1.redraw = bglay.surf_1.clear = !status
+	foreach (i, item in bgs.bgpic_array){
+		item.redraw = item.clear = !status
+	}
 }
 
 function displaynamelogo(cleanname) {
@@ -15529,7 +15532,7 @@ local timescale = {
 }
 
 local surfarr = []
-local surfdebug = false
+local surfdebug = true
 local debugoverlay = null
 
 function buildarraysurf(){
@@ -15605,7 +15608,7 @@ if (surfdebug) {
 /// On Tick ///
 function tick(tick_time) {
 	
-	if (surfdebug) printsrufaces()
+	//if (surfdebug) printsrufaces()
 
 	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
