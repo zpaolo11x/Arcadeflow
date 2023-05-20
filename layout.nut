@@ -8304,6 +8304,10 @@ for (local i = 0; i < tiles.total; i++) {
 
 function tile_redraw(i, status) {
 	tilez[i].obj.redraw = status
+	tilez[i].gr_overlay.redraw = status
+	tilez[i].glomx.redraw = status
+	tilez[i].sh_mx.redraw = status
+
 	foreach (item in tilez[i].surfs) {
 		if (item != null) item.redraw = status //Fixed for low spec mode
 	}
@@ -8311,6 +8315,9 @@ function tile_redraw(i, status) {
 
 function tile_clear(i, status) {
 	tilez[i].obj.clear = status
+	tilez[i].gr_overlay.clear = status
+	tilez[i].glomx.clear = status
+	tilez[i].sh_mx.clear = status
 	foreach (item in tilez[i].surfs) {
 		if (item != null) item.clear = status //Fixed for low spec mode
 	}
@@ -8318,6 +8325,9 @@ function tile_clear(i, status) {
 
 function tile_freeze(i, status) {
 	tilez[i].obj.clear = tilez[i].obj.redraw = !status
+	tilez[i].gr_overlay.clear = tilez[i].gr_overlay.redraw = !status
+	tilez[i].glomx.clear = tilez[i].glomx.redraw = !status
+	tilez[i].sh_mx.clear = tilez[i].sh_mx.redraw = !status
 	foreach (item in tilez[i].surfs) {
 		if (item != null) item.clear = item.redraw = !status //Fixed for low spec mode
 	}
@@ -15532,7 +15542,7 @@ local timescale = {
 }
 
 local surfarr = []
-local surfdebug = true
+local surfdebug = false
 local debugoverlay = null
 
 function buildarraysurf(){
