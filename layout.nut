@@ -11792,16 +11792,25 @@ zmenu_sh.surf_1 = zmenu_sh.surf_2.add_clone(zmenu_surface_container)
 
 zmenu_sh.surf_1.set_pos (4 * UI.scalerate * sh_scale.r2, 8 * UI.scalerate * sh_scale.r2, zmenu.width * sh_scale.r2, zmenu.height * sh_scale.r2)
 
+zmenu_sh.surf_rt.mipmap = zmenu_sh.surf_1.mipmap = zmenu_sh.surf_2.mipmap = 1
+
 //zmenu_sh.set_rgb(0, 0, 0)
 zmenu_sh.surf_1.set_rgb(0, 0, 0)
+
+/*
+//TEST160
+local testcheck = fe.add_clone(zmenu_sh.surf_rt)
+testcheck.zorder = 10000
+testcheck.mipmap = 1
+*/
 
 local shader_tx2 = {
 	h = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 }
 
-gaussshader(shader_tx2.h, 9.0, 3.0, 1.0 / (fl.w * sh_scale.r2), 0.0)
-gaussshader(shader_tx2.v, 9.0, 3.0, 0.0, 1.0 / (fl.h * sh_scale.r2))
+gaussshader(shader_tx2.h, 9.0, 3.0, 1.0 / (zmenu.width * sh_scale.r2), 0.0)
+gaussshader(shader_tx2.v, 9.0, 3.0, 0.0, 1.0 / (zmenu.height * sh_scale.r2))
 
 zmenu_sh.surf_2.shader = noshader
 zmenu_sh.surf_1.shader = noshader
