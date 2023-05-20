@@ -8351,7 +8351,7 @@ data_surface.set_pos(0, 0)
 
 local sh_scale = {
 	r1 = (UI.vertical ? 400.0 / fl.w : 400.0 / fl.h)
-	r2 = null
+	r2 = 0.5 * (UI.vertical ? 400.0 / fl.w : 400.0 / fl.h)
 }
 
 if (!prf.DATASHADOWSMOOTH) sh_scale.r1 = 1.0
@@ -11777,7 +11777,6 @@ local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
 zmenu_surface_container.set_pos (zmenu.x, zmenu.y)
 
 zmenu_surface_container.zorder = 10
-sh_scale.r2 = 0.5 * sh_scale.r1
 
 local zmenu_sh = {
 	surf_clamp = null
