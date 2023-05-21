@@ -72,6 +72,7 @@ local AF = {
 	dat_freezecount = 0
 	bgs_freezecount = 0
 	frost_freezecount = 0
+	zmenu_freezecount = 0
 	
 	folder = fe.script_dir
 	subfolder = ""
@@ -11820,6 +11821,7 @@ zmenu_sh.surf_rt.zorder = 9
 
 zmenu_sh.surf_rt.set_pos(zmenu_surface_container.x, zmenu_surface_container.y, zmenu_surface_container.width, zmenu_surface_container.height)
 
+
 zmenu.simbg = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientRa.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,//zmenu.y + zmenu.height * 0.5 - 0.5 * (zmenu.height-2.0 * zmenu.pad),
@@ -11871,6 +11873,16 @@ zmenu_surface.shader = txtoalpha
 zmenu.scroller = zmenu_surface.add_rectangle(zmenu.width - 1 , 0, 1, 1)
 zmenu.scroller.set_rgb(255,255,255)
 zmenu.scroller.alpha = 0
+
+
+function zmenu_freeze(status){
+	zmenu_surface_container.redraw = zmenu_surface_container.clear = !status
+	zmenu_surface.redraw = zmenu_surface.clear = !status
+	zmenu_sh.surf_rt.redraw = zmenu_sh.surf_rt.clear = !status
+	zmenu_sh.surf_2.redraw = zmenu_sh.surf_2.clear = !status
+	zmenu_sh.surf_1.redraw = zmenu_sh.surf_1.clear = !status
+}
+
 
 function cleanupmenudata(menudata){
 	foreach (i, item in menudata){
@@ -12423,6 +12435,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	//zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 	zmenu.scrollerpos = opts.shrink ? zmenu.width - disp.width : zmenu.width
 	zmenu.scroller.zorder = 200
+
+	zmenu_freeze(false)
 }
 
 function zmenuhide() {
@@ -15625,8 +15639,13 @@ if (surfdebug) {
 
 /// On Tick ///
 function tick(tick_time) {
-	
+	//TEST160
 	//if (surfdebug) printsrufaces()
+	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
+	(zmenu_surface.redraw ? "Y" : "N")+
+	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
+	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
+	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
 
 	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
@@ -15658,6 +15677,16 @@ function tick(tick_time) {
 		bgs_freeze(true)
 		AF.bgs_freezecount = 0
 	}
+
+	if (AF.zmenu_freezecount == 2) {
+		zmenu_freeze(false)
+		AF.zmenu_freezecount = 1
+	}
+	else if (AF.zmenu_freezecount == 1) {
+		zmenu_freeze(true)
+		AF.zmenu_freezecount = 0
+	}
+
 
 	// Hue color cycling
 	if (prf.HUECYCLE) {
@@ -15932,6 +15961,7 @@ function tick(tick_time) {
 
 	// zmenu items scrolling routine
 	if (zmenu.xstart != zmenu.xstop) {
+		
 		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (0.2 * (zmenu.xstop - zmenu.xstart))
 		if (absf(zmenu.speed) > 0.0005 * zmenu.tileh) {
 			for (local i = 0; i < zmenu.shown; i++) {
@@ -16479,6 +16509,12 @@ function tick(tick_time) {
 		prfmenu.description.alpha = 255 * (flowT.zmenutx[1])
 		prfmenu.dropshadow.alpha = 40 * (flowT.zmenutx[1])
 	}
+
+
+	if ((zmenu.xstart == zmenu.xstop) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true)){
+		AF.zmenu_freezecount = 1
+	}
+		
 
 	if (checkfade (flowT.historyblack)) {
 		flowT.historyblack = fadeupdate(flowT.historyblack)
@@ -17519,6 +17555,8 @@ function on_signal(sig) {
 		}
 
 		if (menucheck && ((sig == "up") || (sig == "down") || (sig == "left") || (sig == "right"))) {
+			if (zmenu_surface.redraw == false) zmenu_freeze(false)
+			
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
