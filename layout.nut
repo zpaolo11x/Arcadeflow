@@ -1796,6 +1796,7 @@ local themeT = {
 	optionspanelalpha = 80 // Alpha of options panel
 	mfmrgb = 0
 	mfmalpha = 150
+	logoshalpha = 120 //TEST160 was 150
 }
 
 local satin = {
@@ -1826,7 +1827,7 @@ if (prf.COLORTHEME == "dark") {
 	themeT.themetextcolor = {r = 240, g = 240, b = 240}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 80
+	themeT.themeshadow = 100 //TEST160 was 80
 	themeT.menushadow = 80
 	themeT.listboxbg = 200
 	themeT.listboxalpha = 15
@@ -1860,7 +1861,7 @@ if (prf.COLORTHEME == "pop") {
 	themeT.themetextcolor = {r = 255, g = 255, b = 255}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 70
+	themeT.themeshadow = 90 //TEST160 was 70
 	themeT.menushadow = 70
 	themeT.listboxbg = 200
 	themeT.listboxalpha = 15
@@ -8244,7 +8245,7 @@ for (local i = 0; i < tiles.total; i++) {
 	txt1z.line_spacing = logo.txtlinespacing
 	txt1z.char_spacing = logo.txtcharspacing
 
-	loshz.alpha = 110 //TEST160 was 150
+	loshz.alpha = themeT.logoshalpha 
 	loshz.preserve_aspect_ratio = true
 	loshz.set_rgb(0, 0, 0)
 
@@ -16178,7 +16179,7 @@ function tick(tick_time) {
 				tilez[i].gr_vidsz.alpha = 0
 				tilez[i].vidsz.alpha = 0
 				if (prf.FADEVIDEOTITLE) {
-					tilez[i].txshz.alpha = tilez[i].loshz.alpha = 110
+					tilez[i].txshz.alpha = tilez[i].loshz.alpha = themeT.logoshalpha
 					tilez[i].txt2z.alpha = tilez[i].txt1z.alpha = tilez[i].donez.alpha = tilez[i].favez.alpha = tilez[i].logoz.alpha = 255
 					tilez[i].nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 					tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
@@ -16200,7 +16201,7 @@ function tick(tick_time) {
 			// update size and glow alpha
 			tilez[i].gr_vidsz.alpha = tilez[i].vidsz.alpha = 255 * (fadetemp[1])
 			if (prf.FADEVIDEOTITLE) {
-				tilez[i].txshz.alpha = tilez[i].loshz.alpha = 110 * (1.0 - fadetemp[1])
+				tilez[i].txshz.alpha = tilez[i].loshz.alpha = themeT.logoshalpha * (1.0 - fadetemp[1])
 				tilez[i].txt2z.alpha = tilez[i].txt1z.alpha = tilez[i].donez.alpha = tilez[i].favez.alpha = tilez[i].logoz.alpha = 255 * (1.0 - fadetemp[1])
 				tilez[i].nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)* (1.0 - fadetemp[1])
 				tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)* (1.0 - fadetemp[1])
