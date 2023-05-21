@@ -8244,7 +8244,7 @@ for (local i = 0; i < tiles.total; i++) {
 	txt1z.line_spacing = logo.txtlinespacing
 	txt1z.char_spacing = logo.txtcharspacing
 
-	loshz.alpha = 150
+	loshz.alpha = 110 //TEST160 was 150
 	loshz.preserve_aspect_ratio = true
 	loshz.set_rgb(0, 0, 0)
 
@@ -16178,7 +16178,7 @@ function tick(tick_time) {
 				tilez[i].gr_vidsz.alpha = 0
 				tilez[i].vidsz.alpha = 0
 				if (prf.FADEVIDEOTITLE) {
-					tilez[i].txshz.alpha = tilez[i].loshz.alpha = 150
+					tilez[i].txshz.alpha = tilez[i].loshz.alpha = 110
 					tilez[i].txt2z.alpha = tilez[i].txt1z.alpha = tilez[i].donez.alpha = tilez[i].favez.alpha = tilez[i].logoz.alpha = 255
 					tilez[i].nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)
 					tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)
@@ -16200,7 +16200,7 @@ function tick(tick_time) {
 			// update size and glow alpha
 			tilez[i].gr_vidsz.alpha = tilez[i].vidsz.alpha = 255 * (fadetemp[1])
 			if (prf.FADEVIDEOTITLE) {
-				tilez[i].txshz.alpha = tilez[i].loshz.alpha = 150 * (1.0 - fadetemp[1])
+				tilez[i].txshz.alpha = tilez[i].loshz.alpha = 110 * (1.0 - fadetemp[1])
 				tilez[i].txt2z.alpha = tilez[i].txt1z.alpha = tilez[i].donez.alpha = tilez[i].favez.alpha = tilez[i].logoz.alpha = 255 * (1.0 - fadetemp[1])
 				tilez[i].nw_mx.alpha = ((prf.NEWGAME == true)? 220 : 0)* (1.0 - fadetemp[1])
 				tilez[i].tg_mx.alpha = ((prf.TAGSHOW == true)? 255 : 0)* (1.0 - fadetemp[1])
