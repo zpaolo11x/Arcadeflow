@@ -1827,7 +1827,7 @@ if (prf.COLORTHEME == "dark") {
 	themeT.themetextcolor = {r = 240, g = 240, b = 240}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 100 //TEST160 was 80
+	themeT.themeshadow = 95 //TEST160 was 80
 	themeT.menushadow = 80
 	themeT.listboxbg = 200
 	themeT.listboxalpha = 15
@@ -1861,7 +1861,7 @@ if (prf.COLORTHEME == "pop") {
 	themeT.themetextcolor = {r = 255, g = 255, b = 255}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 90 //TEST160 was 70
+	themeT.themeshadow = 85 //TEST160 was 70
 	themeT.menushadow = 70
 	themeT.listboxbg = 200
 	themeT.listboxalpha = 15
