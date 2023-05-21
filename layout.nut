@@ -8357,11 +8357,11 @@ local sh_scale = {
 if (!prf.DATASHADOWSMOOTH) sh_scale.r1 = 1.0
 
 local shader_tx = {
-	h = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
-	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
+	h = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern13_v.glsl", "glsl/gauss_kern13_f.glsl")
+	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern13_v.glsl", "glsl/gauss_kern13_f.glsl")
 }
-gaussshader(shader_tx.h, 9.0, 3.0, 1.0 / (fl.w * sh_scale.r1), 0.0)
-gaussshader(shader_tx.v, 9.0, 3.0, 0.0, 1.0 / (fl.h * sh_scale.r1))
+gaussshader(shader_tx.h, 13.0, 4.0, 1.0 / (fl.w * sh_scale.r1), 0.0)
+gaussshader(shader_tx.v, 13.0, 4.0, 0.0, 1.0 / (fl.h * sh_scale.r1))
 
 local data_surface_sh_rt = fl.surf.add_surface(data_surface.width * sh_scale.r1, data_surface.height * sh_scale.r1)
 local data_surface_sh_2 = data_surface_sh_rt.add_surface(data_surface.width * sh_scale.r1, data_surface.height * sh_scale.r1)
