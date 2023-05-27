@@ -14830,6 +14830,11 @@ testpr(i+" "+index+"\n")
 	if (z_list.size > 0) indexoffsetvar = (z_list.gametable[modwrap(z_list.index + index + var, z_list.size)].z_felistindex) - fe.list.index
 
 	if ((update) && (z_list.size > 0)) {
+		tile_freeze(indexTemp, false)
+		//tile_clear(focusindex.new, true)
+		//tile_redraw(focusindex.new, true)
+		tilez[indexTemp].freezecount = 0
+
 		// old style access: fe.get_art must reference old romlist
 		tilez[indexTemp].loshz.file_name = fe.get_art("wheel", indexoffsetvar, 0, Art.ImagesOnly)
 		tilez[indexTemp].gr_snapz.file_name = fe.get_art((prf.BOXARTMODE ? prf.BOXARTSOURCE : (prf.TITLEART ? "title" : "snap")), indexoffsetvar, 0, Art.ImagesOnly)
