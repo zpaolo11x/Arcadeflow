@@ -14823,7 +14823,7 @@ function changetiledata(i, index, update) {
 	// .index is used for direct z_list reference
 	tilez[indexTemp].offset = index
 	tilez[indexTemp].index = indexvar
-
+testpr(i+" "+index+"\n")
 	local indexoffset = 0
 	if (z_list.size > 0) indexoffset = (z_list.gametable[modwrap(z_list.index + index, z_list.size)].z_felistindex) - fe.list.index
 	local indexoffsetvar = 0
@@ -15289,8 +15289,8 @@ function on_transition(ttype, var0, ttime) {
 		mfz_apply(true)
 		
 		//TEST160 moved here from mfz_apply...
-		z_listrefreshtiles()
-		updatebgsnap (focusindex.new)
+		//z_listrefreshtiles()
+		//updatebgsnap (focusindex.new)
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
