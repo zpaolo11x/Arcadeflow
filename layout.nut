@@ -15287,7 +15287,10 @@ function on_transition(ttype, var0, ttime) {
 			mfz_populatereverse()
 			} catch(err) {}
 		mfz_apply(true)
-
+		
+		//TEST160 moved here from mfz_apply...
+		z_listrefreshtiles()
+		updatebgsnap (focusindex.new)
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
