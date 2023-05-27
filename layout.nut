@@ -12054,6 +12054,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Zmenu is officially showing, now populate the various elements
 	zmenu.showing = true
+	zmenu_freeze(false)
+	AF.zmenu_freezecount = 0
+	zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 
 	local artname = ""
 	local filename = ""
@@ -12353,7 +12356,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
-	zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = true
 	
 	zmenu.xstart = zmenu.xstop = getxstop()
 
@@ -12495,7 +12497,8 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 
 zmenu.xstop = 0
 
-zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
+zmenu_freeze(true)
+zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
 function gh_branchlist(op) {
@@ -15401,7 +15404,7 @@ function on_transition(ttype, var0, ttime) {
 	}
 
 	if (ttype == Transition.HideOverlay) {
-
+		//TEST160 CHECK THIS!!!
 		zmenu_surface_container.redraw = zmenu_surface.redraw = zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 		zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = false
 
@@ -15642,13 +15645,13 @@ if (surfdebug) {
 function tick(tick_time) {
 	//TEST160
 	//if (surfdebug) printsrufaces()
-	/*
+	
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-	*/
+	
 
 	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
@@ -16498,7 +16501,8 @@ function tick(tick_time) {
 	if (checkfade (flowT.zmenutx)) {
 		flowT.zmenutx = fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
-			zmenu_surface_container.redraw = zmenu_surface.redraw = false
+			//zmenu_surface_container.redraw = zmenu_surface.redraw = false
+			zmenu_freeze(true)
 			zmenu_surface_container.visible = false
 
 			overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
