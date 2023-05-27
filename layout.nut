@@ -15645,13 +15645,13 @@ if (surfdebug) {
 function tick(tick_time) {
 	//TEST160
 	//if (surfdebug) printsrufaces()
-	
+	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-	
+	*/
 
 	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
