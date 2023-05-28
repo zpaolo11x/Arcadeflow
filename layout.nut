@@ -3365,7 +3365,8 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	}
 	romfilename = subst_replace (romfilename, ".", "")
 	romfilename = subst_replace (romfilename, " ", "")
-
+	romfilename = romfilename+".nnn"
+	
 	local execss = ""
 	if (OS == "Windows") {
 		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
