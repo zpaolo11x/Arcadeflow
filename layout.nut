@@ -14823,7 +14823,7 @@ function changetiledata(i, index, update) {
 	// .index is used for direct z_list reference
 	tilez[indexTemp].offset = index
 	tilez[indexTemp].index = indexvar
-testpr(i+" "+index+"\n")
+
 	local indexoffset = 0
 	if (z_list.size > 0) indexoffset = (z_list.gametable[modwrap(z_list.index + index, z_list.size)].z_felistindex) - fe.list.index
 	local indexoffsetvar = 0
@@ -15628,9 +15628,9 @@ function buildarraysurf(){
 }
 function printsrufaces(){
 	foreach(i, item in surfarr){
-		testpr((item.redraw ? "Y" : "N") )
+		print((item.redraw ? "Y" : "N") )
 	}
-	testpr("\n")
+	print("\n")
 }
 
 if (surfdebug) {
