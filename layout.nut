@@ -3776,6 +3776,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
 					}
 					else {
+						try {remove(AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt")} catch(err) {}
+
 						local texe = "echo ok > \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" && "
 						texe += "curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" && "
 						texe += "rm \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" &"
@@ -15769,7 +15771,6 @@ function tick(tick_time) {
 			//Wait for download to finish
 			local dldslist = DirectoryListing (AF.folder + "dlds/", false).results
 			while (dldslist.len() != 2){
-				testpr("waiting..."+dldslist.len()+"\n")
 				dldslist = DirectoryListing (AF.folder + "dlds/", false).results
 			}
 
