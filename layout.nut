@@ -3751,15 +3751,27 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			}
 
 			if (tempdataA != null) {
+				// Download all Arcade media, wheel is not parallelized because if Arcade media is not present, SS media is used as fallback
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
 					if (OS == "Windows") {
 						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdataA.url + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\"")
 					}
 					else {
-						system ("curl -f --create-dirs -s \"" + tempdataA.url + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\"" + (emuartcat == "wheel" ? "": " &"))
+						try {remove(AF.folder + "dlds/" + scrapeid + emuartcat + "dldsA.txt")} catch(err) {}
+						local texeA = ""						
+						if (emuartcat == "wheel") {
+							texeA = "curl -f --create-dirs -s \"" + tempdataA.url + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\""
+						}
+						else {
+							texeA = "echo ok > \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dldsA.txt\" && "
+							texeA += "curl -f --create-dirs -s \"" + tempdataA.url + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\" && "
+							texeA += "rm \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dldsA.txt\" &"
+						}
+						system(texeA)
 					}
 				}
 
+				// Second wheel download run for wheel media from SS, if media from ADB was not present
 				if  (!(AF.scrape.forcemedia == "NO_MEDIA") && ((tempdata.len() > 0) && (emuartcat == "wheel") && ( !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext))))) {
 					if (OS == "Windows") {
 						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
