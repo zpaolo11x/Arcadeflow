@@ -667,7 +667,7 @@ function getromcrc_lookup4(filepath){
       if (zipcontent.len() == 1) blb = zip_extract_file(filepath, zipcontent[0] )
       else {
          try {
-            blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
+            blb = f_in.readblob(50*1000*1000) //loads up to 50 megs
          }
          catch(err){
             print ("*****CRC ERROR****\n")
