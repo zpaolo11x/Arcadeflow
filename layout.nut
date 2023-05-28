@@ -3776,7 +3776,10 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
 					}
 					else {
-						system ("curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" &")
+						local texe = "echo ok > \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" && "
+						texe += "curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" && "
+						texe += "rm \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" &"
+						system (texe)
 					}
 				}
 			}
@@ -15762,6 +15765,13 @@ function tick(tick_time) {
 			local outfile = WriteTextFile(outreport)
 			outfile.write_line(endreport)
 			outfile.close_file()
+
+			//Wait for download to finish
+			local dldslist = DirectoryListing (AF.folder + "dlds/", false).results
+			while (dldslist.len() != 2){
+				testpr("waiting..."+dldslist.len()+"\n")
+				dldslist = DirectoryListing (AF.folder + "dlds/", false).results
+			}
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms, "COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.scrape.separator2 + "\n" + endreport + "\n", false, AF.boxmessage)
 
