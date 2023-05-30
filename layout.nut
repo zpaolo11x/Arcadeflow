@@ -11815,13 +11815,6 @@ zmenu_sh.surf_rt.mipmap = zmenu_sh.surf_1.mipmap = zmenu_sh.surf_2.mipmap = 1
 //zmenu_sh.set_rgb(0, 0, 0)
 zmenu_sh.surf_1.set_rgb(0, 0, 0)
 
-/*
-//TEST160
-local testcheck = fe.add_clone(zmenu_sh.surf_rt)
-testcheck.zorder = 10000
-testcheck.mipmap = 1
-*/
-
 local shader_tx2 = {
 	h = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
 	v = fe.add_shader(Shader.VertexAndFragment, "glsl/gauss_kern9_v.glsl", "glsl/gauss_kern9_f.glsl")
@@ -15481,7 +15474,6 @@ function on_transition(ttype, var0, ttime) {
 
 	// if the transition is to a new selection initialize crossfade, scrolling and srfpos.Pos
 	if ((ttype == Transition.ToNewSelection)) {
-		//TEST160 con il live scroll disabilitato, come gestire queste?
 		if (!data_surface.redraw) data_freeze(false)
 		if (!bglay.surf_1.redraw) bgs_freeze(false)
 
@@ -15500,7 +15492,6 @@ function on_transition(ttype, var0, ttime) {
 		}
 
 		//bgs.bgpic_array[0].file_name = fe.get_art((prf.BOXARTMODE ? "flyer" : "snap"), tilez[focusindex.new].loshz.index_offset + var, 0, Art.ImagesOnly)
-		//TEST160
 		if (checklivejump()){
 			for (local i = 0; i < bgs.stacksize - 1; i++) {
 				bgs.bgpic_array[i].swap(bgs.bgpic_array[i + 1])
@@ -16486,7 +16477,6 @@ function tick(tick_time) {
 			overlay.background.visible = false
 			frost.surf_rt.alpha = 0
 			frostshaders(false)
-			//TEST160 cosa fare qui con canfreeze?
 		}
 		
 		if (endfade (flowT.zmenubg) == 1) {
@@ -17260,15 +17250,6 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	
-	//TEST160
-	if (sig=="custom1"){		
-		foreach (i,item in surfarr){
-			item.clear = false
-			item.redraw = false
-		}		
-		//frost.surf_rt.clear = frost.surf_2.clear = frost.surf_1.clear = false
-		//frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = false
-	}
 	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
