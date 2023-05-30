@@ -1796,7 +1796,7 @@ local themeT = {
 	optionspanelalpha = 80 // Alpha of options panel
 	mfmrgb = 0
 	mfmalpha = 150
-	logoshalpha = 120 //TEST160 was 150
+	logoshalpha = 120 // was 150
 }
 
 local satin = {
@@ -1827,7 +1827,7 @@ if (prf.COLORTHEME == "dark") {
 	themeT.themetextcolor = {r = 240, g = 240, b = 240}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 95 //TEST160 was 80
+	themeT.themeshadow = 95 // was 80
 	themeT.menushadow = 80
 	themeT.listboxbg = 200
 	themeT.listboxalpha = 15
@@ -1861,7 +1861,7 @@ if (prf.COLORTHEME == "pop") {
 	themeT.themetextcolor = {r = 255, g = 255, b = 255}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 85 //TEST160 was 70
+	themeT.themeshadow = 85 // was 70
 	themeT.menushadow = 70
 	themeT.listboxbg = 200
 	themeT.listboxalpha = 15
@@ -5645,33 +5645,18 @@ foreach (item, table in multifilterz.l0) {
 
 savetabletofile(multifilterz.filter, "pref_mf_0.txt")
 
-function mfz_on() {//TEST160 changed with hasfilters
+function mfz_on() {
 	foreach(item, value in multifilterz.hasfilters){
 		if (value) return true
 	}
 	return false
-	/*
-	foreach (item, table in multifilterz.l0) {
-		if (multifilterz.filter.rawin(item)) {
-			if (multifilterz.filter[item].len() > 0) return true
-		}
-	}
-	return false
-	*/
 }
 
-function mfz_num() {//TEST160 changed with hasfilters
+function mfz_num() {
 	local out = 0
 	foreach(item, value in multifilterz.hasfilters){
 		if (value) out ++
 	}
-	/*
-	foreach (item, table in multifilterz.l0) {
-		if (multifilterz.filter.rawin(item)) {
-			if (multifilterz.filter[item].len() > 0) out ++
-		}
-	}
-	*/
 	return out
 }
 
@@ -5838,7 +5823,7 @@ function mfz_checkin(index) {
 		outOR = false
 		metafilter.rawset(id0, outOR)
 		if (multifilterz.hasfilters[id0]) { //Filter is applied on this category
-			vtemp = z_list.levchecks[index][table0] //table0.levcheck(index) //TEST160 Quante volte viene richiamato levcheck nella vita del layout? magari si può fare un baking!
+			vtemp = z_list.levchecks[index][table0] //table0.levcheck(index) 
 			foreach (value in multifilterz.filter[id0]) { //Check every value in OR form
 				foreach (vitem, vtable in vtemp){
 					if ((value == vtable.l1val) || (vtable.rawin("l2val") && (value == vtable.l2val))){
@@ -9113,38 +9098,12 @@ function updatemenu(level, var) {
 
 	else if (level == 2) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
-
 		menupic (level, AF.prefs.l1[prfmenu.outres0][zmenu.selected].varname, AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection)
-		//TEST160 CHECK
-		/*
-		try {
-			prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][zmenu.selected].picsel[AF.prefs.l1[prfmenu.outres0][zmenu.selected].selection]
-		}
-		catch(err) {
-			try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][var].pic}
-			catch(err) {
-				prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
-				prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-			}
-		}
-		*/
 	}
 
 	else if (level == 3) {
 		prfmenu.helppic.set_rgb(255, 255, 255)
-
 		menupic(level, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].varname, var)
-		//TEST160 CHECK
-		/*
-		try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].picsel[var]}
-		catch(err) {
-			try {prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].pic}
-			catch(err) {
-				prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
-				prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-			}
-		}
-		*/
 	}
 }
 
@@ -15665,7 +15624,6 @@ function tick(tick_time) {
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
 	*/
 
-	// testpr("sfpos:"+surfacePos+" cfrz:"+frost.canfreeze+" red:"+frost.surf_rt.redraw+" bgfc:"+AF.bgs_freezecount+" drfc:"+AF.dat_freezecount+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
