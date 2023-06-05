@@ -47,11 +47,11 @@ function ltxt(inputitem,languagestring) {
 	if ((languagestring == "EN") || (languagestring == "")) return (inputitem)
 
 	if (typeof inputitem != "array"){
-		return (languagetable.rawin(inputitem) ? languagetable[inputitem][languagestring] : inputitem)
+		return (languagetable.rawin(inputitem) ? (languagetable[inputitem].rawin(languagestring) ? languagetable[inputitem][languagestring] : inputitem) : inputitem)
 	}
 	else {
 		foreach (i, item in inputitem){
-			out[i] = (languagetable.rawin(inputitem[i]) ? languagetable[inputitem[i]][languagestring] : inputitem[i])
+			out[i] = (languagetable.rawin(inputitem[i]) ? (languagetable[inputitem[i]].rawin(languagestring) ? languagetable[inputitem[i]][languagestring] : inputitem[i]) : inputitem[i])
 		}
 		return out			
 	}
