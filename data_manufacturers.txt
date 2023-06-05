@@ -1104,6 +1104,7 @@ thalion thalionsoftware
 theadventureworkshop
 theedge theedgesoftware edgethe
 thegamefactory
+thegameroom
 theguild theguildadventuresoftware
 thepowerhouse powerhousethe
 thinkingrabbit
@@ -1165,6 +1166,7 @@ ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmen
 ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2004,2017
 ubisoft ubisoftentertainmentsoftware ubisoftentertainmentltd ubisoftentertainmentsa ubisoftmontpellierstudios|2018,10000
 ucom
+uep uepsystems
 ufo ufointeractive ufointeractivegames
 ultimateplaythegame ultimate
 ultra ultrasoft ultragames

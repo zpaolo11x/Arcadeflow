@@ -91,25 +91,3 @@ function ltxt(inputitem,languagestring) {
 		}
 	}
 }
-
-/*
-function ltxt(inputstring,languagestring) {
-   if (languagestring == "EN") return (inputstring)
-   else try{return languagetable [inputstring][languagestring]} catch (err) {return(inputstring)}
-}
-
-
-function ltxtarray(inputarray,languagestring) {
-   local out = inputarray
-   if (languagestring == "EN") return (inputarray)
-   else {
-      for (local i = 0 ; i < inputarray.len() ; i++) {
-         try {out[i] = languagetable [inputarray[i]][languagestring]}
-         catch (err) {out[i] = inputarray[i]}
-      }
-      return out
-   } 
-}
-
-*/
-

@@ -7,7 +7,6 @@ function file_exist_folder(fullpathfilename){
 	try {file(fullpathfilename, "a" );return true;}catch(e){return false;}
 }
 
-local manufvector = ["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]
 local manufinc = 0
 local manufdata = {}
 local manufpath = fe.path_expand( affolder+"data_manufacturers.txt")
@@ -27,7 +26,7 @@ local logoserie = ""
 while ( !manufile.eos() ) {
    datemin = 0
    datemax = 10000
-   instr = manufile.read_line()
+   instr = strip(manufile.read_line())
    datasplit = split(instr,"|")
 
    if (datasplit.len()>1){
@@ -67,29 +66,6 @@ function print_variable(variablein,level,name){
 	}
 }
 
-/*
-while ( !manufile.eos() ) {
-
-   local char = manufile.readn( 'b' )
-
-   if ((char != 10) && (char != 13)) {
-      if (char != 32){
-         arrayline = arrayline + char.tochar()
-      }
-      else {
-         manufdata [arrayline] <- manufinc
-         arrayline = ""
-      }
-   }
-
-   else if (char == 13){
-      manufdata [arrayline] <- manufinc
-      arrayline = ""
-      manufinc++
-   }
-}
-*/
-
 function manufacturer_parser(inputstring){
    local s = inputstring
    local s2 = split( s, "*%/: .()-,<>?&'+’!・~·" )
@@ -107,14 +83,11 @@ function manufacturer_parser(inputstring){
 }
 
 function manufacturer_vec(s){
- //  local s = z_list.gametable(offset).z_manufacturer
-//	local t = fe.game_info( Info.Title, offset )
-
    local sout = manufacturer_parser (s)
 
    local valueout = ""
    try {
-      valueout = manufvector[manufdata[sout]]
+      valueout = gly(manufdata[sout] + 0xe900)
    }
    catch (err){
       valueout = ""
@@ -125,10 +98,8 @@ function manufacturer_vec(s){
 
 // USED ONE
 function manufacturer_vec_name(name,year){
-
    local s = name
    if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
-//	local t = fe.game_info( Info.Title, offset )
 
    local sout = manufacturer_parser (s)
 
@@ -136,14 +107,199 @@ function manufacturer_vec_name(name,year){
    if(manufdata.rawin(sout)){
       foreach (item, val in manufdata[sout]){
          if ((year >= val.dmin) && (year <= val.dmax)) {
-            valueout = manufvector[val.logo]
+            valueout = gly(val.logo + 0xe900)
             break
          }
       }
-      //valueout = manufvector[manufdata[sout]]
    }
 
 	return  ( (sout == "") ? "" : valueout)
+}
+
+local playersfont = {
+	"players_" : "A",
+
+	"players_1" : "B",
+	"players_1P" : "B",
+	
+	"players_2" : "C",
+	"players_1-2" : "C",
+	"players_2P" : "C",
+	"players_2P sim" : "C",
+	
+	"players_3" : "D",
+	"players_1-3" : "D",
+	"players_2-3" : "D",
+	"players_3P sim" : "D",
+	"players_3P" : "D",
+	
+	"players_4" : "E",
+	"players_1-4" : "E",
+	"players_2-4" : "E",
+	"players_4P sim" : "E",
+	"players_4P" : "E",
+
+	"players_5" : "F",
+	"players_2-5" : "F",
+	"players_5P alt" : "F",
+	"players_5P" : "F",
+
+	"players_6" : "G",
+	"players_2-6" : "G",
+	"players_6P alt" : "G",
+	"players_6P" : "G",
+
+	"players_7" : "H",
+	"players_2-7" : "H",
+	"players_7P alt" : "H",
+	"players_7P" : "H",
+
+	"players_8" : "I",
+	"players_2-8" : "I",
+	"players_8P alt" : "I",
+	"players_8P" : "I",
+
+	"players_9" : "J",
+	"players_2-9" : "J",
+	"players_9P alt" : "J",
+	"players_9P" : "J",
+
+	"players_2P alt" : "K",
+
+	"players_3P alt" : "L",
+
+	"players_4P alt" : "M",
+
+}
+
+function players_vec(s){
+   if (playersfont.rawin("players_" + s)) 
+		return playersfont["players_" + s]
+	else
+		return ("A")
+}
+
+local buottonsfont = {
+	"0button" : "0",
+	"button" : "0",
+
+	"1button" : "1",
+	"2button" : "2",
+	"3button" : "3",
+	"4button" : "4",
+	"5button" : "5",
+	"6button" : "6",
+	"8button" : "7",
+	"13utton" : "8"
+}
+
+function buttons_vec(s){
+   if (buottonsfont.rawin(s + "button")) 
+		return buottonsfont[s + "button"]
+	else
+		return ("0")
+}
+
+local controllerfont = {
+   "joystick (8-way)" : "e",
+   "joystick (8-way),joystick (8-way)" : "e",
+   "joystick (8-way),joystick (8-way),joystick (8-way)" : "e",
+   "joystick (8-way),joystick (8-way),joystick (8-way),joystick (8-way)" : "e",
+   "8-way Joystick" : "e",
+   "Joystick 8 ways" : "e",
+   "8-way Top-Fire Joystick" : "e",
+   "8-way Triggerstick" : "e",
+
+   "joystick (8-way),dial" : "e",
+   "joystick (8-way),dial,joystick (8-way),dial" : "e",
+   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),dial" : "e",
+   "joystick (8-way),dial,joystick (8-way),dial,joystick (8-way),joystick (8-way)" : "e",
+   "Joystick 8 ways, Dial" : "e",
+
+   "joystick (8-way),paddle,joystick (8-way)" : "e",
+   "joystick (8-way),paddle" : "e",
+   "joystick (8-way),paddle,joystick (8-way),paddle" : "e",
+   "joystick (8-way),paddle,joystick (8-way),paddle,joystick (8-way),paddle" : "e",
+
+   "joystick (8-way),joystick (analog)" : "h",
+   "joystick (8-way),joystick (analog),joystick (8-way),joystick (analog)" : "h",
+
+   "joystick (2-way),joystick (analog)" : "g",
+
+   "joystick (8-way),trackball" : "o",
+   "joystick (8-way),trackball,joystick (8-way),trackball" : "o",
+
+   "joystick (8-way),positional" : "e",
+   "joystick (8-way),positional,joystick (8-way),positional" : "e",
+   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way),positional" : "e",
+   "joystick (8-way),positional,joystick (8-way),positional,joystick (8-way)positional,joystick (8-way)positional" : "e",
+   "joystick (5 (half8)-way),joystick (5 (half8)-way)" : "e",
+   "joystick (5 (half8)-way)" : "e",
+   "Joystick 8 ways, Positional" : "e",
+
+   "joystick (4-way)" : "d",
+   "joystick (4-way),joystick (4-way)" : "d",
+   "joystick (4-way),joystick (4-way),joystick (4-way),joystick (4-way)" : "d",
+   "joystick (3 (half4)-way),joystick (3 (half4)-way)" : "d",
+   "joystick (3 (half4)-way)" : "d",
+   "4-way Joystick" : "d",
+   "Joystick 4 ways" : "d",
+
+   "joystick (2-way)" : "c",
+   "joystick (vertical2-way)" : "c",
+   "joystick (2-way),joystick (2-way)" : "c",
+   "joystick (2-way),joystick (2-way),joystick (2-way),joystick (2-way)" : "c",
+   "2-way Joystick (Horizontal)" : "c",
+   "2-way Joystick (Vertical)" : "c",
+   "Joystick 2 ways (horizontal)" : "c",
+   "Joystick 2 ways (vertical)" : "c",
+
+   "paddle,pedal" : "n",
+   "paddle,pedal,paddle,pedal" : "n",
+   "Paddle, Pedal" : "n",
+
+   "dial,pedal" : "n",
+   "dial,pedal,dial,pedal" : "n",
+   "dial,pedal,dial,pedal,dial,pedal" : "n",
+   "dial,pedal,dial,pedal,dial,pedal,dial,pedal" : "n",
+
+   "dial,paddle,pedal" : "n",
+
+   "joystick (analog)" : "f",
+   "joystick (analog),joystick (analog)" : "f",
+   "Analog Stick" : "f",
+
+   "trackball" : "m",
+   "trackball,trackball" : "m",
+   "trackball,trackball,trackball" : "m",
+   "Trackball" : "m",
+
+   "paddle" : "l",
+   "paddle,paddle" : "l",
+
+   "dial" : "l",
+   "dial,dial" : "l",
+
+   "only_buttons" : "j",
+   "only_buttons,only_buttons" : "j",
+   "only_buttons,only_buttons,only_buttons,only_buttons" : "j",
+   "Buttons only" : "j",
+   "Just Buttons" : "j",
+
+   "double joystick" : "i",
+   "double joystick,double joystick" : "i",
+   "Dual 8-way Joysticks" : "i",
+
+   "lightgun" : "k",
+   "lightgun,lightgun" : "k",
+   "Analog Gun" : "k",
+   "Lightgun" : "k",
+}
+function controller_vec(s){
+    if (controllerfont.rawin(s)) 
+		return controllerfont[s]
+	else
+		return ("a") 
 }
 
 local controllertable = {
@@ -253,23 +409,6 @@ function controller_pic(s){
 }
 
 
-function manufacturer_pic(offset){
-   local s = fe.game_info( Info.Manufacturer, offset )
-//	local t = fe.game_info( Info.Title, offset )
-
-   local s2 = split( s, "*%_/: .()-,<>?&+!・~·" )
-	local sout =""
-	if ( s2.len() > 1 ) {
-		for (local i=0;i<s2.len();i++){
-		if (s2[i] != "license")sout = sout + s2[i]
-		}
-		sout = sout.tolower()
-	}
-	else sout = strip(s).tolower()
-	return "manufacturer_images/" + ( (sout == "") ? "unknown" : sout) + ".png"
-}
-
-
 local gIDT = {}
    gIDT[0x0000] <- "None" //  No genre
    gIDT[0x0100] <- "Action" //  Generic Action games
@@ -336,7 +475,6 @@ function getgenreid(string){
 }
 
 // Create category data structure for metadata editing
-
 function getyears(){
    local yeartable = {
       names = ["197x","198x","199x","200x","201x"]
@@ -351,158 +489,158 @@ function getyears(){
          yeartable.table[val].push(yeartable.decade[id]+val2)
       }
    }
-
    return (yeartable)
-
 }
 
 function getcatnames_SS(){
-
-   local catnamesdata = []
    local catnames = {
       names = []
       table = {}
+		finder = {}
    }
-   catnamesdata.push("Action RPG")
-   catnamesdata.push("Action/Adventure")
-   catnamesdata.push("Action/Breakout games")
-   catnamesdata.push("Action/Climbing")
-   catnamesdata.push("Action/Labyrinth")
-   catnamesdata.push("Adult")
-   catnamesdata.push("Adventure/Graphics")
-   catnamesdata.push("Adventure/Interactive Movie")
-   catnamesdata.push("Adventure/Point and Click")
-   catnamesdata.push("Adventure/RealTime 3D")
-   catnamesdata.push("Adventure/Survival Horror")
-   catnamesdata.push("Adventure/Text")
-   catnamesdata.push("Adventure/Visual Novel")
-   catnamesdata.push("Asiatic board game")
-   catnamesdata.push("Beat'em Up")
-   catnamesdata.push("Board game")
-   catnamesdata.push("Build And Management")
-   catnamesdata.push("Casino/Cards")
-   catnamesdata.push("Casino/Lottery")
-   catnamesdata.push("Casino/Race")
-   catnamesdata.push("Casino/Roulette")
-   catnamesdata.push("Casino/Slot machine")
-   catnamesdata.push("Casual Game")
-   catnamesdata.push("Compilation")
-   catnamesdata.push("Demo")
-   catnamesdata.push("Dungeon Crawler RPG")
-   catnamesdata.push("Educational")
-   catnamesdata.push("Fight/ Co-op")
-   catnamesdata.push("Fight/2.5D")
-   catnamesdata.push("Fight/2D")
-   catnamesdata.push("Fight/3D")
-   catnamesdata.push("Fight/Versus")
-   catnamesdata.push("Fight/Vertical")
-   catnamesdata.push("Fishing")
-   catnamesdata.push("Go")
-   catnamesdata.push("Hanafuda")
-   catnamesdata.push("Horses race")
-   catnamesdata.push("Hunting")
-   catnamesdata.push("Hunting and Fishing")
-   catnamesdata.push("Japanese RPG")
-   catnamesdata.push("Lightgun Shooter")
-   catnamesdata.push("Mahjong")
-   catnamesdata.push("Massive Multiplayer Online RPG")
-   catnamesdata.push("Motorcycle Race, 1st Pers.")
-   catnamesdata.push("Motorcycle Race, 3rd Pers.")
-   catnamesdata.push("Music and Dance")
-   catnamesdata.push("Othello")
-   catnamesdata.push("Pinball")
-   catnamesdata.push("Platform/Fighter Scrolling")
-   catnamesdata.push("Platform/Run Jump")
-   catnamesdata.push("Platform/Run Jump Scrolling")
-   catnamesdata.push("Platform/Shooter Scrolling")
-   catnamesdata.push("Playing cards")
-   catnamesdata.push("Puzzle-Game/Equalize")
-   catnamesdata.push("Puzzle-Game/Fall")
-   catnamesdata.push("Puzzle-Game/Glide")
-   catnamesdata.push("Puzzle-Game/Throw")
-   catnamesdata.push("Quiz/English")
-   catnamesdata.push("Quiz/French")
-   catnamesdata.push("Quiz/German")
-   catnamesdata.push("Quiz/Italian")
-   catnamesdata.push("Quiz/Japanese")
-   catnamesdata.push("Quiz/Korean")
-   catnamesdata.push("Quiz/Music English")
-   catnamesdata.push("Quiz/Music Japanese")
-   catnamesdata.push("Quiz/Spanish")
-   catnamesdata.push("Race 1st Pers. view")
-   catnamesdata.push("Race 3rd Pers. view")
-   catnamesdata.push("Race, Driving/Boat")
-   catnamesdata.push("Race, Driving/Hang-glider")
-   catnamesdata.push("Race, Driving/Motorcycle")
-   catnamesdata.push("Race, Driving/Plane")
-   catnamesdata.push("Race, Driving/Race")
-   catnamesdata.push("Renju")
-   catnamesdata.push("Rhythm")
-   catnamesdata.push("Role playing games")
-   catnamesdata.push("Shoot'em up/Diagonal")
-   catnamesdata.push("Shoot'em up/Horizontal")
-   catnamesdata.push("Shoot'em up/Vertical")
-   catnamesdata.push("Shooter/1st person")
-   catnamesdata.push("Shooter/3rd person")
-   catnamesdata.push("Shooter/Horizontal")
-   catnamesdata.push("Shooter/Missile Command Like")
-   catnamesdata.push("Shooter/Plane")
-   catnamesdata.push("Shooter/Plane, 1st person")
-   catnamesdata.push("Shooter/Plane, 3rd person")
-   catnamesdata.push("Shooter/Run and Gun")
-   catnamesdata.push("Shooter/Run and Shoot")
-   catnamesdata.push("Shooter/Space Invaders Like")
-   catnamesdata.push("Shooter/Vehicle, 1st person")
-   catnamesdata.push("Shooter/Vehicle, 3rd person")
-   catnamesdata.push("Shooter/Vehicle, Diagonal")
-   catnamesdata.push("Shooter/Vehicle, Horizontal")
-   catnamesdata.push("Shooter/Vehicle, Vertical")
-   catnamesdata.push("Shooter/Vertical")
-   catnamesdata.push("Shougi")
-   catnamesdata.push("Simulation/Life")
-   catnamesdata.push("Simulation/SciFi")
-   catnamesdata.push("Simulation/Vehicle")
-   catnamesdata.push("Sports with Animals")
-   catnamesdata.push("Sports/Arm wrestling")
-   catnamesdata.push("Sports/Baseball")
-   catnamesdata.push("Sports/Basketball")
-   catnamesdata.push("Sports/Bowling")
-   catnamesdata.push("Sports/Boxing")
-   catnamesdata.push("Sports/Cycling")
-   catnamesdata.push("Sports/Darts")
-   catnamesdata.push("Sports/Dodgeball")
-   catnamesdata.push("Sports/Fighting")
-   catnamesdata.push("Sports/Fitness")
-   catnamesdata.push("Sports/Football")
-   catnamesdata.push("Sports/Golf")
-   catnamesdata.push("Sports/Handball")
-   catnamesdata.push("Sports/Hockey")
-   catnamesdata.push("Sports/Pool")
-   catnamesdata.push("Sports/Rugby")
-   catnamesdata.push("Sports/Running trails")
-   catnamesdata.push("Sports/Shuffleboard")
-   catnamesdata.push("Sports/Skateboard")
-   catnamesdata.push("Sports/Skiing")
-   catnamesdata.push("Sports/Skydiving")
-   catnamesdata.push("Sports/Soccer")
-   catnamesdata.push("Sports/Sumo")
-   catnamesdata.push("Sports/Swimming")
-   catnamesdata.push("Sports/Table tennis")
-   catnamesdata.push("Sports/Tennis")
-   catnamesdata.push("Sports/Volleyball")
-   catnamesdata.push("Sports/Wrestling")
-   catnamesdata.push("Strategy")
-   catnamesdata.push("Tactical RPG")
-   catnamesdata.push("Team-as-one RPG")
-   catnamesdata.push("Thinking")
-   catnamesdata.push("Various/Electro - Mechanical")
-   catnamesdata.push("Various/Print Club")
-   catnamesdata.push("Various/System")
-   catnamesdata.push("Various/Utilities")
+   local catnamesdata = [
+		"Action RPG",
+		"Action/Adventure",
+		"Action/Breakout games",
+		"Action/Climbing",
+		"Action/Labyrinth",
+		"Adult",
+		"Adventure/Graphics",
+		"Adventure/Interactive Movie",
+		"Adventure/Point and Click",
+		"Adventure/RealTime 3D",
+		"Adventure/Survival Horror",
+		"Adventure/Text",
+		"Adventure/Visual Novel",
+		"Asiatic board game",
+		"Beat'em Up",
+		"Board game",
+		"Build And Management",
+		"Casino/Cards",
+		"Casino/Lottery",
+		"Casino/Race",
+		"Casino/Roulette",
+		"Casino/Slot machine",
+		"Casual Game",
+		"Compilation",
+		"Demo",
+		"Dungeon Crawler RPG",
+		"Educational",
+		"Fight/ Co-op",
+		"Fight/2.5D",
+		"Fight/2D",
+		"Fight/3D",
+		"Fight/Versus",
+		"Fight/Vertical",
+		"Fishing",
+		"Go",
+		"Hanafuda",
+		"Horses race",
+		"Hunting",
+		"Hunting and Fishing",
+		"Japanese RPG",
+		"Lightgun Shooter",
+		"Mahjong",
+		"Massive Multiplayer Online RPG",
+		"Motorcycle Race, 1st Pers.",
+		"Motorcycle Race, 3rd Pers.",
+		"Music and Dance",
+		"Othello",
+		"Pinball",
+		"Platform/Fighter Scrolling",
+		"Platform/Run Jump",
+		"Platform/Run Jump Scrolling",
+		"Platform/Shooter Scrolling",
+		"Playing cards",
+		"Puzzle-Game/Equalize",
+		"Puzzle-Game/Fall",
+		"Puzzle-Game/Glide",
+		"Puzzle-Game/Throw",
+		"Quiz/English",
+		"Quiz/French",
+		"Quiz/German",
+		"Quiz/Italian",
+		"Quiz/Japanese",
+		"Quiz/Korean",
+		"Quiz/Music English",
+		"Quiz/Music Japanese",
+		"Quiz/Spanish",
+		"Race 1st Pers. view",
+		"Race 3rd Pers. view",
+		"Race, Driving/Boat",
+		"Race, Driving/Hang-glider",
+		"Race, Driving/Motorcycle",
+		"Race, Driving/Plane",
+		"Race, Driving/Race",
+		"Renju",
+		"Rhythm",
+		"Role playing games",
+		"Shoot'em up/Diagonal",
+		"Shoot'em up/Horizontal",
+		"Shoot'em up/Vertical",
+		"Shooter/1st person",
+		"Shooter/3rd person",
+		"Shooter/Horizontal",
+		"Shooter/Missile Command Like",
+		"Shooter/Plane",
+		"Shooter/Plane, 1st person",
+		"Shooter/Plane, 3rd person",
+		"Shooter/Run and Gun",
+		"Shooter/Run and Shoot",
+		"Shooter/Space Invaders Like",
+		"Shooter/Vehicle, 1st person",
+		"Shooter/Vehicle, 3rd person",
+		"Shooter/Vehicle, Diagonal",
+		"Shooter/Vehicle, Horizontal",
+		"Shooter/Vehicle, Vertical",
+		"Shooter/Vertical",
+		"Shougi",
+		"Simulation/Life",
+		"Simulation/SciFi",
+		"Simulation/Vehicle",
+		"Sports with Animals",
+		"Sports/Arm wrestling",
+		"Sports/Baseball",
+		"Sports/Basketball",
+		"Sports/Bowling",
+		"Sports/Boxing",
+		"Sports/Cycling",
+		"Sports/Darts",
+		"Sports/Dodgeball",
+		"Sports/Fighting",
+		"Sports/Fitness",
+		"Sports/Football",
+		"Sports/Golf",
+		"Sports/Handball",
+		"Sports/Hockey",
+		"Sports/Pool",
+		"Sports/Rugby",
+		"Sports/Running trails",
+		"Sports/Shuffleboard",
+		"Sports/Skateboard",
+		"Sports/Skiing",
+		"Sports/Skydiving",
+		"Sports/Soccer",
+		"Sports/Sumo",
+		"Sports/Swimming",
+		"Sports/Table tennis",
+		"Sports/Tennis",
+		"Sports/Volleyball",
+		"Sports/Wrestling",
+		"Strategy",
+		"Tactical RPG",
+		"Team-as-one RPG",
+		"Thinking",
+		"Various/Electro - Mechanical",
+		"Various/Print Club",
+		"Various/System",
+		"Various/Utilities"
+	]
 
    foreach (id, item in catnamesdata){
       local vecn = split(item,"/")
       if (vecn.len() == 2){
+			catnames.finder.rawset(vecn[0]+" / "+vecn[1], null)
          if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
          else {
             catnames.names.push (vecn[0])
@@ -510,6 +648,7 @@ function getcatnames_SS(){
             catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
          }
       } else {
+			catnames.finder.rawset(vecn[0], null)
          if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0])
          else {
             catnames.names.push (vecn[0])
@@ -523,269 +662,275 @@ function getcatnames_SS(){
 }
 
 function getcatnames(){
-
-   local catnamesdata = []
    local catnames = {
       names = []
       table = {}
+		finder = {}
    }
-   catnamesdata.push("Ball & Paddle/Breakout")
-   catnamesdata.push("Ball & Paddle/Breakout * Mature *")
-   catnamesdata.push("Ball & Paddle/Jump and Touch")
-   catnamesdata.push("Ball & Paddle/Misc.")
-   catnamesdata.push("Ball & Paddle/Pong")
-   catnamesdata.push("Board Game/Bridge Machine")
-   catnamesdata.push("Board Game/Chess Machine")
-   catnamesdata.push("Board Game/Dame Machine")
-   catnamesdata.push("Casino/Cards")
-   catnamesdata.push("Casino/Cards * Mature *")
-   catnamesdata.push("Casino/Horse Racing")
-   catnamesdata.push("Casino/Lottery")
-   catnamesdata.push("Casino/Misc.")
-   catnamesdata.push("Casino/Misc. * Mature *")
-   catnamesdata.push("Casino/Multiplay")
-   catnamesdata.push("Casino/Racing")
-   catnamesdata.push("Casino/Reels")
-   catnamesdata.push("Casino/Reels * Mature *")
-   catnamesdata.push("Casino/Roulette")
-   catnamesdata.push("Climbing/Building")
-   catnamesdata.push("Climbing/Mountain - Wall")
-   catnamesdata.push("Climbing/Tree - Plant")
-   catnamesdata.push("Driving/1st Person")
-   catnamesdata.push("Driving/Ambulance Guide")
-   catnamesdata.push("Driving/Boat")
-   catnamesdata.push("Driving/Catch")
-   catnamesdata.push("Driving/Demolition Derby")
-   catnamesdata.push("Driving/FireTruck Guide")
-   catnamesdata.push("Driving/Guide and Collect")
-   catnamesdata.push("Driving/Guide and Shoot")
-   catnamesdata.push("Driving/Landing")
-   catnamesdata.push("Driving/Misc.")
-   catnamesdata.push("Driving/Plane")
-   catnamesdata.push("Driving/Race")
-   catnamesdata.push("Driving/Race (chase view)")
-   catnamesdata.push("Driving/Race (chase view) Bike")
-   catnamesdata.push("Driving/Race 1st P Bike")
-   catnamesdata.push("Driving/Race 1st Person")
-   catnamesdata.push("Driving/Race Bike")
-   catnamesdata.push("Driving/Race Track")
-   catnamesdata.push("Driving/Truck Guide")
-   catnamesdata.push("Electromechanical/Change Money")
-   catnamesdata.push("Electromechanical/Misc.")
-   catnamesdata.push("Electromechanical/Pinball")
-   catnamesdata.push("Electromechanical/Redemption")
-   catnamesdata.push("Electromechanical/Reels")
-   catnamesdata.push("Electromechanical/Utilities")
-   catnamesdata.push("Fighter/2.5D")
-   catnamesdata.push("Fighter/2D")
-   catnamesdata.push("Fighter/3D")
-   catnamesdata.push("Fighter/Asian 3D")
-   catnamesdata.push("Fighter/Compilation")
-   catnamesdata.push("Fighter/Field")
-   catnamesdata.push("Fighter/Misc.")
-   catnamesdata.push("Fighter/Multiplay")
-   catnamesdata.push("Fighter/Versus")
-   catnamesdata.push("Fighter/Versus * Mature *")
-   catnamesdata.push("Fighter/Versus Co-op")
-   catnamesdata.push("Fighter/Vertical")
-   catnamesdata.push("Maze/Ball Guide")
-   catnamesdata.push("Maze/Change Surface")
-   catnamesdata.push("Maze/Collect")
-   catnamesdata.push("Maze/Collect * Mature *")
-   catnamesdata.push("Maze/Collect & Put")
-   catnamesdata.push("Maze/Cross")
-   catnamesdata.push("Maze/Defeat Enemies")
-   catnamesdata.push("Maze/Digging")
-   catnamesdata.push("Maze/Digging * Mature *")
-   catnamesdata.push("Maze/Driving")
-   catnamesdata.push("Maze/Escape")
-   catnamesdata.push("Maze/Escape * Mature *")
-   catnamesdata.push("Maze/Fighter")
-   catnamesdata.push("Maze/Integrate")
-   catnamesdata.push("Maze/Ladders")
-   catnamesdata.push("Maze/Marble Madness")
-   catnamesdata.push("Maze/Misc.")
-   catnamesdata.push("Maze/Move and Sort")
-   catnamesdata.push("Maze/Outline")
-   catnamesdata.push("Maze/Paint")
-   catnamesdata.push("Maze/Run Jump")
-   catnamesdata.push("Maze/Shooter Large")
-   catnamesdata.push("Maze/Shooter Small")
-   catnamesdata.push("Maze/Surround")
-   catnamesdata.push("Medal Game/Action")
-   catnamesdata.push("Medal Game/Adventure")
-   catnamesdata.push("Medal Game/Cards")
-   catnamesdata.push("Medal Game/Casino")
-   catnamesdata.push("Medal Game/Compilation")
-   catnamesdata.push("Medal Game/Driving")
-   catnamesdata.push("Medal Game/Horse Racing")
-   catnamesdata.push("Medal Game/Timing")
-   catnamesdata.push("Medal Game/Versus")
-   catnamesdata.push("Misc./Catch")
-   catnamesdata.push("Misc./Clock")
-   catnamesdata.push("Misc./Dartboard")
-   catnamesdata.push("Misc./Dog Sitter")
-   catnamesdata.push("Misc./Educational Game")
-   catnamesdata.push("Misc./Electronic Board Game")
-   catnamesdata.push("Misc./Electronic Game")
-   catnamesdata.push("Misc./Electronic Typewriter")
-   catnamesdata.push("Misc./Gambling Board")
-   catnamesdata.push("Misc./Hot-air Balloon")
-   catnamesdata.push("Misc./Jump and Bounce")
-   catnamesdata.push("Misc./Laser Disk Simulator")
-   catnamesdata.push("Misc./Mini-Games")
-   catnamesdata.push("Misc./Order")
-   catnamesdata.push("Misc./Pachinko")
-   catnamesdata.push("Misc./Pinball")
-   catnamesdata.push("Misc./Pinball * Mature *")
-   catnamesdata.push("Misc./Prediction")
-   catnamesdata.push("Misc./Print Club")
-   catnamesdata.push("Misc./Redemption")
-   catnamesdata.push("Misc./Reflex")
-   catnamesdata.push("Misc./Response Time")
-   catnamesdata.push("Misc./Robot Control")
-   catnamesdata.push("Misc./Satellite Receiver")
-   catnamesdata.push("Misc./Shoot Photos")
-   catnamesdata.push("Misc./Spank * Mature *")
-   catnamesdata.push("Misc./Toy Cars")
-   catnamesdata.push("Misc./Unknown")
-   catnamesdata.push("Misc./Versus")
-   catnamesdata.push("Misc./Virtual Environment")
-   catnamesdata.push("Misc./VTR Control")
-   catnamesdata.push("Multiplay/Cards")
-   catnamesdata.push("Multiplay/Compilation")
-   catnamesdata.push("Multiplay/Compilation * Mature *")
-   catnamesdata.push("Multiplay/Mini-Games")
-   catnamesdata.push("Multiplay/Mini-Games * Mature *")
-   catnamesdata.push("Multiplay/Misc. * Mature *")
-   catnamesdata.push("Platform/2D")
-   catnamesdata.push("Platform/Fighter")
-   catnamesdata.push("Platform/Fighter Scrolling")
-   catnamesdata.push("Platform/Maze")
-   catnamesdata.push("Platform/Run Jump")
-   catnamesdata.push("Platform/Run Jump * Mature *")
-   catnamesdata.push("Platform/Run, Jump & Scrolling")
-   catnamesdata.push("Platform/Shooter")
-   catnamesdata.push("Platform/Shooter Scrolling")
-   catnamesdata.push("Puzzle/Cards")
-   catnamesdata.push("Puzzle/Drop")
-   catnamesdata.push("Puzzle/Drop * Mature *")
-   catnamesdata.push("Puzzle/Match")
-   catnamesdata.push("Puzzle/Match * Mature *")
-   catnamesdata.push("Puzzle/Maze")
-   catnamesdata.push("Puzzle/Misc.")
-   catnamesdata.push("Puzzle/Misc. * Mature *")
-   catnamesdata.push("Puzzle/Outline")
-   catnamesdata.push("Puzzle/Outline * Mature *")
-   catnamesdata.push("Puzzle/Paint * Mature *")
-   catnamesdata.push("Puzzle/Reconstruction")
-   catnamesdata.push("Puzzle/Reconstruction * Mature *")
-   catnamesdata.push("Puzzle/Sliding")
-   catnamesdata.push("Puzzle/Sliding * Mature *")
-   catnamesdata.push("Puzzle/Toss")
-   catnamesdata.push("Puzzle/Toss * Mature *")
-   catnamesdata.push("Quiz/Questions in Chinese")
-   catnamesdata.push("Quiz/Questions in English")
-   catnamesdata.push("Quiz/Questions in English * Mature *")
-   catnamesdata.push("Quiz/Questions in French")
-   catnamesdata.push("Quiz/Questions in German")
-   catnamesdata.push("Quiz/Questions in Italian")
-   catnamesdata.push("Quiz/Questions in Japanese")
-   catnamesdata.push("Quiz/Questions in Japanese * Mature *")
-   catnamesdata.push("Quiz/Questions in Korean")
-   catnamesdata.push("Quiz/Questions in Spanish")
-   catnamesdata.push("Rhythm/Dance")
-   catnamesdata.push("Rhythm/Instruments")
-   catnamesdata.push("Rhythm/Misc.")
-   catnamesdata.push("Shooter/1st Person")
-   catnamesdata.push("Shooter/3rd Person")
-   catnamesdata.push("Shooter/Command")
-   catnamesdata.push("Shooter/Driving")
-   catnamesdata.push("Shooter/Driving (chase view)")
-   catnamesdata.push("Shooter/Driving 1st Person")
-   catnamesdata.push("Shooter/Driving Diagonal")
-   catnamesdata.push("Shooter/Driving Horizontal")
-   catnamesdata.push("Shooter/Driving Vertical")
-   catnamesdata.push("Shooter/Field")
-   catnamesdata.push("Shooter/Flying")
-   catnamesdata.push("Shooter/Flying (chase view)")
-   catnamesdata.push("Shooter/Flying * Mature *")
-   catnamesdata.push("Shooter/Flying 1st Person")
-   catnamesdata.push("Shooter/Flying Diagonal")
-   catnamesdata.push("Shooter/Flying Horizontal")
-   catnamesdata.push("Shooter/Flying Horizontal * Mature *")
-   catnamesdata.push("Shooter/Flying Vertical")
-   catnamesdata.push("Shooter/Flying Vertical * Mature *")
-   catnamesdata.push("Shooter/Gallery")
-   catnamesdata.push("Shooter/Gallery * Mature *")
-   catnamesdata.push("Shooter/Gun")
-   catnamesdata.push("Shooter/Misc.")
-   catnamesdata.push("Shooter/Misc. Horizontal")
-   catnamesdata.push("Shooter/Misc. Vertical")
-   catnamesdata.push("Shooter/Outline * Mature *")
-   catnamesdata.push("Shooter/Underwater")
-   catnamesdata.push("Shooter/Versus")
-   catnamesdata.push("Shooter/Walking")
-   catnamesdata.push("Sports/Armwrestling")
-   catnamesdata.push("Sports/Baseball")
-   catnamesdata.push("Sports/Basketball")
-   catnamesdata.push("Sports/Bowling")
-   catnamesdata.push("Sports/Boxing")
-   catnamesdata.push("Sports/Bull Fighting")
-   catnamesdata.push("Sports/Cards")
-   catnamesdata.push("Sports/Darts")
-   catnamesdata.push("Sports/Dodgeball")
-   catnamesdata.push("Sports/Fishing")
-   catnamesdata.push("Sports/Football")
-   catnamesdata.push("Sports/Golf")
-   catnamesdata.push("Sports/Gun")
-   catnamesdata.push("Sports/Handball")
-   catnamesdata.push("Sports/Hang Gliding")
-   catnamesdata.push("Sports/Hockey")
-   catnamesdata.push("Sports/Horse Racing")
-   catnamesdata.push("Sports/Horseshoes")
-   catnamesdata.push("Sports/Misc.")
-   catnamesdata.push("Sports/Multiplay")
-   catnamesdata.push("Sports/Ping Pong")
-   catnamesdata.push("Sports/Pool")
-   catnamesdata.push("Sports/Pool * Mature *")
-   catnamesdata.push("Sports/Rugby Football")
-   catnamesdata.push("Sports/Shuffleboard")
-   catnamesdata.push("Sports/Skateboarding")
-   catnamesdata.push("Sports/Skiing")
-   catnamesdata.push("Sports/SkyDiving")
-   catnamesdata.push("Sports/Soccer")
-   catnamesdata.push("Sports/Sumo")
-   catnamesdata.push("Sports/Swimming")
-   catnamesdata.push("Sports/Tennis")
-   catnamesdata.push("Sports/Track & Field")
-   catnamesdata.push("Sports/Volley - Soccer")
-   catnamesdata.push("Sports/Volleyball")
-   catnamesdata.push("Sports/Wrestling")
-   catnamesdata.push("System/BIOS")
-   catnamesdata.push("System/Device")
-   catnamesdata.push("Tabletop/Cards")
-   catnamesdata.push("Tabletop/Chess Machine")
-   catnamesdata.push("Tabletop/Go")
-   catnamesdata.push("Tabletop/Hanafuda")
-   catnamesdata.push("Tabletop/Mahjong")
-   catnamesdata.push("Tabletop/Mahjong * Mature *")
-   catnamesdata.push("Tabletop/Match * Mature *")
-   catnamesdata.push("Tabletop/Misc.")
-   catnamesdata.push("Tabletop/Multiplay")
-   catnamesdata.push("Tabletop/Othello - Reversi")
-   catnamesdata.push("Tabletop/Othello - Reversi * Mature *")
-   catnamesdata.push("Tabletop/Renju")
-   catnamesdata.push("Tabletop/Shougi")
-   catnamesdata.push("Whac-A-Mole/Fighter")
-   catnamesdata.push("Whac-A-Mole/Footsteps")
-   catnamesdata.push("Whac-A-Mole/Gun")
-   catnamesdata.push("Whac-A-Mole/Hammer")
-   catnamesdata.push("Whac-A-Mole/Shooter")
+   local catnamesdata = [
+		"Ball & Paddle/Breakout",
+		"Ball & Paddle/Breakout * Mature *",
+		"Ball & Paddle/Jump and Touch",
+		"Ball & Paddle/Misc.",
+		"Ball & Paddle/Pong",
+		"Board Game/Bridge Machine",
+		"Board Game/Chess Machine",
+		"Board Game/Dame Machine",
+		"Casino/Cards",
+		"Casino/Cards * Mature *",
+		"Casino/Horse Racing",
+		"Casino/Lottery",
+		"Casino/Misc.",
+		"Casino/Misc. * Mature *",
+		"Casino/Multiplay",
+		"Casino/Racing",
+		"Casino/Reels",
+		"Casino/Reels * Mature *",
+		"Casino/Roulette",
+		"Climbing/Building",
+		"Climbing/Mountain - Wall",
+		"Climbing/Tree - Plant",
+		"Driving/1st Person",
+		"Driving/Ambulance Guide",
+		"Driving/Boat",
+		"Driving/Catch",
+		"Driving/Demolition Derby",
+		"Driving/FireTruck Guide",
+		"Driving/Guide and Collect",
+		"Driving/Guide and Shoot",
+		"Driving/Landing",
+		"Driving/Misc.",
+		"Driving/Plane",
+		"Driving/Race",
+		"Driving/Race (chase view)",
+		"Driving/Race (chase view) Bike",
+		"Driving/Race 1st P Bike",
+		"Driving/Race 1st Person",
+		"Driving/Race Bike",
+		"Driving/Race Track",
+		"Driving/Truck Guide",
+		"Electromechanical/Change Money",
+		"Electromechanical/Misc.",
+		"Electromechanical/Pinball",
+		"Electromechanical/Redemption",
+		"Electromechanical/Reels",
+		"Electromechanical/Utilities",
+		"Fighter/2.5D",
+		"Fighter/2D",
+		"Fighter/3D",
+		"Fighter/Asian 3D",
+		"Fighter/Compilation",
+		"Fighter/Field",
+		"Fighter/Misc.",
+		"Fighter/Multiplay",
+		"Fighter/Versus",
+		"Fighter/Versus * Mature *",
+		"Fighter/Versus Co-op",
+		"Fighter/Vertical",
+		"Maze/Ball Guide",
+		"Maze/Change Surface",
+		"Maze/Collect",
+		"Maze/Collect * Mature *",
+		"Maze/Collect & Put",
+		"Maze/Cross",
+		"Maze/Defeat Enemies",
+		"Maze/Digging",
+		"Maze/Digging * Mature *",
+		"Maze/Driving",
+		"Maze/Escape",
+		"Maze/Escape * Mature *",
+		"Maze/Fighter",
+		"Maze/Integrate",
+		"Maze/Ladders",
+		"Maze/Marble Madness",
+		"Maze/Misc.",
+		"Maze/Move and Sort",
+		"Maze/Outline",
+		"Maze/Paint",
+		"Maze/Run Jump",
+		"Maze/Shooter Large",
+		"Maze/Shooter Small",
+		"Maze/Surround",
+		"Medal Game/Action",
+		"Medal Game/Adventure",
+		"Medal Game/Cards",
+		"Medal Game/Casino",
+		"Medal Game/Compilation",
+		"Medal Game/Driving",
+		"Medal Game/Horse Racing",
+		"Medal Game/Timing",
+		"Medal Game/Versus",
+		"Misc./Catch",
+		"Misc./Clock",
+		"Misc./Dartboard",
+		"Misc./Dog Sitter",
+		"Misc./Educational Game",
+		"Misc./Electronic Board Game",
+		"Misc./Electronic Game",
+		"Misc./Electronic Typewriter",
+		"Misc./Gambling Board",
+		"Misc./Hot-air Balloon",
+		"Misc./Jump and Bounce",
+		"Misc./Laser Disk Simulator",
+		"Misc./Mini-Games",
+		"Misc./Order",
+		"Misc./Pachinko",
+		"Misc./Pinball",
+		"Misc./Pinball * Mature *",
+		"Misc./Prediction",
+		"Misc./Print Club",
+		"Misc./Redemption",
+		"Misc./Reflex",
+		"Misc./Response Time",
+		"Misc./Robot Control",
+		"Misc./Satellite Receiver",
+		"Misc./Shoot Photos",
+		"Misc./Spank * Mature *",
+		"Misc./Toy Cars",
+		"Misc./Unknown",
+		"Misc./Versus",
+		"Misc./Virtual Environment",
+		"Misc./VTR Control",
+		"Multiplay/Cards",
+		"Multiplay/Compilation",
+		"Multiplay/Compilation * Mature *",
+		"Multiplay/Mini-Games",
+		"Multiplay/Mini-Games * Mature *",
+		"Multiplay/Misc. * Mature *",
+		"Platform/2D",
+		"Platform/Fighter",
+		"Platform/Fighter Scrolling",
+		"Platform/Maze",
+		"Platform/Run Jump",
+		"Platform/Run Jump * Mature *",
+		"Platform/Run, Jump & Scrolling",
+		"Platform/Shooter",
+		"Platform/Shooter Scrolling",
+		"Puzzle/Cards",
+		"Puzzle/Drop",
+		"Puzzle/Drop * Mature *",
+		"Puzzle/Match",
+		"Puzzle/Match * Mature *",
+		"Puzzle/Maze",
+		"Puzzle/Misc.",
+		"Puzzle/Misc. * Mature *",
+		"Puzzle/Outline",
+		"Puzzle/Outline * Mature *",
+		"Puzzle/Paint * Mature *",
+		"Puzzle/Reconstruction",
+		"Puzzle/Reconstruction * Mature *",
+		"Puzzle/Sliding",
+		"Puzzle/Sliding * Mature *",
+		"Puzzle/Toss",
+		"Puzzle/Toss * Mature *",
+		"Quiz/Questions in Chinese",
+		"Quiz/Questions in English",
+		"Quiz/Questions in English * Mature *",
+		"Quiz/Questions in French",
+		"Quiz/Questions in German",
+		"Quiz/Questions in Italian",
+		"Quiz/Questions in Japanese",
+		"Quiz/Questions in Japanese * Mature *",
+		"Quiz/Questions in Korean",
+		"Quiz/Questions in Spanish",
+		"Rhythm/Dance",
+		"Rhythm/Instruments",
+		"Rhythm/Misc.",
+		"Shooter/1st Person",
+		"Shooter/3rd Person",
+		"Shooter/Command",
+		"Shooter/Driving",
+		"Shooter/Driving (chase view)",
+		"Shooter/Driving 1st Person",
+		"Shooter/Driving Diagonal",
+		"Shooter/Driving Horizontal",
+		"Shooter/Driving Vertical",
+		"Shooter/Field",
+		"Shooter/Flying",
+		"Shooter/Flying (chase view)",
+		"Shooter/Flying * Mature *",
+		"Shooter/Flying 1st Person",
+		"Shooter/Flying Diagonal",
+		"Shooter/Flying Horizontal",
+		"Shooter/Flying Horizontal * Mature *",
+		"Shooter/Flying Vertical",
+		"Shooter/Flying Vertical * Mature *",
+		"Shooter/Gallery",
+		"Shooter/Gallery * Mature *",
+		"Shooter/Gun",
+		"Shooter/Misc.",
+		"Shooter/Misc. Horizontal",
+		"Shooter/Misc. Vertical",
+		"Shooter/Outline * Mature *",
+		"Shooter/Underwater",
+		"Shooter/Versus",
+		"Shooter/Walking",
+		"Sports/Armwrestling",
+		"Sports/Baseball",
+		"Sports/Basketball",
+		"Sports/Bowling",
+		"Sports/Boxing",
+		"Sports/Bull Fighting",
+		"Sports/Cards",
+		"Sports/Darts",
+		"Sports/Dodgeball",
+		"Sports/Fishing",
+		"Sports/Football",
+		"Sports/Golf",
+		"Sports/Gun",
+		"Sports/Handball",
+		"Sports/Hang Gliding",
+		"Sports/Hockey",
+		"Sports/Horse Racing",
+		"Sports/Horseshoes",
+		"Sports/Misc.",
+		"Sports/Multiplay",
+		"Sports/Ping Pong",
+		"Sports/Pool",
+		"Sports/Pool * Mature *",
+		"Sports/Rugby Football",
+		"Sports/Shuffleboard",
+		"Sports/Skateboarding",
+		"Sports/Skiing",
+		"Sports/SkyDiving",
+		"Sports/Soccer",
+		"Sports/Sumo",
+		"Sports/Swimming",
+		"Sports/Tennis",
+		"Sports/Track & Field",
+		"Sports/Volley - Soccer",
+		"Sports/Volleyball",
+		"Sports/Wrestling",
+		"System/BIOS",
+		"System/Device",
+		"Tabletop/Cards",
+		"Tabletop/Chess Machine",
+		"Tabletop/Go",
+		"Tabletop/Hanafuda",
+		"Tabletop/Mahjong",
+		"Tabletop/Mahjong * Mature *",
+		"Tabletop/Match * Mature *",
+		"Tabletop/Misc.",
+		"Tabletop/Multiplay",
+		"Tabletop/Othello - Reversi",
+		"Tabletop/Othello - Reversi * Mature *",
+		"Tabletop/Renju",
+		"Tabletop/Shougi",
+		"Whac-A-Mole/Fighter",
+		"Whac-A-Mole/Footsteps",
+		"Whac-A-Mole/Gun",
+		"Whac-A-Mole/Hammer",
+		"Whac-A-Mole/Shooter"
+	]
 
    foreach (id, item in catnamesdata){
-      local vecn = split(item,"/")
-      if (catnames.table.rawin(vecn[0])) catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
+		local vecn = split(item,"/")
+      
+		catnames.finder.rawset(vecn[0]+" / "+vecn[1],null)
+
+      if (catnames.table.rawin(vecn[0])) {
+			catnames.table[vecn[0]].push(vecn[0]+" / "+vecn[1])
+		}
       else {
          catnames.names.push (vecn[0])
          catnames.table[vecn[0]] <- []
@@ -796,9 +941,8 @@ function getcatnames(){
    return (catnames)
 }
 
-
-function categorynamepurge(catname){
-   local s0 = split (parsecategory(catname), ",")[0]
+function categorynamepurge(cat){
+   local s0 = cat[0] + cat[1]
    local s2 = split( s0, "*_/: .()-,<>?&+'" )
 	local sout =""
 	if ( s2.len() > 1 ) {
@@ -811,47 +955,14 @@ function categorynamepurge(catname){
 	return sout
 }
 
-function category_pic_name(name){
-   //local s = fe.game_info( Info.Category, offset )
-   local s = name
-   local sout = categorynamepurge(s)
-
+function category_pic_name(cat){
+   local sout = categorynamepurge(cat)
 	return "metapics/category/"+sout+".png"
 }
 
-function category_pic(offset){
-   local s = fe.game_info( Info.Category, offset )
-   local sout = categorynamepurge(s)
-
-	return "metapics/category/"+sout+".png"
-}
-
-function category_pic_10_name(s){
-   local sout = categorynamepurge(s)
+function category_pic_10_name(cat){
+   local sout = categorynamepurge(cat)
 	return "metapics/category10/"+sout+".png"
-}
-
-function category_pic_10(offset){
-   local s = fe.game_info( Info.Category, offset )
-   local sout = categorynamepurge(s)
-	return "metapics/category10/"+sout+".png"
-}
-
-function manufacturer_list(){
-   local zout = ""
-   local indexer = 0
-   local s = ""
-   local t = ""
-   for (local i = 0; i<fe.list.size; i++){
-      zout = manufacturer_pic(i)
-      s = fe.game_info( Info.Manufacturer, i )
-	   t = fe.game_info( Info.Title, i )
-
-      if (!(file_exist(affolder + zout))){
-         indexer ++
-         print(  indexer + " *** " + s + " *** " + t + "\n")
-      }
-   }
 }
 
 function manufacturer_list_vector(){
@@ -915,6 +1026,3 @@ function category_list(){
       }
    }
 }
-
-//listbrand()
-//listcategory ()

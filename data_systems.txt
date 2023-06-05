@@ -156,6 +156,19 @@ capcom cp system iii
 capcom,0,0,CAPC,CRT,NONE,-4,3,ARCADE,Capcom,null,Capcom,151,rom,null,null
 capcom classics
 
+casio loopy,0,0,LOPY,CRT,NONE,4,3,CONSOLE,Casio,1995,Casio Loopy,98,rom,joystick (8-way),4
+loopy
+
+casio pv-1000,256,192,PV1K,CRT,NONE,4,3,CONSOLE,Casio,1983,Casio PV-1000,74,rom,joystick (8-way),2
+casio pv1000
+pv-1000
+pv1000
+
+casio pv-2000,256,192,PV2K,CRT,NONE,4,3,COMPUTER,Casio,1983,Casio PV-2000,74,rom,joystick (8-way),2
+casio pv2000
+pv-2000
+pv2000
+
 cave 68000,0,0,CV68K,CRT,NONE,-4,3,ARCADE,Cave,1995,Cave 68000,47,rom,null,null
 cave68000
 cave 68k
@@ -398,6 +411,8 @@ core grafx
 
 nec pc engine cd,256,224,PCECD,CRT,NONE,4,3,CONSOLE,NEC,1988,PC Engine CD,114,iso,joystick (8-way),2
 pc engine cd
+pc engine-cd
+nec pc engine-cd
 
 nec pc engine duo,256,224,PCE2,CRT,NONE,4,3,CONSOLE,NEC,1992,PC Engine Duo,114,iso,joystick (8-way),2
 pc engine duo

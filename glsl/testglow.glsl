@@ -46,7 +46,7 @@ void main()
      vec3 hue = rgb2hsv (tc.rgb);
    vec3 hue1 = vec3(1.0) - hue;
 
-   gl_FragColor = vec4(tc.rgb, gl_Color.a*tc.a*hue.z);
+   gl_FragColor = vec4(tc.rgb, clamp(gl_Color.a*tc.a*hue.z, 0.005 , 1.0));
  
 
 }
