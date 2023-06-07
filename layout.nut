@@ -15731,7 +15731,10 @@ function tick(tick_time) {
 
 			//Wait for download to finish
 			local dldslist = DirectoryListing (AF.folder + "dlds/", false).results
-			while (dldslist.len() != 2){
+			
+			print_variable(dldslist,"","")
+			testpr(dldslist.len()+"\n")
+			while(( (OS == "OSX") && (dldslist.len() != 2)) || ((OS != "OSX") && (dldslist.len() != 1))){
 				dldslist = DirectoryListing (AF.folder + "dlds/", false).results
 			}
 
