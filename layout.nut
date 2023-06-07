@@ -7054,6 +7054,15 @@ function islcd(offset, var) {
 
 /// Misc functions ///
 
+// strips hidden files from folder
+function striphidden(file_list){
+	local out = []
+	foreach(i, item in file_list)
+		if (item[0].tochar() != ".")
+			out.push(item)
+	return (out)
+}
+
 // wrap around value witin range 0 - N
 function wrap(i, N) {
 	while (i < 0) {i += N}
@@ -15730,11 +15739,9 @@ function tick(tick_time) {
 			outfile.close_file()
 
 			//Wait for download to finish
-			local dldslist = DirectoryListing (AF.folder + "dlds/", false).results
+			local dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
 			
-			print_variable(dldslist,"","")
-			testpr(dldslist.len()+"\n")
-			while(( (OS == "OSX") && (dldslist.len() != 2)) || ((OS != "OSX") && (dldslist.len() != 1))){
+			while(dldslist.len() != 0){
 				dldslist = DirectoryListing (AF.folder + "dlds/", false).results
 			}
 
