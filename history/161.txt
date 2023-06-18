@@ -1,2 +1,3 @@
 16.1
 Fixed similar games vidoes not playing
+Fixed crash when exiting to desktop

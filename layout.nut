@@ -17595,7 +17595,7 @@ function on_signal(sig) {
 		}
 
 		if (sig == "exit_to_desktop") {
-			system (AF.config.exitcommand)
+			if (AF.config.exitcommand != null) system (AF.config.exitcommand)
 			return false
 		}
 
