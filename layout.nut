@@ -15626,12 +15626,13 @@ function tick(tick_time) {
 	//TEST160
 	//if (surfdebug) printsrufaces()
 
+	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-
+*/
 
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
@@ -15740,9 +15741,8 @@ function tick(tick_time) {
 
 			//Wait for download to finish
 			local dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
-
 			while(dldslist.len() != 0){
-				dldslist = DirectoryListing (AF.folder + "dlds/", false).results
+				dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
 			}
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms, "COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.scrape.separator2 + "\n" + endreport + "\n", false, AF.boxmessage)
