@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.0
+// Arcadeflow - v 16.1
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -63,7 +63,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.0"
+	version = "16.1"
 	vernum = 0
 
 	LNG = ""
@@ -17748,7 +17748,7 @@ function on_signal(sig) {
 				{text = ltxt("Scrape selected game",AF.LNG), glyph = 0xe9c2},
 				{text = ltxt("Edit metadata",AF.LNG), glyph = 0xe906},
 				{text = ltxt("CAUTION!",AF.LNG), liner = true},
-				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe906, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)}],
+				{text = ltxt("Delete ROM",AF.LNG), glyph = 0xe9ac, note = prf.ENABLEDELETE?"":ltxt("Disabled", AF.LNG)}],
 			ltxt("Game Menu", AF.LNG), 0xe916, 0, {},
 			function(result) {
 				if (result == 0) {

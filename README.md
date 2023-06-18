@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.0 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.1 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,17 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.0 #
+## What's new in v 16.1 #
 
-- Added option for fullscreen tiles
-- Added option for scrape timeout
-- Added new zoom rate options
-- Redesigned help images for options
-- Improved More of the Same menu
-- Improved support for multi emulator romlists
-- Fixed bug with More of the Same menu
-- Fixed zoom ratio for slimline layout
-- Fixed support of redirect romlists
+- Fixed similar games vidoes not playing
+- Fixed crash when exiting to desktop
+- Fixed scrape hanging on macOS
 
 ## Emulator system identifier #
 
@@ -106,16 +100,16 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
-#### ❗ GENERAL ❗
+#### GENERAL
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
 - 'Power menu' : Enable or disable power options in exit menu
 - Layout
-- '❗ Rows in horizontal ❗' : Number of rows to use in 'horizontal' mode
-- '❗ Rows in vertical ❗' : Number of rows to use in 'vertical' mode
+- 'Rows in horizontal' : Number of rows to use in 'horizontal' mode
+- 'Rows in vertical' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
-- '❗ Small screen ❗' : Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout
+- 'Small screen' : Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout
 - 'Custom color' : Define a custom color for UI elements using sliders
 - Game Data
 - 'Display Game Long Name' : Shows the part of the rom name with version and region data
@@ -125,18 +119,18 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - Scroll & Sort
 - 'Page jump size' : Page jumps are one screen by default, you can increase it if you want to jump faster
 - 'Scrollbar style' : Select how the scrollbar should look
-- '❗ Scroll updates ❗' : Immediately updates the tiles while you scroll
+- 'Scroll updates' : Immediately updates the tiles while you scroll
 - 'Strip article from sort' : When sorting by Title ignore articles
 - 'Enable sorting' : Enable custom realtime sorting, diable to keep romlist sort order
 - 'Save sort order' : Custom sort order is saved through Arcadeflow sessions
 
-#### ❗ THUMBNAILS ❗
+#### THUMBNAILS
 Chose the aspect ratio of thumbnails, video thumbnails and decorations
 
 - 'Aspect ratio' : Chose wether you want cropped, square snaps or adaptive snaps depending on game orientation
 - 'Morph snap ratio' : Chose if you want the box to morph into the actual game video or if it must be cropped
 - 'Optimize vertical arcade' : Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project
-- '❗ Zoom thumbnails ❗' : Chose if you want the selected thumbnail to zoom to a larger size
+- 'Zoom thumbnails' : Chose if you want the selected thumbnail to zoom to a larger size
 - 'Show only logos' : If enabled, only game title logos will be shown instead of the screenshot
 - Snapshot Options
 - 'Artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
@@ -301,7 +295,7 @@ Configure the appearence of a second monitor
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
-#### ❗ SCRAPE AND METADATA ❗
+#### SCRAPE AND METADATA
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
 - SCRAPING
@@ -313,7 +307,7 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Media Scrape Options' : You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
-- '❗ Scrape Timeout ❗' : Set the number of seconds to wait for each scrape operation to complete
+- 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete
 - SCREENSCRAPER
 - 'SS Username' : Enter your screenscraper.fr username
 - 'SS Password' : Enter your screenscraper.fr password
@@ -390,6 +384,18 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.0*
+
+- Added option for fullscreen tiles
+- Added option for scrape timeout
+- Added new zoom rate options
+- Redesigned help images for options
+- Improved More of the Same menu
+- Improved support for multi emulator romlists
+- Fixed bug with More of the Same menu
+- Fixed zoom ratio for slimline layout
+- Fixed support of redirect romlists
 
 *v15.9*
 
