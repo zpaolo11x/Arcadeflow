@@ -14,7 +14,7 @@ Scraping match is crc based or filename based, you'll have "name" matches when t
 You can stop the scraping process and restart later with only non scraped roms. In this case you can chose what kind of roms to scrape: missing or even non exact matches.
 Scraping will overwrite your current romlist, while XML import will overwrite scraped data, but a scraper "cache" will be kept so you can re-scrape using "only missing" and rebuild your romlist from scraped data.
 
-## RetroPie XML games list import #
+## RetroPie XML games list import #
 
 Arcadeflow can be used to import XML lists generated in RetroPie format into Attract Mode romlists. Normally only Hyperlist based lists can be imported in Attract Mode specifying the path in the import_extras field in emulator configuration. If you specify a RetroPie romlist in that field, you can then build the Attract Mode romlist from Arcadeflow options menu.
 
@@ -66,7 +66,7 @@ You can also show a tag icon on the games if a tag is present, and you can chose
 
 ## Sorting and scrolling #
 
-When your list is sorted by name a large preview letter will appear while scrolling through the list. 
+When your list is sorted by name a large preview letter will appear while scrolling through the list.
 If your list is sorted by year, manufacturer, system etc the year, manufacturer,system etc will appear instead of the letter.
 You can go "DOWN" from the lower row to enter a "large jumps" scrolling mode which depends on the scrollbar preferences: it can do "page jumps" (one screen at a time) or "label jump" based on your list sort order, or both if you have "timeline" scrollbar activated.
 Unique to Arcadeflow, you can also sort your games by last played or last added favourite.
@@ -75,7 +75,7 @@ Unique to Arcadeflow, you can also sort your games by last played or last added 
 
 Arcadeflow sports a customizable Displays Menu. You can have it as a single list with just text, or you can let Arcadeflow add a system logo based on the Display name. Arcadeflow can categorize displays in groups automatically (Arcade, Console, Computer, Handheld, Pinball, Other), but if you want to force one display in a category, just add "#arcade", "#console" etc to the Display name. You can also enable artwork from the menu-art folder. You can also force positioning a layout at the top putting "!" at the beginning of the name.
 
-## Search and Multifilter
+## Search and Multifilter #
 
 Arcadeflow supports on-screen keyboard and "real" keyboard based search, search is applied on multiple fields and results can be updated while you type.
 Multifilter is a powerful feature that allows you to create custom filters on the fly, filtering by name, brand, year etc, mixing multiple search fields. Multifilter menu voices can be sorted at will or disabled in the options.
