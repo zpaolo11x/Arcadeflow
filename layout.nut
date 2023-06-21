@@ -1313,9 +1313,9 @@ function generateprefarray(){
 		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
-				if (tempdat.selection >= 0) prfarray.push(tempdat.varname)
+				if (tempdat.selection >= 0) prfarray.push(tempdat)
 				else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
-					prfarray.push(tempdat.varname)
+					prfarray.push(tempdat)
 				}
 			}
 		}
@@ -1336,8 +1336,8 @@ function saveprefdata(prfsel, target) {
 	prffile.write_line (AF.version + "\n")
 
 	foreach(i, item in prfarray){
-		if ((item != "SS_USERNAME") && (item != "SS_PASSWORD")) prffile.write_line ("|" + item + "|" + prfsel[item] + "|\n")
-		else ss_prffile.write_line ("|" + item + "|" +  prfsel[item] + "|\n")
+		if ((item.varname != "SS_USERNAME") && (item.varname != "SS_PASSWORD")) prffile.write_line ("|" + item.varname + "|" + prfsel[item.varname] + "|" + item.title + "\n")
+		else ss_prffile.write_line ("|" + item.varname + "|" +  prfsel[item.varname] + "|\n")
 	}
 
 	prffile.close_file()
@@ -1375,7 +1375,7 @@ function readprefdata(target) {
 				if ((tempdat.varname.toupper() == z[0]) && ((tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD"))) {
 					if (tempdat.v.tofloat() <= version.tofloat()) {
 						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
-						else if (z.len() == 1) tempdat.values = ""
+						else if (z.len() == 2) tempdat.values = ""
 						else tempdat.values = z[1]
 					}
 					else {
@@ -1390,14 +1390,14 @@ function readprefdata(target) {
 	local ss_tempdat = null
 	while (!ss_prffile.eos()) {
 		ss_templine = ss_prffile.read_line()
-		ss_z = split (ss_templine, "|")
+		ss_z = split_complete (ss_templine, "|")
 		for (local i = 0; i < AF.prefs.l0.len(); i++) {
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ((ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD"))) {
 						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
-						else if (ss_z.len() == 1) ss_tempdat.values = ""
+						else if (ss_z.len() == 2) ss_tempdat.values = ""
 						else ss_tempdat.values = ss_z[1]
 				}
 			}
