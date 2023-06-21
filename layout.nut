@@ -1273,8 +1273,15 @@ function generateprefstable() {
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
 		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
-			if (tempdat.selection != AF.req.liner) {
-				if (tempdat.selection >= 0) prf[tempdat.varname] <- ((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection])
+			if (tempdat.selection != AF.req.liner) { // Skip liners
+				// Check if selection is a standard "numeric" selection
+				if (tempdat.selection >= 0) {
+					// If there are no values, then the value of the option is loaded, otherwise the value of values is loaded
+					if (tempdat.values == "") prf[tempdat.varname] <- tempdat.options[tempdat.selection]
+					else prf[tempdat.varname] <- tempdat.values[tempdat.selection]
+				}
+				// Selection is a negative value, if we are not handling a function the value is loaded
+				// and in case of a slider the value is converted to integer
 				else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {//function execution with or without return
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					prf[tempdat.varname] <- tempdat.values
@@ -1306,23 +1313,6 @@ function generateselectiontable() {
 	return prfsels
 }
 
-function generateprefarray(){
-	local prfarray = []
-	local tempdat = null
-	for (local i = 0; i < AF.prefs.l0.len(); i++) {
-		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
-			tempdat = AF.prefs.l1[i][j]
-			if (tempdat.selection != AF.req.liner) {
-				if (tempdat.selection >= 0) prfarray.push(tempdat)
-				else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
-					prfarray.push(tempdat)
-				}
-			}
-		}
-	}
-	return prfarray
-}
-
 // Input output functions should save and load the SELECTION value, not the actual value.
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
 function saveprefdata(prfsel, target) {
@@ -1336,7 +1326,7 @@ function saveprefdata(prfsel, target) {
 	prffile.write_line (AF.version + "\n")
 	local tempdat = null
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
-		prffile.write_line("| ||\n")
+		prffile.write_line("\n")
 		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
@@ -1347,12 +1337,7 @@ function saveprefdata(prfsel, target) {
 			}
 		}
 	}
-	/*
-	foreach(i, item in prfarray){
-		if ((item.varname != "SS_USERNAME") && (item.varname != "SS_PASSWORD")) prffile.write_line ("|" + item.varname + "|" + prfsel[item.varname] + "|" + item.title + "\n")
-		else ss_prffile.write_line ("|" + item.varname + "|" +  prfsel[item.varname] + "|\n")
-	}
-	*/
+
 	prffile.close_file()
 	ss_prffile.close_file()
 }
@@ -1380,7 +1365,7 @@ function readprefdata(target) {
 	while (!prffile.eos()) {
 		templine = prffile.read_line()
 		z = split (templine, "|")
-
+		if (z.len() == 0) continue
 		for (local i = 0; i < AF.prefs.l0.len(); i++) {
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				tempdat = AF.prefs.l1[i][j] //Instancing!
