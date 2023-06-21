@@ -1289,21 +1289,21 @@ function generateprefstable() {
 // These values are the selections on the prefs and are used for save/load
 // This table contains the NAME of the variable (like "BOXARTMODE" and the current selection like 0, 1, 2 etc)
 function generateselectiontable() {
-	local prf = {}
+	local prfsels = {}
 	local tempdat = null
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
 		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
-				if (tempdat.selection >= 0) prf[tempdat.varname] <- tempdat.selection
+				if (tempdat.selection >= 0) prfsels[tempdat.varname] <- tempdat.selection
 				else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
-					prf[tempdat.varname] <- tempdat.values
+					prfsels[tempdat.varname] <- tempdat.values
 				}
 			}
 		}
 	}
-	return prf
+	return prfsels
 }
 
 function generateprefarray(){
@@ -1325,7 +1325,7 @@ function generateprefarray(){
 
 // Input output functions should save and load the SELECTION value, not the actual value.
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
-function saveprefdata(prf, target) {
+function saveprefdata(prfsel, target) {
 	local prfarray = generateprefarray()
 
 	local prfpath = fe.path_expand(AF.folder + "pref_layoutoptions.txt")
@@ -1336,8 +1336,8 @@ function saveprefdata(prf, target) {
 	prffile.write_line (AF.version + "\n")
 
 	foreach(i, item in prfarray){
-		if ((item != "SS_USERNAME") && (item != "SS_PASSWORD")) prffile.write_line ("|" + item + "|" + prf[item] + "|\n")
-		else ss_prffile.write_line ("|" + item + "|" +  prf[item] + "|\n")
+		if ((item != "SS_USERNAME") && (item != "SS_PASSWORD")) prffile.write_line ("|" + item + "|" + prfsel[item] + "|\n")
+		else ss_prffile.write_line ("|" + item + "|" +  prfsel[item] + "|\n")
 	}
 
 	prffile.close_file()
