@@ -1325,13 +1325,15 @@ function saveprefdata(prfsel, target) {
 	local ss_prffile = WriteTextFile(ss_prfpath)
 	prffile.write_line (AF.version + "\n")
 	local tempdat = null
+	local printval = ""
 	foreach (i, item in AF.prefs.l0) {
 		prffile.write_line("\n")
 		foreach (j, jtem in AF.prefs.l1[i]){
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
+				printval = (tempdat.selection >= 0) ? tempdat.options[tempdat.selection] : tempdat.values
 				if ((tempdat.selection >= 0) || ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret))) {
-					if ((tempdat.varname != "SS_USERNAME") && (tempdat.varname != "SS_PASSWORD")) prffile.write_line ("|" + tempdat.varname + "|" + prfsel[tempdat.varname] + "|" + tempdat.title + "\n")
+					if ((tempdat.varname != "SS_USERNAME") && (tempdat.varname != "SS_PASSWORD")) prffile.write_line ("|" + tempdat.varname + "|" + prfsel[tempdat.varname] + "| " + tempdat.title + " : " + printval + "\n")
 					else ss_prffile.write_line ("|" + tempdat.varname + "|" +  prfsel[tempdat.varname] + "|\n")
 				}
 			}
