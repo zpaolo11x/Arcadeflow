@@ -1357,6 +1357,9 @@ function readprefdata(target) {
 		return false
 	}
 
+	local corrector = 0
+	if (version.tofloat() > 16.1) corrector = 1
+
 	local warnmessage = ""
 	local templine = null
 	local z = null
@@ -1373,7 +1376,7 @@ function readprefdata(target) {
 				if ((tempdat.varname.toupper() == z[0]) && ((tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD"))) {
 					if (tempdat.v.tofloat() <= version.tofloat()) {
 						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
-						else if (z.len() == 2) tempdat.values = ""
+						else if (z.len() == 1 + corrector) tempdat.values = ""
 						else tempdat.values = z[1]
 					}
 					else {
