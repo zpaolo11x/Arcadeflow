@@ -1336,7 +1336,7 @@ function saveprefdata(prfsel, target) {
 	prffile.write_line (AF.version + "\n")
 	local tempdat = null
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
-		prffile.write_line("| | |\n")
+		prffile.write_line("\n")
 		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
