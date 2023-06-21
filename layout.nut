@@ -1353,14 +1353,13 @@ function readprefdata(target) {
 	local prffile = ReadTextFile (prfpath)
 	local ss_prffile = ReadTextFile (ss_prfpath)
 	local ptable = {}
-	local version = ""
+	local version = "0"
 	try {version = prffile.read_line()} catch(err) {
 		z_splash_message ("Error reading prefs file, resetting to default")
 		return false
 	}
 
 	local corrector = 0
-	if (version == "") version = 0
 	if (version.tofloat() > 16.1) corrector = 1
 
 	local warnmessage = ""
