@@ -249,6 +249,8 @@ dataeast
 data east classics
 dataeast classics
 
+dirksimple,0,0,DRKS,CRT,NONE,4,3,ARCADE,Various,null,Dirksimple,49,dossier,null,null
+
 dragon 32,320,200,DR32,CRT,NONE,4,3,COMPUTER,Dragon Data,1982,Dragon 32,91,rom,joystick (8-way),1
 dragon32
 
