@@ -1326,7 +1326,7 @@ function generateprefarray(){
 // Input output functions should save and load the SELECTION value, not the actual value.
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
 function saveprefdata(prfsel, target) {
-	local prfarray = generateprefarray()
+	//local prfarray = generateprefarray()
 
 	local prfpath = fe.path_expand(AF.folder + "pref_layoutoptions.txt")
 	local ss_prfpath = fe.path_expand(AF.folder + "ss_login.txt")
@@ -1336,7 +1336,7 @@ function saveprefdata(prfsel, target) {
 	prffile.write_line (AF.version + "\n")
 	local tempdat = null
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
-		prffile.write_line("\n")
+		prffile.write_line("| ||\n")
 		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
@@ -1379,7 +1379,6 @@ function readprefdata(target) {
 
 	while (!prffile.eos()) {
 		templine = prffile.read_line()
-		if (templine == "") continue
 		z = split (templine, "|")
 
 		for (local i = 0; i < AF.prefs.l0.len(); i++) {
@@ -1511,6 +1510,7 @@ AF.prefs.defaults = generateselectiontable()
 try {
 	// This function loads saved data into the current "prefs" data structure
 	readprefdata(null)
+	print("***"+prf["TAGNAME"]+"***\n")
 	// Then this data is used to generate the new prf file with variables to use in the layout
 	prf = generateprefstable()
 }
