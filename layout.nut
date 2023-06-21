@@ -1334,12 +1334,25 @@ function saveprefdata(prfsel, target) {
 	local prffile = WriteTextFile(prfpath)
 	local ss_prffile = WriteTextFile(ss_prfpath)
 	prffile.write_line (AF.version + "\n")
-
+	local tempdat = null
+	for (local i = 0; i < AF.prefs.l0.len(); i++) {
+		prffile.write_line("| | |\n")
+		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
+			tempdat = AF.prefs.l1[i][j]
+			if (tempdat.selection != AF.req.liner) {
+				if ((tempdat.selection >= 0) || ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret))) {
+					if ((tempdat.varname != "SS_USERNAME") && (tempdat.varname != "SS_PASSWORD")) prffile.write_line ("|" + tempdat.varname + "|" + prfsel[tempdat.varname] + "|" + tempdat.title + "\n")
+					else ss_prffile.write_line ("|" + tempdat.varname + "|" +  prfsel[tempdat.varname] + "|\n")
+				}
+			}
+		}
+	}
+	/*
 	foreach(i, item in prfarray){
 		if ((item.varname != "SS_USERNAME") && (item.varname != "SS_PASSWORD")) prffile.write_line ("|" + item.varname + "|" + prfsel[item.varname] + "|" + item.title + "\n")
 		else ss_prffile.write_line ("|" + item.varname + "|" +  prfsel[item.varname] + "|\n")
 	}
-
+	*/
 	prffile.close_file()
 	ss_prffile.close_file()
 }
@@ -1366,6 +1379,7 @@ function readprefdata(target) {
 
 	while (!prffile.eos()) {
 		templine = prffile.read_line()
+		if (templine == "") continue
 		z = split (templine, "|")
 
 		for (local i = 0; i < AF.prefs.l0.len(); i++) {
