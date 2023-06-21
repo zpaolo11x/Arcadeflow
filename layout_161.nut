@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.2
+// Arcadeflow - v 16.1
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -63,7 +63,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.2"
+	version = "16.1"
 	vernum = 0
 
 	LNG = ""
@@ -860,7 +860,7 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "TILEZOOM", glyph = 0xea57, title = "Zoom thumbnails", help = "Chose if you want the selected thumbnail to zoom to a larger size", options = ["Increased", "Standard", "Reduced", "None"], values = [3, 2, 1, 0], selection = 1},
 {v = 10.7, varname = "LOGOSONLY", glyph = 0xea6d, title = "Show only logos", help = "If enabled, only game title logos will be shown instead of the screenshot", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Snapshot Options", selection = AF.req.liner},
-{v = 8.8, varname = "TITLEART", glyph = 0xe915, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen", options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
+{v = 8.8, varname = "TITLEART", glyph = 0xe915, title = "Artwork source", help = "Chose if you want the snapshot artwork from gameplay or title screen" options = ["Gameplay", "Title screen"], values = [false, true], selection = 0},
 {v = 8.4, varname = "TITLEONSNAP", glyph = 0xea6d, title = "Show game title", help = "Show the title of the game over the thumbnail", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Box Art Options", selection = AF.req.liner},
 {v = 7.2, varname = "BOXARTMODE", glyph = 0xe918, title = "Box Art mode", help = "Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)", options = ["Yes", "No"], values = [true, false], selection = 1},
@@ -911,7 +911,7 @@ AF.prefs.l0.push({label = "COLOR CYCLE", glyph = 0xe982, description = "Enable a
 AF.prefs.l1.push([
 {v = 10.7, varname = "HUECYCLE", glyph = 0xe982, title = "Enable color cycle", help = "Enable/disable color cycling of the tile higlight border", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Cycle Options", selection = AF.req.liner},
-{v = 10.7, varname = "HCSPEED", glyph = 0xe9a6, title = "Cycle speed", help = "Select the speed of color cycle", options = ["Slow", "Medium", "Fast"], values = [2, 5, 8], selection = 1},
+{v = 10.7, varname = "HCSPEED", glyph = 0xe9a6, title = "Cycle speed", help = "Select the speed of color cycle" options = ["Slow", "Medium", "Fast"], values = [2, 5, 8], selection = 1},
 {v = 10.7, varname = "HCCOLOR", glyph = 0xe90c, title = "Cycle color", help = "Select a color intensity preset for the cycle", options = ["Standard", "Popping", "Light"], values = ["0.7_0.7", "1.0_0.5", "1.0_0.9"], selection = 0},
 {v = 10.7, varname = "HCPINGPONG", glyph = 0xea2d, title = "Ping Pong effect", help = "Enable this if you want the cycle to revert once finished instead of restarting", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 12.8, varname = "HCHUESTART", glyph = 0xe994, title = "Start hue", help = "Define the start value of the hue cycle (0 - 359)", options = "", values = "", selection = AF.req.huevalue},
@@ -921,13 +921,13 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({label = "AUDIO", glyph = 0xea27, description = "Configure layout sounds and audio options for videos"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "THEMEAUDIO", glyph = 0xea27, title = "Enable theme sounds", help = "Enable audio sounds when browsing and moving around the theme", options = ["Yes", "No"], values = [true, false], selection = 0},
+{v = 7.2, varname = "THEMEAUDIO", glyph = 0xea27, title = "Enable theme sounds", help = "Enable audio sounds when browsing and moving around the theme" options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "AUDIOVIDSNAPS", glyph = 0xea27, title = "Audio in videos (thumbs)", help = "Select wether you want to play audio in videos on thumbs", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "AUDIOVIDHISTORY", glyph = 0xea27, title = "Audio in videos (history)", help = "Select wether you want to play audio in videos on history detail page", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 7.2, varname = "BACKGROUNDTUNE", glyph = 0xe911, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow", options = "", values ="", selection = AF.req.filereqs},
-{v = 10.2, varname = "RANDOMTUNE", glyph = 0xe911, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 15.2, varname = "PERDISPLAYTUNE", glyph = 0xe911, title = "Per display background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 7.2, varname = "NOBGONATTRACT", glyph = 0xe911, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode", options = ["Yes", "No"], values =[true, false] selection = 0},
+{v = 7.2, varname = "BACKGROUNDTUNE", glyph = 0xe911, title = "Layout background music", help = "Chose a background music file to play while using Arcadeflow",  options = "", values ="", selection = AF.req.filereqs},
+{v = 10.2, varname = "RANDOMTUNE", glyph = 0xe911, title = "Randomize background music", help = "If this is enabled, Arcadeflow will play a random mp3 from the folder of the selected background music",  options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 15.2, varname = "PERDISPLAYTUNE", glyph = 0xe911, title = "Per display background music", help = "If this is enabled, Arcadeflow will play the music file that has the same name as the current display",  options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 7.2, varname = "NOBGONATTRACT", glyph = 0xe911, title = "Stop bg music in attract mode", help = "Stops playing the layout background music during attract mode",  options = ["Yes", "No"], values =[true, false] selection = 0},
 ])
 
 menucounter++
@@ -984,8 +984,8 @@ menucounter ++
 AF.prefs.l0.push({label = "HISTORY PAGE", glyph = 0xe923, description = "Configure the History page where larger thumbnail and game history data are shown"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Video Effects", selection = AF.req.liner},
-{v = 8.8, varname = "CRTGEOMETRY", glyph = 0xe95b, title = "CRT deformation", help = "Enable CRT deformation for CRT snaps", options = ["Yes", "No"], values =[true, false], selection = 0},
-{v = 7.2, varname = "SCANLINEMODE", glyph = 0xe95b, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline", options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2},
+{v = 8.8, varname = "CRTGEOMETRY", glyph = 0xe95b, title = "CRT deformation", help = "Enable CRT deformation for CRT snaps" options = ["Yes", "No"], values =[true, false], selection = 0},
+{v = 7.2, varname = "SCANLINEMODE", glyph = 0xe95b, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline" options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2},
 {v = 7.2, varname = "LCDMODE", glyph = 0xe959, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
 {v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45, 0.65, 0.75, -1.0], selection = 1},
@@ -1123,8 +1123,8 @@ AF.prefs.l1.push([])
 menucounter ++
 AF.prefs.l0.push({label = "UPDATES", glyph = 0xe91c, description = "Configure update notifications"})
 AF.prefs.l1.push([
-{v = 8.0, varname = "UPDATECHECK", glyph = 0xe91c, title = "Automatically check for updates", help = "Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one", options = ["Yes", "No"], values = [true, false], selection = 0},
-{v = 8.0, varname = "AUTOINSTALL", glyph = 0xe91c, title = "Install update after download", help = "Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly", options = ["Install after download", "Download only"], values = [true, false], selection = 1},
+{v = 8.0, varname = "UPDATECHECK", glyph = 0xe91c, title = "Automatically check for updates", help = "Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one" options = ["Yes", "No"], values = [true, false], selection = 0},
+{v = 8.0, varname = "AUTOINSTALL", glyph = 0xe91c, title = "Install update after download", help = "Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly" options = ["Install after download", "Download only"], values = [true, false], selection = 1},
 ])
 
 menucounter ++
@@ -1137,11 +1137,11 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({label = "DEBUG", glyph = 0xe998, description = "This section is for debug purposes only"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "FPSON", glyph = 0xe998, title = "FPS counter", help = "DBGON FPS COUNTER", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
-{v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
-{v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options", options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
+{v = 7.2, varname = "FPSON", glyph = 0xe998, title = "FPS counter", help = "DBGON FPS COUNTER" options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging" options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page" options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
+{v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only..." options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
+{v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options" options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
 ])
 
 function reset_layout() {
@@ -1270,18 +1270,11 @@ function savereadme() {
 function generateprefstable() {
 	local prf = {}
 	local tempdat = null
-	foreach (i, item in AF.prefs.l0) {
-		foreach (j, jtem in AF.prefs.l1[i]){
+	for (local i = 0; i < AF.prefs.l0.len(); i++) {
+		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
-			if (tempdat.selection != AF.req.liner) { // Skip liners
-				// Check if selection is a standard "numeric" selection
-				if (tempdat.selection >= 0) {
-					// If there are no values, then the value of the option is loaded, otherwise the value of values is loaded
-					if (tempdat.values == "") prf[tempdat.varname] <- tempdat.options[tempdat.selection]
-					else prf[tempdat.varname] <- tempdat.values[tempdat.selection]
-				}
-				// Selection is a negative value, if we are not handling a function the value is loaded
-				// and in case of a slider the value is converted to integer
+			if (tempdat.selection != AF.req.liner) {
+				if (tempdat.selection >= 0) prf[tempdat.varname] <- ((tempdat.values != "") ? tempdat.values[tempdat.selection] : tempdat.options[tempdat.selection])
 				else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {//function execution with or without return
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
 					prf[tempdat.varname] <- tempdat.values
@@ -1296,50 +1289,36 @@ function generateprefstable() {
 // These values are the selections on the prefs and are used for save/load
 // This table contains the NAME of the variable (like "BOXARTMODE" and the current selection like 0, 1, 2 etc)
 function generateselectiontable() {
-	local prfsels = {}
+	local prf = {}
 	local tempdat = null
-	foreach (i, item in AF.prefs.l0) {
-		foreach (j, jtem in AF.prefs.l1[i]){
+	for (local i = 0; i < AF.prefs.l0.len(); i++) {
+		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
-				if (tempdat.selection >= 0) prfsels[tempdat.varname] <- tempdat.selection
+				if (tempdat.selection >= 0) prf[tempdat.varname] <- tempdat.selection
 				else if ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret)) {
 					if (tempdat.selection == AF.req.slideint) tempdat.values = tempdat.values.tointeger()
-					prfsels[tempdat.varname] <- tempdat.values
+					prf[tempdat.varname] <- tempdat.values
 				}
 			}
 		}
 	}
-	return prfsels
+	return prf
 }
 
 // Input output functions should save and load the SELECTION value, not the actual value.
 // Therefore saveprefdata must be called on a table generated with generateselectiontable()
-function saveprefdata(prfsel, target) {
-	//local prfarray = generateprefarray()
-
+function saveprefdata(prf, target) {
 	local prfpath = fe.path_expand(AF.folder + "pref_layoutoptions.txt")
 	local ss_prfpath = fe.path_expand(AF.folder + "ss_login.txt")
 	if (target != null) prfpath = target
 	local prffile = WriteTextFile(prfpath)
 	local ss_prffile = WriteTextFile(ss_prfpath)
 	prffile.write_line (AF.version + "\n")
-	local tempdat = null
-	local printval = ""
-	foreach (i, item in AF.prefs.l0) {
-		prffile.write_line("\n")
-		foreach (j, jtem in AF.prefs.l1[i]){
-			tempdat = AF.prefs.l1[i][j]
-			if (tempdat.selection != AF.req.liner) {
-				printval = (tempdat.selection >= 0) ? tempdat.options[tempdat.selection] : tempdat.values
-				if ((tempdat.selection >= 0) || ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret))) {
-					if ((tempdat.varname != "SS_USERNAME") && (tempdat.varname != "SS_PASSWORD")) prffile.write_line ("|" + tempdat.varname + "|" + prfsel[tempdat.varname] + "| " + tempdat.title + " : " + printval + "\n")
-					else ss_prffile.write_line ("|" + tempdat.varname + "|" +  prfsel[tempdat.varname] + "|\n")
-				}
-			}
-		}
+	foreach (label, val in prf) {
+		if ((label != "SS_USERNAME") && (label != "SS_PASSWORD")) prffile.write_line ("|" + label + "|" + val + "|\n")
+		else ss_prffile.write_line ("|" + label + "|" + val + "|\n")
 	}
-
 	prffile.close_file()
 	ss_prffile.close_file()
 }
@@ -1359,10 +1338,6 @@ function readprefdata(target) {
 		return false
 	}
 
-	local corrector = 0
-	if (version == "") version = 0
-	if (version.tofloat() > 16.1) corrector = 1
-
 	local warnmessage = ""
 	local templine = null
 	local z = null
@@ -1371,15 +1346,15 @@ function readprefdata(target) {
 	while (!prffile.eos()) {
 		templine = prffile.read_line()
 		z = split (templine, "|")
-		if (z.len() == 0) continue
-		foreach (i, item in AF.prefs.l0) {
-			foreach (j, jtem in AF.prefs.l1[i]){
+
+		for (local i = 0; i < AF.prefs.l0.len(); i++) {
+			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((tempdat.varname.toupper() == z[0]) && ((tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD"))) {
 					if (tempdat.v.tofloat() <= version.tofloat()) {
 						if (tempdat.selection >= 0) tempdat.selection = z[1].tointeger()
-						else if (z.len() == 1 + corrector) tempdat.values = ""
+						else if (z.len() == 1) tempdat.values = ""
 						else tempdat.values = z[1]
 					}
 					else {
@@ -1394,14 +1369,14 @@ function readprefdata(target) {
 	local ss_tempdat = null
 	while (!ss_prffile.eos()) {
 		ss_templine = ss_prffile.read_line()
-		ss_z = split_complete (ss_templine, "|")
-		foreach (i, item in AF.prefs.l0) {
-			foreach (j, jtem in AF.prefs.l1[i]){
+		ss_z = split (ss_templine, "|")
+		for (local i = 0; i < AF.prefs.l0.len(); i++) {
+			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ((ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD"))) {
 						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
-						else if (ss_z.len() == 1 + corrector) ss_tempdat.values = ""
+						else if (ss_z.len() == 1) ss_tempdat.values = ""
 						else ss_tempdat.values = ss_z[1]
 				}
 			}
