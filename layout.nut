@@ -1495,7 +1495,6 @@ AF.prefs.defaults = generateselectiontable()
 try {
 	// This function loads saved data into the current "prefs" data structure
 	readprefdata(null)
-	print("***"+prf["TAGNAME"]+"***\n")
 	// Then this data is used to generate the new prf file with variables to use in the layout
 	prf = generateprefstable()
 }
