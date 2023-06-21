@@ -1270,8 +1270,8 @@ function savereadme() {
 function generateprefstable() {
 	local prf = {}
 	local tempdat = null
-	for (local i = 0; i < AF.prefs.l0.len(); i++) {
-		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
+	foreach (i, item in AF.prefs.l0) {
+		foreach (j, jtem in AF.prefs.l1[i]){
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) { // Skip liners
 				// Check if selection is a standard "numeric" selection
@@ -1298,8 +1298,8 @@ function generateprefstable() {
 function generateselectiontable() {
 	local prfsels = {}
 	local tempdat = null
-	for (local i = 0; i < AF.prefs.l0.len(); i++) {
-		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
+	foreach (i, item in AF.prefs.l0) {
+		foreach (j, jtem in AF.prefs.l1[i]){
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
 				if (tempdat.selection >= 0) prfsels[tempdat.varname] <- tempdat.selection
@@ -1325,9 +1325,9 @@ function saveprefdata(prfsel, target) {
 	local ss_prffile = WriteTextFile(ss_prfpath)
 	prffile.write_line (AF.version + "\n")
 	local tempdat = null
-	for (local i = 0; i < AF.prefs.l0.len(); i++) {
+	foreach (i, item in AF.prefs.l0) {
 		prffile.write_line("\n")
-		for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
+		foreach (j, jtem in AF.prefs.l1[i]){
 			tempdat = AF.prefs.l1[i][j]
 			if (tempdat.selection != AF.req.liner) {
 				if ((tempdat.selection >= 0) || ((tempdat.selection != AF.req.executef) && (tempdat.selection != AF.req.exenoret))) {
@@ -1366,8 +1366,8 @@ function readprefdata(target) {
 		templine = prffile.read_line()
 		z = split (templine, "|")
 		if (z.len() == 0) continue
-		for (local i = 0; i < AF.prefs.l0.len(); i++) {
-			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
+		foreach (i, item in AF.prefs.l0) {
+			foreach (j, jtem in AF.prefs.l1[i]){
 				tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((tempdat.varname.toupper() == z[0]) && ((tempdat.varname.toupper() != "SS_USERNAME") && (tempdat.varname.toupper() != "SS_PASSWORD"))) {
@@ -1389,8 +1389,8 @@ function readprefdata(target) {
 	while (!ss_prffile.eos()) {
 		ss_templine = ss_prffile.read_line()
 		ss_z = split_complete (ss_templine, "|")
-		for (local i = 0; i < AF.prefs.l0.len(); i++) {
-			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
+		foreach (i, item in AF.prefs.l0) {
+			foreach (j, jtem in AF.prefs.l1[i]){
 				ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ((ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD"))) {
