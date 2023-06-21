@@ -1398,7 +1398,7 @@ function readprefdata(target) {
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ((ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD"))) {
 						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
-						else if (ss_z.len() == 2) ss_tempdat.values = ""
+						else if (ss_z.len() == 1 + corrector) ss_tempdat.values = ""
 						else ss_tempdat.values = ss_z[1]
 				}
 			}
