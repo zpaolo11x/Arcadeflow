@@ -1,2 +1,4 @@
 16.2
 Added Dirksimple logo
+Fixed scraped media download hanging
+Fixed scraping credential saving

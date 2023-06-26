@@ -1395,19 +1395,19 @@ function readprefdata(target) {
 	local ss_tempdat = null
 	while (!ss_prffile.eos()) {
 		ss_templine = ss_prffile.read_line()
-		ss_z = split_complete (ss_templine, "|")
+		ss_z = split (ss_templine, "|")
 		foreach (i, item in AF.prefs.l0) {
 			foreach (j, jtem in AF.prefs.l1[i]){
 				ss_tempdat = AF.prefs.l1[i][j] //Instancing!
 
 				if ((ss_tempdat.varname.toupper() == ss_z[0]) && ((ss_tempdat.varname.toupper() == "SS_USERNAME") || (ss_tempdat.varname.toupper() == "SS_PASSWORD"))) {
-						if (ss_tempdat.selection >= 0) ss_tempdat.selection = ss_z[1].tointeger()
-						else if (ss_z.len() == 1 + corrector) ss_tempdat.values = ""
-						else ss_tempdat.values = ss_z[1]
+					if (ss_z.len() == 1) ss_tempdat.values = ""
+					else ss_tempdat.values = ss_z[1]
 				}
 			}
 		}
 	}
+
 
 	if (warnmessage != "") {
 		z_splash_message ("Reset prefs:\n\n" + warnmessage)
@@ -3800,24 +3800,25 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				// Second wheel download run for wheel media from SS, if media from ADB was not present
 				if  (!(AF.scrape.forcemedia == "NO_MEDIA") && ((tempdata.len() > 0) && (emuartcat == "wheel") && ( !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext))))) {
 					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
+						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
 					}
 					else {
-						system ("curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" &")
+						system ("curl --create-dirs -s \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" &")
 					}
 				}
 
 			}
 			else if (tempdata.len() > 0) {
+				local escape_path = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
 					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdata[0].path + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
+						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
 					}
 					else {
 						try {remove(AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt")} catch(err) {}
 
 						local texe = "echo ok > \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" && "
-						texe += "curl --create-dirs -s \"" + tempdata[0].path + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" && "
+						texe += "curl --create-dirs -s \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" && "
 						texe += "rm \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" &"
 						system (texe)
 					}
