@@ -6,6 +6,7 @@
 
 // Load file nut
 
+
 fe.do_nut("nut_file.nut")
 
 local comma = ','.tochar()
@@ -241,6 +242,23 @@ local uifonts = {
 	title = "fonts/Figtree-Bold.ttf"
 	metapics = "fonts/font_metapics.ttf"
 }
+
+//TEST162
+function get_png_crc(path){
+	local f_in = file(path, "rb" )
+	local blb = f_in.readblob(20*1000*1000)
+	local bytesize = (blb[33] << 24) + (blb[34] << 16) + (blb[35] << 8) + blb[36]
+	local startpos = bytesize + 45 - 4
+	local crcpng = (blb[startpos] << 24) + (blb[startpos+1] << 16) + (blb[startpos+2] << 8) + blb[startpos+3]
+	return (format("%X",crcpng))
+}
+
+local dir = DirectoryListing(AF.folder + "/blanks")
+	foreach (item in dir.results) {
+		print (get_png_crc(item)+"\n")
+	}
+
+	
 
 /// Splash functions ///
 
