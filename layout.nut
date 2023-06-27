@@ -250,7 +250,7 @@ function get_png_crc(path){
 	local bytesize = (blb[33] << 24) + (blb[34] << 16) + (blb[35] << 8) + blb[36]
 	local startpos = bytesize + 45 - 4
 	local crcpng = (blb[startpos] << 24) + (blb[startpos+1] << 16) + (blb[startpos+2] << 8) + blb[startpos+3]
-	return (format("%X",crcpng))
+	return (("0"+format("%X",crcpng)).slice(-8))
 }
 
 local dir = DirectoryListing(AF.folder + "/blanks")
@@ -690,6 +690,18 @@ function debugpr(instring) {
 
 local dispatcher = []
 local dispatchernum = 0
+local downloadcueA = [] //TEST162
+local blanksnaps = {
+	"E0364710" : 0,
+	"0ACA30A0" : 0,
+	"FCFCE7C3" : 0,
+	"654BDBFF" : 0,
+	"B09B1385" : 0,
+	"65003C89" : 0,
+	"CF5C7216" : 0,
+	"65003C89" : 0,
+	"14137A00" : 0,
+}
 
 function scraprt(instring) {
 	print(dispatchernum + " " + instring)
@@ -3795,6 +3807,27 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				if (tempdataA.url == "") tempdataA = null
 			}
 
+			//TEST162 CAMBIARE QUI PER IL CONTROLLO DEI BLACK SCREEN
+			local tempcue = null
+			if (tempdataA != null) {
+				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {					
+					tempcue = {
+						id = scrapeid
+						cat = emuartcat
+						folder = emuartfolder
+						name = dispatcher[scrapeid].gamedata.name
+						ADBurl = tempdataA.url
+						ADBext = tempdataA.ext
+						status = "start_download"
+					}
+					if (tempdata.len() > 0) {
+						tempcue.rawset("SSurl", tempdata[0].path)
+						tempcue.rawset("SSext", tempdata[0].extension)
+					}
+					downloadcueA.push(tempcue)
+				}
+			}
+/*
 			if (tempdataA != null) {
 				// Download all Arcade media, wheel is not parallelized because if Arcade media is not present, SS media is used as fallback
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
@@ -3826,6 +3859,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				}
 
 			}
+*/
 			else if (tempdata.len() > 0) {
 				local escape_path = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
@@ -15742,6 +15776,53 @@ function tick(tick_time) {
 
 	if (snd.attracttuneplay != snd.attracttune.playing) {
 		snd.attracttune.playing = snd.attracttuneplay
+	}
+
+	//TEST162
+	// Media download cue for arcade games
+	if (downloadcueA.len() > 0){
+		foreach (i, item in downloadcueA){
+			// First case: download kick off
+			if (item.status == "start_download"){
+				//TEST162 ADD PART FOR WINDOWS
+				// Initialize item in download folder and delete existing media
+				try {remove(AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt")} catch(err) {}
+				try {remove(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")} catch(err) {}
+				try {remove(item.folder + "/" + item.name + "." + item.ADBext)} catch(err) {}
+				try {remove(item.folder + "/" + item.name + "." + item.SSext)} catch(err) {}
+				// Start downloading DBA media, and when finished deletes the dldsA.txt file
+				local texeA = "echo ok > \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt\" && "
+				texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.folder + "/" + item.name + "." + item.ADBext + "\" ; "
+				texeA += "rm \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt\"" + " &"
+				system(texeA)
+				item.status = "DBA_downloading"
+			}
+			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
+			else if (item.status == "DBA_downloading") {
+				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt")){
+					// Check if wheel has been downloaded, otherwise load it
+					if (
+					((item.cat == "wheel") && (!file_exist(item.folder + "/" + item.name + "." + item.ADBext)))
+					||
+					((item.cat == "snap") && (blanksnaps.rawin(get_png_crc(item.folder + "/" + item.name + "." + item.ADBext))))
+					){
+						testpr("A"+item.id + item.cat+"\n")
+						try {remove(item.folder + "/" + item.name + "." + item.ADBext)} catch(err) {}
+						local texeSS = "echo ok > \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt\" && "
+						texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.folder + "/" + item.name + "." + item.SSext + "\" ; "
+						texeSS += "rm \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt\"" + " &"
+						system(texeSS)
+						item.status = "SS_downloading"
+					}
+					else {
+						testpr("B"+item.id + item.cat+"\n")
+						item.status = "download_complete"
+					}
+				}
+			}
+			
+			
+		}
 	}
 
 	// Scraping
