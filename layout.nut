@@ -691,6 +691,7 @@ function debugpr(instring) {
 local dispatcher = []
 local dispatchernum = 0
 local downloadcueA = [] //TEST162
+
 local blanksnaps = {
 	"E0364710" : 0,
 	"0ACA30A0" : 0,
@@ -15824,8 +15825,8 @@ function tick(tick_time) {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
 				}
-			}			
-			
+			}	
+
 		}
 	}
 
