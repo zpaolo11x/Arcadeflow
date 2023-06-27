@@ -15820,7 +15820,11 @@ function tick(tick_time) {
 					}
 				}
 			}
-			
+			else if (item.status == "SS_downloading") {
+				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
+					item.status = "download_complete"
+				}
+			}			
 			
 		}
 	}
@@ -15867,6 +15871,7 @@ function tick(tick_time) {
 
 			//Wait for download to finish
 			local dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
+			testpr(dldslist.len()+"\n")
 			while(dldslist.len() != 0){
 				dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
 			}
