@@ -762,25 +762,6 @@ function vartotext(variablein, lev){
 	return textout
 }
 
-function savevar(variablein, outfile){
-	local outarray = split(vartotext(variablein,0),"\n")
-	outarray.insert(0,"return(")
-	outarray.push(")")
-
-	local f_out = WriteTextFile(fe.path_expand(AF.folder + outfile))
-	foreach(i, item in outarray){
-		f_out.write_line (item+"\n")
-	}
-	f_out.close_file()
-}
-
-function loadvar(infile){
-	if (!(file_exist(fe.path_expand(AF.folder + infile)))) return null
-	return(dofile(fe.path_expand(AF.folder + infile)))
-}
-
-savevar(AF,"testvar.nut")
-
 function savetabletofile(table, file_name) {
 	if (table == null) return
 	local tempfile = WriteTextFile(fe.path_expand(AF.folder + file_name))
@@ -824,6 +805,27 @@ fe.do_nut("nut_picfunctions.nut")
 fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
 dofile(AF.folder + "nut_fileutil.nut")
+
+
+function savevar(variablein, outfile){
+	local outarray = split(vartotext(variablein,0),"\n")
+	outarray.insert(0,"return(")
+	outarray.push(")")
+
+	local f_out = WriteTextFile(fe.path_expand(AF.folder + outfile))
+	foreach(i, item in outarray){
+		f_out.write_line (item+"\n")
+	}
+	f_out.close_file()
+}
+
+function loadvar(infile){
+	if (!(file_exist(fe.path_expand(AF.folder + infile)))) return null
+	try {return(dofile(fe.path_expand(AF.folder + infile)))} catch (err){return(null)}
+}
+
+savevar(AF,"testvar.nut")
+loadvar("pref_mf_Atari 2600_All.txt")
 
 local downloadlistA = [] //TEST162
 local blanksnaps = loadtablefromfile("data_blanks.txt", false)
@@ -1638,9 +1640,9 @@ catch(err) {prf.AMTIMER = 120}
 try {prf.AMCHANGETIMER = prf.AMCHANGETIMER.tointeger()}
 catch(err) {prf.AMCHANGETIMER = 10}
 
-local DISPLAYTABLE = {}
-try {DISPLAYTABLE = loadtablefromfile("pref_thumbtype.txt", false)} catch(err) {}
-if (DISPLAYTABLE == null) DISPLAYTABLE = {}
+local DISPLAYTHUMBTYPE = {}
+try {DISPLAYTHUMBTYPE = loadvar("pref_thumbtype.txt")} catch(err) {}
+if (DISPLAYTHUMBTYPE == null) DISPLAYTHUMBTYPE = {}
 
 local SORTTABLE = {}
 try {SORTTABLE = loadtablefromfile("pref_sortorder.txt", false)} catch(err) {}
@@ -1653,7 +1655,7 @@ if (prf.ALLGAMES) {
 local displaystore = fe.list.display_index
 
 try {
-	prf.BOXARTMODE = ((DISPLAYTABLE[fe.displays[fe.list.display_index].name][0] == "BOXES") ? true : false)
+	prf.BOXARTMODE = ((DISPLAYTHUMBTYPE[fe.displays[fe.list.display_index].name] == "BOXES") ? true : false)
 }
 catch(err) {}
 
@@ -14241,9 +14243,9 @@ function switchmode() {
 	z_listrefreshtiles()
 	updatebgsnap (focusindex.new)
 
-	DISPLAYTABLE [fe.displays[fe.list.display_index].name] <- (prf.BOXARTMODE ? ["BOXES"] : ["SNAPS"])
-	//	try {fe.nv["AF_Display_Type"] <- DISPLAYTABLE} catch(err) {}
-	savetabletofile(DISPLAYTABLE, "pref_thumbtype.txt")
+	DISPLAYTHUMBTYPE [fe.displays[fe.list.display_index].name] <- (prf.BOXARTMODE ? "BOXES" : "SNAPS")
+	//	try {fe.nv["AF_Display_Type"] <- DISPLAYTHUMBTYPE} catch(err) {}
+	savevar(DISPLAYTHUMBTYPE, "pref_thumbtype.txt")
 }
 
 function new_search() {
@@ -14630,8 +14632,8 @@ function buildutilitymenu() {
 		}
 		command = function() {
 			umvisible = false
-			DISPLAYTABLE = {}
-			savetabletofile (DISPLAYTABLE, "pref_thumbtype.txt")
+			DISPLAYTHUMBTYPE = {}
+			savevar (DISPLAYTHUMBTYPE, "pref_thumbtype.txt")
 			fe.signal("reload")
 			if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 		}
@@ -15484,7 +15486,7 @@ function on_transition(ttype, var0, ttime) {
 		}
 
 		try {
-			prf.BOXARTMODE = ((DISPLAYTABLE[fe.displays[fe.list.display_index].name][0] == "BOXES") ? true : false)
+			prf.BOXARTMODE = ((DISPLAYTHUMBTYPE[fe.displays[fe.list.display_index].name] == "BOXES") ? true : false)
 		}
 		catch(err) {}
 
