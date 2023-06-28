@@ -787,7 +787,7 @@ function loadvar(infile){
 savevar(AF,"testvar.nut")
 
 
-local downloadlistA = [] //TEST162
+local downloadlist = [] //TEST162
 local blanksnaps = loadvar("data_blanks.txt", false)
 
 /// Preferences functions and table ///
@@ -3834,11 +3834,24 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						tempdld.rawset("SSext", tempdata[0].extension)
 						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 					}
-					downloadlistA.push(tempdld)
+					downloadlist.push(tempdld)
 				}
 			}
 			else if (tempdata.len() > 0) {
-				//if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
+				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
+					tempdld = {
+						id = scrapeid
+						cat = emuartcat
+						folder = emuartfolder
+						SSurl = tempdata[0].path
+						SSext = tempdata[0].extension
+						SSfileUIX = emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension
+						name = dispatcher[scrapeid].gamedata.name
+						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
+						status = "start_download_SS"
+					}
+					downloadlist.push(tempdld)
+				}
 			}		
 
 /*
@@ -15794,8 +15807,8 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if (downloadlistA.len() > 0){
-		foreach (i, item in downloadlistA){
+	if (downloadlist.len() > 0){
+		foreach (i, item in downloadlist){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
 				//TEST162 ADD PART FOR WINDOWS
@@ -15850,7 +15863,6 @@ function tick(tick_time) {
 					item.status = "download_complete"
 				}
 			}	
-
 		}
 	}
 
