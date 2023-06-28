@@ -3816,23 +3816,26 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			}
 
 			//TEST162 CAMBIARE QUI PER IL CONTROLLO DEI BLACK SCREEN
-			local tempcue = null
+			local tempdld = null
 			if (tempdataA != null) {
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {					
-					tempcue = {
+					tempdld = {
 						id = scrapeid
 						cat = emuartcat
 						folder = emuartfolder
 						name = dispatcher[scrapeid].gamedata.name
 						ADBurl = tempdataA.url
 						ADBext = tempdataA.ext
+						ADBfileUIX = emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext
+						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
 						status = "start_download"
 					}
 					if (tempdata.len() > 0) {
-						tempcue.rawset("SSurl", tempdata[0].path)
-						tempcue.rawset("SSext", tempdata[0].extension)
+						tempdld.rawset("SSurl", tempdata[0].path)
+						tempdld.rawset("SSext", tempdata[0].extension)
+						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 					}
-					downloadlistA.push(tempcue)
+					downloadlistA.push(tempdld)
 				}
 			}
 /*
@@ -15794,31 +15797,31 @@ function tick(tick_time) {
 			if (item.status == "start_download"){
 				//TEST162 ADD PART FOR WINDOWS
 				// Initialize item in download folder and delete existing media
-				try {remove(AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt")} catch(err) {}
-				try {remove(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")} catch(err) {}
-				try {remove(item.folder + "/" + item.name + "." + item.ADBext)} catch(err) {}
-				try {remove(item.folder + "/" + item.name + "." + item.SSext)} catch(err) {}
+				try {remove(dldpath + "dldsA.txt")} catch(err) {}
+				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
+				try {remove(item.ADBfileUIX)} catch(err) {}
+				try {remove(item.SSfileUIX)} catch(err) {}
 				// Start downloading DBA media, and when finished deletes the dldsA.txt file
-				local texeA = "echo ok > \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt\" && "
-				texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.folder + "/" + item.name + "." + item.ADBext + "\" ; "
-				texeA += "rm \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt\"" + " &"
+				local texeA = "echo ok > \"" + item.dldpath + "dldsA.txt\" && "
+				texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" ; "
+				texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + " &"
 				system(texeA)
 				item.status = "DBA_downloading"
 			}
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
 			else if (item.status == "DBA_downloading") {
-				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsA.txt")){
+				if (!file_exist(item.dldpath + "dldsA.txt")){
 					// Check if wheel has been downloaded, otherwise load it
 					if (
-					((item.cat == "wheel") && (!file_exist(item.folder + "/" + item.name + "." + item.ADBext)))
+					((item.cat == "wheel") && (!file_exist(item.ADBfileUIX)))
 					||
-					((item.cat == "snap") && (blanksnaps.rawin(get_png_crc(item.folder + "/" + item.name + "." + item.ADBext))))
+					((item.cat == "snap") && (blanksnaps.rawin(get_png_crc(item.ADBfileUIX))))
 					){
 						testpr("A"+item.id + item.cat+"\n")
-						try {remove(item.folder + "/" + item.name + "." + item.ADBext)} catch(err) {}
-						local texeSS = "echo ok > \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt\" && "
-						texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.folder + "/" + item.name + "." + item.SSext + "\" ; "
-						texeSS += "rm \"" + AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt\"" + " &"
+						try {remove(item.ADBfileUIX)} catch(err) {}
+						local texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
+						texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
+						texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
 						system(texeSS)
 						item.status = "SS_downloading"
 					}
