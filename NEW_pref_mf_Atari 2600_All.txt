@@ -1,0 +1,20 @@
+return(
+{
+      "Category" : ["Sports"]
+      "Arcade" : []
+      "Series" : []
+      "Tags" : []
+      "Scraped" : []
+      "Region" : []
+      "System" : []
+      "Manufacturer" : ["mattel electronics","imagic"]
+      "Orientation" : []
+      "Played" : []
+      "Controls" : []
+      "Rating" : []
+      "Year" : []
+      "Favourite" : []
+      "Buttons" : []
+      "Players" : []
+   }
+)

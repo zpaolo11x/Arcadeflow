@@ -1,0 +1,20 @@
+return(
+   {
+      "Category" : []
+      "Arcade" : []
+      "Players" : []
+      "Tags" : []
+      "Scraped" : []
+      "Region" : []
+      "System" : []
+      "Manufacturer" : []
+      "Orientation" : []
+      "Played" : []
+      "Controls" : []
+      "Favourite" : []
+      "Year" : []
+      "Rating" : []
+      "Buttons" : []
+      "Series" : []
+   }
+)

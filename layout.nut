@@ -735,7 +735,7 @@ function vartotext(variablein, lev){
 	local textout = ""
 	switch (typeof variablein) {
 		case "table":
-			textout = textout + ("{"+ (variablein.len() == 0 ? "" : "\n"))
+			textout = textout + ((lev != 0 ? "" : indt[lev]) + "{"+ (variablein.len() == 0 ? "" : "\n"))
 			foreach (item, val in variablein) {
 				textout = textout + (indt[lev+1] + "\"" + item + "\" : ") + vartotext(val, lev + 1) + ("\n")
 			}
@@ -775,6 +775,7 @@ function savevar(variablein, outfile){
 }
 
 function loadvar(infile){
+	if (!(file_exist(fe.path_expand(AF.folder + infile)))) return null
 	return(dofile(fe.path_expand(AF.folder + infile)))
 }
 
@@ -5765,7 +5766,7 @@ foreach (item, table in multifilterz.l0) {
 	multifilterz.filter[item] <- []
 	multifilterz.hasfilters[item] <- false
 }
-
+savevar(multifilterz.filter, "NEW_pref_mf_0.txt")
 savetabletofile(multifilterz.filter, "pref_mf_0.txt")
 
 function mfz_on() {
@@ -6374,7 +6375,10 @@ function mfz_menu0(presel) {
 
 function mfz_save() {
 	debugpr("mfsave\n")
-	if (prf.SAVEMFZ) savetabletofile(multifilterz.filter, "pref_mf_" + aggregatedisplayfilter() + ".txt")
+	if (prf.SAVEMFZ) {
+		savevar(multifilterz.filter, "NEW_pref_mf_" + aggregatedisplayfilter() + ".txt")
+		savetabletofile(multifilterz.filter, "pref_mf_" + aggregatedisplayfilter() + ".txt")
+	}
 }
 
 function mfz_load() {
