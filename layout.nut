@@ -6,7 +6,6 @@
 
 // Load file nut
 
-
 fe.do_nut("nut_file.nut")
 
 local comma = ','.tochar()
@@ -3828,7 +3827,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						ADBext = tempdataA.ext
 						ADBfileUIX = emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext
 						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
-						status = "start_download"
+						status = "start_download_ADB"
 					}
 					if (tempdata.len() > 0) {
 						tempdld.rawset("SSurl", tempdata[0].path)
@@ -3838,6 +3837,10 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 					downloadlistA.push(tempdld)
 				}
 			}
+			else if (tempdata.len() > 0) {
+				//if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
+			}		
+
 /*
 			if (tempdataA != null) {
 				// Download all Arcade media, wheel is not parallelized because if Arcade media is not present, SS media is used as fallback
@@ -15794,36 +15797,47 @@ function tick(tick_time) {
 	if (downloadlistA.len() > 0){
 		foreach (i, item in downloadlistA){
 			// First case: download kick off
-			if (item.status == "start_download"){
+			if (item.status == "start_download_ADB"){
 				//TEST162 ADD PART FOR WINDOWS
 				// Initialize item in download folder and delete existing media
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
-				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.ADBfileUIX)} catch(err) {}
-				try {remove(item.SSfileUIX)} catch(err) {}
-				// Start downloading DBA media, and when finished deletes the dldsA.txt file
+
 				local texeA = "echo ok > \"" + item.dldpath + "dldsA.txt\" && "
 				texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" ; "
 				texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + " &"
 				system(texeA)
+
 				item.status = "DBA_downloading"
+			}
+			else if (item.status == "start_download_SS"){
+				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
+				try {remove(item.SSfileUIX)} catch(err) {}
+				
+				local texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
+				texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
+				texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
+				system(texeSS)
+
+				item.status = "SS_downloading"
 			}
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
 			else if (item.status == "DBA_downloading") {
+					// Check if wheel has been downloaded
 				if (!file_exist(item.dldpath + "dldsA.txt")){
-					// Check if wheel has been downloaded, otherwise load it
+					// File has been downlaoded, check wheel and snap to trigger SS scraping if needed, but IF SSurl is present in the data structure
 					if (
-					((item.cat == "wheel") && (!file_exist(item.ADBfileUIX)))
-					||
-					((item.cat == "snap") && (blanksnaps.rawin(get_png_crc(item.ADBfileUIX))))
-					){
+							(
+								((item.cat == "wheel") && (!file_exist(item.ADBfileUIX))) // wheel artowrk but artwork is missing from ADB
+								||
+								((item.cat == "snap") && (blanksnaps.rawin(get_png_crc(item.ADBfileUIX)))) // snap artwork but artwork is non working screen
+							) 
+							&& 
+							(item.rawin("SSurl"))
+						){
 						testpr("A"+item.id + item.cat+"\n")
 						try {remove(item.ADBfileUIX)} catch(err) {}
-						local texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
-						texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
-						texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
-						system(texeSS)
-						item.status = "SS_downloading"
+						item.status = "start_download_SS"
 					}
 					else {
 						testpr("B"+item.id + item.cat+"\n")
