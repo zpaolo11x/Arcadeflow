@@ -825,7 +825,7 @@ function loadvar(infile){
 }
 
 savevar(AF,"testvar.nut")
-loadvar("pref_mf_Atari 2600_All.txt")
+
 
 local downloadlistA = [] //TEST162
 local blanksnaps = loadtablefromfile("data_blanks.txt", false)
@@ -5768,8 +5768,7 @@ foreach (item, table in multifilterz.l0) {
 	multifilterz.filter[item] <- []
 	multifilterz.hasfilters[item] <- false
 }
-savevar(multifilterz.filter, "NEW_pref_mf_0.txt")
-savetabletofile(multifilterz.filter, "pref_mf_0.txt")
+savevar(multifilterz.filter, "pref_mf_0.txt")
 
 function mfz_on() {
 	foreach(item, value in multifilterz.hasfilters){
@@ -6378,21 +6377,20 @@ function mfz_menu0(presel) {
 function mfz_save() {
 	debugpr("mfsave\n")
 	if (prf.SAVEMFZ) {
-		savevar(multifilterz.filter, "NEW_pref_mf_" + aggregatedisplayfilter() + ".txt")
-		savetabletofile(multifilterz.filter, "pref_mf_" + aggregatedisplayfilter() + ".txt")
+		savevar(multifilterz.filter, "pref_mf_" + aggregatedisplayfilter() + ".txt")
 	}
 }
 
 function mfz_load() {
 	debugpr("mfz_load\n")
 	local tempfilter = null
-	local tempresult = loadtablefromfile("pref_mf_" + aggregatedisplayfilter() + ".txt", true)
-	local defresult = loadtablefromfile("mf_" + aggregatedisplayfilter() + ".txt", true)
+	local tempresult = loadvar("pref_mf_" + aggregatedisplayfilter() + ".txt")
+	local defresult = loadvar("mf_" + aggregatedisplayfilter() + ".txt")
 
 	if (defresult != null) tempresult = defresult
 
 	if ((tempresult == null) || (!prf.SAVEMFZ)) {
-		multifilterz.filter = loadtablefromfile("pref_mf_0.txt", true)
+		multifilterz.filter = loadvar("pref_mf_0.txt")
 	}
 	else {
 		multifilterz.filter = tempresult
