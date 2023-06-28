@@ -762,45 +762,6 @@ function vartotext(variablein, lev){
 	return textout
 }
 
-function savetabletofile(table, file_name) {
-	if (table == null) return
-	local tempfile = WriteTextFile(fe.path_expand(AF.folder + file_name))
-	foreach (cell, val in table) {
-		local savestring = "|" + cell
-		foreach (i, item in val) {
-			savestring = savestring + "|" + item
-		}
-		savestring = savestring + "|\n"
-		tempfile.write_line(savestring)
-	}
-	tempfile.close_file()
-}
-
-function loadtablefromfile(file_name, textonly) {
-	if (!(file_exist(fe.path_expand(AF.folder + file_name)))) return null
-	local tempfile = ReadTextFile (fe.path_expand(AF.folder + file_name))
-	local table = {}
-	while (!tempfile.eos()) {
-		local templine = tempfile.read_line()
-		local temparray = split(templine, "|")
-		local outarray = []
-		for (local i = 1; i < temparray.len(); i++) {
-			local tempval = temparray[i]
-			if (!textonly) {
-				try {
-					tempval = tempval.tointeger()
-				} catch(err) {
-					if (tempval == "true") tempval = true
-					else if (tempval == "false") tempval = false
-				}
-			}
-			outarray.push(tempval)
-		}
-		table[temparray[0]] <- outarray
-	}
-	return table
-}
-
 fe.do_nut("nut_picfunctions.nut")
 fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
@@ -828,7 +789,7 @@ savevar(AF,"testvar.nut")
 
 
 local downloadlistA = [] //TEST162
-local blanksnaps = loadtablefromfile("data_blanks.txt", false)
+local blanksnaps = loadvar("data_blanks.txt", false)
 
 /// Preferences functions and table ///
 function letterdrives() {
@@ -1645,7 +1606,7 @@ try {DISPLAYTHUMBTYPE = loadvar("pref_thumbtype.txt")} catch(err) {}
 if (DISPLAYTHUMBTYPE == null) DISPLAYTHUMBTYPE = {}
 
 local SORTTABLE = {}
-try {SORTTABLE = loadtablefromfile("pref_sortorder.txt", false)} catch(err) {}
+try {SORTTABLE = loadvar("pref_sortorder.txt")} catch(err) {}
 if (SORTTABLE == null) SORTTABLE = {}
 if (prf.ALLGAMES) {
 	SORTTABLE.rawset("AF Favourites_All", [91, true])
@@ -6934,7 +6895,7 @@ function z_listsort(orderby, reverse) {
 
 	if ((prf.SORTSAVE)) {
 		SORTTABLE [aggregatedisplayfilter()] <- [orderby, reverse]
-		savetabletofile(SORTTABLE, "pref_sortorder.txt")
+		savevar(SORTTABLE, "pref_sortorder.txt")
 	}
 
 	timestop("    z_listsort")
@@ -15364,7 +15325,6 @@ function on_transition(ttype, var0, ttime) {
 	}
 
 	if (ttype == Transition.StartLayout) {
-	//	multifilterz.filter = loadtablefromfile("pref_multifilter.txt")
 		z_list.layoutstart = true
 		multifilterglyph.msg = gly(0xeaed)
 	}
