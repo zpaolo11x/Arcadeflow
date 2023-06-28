@@ -690,19 +690,6 @@ function debugpr(instring) {
 
 local dispatcher = []
 local dispatchernum = 0
-local downloadcueA = [] //TEST162
-
-local blanksnaps = {
-	"E0364710" : 0,
-	"0ACA30A0" : 0,
-	"FCFCE7C3" : 0,
-	"654BDBFF" : 0,
-	"B09B1385" : 0,
-	"65003C89" : 0,
-	"CF5C7216" : 0,
-	"65003C89" : 0,
-	"14137A00" : 0,
-}
 
 function scraprt(instring) {
 	print(dispatchernum + " " + instring)
@@ -742,6 +729,56 @@ function unzipfile(zipfilepath, outputpath, updatecycle = false) {
 		}
 	}
 }
+
+function vartotext(variablein, lev){
+	local indt = ["   ","      ","         ","            ","               ","                  ","                     "]
+	local textout = ""
+	switch (typeof variablein) {
+		case "table":
+			textout = textout + ("{"+ (variablein.len() == 0 ? "" : "\n"))
+			foreach (item, val in variablein) {
+				textout = textout + (indt[lev+1] + "\"" + item + "\" : ") + vartotext(val, lev + 1) + ("\n")
+			}
+			textout = textout + (variablein.len() == 0 ? "" : indt[lev]) + ("}\n")
+		break
+		case "array":
+			textout = textout + (lev == 0 ? indt[lev] : "")+  ("[")
+			foreach (i, val in variablein) {
+				textout = textout + vartotext(val, lev)
+				if ((typeof val == "table")) textout = textout + indt[lev]
+				if (i < variablein.len() - 1) textout = textout + (",")
+			}
+			textout = textout + ("]\n")
+		break
+		case "string":
+			textout = textout + ("\""+variablein+"\"")
+		break
+		case "integer":
+		case "bool":
+		case "float":
+			textout = textout + (variablein)
+		break
+	}
+	return textout
+}
+
+function savevar(variablein, outfile){
+	local outarray = split(vartotext(variablein,0),"\n")
+	outarray.insert(0,"return(")
+	outarray.push(")")
+
+	local f_out = WriteTextFile(fe.path_expand(AF.folder + outfile))
+	foreach(i, item in outarray){
+		f_out.write_line (item+"\n")
+	}
+	f_out.close_file()
+}
+
+function loadvar(infile){
+	return(dofile(fe.path_expand(AF.folder + infile)))
+}
+
+savevar(AF,"testvar.nut")
 
 function savetabletofile(table, file_name) {
 	if (table == null) return
@@ -786,6 +823,9 @@ fe.do_nut("nut_picfunctions.nut")
 fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
 dofile(AF.folder + "nut_fileutil.nut")
+
+local downloadlistA = [] //TEST162
+local blanksnaps = loadtablefromfile("data_blanks.txt", false)
 
 /// Preferences functions and table ///
 function letterdrives() {
@@ -2404,6 +2444,9 @@ function print_variable(variablein, level, name) {
 	}
 }
 
+print_variable(blanksnaps,"","")
+
+
 /*
 fl.surf2 = fe.add_surface (fl.w_os * 0.2, fl.h_os * 0.2)
 fl.surf2.mipmap = 1
@@ -3825,7 +3868,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						tempcue.rawset("SSurl", tempdata[0].path)
 						tempcue.rawset("SSext", tempdata[0].extension)
 					}
-					downloadcueA.push(tempcue)
+					downloadlistA.push(tempcue)
 				}
 			}
 /*
@@ -15781,8 +15824,8 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if (downloadcueA.len() > 0){
-		foreach (i, item in downloadcueA){
+	if (downloadlistA.len() > 0){
+		foreach (i, item in downloadlistA){
 			// First case: download kick off
 			if (item.status == "start_download"){
 				//TEST162 ADD PART FOR WINDOWS
