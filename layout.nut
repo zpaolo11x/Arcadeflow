@@ -788,6 +788,7 @@ savevar(AF,"testvar.nut")
 
 
 local downloadlist = [] //TEST162
+local downloadnum = 0
 local blanksnaps = loadvar("data_blanks.txt", false)
 
 /// Preferences functions and table ///
@@ -3835,6 +3836,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 					}
 					downloadlist.push(tempdld)
+					downloadnum ++
 				}
 			}
 			else if (tempdata.len() > 0) {
@@ -3851,6 +3853,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						status = "start_download_SS"
 					}
 					downloadlist.push(tempdld)
+					downloadnum ++
 				}
 			}		
 
@@ -15807,7 +15810,7 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if (downloadlist.len() > 0){
+	if (downloadlist.len() > 0){ //TEST162 cambiare con downloadnum?
 		foreach (i, item in downloadlist){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
@@ -15855,12 +15858,14 @@ function tick(tick_time) {
 					else {
 						testpr("B"+item.id + item.cat+"\n")
 						item.status = "download_complete"
+						downloadnum --
 					}
 				}
 			}
 			else if (item.status == "SS_downloading") {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
+					downloadnum --
 				}
 			}	
 		}
