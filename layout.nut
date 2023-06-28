@@ -784,12 +784,9 @@ function loadvar(infile){
 	try {return(dofile(fe.path_expand(AF.folder + infile)))} catch (err){return(null)}
 }
 
-savevar(AF,"testvar.nut")
-
-
 local downloadlist = [] //TEST162
 local downloadnum = 0
-local blanksnaps = loadvar("data_blanks.txt", false)
+local blanksnaps = loadvar("data_blanks.txt")
 
 /// Preferences functions and table ///
 function letterdrives() {
@@ -3890,6 +3887,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 
 			}
 */
+/*
 			else if (tempdata.len() > 0) {
 				local escape_path = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
@@ -3906,6 +3904,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 					}
 				}
 			}
+*/
 		}
 	}
 }
@@ -15733,6 +15732,7 @@ if (surfdebug) {
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
+	testpr("                                 "+downloadnum+"\n")
 	//if (surfdebug) printsrufaces()
 
 	/*
