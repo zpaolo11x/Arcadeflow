@@ -15732,7 +15732,7 @@ if (surfdebug) {
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-	testpr("                                 "+downloadnum+"\n")
+
 	//if (surfdebug) printsrufaces()
 
 	/*
@@ -15868,6 +15868,10 @@ function tick(tick_time) {
 					downloadnum --
 				}
 			}	
+		}
+		if (downloadnum == 0) {
+			downloadlist = []
+			testpr ("ALL DONE\n")
 		}
 	}
 
