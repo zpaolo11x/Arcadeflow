@@ -11779,7 +11779,7 @@ function update_allgames_collections(verbose, tempprf) {
 						}
 					if (!outfiles.rawin(item)) {
 
-						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
+						outfiles.rawset(item, WriteTextFile(AF.romlistfolder + item + ".txt"))
 						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
 					}
 					outfiles[item].write_line(listline + "\n")
@@ -12666,15 +12666,15 @@ function afinstall(zipball, afname) {
 	}
 	afname = afname + nameiteration
 
-	local newaffolder = AF.amfolder + "layouts/" + afname + "/"
-	local newaffolderTEMP = AF.amfolder + "layouts/" + afname + "TEMP/"
+	local newaffolder = fe.path_expand(AF.amfolder + "layouts/" + afname + "/")
+	local newaffolderTEMP = fe.path_expand(AF.amfolder + "layouts/" + afname + "TEMP/")
 
 	// Download zip of new layout version
 	AF.updatechecking = true
 
 	AF.bar.splashmessage = "Downloading"
 	bar_cycle_update(AF.bar.start)
-	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + fe.path_expand(AF.folder) + afname + ".zip\" --trace-ascii -", "bar_cycle_update")
+	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "bar_cycle_update")
 	bar_cycle_update(AF.bar.stop)
 
 	// Create target directory
@@ -12694,12 +12694,12 @@ function afinstall(zipball, afname) {
 		foreach (item2 in ghfolder2.results) {
 			bar_cycle_update(null)
 			system (OS == "Windows" ?
-				"move " + char_replace("\"" + item2 + "\"", "/", "\\") + " " + char_replace("\"" + newaffolder + "\"", "/", "\\") :
+				"move \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"" :
 				"mv \"" + item2 + "\" \"" + newaffolder + "\"")
 		}
 	}
 
-	system (OS == "Windows" ? "rmdir /q /s " + char_replace("\"" + newaffolderTEMP + "\"", "/", "\\")  : "rm -R \"" + newaffolderTEMP + "\"")
+	system (OS == "Windows" ? "rmdir /q /s " + "\"" + newaffolderTEMP + "\""  : "rm -R \"" + newaffolderTEMP + "\"")
 
 	// Transfer preferences
 	local dir = DirectoryListing(AF.folder)
@@ -12707,7 +12707,7 @@ function afinstall(zipball, afname) {
 		bar_cycle_update(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"), item.len())
-			system ((OS == "Windows" ? "copy " : "cp ") + "\"" + fe.path_expand(AF.folder) + basename + "\" \"" + fe.path_expand(newaffolder) + basename + "\"")
+			system ((OS == "Windows" ? "copy " : "cp ") + "\"" + AF.folder + basename + "\" \"" + newaffolder + basename + "\"")
 		}
 	}
 	// Remove downloaded file
