@@ -255,12 +255,19 @@ function get_png_crc(path){
 	return (("0"+format("%X",crcpng)).slice(-8))
 }
 
-local dir = DirectoryListing(AF.folder + "/blanks")
+function printblanks(){
+	local dir = DirectoryListing(AF.folder + "/blanks")
+	local blanks = {}
+	local tempcrc = null
 	foreach (item in dir.results) {
-		print (get_png_crc(item)+"\n")
+		tempcrc = get_png_crc(item)
+		if (!blanks.rawin(tempcrc)) {
+			blanks.rawset(tempcrc,0)
+			print ("\""+tempcrc+"\" : 0\n")
+		}
 	}
-
-	
+}
+printblanks()	
 
 /// Splash functions ///
 
