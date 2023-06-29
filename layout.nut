@@ -3859,6 +3859,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
 						status = "start_download_ADB"
 					}
+						testpr("                          "+tempdataA.url+"\n")
 					if (tempdata.len() > 0) {
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
@@ -15853,31 +15854,31 @@ function tick(tick_time) {
 				try {remove(item.ADBfileUIX)} catch(err) {}
 
 				local texeA = ""
-				if (OS == Windows) {
+				if (OS == "Windows") {
 					texeA = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
 				}
 				else {
-					texeA = "echo ok > \"" + item.dldpath + "dldsA.txt\" && "
-					texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" && "
-					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + " &"
+					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
+					texeA += "curl -f --create-dirs \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" ; "
+					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
 				system(texeA)
 testpr(texeA+"\n\n")
 
-				item.status = "DBA_downloading"
+				item.status = "ADB_downloading"
 			}
 			else if (item.status == "start_download_SS"){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfileUIX)} catch(err) {}
 
 				local texeSS = ""
-				if (OS == Windows) {
+				if (OS == "Windows") {
 					texeSS = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
 				}
 				else {
-					texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
-					texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" && "
-					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
+					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
+					texeSS += "curl -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
+					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
 
 				system(texeSS)
@@ -15885,7 +15886,7 @@ testpr(texeSS+"\n\n")
 				item.status = "SS_downloading"
 			}
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
-			else if (item.status == "DBA_downloading") {
+			else if (item.status == "ADB_downloading") {
 					// Check if wheel has been downloaded
 				if (!file_exist(item.dldpath + "dldsA.txt")){
 					// File has been downlaoded, check wheel and snap to trigger SS scraping if needed, but IF SSurl is present in the data structure
@@ -15915,7 +15916,7 @@ testpr(texeSS+"\n\n")
 					download.num --
 				}
 			}
-			testpr("item:"+i+" status:"+item.status+"\n")
+			testpr("item:"+i+" "+ item.cat +" status:"+item.status+"\n")
 		}
 		if (download.num == 0) {
 			download.list = []

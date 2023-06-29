@@ -193,7 +193,7 @@ function parsejsonA(scrapeid, gamedata){
       ext = "png"
    }} catch(err) {}
    try {gamedata.adb_media["wheel"] <- {
-      url = "http://adb.arcadeitalia.net/media/mame.current/decals/"+gamedata.filename+".png"//"http://adb.arcadeitalia.net/?mame="+gamedata.filename+"&type=decal&resize=0"
+      url = "http://adb.arcadeitalia.net/media/mame.current/decals/"+gamedata.name+".png"//"http://adb.arcadeitalia.net/?mame="+gamedata.filename+"&type=decal&resize=0"
       ext = "png"
    }} catch(err) {}
 
