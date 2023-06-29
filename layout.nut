@@ -59,6 +59,8 @@ local IDX = array(100000)
 // Support array for quick sort
 foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
+function winfix()
+
 /// Main layout structures setup ///
 
 // General AF data table
@@ -74,7 +76,7 @@ local AF = {
 	frost_freezecount = 0
 	zmenu_freezecount = 0
 
-	folder = fe.script_dir
+	folder = fe.path_expand(fe.script_dir)
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
 	emulatorsfolder = fe.path_expand(FeConfigDirectory + "emulators/")
@@ -3840,7 +3842,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						status = "start_download_ADB"
 					}
 					if (tempdata.len() > 0) {
-						tempdld.rawset("SSurl", tempdata[0].path)
+						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
 						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 					}
@@ -3854,7 +3856,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						id = scrapeid
 						cat = emuartcat
 						folder = emuartfolder
-						SSurl = tempdata[0].path
+						SSurl = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
 						SSext = tempdata[0].extension
 						SSfileUIX = emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension
 						name = dispatcher[scrapeid].gamedata.name
@@ -15824,7 +15826,7 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if ( (download.list.len() > 0) && checkmsec(1000) ){ //TEST162 cambiare con download.num?
+	if ( (download.list.len() > 0) && checkmsec(500) ){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
@@ -15833,10 +15835,17 @@ function tick(tick_time) {
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
 				try {remove(item.ADBfileUIX)} catch(err) {}
 
-				local texeA = "echo ok > \"" + item.dldpath + "dldsA.txt\" && "
-				texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" ; "
-				texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + " &"
+				local texeA = ""
+				if (OS == Windows) {
+					texeA = char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
+				}
+				else {
+					texeA = "echo ok > \"" + item.dldpath + "dldsA.txt\" && "
+					texeA += "curl -f --create-dirs -s \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" && "
+					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + " &"
+				}
 				system(texeA)
+testpr(texeA+"\n\n")
 
 				item.status = "DBA_downloading"
 			}
@@ -15844,12 +15853,18 @@ function tick(tick_time) {
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfileUIX)} catch(err) {}
 				
-				local texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
-				texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
-				texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
+				local texeSS = ""
+				if (OS == Windows) {
+					texeSS = char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
+				}
+				else {
+					texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
+					texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" && "
+					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
+				}
 
 				system(texeSS)
-
+testpr(texeSS+"\n\n")
 				item.status = "SS_downloading"
 			}
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
