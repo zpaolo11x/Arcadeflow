@@ -801,7 +801,7 @@ function printblanks(){
 	}
 	savevar(blanks, "data_blanks.txt")
 }
-printblanks()	
+//printblanks()
 
 local download = {//TEST162
 	list = [],
@@ -3847,7 +3847,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			//TEST162 CAMBIARE QUI PER IL CONTROLLO DEI BLACK SCREEN
 			local tempdld = null
 			if (tempdataA != null) {
-				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {					
+				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
 					tempdld = {
 						id = scrapeid
 						cat = emuartcat
@@ -3884,7 +3884,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 					download.list.push(tempdld)
 					download.num ++
 				}
-			}		
+			}
 
 /*
 			if (tempdataA != null) {
@@ -15869,7 +15869,7 @@ testpr(texeA+"\n\n")
 			else if (item.status == "start_download_SS"){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfileUIX)} catch(err) {}
-				
+
 				local texeSS = ""
 				if (OS == Windows) {
 					texeSS = char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
@@ -15894,8 +15894,8 @@ testpr(texeSS+"\n\n")
 								((item.cat == "wheel") && (!file_exist(item.ADBfileUIX))) // wheel artowrk but artwork is missing from ADB
 								||
 								((item.cat == "snap") && (download.blanks.rawin(get_png_crc(item.ADBfileUIX)))) // snap artwork but artwork is non working screen
-							) 
-							&& 
+							)
+							&&
 							(item.rawin("SSurl"))
 						){
 						testpr("A"+item.id + item.cat+"\n")
@@ -15914,7 +15914,7 @@ testpr(texeSS+"\n\n")
 					item.status = "download_complete"
 					download.num --
 				}
-			}	
+			}
 			testpr("item:"+i+" status:"+item.status+"\n")
 		}
 		if (download.num == 0) {
