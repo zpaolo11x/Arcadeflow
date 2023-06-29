@@ -294,7 +294,7 @@ function splash_update(command) {
 		return
 	}
 	AF.bar.time1 = clock()
-	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {
+	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {//TEST162 possiamo rallentare l'animazione?
 		AF.bar.count = AF.bar.count + 1
 		if (AF.bar.count == 10) AF.bar.count = 0
 		z_splash_message(AF.bar.splashmessage + "\n" + gly(0xeb08 + AF.bar.count) + "\n")
@@ -784,9 +784,21 @@ function loadvar(infile){
 	try {return(dofile(fe.path_expand(AF.folder + infile)))} catch (err){return(null)}
 }
 
-local downloadlist = [] //TEST162
-local downloadnum = 0
-local blanksnaps = loadvar("data_blanks.txt")
+local download = {//TEST162
+	list = [],
+	num = 0,
+	blanks = loadvar("data_blanks.txt")
+	time0 = 0
+	time1 = 0
+}
+function checkmsec(delay){
+	download.time1 = fe.layout.time
+	if ((download.time1 - download.time0) >= delay) {
+		download.time0 = download.time1
+		return true
+	}
+	else return false
+}
 
 /// Preferences functions and table ///
 function letterdrives() {
@@ -2405,7 +2417,7 @@ function print_variable(variablein, level, name) {
 	}
 }
 
-print_variable(blanksnaps,"","")
+print_variable(download.blanks,"","")
 
 
 /*
@@ -3832,8 +3844,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						tempdld.rawset("SSext", tempdata[0].extension)
 						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 					}
-					downloadlist.push(tempdld)
-					downloadnum ++
+					download.list.push(tempdld)
+					download.num ++
 				}
 			}
 			else if (tempdata.len() > 0) {
@@ -3849,8 +3861,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
 						status = "start_download_SS"
 					}
-					downloadlist.push(tempdld)
-					downloadnum ++
+					download.list.push(tempdld)
+					download.num ++
 				}
 			}		
 
@@ -15729,13 +15741,11 @@ if (surfdebug) {
 	debugoverlay.align = Align.Left
 }
 
-function checksec(){
-	return ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20)
-}
 
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
+	if(checkmsec(1000))testpr("X\n")
 //if ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20) testpr ("X\n")
 	//if (surfdebug) printsrufaces()
 
@@ -15814,8 +15824,8 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if ( (downloadlist.len() > 0) && checksec() ){ //TEST162 cambiare con downloadnum?
-		foreach (i, item in downloadlist){
+	if ( (download.list.len() > 0) && checkmsec(1000) ){ //TEST162 cambiare con download.num?
+		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
 				//TEST162 ADD PART FOR WINDOWS
@@ -15837,6 +15847,7 @@ function tick(tick_time) {
 				local texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
 				texeSS += "curl -f --create-dirs -s \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
 				texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + " &"
+
 				system(texeSS)
 
 				item.status = "SS_downloading"
@@ -15850,7 +15861,7 @@ function tick(tick_time) {
 							(
 								((item.cat == "wheel") && (!file_exist(item.ADBfileUIX))) // wheel artowrk but artwork is missing from ADB
 								||
-								((item.cat == "snap") && (blanksnaps.rawin(get_png_crc(item.ADBfileUIX)))) // snap artwork but artwork is non working screen
+								((item.cat == "snap") && (download.blanks.rawin(get_png_crc(item.ADBfileUIX)))) // snap artwork but artwork is non working screen
 							) 
 							&& 
 							(item.rawin("SSurl"))
@@ -15862,19 +15873,20 @@ function tick(tick_time) {
 					else {
 						testpr("B"+item.id + item.cat+"\n")
 						item.status = "download_complete"
-						downloadnum --
+						download.num --
 					}
 				}
 			}
 			else if (item.status == "SS_downloading") {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
-					downloadnum --
+					download.num --
 				}
 			}	
+			testpr("item:"+i+" status:"+item.status+"\n")
 		}
-		if (downloadnum == 0) {
-			downloadlist = []
+		if (download.num == 0) {
+			download.list = []
 			testpr ("ALL DONE\n")
 		}
 	}
@@ -15884,7 +15896,7 @@ function tick(tick_time) {
 	if (AF.scrape.purgedromdirlist != null) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
 		// to close the romlist and save the results
-		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0) && (downloadnum == 0)) {
+		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0) && (download.num == 0)) {
 			// Save current data on respective romlists databases
 			foreach (item, val in z_list.allromlists) {
 				saveromdb1 (item, z_list.db1[item])
