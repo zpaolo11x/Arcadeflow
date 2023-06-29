@@ -5,7 +5,7 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
-
+print ((fe.script_dir)+"\n")
 fe.do_nut("nut_file.nut")
 
 local comma = ','.tochar()
@@ -59,7 +59,6 @@ local IDX = array(100000)
 // Support array for quick sort
 foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
-function winfix()
 
 /// Main layout structures setup ///
 
@@ -80,6 +79,8 @@ local AF = {
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
 	emulatorsfolder = fe.path_expand(FeConfigDirectory + "emulators/")
+	statsfolder = fe.path_expand(FeConfigDirectory + "stats/")
+	amfolder = fe.path_expand(FeConfigDirectory)
 
 	songdir = ""
 	bgsongs = []
@@ -446,7 +447,7 @@ function restartAM() {
 
 // This function parses the attract.cfg and builds a structure for all displays
 function parseconfig() {
-	local cfgfile = ReadTextFile (fe.path_expand(FeConfigDirectory + "attract.cfg"))
+	local cfgfile = ReadTextFile (AF.amfolder + "attract.cfg")
 	local displaytable = []
 	local inline = ""
 	local displayname = ""
@@ -641,7 +642,7 @@ function buildconfig(allgames, tempprf) {
 	}
 
 	// Starts writing the text file
-	local cfgfile = WriteTextFile(fe.path_expand(FeConfigDirectory + "attract.cfg"))
+	local cfgfile = WriteTextFile(AF.amfolder + "attract.cfg")
 
 	foreach (id, item in cfgtable.header) {
 		cfgfile.write_line(item + "\n")
@@ -669,14 +670,14 @@ AF.config = parseconfig()
 
 // for debug purposes
 function loaddebug() {
-	local debugpath = fe.path_expand(AF.folder + "pref_debug.txt")
+	local debugpath = AF.folder + "pref_debug.txt"
 	local debugfile = ReadTextFile (debugpath)
 	local out = debugfile.read_line()
 	return (out == "true")
 }
 
 function savedebug(savecode) {
-	local debugpath = fe.path_expand(AF.folder + "pref_debug.txt")
+	local debugpath = AF.folder + "pref_debug.txt"
 	local debugfile = WriteTextFile(debugpath)
 	debugfile.write_line(savecode)
 	debugfile.close_file()
@@ -1302,7 +1303,7 @@ function buildreadme() {
 }
 
 function savereadme() {
-	local aboutpath = fe.path_expand(AF.folder + "README.md")
+	local aboutpath = AF.folder + "README.md"
 	local aboutfile = WriteTextFile(aboutpath)
 	local about = buildreadme()
 	for (local i = 0; i < about.len(); i++) {
@@ -1364,8 +1365,8 @@ function generateselectiontable() {
 function saveprefdata(prfsel, target) {
 	//local prfarray = generateprefarray()
 
-	local prfpath = fe.path_expand(AF.folder + "pref_layoutoptions.txt")
-	local ss_prfpath = fe.path_expand(AF.folder + "ss_login.txt")
+	local prfpath = AF.folder + "pref_layoutoptions.txt"
+	local ss_prfpath = AF.folder + "ss_login.txt"
 	if (target != null) prfpath = target
 	local prffile = WriteTextFile(prfpath)
 	local ss_prffile = WriteTextFile(ss_prfpath)
@@ -1393,8 +1394,8 @@ function saveprefdata(prfsel, target) {
 // readprefdata() reads values of a selection and puts them in the preferences structure.
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
 function readprefdata(target) {
-	local prfpath = fe.path_expand(AF.folder + "pref_layoutoptions.txt")
-	local ss_prfpath = fe.path_expand(AF.folder + "ss_login.txt")
+	local prfpath = AF.folder + "pref_layoutoptions.txt"
+	local ss_prfpath = AF.folder + "ss_login.txt"
 	if (target != null) prfpath = target
 	local prffile = ReadTextFile (prfpath)
 	local ss_prffile = ReadTextFile (ss_prfpath)
@@ -1469,13 +1470,13 @@ function currentdate() {
 }
 function savedate() {
 	local currentdate = date().year * 1000 + date().yday
-	local datepath = fe.path_expand(AF.folder + "pref_checkdate.txt")
+	local datepath = AF.folder + "pref_checkdate.txt"
 	local datefile = WriteTextFile(datepath)
 	datefile.write_line (currentdate + "\n")
 	datefile.close_file()
 }
 function loaddate() {
-	local datepath = fe.path_expand(AF.folder + "pref_checkdate.txt")
+	local datepath = AF.folder + "pref_checkdate.txt"
 	if (!(file_exist(datepath))) return ("000000")
 	local datefile = ReadTextFile (datepath)
 	return (strip(datefile.read_line ()))
@@ -1580,7 +1581,7 @@ prf.MAXLINE <- false
 // up again until next launch, unless you "Dismiss" from the menu
 prf.UPDATECHECKED <- false
 prf.UPDATEDISMISSVER <- 0.0
-if (file_exist(fe.path_expand(AF.folder + "pref_update.txt"))) prf.UPDATEDISMISSVER = ReadTextFile (fe.path_expand(AF.folder + "pref_update.txt")).read_line()
+if (file_exist(AF.folder + "pref_update.txt")) prf.UPDATEDISMISSVER = ReadTextFile (AF.folder + "pref_update.txt").read_line()
 
 // Set and save debug mode
 DBGON = prf.DEBUGMODE
@@ -1687,7 +1688,7 @@ try {prf.MONITORNUMBER = prf.MONITORNUMBER.tointeger()} catch(err) {
 function readsystemdata() {
 	local sysdata = {}
 	local sysinc = 0
-	local syspath = fe.path_expand(AF.folder + "data_systems.txt")
+	local syspath = AF.folder + "data_systems.txt"
 
 	local sysfile = file(syspath, "rb")
 	local tempcell = {}
@@ -1742,8 +1743,9 @@ function readsystemdata() {
 
 local system_data = readsystemdata()
 
-local commandtable = dofile (fe.path_expand(AF.folder + "nut_command.nut"))//af_create_command_table()
+local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
 
+//TEST162 quest osi può togliere????
 // cleanup frosted glass screen grabs
 local dir0 = {
 	dir = DirectoryListing(FeConfigDirectory)
@@ -2669,7 +2671,7 @@ local keyboard_entrytext = ""
 /// RELOCATED FUNCTIONS ///
 
 function parsecommanddat() {
-	local datpath = fe.path_expand(AF.folder + "command.dat")
+	local datpath = AF.folder + "command.dat"
 	local datfile = ReadTextFile(datpath)
 	local outarray = []
 	local newline = ""
@@ -2677,7 +2679,7 @@ function parsecommanddat() {
 	local commandsarray = []
 	local commandstring = ""
 	local i = 0
-	local outpath = fe.path_expand(AF.folder + "nut_command.nut")
+	local outpath = AF.folder + "nut_command.nut"
 	local outfile = WriteTextFile(outpath)
 	outfile.write_line("return ({\n")
 	while (!datfile.eos()) {
@@ -3103,7 +3105,7 @@ function getemulatordata(emulatorname) {
 		args = null
 		racore = null
 	}
-	local infile = ReadTextFile (FeConfigDirectory + "emulators/" + emulatorname)
+	local infile = ReadTextFile (AF.emulatorsfolder + emulatorname)
 	local inline = ""
 	local rompath = ""
 	local gamepath = ""
@@ -3142,7 +3144,7 @@ function getemulatordata(emulatorname) {
 			workdir = strip(inline.slice(7))
 			workdir = fe.path_expand(workdir)
 			if ((workdir.slice(-1) != "\\") && (workdir.slice(-1) != "/")) workdir = workdir + "/"
-			if (!isroot(workdir)) workdir = FeConfigDirectory + workdir
+			if (!isroot(workdir)) workdir = AF.amfolder + workdir
 		}
 		else if (inline.find("system") == 0) {
 			mainsysname = strip(inline.slice(6))
@@ -3195,12 +3197,12 @@ function getemulatordata(emulatorname) {
 	}
 
 	//	try {if (rompath.slice(0, 3) == "../") rompath = FeConfigDirectory + rompath} catch(err) {}
-	if (!isroot(rompath)) rompath = ((workdir == "") ? FeConfigDirectory : workdir) + rompath
+	if (!isroot(rompath)) rompath = ((workdir == "") ? AF.amfolder : workdir) + rompath
 	rompath = fe.path_expand(rompath)
 
 	foreach (id, item in artworktable) {
 		//	try {if (item.slice(0, 3) == "../") artworktable[id] = FeConfigDirectory + item} catch(err) {}
-		if (!isroot(item)) artworktable[id] = ((workdir == "") ? FeConfigDirectory : workdir) + item
+		if (!isroot(item)) artworktable[id] = ((workdir == "") ? AF.amfolder : workdir) + item
 		artworktable[id] = fe.path_expand(artworktable[id])
 	}
 
@@ -3387,7 +3389,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	scraprt("ID" + scrapeid + "             createjsonA resumed\n")
 
 	local jsarray = []
-	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA.nut"))
+	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "jsonA.nut")
 	local linein = null
 	while (!jsfilein.eos()) {
 		if (linein == "") continue
@@ -3409,7 +3411,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	jsarray.push(")")
 	jsarray[0] = "return(" + jsarray[0]
 
-	local jsfileout = WriteTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "jsonA_out.nut"))
+	local jsfileout = WriteTextFile(AF.folder + "json/" + scrapeid + "jsonA_out.nut")
 	local item_clean = null
 	foreach (i, item in jsarray) {
 		item_clean = item
@@ -3474,7 +3476,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
 
 	local jsarray = []
-	local jsfilein = ReadTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json.nut"))
+	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "json.nut")
 	local linein = null
 	while (!jsfilein.eos()) {
 		linein = jsfilein.read_line()
@@ -3506,7 +3508,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	jsarray.push(")")
 	jsarray[0] = "return(" + jsarray[0]
 
-	local jsfileout = WriteTextFile(fe.path_expand(AF.folder + "json/" + scrapeid + "json_out.nut"))
+	local jsfileout = WriteTextFile(AF.folder + "json/" + scrapeid + "json_out.nut")
 	local item_clean = null
 	foreach (i, item in jsarray) {
 		item_clean = item
@@ -4032,7 +4034,7 @@ function XMLtoAM2(prefst, current) {
 	local dirlist = null
 	local romlists = []
 	if (!current) { // Build an array of romlist files
-		dirlist = DirectoryListing (FeConfigDirectory + "romlists/", false).results
+		dirlist = DirectoryListing (AF.romlistfolder, false).results
 		foreach (item in dirlist) {
 			if (item.slice(-4) == ".txt") {
 				romlists.push(item.slice(0, -4))
@@ -4047,7 +4049,7 @@ function XMLtoAM2(prefst, current) {
 	// emulator_present array with the emulator .cfg path
 	local emulator_present = []
 	foreach (id, item in romlists) {
-		emulator_present.push(file_exist(fe.path_expand(FeConfigDirectory + "emulators/" + item + ".cfg")))
+		emulator_present.push(file_exist(AM.emulatorsfolder + item + ".cfg"))
 	}
 
 	AF.boxmessage = messageOLDboxer ("Load standard romlists", "", false, AF.boxmessage)
@@ -4136,7 +4138,7 @@ function XMLtoAM(prefst, dir) {
 		//local scrapepath = FeConfigDirectory + "romlists/" + xmlsysnames[id] + ".scrape"
 		//try {remove(scrapepath)} catch(err) {}
 
-		local romlistpath = FeConfigDirectory + "romlists/" + xmlsysnames[id] + ".txt"
+		local romlistpath = AF.romlistfolder + xmlsysnames[id] + ".txt"
 		local rompath = AF.emulatordata [xmlsysnames[id]].rompath
 
 		local romlist_file = WriteTextFile(romlistpath)
@@ -4625,11 +4627,11 @@ function buildfavtable(romlist){
 
 function buildplayctable(romlist){
 	local playctable = {}
-	local playclist = DirectoryListing (fe.path_expand(FeConfigDirectory + "stats/" + romlist), false).results
+	local playclist = DirectoryListing (AF.statsfolder + romlist, false).results
 	foreach (id, item in playclist) {
 		local playcount = 0
 		local playcgamename = split(item, ".")[0]
-		local statfile = ReadTextFile(fe.path_expand(FeConfigDirectory + "stats/" + romlist + "/" + item))
+		local statfile = ReadTextFile(AF.statsfolder + romlist + "/" + item)
 		try {playcount = statfile.read_line().tointeger()} catch(err) {}
 		playctable.rawset(playcgamename, playcount)
 	}
@@ -4831,7 +4833,7 @@ function cleandatabase(temppref) {
 		z_splash_message(item + "\nCleaning Database")
 
 		// Check if each db entry has an emulator and a romlist
-		has_emulator = file_exist(FeConfigDirectory + "emulators/" + item + ".cfg")
+		has_emulator = file_exist(AF.emulatorsfolder + item + ".cfg")
 		has_romlist = file_exist(AF.romlistfolder + item + ".txt")
 
 		// If not delete this db main entry
@@ -5270,7 +5272,7 @@ function z_initfavsfromfiles() {
 	z_list.favsarray = []
 
 	foreach (romlistid, val in z_list.allromlists) {
-		local favfile = (FeConfigDirectory + "romlists/" + romlistid + ".tag")
+		local favfile = (AF.romlistfolder + romlistid + ".tag")
 		local favfilepresent = (fe.path_test(favfile, PathTest.IsFile))
 
 		// No favs at all are present
@@ -6601,8 +6603,7 @@ function getallgamesdb(logopic) {
 	}
 
 	local emulatorarray = []
-	local emulatorpath = fe.path_expand(FeConfigDirectory + "emulators/")
-	local emulatordir = DirectoryListing(emulatorpath, false).results
+	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
 	local file = ""
 	local itemname = ""
 	local metadatapath = ""
@@ -9555,7 +9556,7 @@ function savecurrentoptions() {
 		if (keyboard_entrytext != "") {
 			local current_selection = generateselectiontable()
 
-			local savefilepath = fe.path_expand(AF.folder + "options/" + keyboard_entrytext + ".txt")
+			local savefilepath = AF.folder + "options/" + keyboard_entrytext + ".txt"
 			local prffile = WriteTextFile(savefilepath)
 
 			saveprefdata (current_selection, savefilepath)
@@ -9568,7 +9569,7 @@ function savecurrentoptions() {
 }
 
 function restoreoptions() {
-	local optionsdir = fe.path_expand(AF.folder + "options")
+	local optionsdir = AF.folder + "options"
 	local optionsfiles = DirectoryListing(optionsdir, false).results
 	local optionsnames = []
 	foreach (id, item in optionsfiles) {
@@ -9582,7 +9583,7 @@ function restoreoptions() {
 				optionsmenu_lev2()
 			}
 			else {
-				local prefsfilepath = fe.path_expand(AF.folder + "options/" + optionsnames[out].text + ".txt")
+				local prefsfilepath = AF.folder + "options/" + optionsnames[out].text + ".txt"
 				readprefdata(prefsfilepath)
 				local outprefs = generateselectiontable()
 				saveprefdata(outprefs, null)
@@ -9961,7 +9962,7 @@ function filebrowser1(file0) {
 		}
 
 		fb.sortdir.insert(0, AF.folder)
-		fb.sortdir.insert(0, FeConfigDirectory)
+		fb.sortdir.insert(0, AF.amfolder)
 		fb.sortdir.insert(0, "")
 
 		filebrowser1(file0)
@@ -10014,7 +10015,7 @@ function filebrowser(file0) {
 	fb.prevdir = fb.prevdir.slice(0, -1 - 1 * fb.prevdirarray[fb.prevdirarray.len() - 1].len())
 	fb.sortdir.insert(0, fb.prevdir)
 	fb.sortdir.insert(0, AF.folder)
-	fb.sortdir.insert(0, FeConfigDirectory)
+	fb.sortdir.insert(0, AF.amfolder)
 	fb.sortdir.insert(0, "")
 
 	fb.root = false
@@ -10521,11 +10522,11 @@ function updatecustombg() {
 	prf.BGCUSTOMHISTORY = prf.BGCUSTOMHISTORY0
 
 	if (prf.BGPERDISPLAY) {
-		local artname = FeConfigDirectory + "menu-art/bgmain/" + fe.displays[fe.list.display_index].name
+		local artname = AF.amfolder + "menu-art/bgmain/" + fe.displays[fe.list.display_index].name
 		if (file_exist(artname + ".jpg")) prf.BGCUSTOM = artname + ".jpg"
 		if (file_exist(artname + ".png")) prf.BGCUSTOM = artname + ".png"
 
-		local artname = FeConfigDirectory + "menu-art/bghistory/" + fe.displays[fe.list.display_index].name
+		local artname = AF.amfolder + "menu-art/bghistory/" + fe.displays[fe.list.display_index].name
 		if (file_exist(artname + ".jpg")) prf.BGCUSTOMHISTORY = artname + ".jpg"
 		if (file_exist(artname + ".png")) prf.BGCUSTOMHISTORY = artname + ".png"
 
@@ -12300,7 +12301,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 			}
 
 			if (prf.DMPIMAGES != null) {
-				artname = FeConfigDirectory + "menu-art/snap/" + menudata[i].text
+				artname = AF.amfolder + "menu-art/snap/" + menudata[i].text
 				filename = ""
 
 				local system_art = ""
@@ -12643,14 +12644,14 @@ function afinstall(zipball, afname) {
 	// afname is the name for the new AF folder and cfg entry (e.g. newafname)
 	local i = 0
 	local nameiteration = ""
-	while (file_exist(fe.path_expand(FeConfigDirectory) + "layouts/" + afname + nameiteration + "/")) {
+	while (file_exist(AF.amfolder + "layouts/" + afname + nameiteration + "/")) {
 		nameiteration = "_" + i
 		i++
 	}
 	afname = afname + nameiteration
 
-	local newaffolder = fe.path_expand(FeConfigDirectory) + "layouts/" + afname + "/"
-	local newaffolderTEMP = fe.path_expand(FeConfigDirectory) + "layouts/" + afname + "TEMP/"
+	local newaffolder = AF.amfolder + "layouts/" + afname + "/"
+	local newaffolderTEMP = AF.amfolder + "layouts/" + afname + "TEMP/"
 
 	// Download zip of new layout version
 	AF.updatechecking = true
@@ -12702,7 +12703,7 @@ function afinstall(zipball, afname) {
 	// Update config file
 	local currentlayout = split (AF.folder, "\\/").top()
 
-	local cfgfile = file(fe.path_expand(FeConfigDirectory + "attract.cfg"), "rb")
+	local cfgfile = file(AF.amfolder + "attract.cfg", "rb")
 	local outarray = []
 	local char = 0
 	local templine = ""
@@ -12722,7 +12723,7 @@ function afinstall(zipball, afname) {
 		outarray.push(templine)
 	}
 
-	local outfile = WriteTextFile(fe.path_expand(FeConfigDirectory + "attract.cfg"))
+	local outfile = WriteTextFile(AF.amfolder + "attract.cfg")
 	for (local i = 0; i < outarray.len(); i++) {
 		bar_cycle_update(null)
 		outfile.write_line(outarray[i] + "\n")
@@ -12850,9 +12851,9 @@ function checkforupdates(force) {
 
 			// Download latest layout
 			local newafname = "Arcadeflow_" + (ver_in.tofloat() * 10).tointeger()
-			local newaffolder = fe.path_expand(FeConfigDirectory) + "layouts/" + newafname + "/"
-			local newaffolder_noslash = fe.path_expand(FeConfigDirectory) + "layouts/" + newafname
-			local newaffolderTEMP = fe.path_expand(FeConfigDirectory) + "layouts/" + newafname + "TEMP/"
+			local newaffolder = AF.amfolder + "layouts/" + newafname + "/"
+			local newaffolder_noslash = AF.amfolder + "layouts/" + newafname
+			local newaffolderTEMP = AF.amfolder + "layouts/" + newafname + "TEMP/"
 
 			if (!prf.AUTOINSTALL) {
 				// Simply download in your home folder
@@ -12877,7 +12878,7 @@ function checkforupdates(force) {
 		if (out == ghupdatemenu.len() - 1) {
 
 			// Dismiss auto updates
-			local updpath = fe.path_expand(AF.folder + "pref_update.txt")
+			local updpath = AF.folder + "pref_update.txt"
 			local updfile = WriteTextFile(updpath)
 			updfile.write_line(ver_in)
 			updfile.close_file()
@@ -14731,7 +14732,7 @@ function buildutilitymenu() {
 			return "☰"
 		}
 		command = function() {
-			local aboutpath = fe.path_expand(AF.folder + "history/" + (AF.version.tofloat() * 10).tostring() + ".txt")
+			local aboutpath = AF.folder + "history/" + (AF.version.tofloat() * 10).tostring() + ".txt"
 			local aboutfile = ReadTextFile (aboutpath)
 
 			local aboutmenu = []
@@ -17270,7 +17271,7 @@ if (prf.RAENABLED) ra_init()
 
 function ra_updatecfg(emulator, core) {
 	local filearray = []
-	local emufile = ReadTextFile(FeConfigDirectory + "emulators/" + emulator + ".cfg")
+	local emufile = ReadTextFile(AM.emulatorsfolder + emulator + ".cfg")
 	while (!emufile.eos()) {
 		filearray.push(emufile.read_line())
 	}
@@ -17282,7 +17283,7 @@ function ra_updatecfg(emulator, core) {
 			filearray[i] = "args                 -L " + core + " \"[romfilename]\""
 		}
 	}
-	local emuoutfile = WriteTextFile(FeConfigDirectory + "emulators/" + emulator + ".cfg")
+	local emuoutfile = WriteTextFile(AF.emulatorsfolder + emulator + ".cfg")
 	foreach (i, item in filearray) {
 		emuoutfile.write_line(item + "\n")
 	}
