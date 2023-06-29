@@ -249,25 +249,18 @@ local uifonts = {
 function get_png_crc(path){
 	local f_in = file(path, "rb" )
 	local blb = f_in.readblob(20*1000*1000)
-	local bytesize = (blb[33] << 24) + (blb[34] << 16) + (blb[35] << 8) + blb[36]
-	local startpos = bytesize + 45 - 4
+	local IDATcrc = 33
+
+	if ((blb[37] == 112) && (blb[38] == 72) && (blb[39] == 89) && (blb[40] == 115)) {
+		IDATcrc = 33 + blb[36] + 12
+	}
+
+	local bytesize = (blb[IDATcrc] << 24) + (blb[IDATcrc+1] << 16) + (blb[IDATcrc+2] << 8) + blb[IDATcrc+3]
+
+	local startpos = IDATcrc + 8 + bytesize
 	local crcpng = (blb[startpos] << 24) + (blb[startpos+1] << 16) + (blb[startpos+2] << 8) + blb[startpos+3]
 	return (("0"+format("%X",crcpng)).slice(-8))
 }
-
-function printblanks(){
-	local dir = DirectoryListing(AF.folder + "/blanks")
-	local blanks = {}
-	local tempcrc = null
-	foreach (item in dir.results) {
-		tempcrc = get_png_crc(item)
-		if (!blanks.rawin(tempcrc)) {
-			blanks.rawset(tempcrc,0)
-			print ("\""+tempcrc+"\" : 0\n")
-		}
-	}
-}
-printblanks()	
 
 /// Splash functions ///
 
@@ -793,6 +786,22 @@ function loadvar(infile){
 	if (!(file_exist(fe.path_expand(AF.folder + infile)))) return null
 	try {return(dofile(fe.path_expand(AF.folder + infile)))} catch (err){return(null)}
 }
+
+
+function printblanks(){
+	local dir = DirectoryListing(AF.folder + "/blanks")
+	local blanks = {}
+	local tempcrc = null
+	foreach (item in dir.results) {
+		tempcrc = get_png_crc(item)
+		if (!blanks.rawin(tempcrc)) {
+			blanks.rawset(tempcrc,0)
+			print (item+" : "+tempcrc+"\n")
+		}
+	}
+	savevar(blanks, "data_blanks.txt")
+}
+printblanks()	
 
 local download = {//TEST162
 	list = [],
