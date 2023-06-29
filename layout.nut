@@ -15765,7 +15765,6 @@ if (surfdebug) {
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-	if(checkmsec(1000))testpr("X\n")
 //if ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20) testpr ("X\n")
 	//if (surfdebug) printsrufaces()
 
