@@ -15880,7 +15880,7 @@ function tick(tick_time) {
 	if (AF.scrape.purgedromdirlist != null) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
 		// to close the romlist and save the results
-		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0)) {
+		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0) && (downloadnum == 0)) {
 			// Save current data on respective romlists databases
 			foreach (item, val in z_list.allromlists) {
 				saveromdb1 (item, z_list.db1[item])
@@ -15914,13 +15914,6 @@ function tick(tick_time) {
 			local outfile = WriteTextFile(outreport)
 			outfile.write_line(endreport)
 			outfile.close_file()
-
-			//Wait for download to finish
-			local dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
-			testpr(dldslist.len()+"\n")
-			while(dldslist.len() != 0){
-				dldslist = striphidden(DirectoryListing (AF.folder + "dlds/", false).results)
-			}
 
 			AF.boxmessage = messageboxer(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms, "COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.scrape.separator2 + "\n" + endreport + "\n", false, AF.boxmessage)
 
