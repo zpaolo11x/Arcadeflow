@@ -3388,9 +3388,9 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = AF.subfolder + "\\curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
-		execss += "&use_parent=1\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "jsonA.nut\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "jsonA.txt\""
+		execss += "&use_parent=1\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.txt\""
 	}
 	else {
 		execss = "curl -s \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
@@ -3462,7 +3462,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = char_replace(AF.subfolder, "/", "\\") + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss = AF.subfolder + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
 		if (romcrc != null) execss += "&crc=" + romcrc
@@ -3470,7 +3470,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
-		execss += "\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "json.nut\" \"" + char_replace(AF.subfolder, "/", "\\") + "\\json\\" + scrapeid + "json.txt\""
+		execss += "\" \"" + AF.subfolder + "\\json\\" + scrapeid + "json.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "json.txt\""
 	}
 	else {
 		execss = "curl -s \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
@@ -12695,7 +12695,7 @@ function afinstall(zipball, afname) {
 			bar_cycle_update(null)
 			system (OS == "Windows" ?
 				"move \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"" :
-				"mv \"" + item2 + "\" \"" + newaffolder + "\"")
+				"mv \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"")
 		}
 	}
 
@@ -12876,7 +12876,7 @@ function checkforupdates(force) {
 				AF.updatechecking = true
 				AF.bar.splashmessage = "Downloading"
 				bar_cycle_update(AF.bar.start)
-				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + fe.path_expand(AF.folder) + newafname + ".zip\" --trace-ascii -", "bar_cycle_update")
+				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "bar_cycle_update")
 				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
@@ -15854,7 +15854,7 @@ function tick(tick_time) {
 
 				local texeA = ""
 				if (OS == Windows) {
-					texeA = char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
+					texeA = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
 				}
 				else {
 					texeA = "echo ok > \"" + item.dldpath + "dldsA.txt\" && "
@@ -15872,7 +15872,7 @@ testpr(texeA+"\n\n")
 
 				local texeSS = ""
 				if (OS == Windows) {
-					texeSS = char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
+					texeSS = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
 				}
 				else {
 					texeSS = "echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
@@ -17605,7 +17605,7 @@ function on_signal(sig) {
 	if ((sig == prf.VOLUMEBUTTON) && !zmenu.showing) {
 		local currvol = 0
 		if (OS == "OSX") fe.plugin_command ("osascript", "-e \"get volume settings\"", "parsevolume")
-		else if (OS == "Windows") fe.plugin_command (char_replace(AF.folder, "/", "\\") + "\\SetVol.exe", "report", "parsevolume")
+		else if (OS == "Windows") fe.plugin_command (AF.folder + "\\SetVol.exe", "report", "parsevolume")
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
 		local volarray = []
@@ -17622,7 +17622,7 @@ function on_signal(sig) {
 				if (out != -1) {
 					AF.soundvolume = 10 - out
 					if (OS == "OSX") system ("osascript -e \"Set Volume " + (0.7 * AF.soundvolume) + "\"")
-					else if (OS == "Windows") system ("\"" + char_replace(AF.folder, "/", "\\") + "\\SetVol.exe\" " + AF.soundvolume * 10 + " unmute")
+					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + AF.soundvolume * 10 + " unmute")
 					else system ("amixer set Master " + AF.soundvolume * 10 + "%")
 				}
 				zmenuhide()
