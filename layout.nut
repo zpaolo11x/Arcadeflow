@@ -15729,10 +15729,14 @@ if (surfdebug) {
 	debugoverlay.align = Align.Left
 }
 
+function checksec(){
+	return ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20)
+}
+
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-
+//if ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20) testpr ("X\n")
 	//if (surfdebug) printsrufaces()
 
 	/*
@@ -15810,7 +15814,7 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if (downloadlist.len() > 0){ //TEST162 cambiare con downloadnum?
+	if ( (downloadlist.len() > 0) && checksec() ){ //TEST162 cambiare con downloadnum?
 		foreach (i, item in downloadlist){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
