@@ -15956,7 +15956,7 @@ testpr(texeA+"\n\n")
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
+					texeSS = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
