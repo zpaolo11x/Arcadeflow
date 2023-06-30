@@ -13047,7 +13047,89 @@ function displayungrouped() {
 	}
 	)}
 
-function displaygrouped1() {
+function displaygrouped2() {
+	// Array of display table entries to show in the menu
+	local menuarray = []
+	for (local i = 0; i < disp.structure[disp.grouplabel[disp.gmenu0]].disps.len(); i++) {
+		menuarray.push(disp.structure[disp.grouplabel[disp.gmenu0]].disps[i])
+	}
+
+	// Sort the display menu according to its sortkey
+	if (prf.DMPSORT != "false") {
+		menuarray.sort(@(a, b) a.sortkey <=> b.sortkey)
+	}
+
+	zmenu.jumplevel = 1
+
+	// Array structure for the menu
+	local dmenu1 = []
+	local groupnotes = []
+	foreach (i, item in menuarray) {
+		dmenu1.push({text = item.cleanname, note = item.notes})
+		groupnotes.push(item.groupnotes)
+	}
+	for (local i = 1; i < dmenu1.len(); i++) {
+		if (groupnotes[i] == groupnotes[i-1]) dmenu1[i].rawset("skip", true)
+	}
+	// Add separators when the note is different from the previous one
+	local currentnote = ""
+	local i = 0
+	if (prf.DMPSEPARATORS) {
+		while (i < dmenu1.len()) {
+			if ((groupnotes[i] != currentnote) && (!menuarray[i].ontop)) {
+				currentnote = groupnotes[i]
+				dmenu1.insert(i, {text = groupnotes[i], liner = true})
+				groupnotes.insert(i, "")
+				menuarray.insert(i, null)
+				i++
+			}
+			i++
+		}
+	}
+
+	// Now it's the right moment to add code for AF Collecitons
+	if (prf.ALLGAMES) {
+		local itemcount = 0
+		dmenu1 = cleanupmenudata(dmenu1)
+		foreach (ic, itemc in dmenu1) {
+			if (!itemc.liner) itemcount ++
+		}
+		foreach (item, val in z_af_collections.arr) {
+			// Only collection category and categories with more than 1 display show "all games"
+			if (((itemcount > 1) || (val.group == "COLLECTIONS")) && (val.group == disp.grouplabel[disp.gmenu0])) {
+				dmenu1.insert(0, {text = val.id})
+				menuarray.insert(0, z_disp[val.display_id])
+			}
+		}
+	}
+
+	disp.gmenu1in = 0
+	foreach (i, item in menuarray) {
+		if (item != null) if (item.dispindex == fe.list.display_index) disp.gmenu1in = i
+	}
+
+	zmenudraw3(dmenu1, disp.grouplabel[disp.gmenu0], disp.groupglyphs[disp.gmenu0], disp.gmenu1in, {shrink = (prf.DMPIMAGES != null), dmpart = (prf.DMPIMAGES != null), center = true, midscroll = (prf.DMPIMAGES != null)},
+	function(gmenu1) {
+		if (gmenu1 != -1) {
+			if (prf.DMPATSTART) {
+				flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+			}
+			//local targetdisplay = disp.structure[disp.grouplabel[disp.gmenu0]].disps[temparray[gmenu1]].index
+			local targetdisplay = menuarray[gmenu1].dispindex
+			jumptodisplay (targetdisplay)
+
+		}
+		else {
+			displaygrouped1()
+		}
+	},
+	null,
+	function(){
+		zmenunavigate_down("right", true)
+	})
+}
+
+function displaygrouped1(){
 	zmenu.dmp = true
 	zmenu.jumplevel = 0
 
@@ -13069,7 +13151,8 @@ function displaygrouped1() {
 
 		// Group selected, entering the displays menu for that group
 		else if (disp.gmenu0 != -1) {
-
+			displaygrouped2()
+			/*
 			// Array of display table entries to show in the menu
 			local menuarray = []
 			for (local i = 0; i < disp.structure[disp.grouplabel[disp.gmenu0]].disps.len(); i++) {
@@ -13149,6 +13232,7 @@ function displaygrouped1() {
 			function(){
 				zmenunavigate_down("right", true)
 			})
+			*/
 		}
 
 		else {
