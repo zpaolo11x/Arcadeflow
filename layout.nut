@@ -3861,8 +3861,8 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						name = dispatcher[scrapeid].gamedata.name
 						ADBurl = tempdataA.url
 						ADBext = tempdataA.ext
-						ADBfileUIX = emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext
-						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
+						ADBfileUIX = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
+						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
 					}
 						testpr("                          "+tempdataA.url+"\n")
@@ -3883,9 +3883,9 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						folder = emuartfolder
 						SSurl = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
 						SSext = tempdata[0].extension
-						SSfileUIX = emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension
+						SSfileUIX = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 						name = dispatcher[scrapeid].gamedata.name
-						dldpath = AF.folder + "dlds/" + scrapeid + emuartcat
+						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_SS"
 					}
 					download.list.push(tempdld)
