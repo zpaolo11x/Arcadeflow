@@ -99,7 +99,7 @@ function manufacturer_vec(s){
 // USED ONE
 function manufacturer_vec_name(name,year){
    local s = name
-   if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
+   if ((year!="") && (year!="?") && (year!="19??")) year = year.tointeger() else year = 1990 //ARBITRARY!
 
    local sout = manufacturer_parser (s)
 
