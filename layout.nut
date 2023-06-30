@@ -10,9 +10,9 @@ fe.do_nut("nut_file.nut")
 
 //system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\0videodldsS.txt\" \"https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=14109&media=video-normalized\" \"C:\\Z\\ROMS\\atari2600\\media\\videos\\Skeet Shoot (USA).mp4\"")
 
-system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\1videodldsS.txt\" \"https://speed.hetzner.de/1GB.bin\" \"testout1.bin\"")
+//system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\1videodldsS.txt\" \"https://speed.hetzner.de/1GB.bin\" \"testout1.bin\"")
 
-system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\2videodldsS.txt\" \"http://speedtest.ftp.otenet.gr/files/test10Mb.db\" \"testout2.bin\"")
+//system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\2videodldsS.txt\" \"http://speedtest.ftp.otenet.gr/files/test10Mb.db\" \"testout2.bin\"")
 
 local comma = ','.tochar()
 
@@ -15944,6 +15944,8 @@ function tick(tick_time) {
 
 				local texeA = ""
 				if (OS == "Windows") {
+					// OUTPUT
+					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
 					texeA = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
 				}
 				else {
