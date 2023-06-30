@@ -15946,7 +15946,7 @@ function tick(tick_time) {
 				if (OS == "Windows") {
 					// OUTPUT
 					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
-					texeA = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
+					texeA = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
 				}
 				else {
 					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
@@ -15964,7 +15964,7 @@ testpr(texeA+"\n\n")
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = AF.subfolder + "\\curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
+					texeSS = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
