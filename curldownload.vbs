@@ -12,6 +12,7 @@ Set sh = WScript.CreateObject("WScript.Shell")
 
 'vecchio sh.run "cmd /K echo ok > """+Arg(0)+""" && curl -f --create-dirs -s """+Arg(1)+""" -o """+Arg(2)+""" && del """+Arg(0)+""" & exit",0,false
 ' FUNZIONA SU LAPTOP 
-sh.run "cmd /K echo okpluto > """+Arg(0)+""" && curl -s """+Arg(1)+""" -o """+Arg(2)+""" && del """+Arg(0)+""" & exit",0,false
+'sh.run "cmd /K echo okpluto > """+Arg(0)+""" && curl -s """+Arg(1)+""" -o """+Arg(2)+""" && del """+Arg(0)+""" & exit",0,false
+sh.run "cmd /K echo okpluto > """+Arg(0)+""" && curl -s -f --create-dirs """+Arg(1)+""" -o """+Arg(2)+""" && del """+Arg(0)+""" & exit",0,false
 
 Set sh = nothing
