@@ -272,46 +272,8 @@ function get_png_crc(path){
 
 /// Splash functions ///
 
-// Custom splash message wrappers with AF custom fonts
-function z_splash_message(text) {
-	fe.layout.font = uifonts.monodata
-	fe.overlay.splash_message(text)
-	fe.layout.font = uifonts.general
-}
-
-function z_edit_dialog(text1, text2) {
-	fe.layout.font = uifonts.condensed
-	fe.overlay.edit_dialog(text1, text2)
-	fe.layout.font = uifonts.general
-}
-
 // command = bar.start to start cycle
 // command = bar.stop to stop cycle
-
-function splash_update(command) {
-	if (command == AF.bar.start) {
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.count = 0
-		return
-	}
-	if (command == AF.bar.stop) {
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.count = 0
-		AF.bar.splashmessage = ""
-		return
-	}
-	AF.bar.time1 = clock()
-	if (AF.bar.time1 - AF.bar.time0 >= AF.bar.waitframes * 1.0 / ScreenRefreshRate) {//TEST162 possiamo rallentare l'animazione?
-		AF.bar.count = AF.bar.count + 1
-		if (AF.bar.count == 10) AF.bar.count = 0
-		z_splash_message(AF.bar.splashmessage + "\n" + gly(0xeb08 + AF.bar.count) + "\n")
-		AF.bar.time0 = AF.bar.time1
-	}
-}
 
 function bar_cycle_update(command) {
 	local redraw = false
@@ -395,7 +357,7 @@ function bar_progress_update(i, init, max) {
 	}
 }
 
-if (FeVersionNum < 300) z_edit_dialog("Arcadeflow requires AM+ 3.0.0+","")
+if (FeVersionNum < 300) fe.overlay.edit_dialog("Arcadeflow requires AM+ 3.0.0+","")
 
 /// Config management ///
 
@@ -519,7 +481,7 @@ function parseconfig() {
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
-				z_edit_dialog("*WARNING*\nSet Image Cache Size to zero to avoid issues", "")
+				fe.overlay.edit_dialog("*WARNING*\nSet Image Cache Size to zero to avoid issues", "")
 				warning = true
 			}
 		}
@@ -527,7 +489,7 @@ function parseconfig() {
 			tempval = split(item, " ")
 			if (tempval.len() > 1) {
 				if (tempval[1].find("Arcadeflow") == 0) {
-					z_edit_dialog("*WARNING*\nDon't use Arcadeflow as displays menu layout", "")
+					fe.overlay.edit_dialog("*WARNING*\nDon't use Arcadeflow as displays menu layout", "")
 					warning = true
 				}
 			}
@@ -1429,7 +1391,7 @@ function readprefdata(target) {
 	local version = "0.0"
 
 	try {version = prffile.read_line()} catch(err) {
-		z_splash_message ("Error reading prefs file, resetting to default")
+		fe.overlay.splash_message ("Error reading prefs file, resetting to default")
 		return false
 	}
 
@@ -1483,7 +1445,7 @@ function readprefdata(target) {
 
 
 	if (warnmessage != "") {
-		z_splash_message ("Reset prefs:\n\n" + warnmessage)
+		fe.overlay.splash_message ("Reset prefs:\n\n" + warnmessage)
 		return false
 	}
 	return true
@@ -1628,7 +1590,7 @@ function check_buttons() {
 			}
 		}
 	}
-	if (conflict) 	z_splash_message ("WARNING: Conflict in Arcadeflow button assignment")
+	if (conflict) 	fe.overlay.splash_message ("WARNING: Conflict in Arcadeflow button assignment")
 }
 
 check_buttons()
@@ -2372,7 +2334,7 @@ if (prf.CUSTOMSIZE != "") {
 		scr.w = scr.w.tointeger()
 		scr.h = scr.h.tointeger()
 	}
-	catch(err) {z_splash_message("Wrong syntax in screen resolution"); prf.CUSTOMSIZE = ""; scr.w = ScreenWidth; scr.h = ScreenHeight}
+	catch(err) {fe.overlay.splash_message("Wrong syntax in screen resolution"); prf.CUSTOMSIZE = ""; scr.w = ScreenWidth; scr.h = ScreenHeight}
 }
 
 // Screen size and overscan management
@@ -3282,7 +3244,7 @@ function messageOLDboxer(title, message, new, arrayin) {
 		text = text + arrayin[id] + "\n"
 		if (id == 0) text += "\n"
 	}
-	z_splash_message(text)
+	fe.overlay.splash_message(text)
 	//AF.messageoverlay.msg = text
 	return arrayin
 }
@@ -4847,18 +4809,18 @@ function resetromlist() {
 
 function cleandatabase(temppref) {
 	if (temppref.MASTERLIST) {
-		z_edit_dialog("Not possible when master romlist is enabled", "")
+		fe.overlay.edit_dialog("Not possible when master romlist is enabled", "")
 		return
 	}
 
-	z_splash_message("Cleanup...")
+	fe.overlay.splash_message("Cleanup...")
 
 	local has_emulator = false
 	local has_romlist = false
 	local filepresent = false
 	local todolist = []
 	foreach(item, val in z_list.db1) {
-		z_splash_message(item + "\nCleaning Database")
+		fe.overlay.splash_message(item + "\nCleaning Database")
 
 		// Check if each db entry has an emulator and a romlist
 		has_emulator = file_exist(AF.emulatorsfolder + item + ".cfg")
@@ -4889,18 +4851,18 @@ function cleandatabase(temppref) {
 
 	// Now save the updated db files
 	foreach(item, val in z_list.db1) {
-		z_splash_message(item + "\nRefresh Romlist [ ]\nUpdate Database [ ]")
+		fe.overlay.splash_message(item + "\nRefresh Romlist [ ]\nUpdate Database [ ]")
 		refreshromlist(item, false)
-		z_splash_message(item + "\nRefresh Romlist [*]\nUpdate Database [ ]")
+		fe.overlay.splash_message(item + "\nRefresh Romlist [*]\nUpdate Database [ ]")
 		saveromdb1(item, z_list.db1[item])
-		z_splash_message(item + "\nRefresh Romlist [*]\nUpdate Database [*]")
+		fe.overlay.splash_message(item + "\nRefresh Romlist [*]\nUpdate Database [*]")
 		saveromdb2(item, z_list.db2[item])
 	}
 	if (temppref.ALLGAMES) {
 		buildconfig(temppref.ALLGAMES, temppref)
 		update_allgames_collections(true, temppref)
 	}
-	z_splash_message("All Done")
+	fe.overlay.splash_message("All Done")
 	//restartAM()
 }
 
@@ -6662,7 +6624,7 @@ function getallgamesdb(logopic) {
 				//TEST160 if done this way, it doesn't risk to happen during collection.
 				//TEST160 But what happens if the emulator doesn't have a reference romlist?
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
-				z_splash_message("")//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
+				fe.overlay.splash_message("")//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
 
 				if (prf.SPLASHON) {
@@ -11757,7 +11719,7 @@ function update_allgames_collections(verbose, tempprf) {
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if (val2.inmenu) {
-						if (verbose)z_splash_message ("Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
+						if (verbose)fe.overlay.splash_message ("Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 					}
 				}
@@ -11786,7 +11748,7 @@ function update_allgames_collections(verbose, tempprf) {
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
 						if (verbose && (sysname != cursysname)) {
-							z_splash_message ("Collection:" + item + "\nSystem:" + sysname + "\n")
+							fe.overlay.splash_message ("Collection:" + item + "\nSystem:" + sysname + "\n")
 							cursysname = sysname
 						}
 					if (!outfiles.rawin(item)) {
@@ -12837,7 +12799,7 @@ function checkforupdates(force) {
 	savedate()
 
 	//load latest update version
-	z_splash_message("Checking for updates...")
+	fe.overlay.splash_message("Checking for updates...")
 	AF.updatechecking = true
 
 	local ver_in = ""
@@ -17538,6 +17500,12 @@ function ra_selectemu(startemu) {
 
 /// On Signal ///
 function on_signal(sig) {
+
+	if (sig == "custom1"){
+		AF.messageoverlay.visible = true
+		AF.boxmessage = array (2, "")
+		AF.boxmessage = messageboxer ("This is a sample message", "", true, AF.boxmessage)
+	}
 
 	debugpr("\n Si:" + sig)
 
