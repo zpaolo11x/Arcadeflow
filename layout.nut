@@ -812,9 +812,11 @@ function printblanks(){
 local download = {//TEST162
 	list = [],
 	num = 0,
+	numpre = 0,
 	blanks = loadvar("data_blanks.txt")
 	time0 = 0
 	time1 = 0
+	timestep = (OS == "Windows" ? 5000 : 500)
 }
 function checkmsec(delay){
 	download.time1 = fe.layout.time
@@ -15934,7 +15936,7 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if ( (download.list.len() > 0) && checkmsec(5000) ){ //TEST162 cambiare con download.num?
+	if ( (download.list.len() > 0) && checkmsec(download.timestep) ){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
@@ -16107,10 +16109,12 @@ testpr(texeSS+"\n\n")
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.scrape.columns) + "\n" + textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.scrape.columns, "|", "\\") + "\n" + textrate(download.num, download.list.len() + 1, AF.scrape.columns, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.scrape.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.scrape.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.scrape.columns-5, "|", "\\")
 		//TEST162 aggiungere check se download.num è cambiato, sennò non aggiorna
-		AF.boxmessage = messageboxer (dispatch_header, "", false, AF.boxmessage)
-
+		if (download.num != download.numpre) {
+			AF.boxmessage = messageboxer (dispatch_header, "", false, AF.boxmessage)
+			download.numpre = download.num
+		}
 		foreach (i, item in dispatcher) {
 			if (item.done) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
