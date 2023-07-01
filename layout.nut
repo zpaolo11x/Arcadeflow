@@ -4009,8 +4009,8 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 
 // Pre parse function that screens the current or all romlists, and calls XMLtoAM
 function XMLtoAM2(prefst, current) {
-	AF.boxmessage = array (6, "")
-	AF.boxmessage = messageOLDboxer ("XML import start", "", false, AF.boxmessage)
+	
+	msgbox_open("XML import start", "")
 
 	local dirlist = null
 	local romlists = []
@@ -4030,10 +4030,10 @@ function XMLtoAM2(prefst, current) {
 	// emulator_present array with the emulator .cfg path
 	local emulator_present = []
 	foreach (id, item in romlists) {
-		emulator_present.push(file_exist(AM.emulatorsfolder + item + ".cfg"))
+		emulator_present.push(file_exist(AF.emulatorsfolder + item + ".cfg"))
 	}
 
-	AF.boxmessage = messageOLDboxer ("Load standard romlists", "", false, AF.boxmessage)
+	msgbox_newtitle("Load standard romlists")
 
 	// First go through all the romlists that have a .cfg file to import XML data
 	foreach (id, item in romlists) {
@@ -4042,11 +4042,11 @@ function XMLtoAM2(prefst, current) {
 		}
 	}
 
-	AF.boxmessage = messageOLDboxer ("Load collection romlists", "", false, AF.boxmessage)
+	msgbox_newtitle("Load collection romlists")
 	// Once the normal romlists are created, create collections
 	foreach (id, item in romlists) {
 		if (!emulator_present[id]) { // Emulator is not present, the list is a collection romlist
-			AF.boxmessage = messageOLDboxer ("", item, true, AF.boxmessage)
+			msgbox_addlinetop(item)
 
 			local romlistpath = AF.romlistfolder + item + ".txt"
 			local filein = ReadTextFile(romlistpath)
@@ -4074,11 +4074,11 @@ function XMLtoAM2(prefst, current) {
 				}
 			}
 			fileout.close_file()
-			AF.boxmessage = messageOLDboxer ("", item + " DONE", false, AF.boxmessage)
-
+			msgbox_addlinetop(item + " DONE") //TEST162 aggiungere replacelinetop e replacelinebottom
 		}
 	}
-	AF.boxmessage = messageOLDboxer ("Reloading Layout", "", false, AF.boxmessage)
+	msgbox_newtitle("Reloading Layout")
+	msgbox_newbody("")
 }
 
 function XMLtoAM(prefst, dir) {
@@ -4091,10 +4091,13 @@ function XMLtoAM(prefst, dir) {
 	local xmlsysnames = []
 
 	foreach (item in dir) {
+		testpr("-------------------------------------------------------"+item+"\n")
 		if (item.slice(-3) == "cfg") {
-			if (AF.emulatordata[item].importextras != "") {
-				if (AF.emulatordata[item].importextras.slice(-4) == ".xml")  {
-					xmlpaths.push(AF.emulatordata[item].importextras)
+			local itemclean = item.slice(0,-4)
+			print_variable(AF.emulatordata,"","")
+			if (AF.emulatordata[itemclean].importextras != "") {
+				if (AF.emulatordata[itemclean].importextras.slice(-4) == ".xml")  {
+					xmlpaths.push(AF.emulatordata[itemclean].importextras)
 					xmlsysnames.push(item.slice(0, -4))
 				}
 			}
@@ -4104,15 +4107,15 @@ function XMLtoAM(prefst, dir) {
 
 	foreach (id, item in xmlpaths) {
 		local XMLT = {}
-		AF.boxmessage = messageOLDboxer ("", xmlsysnames[id], true, AF.boxmessage)
+		msgbox_addlinetop(xmlsysnames[id])
 
 		XMLT = parseXML (xmlpaths[id])
 
 		if (XMLT == null) {
-			AF.boxmessage = messageOLDboxer ("", xmlsysnames[id] + " SKIP", false, AF.boxmessage)
+			msgbox_addlinetop(xmlsysnames[id] + " SKIP")
 			continue
 		}
-		AF.boxmessage = messageOLDboxer ("", xmlsysnames[id] + " DONE", false, AF.boxmessage)
+		msgbox_addlinetop(xmlsysnames[id] + " DONE")
 
 		//clear scrape data
 		//local scrapepath = FeConfigDirectory + "romlists/" + xmlsysnames[id] + ".scrape"
