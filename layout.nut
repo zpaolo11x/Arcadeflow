@@ -3283,27 +3283,29 @@ function messageOLDboxer(title, message, new, arrayin) {
 	return arrayin
 }
 
-function messageboxer(title, message, new, arrayin) {
+function messageboxer(title, message, newline, arrayin) {
 	// Creates a "scrolling" message box on the screen:
 
-	// If title is not "", it will appear as title and
-	// clear all the data on the screen
+	// If title is not "", it will appear as title, if message is "" and
+	// newline is true, it will clear the whole message. Otherwise if 
+	// message is "" and newline is fals, only the title changes
 
-	// If message is not "", and new is enabled, message
+	// If message is not "", and newline is true, message
 	// is added on top and older text is scrolled down
 
-	// If message is not "" but new is false, text is appended
+	// If message is not "" but newline is false, text is appended
 	// to the end of the current top line
+
 
 	if (title != "") {
 		arrayin[0] = title
-		if (message == "") {
+		if ((message == "") && (newline)){
 			arrayin[1] = ""
 		}
 	}
 
 	if (message != "") {
-		if (new) {
+		if (newline) {
 			arrayin[1] = message + arrayin[1]
 		}
 		else {
@@ -3861,7 +3863,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						name = dispatcher[scrapeid].gamedata.name
 						ADBurl = tempdataA.url
 						ADBext = tempdataA.ext
-						ADBfileUIX = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
+						ADBfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
 					}
@@ -3869,7 +3871,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 					if (tempdata.len() > 0) {
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
-						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
+						tempdld.rawset("SSfile", fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension))
 					}
 					download.list.push(tempdld)
 					download.num ++
@@ -3883,7 +3885,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						folder = emuartfolder
 						SSurl = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
 						SSext = tempdata[0].extension
-						SSfileUIX = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
+						SSfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 						name = dispatcher[scrapeid].gamedata.name
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_SS"
@@ -4124,7 +4126,6 @@ function XMLtoAM2(prefst, current) {
 }
 
 function XMLtoAM(prefst, dir) {
-	//AF.boxmessage = messageboxer ("Load romlists", "", false, AF.boxmessage)
 
 	// prefst is a preference table used for local update in options menu
 	// dir is an array of emulator.cfg files that is used to get the xml extra data
@@ -15933,24 +15934,24 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if ( (download.list.len() > 0) && checkmsec(500) ){ //TEST162 cambiare con download.num?
+	if ( (download.list.len() > 0) && checkmsec(5000) ){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
 				//TEST162 ADD PART FOR WINDOWS
 				// Initialize item in download folder and delete existing media
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
-				try {remove(item.ADBfileUIX)} catch(err) {}
+				try {remove(item.ADBfile)} catch(err) {}
 
 				local texeA = ""
 				if (OS == "Windows") {
 					// OUTPUT
 					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
-					texeA = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
+					texeA = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
 				}
 				else {
 					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
-					texeA += "curl -f --create-dirs \"" + item.ADBurl + "\" -o \"" + item.ADBfileUIX + "\" ; "
+					texeA += "curl -s -f --create-dirs \"" + item.ADBurl + "\" -o \"" + item.ADBfile + "\" ; "
 					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
 				system(texeA)
@@ -15960,15 +15961,15 @@ testpr(texeA+"\n\n")
 			}
 			else if (item.status == "start_download_SS"){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
-				try {remove(item.SSfileUIX)} catch(err) {}
+				try {remove(item.SSfile)} catch(err) {}
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
+					texeSS = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
-					texeSS += "curl -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfileUIX + "\" ; "
+					texeSS += "curl -s -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfile + "\" ; "
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
 
@@ -15983,15 +15984,15 @@ testpr(texeSS+"\n\n")
 					// File has been downlaoded, check wheel and snap to trigger SS scraping if needed, but IF SSurl is present in the data structure
 					if (
 							(
-								((item.cat == "wheel") && (!file_exist(item.ADBfileUIX))) // wheel artowrk but artwork is missing from ADB
+								((item.cat == "wheel") && (!file_exist(item.ADBfile))) // wheel artowrk but artwork is missing from ADB
 								||
-								((item.cat == "snap") && (download.blanks.rawin(get_png_crc(item.ADBfileUIX)))) // snap artwork but artwork is non working screen
+								((item.cat == "snap") && (download.blanks.rawin(get_png_crc(item.ADBfile)))) // snap artwork but artwork is non working screen
 							)
 							&&
 							(item.rawin("SSurl"))
 						){
 						testpr("A"+item.id + item.cat+"\n")
-						try {remove(item.ADBfileUIX)} catch(err) {}
+						try {remove(item.ADBfile)} catch(err) {}
 						item.status = "start_download_SS"
 					}
 					else {
@@ -16105,7 +16106,11 @@ testpr(texeSS+"\n\n")
 		}
 	}
 
-	if (dispatchernum != 0) {
+	if ((dispatchernum != 0) || (download.num != 0)){
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.scrape.columns) + "\n" + textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.scrape.columns, "|", "\\") + "\n" + textrate(download.num, download.list.len() + 1, AF.scrape.columns, "|", "\\")
+		//TEST162 aggiungere check se download.num è cambiato, sennò non aggiorna
+		AF.boxmessage = messageboxer (dispatch_header, "", false, AF.boxmessage)
+
 		foreach (i, item in dispatcher) {
 			if (item.done) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
@@ -16115,7 +16120,7 @@ testpr(texeSS+"\n\n")
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				scraprt("ID" + i + " COMPLETED " + item.gamedata.filename + "\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				AF.boxmessage = messageboxer (patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.scrape.columns) + "\n" + textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.scrape.columns, "|", "\\"), patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.scrape.columns) + "\n", true, AF.boxmessage)
+				AF.boxmessage = messageboxer (dispatch_header, patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.scrape.columns) + "\n", true, AF.boxmessage)
 
 				AF.scrape.threads --
 				dispatchernum --

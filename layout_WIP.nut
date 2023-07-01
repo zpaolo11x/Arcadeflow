@@ -7,7 +7,14 @@
 // Load file nut
 
 fe.do_nut("nut_file.nut")
-
+print (fe.script_dir+"\n")
+print (fe.path_expand(fe.script_dir)+"\n\n\n")
+print("A\n")
+//system("C:\\Users\\zippo\\Downloads\\attractplus\\layouts\\Arcadeflow_16.2_wip_3978D82\\curldownload.vbs \"C:\\Users\\zippo\\Downloads\\attractplus\\layouts\\Arcadeflow_16.2_wip_3978D82\\dlds\\0wheeldldsA.txt\" \"http://adb.arcadeitalia.net/media/mame.current/decals/sf2.png\" \"C:\\Users\\zippo\\Downloads\\sf2_A.png\"")
+print("B\n")
+//system("curl \"http://adb.arcadeitalia.net/media/mame.current/decals/sf2.png\" -o \"C:\\Users\\zippo\\Downloads\\sf2_B.png\"")
+print("C\n")
+//pluto = 0
 //system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\0videodldsS.txt\" \"https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=14109&media=video-normalized\" \"C:\\Z\\ROMS\\atari2600\\media\\videos\\Skeet Shoot (USA).mp4\"")
 
 //system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\1videodldsS.txt\" \"https://speed.hetzner.de/1GB.bin\" \"testout1.bin\"")
@@ -67,7 +74,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 
 /// Main layout structures setup ///
-
+print ("TEST:"+fe.script_dir+"\n")
 // General AF data table
 local AF = {
 	version = "16.2"
@@ -163,7 +170,8 @@ local AF = {
 						"-O------"]
 	}
 }
-
+print ("TEST:"+fe.script_dir+"\n")
+print ("TEST:"+AF.folder+"\n")
 function AFscrapeclear() {
 	AF.scrape = {
 		stack = []
@@ -3869,7 +3877,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 					if (tempdata.len() > 0) {
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
-						tempdld.rawset("SSfileUIX", emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
+						tempdld.rawset("SSfileUIX", fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension))
 					}
 					download.list.push(tempdld)
 					download.num ++
@@ -15855,7 +15863,7 @@ if (surfdebug) {
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-//if ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20) testpr ("X\n")
+	//if ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20) testpr ("X\n")
 	//if (surfdebug) printsrufaces()
 
 	/*
@@ -15933,20 +15941,20 @@ function tick(tick_time) {
 
 	//TEST162
 	// Media download cue for arcade games
-	if ( (download.list.len() > 0) && checkmsec(500) ){ //TEST162 cambiare con download.num?
+	if ( (download.list.len() > 0) && checkmsec(5000) ){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
 				//TEST162 ADD PART FOR WINDOWS
 				// Initialize item in download folder and delete existing media
-				try {remove(dldpath + "dldsA.txt")} catch(err) {}
-				try {remove(item.ADBfileUIX)} catch(err) {}
+				try {remove(dldpath + "dldsA.txt")} catch(err) {testpr("ERR_1")}
+				try {remove(item.ADBfileUIX)} catch(err) {testpr("ERR_2")}
 
 				local texeA = ""
 				if (OS == "Windows") {
 					// OUTPUT
 					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
-					texeA = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
+					texeA = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfileUIX +"\""
 				}
 				else {
 					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
@@ -15964,7 +15972,7 @@ testpr(texeA+"\n\n")
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
+					texeSS = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfileUIX +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
