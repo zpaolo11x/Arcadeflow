@@ -28,6 +28,12 @@ function split_complete(str_in, separator) {
 	return outarray
 }
 
+function strepeat(character, length){
+	local out = ""
+	for (local i = 0; i < length; i++) out += character
+	return out
+}
+
 // COME CAMBIA AR DA AF98
 /*
 Modificare la funzione GetAR in modo che restituisca l'AR _DA MOSTRARE_ pre-clamp,
@@ -121,7 +127,10 @@ local AF = {
 	}
 
 	updatechecking = false
-	boxmessage = [""]
+	boxmessage = {
+		title = ""
+		body = ""
+	}
 	messageoverlay = null
 	tsc = 1.0 // Scaling of timer for different parameters
 
@@ -187,18 +196,15 @@ function AFscrapeclear() {
 		doneroms = 0
 		timeoutroms = []
 		columns = 60
-		separator1 = ""
-		separator2 = ""
+		separator1 = strepeat("-", 60)
+		separator2 = strepeat("=", 60)
 		onegame = ""
 		dispatchid = 0
 		requests = ""
 		report = {}
 		threads = 0
 	}
-	for (local i = 0; i < AF.scrape.columns; i++) {
-		AF.scrape.separator1 += "-"
-		AF.scrape.separator2 += "="
-	}
+	
 }
 
 AFscrapeclear()
@@ -3249,47 +3255,48 @@ function messageOLDboxer(title, message, new, arrayin) {
 	return arrayin
 }
 
-function messageboxer(title, message, newline, arrayin) {
-	// Creates a "scrolling" message box on the screen:
-
-	// If title is not "", it will appear as title, if message is "" and
-	// newline is true, it will clear the whole message. Otherwise if 
-	// message is "" and newline is fals, only the title changes
-
-	// If message is not "", and newline is true, message
-	// is added on top and older text is scrolled down
-
-	// If message is not "" but newline is false, text is appended
-	// to the end of the current top line
+/// Message Box functions ///
 
 
-	if (title != "") {
-		arrayin[0] = title
-		if ((message == "") && (newline)){
-			arrayin[1] = ""
-		}
-	}
 
-	if (message != "") {
-		if (newline) {
-			arrayin[1] = message + arrayin[1]
-		}
-		else {
-			arrayin[1] = message
-		}
-	}
+function msgbox_refresh(){
+	AF.messageoverlay.msg = AF.boxmessage.title + "\n\n" + AF.boxmessage.body + "\n" 
+}
 
-	local text = ""
-	foreach (id, item in arrayin) {
-		text = text + arrayin[id] + "\n"
-		if (id == 0) text += "\n"
-	}
-	//fe.overlay.splash_message(text)
-	AF.messageoverlay.msg = text
-	return arrayin
+function msgbox_newtitle(text){
+	AF.boxmessage.title = text
+	msgbox_refresh()
+}
+
+function msgbox_newbody(text){
+	AF.boxmessage.body = text
+	msgbox_refresh()
+}
+
+function msgbox_addlinetop(text){
+	AF.boxmessage.body = text + AF.boxmessage.body + "\n"
+	msgbox_refresh()
+}
+function msgbox_addlinebottom(text){
+	AF.boxmessage.body = AF.boxmessage.body + "\n" + text
+	msgbox_refresh()
+}
+
+function msgbox_open(title, message){
+	msgbox_newtitle(title)
+	msgbox_newbody(message)
+	AF.messageoverlay.visible = true
+}
+
+function msgbox_close(){
+	
 }
 
 function patchtext(string1, string2, width2, columns) {
+	// Packs together string1 and string2, string1 starts at position 0,
+	// string 2 starts at with2 from the right. Columns is the total width
+	// of the text line. If string1 is larger than the allowed space it's cut 
+	// in half and a custom character is inserted  
 	local out = ""
 	local separator = "…"
 	local separatorsize = 1
@@ -3311,43 +3318,12 @@ function patchtext(string1, string2, width2, columns) {
 	return out
 }
 
-function packwrap(intext, columns) {
-	local outtext = intext + "§"
-	if (intext.len() > columns) {
-		outtext = intext.slice(0, columns) + "§" + intext.slice(columns, intext.len()) + "§"
-	}
-	return (outtext)
-}
-
-function packtext(intext, columns) {
-	if (intext == "") intext = " "
-	local spc = "                                                                             "
-	local out = ""
-	local separator = "§"
-	local textarray = split(intext, separator)
-	local outstring = ""
-	foreach (i, item in textarray) {
-		if (item.len() > columns) textarray[i] = item.slice(0, columns - 1) + "_"
-		if (item.len() < columns) textarray[i] = textarray[i] + spc.slice(0, columns - item.len())
-		outstring = outstring + textarray[i]
-		if (i < textarray.len() - 1)outstring = outstring + "\n"
-	}
-	return (outstring)
-}
-
 function textrate(num, den, columns, ch1, ch0) {
-	local out = ""
+	// Creates a string of special characters ch0 (empty) columns long
+	// then fills num/den * columns characters with ch1 (full)
+	// this is done to create a text progress bar of fixed size
 	local limit = (num * columns) / den
-	local i = 0
-	local char = ""
-
-	while (out.len() < limit) {
-		out += ch1
-	}
-	while (out.len() < columns) {
-		out += ch0
-	}
-	return out
+	return (strepeat(ch1, limit) + strepeat(ch0, columns - limit))
 }
 
 dispatcher = []
@@ -3950,10 +3926,8 @@ local z_list = {
 function scraperomlist2(inprf, forcemedia, onegame) {
 	AF.scrape.report = {}
 	AF.scrape.doneroms = 0
-	AF.messageoverlay.visible = true
 
-	AF.boxmessage = array (2, "")
-	AF.boxmessage = messageboxer ("Scraping...", "", true, AF.boxmessage)
+	msgbox_open("Scraping...", "")
 
 	AF.scrape.forcemedia = forcemedia
 	AF.scrape.inprf = inprf
@@ -16022,7 +15996,8 @@ testpr(texeSS+"\n\n")
 			outfile.write_line(endreport)
 			outfile.close_file()
 
-			AF.boxmessage = messageboxer(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms, "COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.scrape.separator2 + "\n" + endreport + "\n", false, AF.boxmessage)
+			msgbox_newtitle(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms)
+			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.scrape.separator2 + "\n" + endreport)
 
 			AFscrapeclear()
 			dispatcher = []
@@ -16076,7 +16051,7 @@ testpr(texeSS+"\n\n")
 		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.scrape.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.scrape.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.scrape.columns-5, "|", "\\")
 		//TEST162 aggiungere check se download.num è cambiato, sennò non aggiorna
 		if (download.num != download.numpre) {
-			AF.boxmessage = messageboxer (dispatch_header, "", false, AF.boxmessage)
+			msgbox_newtitle(dispatch_header)
 			download.numpre = download.num
 		}
 		foreach (i, item in dispatcher) {
@@ -16088,7 +16063,9 @@ testpr(texeSS+"\n\n")
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				scraprt("ID" + i + " COMPLETED " + item.gamedata.filename + "\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				AF.boxmessage = messageboxer (dispatch_header, patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.scrape.columns) + "\n", true, AF.boxmessage)
+				
+				msgbox_newtitle(dispatch_header)
+				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.scrape.columns))
 
 				AF.scrape.threads --
 				dispatchernum --
@@ -17502,9 +17479,12 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-		AF.messageoverlay.visible = true
-		AF.boxmessage = array (2, "")
-		AF.boxmessage = messageboxer ("This is a sample message", "", true, AF.boxmessage)
+
+		msgbox_open("TITOLO DEL MESSAGGIO", "Questo è il mio messaggio...\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\nExcepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nCiao ciao")
+
+	}
+	if (sig == "custom2"){
+		msgbox_addlinebottom("NEW FIRST LINE")
 	}
 
 	debugpr("\n Si:" + sig)
