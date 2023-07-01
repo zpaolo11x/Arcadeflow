@@ -343,7 +343,7 @@ function bar_cycle_update(command) {
 		return
 	}
 	AF.bar.time1 = clock()
-	if (AF.bar.time1 - AF.bar.time0 >= AF:bar.waitframes * 1.0 / ScreenRefreshRate) {
+	if (AF.bar.time1 - AF.bar.time0 >= AF.bar.waitframes * 1.0 / ScreenRefreshRate) {
 		AF.bar.count = AF.bar.count + 1
 		if (AF.bar.count == 10) AF.bar.count = 0
 		AF.bar.pic.msg = gly(0xeb08 + AF.bar.count)
