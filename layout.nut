@@ -4094,7 +4094,7 @@ function XMLtoAM(prefst, dir) {
 		testpr("-------------------------------------------------------"+item+"\n")
 		if (item.slice(-3) == "cfg") {
 			local itemclean = item.slice(0,-4)
-			print_variable(AF.emulatordata,"","")
+
 			if (AF.emulatordata[itemclean].importextras != "") {
 				if (AF.emulatordata[itemclean].importextras.slice(-4) == ".xml")  {
 					xmlpaths.push(AF.emulatordata[itemclean].importextras)
@@ -4124,9 +4124,19 @@ function XMLtoAM(prefst, dir) {
 		local romlistpath = AF.romlistfolder + xmlsysnames[id] + ".txt"
 		local rompath = AF.emulatordata [xmlsysnames[id]].rompath
 
-		local romlist_file = WriteTextFile(romlistpath)
-		romlist_file.write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
+		//local romlist_file = WriteTextFile(romlistpath)
+		//romlist_file.write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
 		foreach (id2, item2 in XMLT) {
+			local z_data = z_list.db1[xmlsysnames[id]][id2]
+			z_data.z_title = item2.name
+			z_data.z_year = (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "")
+			z_data.z_manufacturer = item2.publisher
+			z_data.z_description = split(item2.desc,"\n")
+			z_data.z_category = (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre)
+			z_data.z_players = item2.players
+			z_data.z_rating = item2.rating
+
+			/*
 			local listline = id2 + ";"
 			listline += item2.name + ";"
 			listline += xmlsysnames[id] + ";;"
@@ -4138,8 +4148,10 @@ function XMLtoAM(prefst, dir) {
 			listline += "‖ XML ‖ " + item2.desc + " ‖;;;;;"
 			listline += item2.rating + ";"
 			if (file_exist(rompath + id2 + "." + item2.ext) || !prefst.ONLYAVAILABLE) romlist_file.write_line(listline + "\n")
+			*/
 		}
-		romlist_file.close_file()
+		saveromdb1(xmlsysnames[id], z_list.db1[xmlsysnames[id]])
+		//romlist_file.close_file()
 	}
 	//fe.set_display(fe.list.display_index)
 }
