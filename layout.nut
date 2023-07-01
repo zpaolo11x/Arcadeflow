@@ -132,6 +132,7 @@ local AF = {
 		body = ""
 	}
 	messageoverlay = null
+	messageback = null
 	tsc = 1.0 // Scaling of timer for different parameters
 
 	scrape = null
@@ -3242,8 +3243,6 @@ function messageOLDboxer(title, message, new, arrayin) {
 
 /// Message Box functions ///
 
-
-
 function msgbox_refresh(){
 	AF.messageoverlay.msg = AF.boxmessage.title + "\n\n" + AF.boxmessage.body + "\n" 
 }
@@ -3267,14 +3266,18 @@ function msgbox_addlinebottom(text){
 	msgbox_refresh()
 }
 
-function msgbox_open(title, message){
+function msgbox_open(title, message, backfunction = null){
 	msgbox_newtitle(title)
 	msgbox_newbody(message)
+	AF.messageback = backfunction
 	AF.messageoverlay.visible = true
 }
 
 function msgbox_close(){
-	
+	msgbox_newtitle("")
+	msgbox_newbody("")
+	AF.messageback = null
+	AF.messageoverlay.visible = false	
 }
 
 function patchtext(string1, string2, width2, columns) {
@@ -3908,11 +3911,39 @@ local z_list = {
 	allemudata = {}
 }
 
+local prfmenu = null
+
 function scraperomlist2(inprf, forcemedia, onegame) {
 	AF.scrape.report = {}
 	AF.scrape.doneroms = 0
 
-	msgbox_open("Scraping...", "")
+	msgbox_open("Scraping...", "", function(){
+		if (AF.scrape.purgedromdirlist == null){
+			AF.messageoverlay.visible = false
+
+			if (prfmenu.showing) fe.signal("back")
+			fe.signal("back")
+
+			// This reloads the romlist without reloading the layout, but if the other display is not AF it can cause issues
+			local ifplus = modwrap(fe.list.display_index + 1, fe.displays.len())
+			local ifminus = modwrap(fe.list.display_index - 1, fe.displays.len())
+
+			try {
+				fe.set_display(fe.list.display_index, false, false)
+			} catch(err) {
+				//OLD METHOD BEFORE THE NEW SET_DISPLAY
+				if (fe.displays[ifplus].layout.tolower().find("arcadeflow") != null) {
+					fe.signal("next_display")
+					fe.signal("prev_display")
+				}
+				else if (fe.displays[ifminus].layout.tolower().find("arcadeflow") != null) {
+					fe.signal("prev_display")
+					fe.signal("next_display")
+				}
+				else fe.signal("reload")
+			}
+		}
+	})
 
 	AF.scrape.forcemedia = forcemedia
 	AF.scrape.inprf = inprf
@@ -9091,7 +9122,7 @@ function getsubmenudata(index) {
 }
 
 
-local prfmenu = {
+prfmenu = {
 	res0 = 0
 	res1 = 0
 	res2 = 0
@@ -17486,6 +17517,47 @@ function on_signal(sig) {
 		return true
 	}
 
+	if (AF.messageoverlay.visible == true){
+		if (sig == "back"){
+			if (AF.messageback != null) 
+				AF.messageback()
+			else
+				msgbox_close()
+		}
+		else if (sig == "up") { // Scrolls the scrape report
+			if (checkrepeat(count.up)) {
+				AF.messageoverlay.first_line_hint--
+				count.up ++
+			}
+			return true
+		}
+		else if (sig == "down") { // Scroll the scrape report
+			if (checkrepeat(count.down)) {
+				AF.messageoverlay.first_line_hint++
+				count.down ++
+			}
+			return true
+		}
+		else if (sig == "left") {
+			if (checkrepeat(count.left)) { //Faster jump scroll
+				AF.messageoverlay.first_line_hint-=10
+				count.left ++
+			}
+			return true
+		}
+		else if (sig == "right") {
+			if (checkrepeat(count.right)) { //Faster jump scroll
+				AF.messageoverlay.first_line_hint += 10
+				count.right ++
+			}
+			return true
+		}
+		else if (sig == "screenshot") {
+			return false
+		}
+		return true
+	}
+/*
 	// Scraping has finished and the end mesage is showing
 	if ((AF.scrape.purgedromdirlist == null) && (AF.messageoverlay.visible == true)) {
 		if (sig == "back") {
@@ -17546,7 +17618,7 @@ function on_signal(sig) {
 		}
 		return true
 	}
-
+*/
 	// Block signal response during update checks
 	if (AF.updatechecking) return
 
