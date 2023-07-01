@@ -4091,7 +4091,7 @@ function XMLtoAM(prefst, dir) {
 	local xmlsysnames = []
 
 	foreach (item in dir) {
-		testpr("-------------------------------------------------------"+item+"\n")
+
 		if (item.slice(-3) == "cfg") {
 			local itemclean = item.slice(0,-4)
 
