@@ -134,6 +134,8 @@ local AF = {
 		time1 = 0
 		progress = 0
 
+		waitframes = 1
+
 		text = null
 		bg = null
 		pic = null
@@ -303,7 +305,7 @@ function splash_update(command) {
 		return
 	}
 	AF.bar.time1 = clock()
-	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {//TEST162 possiamo rallentare l'animazione?
+	if (AF.bar.time1 - AF.bar.time0 >= AF.bar.waitframes * 1.0 / ScreenRefreshRate) {//TEST162 possiamo rallentare l'animazione?
 		AF.bar.count = AF.bar.count + 1
 		if (AF.bar.count == 10) AF.bar.count = 0
 		z_splash_message(AF.bar.splashmessage + "\n" + gly(0xeb08 + AF.bar.count) + "\n")
@@ -341,7 +343,7 @@ function bar_cycle_update(command) {
 		return
 	}
 	AF.bar.time1 = clock()
-	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {
+	if (AF.bar.time1 - AF.bar.time0 >= AF:bar.waitframes * 1.0 / ScreenRefreshRate) {
 		AF.bar.count = AF.bar.count + 1
 		if (AF.bar.count == 10) AF.bar.count = 0
 		AF.bar.pic.msg = gly(0xeb08 + AF.bar.count)
@@ -372,7 +374,7 @@ function bar_progress_update(i, init, max) {
 
 	AF.bar.time1 = clock()
 
-	if (AF.bar.time1 - AF.bar.time0 >= 1.0 / ScreenRefreshRate) {
+	if (AF.bar.time1 - AF.bar.time0 >= AF.bar.waitframes * 1.0 / ScreenRefreshRate) {
 		if (i <= max * 0.2) {
 			redraw = true
 			AF.bar.pic.alpha = 255 * i / (max * 0.2)
