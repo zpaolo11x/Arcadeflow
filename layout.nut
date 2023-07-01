@@ -5,14 +5,7 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
-
 fe.do_nut("nut_file.nut")
-
-//system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\0videodldsS.txt\" \"https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=14109&media=video-normalized\" \"C:\\Z\\ROMS\\atari2600\\media\\videos\\Skeet Shoot (USA).mp4\"")
-
-//system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\1videodldsS.txt\" \"https://speed.hetzner.de/1GB.bin\" \"testout1.bin\"")
-
-//system("C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs \"C:\\Z\\attractplus\\layouts\\Arcadeflow_16.2_wip_91d2dbb\\dlds\\2videodldsS.txt\" \"http://speedtest.ftp.otenet.gr/files/test10Mb.db\" \"testout2.bin\"")
 
 local comma = ','.tochar()
 
@@ -76,8 +69,8 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.2"
-	vernum = 0
+	version = "16.2" // AF version in string form
+	vernum = 0 // AF version as a number
 
 	LNG = ""
 
@@ -87,6 +80,7 @@ local AF = {
 	frost_freezecount = 0
 	zmenu_freezecount = 0
 
+	// Paths variable to different AM and AF locations
 	folder = fe.path_expand(fe.script_dir)
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
@@ -97,7 +91,8 @@ local AF = {
 	songdir = ""
 	bgsongs = []
 
-	config = null
+	config = null //Data structure with all the information from the attract.cfg file
+	emulatordata = {} // Data table with all the properties of all the emulators from the AM folder
 
 	soundvolume = 0
 
@@ -127,6 +122,7 @@ local AF = {
 	}
 
 	updatechecking = false
+
 	boxmessage = {
 		title = ""
 		body = ""
@@ -136,8 +132,6 @@ local AF = {
 	tsc = 1.0 // Scaling of timer for different parameters
 
 	scrape = null
-
-	emulatordata = {}
 
 	bar = {
 		time0 = 0
@@ -407,7 +401,9 @@ function restartAM() {
 	else system ("attractplus &")
 }
 
-// This function parses the attract.cfg and builds a structure for all displays
+// This function parses the attract.cfg and returns a table with all useful
+// data obtained by the config scan
+
 function parseconfig() {
 	local cfgfile = ReadTextFile (AF.amfolder + "attract.cfg")
 	local displaytable = []
@@ -2402,6 +2398,7 @@ function print_variable(variablein, level, name) {
 }
 
 print_variable(download.blanks,"","")
+print_variable(AF.config,"","")
 
 
 /*
@@ -3074,6 +3071,7 @@ function isroot(path) {
 }
 
 // This function gets emulator data for a specified emulator name
+// It's used to create the AF.emulatordata table
 function getemulatordata(emulatorname) {
 	local out = {
 		rompath = null
@@ -3907,7 +3905,7 @@ local z_list = {
 	favdatetable = {}
 	ratingtable = {}
 
-	allromlists = {}
+	romlistemulators = {}
 	allemudata = {}
 }
 
@@ -3956,7 +3954,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 		}
 	}
 
-	// z_list.allromlists è la tabella con tutti i nomi delle romlist "usate" dalla lista
+	// z_list.romlistemulators è la tabella con tutti i nomi delle romlist "usate" dalla lista
 	// ma a cosa serve? io ho già il db da scorrere... posso scorrere z_list.db1 (raggruppati per romlist)
 	// o anche z_list.boot che è una array
 	// se edito i dati nel boot1 e boot2 poi si riflettono su db1 e db2 che poi posso esportare in salvataggio!
@@ -4009,7 +4007,25 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 
 // Pre parse function that screens the current or all romlists, and calls XMLtoAM
 function XMLtoAM2(prefst, current) {
-	
+	//TEST162 come cambiarla: 
+	// nel caso di solo romlist corrente, z_list.allemulators contiene già tutti gli emulatori
+	// usati, e AF.emulatordata contiene i dati. Per quello che deve scansire tutte le romlist 
+	// basta usare la lista di emulatori!
+
+
+	if (current){
+		foreach (item, val in z_list.romlistemulators){
+			XMLtoAM(prefst, item)
+		}
+	}
+	else {
+		foreach (item, val in AF.emulatordata){
+			XMLtoAM(prefst, item)
+		}
+	}
+	msgbox_newtitle("Reloading Layout")
+	msgbox_newbody("")
+/*
 	msgbox_open("XML import start", "")
 
 	local dirlist = null
@@ -4079,14 +4095,41 @@ function XMLtoAM2(prefst, current) {
 	}
 	msgbox_newtitle("Reloading Layout")
 	msgbox_newbody("")
+	*/
 }
 
-function XMLtoAM(prefst, dir) {
+function XMLtoAM(prefst, emulatorname) {
 
 	// prefst is a preference table used for local update in options menu
 	// dir is an array of emulator.cfg files that is used to get the xml extra data
 	//local dir = DirectoryListing (FeConfigDirectory + "emulators/", false)
+	local xmlpath = ""
 
+	//TEST162 filtrare possibili extra multipli
+	if (AF.emulatordata[emulatorname].importextras != "") {
+		if (AF.emulatordata[emulatorname].importextras.slice(-4) == ".xml")  {
+			xmlpath = (AF.emulatordata[emulatorname].importextras)
+		}
+	}
+	local XMLT = parseXML (xmlpath)
+	if (XMLT == null) {
+		return	
+	}
+
+	foreach (id2, item2 in XMLT) {
+		local z_data = z_list.db1[emulatorname][id2]
+		z_data.z_title = item2.name
+		z_data.z_year = (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "")
+		z_data.z_manufacturer = item2.publisher
+		z_data.z_description = split(item2.desc,"\n")
+		z_data.z_category = (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre)
+		z_data.z_players = item2.players
+		z_data.z_rating = item2.rating
+		z_data.z_scrapestatus = "XML"
+	}
+	saveromdb1(emulatorname, z_list.db1[emulatorname])
+
+	/*
 	local xmlpaths = []
 	local xmlsysnames = []
 
@@ -4136,23 +4179,25 @@ function XMLtoAM(prefst, dir) {
 			z_data.z_players = item2.players
 			z_data.z_rating = item2.rating
 
-			/*
-			local listline = id2 + ";"
-			listline += item2.name + ";"
-			listline += xmlsysnames[id] + ";;"
-			listline += (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "") + ";"
-			listline += item2.publisher + ";"
-			listline += (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre) + ";"
-			listline += item2.players + ";"
-			listline += ";;;;;;;"
-			listline += "‖ XML ‖ " + item2.desc + " ‖;;;;;"
-			listline += item2.rating + ";"
-			if (file_exist(rompath + id2 + "." + item2.ext) || !prefst.ONLYAVAILABLE) romlist_file.write_line(listline + "\n")
-			*/
+			
+			//local listline = id2 + ";"
+			//listline += item2.name + ";"
+			//listline += xmlsysnames[id] + ";;"
+			//listline += (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "") + ";"
+			//listline += item2.publisher + ";"
+			//listline += (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre) + ";"
+			//listline += item2.players + ";"
+			//listline += ";;;;;;;"
+			//listline += "‖ XML ‖ " + item2.desc + " ‖;;;;;"
+			//listline += item2.rating + ";"
+			//if (file_exist(rompath + id2 + "." + item2.ext) || !prefst.ONLYAVAILABLE) romlist_file.write_line(listline + "\n")
+			
 		}
 		saveromdb1(xmlsysnames[id], z_list.db1[xmlsysnames[id]])
 		//romlist_file.close_file()
+		
 	}
+	*/
 	//fe.set_display(fe.list.display_index)
 }
 
@@ -4393,7 +4438,7 @@ function updateallgamescollections(tempprf) {
 }
 
 function resetselectedromlists(tempprf) {
-	foreach (item, val in z_list.allromlists) {
+	foreach (item, val in z_list.romlistemulators) {
 		local listpath1 = AF.romlistfolder + item + ".db1"
 		local listpath2 = AF.romlistfolder + item + ".db2"
 		try {remove(listpath1)} catch(err) {print("ERROR1\n")}
@@ -4404,7 +4449,7 @@ function resetselectedromlists(tempprf) {
 }
 
 function eraseselecteddatabase(tempprf) {
-	foreach (item, val in z_list.allromlists) {
+	foreach (item, val in z_list.romlistemulators) {
 		local listpath1 = AF.romlistfolder + item + ".db1"
 		local listpath2 = AF.romlistfolder + item + ".db2"
 		try {remove(listpath1)} catch(err) {print("ERROR1\n")}
@@ -4418,7 +4463,7 @@ function resetlastplayed() {
 		item.z_playedcount = 0
 	}
 
-	foreach (item, val in z_list.allromlists) {
+	foreach (item, val in z_list.romlistemulators) {
 		saveromdb2(item, z_list.db2[item])
 	}
 
@@ -4439,7 +4484,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	foreach (item, val in z_list.allromlists) {
+	foreach (item, val in z_list.romlistemulators) {
 		refreshromlist(item, false)
 	}
 	if (tempprf.ALLGAMES) {
@@ -4784,7 +4829,7 @@ function portgame(romlist, emulator, gamename) {
 // Creates an empty romlist from current romlist
 function resetromlist() {
 	local string0 = "#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating"
-	foreach (item, val in z_list.allromlists) {
+	foreach (item, val in z_list.romlistemulators) {
 
 		local romdirlist = DirectoryListing (AF.emulatordata[item].rompath, false).results
 		local totalroms = 0
@@ -5217,9 +5262,9 @@ function z_list_startorder() {
 	}
 }
 
-// This function scans the romlist looking for all the romlists that are present
-// in a "collection" and returns a table of those romlist names
-function allromlists() {
+// This function scans the romlist looking for all the emulators that are present
+// in a "collection" or in a multi-emulator romlist and returns a table of those emulator names
+function romlistemulators() {
 	local romlist_table = {}
 	local tempemu = ""
 	for (local i = 0; i < fe.list.size; i++) {
@@ -5230,7 +5275,7 @@ function allromlists() {
 	return romlist_table
 }
 
-z_list.allromlists = allromlists()
+z_list.romlistemulators = romlistemulators()
 
 // Proxy function that replicates in z_list.tagstable the tags folder files
 // This is created with each mfz_apply() function so from then on, list creation
@@ -5266,7 +5311,7 @@ function z_initfavsfromfiles() {
 	// Clear the favs table
 	z_list.favsarray = []
 
-	foreach (romlistid, val in z_list.allromlists) {
+	foreach (romlistid, val in z_list.romlistemulators) {
 		local favfile = (AF.romlistfolder + romlistid + ".tag")
 		local favfilepresent = (fe.path_test(favfile, PathTest.IsFile))
 
@@ -6676,7 +6721,7 @@ function getallgamesdb(logopic) {
 function z_listboot() {
 	timestart("z_listboot")
 	debugpr("z_listboot\n")
-	z_list.allromlists = allromlists()
+	z_list.romlistemulators = romlistemulators()
 	local romlistboot = fe.displays[fe.list.display_index].name
 	//TEST160 RIMOSSO z_updatetagstable()
 
@@ -15994,7 +16039,7 @@ testpr(texeSS+"\n\n")
 		// to close the romlist and save the results
 		if ((AF.scrape.purgedromdirlist.len() == 0) && (dispatchernum == 0) && (download.num == 0)) {
 			// Save current data on respective romlists databases
-			foreach (item, val in z_list.allromlists) {
+			foreach (item, val in z_list.romlistemulators) {
 				saveromdb1 (item, z_list.db1[item])
 			}
 			AF.scrape.purgedromdirlist = null
