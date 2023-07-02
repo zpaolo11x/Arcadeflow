@@ -3,3 +3,4 @@ Added Dirksimple logo
 Revamped media downloader for scraper
 Fixed scraped media download hanging
 Fixed scraping credential saving
+Fixed gameslist.xml import
