@@ -122,11 +122,6 @@ local AF = {
 	}
 
 	updatechecking = false
-
-	boxmessage = {
-		title = ""
-		body = ""
-	}
 	
 	msgbox = {
 		obj = null
@@ -134,6 +129,8 @@ local AF = {
 		columns = 60
 		separator1 = strepeat("-", 60)
 		separator2 = strepeat("=", 60)
+		title = ""
+		body = ""
 	}
 	
 	tsc = 1.0 // Scaling of timer for different parameters
@@ -3203,36 +3200,36 @@ function getemulatordata(emulatorname) {
 /// Message Box functions ///
 
 function msgbox_replacelinetop(text){
-	local msgarray = split_complete(AF.boxmessage.body,"\n")
+	local msgarray = split_complete(AF.msgbox.body,"\n")
 	msgarray[0] = text
-	AF.boxmessage.body = ""
+	AF.msgbox.body = ""
 	foreach(i, item in msgarray){
-		AF.boxmessage.body = AF.boxmessage.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
+		AF.msgbox.body = AF.msgbox.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
 	}
 	msgbox_refresh()
 
 }
 
 function msgbox_refresh(){
-	AF.msgbox.obj.msg = AF.boxmessage.title + "\n\n" + AF.boxmessage.body + "\n" 
+	AF.msgbox.obj.msg = AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n" 
 }
 
 function msgbox_newtitle(text){
-	AF.boxmessage.title = text
+	AF.msgbox.title = text
 	msgbox_refresh()
 }
 
 function msgbox_newbody(text){
-	AF.boxmessage.body = text
+	AF.msgbox.body = text
 	msgbox_refresh()
 }
 
 function msgbox_addlinetop(text){
-	AF.boxmessage.body = text + "\n" + AF.boxmessage.body
+	AF.msgbox.body = text + "\n" + AF.msgbox.body
 	msgbox_refresh()
 }
 function msgbox_addlinebottom(text){
-	AF.boxmessage.body = AF.boxmessage.body + "\n" + text
+	AF.msgbox.body = AF.msgbox.body + "\n" + text
 	msgbox_refresh()
 }
 
