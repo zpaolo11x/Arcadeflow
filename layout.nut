@@ -240,7 +240,6 @@ local uifonts = {
 	metapics = "fonts/font_metapics.ttf"
 }
 
-//TEST162
 function get_png_crc(path){
 	local f_in = file(path, "rb" )
 	local blb = f_in.readblob(20*1000*1000)
@@ -755,14 +754,13 @@ function printblanks(){
 		tempcrc = get_png_crc(item)
 		if (!blanks.rawin(tempcrc)) {
 			blanks.rawset(tempcrc,0)
-			print (item+" : "+tempcrc+"\n")
 		}
 	}
 	savevar(blanks, "data_blanks.txt")
 }
 //printblanks()
 
-local download = {//TEST162
+local download = {
 	list = [],
 	num = 0,
 	numpre = 0,
@@ -771,6 +769,7 @@ local download = {//TEST162
 	time1 = 0
 	timestep = (OS == "Windows" ? 5000 : 500)
 }
+
 function checkmsec(delay){
 	download.time1 = fe.layout.time
 	if ((download.time1 - download.time0) >= delay) {
@@ -1723,14 +1722,6 @@ local system_data = readsystemdata()
 
 local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
 
-//TEST162 quest osi può togliere????
-// cleanup frosted glass screen grabs
-local dir0 = {
-	dir = DirectoryListing(FeConfigDirectory)
-	fpos01 = null
-	fpos02 = null
-}
-
 // Background and data crossfade stack
 
 local bgvidsurf = null
@@ -2398,9 +2389,6 @@ function print_variable(variablein, level, name) {
 		if ((typeof val == "table") || (typeof val == "array")) print_variable(val, level, "")
 	}
 }
-
-print_variable(download.blanks,"","")
-print_variable(AF.config,"","")
 
 
 /*
@@ -3278,9 +3266,8 @@ function textrate(num, den, columns, ch1, ch0) {
 	// Creates a string of special characters ch0 (empty) columns long
 	// then fills num/den * columns characters with ch1 (full)
 	// this is done to create a text progress bar of fixed size
-	testpr("textrate:"+num+" "+den+" "+floor(columns)+"\n")
+
 	local limit = ceil((num * floor(columns)) * 1.0 / den)
-	testpr("limit:"+limit+"\n")
 	return (strepeat(ch1, limit) + strepeat(ch0, floor(columns) - limit))
 }
 
@@ -3767,7 +3754,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
 					}
-						testpr("                          "+tempdataA.url+"\n")
+
 					if (tempdata.len() > 0) {
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
@@ -3979,10 +3966,6 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 
 // Pre parse function that screens the current or all romlists, and calls XMLtoAM
 function XMLtoAM2(prefst, current) {
-	//TEST162 come cambiarla: 
-	// nel caso di solo romlist corrente, z_list.allemulators contiene già tutti gli emulatori
-	// usati, e AF.emulatordata contiene i dati. Per quello che deve scansire tutte le romlist 
-	// basta usare la lista di emulatori!
 
 	msgbox_open("XML metadata import", "", function(){
 		fe.signal("back")
@@ -4005,78 +3988,6 @@ function XMLtoAM2(prefst, current) {
 		}
 	}
 	msgbox_addlinetop("Import complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
-	//msgbox_newbody("")
-/*
-	msgbox_open("XML import start", "")
-
-	local dirlist = null
-	local romlists = []
-	if (!current) { // Build an array of romlist files
-		dirlist = DirectoryListing (AF.romlistfolder, false).results
-		foreach (item in dirlist) {
-			if (item.slice(-4) == ".txt") {
-				romlists.push(item.slice(0, -4))
-			}
-		}
-	}
-	else { // Create a 1 item array with current romlist
-		romlists = [fe.displays[fe.list.display_index].romlist]
-	}
-
-	// Scan the list of romlists to check what are single emulator romlists and populate the
-	// emulator_present array with the emulator .cfg path
-	local emulator_present = []
-	foreach (id, item in romlists) {
-		emulator_present.push(file_exist(AF.emulatorsfolder + item + ".cfg"))
-	}
-
-	msgbox_newtitle("Load standard romlists")
-
-	// First go through all the romlists that have a .cfg file to import XML data
-	foreach (id, item in romlists) {
-		if (emulator_present[id]) {
-			XMLtoAM(prefst, [item + ".cfg"])
-		}
-	}
-
-	msgbox_newtitle("Load collection romlists")
-	// Once the normal romlists are created, create collections
-	foreach (id, item in romlists) {
-		if (!emulator_present[id]) { // Emulator is not present, the list is a collection romlist
-			msgbox_addlinetop(item)
-
-			local romlistpath = AF.romlistfolder + item + ".txt"
-			local filein = ReadTextFile(romlistpath)
-			local listoflists = {}
-
-			// Build the list of emulators in the romlist
-			while (!filein.eos()) {
-				local inline = filein.read_line()
-				local dataline = split(inline, ";")
-				if ((dataline.len() >= 3) && (dataline[2]!="@") && (dataline[2]!="Emulator")) {
-					try {
-						listoflists[dataline[2]] <- 1
-					} catch(err) {}
-				}
-			}
-
-			// Copy the romlists in the destination romlist
-			local fileout = WriteTextFile(romlistpath)
-			foreach (romlistid, val in listoflists) {
-				local listfilepath = AF.romlistfolder + romlistid + ".txt"
-				local listfile = ReadTextFile (listfilepath)
-				while (!listfile.eos()) {
-					local inline = listfile.read_line()
-					fileout.write_line(inline + "\n")
-				}
-			}
-			fileout.close_file()
-			msgbox_addlinetop(item + " DONE") //TEST162 aggiungere replacelinetop e replacelinebottom
-		}
-	}
-	msgbox_newtitle("Reloading Layout")
-	msgbox_newbody("")
-	*/
 }
 
 function XMLtoAM(prefst, emulatorname) {
@@ -4112,77 +4023,6 @@ function XMLtoAM(prefst, emulatorname) {
 		}
 	}
 	saveromdb1(emulatorname, z_list.db1[emulatorname])
-
-	/*
-	local xmlpaths = []
-	local xmlsysnames = []
-
-	foreach (item in dir) {
-
-		if (item.slice(-3) == "cfg") {
-			local itemclean = item.slice(0,-4)
-
-			if (AF.emulatordata[itemclean].importextras != "") {
-				if (AF.emulatordata[itemclean].importextras.slice(-4) == ".xml")  {
-					xmlpaths.push(AF.emulatordata[itemclean].importextras)
-					xmlsysnames.push(item.slice(0, -4))
-				}
-			}
-		}
-	}
-	//fe.overlay.splash_message (xmlmessage)
-
-	foreach (id, item in xmlpaths) {
-		local XMLT = {}
-		msgbox_addlinetop(xmlsysnames[id])
-
-		XMLT = parseXML (xmlpaths[id])
-
-		if (XMLT == null) {
-			msgbox_addlinetop(xmlsysnames[id] + " SKIP")
-			continue
-		}
-		msgbox_addlinetop(xmlsysnames[id] + " DONE")
-
-		//clear scrape data
-		//local scrapepath = FeConfigDirectory + "romlists/" + xmlsysnames[id] + ".scrape"
-		//try {remove(scrapepath)} catch(err) {}
-
-		local romlistpath = AF.romlistfolder + xmlsysnames[id] + ".txt"
-		local rompath = AF.emulatordata [xmlsysnames[id]].rompath
-
-		//local romlist_file = WriteTextFile(romlistpath)
-		//romlist_file.write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
-		foreach (id2, item2 in XMLT) {
-			local z_data = z_list.db1[xmlsysnames[id]][id2]
-			z_data.z_title = item2.name
-			z_data.z_year = (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "")
-			z_data.z_manufacturer = item2.publisher
-			z_data.z_description = split(item2.desc,"\n")
-			z_data.z_category = (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre)
-			z_data.z_players = item2.players
-			z_data.z_rating = item2.rating
-
-			
-			//local listline = id2 + ";"
-			//listline += item2.name + ";"
-			//listline += xmlsysnames[id] + ";;"
-			//listline += (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "") + ";"
-			//listline += item2.publisher + ";"
-			//listline += (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre) + ";"
-			//listline += item2.players + ";"
-			//listline += ";;;;;;;"
-			//listline += "‖ XML ‖ " + item2.desc + " ‖;;;;;"
-			//listline += item2.rating + ";"
-			//if (file_exist(rompath + id2 + "." + item2.ext) || !prefst.ONLYAVAILABLE) romlist_file.write_line(listline + "\n")
-			
-		}
-		saveromdb1(xmlsysnames[id], z_list.db1[xmlsysnames[id]])
-		//romlist_file.close_file()
-		
-	}
-	*/
-	//fe.set_display(fe.list.display_index)
 }
 
 /// Romlist management functions ///
@@ -7234,7 +7074,6 @@ function recalculate(str) {
 	local words = split(str, " ")
 	local temp = ""
 	foreach (idx, w in words) {
-		//print("searching: " + w)
 		//if (idx > 0) temp += " "
 		//foreach(c in w)
 		// if (c != " ") temp += ("1234567890".find(c.tochar()) != null) ? c.tochar() : "[" + c.tochar().toupper() + c.tochar().tolower() + "]"
@@ -15866,7 +15705,6 @@ if (surfdebug) {
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-//if ((fe.layout.time - ((fe.layout.time / 1000) * 1000)) < 20) testpr ("X\n")
 	//if (surfdebug) printsrufaces()
 
 	/*
@@ -15942,13 +15780,12 @@ function tick(tick_time) {
 		snd.attracttune.playing = snd.attracttuneplay
 	}
 
-	//TEST162
 	// Media download cue for arcade games
 	if ( (download.list.len() > 0) && checkmsec(download.timestep) ){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
-				//TEST162 ADD PART FOR WINDOWS
+
 				// Initialize item in download folder and delete existing media
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
 				try {remove(item.ADBfile)} catch(err) {}
@@ -15965,7 +15802,6 @@ function tick(tick_time) {
 					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
 				system(texeA)
-testpr(texeA+"\n\n")
 
 				item.status = "ADB_downloading"
 			}
@@ -15984,7 +15820,7 @@ testpr(texeA+"\n\n")
 				}
 
 				system(texeSS)
-testpr(texeSS+"\n\n")
+
 				item.status = "SS_downloading"
 			}
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
@@ -16001,12 +15837,10 @@ testpr(texeSS+"\n\n")
 							&&
 							(item.rawin("SSurl"))
 						){
-						testpr("A"+item.id + item.cat+"\n")
 						try {remove(item.ADBfile)} catch(err) {}
 						item.status = "start_download_SS"
 					}
 					else {
-						testpr("B"+item.id + item.cat+"\n")
 						item.status = "download_complete"
 						download.num --
 					}
@@ -16018,11 +15852,9 @@ testpr(texeSS+"\n\n")
 					download.num --
 				}
 			}
-			testpr("item:"+i+" "+ item.cat +" status:"+item.status+"\n")
 		}
 		if (download.num == 0) {
 			download.list = []
-			testpr ("ALL DONE\n")
 		}
 	}
 
@@ -16119,7 +15951,7 @@ testpr(texeSS+"\n\n")
 
 	if ((dispatchernum != 0) || (download.num != 0)){
 		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
-		//TEST162 aggiungere check se download.num è cambiato, sennò non aggiorna
+
 		if (download.num != download.numpre) {
 			msgbox_newtitle(dispatch_header)
 			download.numpre = download.num
