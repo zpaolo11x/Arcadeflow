@@ -1089,8 +1089,8 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
 {v = 12.0, varname = "INI_BESTGAMES_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML IMPORT", selection = AF.req.liner},
-{v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
-{v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
+{v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
+{v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true)}, selection = AF.req.executef},
 {v = 9.8, varname = "USEGENREID", glyph = 0xe937, title = "Prefer genreid categories", help = "If GenreID is specified in your games list, use that instead of usual categories", options = ["Yes", "No"], values= [true, false], selection = 0},
 {v = 9.8, varname = "ONLYAVAILABLE", glyph = 0xe912, title = "Import only available roms", help = "Import entrief from the games list only if the rom file is actually available", options = ["Yes", "No"], values= [true, false], selection = 0},
 ])
@@ -3196,50 +3196,18 @@ function getemulatordata(emulatorname) {
 	return (out)
 }
 
-function messageOLDboxer(title, message, new, arrayin) {
-	// Creates a "scrolling" message box on the screen:
-
-	// If title is not "", it will appear as title anc
-	// clear all the data on the screen
-
-	// If message is not "", and new is enabled, message
-	// is added on top and older text is scrolled down
-
-	// If message is not "" but new is false, text is appended
-	// to the end of the current top line
-
-	if (title != "") {
-		arrayin[0] = title
-		if (message == "") {
-			for (local i = 1; i < arrayin.len(); i++) {
-				arrayin[i] = ""
-			}
-		}
-	}
-
-	if (message != "") {
-		if (new) {
-			for (local i = arrayin.len() - 1; i > 1; i--) {
-				arrayin[i] = arrayin[i - 1]
-			}
-			arrayin[1] = message
-		}
-		else {
-			arrayin[1] = message
-		}
-	}
-
-	local text = ""
-	foreach (id, item in arrayin) {
-		text = text + arrayin[id] + "\n"
-		if (id == 0) text += "\n"
-	}
-	fe.overlay.splash_message(text)
-	//AF.messageoverlay.msg = text
-	return arrayin
-}
-
 /// Message Box functions ///
+
+function msgbox_replacelinetop(text){
+	local msgarray = split_complete(AF.boxmessage.body,"\n")
+	msgarray[0] = text
+	AF.boxmessage.body = ""
+	foreach(i, item in msgarray){
+		AF.boxmessage.body = AF.boxmessage.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
+	}
+	msgbox_refresh()
+
+}
 
 function msgbox_refresh(){
 	AF.messageoverlay.msg = AF.boxmessage.title + "\n\n" + AF.boxmessage.body + "\n" 
@@ -3256,7 +3224,7 @@ function msgbox_newbody(text){
 }
 
 function msgbox_addlinetop(text){
-	AF.boxmessage.body = text + AF.boxmessage.body + "\n"
+	AF.boxmessage.body = text + "\n" + AF.boxmessage.body
 	msgbox_refresh()
 }
 function msgbox_addlinebottom(text){
@@ -4012,19 +3980,28 @@ function XMLtoAM2(prefst, current) {
 	// usati, e AF.emulatordata contiene i dati. Per quello che deve scansire tutte le romlist 
 	// basta usare la lista di emulatori!
 
+	msgbox_open("XML metadata import", "", function(){
+		fe.signal("back")
+		fe.signal("back")
+		fe.set_display(fe.list.display_index)
+	})
 
 	if (current){
 		foreach (item, val in z_list.romlistemulators){
+			msgbox_addlinetop(item)
 			XMLtoAM(prefst, item)
+			msgbox_replacelinetop(patchtext(item, "DONE", 7, AF.scrape.columns))
 		}
 	}
 	else {
 		foreach (item, val in AF.emulatordata){
+			msgbox_addlinetop(item)
 			XMLtoAM(prefst, item)
+			msgbox_replacelinetop(patchtext(item, "DONE", 7, AF.scrape.columns))
 		}
 	}
-	msgbox_newtitle("Reloading Layout")
-	msgbox_newbody("")
+	msgbox_addlinetop("Import complete\nPress ESC to reload Layout\n"+strepeat("-", AF.scrape.columns))
+	//msgbox_newbody("")
 /*
 	msgbox_open("XML import start", "")
 
