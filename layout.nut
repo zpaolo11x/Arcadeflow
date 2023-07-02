@@ -3278,7 +3278,9 @@ function textrate(num, den, columns, ch1, ch0) {
 	// Creates a string of special characters ch0 (empty) columns long
 	// then fills num/den * columns characters with ch1 (full)
 	// this is done to create a text progress bar of fixed size
+	testpr("textrate:"+num+" "+den+" "+columns+"\n")
 	local limit = (num * columns) / den
+	testpr("limit:"+limit+"\n")
 	return (strepeat(ch1, limit) + strepeat(ch0, columns - limit))
 }
 
@@ -9774,7 +9776,7 @@ function sliderval(name, val, sel, old, start, vmin, vmax, def) {
 	if (typeof old == "string") old = old.tointeger()
 
 	if (start) val = old
-
+	testpr(zmenu.items[0].width+"\n")
 	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 8
 
 	zmenudraw3([
