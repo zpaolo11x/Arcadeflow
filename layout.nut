@@ -4095,15 +4095,18 @@ function XMLtoAM(prefst, emulatorname) {
 	}
 
 	foreach (id2, item2 in XMLT) {
-		local z_data = z_list.db1[emulatorname][id2]
-		z_data.z_title = item2.name
-		z_data.z_year = (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "")
-		z_data.z_manufacturer = item2.publisher
-		z_data.z_description = split(item2.desc,"\n")
-		z_data.z_category = (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre)
-		z_data.z_players = item2.players
-		z_data.z_rating = item2.rating
-		z_data.z_scrapestatus = "XML"
+		local z_data = null
+		if (z_list.db1[emulatorname].rawin(id2)){
+			z_data = z_list.db1[emulatorname][id2]
+			z_data.z_title = item2.name
+			z_data.z_year = (item2.releasedate.len() >= 4 ? item2.releasedate.slice(0, 4) : "")
+			z_data.z_manufacturer = item2.publisher
+			z_data.z_description = split(item2.desc,"\n")
+			z_data.z_category = (prefst.USEGENREID ? getgenreid(item2.genreid) : item2.genre)
+			z_data.z_players = item2.players
+			z_data.z_rating = item2.rating
+			z_data.z_scrapestatus = "XML"
+		}
 	}
 	saveromdb1(emulatorname, z_list.db1[emulatorname])
 
