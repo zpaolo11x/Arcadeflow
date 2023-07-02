@@ -999,6 +999,7 @@ AF.prefs.l1.push([
 {v = 7.3, varname = "DMPGROUPED", glyph = 0xea78, title = "Categorized Displays Menu", help = "Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections", options = ["Yes", "No"], values= [true, false], selection = 0},
 {v = 7.4, varname = "DMPEXITAF", glyph = 0xea7c, title = "Add Exit Arcadeflow to menu", help = "Add an entry to exit Arcadeflow from the displays menu page", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Behavior", selection = AF.req.liner},
+{v = 16.2, varname = "DMPSKIPCATEGORY", glyph = 0xea7a, title = "Open the Displays Menu on current category", help = "With categorised displays menu, open in the current category instead of main menu", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 7.4, varname = "DMPATSTART", glyph = 0xea7a, title = "Open the Displays Menu at startup", help = "Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 7.4, varname = "DMPOUTEXITAF", glyph = 0xea7c, title = "Exit AF when leaving Menu", help = "The esc button from Displays Menu triggers the exit from Arcadeflow", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 7.4, varname = "DMPIFEXITAF", glyph = 0xea7a, title = "Enter Menu when leaving display", help = "The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow", options = ["Yes", "No"], values= [true, false], selection = 1},
@@ -11898,6 +11899,7 @@ zmenu = {
 
 	jumplevel = 0 //Level 0 for parent list, level 1 for sub-lists, exit arcadeflow added only on parent list
 
+	dmpoverride = false // true to bypass prf and always show categories
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
@@ -13336,7 +13338,16 @@ function displaygrouped() {
 	local getout = false
 	// After preparing the structure displaygrouped1 is called, it will manage
 	// main list and sublists by sorting, grouping etc
-	displaygrouped1()
+	if ((!prf.DMPSKIPCATEGORY) || (zmenu.dmpoverride)) {
+		zmenu.dmpoverride = false
+		displaygrouped1() 
+	}
+	else {
+		zmenu.dmp = true
+		zmenu.jumplevel = 0
+		disp.gmenu0 = disp.gmenu0out
+		displaygrouped2()
+	}
 }
 
 /// Layout fades ///
@@ -16898,7 +16909,10 @@ testpr(texeSS+"\n\n")
 		flowT.logo = fadeupdate(flowT.logo)
 		if (endfade(flowT.logo) == 0) {
 
-			if (prf.DMPATSTART && prf.DMPENABLED) 	fe.signal("displays_menu")
+			if (prf.DMPATSTART && prf.DMPENABLED) 	{
+				zmenu.dmpoverride = true
+				fe.signal("displays_menu")
+			}
 		}
 		aflogo.alpha = 255 * flowT.logo[1]
 	}
