@@ -127,8 +127,15 @@ local AF = {
 		title = ""
 		body = ""
 	}
-	messageoverlay = null
-	messageback = null
+	
+	msgbox = {
+		obj = null
+		back = null
+		columns = 60
+		separator1 = strepeat("-", 60)
+		separator2 = strepeat("=", 60)
+	}
+	
 	tsc = 1.0 // Scaling of timer for different parameters
 
 	scrape = null
@@ -175,9 +182,6 @@ function AFscrapeclear() {
 		totalroms = 0
 		doneroms = 0
 		timeoutroms = []
-		columns = 60
-		separator1 = strepeat("-", 60)
-		separator2 = strepeat("=", 60)
 		onegame = ""
 		dispatchid = 0
 		requests = ""
@@ -3210,7 +3214,7 @@ function msgbox_replacelinetop(text){
 }
 
 function msgbox_refresh(){
-	AF.messageoverlay.msg = AF.boxmessage.title + "\n\n" + AF.boxmessage.body + "\n" 
+	AF.msgbox.obj.msg = AF.boxmessage.title + "\n\n" + AF.boxmessage.body + "\n" 
 }
 
 function msgbox_newtitle(text){
@@ -3235,15 +3239,15 @@ function msgbox_addlinebottom(text){
 function msgbox_open(title, message, backfunction = null){
 	msgbox_newtitle(title)
 	msgbox_newbody(message)
-	AF.messageback = backfunction
-	AF.messageoverlay.visible = true
+	AF.msgbox.back = backfunction
+	AF.msgbox.obj.visible = true
 }
 
 function msgbox_close(){
 	msgbox_newtitle("")
 	msgbox_newbody("")
-	AF.messageback = null
-	AF.messageoverlay.visible = false	
+	AF.msgbox.back = null
+	AF.msgbox.obj.visible = false	
 }
 
 function patchtext(string1, string2, width2, columns) {
@@ -3885,7 +3889,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 
 	msgbox_open("Scraping...", "", function(){
 		if (AF.scrape.purgedromdirlist == null){
-			AF.messageoverlay.visible = false
+			AF.msgbox.obj.visible = false
 
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
@@ -3990,17 +3994,17 @@ function XMLtoAM2(prefst, current) {
 		foreach (item, val in z_list.romlistemulators){
 			msgbox_addlinetop(item)
 			XMLtoAM(prefst, item)
-			msgbox_replacelinetop(patchtext(item, "DONE", 7, AF.scrape.columns))
+			msgbox_replacelinetop(patchtext(item, "DONE", 7, AF.msgbox.columns))
 		}
 	}
 	else {
 		foreach (item, val in AF.emulatordata){
 			msgbox_addlinetop(item)
 			XMLtoAM(prefst, item)
-			msgbox_replacelinetop(patchtext(item, "DONE", 7, AF.scrape.columns))
+			msgbox_replacelinetop(patchtext(item, "DONE", 7, AF.msgbox.columns))
 		}
 	}
-	msgbox_addlinetop("Import complete\nPress ESC to reload Layout\n"+strepeat("-", AF.scrape.columns))
+	msgbox_addlinetop("Import complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
 	//msgbox_newbody("")
 /*
 	msgbox_open("XML import start", "")
@@ -13840,20 +13844,20 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.messageoverlay = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13", fl.x, fl.y, fl.w, fl.h)
-AF.messageoverlay.margin = 50 * UI.scalerate
-AF.messageoverlay.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.scrape.columns) //40 columns text
-AF.messageoverlay.word_wrap = true
-AF.messageoverlay.set_bg_rgb (40, 40, 40)
-AF.messageoverlay.bg_alpha = 220
-AF.messageoverlay.align = Align.TopLeft
-AF.messageoverlay.font = uifonts.mono
-AF.messageoverlay.visible = false
-AF.messageoverlay.zorder = 100
+AF.msgbox.obj = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj.margin = 50 * UI.scalerate
+AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
+AF.msgbox.obj.word_wrap = true
+AF.msgbox.obj.set_bg_rgb (40, 40, 40)
+AF.msgbox.obj.bg_alpha = 220
+AF.msgbox.obj.align = Align.TopLeft
+AF.msgbox.obj.font = uifonts.mono
+AF.msgbox.obj.visible = false
+AF.msgbox.obj.zorder = 100
 
-if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.scrape.columns) + 0.5) == 8) {
-	AF.messageoverlay.char_size = 16
-	AF.messageoverlay.font = "fonts/font_7x5pixelmono.ttf"
+if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
+	AF.msgbox.obj.char_size = 16
+	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 }
 
 /// PROGRESS BAR ///
@@ -13887,7 +13891,7 @@ AF.bar.text.set_rgb(255, 255, 255)
 AF.bar.bg.set_rgb(30, 30, 30)
 AF.bar.bg.alpha = 190
 
-	//Number of rows is 0.78 * (fl.h_os - 2.0 * AF.messageoverlay.margin)/AF.messageoverlay.char_size
+	//Number of rows is 0.78 * (fl.h_os - 2.0 * AF.msgbox.obj.margin)/AF.msgbox.obj.char_size
 /// FPS MONITOR ///
 
 local fps = {
@@ -16032,13 +16036,13 @@ testpr(texeSS+"\n\n")
 			}
 
 			endreport += ("\n")
-			if (AF.scrape.timeoutroms.len() > 0) endreport += (AF.scrape.separator1 + "\nTIMEOUT\n")
+			if (AF.scrape.timeoutroms.len() > 0) endreport += (AF.msgbox.separator1 + "\nTIMEOUT\n")
 			foreach(ix, itemx in AF.scrape.timeoutroms) {
 				endreport += ("- " + itemx.z_name + "\n")
 			}
 
 					foreach (item, content in AF.scrape.report) {
-				endreport += (AF.scrape.separator1 + "\n" + item + "\n")
+				endreport += (AF.msgbox.separator1 + "\n" + item + "\n")
 				foreach (i2, item2 in content.names) {
 					endreport += ("- " + item2 + "\n [" + content.matches[i2] + "]\n")
 				}
@@ -16050,7 +16054,7 @@ testpr(texeSS+"\n\n")
 			outfile.close_file()
 
 			msgbox_newtitle(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms)
-			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.scrape.separator2 + "\n" + endreport)
+			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport)
 
 			AFscrapeclear()
 			dispatcher = []
@@ -16101,7 +16105,7 @@ testpr(texeSS+"\n\n")
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.scrape.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.scrape.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.scrape.columns-5, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 		//TEST162 aggiungere check se download.num è cambiato, sennò non aggiorna
 		if (download.num != download.numpre) {
 			msgbox_newtitle(dispatch_header)
@@ -16118,7 +16122,7 @@ testpr(texeSS+"\n\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
 				
 				msgbox_newtitle(dispatch_header)
-				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.scrape.columns))
+				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
 				AF.scrape.threads --
 				dispatchernum --
@@ -16226,7 +16230,7 @@ testpr(texeSS+"\n\n")
 	}
 
 	// prevent attract mode from running when menus are visible
-	if ((overlay.listbox.visible == true) || (zmenu.showing) || (AF.messageoverlay.visible)) attract.timer = fe.layout.time
+	if ((overlay.listbox.visible == true) || (zmenu.showing) || (AF.msgbox.obj.visible)) attract.timer = fe.layout.time
 
 	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
@@ -17554,37 +17558,37 @@ function on_signal(sig) {
 		return true
 	}
 
-	if (AF.messageoverlay.visible == true){
+	if (AF.msgbox.obj.visible == true){
 		if (sig == "back"){
-			if (AF.messageback != null) 
-				AF.messageback()
+			if (AF.msgbox.back != null) 
+				AF.msgbox.back()
 			else
 				msgbox_close()
 		}
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
-				AF.messageoverlay.first_line_hint--
+				AF.msgbox.obj.first_line_hint--
 				count.up ++
 			}
 			return true
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				AF.messageoverlay.first_line_hint++
+				AF.msgbox.obj.first_line_hint++
 				count.down ++
 			}
 			return true
 		}
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) { //Faster jump scroll
-				AF.messageoverlay.first_line_hint-=10
+				AF.msgbox.obj.first_line_hint-=10
 				count.left ++
 			}
 			return true
 		}
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) { //Faster jump scroll
-				AF.messageoverlay.first_line_hint += 10
+				AF.msgbox.obj.first_line_hint += 10
 				count.right ++
 			}
 			return true
@@ -17596,9 +17600,9 @@ function on_signal(sig) {
 	}
 /*
 	// Scraping has finished and the end mesage is showing
-	if ((AF.scrape.purgedromdirlist == null) && (AF.messageoverlay.visible == true)) {
+	if ((AF.scrape.purgedromdirlist == null) && (AF.msgbox.obj.visible == true)) {
 		if (sig == "back") {
-			AF.messageoverlay.visible = false
+			AF.msgbox.obj.visible = false
 
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
@@ -17624,28 +17628,28 @@ function on_signal(sig) {
 		}
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
-				AF.messageoverlay.first_line_hint--
+				AF.msgbox.obj.first_line_hint--
 				count.up ++
 			}
 			return true
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				AF.messageoverlay.first_line_hint++
+				AF.msgbox.obj.first_line_hint++
 				count.down ++
 			}
 			return true
 		}
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) { //Faster jump scroll
-				AF.messageoverlay.first_line_hint-=10
+				AF.msgbox.obj.first_line_hint-=10
 				count.left ++
 			}
 			return true
 		}
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) { //Faster jump scroll
-				AF.messageoverlay.first_line_hint += 10
+				AF.msgbox.obj.first_line_hint += 10
 				count.right ++
 			}
 			return true
