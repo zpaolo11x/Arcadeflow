@@ -1,5 +1,6 @@
 16.2
 Added Dirksimple logo
+Added option to open displays menu on current category
 Revamped media downloader for scraper
 Fixed scraped media download hanging
 Fixed scraping credential saving
