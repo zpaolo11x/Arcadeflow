@@ -8686,6 +8686,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 
 	local game_metapic = data_surface.add_text("Aa0", fl.x + gamed.metapicT.x, fl.y + gamed.metapicT.y, gamed.metapicT.w, gamed.metapicT.h)
 	//game_ctlpic.set_bg_rgb(120,0,0)
+	game_metapic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
 	game_metapic.font = uifonts.metapics
 	game_metapic.align = Align.MiddleCentre
 	game_metapic.margin = 0
