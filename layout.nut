@@ -125,12 +125,15 @@ local AF = {
 	
 	msgbox = {
 		obj = null
+		scroller = null
 		back = null
 		columns = 60
 		separator1 = strepeat("-", 60)
 		separator2 = strepeat("=", 60)
 		title = ""
 		body = ""
+		numlines = 0
+		visiblelines = 0
 	}
 	
 	tsc = 1.0 // Scaling of timer for different parameters
@@ -3208,11 +3211,61 @@ function msgbox_replacelinetop(text){
 		AF.msgbox.body = AF.msgbox.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
 	}
 	msgbox_refresh()
+}
 
+function msgbox_wrapline(text, columns) {
+	if (text == "") return "\n"
+
+   local lines = []
+   local currentline = ""
+
+   // Split the text into words
+   local words = split(text," ")
+	
+	foreach (word in words) {
+		// If adding the word exceeds the column limit, start a new line
+      if (currentline.len() + word.len() > columns) {
+         lines.push(strip(currentline))
+         currentline = ""
+      }
+      // Add the word to the current line
+      currentline += word + " "
+   }
+
+	// Add the remaining line
+	if (currentline.len() > 0) {
+		lines.push(strip(currentline))
+	}
+
+	local out = ""
+	foreach (item in lines){
+		out = out + item + "\n"
+	}
+
+   // Return the formatted lines
+   return out
+}
+
+function msgbox_wraptext(text, columns){
+	local lines = split_complete(text,"\n")
+	local out = ""
+	foreach(line in lines){
+		out = out + msgbox_wrapline(line, columns)
+	}
+	return out
+}
+
+function msgbox_scrollerrefresh(){
+	AF.msgbox.scroller.y = floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * AF.msgbox.obj.first_line_hint * 1.0 / AF.msgbox.numlines)
+	AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
 }
 
 function msgbox_refresh(){
-	AF.msgbox.obj.msg = AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n" 
+	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
+	AF.msgbox.obj.msg = wrappedmessage
+	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
+	msgbox_scrollerrefresh()
+	testpr("LINES:"+AF.msgbox.numlines+"/"+AF.msgbox.visiblelines+"\n")
 }
 
 function msgbox_newtitle(text){
@@ -3238,16 +3291,16 @@ function msgbox_open(title, message, backfunction = null){
 	msgbox_newtitle(title)
 	msgbox_newbody(message)
 	AF.msgbox.back = backfunction
-	AF.msgbox.obj.visible = true
+	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
 	AF.msgbox.obj.first_line_hint = 1
-
+	msgbox_scrollerrefresh()
 }
 
 function msgbox_close(){
 	msgbox_newtitle("")
 	msgbox_newbody("")
 	AF.msgbox.back = null
-	AF.msgbox.obj.visible = false	
+	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false	
 }
 
 function patchtext(string1, string2, width2, columns) {
@@ -3890,7 +3943,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 
 	msgbox_open("Scraping...", "", function(){
 		if (AF.scrape.purgedromdirlist == null){
-			AF.msgbox.obj.visible = false
+			AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
 
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
@@ -13727,6 +13780,13 @@ AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.visible = false
 AF.msgbox.obj.zorder = 100
 
+AF.msgbox.scroller = fe.add_rectangle(fl.w - 25 * UI.scalerate, 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
+AF.msgbox.scroller.set_rgb(255,255,255)
+AF.msgbox.scroller.zorder = 101
+AF.msgbox.scroller.visible = false
+
+AF.msgbox.visiblelines = floor((AF.msgbox.obj.height - 2.0 * AF.msgbox.obj.margin) * 1.0 / (1.28 * AF.msgbox.obj.char_size))
+
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
 	AF.msgbox.obj.char_size = 16
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
@@ -14728,7 +14788,7 @@ function buildutilitymenu() {
 						abouttext = abouttext + item
 					}
 					abouttext = abouttext + "\n" + AF.msgbox.separator2
-					msgbox_open(AF.msgbox.separator2, abouttext)					
+					msgbox_open(AF.msgbox.separator2, abouttext)				
 				}
 				else if (out == -1) {
 					utilitymenu (umpresel)
@@ -17413,11 +17473,7 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-		local abouttext = ""
-		foreach (i, item in buildreadme()){
-			abouttext = abouttext + item
-		}
-		msgbox_open("", abouttext)
+		msgbox_open("TITOLO", "Questo è il testo\nsu due righe corte...")
 	}
 	if (sig == "custom2"){
 		msgbox_addlinebottom("NEW FIRST LINE")
@@ -17447,6 +17503,7 @@ function on_signal(sig) {
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
 				AF.msgbox.obj.first_line_hint--
+				msgbox_scrollerrefresh()
 				count.up ++
 			}
 			return true
@@ -17454,6 +17511,7 @@ function on_signal(sig) {
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
 				AF.msgbox.obj.first_line_hint++
+				msgbox_scrollerrefresh()
 				count.down ++
 			}
 			return true
@@ -17461,6 +17519,7 @@ function on_signal(sig) {
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) { //Faster jump scroll
 				AF.msgbox.obj.first_line_hint-=10
+				msgbox_scrollerrefresh()
 				count.left ++
 			}
 			return true
@@ -17468,6 +17527,7 @@ function on_signal(sig) {
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) { //Faster jump scroll
 				AF.msgbox.obj.first_line_hint += 10
+				msgbox_scrollerrefresh()
 				count.right ++
 			}
 			return true
