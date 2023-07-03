@@ -659,7 +659,6 @@ function getcatnames_SS(){
          }
       }
    }
-
    return (catnames)
 }
 

@@ -4749,6 +4749,7 @@ local focusindex = {
 
 local catnames = getcatnames()
 local catnames_SS = getcatnames_SS()
+print_variable (catnames_SS.finder,"","")
 local yearnames = getyears()
 
 local metadata = {
@@ -5201,14 +5202,21 @@ P2_JOYSTICK:Black:
 // When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
 // of the array is one of the categories. If one of these is "/" separated, this is taken into account.
 function processcategory(categoryname){
+	print (categoryname+"\n")
 	local out = []
 	if (categoryname == "") return ([["Unknown", ""]])
 	local cathierarchy = split (categoryname, "/")
 	local catarray = split (categoryname, ",-")
 	local catmatch = ((catnames.finder.rawin(categoryname)) || (catnames_SS.finder.rawin(categoryname)))
 
+	print (catmatch+"\n")
 	if (catmatch) {
-		if (cathierarchy.len() == 1) return [[strip(categoryname), ""]] else return [cathierarchy.map(function(val){return(strip(val))})]
+		print (cathierarchy.len()+"\n")
+		if (cathierarchy.len() == 1) {
+			return [[strip(categoryname), ""]] 
+		} else {
+			return [cathierarchy.map(function(val){return(strip(val))})]
+		}
 	}
 	foreach (i, item in catarray){
 		cathierarchy = split (item, "/")
@@ -14697,11 +14705,19 @@ function buildutilitymenu() {
 			while (!aboutfile.eos()) {
 				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
 			}
-			aboutmenu[0] = {text = "What's New"}
+			aboutmenu[0] = {text = "What's New", liner = true}
+			aboutmenu.insert(0,{text = "Open Readme", glyph = 0xe926})
 
 			zmenudraw3(aboutmenu, "Arcadeflow " + AF.version, 0xea09, 0, {},
 			function(out) {
-				if (out == -1) {
+				if (out == 0) {
+					local abouttext = ""
+					foreach (i, item in buildreadme()){
+						abouttext = abouttext + item
+					}
+					msgbox_open("", abouttext)					
+				}
+				else if (out == -1) {
 					utilitymenu (umpresel)
 					//zmenuhide()
 					//frosthide()
@@ -17384,9 +17400,11 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-
-		msgbox_open("", buildreadme())
-
+		local abouttext = ""
+		foreach (i, item in buildreadme()){
+			abouttext = abouttext + item
+		}
+		msgbox_open("", abouttext)
 	}
 	if (sig == "custom2"){
 		msgbox_addlinebottom("NEW FIRST LINE")
