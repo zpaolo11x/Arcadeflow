@@ -3239,6 +3239,8 @@ function msgbox_open(title, message, backfunction = null){
 	msgbox_newbody(message)
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = true
+	AF.msgbox.obj.first_line_hint = 1
+
 }
 
 function msgbox_close(){
@@ -14724,7 +14726,8 @@ function buildutilitymenu() {
 					foreach (i, item in buildreadme(true)){
 						abouttext = abouttext + item
 					}
-					msgbox_open("", abouttext)					
+					abouttext = abouttext + "\n" + AF.msgbox.separator2
+					msgbox_open(AF.msgbox.separator2, abouttext)					
 				}
 				else if (out == -1) {
 					utilitymenu (umpresel)
