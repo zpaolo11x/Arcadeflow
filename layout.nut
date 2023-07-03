@@ -1245,16 +1245,22 @@ function historytext() {
 	return history
 }
 
-function buildreadme() {
+function buildreadme(separator=false) {
 	local infile = null
 	local readme = []
 
 	readme.push("# Arcadeflow - Attract Mode theme by zpaolo11x - v " + AF.version + " #\n")
+
+	if (separator) readme.push(AF.msgbox.separator1+"\n")
+
 	readme.push("\n")
 
 	infile = ReadTextFile (AF.folder + "history/00_intro.txt")
 	while (!infile.eos()) readme.push(infile.read_line() + "\n")
 	readme.push("\n")
+
+	if (separator) readme.push(AF.msgbox.separator1+"\n")
+
 	readme.push("## What's new in v " + AF.version + " #" + "\n")
 	readme.push("\n")
 
@@ -1263,11 +1269,17 @@ function buildreadme() {
 	while (!infile.eos()) readme.push("- " + infile.read_line() + "\n")
 	readme.push("\n")
 
+	if (separator) readme.push(AF.msgbox.separator1+"\n")
+
 	infile = ReadTextFile (AF.folder + "history/00_presentation.txt")
 	while (!infile.eos()) readme.push(infile.read_line() + "\n")
 	readme.push("\n")
 
+	if (separator) readme.insert(readme.len() - 2, AF.msgbox.separator1+"\n")
+
 	readme.extend(abouttext())
+
+	if (separator) readme.push(AF.msgbox.separator1+"\n")
 
 	readme.push("## Previous versions history #\n\n")
 	readme.extend(historytext())
@@ -14709,7 +14721,7 @@ function buildutilitymenu() {
 			function(out) {
 				if (out == 0) {
 					local abouttext = ""
-					foreach (i, item in buildreadme()){
+					foreach (i, item in buildreadme(true)){
 						abouttext = abouttext + item
 					}
 					msgbox_open("", abouttext)					
