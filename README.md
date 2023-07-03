@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.1 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.2 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,11 +10,14 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.1 #
+## What's new in v 16.2 #
 
-- Fixed similar games vidoes not playing
-- Fixed crash when exiting to desktop
-- Fixed scrape hanging on macOS
+- Added Dirksimple logo
+- Added option to open displays menu on current category
+- Revamped media downloader for scraper
+- Fixed scraped media download hanging
+- Fixed scraping credential saving
+- Fixed gameslist.xml import
 
 ## Emulator system identifier #
 
@@ -221,7 +224,7 @@ Customize the utility menu entries that you want to see in the menu
 - 'Customize Utility Menu' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
 - 'Reset Utility Menu' : Reset sorting and selection of Utility Menu entries
 
-#### DISPLAYS MENU PAGE
+#### ❗ DISPLAYS MENU PAGE ❗
 Arcadeflow has its own Displays Menu page that can be configured here
 
 - 'Enable Arcadeflow Displays Menu page' : If you disable Arcadeflow menu page you can use other layouts as displays menu
@@ -236,6 +239,7 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Categorized Displays Menu' : Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections
 - 'Add Exit Arcadeflow to menu' : Add an entry to exit Arcadeflow from the displays menu page
 - Behavior
+- '❗ Open the Displays Menu on current category ❗' : With categorised displays menu, open in the current category instead of main menu
 - 'Open the Displays Menu at startup' : Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode
 - 'Exit AF when leaving Menu' : The esc button from Displays Menu triggers the exit from Arcadeflow
 - 'Enter Menu when leaving display' : The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
@@ -295,7 +299,7 @@ Configure the appearence of a second monitor
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
-#### SCRAPE AND METADATA
+#### ❗ SCRAPE AND METADATA ❗
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
 - SCRAPING
@@ -307,7 +311,7 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Media Scrape Options' : You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
-- 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete
+- '❗ Scrape Timeout ❗' : Set the number of seconds to wait for each scrape operation to complete
 - SCREENSCRAPER
 - 'SS Username' : Enter your screenscraper.fr username
 - 'SS Password' : Enter your screenscraper.fr password
@@ -320,7 +324,6 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Import XML data for all romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
 - 'Import XML data for current romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
-- 'Import only available roms' : Import entrief from the games list only if the rom file is actually available
 
 #### ROMLIST MANAGEMENT
 Manage romlists and collections
@@ -384,6 +387,12 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.1*
+
+- Fixed similar games vidoes not playing
+- Fixed crash when exiting to desktop
+- Fixed scrape hanging on macOS
 
 *v16.0*
 
