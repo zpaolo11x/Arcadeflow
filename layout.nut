@@ -142,7 +142,7 @@ local AF = {
 		time1 = 0
 		progress = 0
 
-		waitframes = 1
+		waitframes = 0.25 * ScreenRefreshRate
 
 		text = null
 		bg = null
