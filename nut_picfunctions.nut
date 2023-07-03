@@ -945,7 +945,7 @@ function getcatnames(){
 function categorynamepurge(cat){
    local s0 = cat[0] + cat[1]
    local s2 = split( s0, "*_/: .()-,<>?&+'" )
-	local sout =""
+	local sout = ""
 	if ( s2.len() > 1 ) {
 		for (local i=0;i<s2.len();i++){
 		 if (s2[i] != "Mature")  sout = sout + s2[i]
@@ -953,6 +953,7 @@ function categorynamepurge(cat){
 		sout = sout.tolower()
 	}
 	else sout = strip(s0).tolower()
+
 	return sout
 }
 

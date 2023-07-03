@@ -4749,7 +4749,6 @@ local focusindex = {
 
 local catnames = getcatnames()
 local catnames_SS = getcatnames_SS()
-print_variable (catnames_SS.finder,"","")
 local yearnames = getyears()
 
 local metadata = {
@@ -5202,16 +5201,13 @@ P2_JOYSTICK:Black:
 // When category matches mame or ss it's returned as is, if it's separated by "," or "-" then each element
 // of the array is one of the categories. If one of these is "/" separated, this is taken into account.
 function processcategory(categoryname){
-	print (categoryname+"\n")
 	local out = []
 	if (categoryname == "") return ([["Unknown", ""]])
 	local cathierarchy = split (categoryname, "/")
 	local catarray = split (categoryname, ",-")
 	local catmatch = ((catnames.finder.rawin(categoryname)) || (catnames_SS.finder.rawin(categoryname)))
 
-	print (catmatch+"\n")
 	if (catmatch) {
-		print (cathierarchy.len()+"\n")
 		if (cathierarchy.len() == 1) {
 			return [[strip(categoryname), ""]] 
 		} else {
@@ -6274,6 +6270,7 @@ function z_list_updategamedata(index) {
 	// In realtà questo è il current, basta evitare casi di lista vuota
 	if (z_list.size == 0) return
 	dat.manufacturer_array[dat.stacksize - 1].msg = manufacturer_vec_name (z_list.boot[index].z_manufacturer, z_list.boot[index].z_year)
+
 	dat.cat_array[dat.stacksize - 1].file_name = category_pic_name (processcategory(z_list.boot[index].z_category)[0])
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 
