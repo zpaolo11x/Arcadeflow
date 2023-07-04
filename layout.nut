@@ -141,7 +141,7 @@ local AF = {
 
 	scrape = null
 
-	bar = {
+	splash = {
 		time0 = 0
 		time1 = 0
 		progress = 0
@@ -266,122 +266,122 @@ function get_png_crc(path){
 // command = bar.start to start cycle
 // command = bar.stop to stop cycle
 
-function bar_splash_update(command, message = "", seconds = 1) {
-	if (command == AF.bar.start) {
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		AF.bar.text.msg = message
-		AF.bar.text.visible = AF.bar.bg.visible = true
+function splash_message(command, message = "", seconds = 1) {
+	if (command == af.splash.start) {
+		af.splash.pic.visible = false
+		af.splash.picbg.visible = false
+		af.splash.text.msg = message
+		af.splash.text.visible = af.splash.bg.visible = true
 		fe.layout.redraw()
 		return
 	}
-	if (command == AF.bar.stop) {
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		AF.bar.text.msg = ""
-		AF.bar.text.visible = AF.bar.bg.visible = false
+	if (command == af.splash.stop) {
+		af.splash.pic.visible = false
+		af.splash.picbg.visible = false
+		af.splash.text.msg = ""
+		af.splash.text.visible = af.splash.bg.visible = false
 		fe.layout.redraw()
 		return
 	}
-	if (command == AF.bar.pulse) {
-		AF.bar.time0 = clock()
+	if (command == af.splash.pulse) {
+		af.splash.time0 = clock()
 
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		AF.bar.text.msg = message
-		AF.bar.text.visible = AF.bar.bg.visible = true
+		af.splash.pic.visible = false
+		af.splash.picbg.visible = false
+		af.splash.text.msg = message
+		af.splash.text.visible = af.splash.bg.visible = true
 		fe.layout.redraw()
 
-		while (clock() - AF.bar.time0 <= seconds){
+		while (clock() - af.splash.time0 <= seconds){
 
 		}
 
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		AF.bar.text.msg = ""
-		AF.bar.text.visible = AF.bar.bg.visible = false
+		af.splash.pic.visible = false
+		af.splash.picbg.visible = false
+		af.splash.text.msg = ""
+		af.splash.text.visible = af.splash.bg.visible = false
 		fe.layout.redraw()
 		return			
 	}
 }
 
-function bar_cycle_update(command, message = "") {
+function splash_cycle(command, message = "") {
 	local redraw = false
-	if (command == AF.bar.start) {
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.pic.visible = true
-		AF.bar.picbg.visible = true
-		AF.bar.picbg.msg = gly(0xeafb + 12)
-		AF.bar.pic.msg = gly(0xeafb)
-		AF.bar.count = 0
+	if (command == af.splash.start) {
+		af.splash.time0 = 0
+		af.splash.time1 = 0
+		af.splash.progress = 0
+		af.splash.pic.visible = true
+		af.splash.picbg.visible = true
+		af.splash.picbg.msg = gly(0xeafb + 12)
+		af.splash.pic.msg = gly(0xeafb)
+		af.splash.count = 0
 		if (message != "") {
-			AF.bar.text.msg = message + "\n\n\n\n"
-			AF.bar.text.visible = AF.bar.bg.visible = true
+			af.splash.text.msg = message + "\n\n\n\n"
+			af.splash.text.visible = af.splash.bg.visible = true
 		}
 		return
 	}
-	if (command == AF.bar.stop) {
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
-		AF.bar.count = 0
-		AF.bar.text.msg = ""
-		AF.bar.text.visible = AF.bar.bg.visible = false
+	if (command == af.splash.stop) {
+		af.splash.time0 = 0
+		af.splash.time1 = 0
+		af.splash.progress = 0
+		af.splash.pic.visible = false
+		af.splash.picbg.visible = false
+		af.splash.count = 0
+		af.splash.text.msg = ""
+		af.splash.text.visible = af.splash.bg.visible = false
 		return
 	}
-	AF.bar.time1 = clock()
-	if (AF.bar.time1 - AF.bar.time0 >= AF.bar.syncsecs) {
-		AF.bar.count = AF.bar.count + 1
-		if (AF.bar.count == 10) AF.bar.count = 0
-		AF.bar.pic.msg = gly(0xeb08 + AF.bar.count)
+	af.splash.time1 = clock()
+	if (af.splash.time1 - af.splash.time0 >= af.splash.syncsecs) {
+		af.splash.count = af.splash.count + 1
+		if (af.splash.count == 10) af.splash.count = 0
+		af.splash.pic.msg = gly(0xeb08 + af.splash.count)
 		redraw = true
-		AF.bar.time0 = AF.bar.time1
+		af.splash.time0 = af.splash.time1
 		if (redraw) fe.layout.redraw()
 	}
 }
 
-function bar_progress_update(i, init, max) {
+function splash_progress(i, init, max) {
 	local redraw = false
 	if (i == init) {
-		AF.bar.time0 = 0
-		AF.bar.time1 = 0
-		AF.bar.progress = 0
-		AF.bar.pic.visible = true
-		AF.bar.picbg.visible = true
-		AF.bar.picbg.msg = gly(0xeafb + 12)
-		AF.bar.pic.msg = gly(0xeafb)
+		af.splash.time0 = 0
+		af.splash.time1 = 0
+		af.splash.progress = 0
+		af.splash.pic.visible = true
+		af.splash.picbg.visible = true
+		af.splash.picbg.msg = gly(0xeafb + 12)
+		af.splash.pic.msg = gly(0xeafb)
 		return
 	}
 
 	if (i == max - 1) {
-		AF.bar.pic.visible = false
-		AF.bar.picbg.visible = false
+		af.splash.pic.visible = false
+		af.splash.picbg.visible = false
 		return
 	}
 
-	AF.bar.time1 = clock()
+	af.splash.time1 = clock()
 
-	if (AF.bar.time1 - AF.bar.time0 >= AF.bar.syncsecs) {
+	if (af.splash.time1 - af.splash.time0 >= af.splash.syncsecs) {
 		if (i <= max * 0.2) {
 			redraw = true
-			AF.bar.pic.alpha = 255 * i / (max * 0.2)
-			AF.bar.picbg.alpha = AF.bar.darkalpha * i / (max * 0.2)
+			af.splash.pic.alpha = 255 * i / (max * 0.2)
+			af.splash.picbg.alpha = af.splash.darkalpha * i / (max * 0.2)
 		}
 		else if (i >= max * 0.9) {
 			redraw = true
-			AF.bar.pic.alpha = 255 * (1.0 - (i - max * 0.9) / (max * 0.1))
-			AF.bar.picbg.alpha = 0
+			af.splash.pic.alpha = 255 * (1.0 - (i - max * 0.9) / (max * 0.1))
+			af.splash.picbg.alpha = 0
 		}
-		if (floor(11 * i * 1.0 / max) != AF.bar.progress) {
-			AF.bar.progress = floor(11 * i * 1.0 / max)
-			AF.bar.pic.msg = gly(0xeafb + AF.bar.progress)
+		if (floor(11 * i * 1.0 / max) != af.splash.progress) {
+			af.splash.progress = floor(11 * i * 1.0 / max)
+			af.splash.pic.msg = gly(0xeafb + af.splash.progress)
 			redraw = true
 		}
-		AF.bar.time0 = AF.bar.time1
+		af.splash.time0 = af.splash.time1
 		if (redraw) fe.layout.redraw()
 	}
 }
@@ -716,7 +716,7 @@ function unzipfile(zipfilepath, outputpath, updatecycle = false) {
 	system ("mkdir \"" + outputpath + "\"")
 
 	foreach (id, item in zipdir) {
-		if (updatecycle) bar_cycle_update(null)
+		if (updatecycle) splash_cycle(null)
 		// Item is a folder, create it
 		if ((item.slice(-1) == "/") && (!(split(item, "/")[split(item, "/").len() - 1].slice(0, 1) == "."))) {
 			system ("mkdir \"" + outputpath + item + "\"")
@@ -6124,7 +6124,7 @@ function mfz_refreshnum(catin) {
 
 	local in_other_searches = false
 	foreach (i, item in z_list.boot) {
-		bar_progress_update(i, 0, z_list.boot.len())
+		splash_progress(i, 0, z_list.boot.len())
 
 		in_other_searches = (z_list.boot[i].z_infav && z_list.boot[i].z_insearch && z_list.boot[i].z_incat && z_list.boot[i].z_inmots2)
 		// Iterate the check with all the multifilter categories (title, cat, players etc)
@@ -12606,14 +12606,14 @@ function gh_branchlist(op) {
 }
 
 function gh_taglist(op) {
-	bar_cycle_update(null)
+	splash_cycle(null)
 	if (op.find("\"name\"") != null) {
 		gh.taglist.push(split(op, "\"")[3])
 	}
 }
 
 function gh_releaselist(op) {
-	bar_cycle_update(null)
+	splash_cycle(null)
 	if (op.find("\"tag_name\"") != null) {
 		gh.taglist.push(split(op, "\"")[3])
 	}
@@ -12649,15 +12649,15 @@ function afinstall(zipball, afname) {
 	// Download zip of new layout version
 	AF.updatechecking = true
 
-	bar_cycle_update(AF.bar.start, "Downloading")
-	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "bar_cycle_update")
-	bar_cycle_update(AF.bar.stop)
+	splash_cycle(af.splash.start, "Downloading")
+	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "splash_cycle")
+	splash_cycle(af.splash.stop)
 
 	// Create target directory
-	bar_cycle_update(AF.bar.start, "Installing")
-	bar_cycle_update(null)
+	splash_cycle(af.splash.start, "Installing")
+	splash_cycle(null)
 	system ("mkdir \"" + newaffolderTEMP + "\"")
-	bar_cycle_update(null)
+	splash_cycle(null)
 	system ("mkdir \"" + newaffolder + "\"")
 
 	// Unpack layout
@@ -12667,7 +12667,7 @@ function afinstall(zipball, afname) {
 	foreach (item in ghfolder.results) {
 		local ghfolder2 = DirectoryListing(item)
 		foreach (item2 in ghfolder2.results) {
-			bar_cycle_update(null)
+			splash_cycle(null)
 			system (OS == "Windows" ?
 				"move \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"" :
 				"mv \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"")
@@ -12679,7 +12679,7 @@ function afinstall(zipball, afname) {
 	// Transfer preferences
 	local dir = DirectoryListing(AF.folder)
 	foreach (item in dir.results) {
-		bar_cycle_update(null)
+		splash_cycle(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"), item.len())
 			system ((OS == "Windows" ? "copy " : "cp ") + "\"" + AF.folder + basename + "\" \"" + newaffolder + basename + "\"")
@@ -12688,7 +12688,7 @@ function afinstall(zipball, afname) {
 	// Remove downloaded file
 	local rem0 = 0
 	while (rem0 == 0) {
-		bar_cycle_update(null)
+		splash_cycle(null)
 		try {remove(AF.folder + afname + ".zip"); rem0 = 1} catch(err) {rem0 = 0}
 	}
 	// Update config file
@@ -12700,7 +12700,7 @@ function afinstall(zipball, afname) {
 	local templine = ""
 	local index0 = null
 	while (!cfgfile.eos()) {
-		bar_cycle_update(null)
+		splash_cycle(null)
 		char = 0
 		templine = ""
 		while (char != 10) {
@@ -12716,12 +12716,12 @@ function afinstall(zipball, afname) {
 
 	local outfile = WriteTextFile(AF.amfolder + "attract.cfg")
 	for (local i = 0; i < outarray.len(); i++) {
-		bar_cycle_update(null)
+		splash_cycle(null)
 		outfile.write_line(outarray[i] + "\n")
 	}
 	outfile.close_file()
 	AF.updatechecking = false
-	bar_cycle_update(AF.bar.stop)
+	splash_cycle(af.splash.stop)
 	frostshow()
 	zmenudraw3([{text = ltxt("Restart", AF.LNG)}], ltxt("Arcadeflow updated to", AF.LNG) + " " + zipball, 0xe91c, 0, {center = true},
 	function(out) {
@@ -12742,9 +12742,9 @@ function gh_menu(presel) {
 			gh.branchlist = []
 			gh.commitlist = []
 
-			bar_cycle_update(AF.bar.start)
+			splash_cycle(af.splash.start)
 			fe.plugin_command("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches", "gh_branchlist")
-			bar_cycle_update(AF.bar.stop)
+			splash_cycle(af.splash.stop)
 			if (gh.branchlist.len() == 0) {
 				gh_menu(0)
 				return
@@ -12767,9 +12767,9 @@ function gh_menu(presel) {
 		else if (out == 1) {
 			gh.taglist = []
 			gh.releasedatelist = []
-			bar_cycle_update(AF.bar.start)
+			splash_cycle(af.splash.start)
 			fe.plugin_command("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases", "gh_releaselist")
-			bar_cycle_update(AF.bar.stop)
+			splash_cycle(af.splash.stop)
 			if (gh.taglist.len() == 0) {
 				gh_menu(1)
 				return
@@ -12801,7 +12801,7 @@ function checkforupdates(force) {
 
 	//load latest update version
 	//fe.overlay.splash_message("Checking for updates...")
-	bar_splash_update(AF.bar.start, "Checking for updates...")
+	splash_message(af.splash.start, "Checking for updates...")
 	
 	AF.updatechecking = true
 
@@ -12810,7 +12810,7 @@ function checkforupdates(force) {
 	ver_in = gh.latest_version
 
 	AF.updatechecking = false
-	bar_splash_update(AF.bar.stop)
+	splash_message(af.splash.stop)
 
 	if (ver_in == "") return
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
@@ -12852,9 +12852,9 @@ function checkforupdates(force) {
 			if (!prf.AUTOINSTALL) {
 				// Simply download in your home folder
 				AF.updatechecking = true
-				bar_cycle_update(AF.bar.start, "Downloading")
-				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "bar_cycle_update")
-				bar_cycle_update(AF.bar.stop)
+				splash_cycle(af.splash.start, "Downloading")
+				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "splash_cycle")
+				splash_cycle(af.splash.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw3([{text = "Ok"}], newafname + ".zip downloaded", 0xe91c, 0, {center = true},
@@ -13852,34 +13852,34 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0
 
 /// PROGRESS BAR ///
 
-AF.bar.bg = fe.add_rectangle(0, 0, fl.w_os, fl.h_os)
-AF.bar.text = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
-AF.bar.picbg = fe.add_text("", fl.x + floor(0.5 * (fl.w - AF.bar.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - AF.bar.size * UI.scalerate)), floor(AF.bar.size * UI.scalerate), floor(AF.bar.size * UI.scalerate))
-AF.bar.pic = fe.add_text("", AF.bar.picbg.x, AF.bar.picbg.y, AF.bar.picbg.width, AF.bar.picbg.height)
+af.splash.bg = fe.add_rectangle(0, 0, fl.w_os, fl.h_os)
+af.splash.text = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
+af.splash.picbg = fe.add_text("", fl.x + floor(0.5 * (fl.w - af.splash.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - af.splash.size * UI.scalerate)), floor(af.splash.size * UI.scalerate), floor(af.splash.size * UI.scalerate))
+af.splash.pic = fe.add_text("", af.splash.picbg.x, af.splash.picbg.y, af.splash.picbg.width, af.splash.picbg.height)
 
-AF.bar.pic.font = AF.bar.picbg.font = uifonts.glyphs
-AF.bar.text.font = uifonts.gui
+af.splash.pic.font = af.splash.picbg.font = uifonts.glyphs
+af.splash.text.font = uifonts.gui
 
-AF.bar.pic.margin = AF.bar.picbg.margin = AF.bar.text.margin = 0
-AF.bar.pic.align = AF.bar.picbg.align = AF.bar.text.align = Align.MiddleCentre
+af.splash.pic.margin = af.splash.picbg.margin = af.splash.text.margin = 0
+af.splash.pic.align = af.splash.picbg.align = af.splash.text.align = Align.MiddleCentre
 
-AF.bar.pic.charsize = AF.bar.size * UI.scalerate
-AF.bar.picbg.charsize = AF.bar.size * UI.scalerate
-AF.bar.text.charsize = 0.25 * AF.bar.pic.height //TEST162 was 0.35
+af.splash.pic.charsize = af.splash.size * UI.scalerate
+af.splash.picbg.charsize = af.splash.size * UI.scalerate
+af.splash.text.charsize = 0.25 * af.splash.pic.height //TEST162 was 0.35
 
-AF.bar.bg.zorder = 100000
-AF.bar.text.zorder = 100001
-AF.bar.picbg.zorder = 100002
-AF.bar.pic.zorder = 100003
+af.splash.bg.zorder = 100000
+af.splash.text.zorder = 100001
+af.splash.picbg.zorder = 100002
+af.splash.pic.zorder = 100003
 
-AF.bar.pic.word_wrap = AF.bar.picbg.word_wrap = AF.bar.text.word_wrap = true
-AF.bar.pic.visible = AF.bar.picbg.visible = AF.bar.bg.visible = AF.bar.text.visible = false
+af.splash.pic.word_wrap = af.splash.picbg.word_wrap = af.splash.text.word_wrap = true
+af.splash.pic.visible = af.splash.picbg.visible = af.splash.bg.visible = af.splash.text.visible = false
 
-AF.bar.pic.set_rgb(255, 255, 255)
-AF.bar.picbg.set_rgb(AF.bar.dark, AF.bar.dark, AF.bar.dark)
-AF.bar.text.set_rgb(255, 255, 255)
-AF.bar.bg.set_rgb(30, 30, 30)
-AF.bar.bg.alpha = 190
+af.splash.pic.set_rgb(255, 255, 255)
+af.splash.picbg.set_rgb(af.splash.dark, af.splash.dark, af.splash.dark)
+af.splash.text.set_rgb(255, 255, 255)
+af.splash.bg.set_rgb(30, 30, 30)
+af.splash.bg.alpha = 190
 
 	//Number of rows is 0.78 * (fl.h_os - 2.0 * AF.msgbox.obj.margin)/AF.msgbox.obj.char_size
 /// FPS MONITOR ///
@@ -17531,10 +17531,10 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom2"){
-		bar_splash_update(AF.bar.pulse, "Test Message")
+		splash_message(af.splash.pulse, "Test Message")
 	}
 	if (sig == "custom4"){
-		bar_splash_update(AF.bar.pulse, "Test Message Long", 5)
+		splash_message(af.splash.pulse, "Test Message Long", 5)
 	}
 	debugpr("\n Si:" + sig)
 
