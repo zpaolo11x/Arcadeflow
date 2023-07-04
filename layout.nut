@@ -13790,6 +13790,7 @@ AF.msgbox.scroller.visible = false
 AF.msgbox.visiblelines = floor((AF.msgbox.obj.height - 2.0 * AF.msgbox.obj.margin) * 1.0 / (1.28 * AF.msgbox.obj.char_size))
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
+	AF.msgbox.visiblelines = floor((AF.msgbox.obj.height - 2.0 * AF.msgbox.obj.margin) * 1.0 / (1.6 * AF.msgbox.obj.char_size))
 	AF.msgbox.obj.char_size = 16
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 }
@@ -17478,9 +17479,11 @@ function on_signal(sig) {
 		msgbox_open("TITOLO", "Questo è il testo\nsu due righe corte...\nCon degli"+nbsp+nbsp+nbsp+nbsp+nbsp+"non break space")
 	}
 	if (sig == "custom2"){
-		msgbox_addlinebottom("NEW FIRST LINE"+rand())
+		msgbox_addlinebottom("NEW BOTTOM LINE"+rand())
 	}
-
+	if (sig == "custom3"){
+		msgbox_addlinebottom("END LINE")
+	}
 	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
@@ -17512,7 +17515,8 @@ function on_signal(sig) {
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				if (AF.msgbox.obj.first_line_hint < AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
+				testpr("HIT:"+AF.msgbox.obj.first_line_hint+" ALL:"+AF.msgbox.numlines+"\n")
+				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
 				msgbox_scrollerrefresh()
 				count.down ++
 			}
