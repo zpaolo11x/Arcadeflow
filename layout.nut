@@ -8,6 +8,7 @@
 fe.do_nut("nut_file.nut")
 
 local comma = ','.tochar()
+local nbsp = "^"
 
 function split_complete(str_in, separator) {
 	local outarray = []
@@ -2920,7 +2921,7 @@ function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
 
 function char_replace(inputstring, old, new) {
 	local out = ""
-	local splitarray = split (inputstring, old)
+	local splitarray = split_complete (inputstring, old)
 	foreach (id, item in splitarray) {
 		out = out + (id > 0 ? new : "") + item
 	}
@@ -3262,7 +3263,7 @@ function msgbox_scrollerrefresh(){
 
 function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
-	AF.msgbox.obj.msg = wrappedmessage
+	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
 	msgbox_scrollerrefresh()
@@ -3319,13 +3320,13 @@ function patchtext(string1, string2, width2, columns) {
 	}
 
 	while (string1.len() < string1space) {
-		string1 += " "
+		string1 += nbsp //THIS IS A NON BREAKING SPACE
 	}
 
-	out = string1 + " " + string2
+	out = string1 + nbsp + string2 //THIS IS A NON BREAKING SPACE
 
 	while (out.len() < columns) {
-		out += " "
+		out += nbsp //THIS IS A NON BREAKING SPACE
 	}
 	return out
 }
@@ -17474,7 +17475,7 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-		msgbox_open("TITOLO", "Questo è il testo\nsu due righe corte...")
+		msgbox_open("TITOLO", "Questo è il testo\nsu due righe corte...\nCon degli"+nbsp+nbsp+nbsp+nbsp+nbsp+"non break space")
 	}
 	if (sig == "custom2"){
 		msgbox_addlinebottom("NEW FIRST LINE"+rand())
