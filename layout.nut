@@ -17530,7 +17530,10 @@ function on_signal(sig) {
 		}
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) { //Faster jump scroll
-				AF.msgbox.obj.first_line_hint-=10
+				if (AF.msgbox.obj.first_line_hint > 10) 
+					AF.msgbox.obj.first_line_hint-=10
+				else
+					AF.msgbox.obj.first_line_hint = 1
 				msgbox_scrollerrefresh()
 				count.left ++
 			}
@@ -17538,7 +17541,11 @@ function on_signal(sig) {
 		}
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) { //Faster jump scroll
-				AF.msgbox.obj.first_line_hint += 10
+				if (AF.msgbox.obj.first_line_hint + 10 <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
+					AF.msgbox.obj.first_line_hint += 10
+				else
+					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
+
 				msgbox_scrollerrefresh()
 				count.right ++
 			}
