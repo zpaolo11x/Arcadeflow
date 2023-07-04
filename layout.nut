@@ -155,11 +155,11 @@ local AF = {
 		size = 300
 		dark = 60
 		darkalpha = 90
-		splashmessage = ""
 
 		count = 0
 		start = "start"
 		stop = "stop"
+		pulse = "pulse"
 	}
 }
 
@@ -265,7 +265,46 @@ function get_png_crc(path){
 // command = bar.start to start cycle
 // command = bar.stop to stop cycle
 
-function bar_cycle_update(command) {
+function bar_splash_update(command, message = "", seconds = 1) {
+	if (command == AF.bar.start) {
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		AF.bar.text.msg = message
+		AF.bar.text.visible = AF.bar.bg.visible = true
+		fe.layout.redraw()
+		return
+	}
+	if (command == AF.bar.stop) {
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		AF.bar.text.msg = ""
+		AF.bar.text.visible = AF.bar.bg.visible = false
+		fe.layout.redraw()
+		return
+	}
+	if (command == AF.bar.pulse) {
+		AF.bar.time0 = clock()
+
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		AF.bar.text.msg = message
+		AF.bar.text.visible = AF.bar.bg.visible = true
+		fe.layout.redraw()
+
+		while (clock() - AF.bar.time0 <= seconds){
+
+		}
+
+		AF.bar.pic.visible = false
+		AF.bar.picbg.visible = false
+		AF.bar.text.msg = ""
+		AF.bar.text.visible = AF.bar.bg.visible = false
+		fe.layout.redraw()
+		return			
+	}
+}
+
+function bar_cycle_update(command, message = "") {
 	local redraw = false
 	if (command == AF.bar.start) {
 		AF.bar.time0 = 0
@@ -276,8 +315,8 @@ function bar_cycle_update(command) {
 		AF.bar.picbg.msg = gly(0xeafb + 12)
 		AF.bar.pic.msg = gly(0xeafb)
 		AF.bar.count = 0
-		if (AF.bar.splashmessage != "") {
-			AF.bar.text.msg = AF.bar.splashmessage + "\n\n\n\n"
+		if (message != "") {
+			AF.bar.text.msg = message + "\n\n\n\n"
 			AF.bar.text.visible = AF.bar.bg.visible = true
 		}
 		return
@@ -289,7 +328,6 @@ function bar_cycle_update(command) {
 		AF.bar.pic.visible = false
 		AF.bar.picbg.visible = false
 		AF.bar.count = 0
-		AF.bar.splashmessage = ""
 		AF.bar.text.msg = ""
 		AF.bar.text.visible = AF.bar.bg.visible = false
 		return
@@ -12610,14 +12648,12 @@ function afinstall(zipball, afname) {
 	// Download zip of new layout version
 	AF.updatechecking = true
 
-	AF.bar.splashmessage = "Downloading"
-	bar_cycle_update(AF.bar.start)
+	bar_cycle_update(AF.bar.start, "Downloading")
 	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "bar_cycle_update")
 	bar_cycle_update(AF.bar.stop)
 
 	// Create target directory
-	AF.bar.splashmessage = "Installing"
-	bar_cycle_update(AF.bar.start)
+	bar_cycle_update(AF.bar.start, "Installing")
 	bar_cycle_update(null)
 	system ("mkdir \"" + newaffolderTEMP + "\"")
 	bar_cycle_update(null)
@@ -12763,7 +12799,9 @@ function checkforupdates(force) {
 	savedate()
 
 	//load latest update version
-	fe.overlay.splash_message("Checking for updates...")
+	//fe.overlay.splash_message("Checking for updates...")
+	bar_splash_update(AF.bar.start, "Checking for updates...")
+	
 	AF.updatechecking = true
 
 	local ver_in = ""
@@ -12771,6 +12809,7 @@ function checkforupdates(force) {
 	ver_in = gh.latest_version
 
 	AF.updatechecking = false
+	bar_splash_update(AF.bar.stop)
 
 	if (ver_in == "") return
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
@@ -12812,8 +12851,7 @@ function checkforupdates(force) {
 			if (!prf.AUTOINSTALL) {
 				// Simply download in your home folder
 				AF.updatechecking = true
-				AF.bar.splashmessage = "Downloading"
-				bar_cycle_update(AF.bar.start)
+				bar_cycle_update(AF.bar.start, "Downloading")
 				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "bar_cycle_update")
 				bar_cycle_update(AF.bar.stop)
 				AF.updatechecking = false
@@ -13826,7 +13864,7 @@ AF.bar.pic.align = AF.bar.picbg.align = AF.bar.text.align = Align.MiddleCentre
 
 AF.bar.pic.charsize = AF.bar.size * UI.scalerate
 AF.bar.picbg.charsize = AF.bar.size * UI.scalerate
-AF.bar.text.charsize = 0.35 * AF.bar.pic.height
+AF.bar.text.charsize = 0.25 * AF.bar.pic.height //TEST162 was 0.35
 
 AF.bar.bg.zorder = 100000
 AF.bar.text.zorder = 100001
@@ -17491,6 +17529,12 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 
+	if (sig == "custom2"){
+		bar_splash_update(AF.bar.pulse, "Test Message")
+	}
+	if (sig == "custom4"){
+		bar_splash_update(AF.bar.pulse, "Test Message Long", 5)
+	}
 	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
