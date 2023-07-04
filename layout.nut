@@ -17502,7 +17502,7 @@ function on_signal(sig) {
 		}
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
-				AF.msgbox.obj.first_line_hint--
+				if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
 				msgbox_scrollerrefresh()
 				count.up ++
 			}
@@ -17510,7 +17510,7 @@ function on_signal(sig) {
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				AF.msgbox.obj.first_line_hint++
+				if (AF.msgbox.obj.first_line_hint < AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
 				msgbox_scrollerrefresh()
 				count.down ++
 			}
