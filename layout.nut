@@ -3263,6 +3263,7 @@ function msgbox_scrollerrefresh(){
 function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
 	AF.msgbox.obj.msg = wrappedmessage
+	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
 	msgbox_scrollerrefresh()
 	testpr("LINES:"+AF.msgbox.numlines+"/"+AF.msgbox.visiblelines+"\n")
@@ -17476,7 +17477,7 @@ function on_signal(sig) {
 		msgbox_open("TITOLO", "Questo è il testo\nsu due righe corte...")
 	}
 	if (sig == "custom2"){
-		msgbox_addlinebottom("NEW FIRST LINE")
+		msgbox_addlinebottom("NEW FIRST LINE"+rand())
 	}
 
 	debugpr("\n Si:" + sig)
