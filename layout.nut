@@ -15989,7 +15989,7 @@ function tick(tick_time) {
 
 			msgbox_newtitle(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms)
 			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport + "\n" + AF.msgbox.separator1)
-
+testpr(char_replace(AF.msgbox.obj.msg,"\n","@"))
 			AFscrapeclear()
 			dispatcher = []
 
