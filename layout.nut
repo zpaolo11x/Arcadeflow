@@ -3257,8 +3257,14 @@ function msgbox_wraptext(text, columns){
 }
 
 function msgbox_scrollerrefresh(){
-	AF.msgbox.scroller.y = floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * AF.msgbox.obj.first_line_hint * 1.0 / AF.msgbox.numlines)
-	AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
+	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
+		AF.msgbox.scroller.y = 50 * UI.scalerate
+		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
+	}
+	else {
+		AF.msgbox.scroller.y = floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (AF.msgbox.obj.first_line_hint - 1) * 1.0 / AF.msgbox.numlines)
+		AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
+	}
 }
 
 function msgbox_refresh(){
