@@ -3259,11 +3259,11 @@ function msgbox_wraptext(text, columns){
 
 function msgbox_scrollerrefresh(){
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
-		AF.msgbox.scroller.y = 50 * UI.scalerate
+		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
 	}
 	else {
-		AF.msgbox.scroller.y = floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (AF.msgbox.obj.first_line_hint - 1) * 1.0 / AF.msgbox.numlines)
+		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (AF.msgbox.obj.first_line_hint - 1) * 1.0 / AF.msgbox.numlines)
 		AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
 	}
 }
@@ -13797,7 +13797,7 @@ AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.visible = false
 AF.msgbox.obj.zorder = 100
 
-AF.msgbox.scroller = fe.add_rectangle(fl.w - 25 * UI.scalerate, 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
+AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
 AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
