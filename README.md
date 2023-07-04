@@ -239,7 +239,7 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Categorized Displays Menu' : Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections
 - 'Add Exit Arcadeflow to menu' : Add an entry to exit Arcadeflow from the displays menu page
 - Behavior
-- '❗ Open the Displays Menu on current category ❗' : With categorised displays menu, open in the current category instead of main menu
+- '❗ Open on current category ❗' : With categorised displays menu, open in the current category instead of main menu
 - 'Open the Displays Menu at startup' : Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode
 - 'Exit AF when leaving Menu' : The esc button from Displays Menu triggers the exit from Arcadeflow
 - 'Enter Menu when leaving display' : The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
@@ -377,12 +377,13 @@ Save or reload options configurations
 - 'Save current options' : Save the current options configuration in a custom named file
 - 'Load options from external file' : Restore AF options from a previously saved file
 
-#### DEBUG
+#### ❗ DEBUG ❗
 This section is for debug purposes only
 
 - 'FPS counter' : DBGON FPS COUNTER
 - 'DEBUG mode' : Enter DBGON mode, increased output logging
 - 'AM options page' : Shows the default Attract-Mode options page
+- '❗ Test message box ❗' : For developer use only...
 - 'Generate readme file' : For developer use only...
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 

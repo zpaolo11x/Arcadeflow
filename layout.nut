@@ -1168,6 +1168,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "FPSON", glyph = 0xe998, title = "FPS counter", help = "DBGON FPS COUNTER", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
+{v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
 {v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options", options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
 ])
@@ -3273,7 +3274,6 @@ function msgbox_refresh(){
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
 	msgbox_scrollerrefresh()
-	testpr("LINES:"+AF.msgbox.numlines+"/"+AF.msgbox.visiblelines+"\n")
 }
 
 function msgbox_newtitle(text){
@@ -3344,6 +3344,15 @@ function textrate(num, den, columns, ch1, ch0) {
 
 	local limit = ceil((num * floor(columns)) * 1.0 / den)
 	return (strepeat(ch1, limit) + strepeat(ch0, floor(columns) - limit))
+}
+
+function msgbox_test(){
+	local bodytext = ""
+	for (local i = 3; i < 50; i++){
+		bodytext = bodytext + i + "\n"
+	}
+	bodytext = bodytext + "50"
+	msgbox_open("TOTAL:" + AF.msgbox.visiblelines, bodytext)
 }
 
 dispatcher = []
@@ -13792,6 +13801,7 @@ AF.msgbox.scroller = fe.add_rectangle(fl.w - 25 * UI.scalerate, 50 * UI.scalerat
 AF.msgbox.scroller.set_rgb(255,255,255)
 AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
+AF.msgbox.scroller.alpha = 200
 
 AF.msgbox.visiblelines = floor((AF.msgbox.obj.height - 2.0 * AF.msgbox.obj.margin) * 1.0 / (1.28 * AF.msgbox.obj.char_size))
 
@@ -15998,7 +16008,7 @@ function tick(tick_time) {
 
 			msgbox_newtitle(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms)
 			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport + "\n" + AF.msgbox.separator1)
-testpr(char_replace(AF.msgbox.obj.msg,"\n","@"))
+
 			AFscrapeclear()
 			dispatcher = []
 
@@ -17481,15 +17491,6 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 
-	if (sig == "custom1"){
-		msgbox_open("TITOLO", "Questo è il testo\nsu due righe corte...\nCon degli"+nbsp+nbsp+nbsp+nbsp+nbsp+"non break space")
-	}
-	if (sig == "custom2"){
-		msgbox_addlinebottom("NEW BOTTOM LINE"+rand())
-	}
-	if (sig == "custom3"){
-		msgbox_addlinebottom("END LINE")
-	}
 	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
@@ -17521,7 +17522,6 @@ function on_signal(sig) {
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				testpr("HIT:"+AF.msgbox.obj.first_line_hint+" ALL:"+AF.msgbox.numlines+"\n")
 				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
 				msgbox_scrollerrefresh()
 				count.down ++
