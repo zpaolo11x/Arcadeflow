@@ -13915,7 +13915,7 @@ AF.splash.pic.set_pos(AF.splash.picbg.x, AF.splash.picbg.y, AF.splash.picbg.widt
 
 AF.splash.pic.charsize = AF.splash.size * UI.scalerate
 AF.splash.picbg.charsize = AF.splash.size * UI.scalerate
-AF.splash.text.charsize = 0.25 * AF.splash.pic.height //TEST162 was 0.35
+AF.splash.text.charsize = 0.35 * AF.splash.pic.height //TEST162 was 0.35
 
 //AF.splash.bg.zorder = 100000
 //AF.splash.text.zorder = 100001
