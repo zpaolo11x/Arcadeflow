@@ -6616,13 +6616,14 @@ function getallgamesdb(logopic) {
 	timestart("GamesDB")
 
 	local textobj = null
+	local textoverlay = null
 	local numchars = 12
 	local text_ratio = 0.6
 	local text_charsize = text_ratio * fl.w * 1.45 / numchars
 
 	if (prf.SPLASHON) {
 		textobj = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-		textobj.alpha = 128
+		textobj.alpha = 160
 		textobj.set_rgb(0, 0, 0)
 	} else {
 		//textobj = fe.add_text("", logopic.x + logopic.width * (1.0 - text_ratio) * 0.5, logopic.y + logopic.height - text_charsize * 0.5, logopic.width * text_ratio, text_charsize * 1.2)
@@ -6631,6 +6632,9 @@ function getallgamesdb(logopic) {
 		textobj.font = uifonts.mono
 		textobj.word_wrap = true
 	}
+	textoverlay = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
+	textoverlay.alpha = 200
+	textoverlay.set_rgb(0, 0, 0)
 
 	local emulatorarray = []
 	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
@@ -6638,7 +6642,7 @@ function getallgamesdb(logopic) {
 	local itemname = ""
 	local metadatapath = ""
 	local meta_edited = {}
-	fe.overlay.splash_message("")
+	//fe.overlay.splash_message("")
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3) == "cfg") && (item.slice(0, 2) != "._")) {
@@ -6705,7 +6709,7 @@ function getallgamesdb(logopic) {
 		}
 	}
 
-	textobj.visible = false
+	textobj.visible = textoverlay.visible = false
 
 	timestop("GamesDB")
 }
