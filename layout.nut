@@ -153,7 +153,7 @@ local AF = {
 		bg = null
 		pic = null
 		picbg = null
-		size = 300
+		size = 280
 		dark = 60
 		darkalpha = 90
 
