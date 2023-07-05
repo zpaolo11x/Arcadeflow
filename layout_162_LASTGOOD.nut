@@ -6638,7 +6638,7 @@ function getallgamesdb(logopic) {
 	local itemname = ""
 	local metadatapath = ""
 	local meta_edited = {}
-
+fe.overlay.splash_message("")
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3) == "cfg") && (item.slice(0, 2) != "._")) {
