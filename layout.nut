@@ -6616,7 +6616,6 @@ function z_checkhidden(i) {
 }
 
 function getallgamesdb(logopic) {
-	testpr("ALLGAMES\n")
 	timestart("GamesDB")
 
 	local textobj = null
@@ -6627,7 +6626,7 @@ function getallgamesdb(logopic) {
 
 	if (prf.SPLASHON) {
 		textobj = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-		textobj.alpha = 190
+		textobj.alpha = 128
 		textobj.set_rgb(0, 0, 0)
 	} else {
 		//textobj = fe.add_text("", logopic.x + logopic.width * (1.0 - text_ratio) * 0.5, logopic.y + logopic.height - text_charsize * 0.5, logopic.width * text_ratio, text_charsize * 1.2)
@@ -6637,7 +6636,7 @@ function getallgamesdb(logopic) {
 		textobj.word_wrap = true
 	}
 	textoverlay = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-	textoverlay.alpha = 200
+	textoverlay.alpha = 210
 	textoverlay.set_rgb(0, 0, 0)
 
 	local emulatorarray = []
@@ -9629,7 +9628,7 @@ function restoreoptions() {
 				readprefdata(prefsfilepath)
 				local outprefs = generateselectiontable()
 				saveprefdata(outprefs, null)
-				testpr("A\n")
+
 				fe.signal("reload")
 
 			}
@@ -12933,7 +12932,6 @@ function checkforupdates(force) {
 }
 
 function jumptodisplay(targetdisplay) {
-	testpr("Y\n")
 	fe.set_display(targetdisplay, false, prf.OLDDISPLAYCHANGE)
 	zmenu.dmp = false
 	umvisible = false
@@ -14775,7 +14773,6 @@ function buildutilitymenu() {
 			umvisible = false
 			DISPLAYTHUMBTYPE = {}
 			savevar (DISPLAYTHUMBTYPE, "pref_thumbtype.txt")
-			testpr("B\n")
 			fe.signal("reload")
 			if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 		}
@@ -15400,7 +15397,6 @@ if (prf.ALLGAMES != AF.config.collections) {
 		update_allgames_collections(true, prf)
 	}
 	//fe.signal("reload")
-	testpr("UUU\n")
 	restartAM()
 }
 
@@ -18022,7 +18018,6 @@ function on_signal(sig) {
 		}
 
 		if (sig == "exit_to_desktop") {
-			testpr("ZZZZ\n")
 			if (AF.config.exitcommand != null) system (AF.config.exitcommand)
 			return false
 		}
@@ -18135,12 +18130,10 @@ function on_signal(sig) {
 		if (fe.layout.toggle_rotation == RotateScreen.None)
 		{
 			fe.layout.toggle_rotation = RotateScreen.Right
-			testpr("C\n")
 			fe.signal("reload")
 		}
 		else{
 			fe.layout.toggle_rotation = RotateScreen.None
-			testpr("D\n")
 			fe.signal("reload")
 		}
 		return true
@@ -18150,12 +18143,10 @@ function on_signal(sig) {
 		if (fe.layout.toggle_rotation == RotateScreen.None)
 		{
 			fe.layout.toggle_rotation = RotateScreen.Left
-			testpr("E\n")
 			fe.signal("reload")
 		}
 		else{
 			fe.layout.toggle_rotation = RotateScreen.None
-			testpr("F\n")
 			fe.signal("reload")
 		}
 		return true
