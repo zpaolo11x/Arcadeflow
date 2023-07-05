@@ -157,6 +157,8 @@ local AF = {
 		dark = 60
 		darkalpha = 90
 
+		tscalerate = fe.layout.width >= fe.layout.height ? fe.layout.height / 1200.0 : fe.layout.width / 1200.0
+
 		count = 0
 		start = "start"
 		stop = "stop"
@@ -261,45 +263,80 @@ function get_png_crc(path){
 	return (("0"+format("%X",crcpng)).slice(-8))
 }
 
-/// Splash functions ///
+/// SPLASH SCREEN ///
+
+// Create proxy splash in fullscreen, before even reading options
+// this can be used for emergency messages
+
+
+AF.splash.bg = fe.add_rectangle(0, 0, fe.layout.width, fe.layout.height)
+AF.splash.text = fe.add_text("", 0, 0, fe.layout.width, fe.layout.height)
+AF.splash.picbg = fe.add_text("", floor(0.5 * (fe.layout.width - AF.splash.size * AF.splash.tscalerate)), floor(0.5 * (fe.layout.height - AF.splash.size * AF.splash.tscalerate)), floor(AF.splash.size * AF.splash.tscalerate), floor(AF.splash.size * AF.splash.tscalerate))
+AF.splash.pic = fe.add_text("", AF.splash.picbg.x, AF.splash.picbg.y, AF.splash.picbg.width, AF.splash.picbg.height)
+
+AF.splash.pic.font = AF.splash.picbg.font = uifonts.glyphs
+AF.splash.text.font = uifonts.gui
+
+AF.splash.pic.margin = AF.splash.picbg.margin = AF.splash.text.margin = 0
+AF.splash.pic.align = AF.splash.picbg.align = AF.splash.text.align = Align.MiddleCentre
+
+AF.splash.pic.charsize = AF.splash.size * AF.splash.tscalerate
+AF.splash.picbg.charsize = AF.splash.size * AF.splash.tscalerate
+AF.splash.text.charsize = 0.25 * AF.splash.pic.height //TEST162 was 0.35
+
+AF.splash.bg.zorder = 100000
+AF.splash.text.zorder = 100001
+AF.splash.picbg.zorder = 100002
+AF.splash.pic.zorder = 100003
+
+AF.splash.pic.word_wrap = AF.splash.picbg.word_wrap = AF.splash.text.word_wrap = true
+AF.splash.pic.visible = AF.splash.picbg.visible = AF.splash.bg.visible = AF.splash.text.visible = false
+
+AF.splash.pic.set_rgb(255, 255, 255)
+AF.splash.picbg.set_rgb(AF.splash.dark, AF.splash.dark, AF.splash.dark)
+AF.splash.text.set_rgb(255, 255, 255)
+AF.splash.bg.set_rgb(30, 30, 30)
+AF.splash.bg.alpha = 190
+
+
 
 // command = bar.start to start cycle
 // command = bar.stop to stop cycle
 
 function splash_message(command, message = "", seconds = 1) {
-	if (command == af.splash.start) {
-		af.splash.pic.visible = false
-		af.splash.picbg.visible = false
-		af.splash.text.msg = message
-		af.splash.text.visible = af.splash.bg.visible = true
+	if (command == AF.splash.start) {
+		AF.splash.pic.visible = false
+		AF.splash.picbg.visible = false
+		AF.splash.text.msg = message
+		AF.splash.text.visible = AF.splash.bg.visible = true
 		fe.layout.redraw()
 		return
 	}
-	if (command == af.splash.stop) {
-		af.splash.pic.visible = false
-		af.splash.picbg.visible = false
-		af.splash.text.msg = ""
-		af.splash.text.visible = af.splash.bg.visible = false
+	if (command == AF.splash.stop) {
+		AF.splash.pic.visible = false
+		AF.splash.picbg.visible = false
+		AF.splash.text.msg = ""
+		AF.splash.text.visible = AF.splash.bg.visible = false
 		fe.layout.redraw()
 		return
 	}
-	if (command == af.splash.pulse) {
-		af.splash.time0 = clock()
+	if (command == AF.splash.pulse) {
+		AF.splash.time0 = clock()
 
-		af.splash.pic.visible = false
-		af.splash.picbg.visible = false
-		af.splash.text.msg = message
-		af.splash.text.visible = af.splash.bg.visible = true
+		AF.splash.pic.visible = false
+		AF.splash.picbg.visible = false
+		AF.splash.text.msg = message
+		AF.splash.text.visible = AF.splash.bg.visible = true
 		fe.layout.redraw()
 
-		while (clock() - af.splash.time0 <= seconds){
+		while (clock() - AF.splash.time0 <= seconds){
 
 		}
 
-		af.splash.pic.visible = false
-		af.splash.picbg.visible = false
-		af.splash.text.msg = ""
-		af.splash.text.visible = af.splash.bg.visible = false
+		AF.splash.pic.visible = false
+		AF.splash.picbg.visible = false
+		AF.splash.text.msg = ""
+		AF.splash.text.visible = AF.splash.bg.visible = false
 		fe.layout.redraw()
 		return			
 	}
@@ -307,39 +344,39 @@ function splash_message(command, message = "", seconds = 1) {
 
 function splash_cycle(command, message = "") {
 	local redraw = false
-	if (command == af.splash.start) {
-		af.splash.time0 = 0
-		af.splash.time1 = 0
-		af.splash.progress = 0
-		af.splash.pic.visible = true
-		af.splash.picbg.visible = true
-		af.splash.picbg.msg = gly(0xeafb + 12)
-		af.splash.pic.msg = gly(0xeafb)
-		af.splash.count = 0
+	if (command == AF.splash.start) {
+		AF.splash.time0 = 0
+		AF.splash.time1 = 0
+		AF.splash.progress = 0
+		AF.splash.pic.visible = true
+		AF.splash.picbg.visible = true
+		AF.splash.picbg.msg = gly(0xeafb + 12)
+		AF.splash.pic.msg = gly(0xeafb)
+		AF.splash.count = 0
 		if (message != "") {
-			af.splash.text.msg = message + "\n\n\n\n"
-			af.splash.text.visible = af.splash.bg.visible = true
+			AF.splash.text.msg = message + "\n\n\n\n"
+			AF.splash.text.visible = AF.splash.bg.visible = true
 		}
 		return
 	}
-	if (command == af.splash.stop) {
-		af.splash.time0 = 0
-		af.splash.time1 = 0
-		af.splash.progress = 0
-		af.splash.pic.visible = false
-		af.splash.picbg.visible = false
-		af.splash.count = 0
-		af.splash.text.msg = ""
-		af.splash.text.visible = af.splash.bg.visible = false
+	if (command == AF.splash.stop) {
+		AF.splash.time0 = 0
+		AF.splash.time1 = 0
+		AF.splash.progress = 0
+		AF.splash.pic.visible = false
+		AF.splash.picbg.visible = false
+		AF.splash.count = 0
+		AF.splash.text.msg = ""
+		AF.splash.text.visible = AF.splash.bg.visible = false
 		return
 	}
-	af.splash.time1 = clock()
-	if (af.splash.time1 - af.splash.time0 >= af.splash.syncsecs) {
-		af.splash.count = af.splash.count + 1
-		if (af.splash.count == 10) af.splash.count = 0
-		af.splash.pic.msg = gly(0xeb08 + af.splash.count)
+	AF.splash.time1 = clock()
+	if (AF.splash.time1 - AF.splash.time0 >= AF.splash.syncsecs) {
+		AF.splash.count = AF.splash.count + 1
+		if (AF.splash.count == 10) AF.splash.count = 0
+		AF.splash.pic.msg = gly(0xeb08 + AF.splash.count)
 		redraw = true
-		af.splash.time0 = af.splash.time1
+		AF.splash.time0 = AF.splash.time1
 		if (redraw) fe.layout.redraw()
 	}
 }
@@ -347,41 +384,41 @@ function splash_cycle(command, message = "") {
 function splash_progress(i, init, max) {
 	local redraw = false
 	if (i == init) {
-		af.splash.time0 = 0
-		af.splash.time1 = 0
-		af.splash.progress = 0
-		af.splash.pic.visible = true
-		af.splash.picbg.visible = true
-		af.splash.picbg.msg = gly(0xeafb + 12)
-		af.splash.pic.msg = gly(0xeafb)
+		AF.splash.time0 = 0
+		AF.splash.time1 = 0
+		AF.splash.progress = 0
+		AF.splash.pic.visible = true
+		AF.splash.picbg.visible = true
+		AF.splash.picbg.msg = gly(0xeafb + 12)
+		AF.splash.pic.msg = gly(0xeafb)
 		return
 	}
 
 	if (i == max - 1) {
-		af.splash.pic.visible = false
-		af.splash.picbg.visible = false
+		AF.splash.pic.visible = false
+		AF.splash.picbg.visible = false
 		return
 	}
 
-	af.splash.time1 = clock()
+	AF.splash.time1 = clock()
 
-	if (af.splash.time1 - af.splash.time0 >= af.splash.syncsecs) {
+	if (AF.splash.time1 - AF.splash.time0 >= AF.splash.syncsecs) {
 		if (i <= max * 0.2) {
 			redraw = true
-			af.splash.pic.alpha = 255 * i / (max * 0.2)
-			af.splash.picbg.alpha = af.splash.darkalpha * i / (max * 0.2)
+			AF.splash.pic.alpha = 255 * i / (max * 0.2)
+			AF.splash.picbg.alpha = AF.splash.darkalpha * i / (max * 0.2)
 		}
 		else if (i >= max * 0.9) {
 			redraw = true
-			af.splash.pic.alpha = 255 * (1.0 - (i - max * 0.9) / (max * 0.1))
-			af.splash.picbg.alpha = 0
+			AF.splash.pic.alpha = 255 * (1.0 - (i - max * 0.9) / (max * 0.1))
+			AF.splash.picbg.alpha = 0
 		}
-		if (floor(11 * i * 1.0 / max) != af.splash.progress) {
-			af.splash.progress = floor(11 * i * 1.0 / max)
-			af.splash.pic.msg = gly(0xeafb + af.splash.progress)
+		if (floor(11 * i * 1.0 / max) != AF.splash.progress) {
+			AF.splash.progress = floor(11 * i * 1.0 / max)
+			AF.splash.pic.msg = gly(0xeafb + AF.splash.progress)
 			redraw = true
 		}
-		af.splash.time0 = af.splash.time1
+		AF.splash.time0 = AF.splash.time1
 		if (redraw) fe.layout.redraw()
 	}
 }
@@ -1436,7 +1473,7 @@ function readprefdata(target) {
 	local version = "0.0"
 
 	try {version = prffile.read_line()} catch(err) {
-		fe.overlay.splash_message ("Error reading prefs file, resetting to default")
+		splash_message (AF.splash.pulse, "Error reading prefs file, resetting to default")
 		return false
 	}
 
@@ -1490,7 +1527,7 @@ function readprefdata(target) {
 
 
 	if (warnmessage != "") {
-		fe.overlay.splash_message ("Reset prefs:\n\n" + warnmessage)
+		splash_message (AF.splash.pulse, "Reset prefs:\n\n" + warnmessage)
 		return false
 	}
 	return true
@@ -1635,7 +1672,7 @@ function check_buttons() {
 			}
 		}
 	}
-	if (conflict) 	fe.overlay.splash_message ("WARNING: Conflict in Arcadeflow button assignment")
+	if (conflict) 	splash_message (AF.splash.pulse, "WARNING\n\nConflict in Arcadeflow\nbutton assignment", 3)
 }
 
 check_buttons()
@@ -2371,7 +2408,7 @@ if (prf.CUSTOMSIZE != "") {
 		scr.w = scr.w.tointeger()
 		scr.h = scr.h.tointeger()
 	}
-	catch(err) {fe.overlay.splash_message("Wrong syntax in screen resolution"); prf.CUSTOMSIZE = ""; scr.w = ScreenWidth; scr.h = ScreenHeight}
+	catch(err) {splash_message(AF.splash.pulse, "Wrong syntax in screen resolution"); prf.CUSTOMSIZE = ""; scr.w = ScreenWidth; scr.h = ScreenHeight}
 }
 
 // Screen size and overscan management
@@ -4810,14 +4847,14 @@ function cleandatabase(temppref) {
 		return
 	}
 
-	fe.overlay.splash_message("Cleanup...")
+	splash_message(AF.splash.pulse, "Cleanup...")
 
 	local has_emulator = false
 	local has_romlist = false
 	local filepresent = false
 	local todolist = []
 	foreach(item, val in z_list.db1) {
-		fe.overlay.splash_message(item + "\nCleaning Database")
+		splash_message(AF.splash.start, item + "\nCleaning Database")
 
 		// Check if each db entry has an emulator and a romlist
 		has_emulator = file_exist(AF.emulatorsfolder + item + ".cfg")
@@ -4848,18 +4885,18 @@ function cleandatabase(temppref) {
 
 	// Now save the updated db files
 	foreach(item, val in z_list.db1) {
-		fe.overlay.splash_message(item + "\nRefresh Romlist [ ]\nUpdate Database [ ]")
+		splash_message(AF.splash.start, item + "\nRefresh Romlist [ ]\nUpdate Database [ ]")
 		refreshromlist(item, false)
-		fe.overlay.splash_message(item + "\nRefresh Romlist [*]\nUpdate Database [ ]")
+		splash_message(AF.splash.start, item + "\nRefresh Romlist [*]\nUpdate Database [ ]")
 		saveromdb1(item, z_list.db1[item])
-		fe.overlay.splash_message(item + "\nRefresh Romlist [*]\nUpdate Database [*]")
+		splash_message(AF.splash.start, item + "\nRefresh Romlist [*]\nUpdate Database [*]")
 		saveromdb2(item, z_list.db2[item])
 	}
 	if (temppref.ALLGAMES) {
 		buildconfig(temppref.ALLGAMES, temppref)
 		update_allgames_collections(true, temppref)
 	}
-	fe.overlay.splash_message("All Done")
+	splash_message(AF.splash.pulse, "All Done")
 	//restartAM()
 }
 
@@ -6626,6 +6663,7 @@ function getallgamesdb(logopic) {
 				//TEST160 if done this way, it doesn't risk to happen during collection.
 				//TEST160 But what happens if the emulator doesn't have a reference romlist?
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
+				//TEST162 SERVE QUESTO???
 				fe.overlay.splash_message("")//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
 
@@ -11429,7 +11467,6 @@ function history_updatetext() {
 	local tempdesc = "" //this description comes from history.dat
 
 	if (lookup >= 0) {
-		//fe.overlay.splash_message(lookup + " " + my_config)
 		try {
 			tempdesc = af_get_history_entry(lookup, prf)
 		} catch(err) {
@@ -11721,7 +11758,7 @@ function update_allgames_collections(verbose, tempprf) {
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if (val2.inmenu) {
-						if (verbose)fe.overlay.splash_message ("Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
+						if (verbose) splash_message (AF.item.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 					}
 				}
@@ -11750,7 +11787,7 @@ function update_allgames_collections(verbose, tempprf) {
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
 						if (verbose && (sysname != cursysname)) {
-							fe.overlay.splash_message ("Collection:" + item + "\nSystem:" + sysname + "\n")
+							splash_message (AF.item.pulse, "Collection:" + item + "\nSystem:" + sysname + "\n")
 							cursysname = sysname
 						}
 					if (!outfiles.rawin(item)) {
@@ -12649,12 +12686,12 @@ function afinstall(zipball, afname) {
 	// Download zip of new layout version
 	AF.updatechecking = true
 
-	splash_cycle(af.splash.start, "Downloading")
+	splash_cycle(AF.splash.start, "Downloading")
 	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "splash_cycle")
-	splash_cycle(af.splash.stop)
+	splash_cycle(AF.splash.stop)
 
 	// Create target directory
-	splash_cycle(af.splash.start, "Installing")
+	splash_cycle(AF.splash.start, "Installing")
 	splash_cycle(null)
 	system ("mkdir \"" + newaffolderTEMP + "\"")
 	splash_cycle(null)
@@ -12721,7 +12758,7 @@ function afinstall(zipball, afname) {
 	}
 	outfile.close_file()
 	AF.updatechecking = false
-	splash_cycle(af.splash.stop)
+	splash_cycle(AF.splash.stop)
 	frostshow()
 	zmenudraw3([{text = ltxt("Restart", AF.LNG)}], ltxt("Arcadeflow updated to", AF.LNG) + " " + zipball, 0xe91c, 0, {center = true},
 	function(out) {
@@ -12742,9 +12779,9 @@ function gh_menu(presel) {
 			gh.branchlist = []
 			gh.commitlist = []
 
-			splash_cycle(af.splash.start)
+			splash_cycle(AF.splash.start)
 			fe.plugin_command("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/branches", "gh_branchlist")
-			splash_cycle(af.splash.stop)
+			splash_cycle(AF.splash.stop)
 			if (gh.branchlist.len() == 0) {
 				gh_menu(0)
 				return
@@ -12767,9 +12804,9 @@ function gh_menu(presel) {
 		else if (out == 1) {
 			gh.taglist = []
 			gh.releasedatelist = []
-			splash_cycle(af.splash.start)
+			splash_cycle(AF.splash.start)
 			fe.plugin_command("curl", "-L -s https://api.github.com/repos/zpaolo11x/Arcadeflow/releases", "gh_releaselist")
-			splash_cycle(af.splash.stop)
+			splash_cycle(AF.splash.stop)
 			if (gh.taglist.len() == 0) {
 				gh_menu(1)
 				return
@@ -12801,7 +12838,7 @@ function checkforupdates(force) {
 
 	//load latest update version
 	//fe.overlay.splash_message("Checking for updates...")
-	splash_message(af.splash.start, "Checking for updates...")
+	splash_message(AF.splash.start, "Checking for updates...")
 	
 	AF.updatechecking = true
 
@@ -12810,7 +12847,7 @@ function checkforupdates(force) {
 	ver_in = gh.latest_version
 
 	AF.updatechecking = false
-	splash_message(af.splash.stop)
+	splash_message(AF.splash.stop)
 
 	if (ver_in == "") return
 	if ((ver_in == prf.UPDATEDISMISSVER) && (!force)) return
@@ -12852,9 +12889,9 @@ function checkforupdates(force) {
 			if (!prf.AUTOINSTALL) {
 				// Simply download in your home folder
 				AF.updatechecking = true
-				splash_cycle(af.splash.start, "Downloading")
+				splash_cycle(AF.splash.start, "Downloading")
 				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "splash_cycle")
-				splash_cycle(af.splash.stop)
+				splash_cycle(AF.splash.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
 				zmenudraw3([{text = "Ok"}], newafname + ".zip downloaded", 0xe91c, 0, {center = true},
@@ -13850,36 +13887,36 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 }
 
-/// PROGRESS BAR ///
+/// SPLASH SCREEN UPDATE ///
 
-af.splash.bg = fe.add_rectangle(0, 0, fl.w_os, fl.h_os)
-af.splash.text = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
-af.splash.picbg = fe.add_text("", fl.x + floor(0.5 * (fl.w - af.splash.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - af.splash.size * UI.scalerate)), floor(af.splash.size * UI.scalerate), floor(af.splash.size * UI.scalerate))
-af.splash.pic = fe.add_text("", af.splash.picbg.x, af.splash.picbg.y, af.splash.picbg.width, af.splash.picbg.height)
+AF.splash.bg.set_pos(0, 0, fl.w_os, fl.h_os)
+AF.splash.text.set_pos(fl.x, fl.y, fl.w, fl.h)
+AF.splash.picbg.set_pos(fl.x + floor(0.5 * (fl.w - AF.splash.size * UI.scalerate)), fl.y + floor(0.5 * (fl.h - AF.splash.size * UI.scalerate)), floor(AF.splash.size * UI.scalerate), floor(AF.splash.size * UI.scalerate))
+AF.splash.pic.set_pos(AF.splash.picbg.x, AF.splash.picbg.y, AF.splash.picbg.width, AF.splash.picbg.height)
 
-af.splash.pic.font = af.splash.picbg.font = uifonts.glyphs
-af.splash.text.font = uifonts.gui
+//AF.splash.pic.font = AF.splash.picbg.font = uifonts.glyphs
+//AF.splash.text.font = uifonts.gui
 
-af.splash.pic.margin = af.splash.picbg.margin = af.splash.text.margin = 0
-af.splash.pic.align = af.splash.picbg.align = af.splash.text.align = Align.MiddleCentre
+//AF.splash.pic.margin = AF.splash.picbg.margin = AF.splash.text.margin = 0
+//AF.splash.pic.align = AF.splash.picbg.align = AF.splash.text.align = Align.MiddleCentre
 
-af.splash.pic.charsize = af.splash.size * UI.scalerate
-af.splash.picbg.charsize = af.splash.size * UI.scalerate
-af.splash.text.charsize = 0.25 * af.splash.pic.height //TEST162 was 0.35
+AF.splash.pic.charsize = AF.splash.size * UI.scalerate
+AF.splash.picbg.charsize = AF.splash.size * UI.scalerate
+AF.splash.text.charsize = 0.25 * AF.splash.pic.height //TEST162 was 0.35
 
-af.splash.bg.zorder = 100000
-af.splash.text.zorder = 100001
-af.splash.picbg.zorder = 100002
-af.splash.pic.zorder = 100003
+//AF.splash.bg.zorder = 100000
+//AF.splash.text.zorder = 100001
+//AF.splash.picbg.zorder = 100002
+//AF.splash.pic.zorder = 100003
 
-af.splash.pic.word_wrap = af.splash.picbg.word_wrap = af.splash.text.word_wrap = true
-af.splash.pic.visible = af.splash.picbg.visible = af.splash.bg.visible = af.splash.text.visible = false
+//AF.splash.pic.word_wrap = AF.splash.picbg.word_wrap = AF.splash.text.word_wrap = true
+//AF.splash.pic.visible = AF.splash.picbg.visible = AF.splash.bg.visible = AF.splash.text.visible = false
 
-af.splash.pic.set_rgb(255, 255, 255)
-af.splash.picbg.set_rgb(af.splash.dark, af.splash.dark, af.splash.dark)
-af.splash.text.set_rgb(255, 255, 255)
-af.splash.bg.set_rgb(30, 30, 30)
-af.splash.bg.alpha = 190
+//AF.splash.pic.set_rgb(255, 255, 255)
+//AF.splash.picbg.set_rgb(AF.splash.dark, AF.splash.dark, AF.splash.dark)
+//AF.splash.text.set_rgb(255, 255, 255)
+//AF.splash.bg.set_rgb(30, 30, 30)
+//AF.splash.bg.alpha = 190
 
 	//Number of rows is 0.78 * (fl.h_os - 2.0 * AF.msgbox.obj.margin)/AF.msgbox.obj.char_size
 /// FPS MONITOR ///
@@ -17531,10 +17568,10 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom2"){
-		splash_message(af.splash.pulse, "Test Message")
+		splash_message(AF.splash.pulse, "Test Message")
 	}
 	if (sig == "custom4"){
-		splash_message(af.splash.pulse, "Test Message Long", 5)
+		splash_message(AF.splash.pulse, "Test Message Long", 5)
 	}
 	debugpr("\n Si:" + sig)
 
