@@ -343,7 +343,6 @@ function splash_message(command, message = "", seconds = 1) {
 }
 
 function splash_cycle(command, message = "") {
-	local redraw = false
 	if (command == AF.splash.start) {
 		AF.splash.time0 = 0
 		AF.splash.time1 = 0
@@ -370,6 +369,10 @@ function splash_cycle(command, message = "") {
 		AF.splash.text.visible = AF.splash.bg.visible = false
 		return
 	}
+}
+
+function splash_cycle_update(){
+	local redraw = false
 	AF.splash.time1 = clock()
 	if (AF.splash.time1 - AF.splash.time0 >= AF.splash.syncsecs) {
 		AF.splash.count = AF.splash.count + 1
@@ -12696,7 +12699,7 @@ function afinstall(zipball, afname) {
 	AF.updatechecking = true
 
 	splash_cycle(AF.splash.start, "Downloading")
-	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "splash_cycle")
+	fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + zipball + " -o \"" + AF.folder + afname + ".zip\" --trace-ascii -", "splash_cycle_update")
 	splash_cycle(AF.splash.stop)
 
 	// Create target directory
@@ -12899,7 +12902,7 @@ function checkforupdates(force) {
 				// Simply download in your home folder
 				AF.updatechecking = true
 				splash_cycle(AF.splash.start, "Downloading")
-				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "splash_cycle")
+				fe.plugin_command ("curl", "-L -s -k https://api.github.com/repos/zpaolo11x/Arcadeflow/zipball/" + gh.latest_version + " -o \"" + AF.folder + newafname + ".zip\" --trace-ascii -", "splash_cycle_update")
 				splash_cycle(AF.splash.stop)
 				AF.updatechecking = false
 				prf.UPDATECHECKED = true
