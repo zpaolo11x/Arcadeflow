@@ -153,9 +153,10 @@ local AF = {
 		bg = null
 		pic = null
 		picbg = null
-		size = 280
+		size = 290 //WAS 300
 		dark = 60
 		darkalpha = 90
+		charscale = 0.28 //WAS 0.35
 
 		tscalerate = fe.layout.width >= fe.layout.height ? fe.layout.height / 1200.0 : fe.layout.width / 1200.0
 
@@ -353,7 +354,7 @@ function splash_cycle(command, message = "") {
 		AF.splash.pic.msg = gly(0xeafb)
 		AF.splash.count = 0
 		if (message != "") {
-			AF.splash.text.msg = message + "\n\n\n\n"
+			AF.splash.text.msg = message + "\n\n\n\n\n"
 			AF.splash.text.visible = AF.splash.bg.visible = true
 		}
 		return
@@ -13915,7 +13916,7 @@ AF.splash.pic.set_pos(AF.splash.picbg.x, AF.splash.picbg.y, AF.splash.picbg.widt
 
 AF.splash.pic.charsize = AF.splash.size * UI.scalerate
 AF.splash.picbg.charsize = AF.splash.size * UI.scalerate
-AF.splash.text.charsize = 0.35 * AF.splash.pic.height //TEST162 was 0.35
+AF.splash.text.charsize =AF.splash.charscale * AF.splash.pic.height //TEST162 was 0.35
 
 //AF.splash.bg.zorder = 100000
 //AF.splash.text.zorder = 100001
@@ -17581,6 +17582,10 @@ function ra_selectemu(startemu) {
 
 /// On Signal ///
 function on_signal(sig) {
+
+	if (sig == "custom1"){
+		splash_cycle(AF.splash.start,"Downloading")
+	}
 
 	if (sig == "custom2"){
 		splash_message(AF.splash.pulse, "Test Message")
