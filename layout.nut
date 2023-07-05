@@ -6673,7 +6673,8 @@ function getallgamesdb(logopic) {
 				//TEST160 But what happens if the emulator doesn't have a reference romlist?
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
 				//TEST162 SERVE QUESTO???
-				//fe.overlay.splash_message("")//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
+				//fe.overlay.splash_message("")
+				//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
 				fe.layout.redraw()
 				if (prf.SPLASHON) {
@@ -15400,9 +15401,7 @@ if (prf.ALLGAMES != AF.config.collections) {
 	restartAM()
 }
 
-fe.layout.font = uifonts.mono
 getallgamesdb(aflogo)
-fe.layout.font = uifonts.general
 
 function checkit2() {
 	foreach(item, val in z_af_collections.tab) {
