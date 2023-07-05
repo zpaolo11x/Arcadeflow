@@ -371,7 +371,7 @@ function splash_cycle(command, message = "") {
 	}
 }
 
-function splash_cycle_update(){
+function splash_cycle_update(command){
 	local redraw = false
 	AF.splash.time1 = clock()
 	if (AF.splash.time1 - AF.splash.time0 >= AF.splash.syncsecs) {
