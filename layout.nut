@@ -6623,7 +6623,7 @@ function getallgamesdb(logopic) {
 
 	if (prf.SPLASHON) {
 		textobj = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-		textobj.alpha = 160
+		textobj.alpha = 190
 		textobj.set_rgb(0, 0, 0)
 	} else {
 		//textobj = fe.add_text("", logopic.x + logopic.width * (1.0 - text_ratio) * 0.5, logopic.y + logopic.height - text_charsize * 0.5, logopic.width * text_ratio, text_charsize * 1.2)
@@ -6643,6 +6643,7 @@ function getallgamesdb(logopic) {
 	local metadatapath = ""
 	local meta_edited = {}
 	//fe.overlay.splash_message("")
+	
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3) == "cfg") && (item.slice(0, 2) != "._")) {
