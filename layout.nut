@@ -438,7 +438,7 @@ function splash_progress(i, init, max) {
 	}
 }
 
-if (FeVersionNum < 300) splash_message(AF.splash.pulse, "Arcadeflow requires AM+ 3.0.0+", 5)
+if (FeVersionNum < 300) splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.0+",5)
 
 /// Config management ///
 
@@ -564,7 +564,7 @@ function parseconfig() {
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
-				fe.overlay.edit_dialog("*WARNING*\nSet Image Cache Size to zero to avoid issues", "")
+				splash_message(AF.splash.pulse, "*WARNING*\nSet Image Cache Size to zero to avoid issues", 5)
 				warning = true
 			}
 		}
@@ -572,7 +572,7 @@ function parseconfig() {
 			tempval = split(item, " ")
 			if (tempval.len() > 1) {
 				if (tempval[1].find("Arcadeflow") == 0) {
-					fe.overlay.edit_dialog("*WARNING*\nDon't use Arcadeflow as displays menu layout", "")
+					splash_message(AF.splash.pulse, "*WARNING*\nDon't use Arcadeflow as displays menu layout", 5)
 					warning = true
 				}
 			}
@@ -4860,7 +4860,7 @@ function resetromlist() {
 
 function cleandatabase(temppref) {
 	if (temppref.MASTERLIST) {
-		fe.overlay.edit_dialog("Not possible when master romlist is enabled", "")
+		splash_message(AF.splash.pulse, "Not possible when master romlist is enabled", 5)
 		return
 	}
 
@@ -7829,7 +7829,7 @@ bglay.whitepic.visible = false
 
 try {bglay.commonground = fl.surf.add_rectangle(0, 0, fl.w_os, fl.h_os)}
 catch(err) {
-	fe.overlay.edit_dialog("Arcadeflow needs Attract Mode Plus\nPress enter to quit", "")
+	splash_message(AF.splash.pulse, "Arcadeflow needs Attract Mode Plus", 5)
 	fe.signal("exit_to_desktop")
 }
 bglay.commonground.set_rgb(128, 128, 128)
