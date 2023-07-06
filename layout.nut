@@ -12740,10 +12740,12 @@ function afinstall(zipball, afname) {
 	system ("mkdir \"" + newaffolderTEMP + "\"")
 	splash_cycle_update(null)
 	system ("mkdir \"" + newaffolder + "\"")
+	splash_cycle_update(null)
 
 	// Unpack layout
 	unzipfile (AF.folder + afname + ".zip", newaffolderTEMP, true)
 	local ghfolder = DirectoryListing(newaffolderTEMP)
+	splash_cycle_update(null)
 
 	foreach (item in ghfolder.results) {
 		local ghfolder2 = DirectoryListing(item)
@@ -12756,6 +12758,7 @@ function afinstall(zipball, afname) {
 	}
 
 	system (OS == "Windows" ? "rmdir /q /s " + "\"" + newaffolderTEMP + "\""  : "rm -R \"" + newaffolderTEMP + "\"")
+	splash_cycle_update(null)
 
 	// Transfer preferences
 	local dir = DirectoryListing(AF.folder)
