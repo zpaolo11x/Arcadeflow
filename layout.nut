@@ -6721,8 +6721,9 @@ function getallgamesdb(logopic) {
 	}
 	//flowT.blacker = startfade()
 	if (prf.SPLASHON) AF.bootplane1.visible = false
-	flowT.bootfade = startfade(flowT.bootfade, 0.1, 1.0)
- 	//AF.bootplane1.visible = AF.bootplane2.visible = false
+	//flowT.bootfade = startfade(flowT.bootfade, 0.1, 1.0)
+ 	flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
+	//AF.bootplane1.visible = AF.bootplane2.visible = false
 
 	timestop("GamesDB")
 }
@@ -17040,7 +17041,11 @@ function tick(tick_time) {
 		if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
 		//TEST162 if (prf.SPLASHON) aflogo.alpha = 255 * flowT.blacker[1]
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
-	}
+		if (prf.SPLASHON) 
+			aflogo.alpha = 255 - AF.bootalpha * (1.0 - flowT.blacker[1])
+		else 
+			AF.boottext.alpha = AF.bootalpha * (1.0 - flowT.blacker[1])
+		}
 
 	// history text fade
 	if (checkfade(flowT.histtext)) {
