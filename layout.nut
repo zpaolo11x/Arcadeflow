@@ -357,6 +357,8 @@ function splash_cycle(command, message = "") {
 		AF.splash.progress = 0
 		AF.splash.pic.visible = true
 		AF.splash.picbg.visible = true
+		AF.splash.pic.alpha = 255
+		AF.splash.picbg.alpha = AF.splash.darkalpha
 		AF.splash.picbg.msg = gly(0xeafb + 12)
 		AF.splash.pic.msg = gly(0xeafb)
 		AF.splash.count = 0
@@ -400,6 +402,8 @@ function splash_progress(i, init, max) {
 		AF.splash.progress = 0
 		AF.splash.pic.visible = true
 		AF.splash.picbg.visible = true
+		AF.splash.pic.alpha = 255
+		AF.splash.picbg.alpha = AF.splash.darkalpha
 		AF.splash.picbg.msg = gly(0xeafb + 12)
 		AF.splash.pic.msg = gly(0xeafb)
 		return
