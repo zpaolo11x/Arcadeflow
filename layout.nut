@@ -170,6 +170,8 @@ local AF = {
 	bootplane2 = null
 	boottext = null
 	bootalpha = 70
+
+	logo = null
 }
 
 function AFscrapeclear() {
@@ -6625,6 +6627,8 @@ function z_checkhidden(i) {
 function getallgamesdb(logopic) {
 	timestart("GamesDB")
 
+	local showalpha = 0
+
 	local numchars = 12
 	local text_ratio = 0.6
 	local text_charsize = text_ratio * fl.w * 1.45 / numchars
@@ -6644,6 +6648,16 @@ function getallgamesdb(logopic) {
 //	AF.bootplane2 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
 //	AF.bootplane2.alpha = 210
 //	AF.bootplane2.set_rgb(0, 0, 0)
+
+	while (showalpha < AF.bootalpha){
+		showalpha = showalpha + 1
+		if (prf.SPLASHON) 
+			AF.logo.alpha = showalpha
+		else
+			AF.boottext.alpha = showalpha
+		fe.layout.redraw()
+		
+	}
 
 	local emulatorarray = []
 	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
@@ -13640,16 +13654,16 @@ if (prf.AMENABLE) {
 
 /// Splash Screen ///
 
-local aflogo = fe.add_image(prf.SPLASHLOGOFILE, fl.x, fl.y, fl.w, fl.h)
-aflogo.visible = false
-aflogo.alpha = AF.bootalpha
+AF.logo = fe.add_image(prf.SPLASHLOGOFILE, fl.x, fl.y, fl.w, fl.h)
+AF.logo.visible = false
+AF.logo.alpha = AF.bootalpha
 
 local aflogoT = {
 	w = fl.w,
 	h = fl.h,
 	x = 0,
 	y = 0,
-	ar = aflogo.texture_width * 1.0 / aflogo.texture_height
+	ar = AF.logo.texture_width * 1.0 / AF.logo.texture_height
 }
 
 if (aflogoT.ar >= fl.w / (fl.h * 1.0)) {
@@ -13665,16 +13679,16 @@ else {
 	aflogoT.x = fl.x - (aflogoT.w - fl.w) * 0.5
 }
 
-aflogo.set_pos(aflogoT.x, aflogoT.y, aflogoT.w, aflogoT.h)
+AF.logo.set_pos(aflogoT.x, aflogoT.y, aflogoT.w, aflogoT.h)
 
 if (!prf.CUSTOMLOGO) {
-	aflogo.width = (1150.0 / 10.0) * floor((fl.w * 10.0 / 1150.0) + 0.5)
-	aflogo.height = aflogo.width * aflogo.texture_height * 1.0 / aflogo.texture_width
-	aflogo.x = fl.x + floor((fl.w - aflogo.width) * 0.5)
-	aflogo.y = fl.y + floor((fl.h - aflogo.height) * 0.5)
+	AF.logo.width = (1150.0 / 10.0) * floor((fl.w * 10.0 / 1150.0) + 0.5)
+	AF.logo.height = AF.logo.width * AF.logo.texture_height * 1.0 / AF.logo.texture_width
+	AF.logo.x = fl.x + floor((fl.w - AF.logo.width) * 0.5)
+	AF.logo.y = fl.y + floor((fl.h - AF.logo.height) * 0.5)
 }
 
-aflogo.visible = prf.SPLASHON
+AF.logo.visible = prf.SPLASHON
 
 /// Layout fade from black ///
 
@@ -15412,7 +15426,7 @@ if (prf.ALLGAMES != AF.config.collections) {
 	restartAM()
 }
 
-getallgamesdb(aflogo)
+getallgamesdb(AF.logo)
 
 function checkit2() {
 	foreach(item, val in z_af_collections.tab) {
@@ -15907,12 +15921,17 @@ if (surfdebug) {
 	debugoverlay.align = Align.Left
 }
 
-
+local clock0 = 0
+local clock1 = 0
+local time0 = 0
+local time1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
 	//if (surfdebug) printsrufaces()
-
+	testpr((clock() - clock0) * 1000+" "+(fe.layout.time - time0)+"\n")
+	clock0 = clock()
+	time0 = fe.layout.time
 	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
@@ -16954,7 +16973,7 @@ function tick(tick_time) {
 				fe.signal("displays_menu")
 			}
 		}
-		aflogo.alpha = 255 * flowT.logo[1]
+		AF.logo.alpha = 255 * flowT.logo[1]
 	}
 
 	if (checkfade(flowT.groupbg)) {
@@ -17011,7 +17030,7 @@ function tick(tick_time) {
 			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 		}
 		if (prf.SPLASHON) 
-			aflogo.alpha = 255 - AF.bootalpha * (1.0 - flowT.bootfade[1])
+			AF.logo.alpha = 255 - AF.bootalpha * (1.0 - flowT.bootfade[1])
 		else 
 			AF.boottext.alpha = AF.bootalpha * (1.0 - flowT.bootfade[1])
 	}
@@ -17039,10 +17058,10 @@ function tick(tick_time) {
 
 		fl.surf.alpha = 255 * flowT.blacker[1]
 		if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
-		//TEST162 if (prf.SPLASHON) aflogo.alpha = 255 * flowT.blacker[1]
+		//TEST162 if (prf.SPLASHON) AF.logo.alpha = 255 * flowT.blacker[1]
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
 		if (prf.SPLASHON) 
-			aflogo.alpha = 255 - AF.bootalpha * (1.0 - flowT.blacker[1])
+			AF.logo.alpha = 255 - AF.bootalpha * (1.0 - flowT.blacker[1])
 		else 
 			AF.boottext.alpha = AF.bootalpha * (1.0 - flowT.blacker[1])
 		}
