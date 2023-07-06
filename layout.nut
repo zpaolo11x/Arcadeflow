@@ -329,7 +329,7 @@ function splash_message(command, message = "", seconds = 1) {
 		return
 	}
 	if (command == AF.splash.pulse) {
-		AF.splash.time0 = clock()
+		AF.splash.time0 = fe.layout.time
 
 		AF.splash.pic.visible = false
 		AF.splash.picbg.visible = false
@@ -337,7 +337,7 @@ function splash_message(command, message = "", seconds = 1) {
 		AF.splash.text.visible = AF.splash.bg.visible = true
 		fe.layout.redraw()
 
-		while (clock() - AF.splash.time0 <= seconds){
+		while (fe.layout.time - AF.splash.time0 <= 1000 * seconds){
 
 		}
 
@@ -381,8 +381,8 @@ function splash_cycle(command, message = "") {
 
 function splash_cycle_update(command){
 	local redraw = false
-	AF.splash.time1 = clock()
-	if (AF.splash.time1 - AF.splash.time0 >= AF.splash.syncsecs) {
+	AF.splash.time1 = fe.layout.time
+	if (AF.splash.time1 - AF.splash.time0 >= 1000 * AF.splash.syncsecs) {
 		AF.splash.count = AF.splash.count + 1
 		if (AF.splash.count == 10) AF.splash.count = 0
 		AF.splash.pic.msg = gly(0xeb08 + AF.splash.count)
@@ -411,9 +411,9 @@ function splash_progress(i, init, max) {
 		return
 	}
 
-	AF.splash.time1 = clock()
+	AF.splash.time1 = fe.layout.time
 
-	if (AF.splash.time1 - AF.splash.time0 >= AF.splash.syncsecs) {
+	if (AF.splash.time1 - AF.splash.time0 >= 1000 * AF.splash.syncsecs) {
 		if (i <= max * 0.2) {
 			redraw = true
 			AF.splash.pic.alpha = 255 * i / (max * 0.2)
