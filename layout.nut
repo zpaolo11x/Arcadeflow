@@ -6649,9 +6649,15 @@ function getallgamesdb(logopic) {
 		AF.boottext.word_wrap = true
 		AF.boottext.alpha = AF.bootalpha
 	}
-//	AF.bootplane2 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-//	AF.bootplane2.alpha = 210
-//	AF.bootplane2.set_rgb(0, 0, 0)
+	fe.overlay.splash_message("") //TEST162 maybe useless
+
+	local emulatorarray = []
+	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
+	local file = ""
+	local itemname = ""
+	local metadatapath = ""
+	local meta_edited = {}
+
 	local time0 = fe.layout.time
 
 	while (showalpha < AF.bootalpha){
@@ -6666,14 +6672,7 @@ function getallgamesdb(logopic) {
 		}
 	}
 
-	local emulatorarray = []
-	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
-	local file = ""
-	local itemname = ""
-	local metadatapath = ""
-	local meta_edited = {}
-	//fe.overlay.splash_message("")
-	
+
 	foreach(i, item in emulatordir) {
 
 		if ((item.slice(-3) == "cfg") && (item.slice(0, 2) != "._")) {
