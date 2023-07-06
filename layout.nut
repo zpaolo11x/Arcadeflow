@@ -7649,7 +7649,7 @@ local tilez = []
 
 fl.surf = fe.add_surface(fl.w_os, fl.h_os)
 fl.surf.redraw = true
-fl.surf.alpha = 0
+fl.surf.alpha = 255
 
 // fl.surf.mipmap = 1
 // fl.surf.zorder = -1000
