@@ -12732,9 +12732,9 @@ function afinstall(zipball, afname) {
 
 	// Create target directory
 	splash_cycle(AF.splash.start, "Installing")
-	splash_cycle(null)
+	splash_cycle_update(null)
 	system ("mkdir \"" + newaffolderTEMP + "\"")
-	splash_cycle(null)
+	splash_cycle_update(null)
 	system ("mkdir \"" + newaffolder + "\"")
 
 	// Unpack layout
@@ -12744,7 +12744,7 @@ function afinstall(zipball, afname) {
 	foreach (item in ghfolder.results) {
 		local ghfolder2 = DirectoryListing(item)
 		foreach (item2 in ghfolder2.results) {
-			splash_cycle(null)
+			splash_cycle_update(null)
 			system (OS == "Windows" ?
 				"move \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"" :
 				"mv \"" + fe.path_expand(item2) + "\" \"" + newaffolder + "\"")
@@ -12756,7 +12756,7 @@ function afinstall(zipball, afname) {
 	// Transfer preferences
 	local dir = DirectoryListing(AF.folder)
 	foreach (item in dir.results) {
-		splash_cycle(null)
+		splash_cycle_update(null)
 		if (item.find("pref_")) {
 			local basename = item.slice(item.find("pref_"), item.len())
 			system ((OS == "Windows" ? "copy " : "cp ") + "\"" + AF.folder + basename + "\" \"" + newaffolder + basename + "\"")
@@ -12765,7 +12765,7 @@ function afinstall(zipball, afname) {
 	// Remove downloaded file
 	local rem0 = 0
 	while (rem0 == 0) {
-		splash_cycle(null)
+		splash_cycle_update(null)
 		try {remove(AF.folder + afname + ".zip"); rem0 = 1} catch(err) {rem0 = 0}
 	}
 	// Update config file
@@ -12777,7 +12777,7 @@ function afinstall(zipball, afname) {
 	local templine = ""
 	local index0 = null
 	while (!cfgfile.eos()) {
-		splash_cycle(null)
+		splash_cycle_update(null)
 		char = 0
 		templine = ""
 		while (char != 10) {
@@ -12793,7 +12793,7 @@ function afinstall(zipball, afname) {
 
 	local outfile = WriteTextFile(AF.amfolder + "attract.cfg")
 	for (local i = 0; i < outarray.len(); i++) {
-		splash_cycle(null)
+		splash_cycle_update(null)
 		outfile.write_line(outarray[i] + "\n")
 	}
 	outfile.close_file()
