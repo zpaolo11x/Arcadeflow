@@ -6648,15 +6648,18 @@ function getallgamesdb(logopic) {
 //	AF.bootplane2 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
 //	AF.bootplane2.alpha = 210
 //	AF.bootplane2.set_rgb(0, 0, 0)
+	local time0 = fe.layout.time
 
 	while (showalpha < AF.bootalpha){
-		showalpha = showalpha + 1
-		if (prf.SPLASHON) 
-			AF.logo.alpha = showalpha
-		else
-			AF.boottext.alpha = showalpha
-		fe.layout.redraw()
-		
+		if (fe.layout.time - time0 >= 1000 / ScreenRefreshRate) {
+			showalpha = showalpha + 7
+			if (prf.SPLASHON) 
+				AF.logo.alpha = showalpha
+			else
+				AF.boottext.alpha = showalpha
+			fe.layout.redraw()
+			time0 = fe.layout.time
+		}
 	}
 
 	local emulatorarray = []
