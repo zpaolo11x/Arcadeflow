@@ -364,6 +364,7 @@ function splash_cycle(command, message = "") {
 			AF.splash.text.msg = message + "\n\n\n\n\n"
 			AF.splash.text.visible = AF.splash.bg.visible = true
 		}
+		fe.layout.redraw()
 		return
 	}
 	if (command == AF.splash.stop) {
@@ -375,6 +376,7 @@ function splash_cycle(command, message = "") {
 		AF.splash.count = 0
 		AF.splash.text.msg = ""
 		AF.splash.text.visible = AF.splash.bg.visible = false
+		fe.layout.redraw()
 		return
 	}
 }
