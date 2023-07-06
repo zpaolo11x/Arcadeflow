@@ -169,7 +169,7 @@ local AF = {
 	bootplane1 = null
 	bootplane2 = null
 	boottext = null
-	bootalpha = 70
+	bootalpha = 60
 
 	logo = null
 }
