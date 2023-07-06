@@ -165,6 +165,11 @@ local AF = {
 		stop = "stop"
 		pulse = "pulse"
 	}
+
+	bootplane1 = null
+	bootplane2 = null
+	boottext = null
+	bootalpha = 70
 }
 
 function AFscrapeclear() {
@@ -1897,6 +1902,8 @@ local flowT = {
 	zoomdisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
 
 	scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
+
+	bootfade = [0.0, 0.0, 0.0, 0.0, 0.0]
 
 }
 
@@ -6618,26 +6625,25 @@ function z_checkhidden(i) {
 function getallgamesdb(logopic) {
 	timestart("GamesDB")
 
-	local textobj = null
-	local textoverlay = null
 	local numchars = 12
 	local text_ratio = 0.6
 	local text_charsize = text_ratio * fl.w * 1.45 / numchars
 
 	if (prf.SPLASHON) {
-		textobj = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-		textobj.alpha = 128
-		textobj.set_rgb(0, 0, 0)
+		AF.bootplane1 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
+		AF.bootplane1.alpha = 128
+		AF.bootplane1.set_rgb(0, 0, 0)
 	} else {
 		//textobj = fe.add_text("", logopic.x + logopic.width * (1.0 - text_ratio) * 0.5, logopic.y + logopic.height - text_charsize * 0.5, logopic.width * text_ratio, text_charsize * 1.2)
-		textobj = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
-		textobj.char_size = text_charsize
-		textobj.font = uifonts.mono
-		textobj.word_wrap = true
+		AF.boottext = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
+		AF.boottext.char_size = text_charsize
+		AF.boottext.font = uifonts.mono
+		AF.boottext.word_wrap = true
+		AF.boottext.alpha = AF.bootalpha
 	}
-	textoverlay = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
-	textoverlay.alpha = 210
-	textoverlay.set_rgb(0, 0, 0)
+//	AF.bootplane2 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
+//	AF.bootplane2.alpha = 210
+//	AF.bootplane2.set_rgb(0, 0, 0)
 
 	local emulatorarray = []
 	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
@@ -6678,10 +6684,10 @@ function getallgamesdb(logopic) {
 				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
 				fe.layout.redraw()
 				if (prf.SPLASHON) {
-					textobj.x = fl.x + fl.w * i * 1.0 / (emulatordir.len() - 1)
-					textobj.width = fl.w - textobj.x + fl.x
+					AF.bootplane1.x = fl.x + fl.w * i * 1.0 / (emulatordir.len() - 1)
+					AF.bootplane1.width = fl.w - AF.bootplane1.x + fl.x
 				} else {
-					textobj.msg = "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars, "|", "\\")
+					AF.boottext.msg = "NOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars, "|", "\\")
 				}
 
 				z_list.db1.rawset (itemname, dofile(AF.romlistfolder + itemname + ".db1"))
@@ -6713,8 +6719,10 @@ function getallgamesdb(logopic) {
 			}
 		}
 	}
-
-	textobj.visible = textoverlay.visible = false
+	//flowT.blacker = startfade()
+	if (prf.SPLASHON) AF.bootplane1.visible = false
+	flowT.bootfade = startfade(flowT.bootfade, 0.1, 1.0)
+ 	//AF.bootplane1.visible = AF.bootplane2.visible = false
 
 	timestop("GamesDB")
 }
@@ -7623,6 +7631,7 @@ local tilez = []
 
 fl.surf = fe.add_surface(fl.w_os, fl.h_os)
 fl.surf.redraw = true
+fl.surf.alpha = 0
 
 // fl.surf.mipmap = 1
 // fl.surf.zorder = -1000
@@ -13632,6 +13641,7 @@ if (prf.AMENABLE) {
 
 local aflogo = fe.add_image(prf.SPLASHLOGOFILE, fl.x, fl.y, fl.w, fl.h)
 aflogo.visible = false
+aflogo.alpha = AF.bootalpha
 
 local aflogoT = {
 	w = fl.w,
@@ -13667,7 +13677,7 @@ aflogo.visible = prf.SPLASHON
 
 /// Layout fade from black ///
 
-flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
+//TEST162 flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 
 /// BGM Start ///
 
@@ -16992,9 +17002,21 @@ function tick(tick_time) {
 		attractitem.black.alpha = 255 * flowT.gametoblack[1]
 	}
 
+	if (checkfade(flowT.bootfade)){
+		flowT.bootfade = fadeupdate(flowT.bootfade)
+
+		if (endfade(flowT.bootfade) == 1) {
+			testpr("OK\n")
+			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
+		}
+		if (prf.SPLASHON) 
+			aflogo.alpha = 255 - AF.bootalpha * (1.0 - flowT.bootfade[1])
+		else 
+			AF.boottext.alpha = AF.bootalpha * (1.0 - flowT.bootfade[1])
+	}
+
 	// Fade whole layout from black
 	if (checkfade(flowT.blacker)) {
-
 		if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -1.0)
 
 		flowT.blacker = fadeupdate(flowT.blacker)
@@ -17016,7 +17038,7 @@ function tick(tick_time) {
 
 		fl.surf.alpha = 255 * flowT.blacker[1]
 		if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
-		if (prf.SPLASHON) aflogo.alpha = 255 * flowT.blacker[1]
+		//TEST162 if (prf.SPLASHON) aflogo.alpha = 255 * flowT.blacker[1]
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
 	}
 
