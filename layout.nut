@@ -15930,19 +15930,11 @@ if (surfdebug) {
 	debugoverlay.align = Align.Left
 }
 
-local clock0 = 0
-local clock1 = 0
-local time0 = 0
-local time1 = 0
 /// On Tick ///
 function tick(tick_time) {
-	clock1 = clock()
-	time1 = fe.layout.time
+
 	//TEST160
 	//if (surfdebug) printsrufaces()
-	testpr((clock1 - clock0)+" "+(time1 - time0)+"\n")
-	time0 = time1
-	clock0 = clock1
 	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
