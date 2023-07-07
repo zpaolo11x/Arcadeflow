@@ -17029,7 +17029,6 @@ function tick(tick_time) {
 		flowT.bootfade = fadeupdate(flowT.bootfade)
 
 		if (endfade(flowT.bootfade) == 1) {
-			testpr("OK\n")
 			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 		}
 		if (prf.SPLASHON) 
