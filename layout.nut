@@ -17713,7 +17713,11 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-		splash_cycle(AF.splash.start,"Downloading")
+		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
+		msgbox_open("Title", "")
+		foreach(i, item in names){
+			msgbox_addlinetop(patchtext(item, "DONE", 10, 60))
+		}
 	}
 
 	if (sig == "custom2"){
