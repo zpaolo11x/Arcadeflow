@@ -3309,6 +3309,26 @@ function msgbox_replacelinetop(text){
 	msgbox_refresh()
 }
 
+function msgbox_replacelinebelow(text, row = 1){
+	local msgarray = split_complete(AF.msgbox.body,"\n")
+	msgarray[row] = text
+	AF.msgbox.body = ""
+	foreach(i, item in msgarray){
+		AF.msgbox.body = AF.msgbox.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
+	}
+	msgbox_refresh()	
+}
+
+function msgbox_addlinebelow(text, row = 1){
+	local msgarray = split_complete(AF.msgbox.body,"\n")
+	msgarray.insert(row, text)
+	AF.msgbox.body = ""
+	foreach(i, item in msgarray){
+		AF.msgbox.body = AF.msgbox.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
+	}
+	msgbox_refresh()	
+}
+
 function msgbox_wrapline(text, columns) {
 	if (text == "") return "\n"
 
@@ -4885,15 +4905,26 @@ function cleandatabase(temppref) {
 		return
 	}
 
-	splash_message(AF.splash.pulse, "Cleanup...")
+	msgbox_open("Romlist and Database cleanup","",function(){
+		fe.signal("back")
+		fe.signal("back")
+		fe.set_display(fe.list.display_index)
+	})
+	msgbox_lock(true)
+	fe.layout.redraw()
 
 	local has_emulator = false
 	local has_romlist = false
 	local filepresent = false
 	local todolist = []
-	foreach(item, val in z_list.db1) {
-		splash_message(AF.splash.start, item + "\nCleaning Database")
 
+	msgbox_addlinetop("Database Cleanup\n" + AF.msgbox.separator1)
+
+	foreach(item, val in z_list.db1) {
+		
+		msgbox_addlinebelow(patchtext(item, "CLEAN", 7, AF.msgbox.columns), 2)
+		
+		fe.layout.redraw()
 		// Check if each db entry has an emulator and a romlist
 		has_emulator = file_exist(AF.emulatorsfolder + item + ".cfg")
 		has_romlist = file_exist(AF.romlistfolder + item + ".txt")
@@ -4920,21 +4951,30 @@ function cleandatabase(temppref) {
 			}
 		}
 	}
+	
+	msgbox_addlinetop("Romlist Refresh and dB Rebuild\n" + AF.msgbox.separator1 + "\n")
 
 	// Now save the updated db files
 	foreach(item, val in z_list.db1) {
-		splash_message(AF.splash.start, item + "\nRefresh Romlist [ ]\nUpdate Database [ ]")
+		msgbox_addlinebelow(patchtext(item, "ROM[ ] DB[ ]", 13, AF.msgbox.columns), 2)
+		fe.layout.redraw()
 		refreshromlist(item, false)
-		splash_message(AF.splash.start, item + "\nRefresh Romlist [*]\nUpdate Database [ ]")
+		msgbox_replacelinebelow(patchtext(item, "ROM[*] DB[ ]", 13, AF.msgbox.columns), 2)
+		fe.layout.redraw()
 		saveromdb1(item, z_list.db1[item])
-		splash_message(AF.splash.start, item + "\nRefresh Romlist [*]\nUpdate Database [*]")
+		msgbox_replacelinebelow(patchtext(item, "ROM[*] DB[*]", 13, AF.msgbox.columns), 2)
+		fe.layout.redraw()
 		saveromdb2(item, z_list.db2[item])
 	}
+
+
 	if (temppref.ALLGAMES) {
 		buildconfig(temppref.ALLGAMES, temppref)
 		update_allgames_collections(true, temppref)
 	}
-	splash_message(AF.splash.pulse, "All Done")
+
+	msgbox_addlinetop("All Done\n" + AF.msgbox.separator2)
+	msgbox_lock(false)
 	//restartAM()
 }
 
@@ -11816,9 +11856,8 @@ function update_allgames_collections(verbose, tempprf) {
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
-				if (verbose) msgbox_addlinetop("Collection:" + item)
+				if (verbose) msgbox_addlinetop("Collection:" + item + "\n" + AF.msgbox.separator1)
 				fe.layout.redraw()
-				testpr("Collection: "+item+"\n")
 				// build the name for the allgames romlist
 				local filename = AF.romlistfolder + item + ".txt"
 				local strline = ""
@@ -11832,17 +11871,14 @@ function update_allgames_collections(verbose, tempprf) {
 					if ((val2.inmenu) && (!doneromlists_coll.rawin(val2.romlist))) {
 						doneromlists_coll.rawset(val2.romlist, 0)
 						if (verbose) {
-							msgbox_replacelinetop("-   " + val2.romlist)
-							msgbox_addlinetop("Collection:" + item)//splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)						
+							msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
 						}
 						fe.layout.redraw()
-						testpr("-  "+val2.romlist+"\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 						if (!doneromlists_all.rawin(val2.romlist)) allgamesromlist += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 						doneromlists_all.rawset(val2.romlist, 0)
 					}
 				}
-				msgbox_addlinetop(AF.msgbox.separator1)
 				system ((OS == "Windows" ? "type" : "cat") + strline + " > \"" + filename + "\"")
 			}
 		}
