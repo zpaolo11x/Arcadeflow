@@ -11780,8 +11780,10 @@ if (prf.DMPIMAGES == "WALLS") disp.spacing = disp.bgtileh
 
 function update_allgames_collections(verbose, tempprf) {
 	// Build the table of display data
+	testpr(verbose+"\n")
+	if (verbose) msgbox_open("Build AF Collections", "")
+	fe.layout.redraw()
 	builddisplaystructure()
-
 	local allgamesromlist = ""
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
@@ -11793,6 +11795,9 @@ function update_allgames_collections(verbose, tempprf) {
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
+				if (verbose) msgbox_addlinebottom("Collection:" + item)
+				fe.layout.redraw()
+				testpr(item+"\n")
 				// build the name for the allgames romlist
 				local filename = AF.romlistfolder + item + ".txt"
 				local strline = ""
@@ -11805,7 +11810,9 @@ function update_allgames_collections(verbose, tempprf) {
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if ((val2.inmenu) && (!doneromlists.rawin(val2.romlist))) {
 						doneromlists.rawset(val2.romlist, 0)
-						if (verbose) splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)
+						if (verbose) msgbox_addlinebottom("-   " + val2.romlist)//splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)
+						fe.layout.redraw()
+						testpr(val2.romlist+"\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 					}
 				}
