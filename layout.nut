@@ -11793,41 +11793,44 @@ function update_allgames_collections(verbose, tempprf) {
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
-
 	if (!tempprf.MASTERLIST) {
+		local doneromlists_all = {}
 		foreach (item, val in z_af_collections.tab) {
-			local doneromlists = {}
 			// The all games collections are generated only if they are not in "OTHER"
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
 				if (verbose) msgbox_addlinetop("Collection:" + item)
 				fe.layout.redraw()
-				testpr(item+"\n")
+				testpr("Collection: "+item+"\n")
 				// build the name for the allgames romlist
 				local filename = AF.romlistfolder + item + ".txt"
 				local strline = ""
 
 				// Add the group romlist to the all games romlsit list
-				allgamesromlist += " \"" + AF.romlistfolder + item + ".txt\""
+				//TEST162 moved inside the loop to avoid duplicates allgamesromlist += " \"" + AF.romlistfolder + item + ".txt\""
 
-				local doneromlists = {}
+				local doneromlists_coll = {}
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
-					if ((val2.inmenu) && (!doneromlists.rawin(val2.romlist))) {
-						doneromlists.rawset(val2.romlist, 0)
+					if ((val2.inmenu) && (!doneromlists_coll.rawin(val2.romlist))) {
+						doneromlists_coll.rawset(val2.romlist, 0)
 						if (verbose) {
 							msgbox_replacelinetop("-   " + val2.romlist)
 							msgbox_addlinetop("Collection:" + item)//splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)						
 						}
 						fe.layout.redraw()
-						testpr(val2.romlist+"\n")
+						testpr("-  "+val2.romlist+"\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
+						if (!doneromlists_all.rawin(val2.romlist)) allgamesromlist += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
+						doneromlists_all.rawset(val2.romlist, 0)
 					}
 				}
+				msgbox_addlinetop(AF.msgbox.separator1)
 				system ((OS == "Windows" ? "type" : "cat") + strline + " > \"" + filename + "\"")
 			}
 		}
+		msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
 		local listfile = ReadTextFile(prf.MASTERPATH)
