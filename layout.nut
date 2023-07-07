@@ -1488,7 +1488,7 @@ function readprefdata(target) {
 	local version = "0.0"
 
 	try {version = prffile.read_line()} catch(err) {
-		splash_message (AF.splash.pulse, "Error reading prefs file, resetting to default")
+		splash_message (AF.splash.pulse, "Error reading prefs file, resetting to default", 3)
 		return false
 	}
 
