@@ -1206,7 +1206,7 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "BUILDXML", glyph = 0xe961, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation", options = "", values = function() {buildgamelistxml()}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = AF.req.liner},
 {v = 12.1, varname = "ALLGAMES", glyph = 0xe95c, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 12.0, varname = "UPDATEALLGAMES", glyph = 0xe95c, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays", options = "", values = function() {local tempprf = generateprefstable(); updateallgamescollections(tempprf); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
+{v = 12.0, varname = "UPDATEALLGAMES", glyph = 0xe95c, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays", options = "", values = function() {local tempprf = generateprefstable(); updateallgamescollections(tempprf)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = AF.req.liner},
 {v = 14.7, varname = "CLEANDATABASE", glyph = 0xe97c, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry", options = "", values = function() {local tempprf = generateprefstable(); cleandatabase(tempprf); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
 {v = 14.1, varname = "ENABLEHIDDEN", glyph = 0xe997, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -4434,6 +4434,11 @@ function saveromdb2(romlist, zdb) {
 function updateallgamescollections(tempprf) {
 	if (tempprf.ALLGAMES) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
+		msgbox_open("Update All Games Collections", "", function(){
+			fe.signal("back")
+			fe.signal("back")
+			fe.set_display(fe.list.display_index)
+		})
 		update_allgames_collections(true, tempprf)
 	}
 }
@@ -11781,13 +11786,14 @@ if (prf.DMPIMAGES == "WALLS") disp.spacing = disp.bgtileh
 function update_allgames_collections(verbose, tempprf) {
 	// Build the table of display data
 	testpr(verbose+"\n")
-	if (verbose) msgbox_open("Build AF Collections", "")
+	//if (verbose) msgbox_open("Build AF Collections", "")
 	fe.layout.redraw()
 	builddisplaystructure()
 	local allgamesromlist = ""
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
+
 	if (!tempprf.MASTERLIST) {
 		foreach (item, val in z_af_collections.tab) {
 			local doneromlists = {}
@@ -11795,7 +11801,7 @@ function update_allgames_collections(verbose, tempprf) {
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
-				if (verbose) msgbox_addlinebottom("Collection:" + item)
+				if (verbose) msgbox_addlinetop("Collection:" + item)
 				fe.layout.redraw()
 				testpr(item+"\n")
 				// build the name for the allgames romlist
@@ -11810,7 +11816,10 @@ function update_allgames_collections(verbose, tempprf) {
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if ((val2.inmenu) && (!doneromlists.rawin(val2.romlist))) {
 						doneromlists.rawset(val2.romlist, 0)
-						if (verbose) msgbox_addlinebottom("-   " + val2.romlist)//splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)
+						if (verbose) {
+							msgbox_replacelinetop("-   " + val2.romlist)
+							msgbox_addlinetop("Collection:" + item)//splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)						
+						}
 						fe.layout.redraw()
 						testpr(val2.romlist+"\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
