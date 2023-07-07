@@ -1542,7 +1542,7 @@ function readprefdata(target) {
 
 
 	if (warnmessage != "") {
-		splash_message (AF.splash.pulse, "Reset prefs:\n\n" + warnmessage)
+		splash_message (AF.splash.pulse, "Reset prefs:\n\n" + warnmessage, 3)
 		return false
 	}
 	return true
