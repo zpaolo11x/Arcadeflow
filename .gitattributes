@@ -11,3 +11,4 @@ _todo.txt export-ignore
 ss_login.txt export-ignore
 layout_*.nut export-ignore
 pref_mf_*.txt export-ignore
+/blanks export-ignore
