@@ -4956,13 +4956,13 @@ function cleandatabase(temppref) {
 
 	// Now save the updated db files
 	foreach(item, val in z_list.db1) {
-		msgbox_addlinebelow(patchtext(item, "ROM[ ] DB[ ]", 13, AF.msgbox.columns), 2)
+		msgbox_addlinebelow(patchtext(item, "\\ Romlist \\ Database", 22, AF.msgbox.columns), 2)
 		fe.layout.redraw()
 		refreshromlist(item, false)
-		msgbox_replacelinebelow(patchtext(item, "ROM[*] DB[ ]", 13, AF.msgbox.columns), 2)
+		msgbox_replacelinebelow(patchtext(item,"| Romlist \\ Database", 22, AF.msgbox.columns), 2)
 		fe.layout.redraw()
 		saveromdb1(item, z_list.db1[item])
-		msgbox_replacelinebelow(patchtext(item, "ROM[*] DB[*]", 13, AF.msgbox.columns), 2)
+		msgbox_replacelinebelow(patchtext(item, "| Romlist | Database", 22, AF.msgbox.columns), 2)
 		fe.layout.redraw()
 		saveromdb2(item, z_list.db2[item])
 	}
