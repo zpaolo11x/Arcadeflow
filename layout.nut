@@ -11801,7 +11801,7 @@ function update_allgames_collections(verbose, tempprf) {
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if (val2.inmenu) {
-						if (verbose) splash_message (AF.item.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
+						if (verbose) splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 					}
 				}
