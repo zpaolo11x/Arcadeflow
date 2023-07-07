@@ -11783,14 +11783,15 @@ function update_allgames_collections(verbose, tempprf) {
 	builddisplaystructure()
 
 	local allgamesromlist = ""
-
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
 	if (!tempprf.MASTERLIST) {
 		foreach (item, val in z_af_collections.tab) {
+			local doneromlists = {}
 			// The all games collections are generated only if they are not in "OTHER"
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
+
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
 				// build the name for the allgames romlist
 				local filename = AF.romlistfolder + item + ".txt"
@@ -11799,9 +11800,12 @@ function update_allgames_collections(verbose, tempprf) {
 				// Add the group romlist to the all games romlsit list
 				allgamesromlist += " \"" + AF.romlistfolder + item + ".txt\""
 
+				local doneromlists = {}
+
 				foreach (item2, val2 in disp.structure[val.group].disps) {
-					if (val2.inmenu) {
-						if (verbose) splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n")
+					if ((val2.inmenu) && (!doneromlists.rawin(val2.romlist))) {
+						doneromlists.rawset(val2.romlist, 0)
+						if (verbose) splash_message (AF.splash.pulse, "Collection:" + item + "\nRomlist:" + val2.romlist + "\n", 0.1)
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 					}
 				}
