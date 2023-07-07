@@ -15929,19 +15929,21 @@ if (surfdebug) {
 	debugoverlay.bg_alpha = 128
 	debugoverlay.align = Align.Left
 }
-
+/*
 local clock0 = clock()
 local time0 = fe.layout.time
 local time1 = 0
 local clock1 = 0
+*/
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-	clock1 = clock()
+/*	clock1 = clock()
 	time1 = fe.layout.time
 	print(round(1000*(clock1 - clock0),1)+" "+(time1 - time0)+"\n")
 	time0 = time1
 	clock0 = clock1
+*/
 	//if (surfdebug) printsrufaces()
 	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
