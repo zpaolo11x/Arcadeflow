@@ -135,6 +135,7 @@ local AF = {
 		body = ""
 		numlines = 0
 		visiblelines = 0
+		lock = false
 	}
 	
 	tsc = 1.0 // Scaling of timer for different parameters
@@ -1195,9 +1196,9 @@ menucounter ++
 AF.prefs.l0.push({label = "ROMLIST MANAGEMENT", glyph = 0xea80, description = "Manage romlists and collections"})
 AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "ROMLISTS", selection = AF.req.liner},
-{v = 12.0, varname = "REFRESHROMLIST", glyph = 0xe982, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data", options = "", values = function() {local tempprf = generateprefstable(); refreshselectedromlists(tempprf); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
+{v = 12.0, varname = "REFRESHROMLIST", glyph = 0xe982, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data", options = "", values = function() {local tempprf = generateprefstable(); refreshselectedromlists(tempprf)}, selection = AF.req.executef},
 {v = 14.7, varname = "RESETDATABASE", glyph = 0xe97c, title = "Erase romlist database", help = "Doesn't rescan the romlist, bur erases all game database information", options = "", values = function() {local tempprf = generateprefstable(); eraseselecteddatabase(tempprf); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
-{v = 12.0, varname = "CLEANROMLIST", glyph = 0xe97c, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data", options = "", values = function() {local tempprf = generateprefstable(); resetselectedromlists(tempprf); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
+{v = 12.0, varname = "CLEANROMLIST", glyph = 0xe97c, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data", options = "", values = function() {local tempprf = generateprefstable(); resetselectedromlists(tempprf)}, selection = AF.req.executef},
 {v = 12.3, varname = "RESETLASTPLAYED", glyph = 0xe97c, title = "Reset last played", help = "Remove all last played data from the current romlist", options = "", values = function() {local tempprf = resetlastplayed()}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = AF.req.liner},
 {v = 13.9, varname = "MASTERLIST", glyph = 0xe95c, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it", options = ["Yes", "No"], values = [true, false], selection = 1},
@@ -3389,12 +3390,17 @@ function msgbox_addlinebottom(text){
 }
 
 function msgbox_open(title, message, backfunction = null){
+	AF.msgbox.lock = false
 	msgbox_newtitle(title)
 	msgbox_newbody(message)
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
 	AF.msgbox.obj.first_line_hint = 1
 	msgbox_scrollerrefresh()
+}
+
+function msgbox_lock(status){
+	AF.msgbox.lock = status
 }
 
 function msgbox_close(){
@@ -4439,7 +4445,9 @@ function updateallgamescollections(tempprf) {
 			fe.signal("back")
 			fe.set_display(fe.list.display_index)
 		})
+		msgbox_lock(true)
 		update_allgames_collections(true, tempprf)
+		msgbox_lock(false)
 	}
 }
 
@@ -4490,6 +4498,13 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
+	msgbox_open("Update All Games Collections", "", function(){
+		fe.signal("back")
+		fe.signal("back")
+		fe.set_display(fe.list.display_index)
+	})
+	msgbox_lock(true)
+
 	foreach (item, val in z_list.romlistemulators) {
 		refreshromlist(item, false)
 	}
@@ -4497,6 +4512,7 @@ function refreshselectedromlists(tempprf) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
 		update_allgames_collections(true, tempprf)
 	}
+	msgbox_lock(false)
 	// this function doesn't need to reboot the layout
 	// since it's run from the options menu where reboot
 	// is triggered with the "back back" signal response
@@ -15452,7 +15468,7 @@ function checkrepeat(counter) {
 if (prf.ALLGAMES != AF.config.collections) {
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
-		update_allgames_collections(true, prf)
+		update_allgames_collections(false, prf) //TEST162 va bene col false? meglio true?
 	}
 	//fe.signal("reload")
 	restartAM()
@@ -17685,10 +17701,12 @@ function on_signal(sig) {
 
 	if (AF.msgbox.obj.visible == true){
 		if (sig == "back"){
-			if (AF.msgbox.back != null) 
-				AF.msgbox.back()
-			else
-				msgbox_close()
+			if (!AF.msgbox.lock){
+				if (AF.msgbox.back != null) 
+					AF.msgbox.back()
+				else
+					msgbox_close()
+			}
 		}
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
