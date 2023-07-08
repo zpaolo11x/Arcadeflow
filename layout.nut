@@ -2020,7 +2020,7 @@ if (prf.COLORTHEME == "pop") {
 }
 if (prf.COLORTHEME == "slate") {
 	themeT.themeoverlaycolor = 50 //60
-	themeT.themeoverlayalpha = 245
+	themeT.themeoverlayalpha = 240 //245
 	themeT.themetextcolor = {r = 245, g = 245, b = 245}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
