@@ -13985,7 +13985,7 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.word_wrap = true
@@ -14002,12 +14002,12 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
-AF.msgbox.visiblelines = floor((AF.msgbox.obj.height - 2.0 * AF.msgbox.obj.margin) * 1.0 / (1.28 * AF.msgbox.obj.char_size))
+AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
-	AF.msgbox.visiblelines = floor((AF.msgbox.obj.height - 2.0 * AF.msgbox.obj.margin) * 1.0 / (1.6 * AF.msgbox.obj.char_size))
 	AF.msgbox.obj.char_size = 16
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
+	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 }
 
 /// SPLASH SCREEN UPDATE ///
