@@ -1613,14 +1613,6 @@ local orderdatalabel = {}
 foreach (item, val in z_info) {
 	orderdatalabel[val.id] <- split(ltxt(val.label, AF.LNG), "_")[0]
 }
-/*
-local z_info = {}
-local orderdatalabel = {}
-foreach (i, item in infotable) {
-	z_info[item.id] <- item.val
-	orderdatalabel[item.val] <- split(ltxt(item.label, AF.LNG), "_")[0]
-}
-*/
 
 // prf is the table that cotains all the layout variables as they are used in the layout, like prf.CROPSNAPS etc
 // this command generate default prefs table, this contains the variable names and values as used in the layout (not the selections)
@@ -2319,30 +2311,7 @@ foreach (item, val in colormapper) {
 }
 
 // GAME BOY green tints in HSL format (H = 0 360, SL = 0 1)
-/*
-local gbrgb = {
-	"LCDGBC" : {
-		a = hsl2rgb(103.0, 0.95, 0.15)
-		b = hsl2rgb(68, 0.68, 0.40)
-	}
-	"LCDGBP" : {
-		a = hsl2rgb(90, 0.05, 0.10)
-		b = hsl2rgb(66, 0.26, 0.7)
-	}
-	"LCDGBL" : {
-		a = hsl2rgb(160, 0.9, 0.15)
-		b = hsl2rgb(160, 0.7, 0.5)
-	}
-	"LCDBW" : {
-		a = hsl2rgb(90, 0.05, 0.2)
-		b = hsl2rgb(66, 0.2, 0.7)
-	}
-	"NONE" : {
-		a = hsl2rgb(150, 0.5, 0.2)
-		b = hsl2rgb(70, 0.50, 0.6)
-	}
-}
-*/
+
 // Horizontal rows definition
 if (prf.HORIZONTALROWS == -1) {
 	prf.HORIZONTALROWS = 1
@@ -3740,13 +3709,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		echoprint("RETRY\n")
 		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
 	}
-	/*
-	else if (dispatcher[scrapeid].jsonstatus == "ERROR") {
-		echoprint("ERROR\n")
-		dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
-	}
-	*/
-	//dispatcher[scrapeid].gamedata = gamedata
+
 	dispatcher[scrapeid].done = true
 
 	try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
@@ -3885,14 +3848,6 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				// dispatcher scrapestatus is an error. If no previous scraping was done this is transferred to the rom scrape status
 				if (inputitem.z_scrapestatus == "NONE") inputitem.z_scrapestatus = "ERROR"
 			}
-			/*
-			else {
-				try {listline = AF.scrape.checktable[inputitem].line} catch(err) {
-					listline = gname + ";" + gname + ";" + AF.scrape.romlist + ";;;;;;;;;;;;;" + "‖ " + dispatcher[scrapeid].gamedata.scrapestatus + " ‖ " + dispatcher[scrapeid].gamedata.scrapestatus + " ‖" + ";;;;;;"
-				}
-			}
-			AF.scrape.scrapelist_lines.push(inputitem + "|" + dispatcher[scrapeid].gamedata.scrapestatus + "|" + listline)
-			*/
 		}
 		else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
 			inputitem.z_scrapestatus = "NOGAME"
@@ -3984,58 +3939,6 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 					download.num ++
 				}
 			}
-
-/*
-			if (tempdataA != null) {
-				// Download all Arcade media, wheel is not parallelized because if Arcade media is not present, SS media is used as fallback
-				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
-					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + tempdataA.url + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\"")
-					}
-					else {
-						//system("curl -f --create-dirs -s \"" + tempdataA.url + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\"" + (emuartcat == "wheel" ? "": " &"))
-
-
-						try {remove(AF.folder + "dlds/" + scrapeid + emuartcat + "dldsA.txt")} catch(err) {}
-
-						local texeA = "echo ok > \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dldsA.txt\" && "
-						texeA += "curl -f --create-dirs -s \"" + tempdataA.url + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext + "\" ; "
-						texeA += "rm \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dldsA.txt\"" + (emuartcat == "wheel" ? "": " &")
-						system(texeA)
-
-					}
-				}
-
-				// Second wheel download run for wheel media from SS, if media from ADB was not present
-				if  (!(AF.scrape.forcemedia == "NO_MEDIA") && ((tempdata.len() > 0) && (emuartcat == "wheel") && ( !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext))))) {
-					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
-					}
-					else {
-						system ("curl --create-dirs -s \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" &")
-					}
-				}
-
-			}
-*/
-/*
-			else if (tempdata.len() > 0) {
-				local escape_path = char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]")
-				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
-					if (OS == "Windows") {
-						system (char_replace(AF.subfolder, "/", "\\") + "\\curldownload.vbs \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" \"" + emuartfolder + "\\" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\"")
-					}
-					else {
-						try {remove(AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt")} catch(err) {}
-
-						local texe = "echo ok > \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" && "
-						texe += "curl --create-dirs -s \"" + char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]") + "\" -o \"" + emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension + "\" && "
-						texe += "rm \"" + AF.folder + "dlds/" + scrapeid + emuartcat + "dlds.txt\" &"
-						system (texe)
-					}
-				}
-			}
-*/
 		}
 	}
 }
@@ -6513,11 +6416,7 @@ function z_list_updategamedata(index) {
 	if (!prf.CLEANLAYOUT) dat.manufacturername_array[dat.stacksize - 1].visible = (dat.manufacturer_array[dat.stacksize - 1].msg == "")
 
 	dat.meta_array[dat.stacksize - 1].msg = metastring(index)
-	/*
-	dat.ply_array[dat.stacksize - 1].msg = players_vec(z_list.boot[index].z_players)
-	dat.but_array[dat.stacksize - 1].msg = buttons_vec(z_list.boot[index].z_buttons)
-	dat.ctl_array[dat.stacksize - 1].msg = controller_vec (z_list.boot[index].z_control)
-	*/
+
 	dat.mainctg_array[dat.stacksize - 1].msg = maincategorydispl(index)
 	dat.gamename_array[dat.stacksize - 1].msg = gamename2(index)
 
@@ -9455,13 +9354,6 @@ function optionsmenu_lev3() {
 			v0[i] = v0[i].tointeger()
 		}
 		local n0 = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options()
-		//local intab = AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].options()
-		//local n0 = []
-		/*
-		for (local i =0; i < intab.len(); i++) {
-			n0.push(intab[i]["label"])
-		}
-		*/
 		sortmenu(v0, n0, 0, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].glyph, AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].title)
 	}
 	else if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection == AF.req.exenoret) {
@@ -10624,12 +10516,6 @@ historypadding += historypadding % 2.0
 local hist_curr_rom = ""
 local history_surface = fe.add_surface(fl.w_os, fl.h_os)
 
-/*
-local hist_bg = history_surface.add_text("", 0, 0, history_surface.width, history_surface.height)
-hist_bg.set_bg_rgb(0, 0, 0)
-hist_bg.bg_alpha = 1
-*/
-
 picture.bg_hist = history_surface.add_image(AF.folder + "pics/black.png", 0, 0, fl.w_os, fl.h_os)
 picture.bg_hist.alpha = 1
 
@@ -11401,44 +11287,6 @@ function history_updatesnap() {
 	hist_screen.shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
 	hist_glow_shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
 
-	/*
-	if (recolorise(0, 0) == "LCDGBA") {
-		hist_screen.shader.set_param ("remap", 0.0)
-		hist_glow_shader.set_param ("remap", 0.0)
-		hist_screen.shader.set_param ("lcdcolor", 1.0)
-		hist_glow_shader.set_param ("lcdcolor", 1.0)
-	}
-	else if (recolorise(0, 0) != "NONE") {
-		local remapcolor = recolorise(0, 0)
-		//local localcolor = (gbrgb[remapcolor])
-
-		local localcolor = {
-			a = colormapper[remapcolor].a
-			b = colormapper[remapcolor].b
-		}
-
-		hist_screen.shader.set_param ("lcdcolor", 0.0)
-		hist_glow_shader.set_param ("lcdcolor", 0.0)
-
-		hist_screen.shader.set_param ("hsv", 0.0, 0.0, 0.0)
-		hist_glow_shader.set_param ("hsv", 0.0, 0.0, 0.0)
-
-		hist_screen.shader.set_param ("remap", colormapper[remapcolor].remap)
-		hist_glow_shader.set_param ("remap", colormapper[remapcolor].remap)
-		hist_glow_shader.set_param ("color1", localcolor.a.R, localcolor.a.G, localcolor.a.B)
-		hist_glow_shader.set_param ("color2", localcolor.b.R, localcolor.b.G, localcolor.b.B)
-		hist_screen.shader.set_param ("color1", localcolor.a.R, localcolor.a.G, localcolor.a.B)
-		hist_screen.shader.set_param ("color2", localcolor.b.R, localcolor.b.G, localcolor.b.B)
-	}
-	else{
-		hist_screen.shader.set_param ("remap", 0.0)
-		hist_glow_shader.set_param ("remap", 0.0)
-		hist_screen.shader.set_param ("lcdcolor", 0.0)
-		hist_glow_shader.set_param ("lcdcolor", 0.0)
-		hist_screen.shader.set_param ("hsv", 0.0, 0.0, 0.0)
-		hist_glow_shader.set_param ("hsv", 0.0, 0.0, 0.0)
-	}
-*/
 	if (islcd(0, 0)) hist_screen.shader.set_param ("plusminus", (recolorise(0, 0) == "NONE" || recolorise (0, 0) == "LCDGBA") ? -1.0 : 1.0)
 
 	shadowsurf_1.shader = shadowshader.h
@@ -14625,11 +14473,6 @@ function buildutilitymenu() {
 				else if (result2 == 13) result_sort = [z_info.z_favdate.id, true]
 
 				if (result2 != -1) {
-					/*
-					umvisible = false
-					frosthide()
-					zmenuhide()
-					*/
 
 					z_listsort(result_sort[0], result_sort[1])
 					AF.dat_freezecount = 2
@@ -14640,8 +14483,6 @@ function buildutilitymenu() {
 
 					utilitymenu(umpresel)
 
-					//if (DBGON) z_listprint(z_list.gametable)
-					//if (DBGON) z_stopprint(z_list.jumptable)
 				}
 				else {
 					utilitymenu(umpresel)
@@ -14862,11 +14703,6 @@ function buildutilitymenu() {
 			switchmode()
 			if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 			utilitymenu(umpresel)
-			/*
-			umvisible = false
-			frosthide()
-			zmenuhide()
-			*/
 		}
 	})
 
@@ -17666,22 +17502,7 @@ function ra_selectemu(startemu) {
 
 	emumenu.sort(@(a, b) a.text <=> b.text)
 	startpos = emumenu.map(function(value){return(value.text)}).find(currentemu)
-/*
-	local emulist = []
-	local corelist = []
-	local todoglyph = []
-	foreach (item, val in AF.emulatordata) {
-		emulist.push(item)
-	}
-
-	emulist.sort()
-	startpos = emulist.find(currentemu)
-
-	foreach (i, val in emulist) {
-		corelist.push(((AF.emulatordata[val].racore == "") && (!ra.todolist.rawin(val))) ? "" : "("+ (ra.todolist.rawin(val) ? ra.todolist[val]: AF.emulatordata[val].racore) + ")")
-		todoglyph.push((ra.todolist.rawin(val)) ? 0xe905 : 0)
-	}
-*/
+	
 	frostshow()
 	zmenudraw3(emumenu, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, {},
 	function(result) {
