@@ -1003,7 +1003,7 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({label = "BACKGROUND", glyph = 0xe90c, description = "Chose the layout background theme in main page and in History page, or select custom backgrounds"})
 AF.prefs.l1.push([
-{v = 7.2, varname = "COLORTHEME", glyph = 0xe90c, title = "Color theme", help = "Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered", options = ["Basic", "Dark", "Light", "Pop"], values =["basic", "dark", "light", "pop"], selection = 3},
+{v = 16.2, varname = "COLORTHEME", glyph = 0xe90c, title = "Color theme", help = "Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered", options = ["Basic", "Dark", "Light", "Pop", "Slate"], values =["basic", "dark", "light", "pop", "slate"], selection = 3},
 {v = 8.9, varname = "OVERCUSTOM", glyph = 0xe930, title = "Custom overlay", help = "Insert custom PNG to be overlayed over everything", options = "", values = "pics/", selection = AF.req.filereqs},
 {v = 8.4, varname = "BGCUSTOM", glyph = 0xe930, title = "Custom main BG image", help = "Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)", options = "", values = "pics/", selection = AF.req.filereqs},
 {v = 8.4, varname = "BGCUSTOMSTRETCH", glyph = 0xea57, title = "Format of main BG image", help = "Select if the custom background must be cropped to fill the screen or stretched", options = ["Crop", "Stretch"], values = [false, true], selection = 1},
@@ -2018,7 +2018,23 @@ if (prf.COLORTHEME == "pop") {
 	themeT.mfmrgb = 0
 	themeT.mfmalpha = 240
 }
-
+if (prf.COLORTHEME == "slate") {
+	themeT.themeoverlaycolor = 50 //60
+	themeT.themeoverlayalpha = 245
+	themeT.themetextcolor = {r = 245, g = 245, b = 245}
+	themeT.themelettercolor = 255
+	themeT.themehistorytextcolor = 90
+	themeT.themeshadow = 95
+	themeT.menushadow = 80
+	themeT.listboxbg = 70 //80
+	themeT.listboxalpha = 185
+	themeT.listboxselbg = {r = 235, g = 235, b = 235}
+	themeT.listboxseltext = 50
+	themeT.optionspanelrgb = 0
+	themeT.optionspanelalpha = 70
+	themeT.mfmrgb = 0
+	themeT.mfmalpha = 220
+}
 // Math functions
 
 function minv(vectorin) { //Return min value in an array
