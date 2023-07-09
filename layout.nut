@@ -38,13 +38,16 @@ l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimension
 */
 
 //EASE PRINT
-//local CCC = 0
+local easeprint = {
+	status = false
+	counter = 0
+}
 
 local elapse = {
+	timer = false
 	name = ""
 	t1 = 0
 	t2 = 0
-	timer = false
 	timetable = {}
 }
 
@@ -16535,18 +16538,18 @@ function tick(tick_time) {
 	}
 
 	//EASE PRINT
-/*
-	local pippo1 = fe.add_image(AF.folder + "pics/white.png", CCC, fl.h_os * 0.5 + (impulse2.tilepos) * 0.1, 3, 3) //RED
-	local pippo2 = fe.add_image(AF.folder + "pics/white.png", CCC, fl.h_os * 0.5 + (impulse2.flow) * 0.1, 3, 3) //BLACK
-	local pippo3 = fe.add_image(AF.folder + "pics/white.png", CCC, fl.h_os * 0.5 + (impulse2.maxoffset) * 0.1, 3, 3) //WHITE
-	local pippo4 = fe.add_image(AF.folder + "pics/white.png", CCC, fl.h_os * 0.5 - (impulse2.maxoffset) * 0.1, 3, 3) //BLUE
-	pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
-	pippo1.set_rgb(255, 0, 0)
-	pippo2.set_rgb(0, 0, 0)
-	pippo3.set_rgb(255, 255, 255)
-	pippo4.set_rgb(0, 0, 255)
-	CCC = CCC + 0.5
-*/
+	if (easeprint.status){
+		local pippo1 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.tilepos) * 0.1, 3, 3) //RED
+		local pippo2 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.flow) * 0.1, 3, 3) //BLACK
+		local pippo3 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.maxoffset) * 0.1, 3, 3) //WHITE
+		local pippo4 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (impulse2.maxoffset) * 0.1, 3, 3) //BLUE
+		pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
+		pippo1.set_rgb(255, 0, 0)
+		pippo2.set_rgb(0, 0, 0)
+		pippo3.set_rgb(255, 255, 255)
+		pippo4.set_rgb(0, 0, 255)
+		easeprint.counter = easeprint.counter + 0.5
+	}
 
 	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
