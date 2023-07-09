@@ -1831,7 +1831,7 @@ local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_t
 local bgvidsurf = null
 
 local bgs = {
-	stacksize = (prf.LOWSPECMODE ? 3 : 6) //TEST162 was 5
+	stacksize = (prf.LOWSPECMODE ? 3 : 5)//6) //TEST162 was 5
 	bgpic_array = []
 	bgvid_array = []
 	flowalpha = []
@@ -5204,6 +5204,7 @@ function metamenu(starter) {
 			mfz_apply(true)
 
 			z_listrefreshtiles()
+			testpr("C\n")
 			updatebgsnap (focusindex.new)
 
 		}
@@ -7805,7 +7806,7 @@ bglay.surf_1 = bglay.surf_2.add_surface(bglay.smallsize, bglay.smallsize)
 bglay.bgpic = null
 
 for (local i = 0; i < bgs.stacksize; i++) {
-	bgs.flowalpha.push([0.0, 0.0, 0.0, 0.0, 0.0])
+	bgs.flowalpha.push([0.0, 1.0, 0.0, 0.0, 0.0])
 	bglay.bgpic = bglay.surf_1.add_image(AF.folder + "pics/transparent.png", 0, 0, bglay.smallsize, bglay.smallsize)
 	bglay.bgpic.alpha = 255
 	bglay.bgpic.trigger = Transition.EndNavigation
@@ -13981,6 +13982,7 @@ local labelcounter = {}
 // since it must run in the on_tick routine
 
 function updatebgsnap(index) {
+	testpr("X\n")
 	// index è l'indice di riferimento della tilez
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
@@ -14339,6 +14341,7 @@ function switchmode() {
 	prf.BOXARTMODE = !prf.BOXARTMODE
 
 	z_listrefreshtiles()
+	testpr("D\n")
 	updatebgsnap (focusindex.new)
 
 	DISPLAYTHUMBTYPE [fe.displays[fe.list.display_index].name] <- (prf.BOXARTMODE ? "BOXES" : "SNAPS")
@@ -15598,7 +15601,10 @@ function on_transition(ttype, var0, ttime) {
 
 	// UPDATE TILES FROM OLD SELECTION
 	if (ttype == Transition.FromOldSelection) {
-		if (checklivejump()) updatebgsnap(focusindex.new) //TEST160
+		if (checklivejump()) {
+			testpr("E\n")
+			updatebgsnap(focusindex.new) //TEST160
+		}
 	}
 
 	// some fixes for the tags menu
@@ -15658,6 +15664,7 @@ function on_transition(ttype, var0, ttime) {
 
 	// UPDATE GAME DATA
 	if ((ttype == Transition.ToNewList)) {
+		testpr("F\n")
 		updatebgsnap (focusindex.new)
 	}
 
@@ -15690,10 +15697,16 @@ function on_transition(ttype, var0, ttime) {
 				bgs.bg_aspect[i] = bgs.bg_aspect[i + 1]
 				bgs.bg_box[i] = bgs.bg_box[i + 1]
 				bgs.bg_index[i] = bgs.bg_index[i + 1]
-
 				if (prf.MULTIMON) mon2.pic_array[i].swap(mon2.pic_array[i + 1])
 			}
-
+			
+			if (prf.LOWSPECMODE){
+				bgs.flowalpha[0] = startfade(bgs.flowalpha[0], 0.18, -4.0)
+				bgs.flowalpha[1] = startfade(bgs.flowalpha[1], 0.075, -4.0)
+			} else {
+				bgs.flowalpha[0] = startfade(bgs.flowalpha[0], 0.15, -4.0)
+				bgs.flowalpha[1] = startfade(bgs.flowalpha[1], 0.05, -4.0)
+			} 
 
 			for (local i = 0; i < dat.stacksize - 2; i++) {
 				dat.var_array[i] = dat.var_array[i + 1]
@@ -15850,11 +15863,17 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
+	foreach (i, item in bgs.bgpic_array){
+		testpr(item.alpha+" ")
+	}
+	testpr("\n")
+	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
 		alphasum = alphasum * (1.0 - (item.alpha * 1.0 / 255))
 	}
 	testpr(255*(1.0 - alphasum)+"\n")
+*/
 /*	clock1 = clock()
 	time1 = fe.layout.time
 	print(round(1000*(clock1 - clock0),1)+" "+(time1 - time0)+"\n")
@@ -18602,6 +18621,7 @@ function on_signal(sig) {
 						if (!prf.LIVEJUMP) {
 							z_listrefreshtiles()
 							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
+							testpr("A\n")
 							updatebgsnap(focusindex.new)
 						}
 						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
@@ -18618,6 +18638,7 @@ function on_signal(sig) {
 						if ((!prf.LIVEJUMP) && (prf.SCROLLERTYPE == "labellist")){
 							z_listrefreshtiles()
 							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
+							testpr("B\n")
 							updatebgsnap(focusindex.new)
 						}
 						labelstrip.visible = false
