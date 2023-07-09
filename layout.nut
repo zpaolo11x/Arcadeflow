@@ -9638,7 +9638,8 @@ function rgbselector(rgb, sel, old, start) {
 	if (rgb.len() == 0) rgb = [255, 255, 255]
 	prfmenu.helppic.set_rgb(rgb[0], rgb[1], rgb[2])
 
-	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
+//	local spaces = (zmenu.width - zmenu.glyphw * 2) / (0.5 * uifonts.pixel * overlay.charsize)
+	local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (uifonts.pixel * overlay.charsize))) - 4
 
 	zmenudraw3([
 		{ text = "R:  " + textrate(rgb[0], 255, spaces, "Ⓞ ", "Ⓟ "), note = rgb[0]},
@@ -9710,7 +9711,8 @@ function hueselector(hue, sel, old, start) {
 
 	prfmenu.helppic.set_rgb(rgbval.R * 255, rgbval.G * 255, rgbval.B * 255)
 
-	local spaces = (zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
+	local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (uifonts.pixel * overlay.charsize))) - 4
+	//(zmenu.items[0].width / (0.5 * uifonts.pixel * overlay.charsize)) - 5
 
 	zmenudraw3([
 		{ text = "HUE:  " + textrate(hue, 359, spaces, "Ⓞ ", "Ⓟ "), note = hue},
