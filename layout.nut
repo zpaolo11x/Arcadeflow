@@ -1925,106 +1925,96 @@ local column ={
 local squarizer = true
 local squarizertop = false
 
-// Apply color theme
-local themeT = {
-	themeoverlaycolor = 255 //basic color of overlay
-	themeoverlayalpha = 80	// overlay alpha
-	themetextcolor = {r = 255, g = 255, b = 255}	// color of main text
-	themelettercolor = 255	// color of popup letter
-	themehistorytextcolor = 90 // color of history text
-	themeshadow = 50 // shadow color
-	menushadow = 50 // menu shadow color
-	listboxbg = 200 // listbox overlay color
-	listboxalpha = 15 //listbox overlay alpha
-	listboxselbg = {r = 250, g = 250, b = 250} // listbox selection background
-	listboxseltext = 250 // listbox text of selected item
-	optionspanelrgb = 128 // Grey level of options panel
-	optionspanelalpha = 80 // Alpha of options panel
-	mfmrgb = 0 // OBSOLETE
-	mfmalpha = 150 // OBSOLETE
-	logoshalpha = 120 // was 150
+local colorthemes = {
+	"basic": {
+		themeoverlaycolor = 255 //basic color of overlay
+		themeoverlayalpha = 80	// overlay alpha
+		themetextcolor = {r = 255, g = 255, b = 255}	// color of main text
+		themelettercolor = 255	// color of popup letter
+		themehistorytextcolor = 90 // color of history text
+		themeshadow = 50 // shadow color
+		menushadow = 50 // menu shadow color
+		listboxbg = 200 // listbox overlay color
+		listboxalpha = 15 //listbox overlay alpha
+		listboxselbg = {r = 250, g = 250, b = 250} // listbox selection background
+		listboxseltext = 50 // 250 listbox text of selected item
+		optionspanelrgb = 100 // 128 Grey level of options panel
+		optionspanelalpha = 80 // Alpha of options panel
+		logoshalpha = 120 // was 150
+	},
+	"dark": {
+		themeoverlaycolor = 0
+		themeoverlayalpha = 150
+		themetextcolor = {r = 240, g = 240, b = 240}
+		themelettercolor = 255
+		themehistorytextcolor = 90
+		themeshadow = 95 // was 80
+		menushadow = 80
+		listboxbg = 200
+		listboxalpha = 15
+		listboxselbg = {r = 225, g = 225, b = 225}
+		listboxseltext = 50
+		optionspanelrgb = 0
+		optionspanelalpha = 70
+		logoshalpha = 120
+	},
+	"light": {
+		themeoverlaycolor = 255
+		themeoverlayalpha = 190
+		themetextcolor = {r = 90, g = 90, b = 90}
+		themelettercolor = 255
+		themehistorytextcolor = 90
+		themeshadow = 50
+		menushadow = 25
+		listboxbg = 255
+		listboxalpha = 120
+		listboxselbg = {r = 95, g = 95, b = 95}
+		listboxseltext = 200
+		optionspanelrgb = 128
+		optionspanelalpha = 50
+		logoshalpha = 120
+	},
+	"pop": {
+		themeoverlaycolor = 255
+		themeoverlayalpha = 0
+		themetextcolor = {r = 255, g = 255, b = 255}
+		themelettercolor = 255
+		themehistorytextcolor = 90
+		themeshadow = 85 // was 70
+		menushadow = 70
+		listboxbg = 200
+		listboxalpha = 15
+		listboxselbg = {r = 250, g = 250, b = 250}
+		listboxseltext = 50
+		optionspanelrgb = 50
+		optionspanelalpha = 50
+		logoshalpha = 120
+	},
+	"slate": {
+		themeoverlaycolor = 50 //60
+		themeoverlayalpha = 240 //245
+		themetextcolor = {r = 240, g = 240, b = 240}
+		themelettercolor = 255
+		themehistorytextcolor = 90
+		themeshadow = 95
+		menushadow = 80
+		listboxbg = 70 //80
+		listboxalpha = 185
+		listboxselbg = {r = 230, g = 230, b = 230}
+		listboxseltext = 50
+		optionspanelrgb = 0
+		optionspanelalpha = 70
+		logoshalpha = 120
+	}
 }
 
+// Apply color theme
+local themeT = colorthemes[prf.COLORTHEME]
 local satin = {
 	rate = 0.95
 	vid = 50
 }
 
-if (prf.COLORTHEME == "basic") {
-	themeT.themeoverlaycolor = 255
-	themeT.themeoverlayalpha = 80
-	themeT.themetextcolor = {r = 255, g = 255, b = 255}
-	themeT.themelettercolor = 255
-	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 50
-	themeT.menushadow = 50
-	themeT.listboxbg = 200
-	themeT.listboxalpha = 15
-	themeT.listboxselbg = {r = 250, g = 250, b = 250}
-	themeT.listboxseltext = 50
-	themeT.optionspanelrgb = 100
-	themeT.optionspanelalpha = 80
-}
-if (prf.COLORTHEME == "dark") {
-	themeT.themeoverlaycolor = 0
-	themeT.themeoverlayalpha = 150
-	themeT.themetextcolor = {r = 240, g = 240, b = 240}
-	themeT.themelettercolor = 255
-	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 95 // was 80
-	themeT.menushadow = 80
-	themeT.listboxbg = 200
-	themeT.listboxalpha = 15
-	themeT.listboxselbg = {r = 225, g = 225, b = 225}
-	themeT.listboxseltext = 50
-	themeT.optionspanelrgb = 0
-	themeT.optionspanelalpha = 70
-}
-if (prf.COLORTHEME == "light") {
-	themeT.themeoverlaycolor = 255
-	themeT.themeoverlayalpha = 190
-	themeT.themetextcolor = {r = 90, g = 90, b = 90}
-	themeT.themelettercolor = 255
-	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 50
-	themeT.menushadow = 25
-	themeT.listboxbg = 255
-	themeT.listboxalpha = 120
-	themeT.listboxselbg = {r = 95, g = 95, b = 95}
-	themeT.listboxseltext = 200
-	themeT.optionspanelrgb = 128
-	themeT.optionspanelalpha = 50
-}
-if (prf.COLORTHEME == "pop") {
-	themeT.themeoverlaycolor = 255
-	themeT.themeoverlayalpha = 0
-	themeT.themetextcolor = {r = 255, g = 255, b = 255}
-	themeT.themelettercolor = 255
-	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 85 // was 70
-	themeT.menushadow = 70
-	themeT.listboxbg = 200
-	themeT.listboxalpha = 15
-	themeT.listboxselbg = {r = 250, g = 250, b = 250}
-	themeT.listboxseltext = 50
-	themeT.optionspanelrgb = 50
-	themeT.optionspanelalpha = 50
-}
-if (prf.COLORTHEME == "slate") {
-	themeT.themeoverlaycolor = 50 //60
-	themeT.themeoverlayalpha = 240 //245
-	themeT.themetextcolor = {r = 240, g = 240, b = 240}
-	themeT.themelettercolor = 255
-	themeT.themehistorytextcolor = 90
-	themeT.themeshadow = 95
-	themeT.menushadow = 80
-	themeT.listboxbg = 70 //80
-	themeT.listboxalpha = 185
-	themeT.listboxselbg = {r = 230, g = 230, b = 230}
-	themeT.listboxseltext = 50
-	themeT.optionspanelrgb = 0
-	themeT.optionspanelalpha = 70
-}
 // Math functions
 
 function minv(vectorin) { //Return min value in an array
