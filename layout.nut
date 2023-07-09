@@ -1992,15 +1992,15 @@ local colorthemes = {
 	},
 	"slate": {
 		overlaycolor = 50 //60
-		overlayalpha = 240 //245
-		textcolor = {r = 230, g = 230, b = 230}
+		overlayalpha = 235 //245
+		textcolor = {r = 240, g = 240, b = 240}
 		lettercolor = 255
 		historytextcolor = 90
 		mainshadow = 95
 		menushadow = 80
 		menubg = 70 //80
 		menualpha = 185
-		menuselbg = {r = 210, g = 210, b = 210}
+		menuselbg = {r = 225, g = 225, b = 225}
 		menuseltext = 50
 		optionspanelrgb = 0
 		optionspanelalpha = 70
