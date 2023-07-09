@@ -1831,7 +1831,7 @@ local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_t
 local bgvidsurf = null
 
 local bgs = {
-	stacksize = (prf.LOWSPECMODE ? 3 : 5)
+	stacksize = (prf.LOWSPECMODE ? 3 : 5) //TEST162 riportare a 5
 	bgpic_array = []
 	bgvid_array = []
 	flowalpha = []
@@ -7792,7 +7792,8 @@ catch(err) {
 	splash_message(AF.splash.pulse, "Arcadeflow needs Attract Mode Plus", 5)
 	fe.signal("exit_to_desktop")
 }
-bglay.commonground.set_rgb(128, 128, 128)
+bglay.commonground.set_rgb(themeT.overlaycolor, themeT.overlaycolor, themeT.overlaycolor)
+bglay.commonground.alpha = themeT.overlayalpha
 bglay.commonground.zorder = -7
 
 bglay.smallsize = 26
