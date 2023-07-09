@@ -1,4 +1,5 @@
 16.2
+Added new "slate" color theme
 Added Dirksimple logo
 Added option to open displays menu on current category
 Revamped media downloader for scraper
