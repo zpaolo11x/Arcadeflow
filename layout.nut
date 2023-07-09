@@ -1927,81 +1927,81 @@ local squarizertop = false
 
 local colorthemes = {
 	"basic": {
-		themeoverlaycolor = 255 //basic color of overlay
-		themeoverlayalpha = 80	// overlay alpha
-		themetextcolor = {r = 255, g = 255, b = 255}	// color of main text
-		themelettercolor = 255	// color of popup letter
-		themehistorytextcolor = 90 // color of history text
-		themeshadow = 50 // shadow color
+		overlaycolor = 255 //basic color of overlay
+		overlayalpha = 80	// overlay alpha
+		textcolor = {r = 255, g = 255, b = 255}	// color of main text
+		lettercolor = 255	// color of popup letter
+		historytextcolor = 90 // color of history text
+		mainshadow = 50 // shadow color
 		menushadow = 50 // menu shadow color
-		listboxbg = 200 // listbox overlay color
-		listboxalpha = 15 //listbox overlay alpha
-		listboxselbg = {r = 250, g = 250, b = 250} // listbox selection background
-		listboxseltext = 50 // 250 listbox text of selected item
+		menubg = 200 // listbox overlay color
+		menualpha = 15 //listbox overlay alpha
+		menuselbg = {r = 250, g = 250, b = 250} // listbox selection background
+		menuseltext = 50 // 250 listbox text of selected item
 		optionspanelrgb = 100 // 128 Grey level of options panel
 		optionspanelalpha = 80 // Alpha of options panel
 		logoshalpha = 120 // was 150
 	},
 	"dark": {
-		themeoverlaycolor = 0
-		themeoverlayalpha = 150
-		themetextcolor = {r = 240, g = 240, b = 240}
-		themelettercolor = 255
-		themehistorytextcolor = 90
-		themeshadow = 95 // was 80
+		overlaycolor = 0
+		overlayalpha = 150
+		textcolor = {r = 240, g = 240, b = 240}
+		lettercolor = 255
+		historytextcolor = 90
+		mainshadow = 95 // was 80
 		menushadow = 80
-		listboxbg = 200
-		listboxalpha = 15
-		listboxselbg = {r = 225, g = 225, b = 225}
-		listboxseltext = 50
+		menubg = 200
+		menualpha = 15
+		menuselbg = {r = 225, g = 225, b = 225}
+		menuseltext = 50
 		optionspanelrgb = 0
 		optionspanelalpha = 70
 		logoshalpha = 120
 	},
 	"light": {
-		themeoverlaycolor = 255
-		themeoverlayalpha = 190
-		themetextcolor = {r = 90, g = 90, b = 90}
-		themelettercolor = 255
-		themehistorytextcolor = 90
-		themeshadow = 50
+		overlaycolor = 255
+		overlayalpha = 190
+		textcolor = {r = 90, g = 90, b = 90}
+		lettercolor = 255
+		historytextcolor = 90
+		mainshadow = 50
 		menushadow = 25
-		listboxbg = 255
-		listboxalpha = 120
-		listboxselbg = {r = 95, g = 95, b = 95}
-		listboxseltext = 200
+		menubg = 255
+		menualpha = 120
+		menuselbg = {r = 95, g = 95, b = 95}
+		menuseltext = 200
 		optionspanelrgb = 128
 		optionspanelalpha = 50
 		logoshalpha = 120
 	},
 	"pop": {
-		themeoverlaycolor = 255
-		themeoverlayalpha = 0
-		themetextcolor = {r = 255, g = 255, b = 255}
-		themelettercolor = 255
-		themehistorytextcolor = 90
-		themeshadow = 85 // was 70
+		overlaycolor = 255
+		overlayalpha = 0
+		textcolor = {r = 255, g = 255, b = 255}
+		lettercolor = 255
+		historytextcolor = 90
+		mainshadow = 85 // was 70
 		menushadow = 70
-		listboxbg = 200
-		listboxalpha = 15
-		listboxselbg = {r = 250, g = 250, b = 250}
-		listboxseltext = 50
+		menubg = 200
+		menualpha = 15
+		menuselbg = {r = 250, g = 250, b = 250}
+		menuseltext = 50
 		optionspanelrgb = 50
 		optionspanelalpha = 50
 		logoshalpha = 120
 	},
 	"slate": {
-		themeoverlaycolor = 50 //60
-		themeoverlayalpha = 240 //245
-		themetextcolor = {r = 240, g = 240, b = 240}
-		themelettercolor = 255
-		themehistorytextcolor = 90
-		themeshadow = 95
+		overlaycolor = 50 //60
+		overlayalpha = 240 //245
+		textcolor = {r = 230, g = 230, b = 230}
+		lettercolor = 255
+		historytextcolor = 90
+		mainshadow = 95
 		menushadow = 80
-		listboxbg = 70 //80
-		listboxalpha = 185
-		listboxselbg = {r = 230, g = 230, b = 230}
-		listboxseltext = 50
+		menubg = 70 //80
+		menualpha = 185
+		menuselbg = {r = 210, g = 210, b = 210}
+		menuseltext = 50
 		optionspanelrgb = 0
 		optionspanelalpha = 70
 		logoshalpha = 120
@@ -2093,15 +2093,15 @@ function applycustomcolor() {
 		try {colorarray[i] = item.tointeger()} catch(err) {return}
 	}
 
-	local deltacolor = themeT.listboxselbg.r - themeT.themetextcolor.r
+	local deltacolor = themeT.menuselbg.r - themeT.textcolor.r
 
-	themeT.themetextcolor.r = min(max(0, colorarray[0]), 255)
-	themeT.themetextcolor.g = min(max(0, colorarray[1]), 255)
-	themeT.themetextcolor.b = min(max(0, colorarray[2]), 255)
+	themeT.textcolor.r = min(max(0, colorarray[0]), 255)
+	themeT.textcolor.g = min(max(0, colorarray[1]), 255)
+	themeT.textcolor.b = min(max(0, colorarray[2]), 255)
 
-	themeT.listboxselbg.r = min(max(0, colorarray[0] - deltacolor), 255)
-	themeT.listboxselbg.g = min(max(0, colorarray[1] - deltacolor), 255)
-	themeT.listboxselbg.b = min(max(0, colorarray[2] - deltacolor), 255)
+	themeT.menuselbg.r = min(max(0, colorarray[0] - deltacolor), 255)
+	themeT.menuselbg.g = min(max(0, colorarray[1] - deltacolor), 255)
+	themeT.menuselbg.b = min(max(0, colorarray[2] - deltacolor), 255)
 }
 
 if (prf.CUSTOMCOLOR != "") applycustomcolor()
@@ -7843,8 +7843,8 @@ local shader_bg = {
 }
 gaussshader(shader_bg.v, 9.0, 2.2, 0.0, bglay.blursize)
 gaussshader(shader_bg.h, 9.0, 2.2, bglay.blursize, 0.0)
-shader_bg.bg.set_param ("bgmix", themeT.themeoverlayalpha / 255.0)
-shader_bg.bg.set_param ("bgcol", themeT.themeoverlaycolor / 255.0)
+shader_bg.bg.set_param ("bgmix", themeT.overlayalpha / 255.0)
+shader_bg.bg.set_param ("bgcol", themeT.overlaycolor / 255.0)
 
 bglay.surf_1.shader = shader_bg.h
 bglay.surf_2.shader = shader_bg.v
@@ -8539,7 +8539,7 @@ if (prf.DATASHADOWSMOOTH) {
 	data_surface_sh_2.shader = shader_tx.h
 }
 
-data_surface_sh_rt.alpha = themeT.themeshadow
+data_surface_sh_rt.alpha = themeT.mainshadow
 
 data_surface_sh_rt.zorder = -1
 
@@ -8592,7 +8592,7 @@ filterdata.word_wrap = true
 filterdata.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
 filterdata.visible = true
 filterdata.font = uifonts.gui
-filterdata.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+filterdata.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 pixelizefont(filterdata, (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local filternumbers = data_surface.add_text((prf.CLEANLAYOUT ? "" :"[!zlistentry]\n[!zlistsize]"), fl.x + fl.w - UI.footermargin, fl.y + fl.h - UI.footer.h, UI.footermargin, UI.footer.h)
@@ -8603,18 +8603,18 @@ filternumbers.word_wrap = true
 filternumbers.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
-filternumbers.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+filternumbers.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 pixelizefont(filternumbers, (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local separatorline = data_surface.add_rectangle(fl.x + fl.w - UI.footermargin + UI.footermargin * 0.3, fl.y + fl.h - UI.footer.h + UI.footer.h * 0.5, UI.footermargin * 0.4, 1)
-separatorline.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+separatorline.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 separatorline.visible = !((prf.CLEANLAYOUT))
 
 multifilterglyph = data_surface.add_text("X", fl.x + fl.w - UI.footermargin, fl.y + fl.h - UI.footer.h, UI.footermargin * 0.3, UI.footer.h)
 multifilterglyph.margin = 0
 multifilterglyph.char_size = UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
-multifilterglyph.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+multifilterglyph.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 multifilterglyph.word_wrap = true
 multifilterglyph.msg = ""
 multifilterglyph.font = uifonts.glyphs
@@ -8623,20 +8623,20 @@ multifilterglyph.visible = false
 // scroller definition
 local scrolline = data_surface.add_rectangle(fl.x + UI.footermargin, fl.y + fl.h - UI.footer.h * 0.5 - 1, fl.w - 2 * UI.footermargin, 1)
 //scrolline.alpha = 255
-scrolline.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+scrolline.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 local scrollineglow = data_surface.add_image("pics/ui/whitedisc2.png", fl.x + UI.footermargin, fl.y + fl.h - UI.footer.h * 0.5 - 10 * UI.scalerate - 1, fl.w - 2 * UI.footermargin, 20 * UI.scalerate + 1)
 scrollineglow.visible = false
 scrollineglow.alpha = 200
-scrollineglow.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+scrollineglow.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 local scroller = data_surface.add_image("pics/ui/whitedisc.png", fl.x + UI.footermargin - scrollersize * 0.5, fl.y + fl.h - UI.footer.h * 0.5 - (scrollersize + 1) * 0.5, scrollersize, scrollersize)
-scroller.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+scroller.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 local scroller2 = data_surface.add_image("pics/ui/whitedisc2.png", scroller.x - scrollersize * 0.5, scroller.y - scrollersize * 0.5, scrollersize * 2, scrollersize * 2)
 scroller2.visible = false
 scroller2.alpha = 200
-scroller2.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+scroller2.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 if (prf.SCROLLERTYPE == "labellist") scroller2.alpha = scrollineglow.alpha = scroller.alpha = scrolline.alpha = 0
 
@@ -8653,7 +8653,7 @@ searchdata.word_wrap = true
 searchdata.char_size = 25 * UI.scalerate
 searchdata.visible = true
 searchdata.font = uifonts.gui
-searchdata.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+searchdata.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 function data_freeze(status) {
 	data_surface.clear = data_surface.redraw = !status
@@ -8711,7 +8711,7 @@ local letterobj = letterobjsurf.surf.add_text("...", 0.5 * (letterobjsurf.w - le
 letterobj.alpha = 0
 letterobj.char_size = lettersize.name * 2.0
 letterobj.font = uifonts.gui
-letterobj.set_rgb(themeT.themelettercolor, themeT.themelettercolor, themeT.themelettercolor)
+letterobj.set_rgb(themeT.lettercolor, themeT.lettercolor, themeT.lettercolor)
 letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
 letterobjsurf.surf.redraw = false
@@ -8817,7 +8817,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	local game_catpic = data_surface.add_image(AF.folder + "pics/white.png", fl.x + gamed.catpicT.x, fl.y + gamed.catpicT.y, gamed.catpicT.w, gamed.catpicT.h)
 	game_catpic.smooth = false
 	game_catpic.preserve_aspect_ratio = true
-	game_catpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_catpic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_catpic.shader = bwtoalpha
 	game_catpic.mipmap = 1
 	//game_catpic.fix_masked_image()
@@ -8832,7 +8832,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 
 	local game_metapic = data_surface.add_text("Aa0", fl.x + gamed.metapicT.x, fl.y + gamed.metapicT.y, gamed.metapicT.w, gamed.metapicT.h)
 	//game_ctlpic.set_bg_rgb(120,0,0)
-	game_metapic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_metapic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_metapic.font = uifonts.metapics
 	game_metapic.align = Align.MiddleCentre
 	game_metapic.margin = 0
@@ -8841,7 +8841,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
 	game_maincat.word_wrap = true
-	game_maincat.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_maincat.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_maincat.char_size = (gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel
 	game_maincat.font = uifonts.condensed
 	game_maincat.alpha = 255
@@ -8852,7 +8852,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	local game_mainname = data_surface.add_text("", fl.x + gamed.mainnameT.x, fl.y + gamed.mainnameT.y, gamed.mainnameT.w, gamed.mainnameT.h)
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
 	game_mainname.word_wrap = true
-	game_mainname.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_mainname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_mainname.char_size = (gamed.mainnameT.h - 10 * UI.scalerate) * 0.5 / uifonts.pixel
 	game_mainname.line_spacing = 0.670000068
 	game_mainname.margin = 0
@@ -8863,7 +8863,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	local game_subname = data_surface.add_text("", fl.x + (prf.CLEANLAYOUT ? gamed.mainnameT.x : gamed.subnameT.x), fl.y + gamed.subnameT.y, gamed.subnameT.w, gamed.subnameT.h)
 	game_subname.align = prf.CLEANLAYOUT ? Align.TopCentre : Align.TopLeft
 	game_subname.word_wrap = false
-	game_subname.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_subname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_subname.char_size = gamed.subnameT.h / uifonts.pixel
 	game_subname.font = uifonts.gui
 	game_subname.alpha = 255
@@ -8874,7 +8874,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	// game_manufacturerpic.mipmap = 1
 	//	game_manufacturerpic.smooth = true
 	//	game_manufacturerpic.preserve_aspect_ratio = false
-	game_manufacturerpic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_manufacturerpic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	//	game_manufacturerpic.shader = bwtoalpha
 	game_manufacturerpic.char_size = gamed.manufacturerpicT.h - 5 * UI.scalerate
 	game_manufacturerpic.margin = 5 * UI.scalerate
@@ -8890,7 +8890,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_manufacturername.visible = false
 	game_manufacturername.font = uifonts.gui
 	game_manufacturername.margin = 0
-	game_manufacturername.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_manufacturername.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 	local game_year = data_surface.add_text("", fl.x + gamed.yearT.x, fl.y + gamed.yearT.y, gamed.yearT.w, gamed.yearT.h)
 	game_year.align = Align.TopCentre
@@ -8900,7 +8900,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_year.visible = true
 	game_year.font = uifonts.gui
 	game_year.margin = 0
-	game_year.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	game_year.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
 
 	if (prf.CLEANLAYOUT) {
@@ -8966,17 +8966,17 @@ function overmenu_hide(strict) {
 
 // Overlay area background
 overlay.background = fe.add_rectangle(overlay.x, overlay.y, overlay.w, overlay.h)
-overlay.background.set_rgb(themeT.listboxbg, themeT.listboxbg, themeT.listboxbg)
-overlay.background.alpha = themeT.listboxalpha
+overlay.background.set_rgb(themeT.menubg, themeT.menubg, themeT.menubg)
+overlay.background.alpha = themeT.menualpha
 
 overlay.listbox = fe.add_listbox(overlay.x, overlay.y + overlay.labelheight, overlay.w, overlay.menuheight)
 overlay.listbox.rows = overlay.rows
 overlay.listbox.char_size = overlay.charsize
 overlay.listbox.bg_alpha = 0
-overlay.listbox.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
+overlay.listbox.set_rgb(themeT.menuselbg.r, themeT.menuselbg.g, themeT.menuselbg.b)
 overlay.listbox.set_bg_rgb(0, 0, 0)
-overlay.listbox.set_sel_rgb(themeT.listboxseltext, themeT.listboxseltext, themeT.listboxseltext)
-overlay.listbox.set_selbg_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
+overlay.listbox.set_sel_rgb(themeT.menuseltext, themeT.menuseltext, themeT.menuseltext)
+overlay.listbox.set_selbg_rgb(themeT.menuselbg.r, themeT.menuselbg.g, themeT.menuselbg.b)
 overlay.listbox.selbg_alpha = 255
 overlay.listbox.font = uifonts.gui
 overlay.listbox.align = Align.MiddleCentre
@@ -8984,7 +8984,7 @@ overlay.listbox.sel_alpha = 255
 
 overlay.label = fe.add_text("LABEL", overlay.x, overlay.y, overlay.w, overlay.labelheight)
 overlay.label.char_size = overlay.labelcharsize
-overlay.label.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
+overlay.label.set_rgb(themeT.menuselbg.r, themeT.menuselbg.g, themeT.menuselbg.b)
 overlay.label.align = Align.MiddleCentre
 overlay.label.font = uifonts.gui
 overlay.label.set_bg_rgb(0, 200, 0)
@@ -8992,7 +8992,7 @@ overlay.label.bg_alpha = 0
 
 overlay.sidelabel = fe.add_text("", overlay.x, overlay.y, overlay.w, overlay.labelheight)
 overlay.sidelabel.char_size = overlay.labelcharsize * 0.6
-overlay.sidelabel.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
+overlay.sidelabel.set_rgb(themeT.menuselbg.r, themeT.menuselbg.g, themeT.menuselbg.b)
 overlay.sidelabel.align = Align.MiddleRight
 overlay.sidelabel.font = uifonts.lite
 overlay.sidelabel.set_bg_rgb(0, 200, 0)
@@ -9006,7 +9006,7 @@ overlay.glyph.margin = 0
 overlay.glyph.char_size = overlay.charsize * 1.25
 overlay.glyph.align = Align.MiddleCentre
 overlay.glyph.bg_alpha = 0
-overlay.glyph.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
+overlay.glyph.set_rgb(themeT.menuselbg.r, themeT.menuselbg.g, themeT.menuselbg.b)
 overlay.glyph.word_wrap = true
 
 overlay.wline = fe.add_rectangle(overlay.x, overlay.y + overlay.labelheight - 2, overlay.w, 2)
@@ -9022,7 +9022,7 @@ foreach (item in overlay.shadows) {
 }
 
 overlay.wline.alpha = 0
-overlay.wline.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+overlay.wline.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 //overlay.filterbg.visible = overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
 overlay.background.visible = overlay.listbox.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = false
@@ -9208,7 +9208,7 @@ prfmenu.description.font = uifonts.lite
 prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
 prfmenu.description.margin = 0
-prfmenu.description.set_rgb (themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+prfmenu.description.set_rgb (themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 pixelizefont(prfmenu.description, 48 * UI.scalerate - 1)
 
 prfmenu.helppic.preserve_aspect_ratio = true
@@ -9248,14 +9248,14 @@ function menupic(level, main, opt){
 	}
 	else {
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
-		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+		prfmenu.helppic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	}
 }
 
 function updatemenu(level, var) {
 	if (level == 1) {
 		prfmenu.helppic.file_name = AF.folder + AF.prefs.imgpath + "gear2.png"
-		prfmenu.helppic.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+		prfmenu.helppic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	}
 
 	else if (level == 2) {
@@ -10523,7 +10523,7 @@ function groupalpha(alphain) {
 	}
 	//picture.bg.alpha = alphain
 	data_surface.alpha = alphain
-	data_surface_sh_rt.alpha = themeT.themeshadow * alphain / 255.0
+	data_surface_sh_rt.alpha = themeT.mainshadow * alphain / 255.0
 	foreach (i, item in tilez) {
 		item.alphafade = alphain
 		item.obj.alpha = item.alphazero * item.alphafade / 255.0
@@ -11061,12 +11061,12 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)) {
 }
 
 if (prf.HISTORYPANEL) {
-	hist_text_rgb(themeT.themehistorytextcolor, themeT.themehistorytextcolor, themeT.themehistorytextcolor)
-	hist_text_surf.set_rgb(themeT.themehistorytextcolor, themeT.themehistorytextcolor, themeT.themehistorytextcolor)
+	hist_text_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
+	hist_text_surf.set_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 }
 else {
-	hist_text_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
-	hist_text_surf.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+	hist_text_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
+	hist_text_surf.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 }
 
 hist_text_surf.shader = noshader
@@ -12446,7 +12446,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.blanker.visible = true
 	}
 
-	zmenu_surface.set_rgb(themeT.listboxselbg.r, themeT.listboxselbg.g, themeT.listboxselbg.b)
+	zmenu_surface.set_rgb(themeT.menuselbg.r, themeT.menuselbg.g, themeT.menuselbg.b)
 
 	zmenu_sh.surf_2.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.v : noshader)
 	zmenu_sh.surf_1.shader = (prf.DATASHADOWSMOOTH ? shader_tx2.h : noshader)
@@ -13683,7 +13683,7 @@ zmenu.simsys.char_size = 50 * UI.scalerate
 zmenu.simsys.word_wrap = true
 zmenu.simsys.align = Align.TopRight
 zmenu.simsys.font = uifonts.gui
-zmenu.simsys.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+zmenu.simsys.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 zmenu.simtxt = zmenu_surface_container.add_text("",
 										zmenu.simbg.x,
@@ -13695,7 +13695,7 @@ zmenu.simtxt.char_size = 50 * UI.scalerate
 zmenu.simtxt.word_wrap = true
 zmenu.simtxt.align = Align.TopCentre
 zmenu.simtxt.font = uifonts.lite
-zmenu.simtxt.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+zmenu.simtxt.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 function zmenusimvisible(visibility) {
 	zmenu.simpicshT.visible = zmenu.simpicshB.visible = zmenu.simpicshL.visible = zmenu.simpicshR.visible = visibility
@@ -15214,7 +15214,7 @@ function z_listrefreshtiles() {
 		}
 
 		labelstrip.set_pos (fl.x + x0, fl.h - UI.footer.h * 0.5 - label.h * 0.5 + fl.y, w0, label.h)
-		labelstrip.set_rgb (themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+		labelstrip.set_rgb (themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 		labelstrip.alpha = 100
 		//labelstrip.visible = false
 
@@ -15250,7 +15250,7 @@ function z_listrefreshtiles() {
 			resetkey (key)
 			labelarrayindex ++
 		}
-		labelsurf.set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+		labelsurf.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 		labelsurf.shader = txtoalpha
 
 		labelsurf.set_pos(fl.x + x0, fl.y + fl.h - UI.footer.h * 0.5 - label.h * 0.5)
@@ -15259,7 +15259,7 @@ function z_listrefreshtiles() {
 
 	if (prf.SCROLLERTYPE == "timeline") {
 		labelstrip.set_pos(fl.x + x0, fl.y + fl.h - UI.footer.h * 0.5, w0, label.h)
-		labelstrip.set_rgb (themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+		labelstrip.set_rgb (themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 		labelstrip.alpha = 100
 		//labelstrip.visible = false
 		local labelarrayindex = 0
@@ -15283,7 +15283,7 @@ function z_listrefreshtiles() {
 			}
 
 			sortlabelsarray[labelarrayindex].msg = ((z_list.orderby == Info.Category ? categorylabel (key, 0) : (z_list.orderby == Info.System ? systemlabel(key) : key))).toupper()
-			sortlabelsarray[labelarrayindex].set_rgb (themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+			sortlabelsarray[labelarrayindex].set_rgb (themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 
 			i++
 			sortlabelsarray[labelarrayindex].visible = !((labelspacer < 0.5 * label.h) || ((searchdata.msg != "") && (abs(sortlabelsarray[labelarrayindex].x + sortlabelsarray[labelarrayindex].width * 0.5 - fl.w * 0.5) < searchdata.msg_width)))
@@ -15297,7 +15297,7 @@ function z_listrefreshtiles() {
 				sortticksarray.push(null)
 				sortticksarray[labelarrayindex] = data_surface.add_image(AF.folder + "pics/white.png", fl.x + x0, fl.y + fl.h - UI.footer.h * 0.5 - 0.5 * label.h * 0.5, 1, 0.5 * label.h + 1)
 			}
-			sortticksarray[labelarrayindex].set_rgb(themeT.themetextcolor.r, themeT.themetextcolor.g, themeT.themetextcolor.b)
+			sortticksarray[labelarrayindex].set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 			sortticksarray[labelarrayindex].visible = true
 
 			x0 = x0 + labelspacer
@@ -16761,7 +16761,7 @@ function tick(tick_time) {
 		}
 
 		frost.surf_rt.alpha = 255 //In frosted glass case we don't fade the surface but the blur radius
-		overlay.background.alpha = themeT.listboxalpha * (flowT.zmenubg[1])
+		overlay.background.alpha = themeT.menualpha * (flowT.zmenubg[1])
 	}
 
 	if (checkfade (flowT.filterbg)) {
