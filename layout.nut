@@ -2005,7 +2005,7 @@ local colorthemes = {
 		menualpha = 185
 		menuselbg = {r = 225, g = 225, b = 225}
 		menuseltext = 50
-		optionspanelrgb = 0
+		optionspanelrgb = 30
 		optionspanelalpha = 70
 		logoshalpha = 120
 	}
@@ -5204,7 +5204,6 @@ function metamenu(starter) {
 			mfz_apply(true)
 
 			z_listrefreshtiles()
-			testpr("C\n")
 			updatebgsnap (focusindex.new)
 
 		}
@@ -11690,7 +11689,6 @@ if (prf.DMPIMAGES == "WALLS") disp.spacing = disp.bgtileh
 
 function update_allgames_collections(verbose, tempprf) {
 	// Build the table of display data
-	testpr(verbose+"\n")
 	//if (verbose) msgbox_open("Build AF Collections", "")
 	fe.layout.redraw()
 	builddisplaystructure()
@@ -13982,7 +13980,6 @@ local labelcounter = {}
 // since it must run in the on_tick routine
 
 function updatebgsnap(index) {
-	testpr("X\n")
 	// index è l'indice di riferimento della tilez
 	// da questo index devo ricavare i dati usando le
 	// proprietà .offset e .index della tabella tilez
@@ -14341,7 +14338,6 @@ function switchmode() {
 	prf.BOXARTMODE = !prf.BOXARTMODE
 
 	z_listrefreshtiles()
-	testpr("D\n")
 	updatebgsnap (focusindex.new)
 
 	DISPLAYTHUMBTYPE [fe.displays[fe.list.display_index].name] <- (prf.BOXARTMODE ? "BOXES" : "SNAPS")
@@ -15602,7 +15598,6 @@ function on_transition(ttype, var0, ttime) {
 	// UPDATE TILES FROM OLD SELECTION
 	if (ttype == Transition.FromOldSelection) {
 		if (checklivejump()) {
-			testpr("E\n")
 			updatebgsnap(focusindex.new) //TEST160
 		}
 	}
@@ -15664,7 +15659,6 @@ function on_transition(ttype, var0, ttime) {
 
 	// UPDATE GAME DATA
 	if ((ttype == Transition.ToNewList)) {
-		testpr("F\n")
 		updatebgsnap (focusindex.new)
 	}
 
@@ -15863,10 +15857,12 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
+	/*
 	foreach (i, item in bgs.bgpic_array){
 		testpr(item.alpha+" ")
 	}
 	testpr("\n")
+*/
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -18621,7 +18617,6 @@ function on_signal(sig) {
 						if (!prf.LIVEJUMP) {
 							z_listrefreshtiles()
 							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
-							testpr("A\n")
 							updatebgsnap(focusindex.new)
 						}
 						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
@@ -18638,7 +18633,6 @@ function on_signal(sig) {
 						if ((!prf.LIVEJUMP) && (prf.SCROLLERTYPE == "labellist")){
 							z_listrefreshtiles()
 							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
-							testpr("B\n")
 							updatebgsnap(focusindex.new)
 						}
 						labelstrip.visible = false
