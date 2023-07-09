@@ -1831,7 +1831,7 @@ local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_t
 local bgvidsurf = null
 
 local bgs = {
-	stacksize = (prf.LOWSPECMODE ? 3 : 5) //TEST162 riportare a 5
+	stacksize = (prf.LOWSPECMODE ? 3 : 6) //TEST162 was 5
 	bgpic_array = []
 	bgvid_array = []
 	flowalpha = []
@@ -15850,6 +15850,11 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
+	local alphasum = 1.0
+	foreach (i, item in bgs.bgpic_array){
+		alphasum = alphasum * (1.0 - (item.alpha * 1.0 / 255))
+	}
+	testpr(255*(1.0 - alphasum)+"\n")
 /*	clock1 = clock()
 	time1 = fe.layout.time
 	print(round(1000*(clock1 - clock0),1)+" "+(time1 - time0)+"\n")
