@@ -1940,8 +1940,8 @@ local themeT = {
 	listboxseltext = 250 // listbox text of selected item
 	optionspanelrgb = 128 // Grey level of options panel
 	optionspanelalpha = 80 // Alpha of options panel
-	mfmrgb = 0
-	mfmalpha = 150
+	mfmrgb = 0 // OBSOLETE
+	mfmalpha = 150 // OBSOLETE
 	logoshalpha = 120 // was 150
 }
 
@@ -1964,8 +1964,6 @@ if (prf.COLORTHEME == "basic") {
 	themeT.listboxseltext = 50
 	themeT.optionspanelrgb = 100
 	themeT.optionspanelalpha = 80
-	themeT.mfmrgb = 60
-	themeT.mfmalpha = 230
 }
 if (prf.COLORTHEME == "dark") {
 	themeT.themeoverlaycolor = 0
@@ -1981,8 +1979,6 @@ if (prf.COLORTHEME == "dark") {
 	themeT.listboxseltext = 50
 	themeT.optionspanelrgb = 0
 	themeT.optionspanelalpha = 70
-	themeT.mfmrgb = 0
-	themeT.mfmalpha = 220
 }
 if (prf.COLORTHEME == "light") {
 	themeT.themeoverlaycolor = 255
@@ -1998,8 +1994,6 @@ if (prf.COLORTHEME == "light") {
 	themeT.listboxseltext = 200
 	themeT.optionspanelrgb = 128
 	themeT.optionspanelalpha = 50
-	themeT.mfmrgb = 255
-	themeT.mfmalpha = 200
 }
 if (prf.COLORTHEME == "pop") {
 	themeT.themeoverlaycolor = 255
@@ -2015,25 +2009,21 @@ if (prf.COLORTHEME == "pop") {
 	themeT.listboxseltext = 50
 	themeT.optionspanelrgb = 50
 	themeT.optionspanelalpha = 50
-	themeT.mfmrgb = 0
-	themeT.mfmalpha = 240
 }
 if (prf.COLORTHEME == "slate") {
 	themeT.themeoverlaycolor = 50 //60
 	themeT.themeoverlayalpha = 240 //245
-	themeT.themetextcolor = {r = 245, g = 245, b = 245}
+	themeT.themetextcolor = {r = 240, g = 240, b = 240}
 	themeT.themelettercolor = 255
 	themeT.themehistorytextcolor = 90
 	themeT.themeshadow = 95
 	themeT.menushadow = 80
 	themeT.listboxbg = 70 //80
 	themeT.listboxalpha = 185
-	themeT.listboxselbg = {r = 235, g = 235, b = 235}
+	themeT.listboxselbg = {r = 230, g = 230, b = 230}
 	themeT.listboxseltext = 50
 	themeT.optionspanelrgb = 0
 	themeT.optionspanelalpha = 70
-	themeT.mfmrgb = 0
-	themeT.mfmalpha = 220
 }
 // Math functions
 
