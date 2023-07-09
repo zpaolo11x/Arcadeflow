@@ -7792,8 +7792,7 @@ catch(err) {
 	splash_message(AF.splash.pulse, "Arcadeflow needs Attract Mode Plus", 5)
 	fe.signal("exit_to_desktop")
 }
-bglay.commonground.set_rgb(themeT.overlaycolor, themeT.overlaycolor, themeT.overlaycolor)
-bglay.commonground.alpha = themeT.overlayalpha
+bglay.commonground.set_rgb(0, 0, 0)
 bglay.commonground.zorder = -7
 
 bglay.smallsize = 26
