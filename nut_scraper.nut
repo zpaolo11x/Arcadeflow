@@ -657,6 +657,16 @@ function getromcrc_lookup(filepath){
 
 }
 
+function get_zip_crc(path){
+	local f_in = file(path, "rb" )
+	local blb = f_in.readblob(20*1000*1000)
+	local startpos_crc = 14
+	local uncompressed_crc = (blb[startpos_crc+3] << 24) + (blb[startpos_crc+2] << 16) + (blb[startpos_crc+1] << 8) + blb[startpos_crc]
+	local out_crc = ("0"+format("%X",uncompressed_crc)).slice(-8)
+	local uncompressed_size = (blb[startpos_size+3] << 24) + (blb[startpos_size+2] << 16) + (blb[startpos_size+1] << 8) + blb[startpos_size]
+	return ({crc = uncompressed_crc, size = uncompressed_size})
+}
+
 function getromcrc_lookup4(filepath){
 
    local f_in = file(filepath, "rb" )
@@ -664,7 +674,15 @@ function getromcrc_lookup4(filepath){
    if (IS_ZIP(filepath)){
       local zipcontent = zip_get_dir(filepath)
       //NOTE: If the zip has more than one file, check the crc of the zip itselfs
-      if (zipcontent.len() == 1) blb = zip_extract_file(filepath, zipcontent[0] )
+      if (zipcontent.len() == 1) {
+			//TEST162 add here code for zip crc extraction
+			local archext = split(filepath,".").top()
+			if (archext == "zip"){
+				local out = get_zip_crc(filepath)
+   			return ([format("%X",out.crc).slice(-8),format("%x",out.crc).slice(-8),out.size])
+			}
+			blb = zip_extract_file(filepath, zipcontent[0] )
+		}
       else {
          try {
             blb = f_in.readblob(50*1000*1000) //loads up to 50 megs
@@ -677,7 +695,7 @@ function getromcrc_lookup4(filepath){
    }
    else {
       try {
-         blb = f_in.readblob(20*1000*1000) //loads up to 20 megs
+         blb = f_in.readblob(50*1000*1000) //loads up to 50 megs
       }
       catch(err){
          print ("*****CRC ERROR****\n")
