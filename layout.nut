@@ -13239,10 +13239,10 @@ function displaygrouped1(){
 function builddisplaystructure() {
 	// This function builds the displays structrue categorising games by platform
 	// it doesn't take into account the "AF " collections because they are purged from z_disp
-	disp.grouplabel = ["ARCADE", "CONSOLE", "HANDHELD", "COMPUTER", "PINBALL", "COLLECTIONS", "OTHER"]
-	disp.groupname = ["zmenuarcade", "zmenuconsole", "zmenuhandheld", "zmenucomputer", "zmenupinball", "zmenucollections", "other"]
-	if (!prf.DMPGENERATELOGO) disp.groupname = ["arcade", "console", "handheld", "computer", "pinball", "collections", "other"]
-	disp.groupglyphs = [0xeaeb, 0xeaec, 0xe959, 0xe956, 0xeaf0, 0xe912, 0xe912]
+	disp.grouplabel = ["ARCADE", "CONSOLE", "HANDHELD", "COMPUTER", "PINBALL", "COLLECTIONS", "OTHER", "MENU"]
+	disp.groupname = ["zmenuarcade", "zmenuconsole", "zmenuhandheld", "zmenucomputer", "zmenupinball", "zmenucollections", "other", "menu"]
+	if (!prf.DMPGENERATELOGO) disp.groupname = ["arcade", "console", "handheld", "computer", "pinball", "collections", "other", "menu"]
+	disp.groupglyphs = [0xeaeb, 0xeaec, 0xe959, 0xe956, 0xeaf0, 0xe912, 0xe912, 0xe912] //TEST162 change glyph for menu
 
 	// Initialise the variable that builds the menu categorized structure
 	disp.structure = {}
@@ -13260,18 +13260,30 @@ function builddisplaystructure() {
 	foreach (i, item in z_disp) {
 		// Display "i" is in_menu so group count is increased or initialised
 		if (item.inmenu) {
-			try {disp.structure[item.group].size ++}
-			catch(err) {
-				disp.structure[item.group] <- {
-					size = 1
-					disps = []
-				}
-				disp.grouplabel.push(item.group)
-				disp.groupname.push(item.group)
-				disp.groupglyphs.push(0)
+			if (item.group == "MENU"){
+				/*
+				NOTE VARIE:
+
+				L'idea è di popolare comunque una sezione MENU ma poi quando si crea il menu
+				tutto quello che é nella sezione MENU viene esplicitato direttamente nel main menu
+
+				*/
+
 			}
-			// item (the z_disp table with display data) is added to the group
-			disp.structure[item.group].disps.push(item)
+			else {
+				try {disp.structure[item.group].size ++}
+				catch(err) {
+					disp.structure[item.group] <- {
+						size = 1
+						disps = []
+					}
+					disp.grouplabel.push(item.group)
+					disp.groupname.push(item.group)
+					disp.groupglyphs.push(0)
+				}
+				// item (the z_disp table with display data) is added to the group
+				disp.structure[item.group].disps.push(item)
+			}
 		}
 	}
 
@@ -13286,6 +13298,7 @@ function builddisplaystructure() {
 			}
 		}
 	}
+	print_variable(disp,"","")
 }
 
 function displaygrouped() {

@@ -1068,3 +1068,5 @@ zmenuhandheld,0,0,HND,HND,NONE,0,0,HANDHELD,null,null,_handheld,null,null,null,n
 zmenupinball,0,0,PBL,PBL,NONE,0,0,PINBALL,null,null,_pinball,null,null,null,null
 
 zmenucollections,0,0,COL,COL,NONE,0,0,COLLECTIONS,null,null,_collections,null,null,null,null
+
+settings,0,0,SET,SET,NONE,0,0,SETTINGS,null,null,settings,null,null,null,null
