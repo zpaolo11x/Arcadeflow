@@ -662,7 +662,7 @@ function get_zip_crc(path){
 	local blb = f_in.readblob(20*1000*1000)
 	local startpos_crc = 14
 	local uncompressed_crc = (blb[startpos_crc+3] << 24) + (blb[startpos_crc+2] << 16) + (blb[startpos_crc+1] << 8) + blb[startpos_crc]
-	local out_crc = ("0"+format("%X",uncompressed_crc)).slice(-8)
+	local startpos_size = 22
 	local uncompressed_size = (blb[startpos_size+3] << 24) + (blb[startpos_size+2] << 16) + (blb[startpos_size+1] << 8) + blb[startpos_size]
 	return ({crc = uncompressed_crc, size = uncompressed_size})
 }
