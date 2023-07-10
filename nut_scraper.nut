@@ -657,13 +657,14 @@ function getromcrc_lookup(filepath){
 
 }
 
-function get_zip_crc(path){
+function get_zip_data(path){
 	local f_in = file(path, "rb" )
-	local blb = f_in.readblob(20*1000*1000)
+	local blb = f_in.readblob(100)
 	local startpos_crc = 14
 	local uncompressed_crc = (blb[startpos_crc+3] << 24) + (blb[startpos_crc+2] << 16) + (blb[startpos_crc+1] << 8) + blb[startpos_crc]
 	local startpos_size = 22
 	local uncompressed_size = (blb[startpos_size+3] << 24) + (blb[startpos_size+2] << 16) + (blb[startpos_size+1] << 8) + blb[startpos_size]
+	print ("zipdata: "+("0"+format("%X",crcpng)).slice(-8)+" "+uncompressed_size+"\n")
 	return ({crc = uncompressed_crc, size = uncompressed_size})
 }
 
@@ -678,7 +679,7 @@ function getromcrc_lookup4(filepath){
 			//TEST162 add here code for zip crc extraction
 			local archext = split(filepath,".").top()
 			if (archext == "zip"){
-				local out = get_zip_crc(filepath)
+				local out = get_zip_data(filepath)
    			return ([format("%X",out.crc).slice(-8),format("%x",out.crc).slice(-8),out.size])
 			}
 			blb = zip_extract_file(filepath, zipcontent[0] )
