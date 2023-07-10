@@ -13261,6 +13261,13 @@ function builddisplaystructure() {
 		// Display "i" is in_menu so group count is increased or initialised
 		if (item.inmenu) {
 			if (item.group == "MENU"){
+				disp.structure[item.cleanname] <- {
+					size = 1
+					disps = [item]
+				}
+				disp.grouplabel.push(item.cleanname)
+				disp.groupname.push(item.cleanname)
+				disp.groupglyphs.push(0)
 				/*
 				NOTE VARIE:
 
