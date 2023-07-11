@@ -13309,7 +13309,7 @@ function hideallbutbg() {
 
 function layoutfadein() {
 	testpr("E\n")
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.03, 3.0) //0.15, 5.0
+	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
 
 	if (prf.SPLASHON) {
 		flowT.groupbg = [0.0, 0.0, 0.0, 0.016, 3.0]
@@ -16963,8 +16963,7 @@ function tick(tick_time) {
 		//TEST162 a cosa serviva questo? forse a far rallentare lo zoom in?
 		//testpr("Z\n")
 		//if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -1.0)
-		//SMASH VARIANT 
-		if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
+		//SMASH VARIANT if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
 
 		flowT.blacker = fadeupdate(flowT.blacker)
 
