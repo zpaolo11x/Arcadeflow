@@ -13136,16 +13136,15 @@ function displaygrouped1(){
 		else menublock.push({text = item})
 	}
 
-	if (disp.gmenu0out == -1) {
+	if (disp.gmenu0out == -100) {
 		foreach (i, item in disp.structure["MENU"].disps){
 			if (item.cleanname == z_disp[fe.list.display_index].cleanname) {
 				disp.gmenu0out = disp.menuthresh + i
 				break
-
 			}
 		}
 	}
-
+	testpr("XXXX disp.gmenu0out:"+disp.gmenu0out+"\n")
 	// Displays the group menu
 	zmenudraw3(menublock, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, {shrink = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, dmpart = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, center = true, midscroll = (prf.DMPIMAGES != null) && prf.DMCATEGORYART},
 	function(gmenu0) {
@@ -13154,7 +13153,7 @@ function displaygrouped1(){
 		if (disp.gmenu0 != -1) disp.gmenu0out = disp.gmenu0
 
 		// Code when "ESC" is pressed in Displays Menu page
-		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == disp.groupname.len() - 1))) {
+		if (((disp.gmenu0 == -1) && (prf.DMPOUTEXITAF)) || ((prf.DMPEXITAF) && (disp.gmenu0 == menublock.len() - 1))) {
 
 			zmenu.dmp = false
 			powermenu(function(){
@@ -13266,7 +13265,7 @@ function displaygrouped() {
 	disp.gmenu0out = disp.grouplabel.find(z_disp[fe.list.display_index].group)
 	if (z_disp[fe.list.display_index].group == "MENU") {
 		testpr("XXXXXXXXXXXXXXXXXXXXX\n")
-		disp.gmenu0out = -1 //disp.grouplabel.find(z_disp[fe.list.display_index].cleanname)
+		disp.gmenu0out = -100 //disp.grouplabel.find(z_disp[fe.list.display_index].cleanname)
 	}
 	//Check if we are in a collection
 	if (prf.ALLGAMES) {
@@ -13282,7 +13281,7 @@ function displaygrouped() {
 	local getout = false
 	// After preparing the structure displaygrouped1 is called, it will manage
 	// main list and sublists by sorting, grouping etc
-	if ((disp.gmenu0out == -1) || (!prf.DMPSKIPCATEGORY) || (zmenu.dmpoverride)) { //TEST162 con skipcat
+	if ((disp.gmenu0out == -100) || (!prf.DMPSKIPCATEGORY) || (zmenu.dmpoverride)) { //TEST162 con skipcat
 		zmenu.dmpoverride = false
 		displaygrouped1() 
 	}
