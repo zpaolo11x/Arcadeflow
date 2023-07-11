@@ -1876,7 +1876,7 @@ local flowT = {
 	logo = [0.0, 1.0, 0.0, 0.0, 0.0]
 	fg = [0.0, 1.0, 0.0, 0.0, 0.0]
 	groupbg = [0.0, 0.0, 0.0, 0.0, 0.0]
-	attract = [0.0, 1.0, 0.0, 0.0, 0.0]
+	attract = [0.0, 0.0, 0.0, 0.0, 0.0] //TEST162 ERA 0.0 1.0
 	gametoblack = [0.0, 0.0, 0.0, 0.0, 0.0]
 	blacker = [0.0, 1.0, 0.0, 0.0, 0.0]
 	historydata = [0.0, 0.0, 0.0, 0.0, 0.0]
@@ -13378,6 +13378,7 @@ local attractitem = {
 }
 
 function attractkick() {
+	testpr("KICK\n")
 	if (!prf.AMENABLE) return
 
 	if (zmenu.sim) return true
@@ -15820,6 +15821,7 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
+	
 	/*
 	foreach (i, item in bgs.bgpic_array){
 		testpr(item.alpha+" ")
