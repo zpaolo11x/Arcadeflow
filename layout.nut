@@ -13222,9 +13222,9 @@ function builddisplaystructure() {
 						size = 1
 						disps = []
 					}
-					disp.grouplabel.push(item.group)
-					disp.groupname.push(item.group)
-					disp.groupglyphs.push(0)
+					disp.grouplabel.insert(disp.grouplabel.len() - 1, item.group)
+					disp.groupname.insert(disp.groupname.len() - 1,item.group)
+					disp.groupglyphs.insert(disp.groupglyphs.len() - 1,0)
 				}
 				// item (the z_disp table with display data) is added to the group
 				disp.structure[item.group].disps.push(item)
