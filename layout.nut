@@ -13116,8 +13116,14 @@ function displaygrouped1(){
 	zmenu.dmp = true
 	zmenu.jumplevel = 0
 
+	local menublock = []
+
+	foreach (i, item in disp.groupname){
+		menublock.push({text = item})
+	}
+
 	// Displays the group menu
-	zmenudraw3(disp.groupname.map(function(val){return({text = val})}), ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, {shrink = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, dmpart = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, center = true, midscroll = (prf.DMPIMAGES != null) && prf.DMCATEGORYART},
+	zmenudraw3(menublock, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, {shrink = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, dmpart = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, center = true, midscroll = (prf.DMPIMAGES != null) && prf.DMCATEGORYART},
 	function(gmenu0) {
 		disp.gmenu0 = gmenu0
 
