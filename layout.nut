@@ -11680,6 +11680,8 @@ local disp = {
 	gmenu0 = null
 	gmenu0out = null
 	gmenu1in = null
+
+	menuthresh = 10000
 }
 
 disp.width = disp.tilew
@@ -13119,7 +13121,24 @@ function displaygrouped1(){
 	local menublock = []
 
 	foreach (i, item in disp.groupname){
-		menublock.push({text = item})
+		if (item == "menu") {
+			menublock.push({liner = true})
+			disp.menuthresh = i + 1
+			foreach(i2, item2 in disp.structure["MENU"].disps){
+				menublock.push({text = item2.cleanname})
+			}
+		}
+		else menublock.push({text = item})
+	}
+
+	if (disp.gmenu0out == -1) {
+		foreach (i, item in disp.structure["MENU"].disps){
+			if (item.cleanname == z_disp[fe.list.display_index].cleanname) {
+				disp.gmenu0out = disp.menuthresh + i
+				break
+
+			}
+		}
 	}
 
 	// Displays the group menu
@@ -13140,11 +13159,8 @@ function displaygrouped1(){
 
 		// Group selected, entering the displays menu for that group
 		else if (disp.gmenu0 != -1) {
-			local itemzero = null
-			try{itemzero = disp.structure[disp.grouplabel[disp.gmenu0]].disps[0]} catch(err){}
 
-			//TEST162 insert code to jump to display if it's in #MENU category
-			if ((itemzero != null) && (itemzero.group == "MENU")) {
+			if (disp.gmenu0 >= disp.menuthresh) {
 				
 				zmenu.jumplevel = 1
 				disp.gmenu1in = 0
@@ -13152,7 +13168,7 @@ function displaygrouped1(){
 				if (prf.DMPATSTART) {
 					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
 				}
-				local targetdisplay = itemzero.dispindex
+				local targetdisplay = disp.structure["MENU"].disps[disp.gmenu0 - disp.menuthresh].dispindex
 				jumptodisplay (targetdisplay)
 			}
 			else displaygrouped2()
@@ -13199,24 +13215,7 @@ function builddisplaystructure() {
 	foreach (i, item in z_disp) {
 		// Display "i" is in_menu so group count is increased or initialised
 		if (item.inmenu) {
-			if (item.group == "MENU"){
-				disp.structure[item.cleanname] <- {
-					size = 1
-					disps = [item]
-				}
-				disp.grouplabel.push(item.cleanname)
-				disp.groupname.push(item.cleanname)
-				disp.groupglyphs.push(0)
-				/*
-				NOTE VARIE:
-
-				L'idea è di popolare comunque una sezione MENU ma poi quando si crea il menu
-				tutto quello che é nella sezione MENU viene esplicitato direttamente nel main menu
-
-				*/
-
-			}
-			else {
+			
 				try {disp.structure[item.group].size ++}
 				catch(err) {
 					disp.structure[item.group] <- {
@@ -13229,7 +13228,7 @@ function builddisplaystructure() {
 				}
 				// item (the z_disp table with display data) is added to the group
 				disp.structure[item.group].disps.push(item)
-			}
+			
 		}
 	}
 
@@ -13261,7 +13260,8 @@ function displaygrouped() {
 	disp.gmenu0 = 0
 	disp.gmenu0out = disp.grouplabel.find(z_disp[fe.list.display_index].group)
 	if (z_disp[fe.list.display_index].group == "MENU") {
-		disp.gmenu0out = disp.grouplabel.find(z_disp[fe.list.display_index].cleanname)
+		testpr("XXXXXXXXXXXXXXXXXXXXX\n")
+		disp.gmenu0out = -1 //disp.grouplabel.find(z_disp[fe.list.display_index].cleanname)
 	}
 	//Check if we are in a collection
 	if (prf.ALLGAMES) {
@@ -13271,13 +13271,13 @@ function displaygrouped() {
 					disp.gmenu0out = disp.grouplabel.find(val.group)
 		}
 	}
-testpr("disp.gmenu0out: "+disp.gmenu0out+"\n")
+	testpr("disp.gmenu0out: "+disp.gmenu0out+"\n")
 	//TEST120 CHECK quando non ci sono AF ALL GAMES in attract.cfg
 
 	local getout = false
 	// After preparing the structure displaygrouped1 is called, it will manage
 	// main list and sublists by sorting, grouping etc
-	if ((!prf.DMPSKIPCATEGORY) || (zmenu.dmpoverride)) {
+	if ((disp.gmenu0out == -1) || (!prf.DMPSKIPCATEGORY) || (zmenu.dmpoverride)) { //TEST162 con skipcat
 		zmenu.dmpoverride = false
 		displaygrouped1() 
 	}
