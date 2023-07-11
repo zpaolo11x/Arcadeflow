@@ -6702,7 +6702,8 @@ function getallgamesdb(logopic) {
 	//flowT.blacker = startfade()
 	if (prf.SPLASHON) AF.bootplane1.visible = false
 	//flowT.bootfade = startfade(flowT.bootfade, 0.1, 1.0)
- 	flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
+ 	testpr("-----------B\n")
+	flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 	//AF.bootplane1.visible = AF.bootplane2.visible = false
 
 	timestop("GamesDB")
@@ -13308,7 +13309,7 @@ function hideallbutbg() {
 
 function layoutfadein() {
 	testpr("E\n")
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
+	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.03, 3.0) //0.15, 5.0
 
 	if (prf.SPLASHON) {
 		flowT.groupbg = [0.0, 0.0, 0.0, 0.016, 3.0]
@@ -16436,7 +16437,7 @@ function tick(tick_time) {
 	}
 
 	foreach (i, item in tilesTableZoom) {
-		testpr(tilez[i].obj.width+" ")
+		//testpr(tilez[i].obj.width+" ")
 		if (checkfade(tilesTableZoom[i])) {
 			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
@@ -16445,7 +16446,7 @@ function tick(tick_time) {
 			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), 0, -(UI.zoomedvshift * 1.0 / UI.zoomedwidth))
 		}
 	}
-	testpr("\n")
+	//testpr("\n")
 
 	// Manage video fade and unfade, anc crop fade
 	foreach (i, item in aspectratioMorph) {
@@ -16948,6 +16949,7 @@ function tick(tick_time) {
 		flowT.bootfade = fadeupdate(flowT.bootfade)
 
 		if (endfade(flowT.bootfade) == 1) {
+			testpr("-----------A\n")
 			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 		}
 		if (prf.SPLASHON) 
@@ -16961,7 +16963,8 @@ function tick(tick_time) {
 		//TEST162 a cosa serviva questo? forse a far rallentare lo zoom in?
 		//testpr("Z\n")
 		//if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -1.0)
-//SMASH VARIANT if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
+		//SMASH VARIANT 
+		if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
 
 		flowT.blacker = fadeupdate(flowT.blacker)
 
