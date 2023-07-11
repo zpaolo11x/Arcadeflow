@@ -16436,7 +16436,7 @@ function tick(tick_time) {
 	}
 
 	foreach (i, item in tilesTableZoom) {
-		testpr(round(tilez[i].obj.width,1)+" ")
+		testpr(round(tilez[i].obj.width,1)+""+(tilez[i].obj.redraw ? "O" : "X")+" ")
 		if (checkfade(tilesTableZoom[i])) {
 			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
