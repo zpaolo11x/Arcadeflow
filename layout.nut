@@ -15887,6 +15887,8 @@ function tick(tick_time) {
 		AF.zmenu_freezecount = 0
 	}
 
+	// prevent attract mode from running when menus are visible
+	if ((overlay.listbox.visible == true) || (zmenu.showing) || (AF.msgbox.obj.visible)) attract.timer = fe.layout.time
 
 	// Hue color cycling
 	if (prf.HUECYCLE) {
@@ -16206,10 +16208,12 @@ function tick(tick_time) {
 
 		}
 	}
-
+	//TEST162 moved up
+	/*
 	// prevent attract mode from running when menus are visible
 	if ((overlay.listbox.visible == true) || (zmenu.showing) || (AF.msgbox.obj.visible)) attract.timer = fe.layout.time
-
+	*/
+	
 	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
 		disp.speed = (0.15 * (disp.xstop - disp.xstart))
