@@ -16436,7 +16436,7 @@ function tick(tick_time) {
 	}
 
 	foreach (i, item in tilesTableZoom) {
-		//testpr(tilez[i].obj.width+" ")
+		testpr(round(tilez[i].obj.width,1)+" ")
 		if (checkfade(tilesTableZoom[i])) {
 			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
@@ -16445,7 +16445,7 @@ function tick(tick_time) {
 			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), 0, -(UI.zoomedvshift * 1.0 / UI.zoomedwidth))
 		}
 	}
-	//testpr("\n")
+	testpr("\n")
 
 	// Manage video fade and unfade, anc crop fade
 	foreach (i, item in aspectratioMorph) {
