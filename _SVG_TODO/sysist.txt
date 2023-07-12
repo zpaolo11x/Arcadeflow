@@ -1,4 +1,3 @@
-Capcom
 Dirksimple
 Future Pinball
 HBMAME
@@ -14,7 +13,6 @@ ScummVM
 Sega
 Sega System SP
 settings
-SNK
 Steam
 Virtual Console
 Visual Pinball
