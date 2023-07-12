@@ -1806,8 +1806,8 @@ function readsystemdata() {
 					ss_media = linearray[13] == "null" ? null : linearray[13]
 					sys_control = linearray[14] == "null" ? "" : linearray[14]
 					sys_buttons = linearray[15] == "null" ? "" : linearray[15]
-
 				}
+
 				tempcell = sysdata[linearray[0]]
 			}
 			else {

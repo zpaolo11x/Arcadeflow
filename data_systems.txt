@@ -40,7 +40,7 @@ apple macintosh,0,0,MAC,CRT,NONE,4,3,COMPUTER,Apple,1984,Macintosh,146,rom,joyst
 macintosh
 mac
 
-aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,aquarius,null,null,joystick (8-way),1
+aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,Aquarius,null,null,joystick (8-way),1
 mattel aquarius
 
 arcade,0,0,ARC,CRT,NONE,-4,3,ARCADE,Various,null,Arcade,75,rom,null,null
