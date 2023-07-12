@@ -294,7 +294,7 @@ AF.splash.pic.align = AF.splash.picbg.align = AF.splash.text.align = Align.Middl
 
 AF.splash.pic.charsize = AF.splash.size * AF.splash.tscalerate
 AF.splash.picbg.charsize = AF.splash.size * AF.splash.tscalerate
-AF.splash.text.charsize = 0.25 * AF.splash.pic.height //TEST162 was 0.35
+AF.splash.text.charsize = 0.25 * AF.splash.pic.height
 
 AF.splash.bg.zorder = 100000
 AF.splash.text.zorder = 100001
@@ -1831,7 +1831,7 @@ local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_t
 local bgvidsurf = null
 
 local bgs = {
-	stacksize = (prf.LOWSPECMODE ? 3 : 5)//6) //TEST162 was 5
+	stacksize = (prf.LOWSPECMODE ? 3 : 5)
 	bgpic_array = []
 	bgvid_array = []
 	flowalpha = []
@@ -3896,7 +3896,6 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 				if (tempdataA.url == "") tempdataA = null
 			}
 
-			//TEST162 CAMBIARE QUI PER IL CONTROLLO DEI BLACK SCREEN
 			local tempdld = null
 			if (tempdataA != null) {
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
@@ -6658,10 +6657,7 @@ function getallgamesdb(logopic) {
 				//TEST160 if done this way, it doesn't risk to happen during collection.
 				//TEST160 But what happens if the emulator doesn't have a reference romlist?
 				if (!file_exist(AF.romlistfolder + itemname + ".db1")) portromlist(itemname)
-				//TEST162 SERVE QUESTO???
-				//fe.overlay.splash_message("")
-				//("\n\n\n\n\n\n\nNOW LOADING\n" + textrate (i, (emulatordir.len() - 1), numchars) + "\n")//(i * 100/(emulatordir.len() - 1)) + "%")
-				//XXXXXX textobj.msg = textrate (i, (emulatordir.len() - 1), numchars)
+
 				fe.layout.redraw()
 				if (prf.SPLASHON) {
 					AF.bootplane1.x = fl.x + fl.w * i * 1.0 / (emulatordir.len() - 1)
@@ -6702,7 +6698,6 @@ function getallgamesdb(logopic) {
 	//flowT.blacker = startfade()
 	if (prf.SPLASHON) AF.bootplane1.visible = false
 	//flowT.bootfade = startfade(flowT.bootfade, 0.1, 1.0)
- 	testpr("-----------B\n")
 	flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 	//AF.bootplane1.visible = AF.bootplane2.visible = false
 
@@ -11464,7 +11459,6 @@ function history_updatetext() {
 
 function history_show(h_startup)
 {
-	testpr("A\n")
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
@@ -11487,7 +11481,6 @@ function history_show(h_startup)
 }
 
 function history_hide() {
-	testpr("B\n")
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.015, -5.0)
 
 	if (prf.AUDIOVIDHISTORY && prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
@@ -11715,9 +11708,6 @@ function update_allgames_collections(verbose, tempprf) {
 				// build the name for the allgames romlist
 				local filename = AF.romlistfolder + item + ".txt"
 				local strline = ""
-
-				// Add the group romlist to the all games romlsit list
-				//TEST162 moved inside the loop to avoid duplicates allgamesromlist += " \"" + AF.romlistfolder + item + ".txt\""
 
 				local doneromlists_coll = {}
 
@@ -12114,7 +12104,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	// Unhide overlay drop shadows and start fading of menu elements
 	foreach (item in overlay.shadows) item.visible = true
 	flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.08, 0.0)
-	testpr("C\n")
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 	foreach (i, item in zmenu.data) try {zmenu.data[i].note = zmenu.data[i].note.toupper()} catch(err) {}
@@ -12549,7 +12538,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 }
 
 function zmenuhide() {
-	testpr("D\n")
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 	foreach (item in disp.images) item.file_name = AF.folder + "pics/transparent.png"
@@ -13144,7 +13132,6 @@ function displaygrouped1(){
 			}
 		}
 	}
-	testpr("XXXX disp.gmenu0out:"+disp.gmenu0out+"\n")
 	// Displays the group menu
 	zmenudraw3(menublock, ltxt("DISPLAYS", AF.LNG), 0xe912, disp.gmenu0out, {shrink = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, dmpart = (prf.DMPIMAGES != null) && prf.DMCATEGORYART, center = true, midscroll = (prf.DMPIMAGES != null) && prf.DMCATEGORYART},
 	function(gmenu0) {
@@ -13264,7 +13251,6 @@ function displaygrouped() {
 	disp.gmenu0 = 0
 	disp.gmenu0out = disp.grouplabel.find(z_disp[fe.list.display_index].group)
 	if (z_disp[fe.list.display_index].group == "MENU") {
-		testpr("XXXXXXXXXXXXXXXXXXXXX\n")
 		disp.gmenu0out = -100 //disp.grouplabel.find(z_disp[fe.list.display_index].cleanname)
 	}
 	//Check if we are in a collection
@@ -13275,7 +13261,6 @@ function displaygrouped() {
 					disp.gmenu0out = disp.grouplabel.find(val.group)
 		}
 	}
-	testpr("disp.gmenu0out: "+disp.gmenu0out+"\n")
 	//TEST120 CHECK quando non ci sono AF ALL GAMES in attract.cfg
 
 	local getout = false
@@ -13307,7 +13292,6 @@ function hideallbutbg() {
 }
 
 function layoutfadein() {
-	testpr("E\n")
 	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
 
 	if (prf.SPLASHON) {
@@ -13383,7 +13367,6 @@ local attractitem = {
 }
 
 function attractkick() {
-	testpr("KICK\n")
 	if (!prf.AMENABLE) return
 
 	if (zmenu.sim) return true
@@ -13841,7 +13824,7 @@ AF.splash.pic.set_pos(AF.splash.picbg.x, AF.splash.picbg.y, AF.splash.picbg.widt
 
 AF.splash.pic.charsize = AF.splash.size * UI.scalerate
 AF.splash.picbg.charsize = AF.splash.size * UI.scalerate
-AF.splash.text.charsize =AF.splash.charscale * AF.splash.pic.height //TEST162 was 0.35
+AF.splash.text.charsize = AF.splash.charscale * AF.splash.pic.height
 
 //AF.splash.bg.zorder = 100000
 //AF.splash.text.zorder = 100001
@@ -14906,7 +14889,6 @@ function resetvarsandpositions() {
 	centercorr.shift = centercorr.zero
 
 	// loop for all tiles
-	testpr("F\n")
 	for (local i = 0; i < tiles.total; i++) {
 
 		// reset video fade data
@@ -15054,7 +15036,7 @@ function finaltileupdate() {
 		//tile_clear(focusindex.new, true)
 		//tile_redraw(focusindex.new, true)
 		tilez[focusindex.new].freezecount = 0
-		testpr("G\n")
+
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
 			tilesTableZoom[focusindex.old] = startfade(tilesTableZoom[focusindex.old], -0.055, 1.0)
 			tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
@@ -16216,12 +16198,7 @@ function tick(tick_time) {
 
 		}
 	}
-	//TEST162 moved up
-	/*
-	// prevent attract mode from running when menus are visible
-	if ((overlay.listbox.visible == true) || (zmenu.showing) || (AF.msgbox.obj.visible)) attract.timer = fe.layout.time
-	*/
-	
+
 	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
 		disp.speed = (0.15 * (disp.xstop - disp.xstart))
@@ -16436,7 +16413,7 @@ function tick(tick_time) {
 	}
 
 	foreach (i, item in tilesTableZoom) {
-		testpr(round(tilez[i].obj.width,1)+""+(tilez[i].obj.redraw ? "O" : "X")+" ")
+		//testpr(round(tilez[i].obj.width,1)+""+(tilez[i].obj.redraw ? "O" : "X")+" ")
 		if (checkfade(tilesTableZoom[i])) {
 			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
@@ -16445,7 +16422,7 @@ function tick(tick_time) {
 			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), 0, -(UI.zoomedvshift * 1.0 / UI.zoomedwidth))
 		}
 	}
-	testpr("\n")
+	//testpr("\n")
 
 	// Manage video fade and unfade, anc crop fade
 	foreach (i, item in aspectratioMorph) {
@@ -16948,7 +16925,6 @@ function tick(tick_time) {
 		flowT.bootfade = fadeupdate(flowT.bootfade)
 
 		if (endfade(flowT.bootfade) == 1) {
-			testpr("-----------A\n")
 			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 		}
 		if (prf.SPLASHON) 
@@ -16959,8 +16935,7 @@ function tick(tick_time) {
 
 	// Fade whole layout from black
 	if (checkfade(flowT.blacker)) {
-		//TEST162 a cosa serviva questo? forse a far rallentare lo zoom in?
-		//testpr("Z\n")
+		//TEST162 used to slow zoom in, not used from this version
 		//if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -1.0)
 		//SMASH VARIANT if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
 
@@ -16983,7 +16958,7 @@ function tick(tick_time) {
 
 		fl.surf.alpha = 255 * flowT.blacker[1]
 		if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
-		//TEST162 if (prf.SPLASHON) AF.logo.alpha = 255 * flowT.blacker[1]
+
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
 		if (prf.SPLASHON) 
 			AF.logo.alpha = 255 - AF.bootalpha * (1.0 - flowT.blacker[1])
@@ -18528,7 +18503,6 @@ function on_signal(sig) {
 							return true
 						}
 						else if ((!count.forceleft) && (count.left != 0)) {
-							testpr("Y\n")
 							tilesTableZoom[focusindex.new] = [0.8, 0.8, 0.8, 0.04, 0.0]
 							tilesTableUpdate[focusindex.new] = [0.8, 0.8, 0.8, 0.04, 0.0]
 							count.forceleft = true
@@ -18601,7 +18575,6 @@ function on_signal(sig) {
 							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
 							updatebgsnap(focusindex.new)
 						}
-						testpr("X\n")
 						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 						scroll.step = UI.rows
@@ -18611,7 +18584,6 @@ function on_signal(sig) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 
 						if (prf.SCROLLERTYPE == "labellist") {
-							testpr("W\n")
 							tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 						}
 						scroll.sortjump = false
@@ -18649,7 +18621,6 @@ function on_signal(sig) {
 					// if you go down and label list is not active, activate scroll.jump
 					else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
-						testpr("1\n")
 						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 						scroll.jump = true
@@ -18660,7 +18631,6 @@ function on_signal(sig) {
 					// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
 					else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
-						testpr("2\n")
 						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 						scroll.jump = false
