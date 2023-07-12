@@ -5,8 +5,6 @@ Mega Play
 MUGEN
 OpenBor
 Pinball Arcade
-Pinball FX2
-Pinball FX3
 ScummVM
 Sega System SP
 settings
