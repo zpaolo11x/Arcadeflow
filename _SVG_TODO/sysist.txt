@@ -10,14 +10,12 @@ Pinball Arcade
 Pinball FX2
 Pinball FX3
 ScummVM
-Sega
 Sega System SP
 settings
 Steam
 Virtual Console
 Visual Pinball
 Wii Ware
-Williams
 Windows 3x
 Windows 9x
 Zaccaria Pinball
