@@ -1,46 +1,22 @@
-Atari
-Atari XEGS
-C PET
 Capcom
-Casio PV-2000
-Data East
 Dirksimple
 Future Pinball
 HBMAME
-Irem
-Konami
-LCD Game
 Linux
-MAME
 Mega Play
 Mega Tech
-Midway
-Mikrosha
 MUGEN
-NABU
-Namco
-Naomi 2
-Naomi 2 GD-ROM System
 Nintendo Super System
 OpenBor
-Pecom 64
-Pegasus
-Pico
 Pinball Arcade
 Pinball FX2
 Pinball FX3
-PlayChoice 10
 ScummVM
 Sega
 Sega System SP
 settings
 SNK
-Sol-20
 Steam
-Super 32X
-Taito
-Ultra 64
-VG5000
 Virtual Console
 Visual Pinball
 Wii Ware
