@@ -1,10 +1,8 @@
 Dirksimple
 Future Pinball
 HBMAME
-Linux
 Mega Play
 MUGEN
-Nintendo Super System
 OpenBor
 Pinball Arcade
 Pinball FX2
@@ -12,7 +10,6 @@ Pinball FX3
 ScummVM
 Sega System SP
 settings
-Steam
 Virtual Console
 Visual Pinball
 Wii Ware
