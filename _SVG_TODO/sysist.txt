@@ -4,7 +4,6 @@ Future Pinball
 HBMAME
 Linux
 Mega Play
-Mega Tech
 MUGEN
 Nintendo Super System
 OpenBor
