@@ -13,8 +13,6 @@ Capcom
 Casio PV-2000
 	CDI
 Colour Genie
-	CoreGrafx
-	CoreGrafx II
 Data East
 Dirksimple
 EXL 100
@@ -22,7 +20,7 @@ Family Computer New
 Future Pinball
 	Game Boy Advance SP
 	Game Com
-	Game Master
+Game Master
 GP32
 HBMAME
 Irem
