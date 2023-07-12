@@ -21,7 +21,7 @@ Future Pinball
 	Game Boy Advance SP
 	Game Com
 	Game Master
-GP32
+	GP32
 HBMAME
 Irem
 	Jaguar CD
@@ -65,9 +65,9 @@ Steam
 Super 32X
 	Super Acan
 	Super Famicom Jr
-Super Game Boy
+	Super Game Boy
 	Super NES New-Style
-Supervision
+	Supervision
 Taito
 Ultra 64
 VG5000
