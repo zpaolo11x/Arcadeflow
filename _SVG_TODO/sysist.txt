@@ -16,6 +16,4 @@ Steam
 Virtual Console
 Visual Pinball
 Wii Ware
-Windows 3x
-Windows 9x
 Zaccaria Pinball
