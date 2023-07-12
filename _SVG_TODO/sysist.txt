@@ -1,31 +1,31 @@
 	Adventure Vision
-APF MP1000
+	APF MP1000
 	Apple IIc
 	Arcadia 2001
 	Astrocade
 Atari
 Atari XEGS
-C 16
+	C 16
 C PET
 Capcom
 	Casio Loopy
 	Casio PV-1000
 Casio PV-2000
 	CDI
-Colour Genie
+	Colour Genie
 Data East
 Dirksimple
-EXL 100
-Family Computer New
+	EXL 100
+	Family Computer New
 Future Pinball
 	Game Boy Advance SP
 	Game Com
-Game Master
+	Game Master
 GP32
 HBMAME
 Irem
 	Jaguar CD
-Jupiter ACE
+	Jupiter ACE
 Konami
 LCD Game
 Linux
@@ -43,7 +43,7 @@ NABU
 Namco
 Naomi 2
 Naomi 2 GD-ROM System
-Nintendo Entertainment System New-Style
+	Nintendo Entertainment System New-Style
 Nintendo Super System
 OpenBor
 	PC Engine LT
@@ -59,7 +59,7 @@ Sega
 Sega System SP
 settings
 SNK
-Socrates
+	Socrates
 Sol-20
 Steam
 Super 32X
