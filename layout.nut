@@ -12229,8 +12229,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		zmenu.glyphs[i].margin = 0
 		zmenu.glyphs[i].char_size = overlay.charsize * 1.25
 		zmenu.glyphs[i].align = Align.MiddleCentre
-
-		zmenu.glyphs[i].msg = gly(menudata[i].glyph)
+		zmenu.glyphs[i].msg = ":" + gly(menudata[i].glyph) + ":"
 		zmenu.glyphs[i].bg_alpha = 0
 		zmenu.glyphs[i].set_rgb(255, 255, 255)
 		zmenu.glyphs[i].visible = true
@@ -17687,11 +17686,13 @@ function on_signal(sig) {
 		else if (OS == "Windows") fe.plugin_command (AF.folder + "\\SetVol.exe", "report", "parsevolume")
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
+		local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (uifonts.pixel * overlay.charsize))) - 4
+
 		local volarray = []
 		local amparray = [0xea26, 0xea26, 0xea26, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
 		for (local i = 0; i <= 10; i++) {
 			volarray.push(
-				{text = textrate(10 - i, 10, 40, "Ⓞ ", "Ⓟ "),
+				{text = textrate(10 - i, 10, spaces, "Ⓞ ", "Ⓟ "),
 				glyph = amparray[i]}
 			)
 		}
