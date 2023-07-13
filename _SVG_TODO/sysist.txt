@@ -1,6 +1,4 @@
 Dirksimple
 HBMAME
-MUGEN
-OpenBor
 Sega System SP
 Wii Ware
