@@ -13234,7 +13234,6 @@ function builddisplaystructure() {
 			}
 		}
 	}
-	print_variable(disp,"","")
 }
 
 function displaygrouped() {
