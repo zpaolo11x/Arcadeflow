@@ -1,9 +1,6 @@
 Dirksimple
-Future Pinball
 HBMAME
-Mega Play
 MUGEN
 OpenBor
 Sega System SP
-Visual Pinball
 Wii Ware
