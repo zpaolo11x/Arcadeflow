@@ -4,11 +4,6 @@ HBMAME
 Mega Play
 MUGEN
 OpenBor
-Pinball Arcade
-ScummVM
 Sega System SP
-settings
-Virtual Console
 Visual Pinball
 Wii Ware
-Zaccaria Pinball
