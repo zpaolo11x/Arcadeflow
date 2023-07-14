@@ -68,7 +68,7 @@ class textboard
 	}
 
 	function board_on_signal(sig){
-		if (!val.enable_signals) return
+		if !(val.enable_signals && m_object.visible) return
 
 		local step = val.natural_scroll ? -1 : 1
 		::print (step+"\n")
