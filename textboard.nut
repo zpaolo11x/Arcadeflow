@@ -41,7 +41,7 @@ class textboard
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
       if ( _surface == null ) _surface = ::fe
-
+		::print (_x+" "+_y+" "+_w+" "+_h+"\n")
 		m_move = 0
 		m_line_move = 0
 		m_hint_delta = 0
@@ -90,6 +90,7 @@ class textboard
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
+		::print("LH:"+(f2-f1)+"\n")
 		return (f2 - f1)
 	}
 
@@ -148,7 +149,6 @@ class textboard
 			case "msg":
 				m_text = value
 				m_object.msg = "\n" + value + "\n"
-				m_line_height = getlineheight()
 				m_object.first_line_hint = 1
 				break
 			

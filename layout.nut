@@ -11013,8 +11013,8 @@ foreach (item in hist_text) {
 
 hist_text.descr.line_spacing = 1.15
 pixelizefont(hist_text.descr, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize), 0.7 * 1.15)
-hist_text.descr.y = hist_text.descr.y + 0.25 * hist_textT.linesize
-hist_text.descr.height = hist_text.descr.height - 0.25 * hist_textT.linesize
+hist_text.descr.y = hist_text.descr.y + floor(0.25 * hist_textT.linesize)
+hist_text.descr.height = hist_text.descr.height - floor(0.25 * hist_textT.linesize)
 
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
@@ -15817,9 +15817,9 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-	try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
-	testpr(" ")
-	try{testpr("LH:"+hist_text.descr.line_height+"\n")}catch(err){testpr("LH:xxx\n")}
+	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
+	//testpr(" ")
+	//try{testpr("LH:"+hist_text.descr.line_height+"\n")}catch(err){testpr("LH:xxx\n")}
 
 	/*
 	foreach (i, item in bgs.bgpic_array){
