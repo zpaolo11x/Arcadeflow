@@ -3353,7 +3353,7 @@ function msgbox_scrollerrefresh(){
 
 function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
-	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
+	AF.msgbox.obj.msg = "\n" + char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
 	msgbox_scrollerrefresh()
@@ -13801,6 +13801,9 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
+AF.msgbox.obj.y = AF.msgbox.obj.y - AF.msgbox.obj.line_height
+AF.msgbox.obj.height = AF.msgbox.obj.height + 2 * AF.msgbox.obj.line_height
+
 AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
@@ -17510,7 +17513,7 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
+		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
 		msgbox_open("Title", "")
 		foreach(i, item in names){
 			msgbox_addlinetop(patchtext(item, "DONE", 10, 60))
@@ -17548,18 +17551,20 @@ function on_signal(sig) {
 		}
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
-				AF.msgbox.obj.line_up()
+				
 				//if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
-				//msgbox_scrollerrefresh()
+				if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.line_up()
+				msgbox_scrollerrefresh()
 				count.up ++
 			}
 			return true
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				AF.msgbox.obj.line_down()
+				
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
-				//msgbox_scrollerrefresh()
+				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.line_down()
+				msgbox_scrollerrefresh()
 				count.down ++
 			}
 			return true
