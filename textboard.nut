@@ -180,6 +180,14 @@ class textboard
 			case "word_wrap":
 				break
 
+			case "line_spacing":
+				m_object.line_spacing = value
+				m_line_height = getlineheight()
+				m_object.y = - 1.0 * m_line_height
+				m_object.height = m_surf.height + 2.0 * m_line_height
+				m_y_zero = m_object.y
+				break
+
 			case "char_size":
 				m_object.char_size = value
 				m_line_height = getlineheight()

@@ -10978,19 +10978,23 @@ else { //LOW RES MODE
 	}
 }
 
-local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad3.glsl")
+hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
+
+local olay = hist_text_surf.add_rectangle(hist_text.descr.x, hist_text.descr.y, hist_text.descr.width, hist_text.descr.height)
+olay.set_rgb(200,0,0)
+olay.alpha = 100
+
+local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad4.glsl")
 gradshader.set_texture_param("texture")
 //gradshader.set_param ("limits", 0.2, 0.05, 0.5)
 //gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h, 40 * UI.scalerate * 5.0 / hist_textT.h)
 
 function descrshader(enable) {
 	if (!UI.vertical) {
-		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.5 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
-		gradshader.set_param ("blanker", 0.0, 0.0)
+		gradshader.set_param ("limits", enable ? hist_textT.linesize * 2.0 / hist_textT.h : 0.0, hist_textT.linesize * 4.0 / hist_textT.h)
 	}
 	else {
 		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.5 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
-		gradshader.set_param ("blanker", 0.0, 0.0)
 	}
 }
 
@@ -15813,7 +15817,10 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-	try{testpr(hist_text.descr.scroll_speed+"\n")}catch(err){testpr("no\n")}
+	try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
+	testpr(" ")
+	try{testpr("LH:"+hist_text.descr.line_height+"\n")}catch(err){testpr("LH:xxx\n")}
+
 	/*
 	foreach (i, item in bgs.bgpic_array){
 		testpr(item.alpha+" ")
