@@ -69,11 +69,9 @@ class textboard
 	}
 
 	function board_on_signal(sig){
-		::print ("MBSIGNAL:"+sig+"\n")
 		if (!(val.enable_signals && m_object.visible)) return
 
 		local step = val.natural_scroll ? -1 : 1
-		::print (step+"\n")
 		if (sig == "up") {
 			m_hint_delta += step
 			m_move += step * val.line_height
