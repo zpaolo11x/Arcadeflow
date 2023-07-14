@@ -20,14 +20,12 @@ New properties:
 class textboard
 {
 	m_object = null
-	m_surf = null
 
 	m_move = null
 	m_line_move = null
 	m_hint_delta = null
 	m_y_zero = null
 	m_step = null
-	m_text = null
 
 	m_scroll_speed = null
 	m_natural_scroll = null
@@ -45,7 +43,7 @@ class textboard
 		m_move = 0
 		m_line_move = 0
 		m_hint_delta = 0
-		m_y_zero = 0 //_y
+		m_y_zero = _y
 		m_step = 1
 
 		m_scroll_speed = 1
@@ -54,20 +52,10 @@ class textboard
 		m_enable_signals = false
 		m_signal_block = true
 
-		m_text = _t
-
-		m_surf = _surface.add_surface(_w, _h)
-		m_surf.set_pos(_x, _y)
-		m_object = m_surf.add_text( "\n" + m_text + "\n", 0, 0, _w, _h )
-
+		m_object = _surface.add_text( _t, _x, _y, _w, _h )
 		m_object.word_wrap = true
 		m_object.char_size = _h / 4
 		m_line_height = getlineheight()
-
-		m_object.y = - 1.0 * m_line_height
-		m_object.height = _h + 2.0 * m_line_height
-		m_y_zero = m_object.y
-		
 		m_object.first_line_hint = 1
 
 		::fe.add_signal_handler( this, "board_on_signal" )
@@ -146,18 +134,14 @@ class textboard
 		switch ( idx )
 		{
 			case "msg":
-				m_text = value
-				m_object.msg = "\n" + value + "\n"
+				m_object.msg = value
 				m_line_height = getlineheight()
 				m_object.first_line_hint = 1
 				break
 			
-			case "shader":
 			case "y":
-			case "x":
-			case "width":
-			case "height":
-				m_surf[idx] = value
+				m_object.y = value
+				m_y_zero = value
 				break
 
 			case "scroll_speed":
@@ -183,9 +167,6 @@ class textboard
 			case "char_size":
 				m_object.char_size = value
 				m_line_height = getlineheight()
-				m_object.y = - 1.0 * m_line_height
-				m_object.height = m_surf.height + 2.0 * m_line_height
-				m_y_zero = m_object.y
 				break
 
 			default:
@@ -197,18 +178,6 @@ class textboard
 	{
 		switch ( idx )
 		{
-			case "shader":
-			case "x":
-			case "y":
-			case "width":
-			case "height":
-				return m_surf[idx]
-				break
-			
-			case "msg":
-				return m_text
-				break
-
 			case "scroll_speed":
 				return m_scroll_speed
 				break
@@ -228,7 +197,7 @@ class textboard
 			case "signal_block":
 				return m_signal_block
 				break
-			
+				
 			default:
 			   return m_object[idx]
 		}

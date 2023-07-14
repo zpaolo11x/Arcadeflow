@@ -10857,7 +10857,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 8 * hist_textT.linesize, hist_textT.w, hist_textT.linesize)
 
-				descr = hist_text_surf.add_text("", 0, 9 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9 * hist_textT.linesize)
+				descr = fe.add_textboard("", 0, 9 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9 * hist_textT.linesize,hist_text_surf)
 			}
 		}
 		else if (hist.panel_ar <= 1.0) { // DEFAULT PANEL STRUCTURE, UP TO AR = 1.0
@@ -10874,7 +10874,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				buttn = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 4 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 				ratng = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 5 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 
-				descr = hist_text_surf.add_text("", 0, 7 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7 * hist_textT.linesize)
+				descr = fe.add_textboard("", 0, 7 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -10895,7 +10895,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 9 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3 * hist_textT.linesize)
 
-				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, 0 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 0 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h, hist_text_surf)
 			}
 
 		}
@@ -10917,7 +10917,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
-				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.5 * hist_textT.linesize))
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.5 * hist_textT.linesize), hist_text_surf)
 			}
 
 		}
@@ -10938,7 +10938,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				tags  = hist_text_surf.add_text("", 0, 6.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
 			//	compl = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 6 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
-				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize, hist_text_surf)
 			}
 		}
 		else  { // LONG PANEL STRUCTURE AR > 1.0
@@ -10957,7 +10957,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3.0 * hist_textT.linesize)
 
-				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize, hist_text_surf)
 			}
 		}
 	}
@@ -10974,9 +10974,10 @@ else { //LOW RES MODE
 		buttn = null
 		ratng = null
 		tags = null
-		descr = hist_text_surf.add_text("", 0, 0, (UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w * 0.58 : hist_textT.w, hist_textT.h)
+		descr = fe.add_textboard("", 0, 0, (UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w * 0.58 : hist_textT.w, hist_textT.h, hist_text_surf)
 	}
 }
+
 local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad3.glsl")
 gradshader.set_texture_param("texture")
 //gradshader.set_param ("limits", 0.2, 0.05, 0.5)
@@ -10984,12 +10985,12 @@ gradshader.set_texture_param("texture")
 
 function descrshader(enable) {
 	if (!UI.vertical) {
-		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.25 / hist_textT.h : 0.0, hist_textT.linesize * 3.0 / hist_textT.h)
-		gradshader.set_param ("blanker", 0.0, (hist_text.descr.y + 3) * 1.0 / hist_textT.h)
+		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.5 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
+		gradshader.set_param ("blanker", 0.0, 0.0)
 	}
 	else {
-		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.25 / hist_textT.h : 0.0, hist_textT.linesize * 3.0 / hist_textT.h)
-		gradshader.set_param ("blanker", hist_text.descr.x * 1.0 / hist_textT.w, (hist_text.descr.y + 3) * 1.0 / hist_textT.h)
+		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.5 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
+		gradshader.set_param ("blanker", 0.0, 0.0)
 	}
 }
 
@@ -11360,7 +11361,7 @@ function history_updatetext() {
 	hist_titletxt_bd.visible = hist_titletxt.visible = (hist_title.subimg_height == 0)
 	if (prf.HISTORYPANEL) hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
-	hist_text_surf.shader = gradshader
+	hist_text.descr.shader = gradshader
 
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
@@ -11501,13 +11502,13 @@ function history_visible() {
 }
 
 function af_on_scroll_up() {
-	if (hist_text.descr.first_line_hint > 1) hist_text.descr.first_line_hint--
-	if (hist_text.descr.first_line_hint == 1) descrshader(false)
+	if (hist_text.descr.first_line_hint > 1) hist_text.descr.line_up() //hist_text.descr.first_line_hint--
+	if (hist_text.descr.first_line_hint == 2) descrshader(false)
 }
 
 function af_on_scroll_down() {
 	if (hist_text.descr.first_line_hint == 1) descrshader(true)
-	hist_text.descr.first_line_hint++
+	hist_text.descr.line_down() //hist_text.descr.first_line_hint++
 }
 
 function history_exit() {
@@ -13802,7 +13803,7 @@ AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
 AF.msgbox.obj.y = AF.msgbox.obj.y - AF.msgbox.obj.line_height
-AF.msgbox.obj.height = AF.msgbox.obj.height + 2 * AF.msgbox.obj.line_height
+AF.msgbox.obj.height = AF.msgbox.obj.height + 3 * AF.msgbox.obj.line_height
 
 AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 
@@ -15812,7 +15813,7 @@ local clock1 = 0
 /// On Tick ///
 function tick(tick_time) {
 	//TEST160
-	
+	try{testpr(hist_text.descr.scroll_speed+"\n")}catch(err){testpr("no\n")}
 	/*
 	foreach (i, item in bgs.bgpic_array){
 		testpr(item.alpha+" ")
