@@ -6,6 +6,7 @@
 
 // Load file nut
 fe.do_nut("nut_file.nut")
+fe.do_nut("textboard.nut") //TEST162
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -13782,9 +13783,8 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_textboard("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
-AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
 AF.msgbox.obj.bg_alpha = 220
@@ -13792,6 +13792,8 @@ AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.visible = false
 AF.msgbox.obj.zorder = 100
+AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
+AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
@@ -17508,7 +17510,7 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 
 	if (sig == "custom1"){
-		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
+		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
 		msgbox_open("Title", "")
 		foreach(i, item in names){
 			msgbox_addlinetop(patchtext(item, "DONE", 10, 60))
@@ -17546,16 +17548,18 @@ function on_signal(sig) {
 		}
 		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
-				if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
-				msgbox_scrollerrefresh()
+				AF.msgbox.obj.line_up()
+				//if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
+				//msgbox_scrollerrefresh()
 				count.up ++
 			}
 			return true
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
-				msgbox_scrollerrefresh()
+				AF.msgbox.obj.line_down()
+				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
+				//msgbox_scrollerrefresh()
 				count.down ++
 			}
 			return true
@@ -17588,6 +17592,7 @@ function on_signal(sig) {
 		}
 		return true
 	}
+
 
 	// Block signal response during update checks
 	if (AF.updatechecking) return

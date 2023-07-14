@@ -25,13 +25,14 @@ class textboard
 	m_line_move = 0
 	m_hint_delta = 0
 	m_y_zero = null
+	m_step = 1
 
 	val = {
 		line_height = null
 
-		scroll_speed = 0.5
+		scroll_speed = 1
 		natural_scroll = false
-		enable_signals = true
+		enable_signals = false
 		signal_block = true
 	}
 
@@ -68,7 +69,8 @@ class textboard
 	}
 
 	function board_on_signal(sig){
-		if !(val.enable_signals && m_object.visible) return
+		::print ("MBSIGNAL:"+sig+"\n")
+		if (!(val.enable_signals && m_object.visible)) return
 
 		local step = val.natural_scroll ? -1 : 1
 		::print (step+"\n")
@@ -85,36 +87,36 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
-	if (m_move != 0) {
-		if (m_move > 0) {
-			m_object.y += val.scroll_speed
-			m_move -= val.scroll_speed
-			if (m_move % val.line_height <= val.scroll_speed) {
-				m_line_move = (m_move - (m_move % val.line_height)) / val.line_height
-				if (m_hint_delta != 0) {
-					m_hint_delta --
-					m_object.first_line_hint --
-					if (m_object.first_line_hint == 0) m_object.first_line_hint = 1
-				}				
-				m_object.y = m_y_zero
-				m_move = m_line_move * val.line_height
-			}
-		}
-		else 	if (m_move < 0) {
-			m_object.y -= val.scroll_speed
-			m_move += val.scroll_speed
-			if (m_move % val.line_height >= -val.scroll_speed){
-				m_line_move = (m_move - (m_move % val.line_height)) / val.line_height
-				if (m_hint_delta != 0) {
-					m_hint_delta ++
-					m_object.first_line_hint ++
+		if (m_move != 0) {
+			if (m_move > 0) {
+				m_object.y += val.scroll_speed
+				m_move -= val.scroll_speed
+				if (m_move % val.line_height <= val.scroll_speed) {
+					m_line_move = (m_move - (m_move % val.line_height)) / val.line_height
+					if (m_hint_delta != 0) {
+						m_hint_delta --
+						m_object.first_line_hint --
+						if (m_object.first_line_hint == 0) m_object.first_line_hint = 1
+					}				
+					m_object.y = m_y_zero
+					m_move = m_line_move * val.line_height
 				}
-				m_object.y = m_y_zero
-				m_move = m_line_move * val.line_height
+			}
+			else 	if (m_move < 0) {
+				m_object.y -= val.scroll_speed
+				m_move += val.scroll_speed
+				if (m_move % val.line_height >= -val.scroll_speed){
+					m_line_move = (m_move - (m_move % val.line_height)) / val.line_height
+					if (m_hint_delta != 0) {
+						m_hint_delta ++
+						m_object.first_line_hint ++
+					}
+					m_object.y = m_y_zero
+					m_move = m_line_move * val.line_height
+				}
 			}
 		}
 	}
-}
 
 	function _set( idx, value )
 	{
@@ -136,6 +138,7 @@ class textboard
 			case "scroll_speed":
 			case "enable_signals":
 				val[idx] = value
+				m_step = val.natural_scroll ? -1 : 1
 				break
 
 			case "word_wrap":
@@ -167,6 +170,25 @@ class textboard
 			   return m_object[idx]
 		}
 	}
+
+	function set_rgb( r, g, b )
+	{
+		m_object.set_rgb( r, g, b )
+	}
+
+	function set_bg_rgb( r, g, b )
+	{
+		m_object.set_bg_rgb( r, g, b )
+	}
+	function line_down(){
+			m_hint_delta -= m_step
+			m_move -= m_step * val.line_height
+	}
+	function line_up(){
+			m_hint_delta += m_step
+			m_move += m_step * val.line_height
+	}
 }
+
 
 fe.add_textboard <- textboard
