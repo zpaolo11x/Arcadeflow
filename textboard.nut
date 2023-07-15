@@ -261,5 +261,4 @@ class textboard
 	}
 }
 
-
 fe.add_textboard <- textboard
