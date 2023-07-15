@@ -11026,6 +11026,8 @@ if (hist_text.title != null) {
 	hist_text.title.width = hist_text.title.width -2
 }
 
+testpr (hist_text.descr.char_size+"\n")
+
 function hist_text_rgb(r, g, b) {
 	foreach (item in hist_text) {
 		if (item != null) item.set_rgb(r, g, b)
@@ -11380,19 +11382,20 @@ function history_updatetext() {
 		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
 	}
 	else if (prf.SMALLSCREEN) {
-		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
-		hist_text.descr.msg = hist_text.descr.msg + "©" + z_list.gametable[z_list.index].z_year + " " + gly(0xe906) + z_list.gametable[z_list.index].z_manufacturer
-		hist_text.descr.msg = hist_text.descr.msg + gly(0xe90b) + z_list.gametable[z_list.index].z_system + "\n"
-		hist_text.descr.msg = hist_text.descr.msg + gly(0xe902) + z_list.gametable[z_list.index].z_category + " "
-		hist_text.descr.msg = hist_text.descr.msg + gly(0xe905) + z_list.gametable[z_list.index].z_series + "\n"
-		hist_text.descr.msg = hist_text.descr.msg + gly(0xe903) + " "
+		local temptext = ""
+		temptext = z_list.gametable[z_list.index].z_title + "\n\n"
+		temptext = temptext + "©" + z_list.gametable[z_list.index].z_year + " " + gly(0xe906) + z_list.gametable[z_list.index].z_manufacturer
+		temptext = temptext + gly(0xe90b) + z_list.gametable[z_list.index].z_system + "\n"
+		temptext = temptext + gly(0xe902) + z_list.gametable[z_list.index].z_category + " "
+		temptext = temptext + gly(0xe905) + z_list.gametable[z_list.index].z_series + "\n"
+		temptext = temptext + gly(0xe903) + " "
 		foreach (i, item in z_list.gametable2[z_list.index].z_tags) {
-			hist_text.descr.msg = hist_text.descr.msg + item
+			temptext = temptext + item
 			if (i < z_list.gametable2[z_list.index].z_tags.len() - 1)
-				hist_text.descr.msg = hist_text.descr.msg + ", "
+				temptext = temptext + ", "
 		}
-		hist_text.descr.msg = hist_text.descr.msg + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
-
+		temptext = temptext + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
+		hist_text.descr.msg = temptext
 	}
 	else {
 		hist_text.title.msg = z_list.gametable[z_list.index].z_title
