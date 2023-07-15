@@ -10857,7 +10857,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 8 * hist_textT.linesize, hist_textT.w, hist_textT.linesize)
 
-				descr = fe.add_textboard("", 0, 9 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9 * hist_textT.linesize,hist_text_surf)
+				descr = fe.add_textboard("", 0, 9.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9.25 * hist_textT.linesize,hist_text_surf)
 			}
 		}
 		else if (hist.panel_ar <= 1.0) { // DEFAULT PANEL STRUCTURE, UP TO AR = 1.0
@@ -10874,7 +10874,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				buttn = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 4 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 				ratng = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 5 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 
-				descr = fe.add_textboard("", 0, 7 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -10895,7 +10895,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 9 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3 * hist_textT.linesize)
 
-				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 0 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h, hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 0.25 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 0.25 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -10917,7 +10917,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
-				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.5 * hist_textT.linesize), hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.75 * hist_textT.linesize), hist_text_surf)
 			}
 
 		}
@@ -10938,7 +10938,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				tags  = hist_text_surf.add_text("", 0, 6.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
 			//	compl = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 6 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
-				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
 			}
 		}
 		else  { // LONG PANEL STRUCTURE AR > 1.0
@@ -10957,7 +10957,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3.0 * hist_textT.linesize)
 
-				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
 			}
 		}
 	}
@@ -10980,18 +10980,21 @@ else { //LOW RES MODE
 
 hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
 
+//TEST162
+/*
 local olay = hist_text_surf.add_rectangle(hist_text.descr.x, hist_text.descr.y, hist_text.descr.width, hist_text.descr.height)
 olay.set_rgb(200,0,0)
 olay.alpha = 100
+*/
 
 local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad4.glsl")
-gradshader.set_texture_param("texture")
+//gradshader.set_texture_param("texture")
 //gradshader.set_param ("limits", 0.2, 0.05, 0.5)
 //gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h, 40 * UI.scalerate * 5.0 / hist_textT.h)
 
 function descrshader(enable) {
 	if (!UI.vertical) {
-		gradshader.set_param ("limits", enable ? hist_textT.linesize * 2.0 / hist_textT.h : 0.0, hist_textT.linesize * 4.0 / hist_textT.h)
+		gradshader.set_param ("limits", enable ? hist_textT.linesize * 2.0 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
 	}
 	else {
 		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.5 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
@@ -11013,8 +11016,8 @@ foreach (item in hist_text) {
 
 hist_text.descr.line_spacing = 1.15
 pixelizefont(hist_text.descr, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize), 0.7 * 1.15)
-hist_text.descr.y = hist_text.descr.y + floor(0.25 * hist_textT.linesize)
-hist_text.descr.height = hist_text.descr.height - floor(0.25 * hist_textT.linesize)
+//hist_text.descr.y = hist_text.descr.y + floor(0.25 * hist_textT.linesize)
+//hist_text.descr.height = hist_text.descr.height - floor(0.25 * hist_textT.linesize)
 
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
