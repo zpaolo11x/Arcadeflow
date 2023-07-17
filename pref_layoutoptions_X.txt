@@ -1,0 +1,171 @@
+16.2
+
+|LAYOUTLANGUAGE|1| Layout language : English
+|POWERMENU|1| Power menu : No
+|HORIZONTALROWS|3| Rows in horizontal : 2
+|VERTICALROWS|4| Rows in vertical : 3
+|CLEANLAYOUT|1| Clean layout : No
+|SMALLSCREEN|1| Small screen : No
+|CUSTOMCOLOR|| Custom color : 
+|SHOWSUBNAME|0| Display Game Long Name : Yes
+|SHOWSYSNAME|0| Display System Name : Yes
+|SHOWARCADENAME|0| Display Arcade System Name : Yes
+|SHOWSYSART|0| System Name as artwork : Yes
+|SCROLLAMOUNT|0| Page jump size : 1 Screen
+|SCROLLERTYPE|0| Scrollbar style : Timeline
+|LIVEJUMP|0| Scroll updates : Yes
+|STRIPARTICLE|1| Strip article from sort : No
+|ENABLESORT|0| Enable sorting : Yes
+|SORTSAVE|0| Save sort order : Yes
+
+|CROPSNAPS|0| Aspect ratio : Adaptive
+|MORPHASPECT|0| Morph snap ratio : Morph video
+|FIX169|1| Optimize vertical arcade : No
+|TILEZOOM|1| Zoom thumbnails : Standard
+|LOGOSONLY|1| Show only logos : No
+|TITLEART|0| Artwork source : Gameplay
+|TITLEONSNAP|0| Show game title : Yes
+|BOXARTMODE|1| Box Art mode : No
+|TITLEONBOX|1| Game title over box art : No
+|BOXARTSOURCE|0| Artwork source : flyer
+|THUMBVIDEO|0| Video thumbs : Yes
+|FADEVIDEOTITLE|1| Fade title on video : No
+|THUMBVIDELAY|2| Video delay multiplier : 1x
+|MISSINGWHEEL|0| Generate missing title art : Yes
+|VID169|1| Vertical arcade videos : No
+|REDCROSS|0| Game not available indicator : Yes
+|NEWGAME|0| New game indicator : Yes
+|TAGSHOW|0| Show tag indicator : Yes
+|TAGNAME|| Custom tag name : 
+|GBRECOLOR|0| Game Boy color correction : Automatic
+|CRTRECOLOR|1| MSX crt color correction : No
+
+|COLORTHEME|3| ❗ Color theme ❗ : Pop
+|OVERCUSTOM|pics/| Custom overlay : pics/
+|BGCUSTOM|pics/| Custom main BG image : pics/
+|BGCUSTOMSTRETCH|1| Format of main BG image : Stretch
+|BGCUSTOMHISTORY|pics/| Custom history BG image : pics/
+|BGCUSTOMHISTORYSTRETCH|1| Format of history BG image : Stretch
+|LAYERSNAP|1| Background snap : No
+|LAYERVIDEO|1| Animate BG snap : No
+|LAYERVIDELAY|1| Delay BG animation : No
+|BGPERDISPLAY|1| Per Display background : No
+
+|SPLASHON|0| Enable splash logo : Yes
+|SPLASHLOGOFILE|| Custom splash logo : 
+
+|HUECYCLE|1| Enable color cycle : No
+|HCSPEED|1| Cycle speed : Medium
+|HCCOLOR|0| Cycle color : Standard
+|HCPINGPONG|1| Ping Pong effect : No
+|HCHUESTART|| Start hue : 
+|HCHUESTOP|| Stop hue : 
+
+|THEMEAUDIO|0| Enable theme sounds : Yes
+|AUDIOVIDSNAPS|1| Audio in videos (thumbs) : No
+|AUDIOVIDHISTORY|1| Audio in videos (history) : No
+|BACKGROUNDTUNE|| Layout background music : 
+|RANDOMTUNE|1| Randomize background music : No
+|PERDISPLAYTUNE|1| Per display background music : No
+|NOBGONATTRACT|0| Stop bg music in attract mode : Yes
+
+
+|OVERMENUBUTTON|1| Context menu button : Select
+|UTILITYMENUBUTTON|1| Utility menu button : Up
+|HISTORYBUTTON|0| History page button : None
+|SWITCHMODEBUTTON|3| Thumbnail mode button : Custom 3
+|SEARCHBUTTON|0| Search menu button : None
+|CATEGORYBUTTON|0| Category menu button : None
+|MULTIFILTERBUTTON|0| Multifilter menu button : None
+|FAVBUTTON|0| Show favorites button : None
+|VOLUMEBUTTON|6| Volume button : Custom 6
+|DELETEBUTTON|0| Delete ROM button : None
+
+|UMVECTOR|1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,| Customize Utility Menu : 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,
+
+|DMPENABLED|0| Enable Arcadeflow Displays Menu page : Yes
+|OLDDISPLAYCHANGE|0| Enable Fast Displays Change : Yes
+|DMPGENERATELOGO|0| Generate display logo : Yes
+|DMPSORT|3| Sort displays menu : System brand then name
+|DMPSEPARATORS|0| Show group separators : Yes
+|DMPIMAGES|1| Displays menu layout : List with artwork
+|DMART|0| Artwork source : Arcadeflow only
+|DMCATEGORYART|0| Enable category artwork : Yes
+|DMPGROUPED|0| Categorized Displays Menu : Yes
+|DMPEXITAF|1| Add Exit Arcadeflow to menu : No
+|DMPSKIPCATEGORY|1| ❗ Open on current category ❗ : No
+|DMPATSTART|1| Open the Displays Menu at startup : No
+|DMPOUTEXITAF|1| Exit AF when leaving Menu : No
+|DMPIFEXITAF|1| Enter Menu when leaving display : No
+
+|CRTGEOMETRY|0| CRT deformation : Yes
+|SCANLINEMODE|2| Scanline effect : Aperture
+|LCDMODE|1| LCD effect : Half Resolution
+|HISTORYSIZE|1| Text panel size : Default
+|HISTORYPANEL|0| Text panel style : White panel
+|DARKPANEL|1| Game panel style : Standard
+|HISTMININAME|0| Detailed game data : Yes
+|CONTROLOVERLAY|0| Control panel overlay : Always
+
+|AMENABLE|1| Enable attract mode : Inactivity only
+|AMTIMER|120| Attract mode timer (s) : 120
+|AMCHANGETIMER|10| Game change time (s) : 10
+|AMSHOWLOGO|0| Attract logo : Yes
+|AMMESSAGE|PRESS ANY KEY| Attract message : PRESS ANY KEY
+|AMTUNE|| Background music : 
+|AMSOUND|0| Enable game sound : Yes
+
+|ADAPTSPEED|1| Adjust performance : No
+|CUSTOMSIZE|| Resolution W x H : 
+|RPI|1| Raspberry Pi fix : No
+|OVERSCANW|100| Width % : 100
+|OVERSCANH|100| Height % : 100
+|OVERSCANX|0| Shift X % : 0
+|OVERSCANY|0| Shift Y % : 0
+|LOWSPECMODE|1| Low Spec mode : No
+|DATASHADOWSMOOTH|0| Smooth shadow : Yes
+|SNAPGLOW|0| Glow effect : Yes
+|SNAPBORDER|0| Snap border : Yes
+|SNAPGRADIENT|0| Thumb gradient : Yes
+
+|MULTIMON|1| Enable multiple monitor : No
+|MONITORNUMBER|0| Monitor identifier : Monitor 1
+|MONITORASPECT|0| Correct aspect ratio : Yes
+|MONITORMEDIA1|0| Main media source : marquee
+|MONITORMEDIA2|1| Alternate media source : logo
+
+
+|NOCRC|0| Enable CRC check : Yes
+|ROMSCRAPE|1| Rom Scrape Options : Skip CRC matched
+|ERRORSCRAPE|1| Scrape error roms : No
+|MEDIASCRAPE|1| Media Scrape Options : Only missing
+|REGIONPREFS|1,2,3,4,5,| Region Priority : 1,2,3,4,5,
+|SCRAPETIMEOUT|15| ❗ Scrape Timeout ❗ : 15
+|DAT_PATH|| History.dat : 
+|INDEX_CLONES|0| Index clones : Yes
+|INI_BESTGAMES_PATH|| Bestgames.ini : 
+|USEGENREID|0| Prefer genreid categories : Yes
+
+|MASTERLIST|1| Enable Master Romlist : No
+|MASTERPATH|| Master Romlist Path : 
+|ALLGAMES|1| Enable all games collections : No
+|ENABLEHIDDEN|0| Enable game hiding : Yes
+|ENABLEDELETE|1| Enable rom delete : No
+
+|RAENABLED|1| Enable RetroArch integration : No
+|RAEXEPATH|| Custom executable path : 
+|RACOREPATH|| Custom Core folder : 
+|RAINFOPATH|| Custom Info folder : 
+
+|LIVESEARCH|0| Immediate search : Yes
+|KEYLAYOUT|0| Keyboard layout : ABCDEF
+|SAVEMFZ|0| Save Multifilter sessions : Yes
+|MFZVECTOR|1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,| Customize Multifilter Menu : 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
+
+
+|UPDATECHECK|0| Automatically check for updates : Yes
+|AUTOINSTALL|1| Install update after download : Download only
+
+
+|FPSON|1| FPS counter : No
+|DEBUGMODE|1| DEBUG mode : No
