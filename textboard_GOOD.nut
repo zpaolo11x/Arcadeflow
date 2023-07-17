@@ -21,8 +21,6 @@ class textboard
 {
 	m_object = null
 	m_surf = null
-	m_blank_top = null
-	m_blank_bot = null
 
 	m_move = null
 	m_line_move = null
@@ -30,9 +28,7 @@ class textboard
 	m_y_zero = null
 	m_step = null
 	m_text = null
-	m_margin = null
 	m_bufferlines = null
-	m_shader = null
 
 	// Reas/write properties
 	m_scroll_speed = null
@@ -47,9 +43,6 @@ class textboard
 	constructor (_t, _x, _y, _w, _h, _surface = null){
       if ( _surface == null ) _surface = ::fe
 		::print (_x+" "+_y+" "+_w+" "+_h+"\n")
-		
-		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
-
 		m_move = 0
 		m_line_move = 0
 		m_hint_delta = 0
@@ -63,22 +56,10 @@ class textboard
 		m_signal_block = true
 
 		m_text = _t
-		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
 		m_surf.set_pos(_x, _y)
 		m_object = m_surf.add_text( "\n\n" + m_text + "\n\n", 0, 0, _w, _h )
-		m_object.margin = m_margin
-		m_object.set_bg_rgb(255,255,255)
-		m_object.set_rgb(0, 0, 0)
-		m_object.bg_alpha = 255
-		m_object.alpha = 255
-
-		m_blank_top = m_surf.add_rectangle(0, 0, _w, m_margin)
-		m_blank_top.set_rgb(255,255,255)
-
-		m_blank_bot = m_surf.add_rectangle(0, _h - m_margin, _w, m_margin)
-		m_blank_bot.set_rgb(255,255,255)
 
 		m_object.word_wrap = true
 		m_object.char_size = _h / 4
@@ -88,8 +69,6 @@ class textboard
 		m_object.height = _h + 4.0 * m_line_height
 		m_y_zero = m_object.y
 		
-		//m_surf.shader = m_shader
-
 		m_object.first_line_hint = 1
 
 		::fe.add_signal_handler( this, "board_on_signal" )
@@ -118,7 +97,7 @@ class textboard
 
 	function refreshtext(){
 		m_line_height = getlineheight()
-		m_bufferlines = 1//::floor(m_object.margin * 1.0 / m_line_height) + 2
+		m_bufferlines = ::floor(m_object.margin * 1.0 / m_line_height) + 2
 		::print("BLINES:"+m_bufferlines+"\n")
 		m_object.y = - 1.0 * m_line_height * m_bufferlines
 		m_object.height = m_surf.height + 2.0 * m_line_height * m_bufferlines
@@ -134,8 +113,6 @@ class textboard
 			temptext += "\n"
 		}
 		m_object.msg = temptext
-		m_blank_top.set_pos(0,0,m_surf.width,m_object.margin)
-		m_blank_bot.set_pos(0,m_surf.height - m_object.margin,m_surf.width,m_object.margin)
 		::print("*\n"+m_object.msg+"\n*\n")
 	}
 

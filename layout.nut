@@ -13812,9 +13812,6 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
-AF.msgbox.obj.y = AF.msgbox.obj.y - AF.msgbox.obj.line_height
-AF.msgbox.obj.height = AF.msgbox.obj.height + 3 * AF.msgbox.obj.line_height
-
 AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
@@ -13822,6 +13819,9 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 }
+
+	testpr("VISLINES:"+AF.msgbox.obj.visible_lines+"\n")
+
 
 /// SPLASH SCREEN UPDATE ///
 
