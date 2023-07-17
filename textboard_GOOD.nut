@@ -42,7 +42,7 @@ class textboard
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
       if ( _surface == null ) _surface = ::fe
-		::print (_x+" "+_y+" "+_w+" "+_h+"\n")
+		//::print (_x+" "+_y+" "+_w+" "+_h+"\n")
 		m_move = 0
 		m_line_move = 0
 		m_hint_delta = 0
@@ -63,12 +63,14 @@ class textboard
 
 		m_object.word_wrap = true
 		m_object.char_size = _h / 4
+		refreshtext()
+		/*
 		m_line_height = getlineheight()
 
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = _h + 4.0 * m_line_height
 		m_y_zero = m_object.y
-		
+		*/
 		m_object.first_line_hint = 1
 
 		::fe.add_signal_handler( this, "board_on_signal" )
@@ -91,14 +93,14 @@ class textboard
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
-		::print("LH:"+(f2-f1)+"\n")
+		//::print("LH:"+(f2-f1)+"\n")
 		return (f2 - f1)
 	}
 
 	function refreshtext(){
 		m_line_height = getlineheight()
 		m_bufferlines = ::floor(m_object.margin * 1.0 / m_line_height) + 2
-		::print("BLINES:"+m_bufferlines+"\n")
+		//::print("BLINES:"+m_bufferlines+"\n")
 		m_object.y = - 1.0 * m_line_height * m_bufferlines
 		m_object.height = m_surf.height + 2.0 * m_line_height * m_bufferlines
 		m_y_zero = m_object.y
@@ -113,7 +115,7 @@ class textboard
 			temptext += "\n"
 		}
 		m_object.msg = temptext
-		::print("*\n"+m_object.msg+"\n*\n")
+		//::print("*\n"+m_object.msg+"\n*\n")
 	}
 
 	function board_on_signal(sig){
@@ -134,6 +136,7 @@ class textboard
 
 	function board_on_tick(tick_time){
 		if (m_move != 0) {
+			::print (m_move+"\n")
 			if (m_move > 0) {
 				m_object.y += m_scroll_speed
 				m_move -= m_scroll_speed
@@ -154,6 +157,7 @@ class textboard
 				if (m_move % m_line_height >= -m_scroll_speed){
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
+						::print("XXX\n")
 						m_hint_delta ++
 						m_object.first_line_hint ++
 					}
@@ -245,10 +249,10 @@ class textboard
 				break
 			
 			case "visible_lines":
-				::print ("m_surf.height:" + m_surf.height+"\n")
-				::print ("m_object.margin:" + m_object.margin+"\n")
-				::print ("m_line_height:" + m_line_height+"\n")
-				return (m_surf.height - 2 * m_object.margin) * 1.0 / m_line_height
+				//::print ("m_surf.height:" + m_surf.height+"\n")
+				//::print ("m_object.margin:" + m_object.margin+"\n")
+				//::print ("m_line_height:" + m_line_height+"\n")
+				return (::round((m_surf.height - 2 * m_object.margin) * 1.0 / m_line_height, 1))
 				break
 
 			case "line_height":

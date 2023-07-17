@@ -3353,7 +3353,7 @@ function msgbox_scrollerrefresh(){
 
 function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
-	AF.msgbox.obj.msg = "\n" + char_replace(wrappedmessage, nbsp, " ")
+	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
 	msgbox_scrollerrefresh()
@@ -11073,11 +11073,11 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)) {
 }
 
 if (prf.HISTORYPANEL) {
-	hist_text_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
+	//TEST162 hist_text_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 	hist_text_surf.set_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 }
 else {
-	hist_text_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
+	//TEST162 hist_text_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	hist_text_surf.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 }
 
@@ -13812,13 +13812,19 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
-AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
-
+//TEST162 AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
+AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
 	AF.msgbox.obj.char_size = 16
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 }
+
+
+local overlayz = fe.add_rectangle (AF.msgbox.obj.x + AF.msgbox.obj.margin, AF.msgbox.obj.y+AF.msgbox.obj.margin,AF.msgbox.obj.width - 2 * AF.msgbox.obj.margin, AF.msgbox.obj.height-2*AF.msgbox.obj.margin)
+overlayz.set_rgb(0,0,200)
+overlayz.alpha = 128
+overlayz.zorder = 250
 
 	testpr("VISLINES:"+AF.msgbox.obj.visible_lines+"\n")
 
@@ -15822,6 +15828,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
+	//testpr("                                  "+AF.msgbox.obj.first_line_hint+"\n")
 	//TEST160
 	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
 	//testpr(" ")
@@ -17567,7 +17574,10 @@ function on_signal(sig) {
 			if (checkrepeat(count.up)) {
 				
 				//if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
-				if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.line_up()
+				if (AF.msgbox.obj.first_line_hint >= 1) 
+					AF.msgbox.obj.line_up()
+				else
+					AF.msgbox.obj.first_line_hint = 1
 				msgbox_scrollerrefresh()
 				count.up ++
 			}
@@ -17575,9 +17585,10 @@ function on_signal(sig) {
 		}
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
-				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.line_down()
+				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
+					AF.msgbox.obj.line_down()
+
 				msgbox_scrollerrefresh()
 				count.down ++
 			}
