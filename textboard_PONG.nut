@@ -145,10 +145,19 @@ class textboard
 
 	function refreshtext(){
 		m_line_height = getlineheight()
-		m_object.y = - 1.0 * m_line_height
-		m_object.height = m_surf.height + 2.0 * m_line_height
+		m_bufferlines = 1// IN CASE OF LARGER MARGIN AND NO FADE USE ::floor(m_object.margin * 1.0 / m_line_height) + 2
+		m_object.y = - 1.0 * m_line_height * m_bufferlines
+		m_object.height = m_surf.height + 2.0 * m_line_height * m_bufferlines
 		m_y_zero = m_object.y
-		m_object.msg = "|\n"+m_text+"\n|"
+		local temptext = ""
+		for (local i =0; i < m_bufferlines; i++){
+			temptext += "\n"
+		}
+		temptext += m_text
+		for (local i =0; i < m_bufferlines; i++){
+			temptext += "\n"
+		}
+		m_object.msg = temptext
 
 		local marginbottom = ((m_surf.height - 2.0 * m_object.margin) % m_line_height) + m_object.margin
 
@@ -176,6 +185,7 @@ class textboard
 			m_ponging = true
 			line_up()
 		}
+::print(m_ponghint+" "+m_object.first_line_hint+"\n")
 		if (m_move != 0) {
 			if (m_move > 0){
 				// TEXT GOES DOWN
@@ -188,16 +198,15 @@ class textboard
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta --
+						m_ponghint = m_object.first_line_hint
 						if (m_object.first_line_hint > 1) m_object.first_line_hint --
 					}				
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
-					if (split_complete(m_object.msg_wrapped,"\n")[0] == "|") {
-						::print("DOWNSTOP\n")
-						m_move = 0				
-						m_hint_delta = 0
-						if (m_ponging) line_up()
-					} else if (m_ponging) line_down()
+					if (m_ponging) {
+						if (m_ponghint == m_object.first_line_hint) line_up()
+						else line_down()
+					}					
 				}
 			}
 			else if (m_move < 0) {
@@ -211,18 +220,17 @@ class textboard
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta ++
+						m_ponghint = m_object.first_line_hint
 						m_object.first_line_hint ++
 					}
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
-					local splitarray = split_complete(m_object.msg_wrapped,"\n")
-					if (splitarray[splitarray.len()-2] == "|") {
-						::print("UPSTOP\n")
-						m_move = 0				
-						m_hint_delta = 0
-						if (m_ponging) line_down()
+					if (m_ponging) {
+						if (m_ponghint == m_object.first_line_hint) {
+							line_down()
+						}
+						else line_up()
 					}
-					else if (m_ponging) line_up()
 				}
 			}
 		}
@@ -385,29 +393,14 @@ class textboard
 		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
 	
-	function split_complete(str_in, separator) {
-	local outarray = []
-	local index = str_in.find(separator)
-	while (index != null) {
-		outarray.push(str_in.slice(0, index))
-		str_in = str_in.slice(index + separator.len())
-		index = str_in.find(separator)
-	}
-	outarray.push(str_in)
-	return outarray
-}
-
 	function line_down(){
 		//if (m_object.first_line_hint + m_hint_delta + 1 > 2){
-			if (split_complete(m_object.msg_wrapped,"\n")[0] == "|") return
 			m_hint_delta += 1
 			m_move += m_line_height
 		//}
 	}
 	function line_up(){
 		//if ((m_object.first_line_hint + m_hint_delta + m_step > 2) && (m_step > 0)){
-			local splitarray = split_complete(m_object.msg_wrapped,"\n")
-			if (splitarray[splitarray.len()-2] == "|") return				
 			m_hint_delta -= 1
 			m_move -= m_line_height
 		//}
