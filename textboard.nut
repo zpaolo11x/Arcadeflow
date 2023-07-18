@@ -119,7 +119,7 @@ class textboard
 
 		m_object.first_line_hint = 1
 
-		m_pong = true
+		m_pong = false
 		m_ponging = false
 
 		::fe.add_signal_handler( this, "board_on_signal" )
@@ -145,10 +145,10 @@ class textboard
 
 	function refreshtext(){
 		m_line_height = getlineheight()
-		m_object.y = - 1.0 * m_line_height
-		m_object.height = m_surf.height + 2.0 * m_line_height
+		m_object.y = - 2.0 * m_line_height
+		m_object.height = m_surf.height + 4.0 * m_line_height
 		m_y_zero = m_object.y
-		m_object.msg = "|\n"+m_text+"\n|"
+		m_object.msg = "#\n|\n"+m_text+"\n|\n#"
 
 		local marginbottom = ((m_surf.height - 2.0 * m_object.margin) % m_line_height) + m_object.margin
 
@@ -172,6 +172,8 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
+				::print(split_complete(m_object.msg_wrapped,"\n")[0]+" "+split_complete(m_object.msg_wrapped,"\n")[1]+"\n")
+
 		if ((m_pong) && (!m_ponging)){
 			m_ponging = true
 			line_up()
@@ -182,7 +184,9 @@ class textboard
 				m_object.y += m_scroll_speed
 				m_move -= m_scroll_speed
 
-				if (m_object.first_line_hint == 2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+				//if (m_object.first_line_hint == 2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+
+				if (split_complete(m_object.msg_wrapped,"\n")[0] == "|") m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
 
 				if (m_move % m_line_height <= m_scroll_speed) {
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
@@ -192,7 +196,7 @@ class textboard
 					}				
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
-					if (split_complete(m_object.msg_wrapped,"\n")[0] == "|") {
+					if (split_complete(m_object.msg_wrapped,"\n")[0] == "#") {
 						::print("DOWNSTOP\n")
 						m_move = 0				
 						m_hint_delta = 0
@@ -205,7 +209,8 @@ class textboard
 				m_object.y -= m_scroll_speed
 				m_move += m_scroll_speed
 	
-				if (m_object.first_line_hint == 1) m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+				//if (m_object.first_line_hint == 1)
+				if (split_complete(m_object.msg_wrapped,"\n")[0] == "#") m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
 	
 				if (m_move % m_line_height >= -m_scroll_speed){
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
@@ -216,7 +221,7 @@ class textboard
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
 					local splitarray = split_complete(m_object.msg_wrapped,"\n")
-					if (splitarray[splitarray.len()-2] == "|") {
+					if (splitarray[splitarray.len()-2] == "#") {
 						::print("UPSTOP\n")
 						m_move = 0				
 						m_hint_delta = 0
@@ -399,7 +404,7 @@ class textboard
 
 	function line_down(){
 		//if (m_object.first_line_hint + m_hint_delta + 1 > 2){
-			if (split_complete(m_object.msg_wrapped,"\n")[0] == "|") return
+			if (split_complete(m_object.msg_wrapped,"\n")[0] == "#") return
 			m_hint_delta += 1
 			m_move += m_line_height
 		//}
@@ -407,7 +412,7 @@ class textboard
 	function line_up(){
 		//if ((m_object.first_line_hint + m_hint_delta + m_step > 2) && (m_step > 0)){
 			local splitarray = split_complete(m_object.msg_wrapped,"\n")
-			if (splitarray[splitarray.len()-2] == "|") return				
+			if (splitarray[splitarray.len()-2] == "#") return				
 			m_hint_delta -= 1
 			m_move -= m_line_height
 		//}

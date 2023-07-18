@@ -10,7 +10,7 @@ local tboard = fe.add_textboard("TEST\ntest",0,0,flw * 0.5,flh * 0.6)
 
 tboard.align = Align.TopLeft
 tboard.char_size = 25
-tboard.scroll_speed = 2//0.2
+tboard.scroll_speed = 0.2//0.2
 tboard.margin = 20
 tboard.natural_scroll = true
 tboard.enable_signals = true
