@@ -47,6 +47,10 @@ class textboard
 	m_bg_alpha = null
 	m_alpha = null
 
+	m_pong = null
+	m_ponging = null
+	m_ponghint = 0
+
 	// Read only properties
 	m_line_height = null
 	m_visible_lines = null
@@ -115,6 +119,9 @@ class textboard
 
 		m_object.first_line_hint = 1
 
+		m_pong = true
+		m_ponging = false
+
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
 	}
@@ -128,21 +135,17 @@ class textboard
 		m_object.msg = "X"
 		m_object.first_line_hint = 0
 		local f1 = m_object.msg_height
-		::print("f1"+f1+"\n")
 		m_object.msg = "X\nX"
 		local f2 = m_object.msg_height
-		::print("f2"+f2+"\n")
-		::print("gs"+m_object.glyph_size+"\n")
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
-		::print("LH:"+(f2-f1)+"\n")
 		return (f2 - f1)
 	}
 
 	function refreshtext(){
 		m_line_height = getlineheight()
-		m_bufferlines = ::floor(m_object.margin * 1.0 / m_line_height) + 2
+		m_bufferlines = 1// IN CASE OF LARGER MARGIN AND NO FADE USE ::floor(m_object.margin * 1.0 / m_line_height) + 2
 		m_object.y = - 1.0 * m_line_height * m_bufferlines
 		m_object.height = m_surf.height + 2.0 * m_line_height * m_bufferlines
 		m_y_zero = m_object.y
@@ -157,7 +160,7 @@ class textboard
 		m_object.msg = temptext
 
 		local marginbottom = ((m_surf.height - 2.0 * m_object.margin) % m_line_height) + m_object.margin
-		::print ("mbot:"+marginbottom+"\n")
+
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 
@@ -178,9 +181,13 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
+		if ((m_pong) && (!m_ponging)){
+			m_ponging = true
+			line_up()
+		}
+::print(m_ponghint+" "+m_object.first_line_hint+"\n")
 		if (m_move != 0) {
 			if (m_move > 0){
-				::print(m_object.first_line_hint+"\n")
 				// TEXT GOES DOWN
 				m_object.y += m_scroll_speed
 				m_move -= m_scroll_speed
@@ -191,10 +198,15 @@ class textboard
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta --
+						m_ponghint = m_object.first_line_hint
 						if (m_object.first_line_hint > 1) m_object.first_line_hint --
 					}				
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
+					if (m_ponging) {
+						if (m_ponghint == m_object.first_line_hint) line_up()
+						else line_down()
+					}					
 				}
 			}
 			else if (m_move < 0) {
@@ -208,10 +220,17 @@ class textboard
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta ++
+						m_ponghint = m_object.first_line_hint
 						m_object.first_line_hint ++
 					}
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
+					if (m_ponging) {
+						if (m_ponghint == m_object.first_line_hint) {
+							line_down()
+						}
+						else line_up()
+					}
 				}
 			}
 		}
@@ -358,7 +377,7 @@ class textboard
 			case "buffer_lines":
 				return m_bufferlines
 				break
-				
+
 			default:
 			   return m_object[idx]
 		}
