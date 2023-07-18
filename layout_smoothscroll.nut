@@ -15,7 +15,8 @@ tboard.margin = 20
 tboard.natural_scroll = true
 tboard.enable_signals = true
 tboard.signal_block = false
-
+tboard.lines_bottom = 3.0
+tboard.lines_top = 1.0
 
 
 //tboard.set_bg_rgb(200,0,0)

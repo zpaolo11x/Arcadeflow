@@ -23,6 +23,8 @@ class textboard
 	m_surf = null
 	m_blank_top = null
 	m_blank_bot = null
+	m_line_top = null
+	m_line_bot = null
 
 	m_move = null
 	m_line_move = null
@@ -87,6 +89,8 @@ class textboard
 
 		m_blank_top = 0.0
 		m_blank_bot = 1.0
+		m_line_top = 1.0
+		m_line_bot = 1.0
 /*
 		m_blank_top = m_surf.add_rectangle(0, 0, _w, m_margin)
 		m_blank_top.set_rgb(0,0,0)
@@ -153,8 +157,8 @@ class textboard
 
 		local marginbottom = ((m_surf.height - 2.0 * m_object.margin) % m_line_height) + m_object.margin
 
-		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height) * 1.0 / m_surf.height)
-		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height) * 1.0 / m_surf.height)
+		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
+		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 
 	}
 
@@ -222,6 +226,7 @@ class textboard
 				m_object.first_line_hint = 1
 				break
 			
+			case "visible":
 			case "shader":
 			case "y":
 			case "x":
@@ -280,6 +285,16 @@ class textboard
 				m_shader.set_param("wholealpha", value * 1.0 / 255)
 				break
 
+			case "lines_bottom":
+				m_line_bot = value
+				refreshtext()
+				break
+			
+			case "lines_top":
+				m_line_top = value
+				refreshtext()
+				break
+
 			default:
    			m_object[idx] = value
 		}
@@ -289,6 +304,7 @@ class textboard
 	{
 		switch ( idx )
 		{
+			case "visible":
 			case "shader":
 			case "x":
 			case "y":

@@ -6,7 +6,7 @@
 
 // Load file nut
 fe.do_nut("nut_file.nut")
-fe.do_nut("textboard_GOOD.nut") //TEST162
+fe.do_nut("textboard.nut") //TEST162
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -13820,12 +13820,12 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0
 	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 }
 
-
+/*
 local overlayz = fe.add_rectangle (AF.msgbox.obj.x + AF.msgbox.obj.margin, AF.msgbox.obj.y+AF.msgbox.obj.margin,AF.msgbox.obj.width - 2 * AF.msgbox.obj.margin, AF.msgbox.obj.height-2*AF.msgbox.obj.margin)
 overlayz.set_rgb(0,0,200)
 overlayz.alpha = 128
 overlayz.zorder = 250
-
+*/
 	testpr("VISLINES:"+AF.msgbox.obj.visible_lines+"\n")
 
 
