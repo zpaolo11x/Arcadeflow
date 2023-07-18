@@ -140,6 +140,7 @@ local AF = {
 		numlines = 0
 		visiblelines = 0
 		lock = false
+		inline = 0
 	}
 	
 	tsc = 1.0 // Scaling of timer for different parameters
@@ -3340,13 +3341,15 @@ function msgbox_wraptext(text, columns){
 	return out
 }
 
-function msgbox_scrollerrefresh(){
+function msgbox_scrollerrefresh(inline){
+	testpr("                           "+inline+"\n")
+	AF.msgbox.inline = inline
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
 	}
 	else {
-		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (AF.msgbox.obj.first_line_hint - 1) * 1.0 / AF.msgbox.numlines)
+		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (inline) * 1.0 / AF.msgbox.numlines)
 		AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
 	}
 }
@@ -3356,7 +3359,7 @@ function msgbox_refresh(){
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
-	msgbox_scrollerrefresh()
+	msgbox_scrollerrefresh(0)
 }
 
 function msgbox_newtitle(text){
@@ -3385,7 +3388,7 @@ function msgbox_open(title, message, backfunction = null){
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
 	AF.msgbox.obj.first_line_hint = 1
-	msgbox_scrollerrefresh()
+	msgbox_scrollerrefresh(0)
 }
 
 function msgbox_lock(status){
@@ -11004,8 +11007,8 @@ hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
 hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
-hist_text.descr.lines_bottom = 2.0
-hist_text.descr.lines_top = 1.0
+hist_text.descr.lines_bottom = 3.0
+hist_text.descr.lines_top = 0.7
 
 //TEST162
 /*
@@ -13809,6 +13812,7 @@ AF.msgbox.scroller.alpha = 200
 
 //TEST162 AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
+
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
 	AF.msgbox.obj.char_size = 16
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
@@ -17569,11 +17573,13 @@ function on_signal(sig) {
 			if (checkrepeat(count.up)) {
 				
 				//if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
-				if (AF.msgbox.obj.first_line_hint >= 1) 
+				//if (AF.msgbox.obj.first_line_hint >= 1) 
+				//else
+				//	AF.msgbox.obj.first_line_hint = 1
+				if (AF.msgbox.inline >= 1) {
+					msgbox_scrollerrefresh(AF.msgbox.inline - 1)
 					AF.msgbox.obj.line_down()
-				else
-					AF.msgbox.obj.first_line_hint = 1
-				msgbox_scrollerrefresh()
+				}
 				count.up ++
 			}
 			return true
@@ -17581,10 +17587,12 @@ function on_signal(sig) {
 		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
-				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
-					AF.msgbox.obj.line_up()
+				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
 
-				msgbox_scrollerrefresh()
+				if (AF.msgbox.inline <= AF.msgbox.numlines - AF.msgbox.visiblelines - 1) {
+					msgbox_scrollerrefresh(AF.msgbox.inline + 1)
+					AF.msgbox.obj.line_up()
+				}
 				count.down ++
 			}
 			return true
@@ -17595,7 +17603,7 @@ function on_signal(sig) {
 					AF.msgbox.obj.first_line_hint -= AF.msgbox.visiblelines
 				else
 					AF.msgbox.obj.first_line_hint = 1
-				msgbox_scrollerrefresh()
+				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
 				count.left ++
 			}
 			return true
@@ -17607,7 +17615,7 @@ function on_signal(sig) {
 				else
 					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
 
-				msgbox_scrollerrefresh()
+				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
 				count.right ++
 			}
 			return true

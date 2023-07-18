@@ -128,10 +128,11 @@ class textboard
 		m_object.msg = "X"
 		m_object.first_line_hint = 0
 		local f1 = m_object.msg_height
-
+		::print("f1"+f1+"\n")
 		m_object.msg = "X\nX"
 		local f2 = m_object.msg_height
-		
+		::print("f2"+f2+"\n")
+		::print("gs"+m_object.glyph_size+"\n")
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
@@ -323,7 +324,7 @@ class textboard
 				break
 			
 			case "visible_lines":
-				return (::round((m_surf.height - 2 * m_object.margin) * 1.0 / m_line_height, 1))
+				return (::floor((m_surf.height - 2 * m_object.margin) * 1.0 / m_line_height))
 				break
 
 			case "line_height":
@@ -354,6 +355,10 @@ class textboard
 				return m_tx_alpha
 				break
 
+			case "buffer_lines":
+				return m_bufferlines
+				break
+				
 			default:
 			   return m_object[idx]
 		}
