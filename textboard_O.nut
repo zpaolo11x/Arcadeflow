@@ -21,8 +21,10 @@ class textboard
 {
 	m_object = null
 	m_surf = null
-	m_blank_top = null
-	m_blank_bot = null
+	m_cut_top = null
+	m_cut_bot = null
+	m_add_top = null
+	m_add_bot = null
 
 	m_move = null
 	m_line_move = null
@@ -30,20 +32,13 @@ class textboard
 	m_y_zero = null
 	m_step = null
 	m_text = null
-	m_margin = null
 	m_bufferlines = null
-	m_shader = null
-
-	m_check = null
 
 	// Reas/write properties
 	m_scroll_speed = null
 	m_natural_scroll = null
 	m_enable_signals = null
 	m_signal_block = null
-	m_tx_alpha = null
-	m_bg_alpha = null
-	m_alpha = null
 
 	// Read only properties
 	m_line_height = null
@@ -51,16 +46,7 @@ class textboard
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
       if ( _surface == null ) _surface = ::fe
-		::print (_x+" "+_y+" "+_w+" "+_h+"\n")
-		
-		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
-
-		m_check = 0
-
-		m_tx_alpha = 255
-		m_bg_alpha = 0
-		m_alpha = 255
-
+		//::print (_x+" "+_y+" "+_w+" "+_h+"\n")
 		m_move = 0
 		m_line_move = 0
 		m_hint_delta = 0
@@ -74,41 +60,30 @@ class textboard
 		m_signal_block = true
 
 		m_text = _t
-		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
 		m_surf.set_pos(_x, _y)
 		m_object = m_surf.add_text( "\n\n" + m_text + "\n\n", 0, 0, _w, _h )
-		m_object.margin = m_margin
-		m_object.set_bg_rgb(0,0,0)
-		m_object.set_rgb(255, 255, 255)
-		m_object.bg_alpha = 255
-		m_object.alpha = 255
+		
+		m_object.margin = 0
 
-		m_blank_top = 0.0
-		m_blank_bot = 1.0
-/*
-		m_blank_top = m_surf.add_rectangle(0, 0, _w, m_margin)
-		m_blank_top.set_rgb(0,0,0)
-		m_blank_top.alpha = 128
+		m_cut_top = m_surf.add_rectangle(0, 0, m_surf.width, m_object.margin)
+		m_cut_bot = m_surf.add_rectangle(0, m_surf.height - m_cut_top.height, m_surf.width, m_cut_top.height)
+		m_cut_top.blend_mode = BlendMode.Subtract
+		m_cut_bot.blend_mode = BlendMode.Subtract
+		m_add_top = m_surf.add_rectangle(0, 0, m_cut_top.width, m_cut_top.height)
+		m_add_bot = m_surf.add_rectangle(0, m_cut_bot.y, m_cut_bot.width, m_cut_bot.height)
 
-		m_blank_bot = m_surf.add_rectangle(0, _h - m_margin, _w, m_margin)
-		m_blank_bot.set_rgb(0,0,0)
-		m_blank_bot.alpha = 128
-*/
 		m_object.word_wrap = true
 		m_object.char_size = _h / 4
 		refreshtext()
+		/*
+		m_line_height = getlineheight()
 
-		m_surf.shader = m_shader
-		m_shader.set_param("textcolor", 1, 1, 1)
-		m_shader.set_param("panelcolor", 0, 0, 0)
-		m_shader.set_param("textalpha", 1)
-		m_shader.set_param("panelalpha", 0)
-		m_shader.set_param("wholealpha", 1)
-		m_shader.set_param("alphatop", m_blank_top)
-		m_shader.set_param("alphabot", m_blank_bot)
-
+		m_object.y = - 2.0 * m_line_height
+		m_object.height = _h + 4.0 * m_line_height
+		m_y_zero = m_object.y
+		*/
 		m_object.first_line_hint = 1
 
 		::fe.add_signal_handler( this, "board_on_signal" )
@@ -131,31 +106,33 @@ class textboard
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
-		::print("LH:"+(f2-f1)+"\n")
+		//::print("LH:"+(f2-f1)+"\n")
 		return (f2 - f1)
 	}
 
 	function refreshtext(){
 		m_line_height = getlineheight()
 		m_bufferlines = ::floor(m_object.margin * 1.0 / m_line_height) + 2
+		//::print("BLINES:"+m_bufferlines+"\n")
 		m_object.y = - 1.0 * m_line_height * m_bufferlines
 		m_object.height = m_surf.height + 2.0 * m_line_height * m_bufferlines
 		m_y_zero = m_object.y
 		local temptext = ""
 		for (local i =0; i < m_bufferlines; i++){
+			::print ("1-LINEADD\n")
 			temptext += "\n"
 		}
 		temptext += m_text
 		for (local i =0; i < m_bufferlines; i++){
+			::print ("2-LINEADD\n")
 			temptext += "\n"
 		}
 		m_object.msg = temptext
-
-		local marginbottom = (m_object.height % m_line_height) + m_object.margin
-
-		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height) * 1.0 / m_surf.height)
-		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height) * 1.0 / m_surf.height)
-
+		m_cut_top.set_pos(0, 0, m_surf.width, m_object.margin)
+		m_cut_bot.set_pos(0, m_surf.height - m_cut_top.height, m_surf.width, m_cut_top.height)
+		m_add_top.set_pos(m_cut_top.x, m_cut_top.y, m_cut_top.width, m_cut_top.height)
+		m_add_bot.set_pos(m_cut_bot.x, m_cut_bot.y, m_cut_bot.width, m_cut_bot.height)
+		//::print("*\n"+m_object.msg+"\n*\n")
 	}
 
 	function board_on_signal(sig){
@@ -163,45 +140,41 @@ class textboard
 
 		local step = m_natural_scroll ? -1 : 1
 		if (sig == "up") {
-			if (m_natural_scroll) line_up() else line_down()
+			m_hint_delta += step
+			m_move += step * m_line_height
 			return m_signal_block
 		}
 		if (sig == "down") {
-			if (m_natural_scroll) line_down() else line_up()
+			m_hint_delta -= step
+			m_move -= step * m_line_height
 			return m_signal_block
 		}			
 	}
 
 	function board_on_tick(tick_time){
 		if (m_move != 0) {
-			if (m_move > 0){
-				::print(m_object.first_line_hint+"\n")
-				// TEXT GOES DOWN
+			::print (m_move+"\n")
+			if (m_move > 0) {
 				m_object.y += m_scroll_speed
 				m_move -= m_scroll_speed
-
-				if (m_object.first_line_hint == 2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
-
 				if (m_move % m_line_height <= m_scroll_speed) {
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta --
-						if (m_object.first_line_hint > 1) m_object.first_line_hint --
+						m_object.first_line_hint --
+						if (m_object.first_line_hint == 0) m_object.first_line_hint = 1
 					}				
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
 				}
 			}
-			else if (m_move < 0) {
-				// TEXT GOES UP
+			else 	if (m_move < 0) {
 				m_object.y -= m_scroll_speed
 				m_move += m_scroll_speed
-	
-				if (m_object.first_line_hint == 1) m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
-	
 				if (m_move % m_line_height >= -m_scroll_speed){
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
+						::print("XXX\n")
 						m_hint_delta ++
 						m_object.first_line_hint ++
 					}
@@ -265,20 +238,6 @@ class textboard
 				m_object.margin = value
 				refreshtext()
 				break
-			case "tx_alpha":
-				m_tx_alpha = value
-				m_shader.set_param("textalpha", value * 1.0 / 255)
-				break
-			
-			case "bg_alpha":
-				m_bg_alpha = value
-				m_shader.set_param("panelalpha", value * 1.0 / 255)
-				break
-
-			case "alpha":
-				m_alpha = value
-				m_shader.set_param("wholealpha", value * 1.0 / 255)
-				break
 
 			default:
    			m_object[idx] = value
@@ -307,6 +266,9 @@ class textboard
 				break
 			
 			case "visible_lines":
+				//::print ("m_surf.height:" + m_surf.height+"\n")
+				//::print ("m_object.margin:" + m_object.margin+"\n")
+				//::print ("m_line_height:" + m_line_height+"\n")
 				return (::round((m_surf.height - 2 * m_object.margin) * 1.0 / m_line_height, 1))
 				break
 
@@ -325,19 +287,7 @@ class textboard
 			case "signal_block":
 				return m_signal_block
 				break
-
-			case "tx_alpha":
-				return m_tx_alpha
-				break
-
-			case "bg_alpha":
-				return m_tx_alpha
-				break
-
-			case "alpha":
-				return m_tx_alpha
-				break
-
+			
 			default:
 			   return m_object[idx]
 		}
@@ -345,24 +295,22 @@ class textboard
 
 	function set_rgb( r, g, b )
 	{
-		m_shader.set_param("textcolor", r*1.0/255, g*1.0/255, b*1.0/255)
+		m_object.set_rgb( r, g, b )
 	}
 
 	function set_bg_rgb( r, g, b )
 	{
-		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
+		m_object.set_bg_rgb( r, g, b )
+		m_add_top.set_rgb( r, g, b )
+		m_add_bot.set_rgb( r, g, b )
 	}
 	function line_down(){
-		//if (m_object.first_line_hint + m_hint_delta + 1 > 2){
-			m_hint_delta += 1
-			m_move += m_line_height
-		//}
+			m_hint_delta -= m_step
+			m_move -= m_step * m_line_height
 	}
 	function line_up(){
-		//if ((m_object.first_line_hint + m_hint_delta + m_step > 2) && (m_step > 0)){
-			m_hint_delta -= 1
-			m_move -= m_line_height
-		//}
+			m_hint_delta += m_step
+			m_move += m_step * m_line_height
 	}
 }
 
