@@ -10978,33 +10978,16 @@ else { //LOW RES MODE
 	}
 }
 
-hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
 
-//TEST162
-/*
-local olay = hist_text_surf.add_rectangle(hist_text.descr.x, hist_text.descr.y, hist_text.descr.width, hist_text.descr.height)
-olay.set_rgb(200,0,0)
-olay.alpha = 100
-*/
 
-local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad4.glsl")
+//local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad4.glsl")
 //gradshader.set_texture_param("texture")
 //gradshader.set_param ("limits", 0.2, 0.05, 0.5)
 //gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h, 40 * UI.scalerate * 5.0 / hist_textT.h)
 
-function descrshader(enable) {
-	if (!UI.vertical) {
-		gradshader.set_param ("limits", enable ? hist_textT.linesize * 2.0 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
-	}
-	else {
-		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.5 / hist_textT.h : 0.0, hist_textT.linesize * 5.0 / hist_textT.h)
-	}
-}
-
-descrshader(false)
 
 foreach (item in hist_text) {
-	if (item != null) {
+	if ((item != null) && (item != "descr")){
 		item.word_wrap = false
 		item.char_size = hist_textT.charsize
 		item.visible = true
@@ -11014,7 +10997,26 @@ foreach (item in hist_text) {
 	}
 }
 
+hist_text.descr.char_size = hist_textT.charsize
 hist_text.descr.line_spacing = 1.15
+hist_text.descr.align = Align.TopCentre
+hist_text.descr.word_wrap = true
+hist_text.descr.margin = 0.3 * hist_textT.linesize
+hist_text.descr.visible = true
+hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
+hist_text.descr.lines_bottom = 2.0
+hist_text.descr.lines_top = 1.0
+
+//TEST162
+/*
+local olay = hist_text_surf.add_rectangle(hist_text.descr.x + hist_text.descr.margin, hist_text.descr.y + hist_text.descr.margin, hist_text.descr.width - 2.0 * hist_text.descr.margin, hist_text.descr.height - 2.0 * hist_text.descr.margin)
+olay.set_rgb(200,0,0)
+olay.alpha = 100
+local olay2 = hist_text_surf.add_rectangle(hist_text.descr.x, hist_text.descr.y, hist_text.descr.width, hist_text.descr.height)
+olay2.set_rgb(0,200,0)
+olay2.alpha = 100
+*/
+
 pixelizefont(hist_text.descr, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize), 0.7 * 1.15)
 //hist_text.descr.y = hist_text.descr.y + floor(0.25 * hist_textT.linesize)
 //hist_text.descr.height = hist_text.descr.height - floor(0.25 * hist_textT.linesize)
@@ -11370,7 +11372,7 @@ function history_updatetext() {
 	hist_titletxt_bd.visible = hist_titletxt.visible = (hist_title.subimg_height == 0)
 	if (prf.HISTORYPANEL) hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
-	hist_text.descr.shader = gradshader
+	//TEST162 hist_text.descr.shader = gradshader
 
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
@@ -11461,12 +11463,7 @@ function history_updatetext() {
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
 	hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
-	hist_text.descr.align = Align.TopCentre
-	hist_text.descr.word_wrap = true
 	hist_text.descr.first_line_hint = 1
-	hist_text.descr.margin = 0.3 * hist_textT.linesize
-
-	descrshader(false)
 }
 
 function history_show(h_startup)
@@ -11512,13 +11509,11 @@ function history_visible() {
 }
 
 function af_on_scroll_up() {
-	if (hist_text.descr.first_line_hint > 1) hist_text.descr.line_up() //hist_text.descr.first_line_hint--
-	if (hist_text.descr.first_line_hint == 2) descrshader(false)
+	if (hist_text.descr.first_line_hint > 1) hist_text.descr.line_down() //hist_text.descr.first_line_hint--
 }
 
 function af_on_scroll_down() {
-	if (hist_text.descr.first_line_hint == 1) descrshader(true)
-	hist_text.descr.line_down() //hist_text.descr.first_line_hint++
+	hist_text.descr.line_up() //hist_text.descr.first_line_hint++
 }
 
 function history_exit() {
