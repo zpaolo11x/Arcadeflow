@@ -17575,7 +17575,7 @@ function on_signal(sig) {
 				
 				//if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
 				if (AF.msgbox.obj.first_line_hint >= 1) 
-					AF.msgbox.obj.line_up()
+					AF.msgbox.obj.line_down()
 				else
 					AF.msgbox.obj.first_line_hint = 1
 				msgbox_scrollerrefresh()
@@ -17587,7 +17587,7 @@ function on_signal(sig) {
 			if (checkrepeat(count.down)) {
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
 				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
-					AF.msgbox.obj.line_down()
+					AF.msgbox.obj.line_up()
 
 				msgbox_scrollerrefresh()
 				count.down ++
