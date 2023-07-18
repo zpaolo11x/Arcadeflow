@@ -368,6 +368,7 @@ class textboard
 	{
 		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
+	
 	function line_down(){
 		//if (m_object.first_line_hint + m_hint_delta + 1 > 2){
 			m_hint_delta += 1
