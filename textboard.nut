@@ -151,7 +151,7 @@ class textboard
 		}
 		m_object.msg = temptext
 
-		local marginbottom = (m_object.height % m_line_height) + m_object.margin
+		local marginbottom = ((m_surf.height - 2.0 * m_object.margin) % m_line_height) + m_object.margin
 
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height) * 1.0 / m_surf.height)

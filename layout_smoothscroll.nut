@@ -9,9 +9,9 @@ bg.alpha = 255
 local tboard = fe.add_textboard("TEST\ntest",0,0,flw * 0.5,flh * 0.6)
 
 tboard.align = Align.TopLeft
-tboard.char_size = 15
+tboard.char_size = 20
 tboard.scroll_speed = 0.2
-tboard.margin = 5
+tboard.margin = 10
 tboard.natural_scroll = true
 tboard.enable_signals = true
 tboard.signal_block = false
@@ -37,4 +37,4 @@ tboard.alpha = 255
 
 local overlay = fe.add_rectangle (tboard.x + tboard.margin, tboard.y+tboard.margin,tboard.width - 2 * tboard.margin, tboard.height-2*tboard.margin)
 overlay.set_rgb(200,0,0)
-overlay.alpha = 0
+overlay.alpha = 100
