@@ -6,7 +6,7 @@
 
 // Load file nut
 fe.do_nut("nut_file.nut")
-fe.do_nut("textboard_PONG.nut") //TEST162
+fe.do_nut("textboard.nut") //TEST162
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -3300,10 +3300,11 @@ function msgbox_addlinebelow(text, row = 1){
 }
 
 function msgbox_wrapline(text, columns) {
-	if (text == "") return "\n"
+	if (text == "") return ""
 
    local lines = []
    local currentline = ""
+	local linesnum = 0
 
    // Split the text into words
    local words = split(text," ")
@@ -3312,6 +3313,7 @@ function msgbox_wrapline(text, columns) {
 		// If adding the word exceeds the column limit, start a new line
       if (currentline.len() + word.len() > columns) {
          lines.push(strip(currentline))
+			linesnum ++
          currentline = ""
       }
       // Add the word to the current line
@@ -3321,11 +3323,12 @@ function msgbox_wrapline(text, columns) {
 	// Add the remaining line
 	if (currentline.len() > 0) {
 		lines.push(strip(currentline))
+		linesnum ++
 	}
 
 	local out = ""
-	foreach (item in lines){
-		out = out + item + "\n"
+	foreach (i, item in lines){
+		out = out + item + ((i == linesnum - 1) ? "" : "\n")
 	}
 
    // Return the formatted lines
@@ -3335,8 +3338,9 @@ function msgbox_wrapline(text, columns) {
 function msgbox_wraptext(text, columns){
 	local lines = split_complete(text,"\n")
 	local out = ""
-	foreach(line in lines){
-		out = out + msgbox_wrapline(line, columns)
+	local linesnum = lines.len()
+	foreach(i, line in lines){
+		out = out + msgbox_wrapline(line, columns) + ((i == linesnum - 1) ? "" : "\n")
 	}
 	return out
 }
@@ -3355,10 +3359,13 @@ function msgbox_scrollerrefresh(inline){
 }
 
 function msgbox_refresh(){
-	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
+	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
+	testpr("XXXXXXXXX\n"+"*"+(AF.msgbox.title + "\n\n" + AF.msgbox.body)+"*")
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
-	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
+	testpr("*"+wrappedmessage+"*\n")
+	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len()
+	testpr("ALLLINES:"+AF.msgbox.numlines+"\n")
 	msgbox_scrollerrefresh(0)
 }
 

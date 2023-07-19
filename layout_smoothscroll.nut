@@ -1,41 +1,55 @@
+// This line loads the module nut file.
+fe.do_nut( "textboard.nut" )
 
 local flw = fe.layout.width
 local flh = fe.layout.height
 
-fe.do_nut( "textboard.nut" )
 local bg = fe.add_rectangle(0,0,flw,flh )
 bg.set_rgb(0,100,100)
 bg.alpha = 255
-local tboard = fe.add_textboard("TEST\ntest",0,0,flw * 0.5,flh * 0.6)
 
+local text_to_show = "START\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus.\nSTOP"// \nDonec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
+
+local tw = flw * 0.5
+local th = flh
+
+local tboard = fe.add_textboard("", 0, 0, tw, th)
+
+// "standard" text parameters
 tboard.align = Align.TopLeft
-tboard.char_size = 25
-tboard.scroll_speed = 0.2//0.2
-tboard.margin = 20
-tboard.natural_scroll = true
-tboard.enable_signals = true
-tboard.signal_block = false
-tboard.lines_bottom = 1.0
-tboard.lines_top = 1.0
+tboard.char_size = floor(0.05 * th)
+tboard.margin = floor(0.06 * th)
+tboard.line_spacing = 1.0
+tboard.msg = text_to_show
+
+// Color and alpha definition
+tboard.set_bg_rgb(0,0,100)			// Color of the board background
+tboard.set_rgb(200, 200, 200)		// Color of the text
+tboard.bg_alpha = 100				// Alpha of the background
+tboard.tx_alpha = 255				// Alpha of the text
+tboard.alpha = 255					// Alpha of the whole board
+
+// Scroll parameters
+tboard.scroll_speed = 0.02 * tboard.line_height	// Scroll speed calculated on the base of line height
+
+tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
+tboard.enable_signals = true	// Enable module signal control
+tboard.signal_block = false	// Prevents or enable further signal management
+tboard.lines_bottom = 1.0		// Faded lines at the bottom of the board
+tboard.lines_top = 1.0			// Faded lines at the top of the board
+tboard.pingpong = false			// Enable auto-scroll
 
 
-//tboard.set_bg_rgb(200,0,0)
-tboard.msg = "START\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. \nSTOP"//Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nPhasellus efficitur et quam non congue. Duis ornare vestibulum massa, id eleifend metus feugiat vitae. Donec convallis est justo, quis tempus lectus hendrerit sit amet.\nSTOP"
-
-local textref = fe.add_text("X",flw*0.5,0,flw * 0.5,flh * 0.6)
-textref.msg = "START\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nPhasellus efficitur et quam non congue. Duis ornare vestibulum massa, id eleifend metus feugiat vitae. Donec convallis est justo, quis tempus lectus hendrerit sit amet.\nSTOP"
+// Reference text box to compare
+local textref = fe.add_text(text_to_show, tw, 0, tw, th)
 textref.align = tboard.align
 textref.char_size = tboard.char_size 
 textref.margin = tboard.margin
 textref.word_wrap = true
+textref.line_spacing = tboard.line_spacing
 
-tboard.set_bg_rgb(0,0,100)
-tboard.set_rgb(200, 200, 200)
-tboard.bg_alpha = 100
-tboard.tx_alpha = 255
-tboard.alpha = 255
-
-
-local overlay = fe.add_rectangle (tboard.x + tboard.margin, tboard.y+tboard.margin,tboard.width - 2 * tboard.margin, tboard.height-2*tboard.margin)
-overlay.set_rgb(200,0,0)
-overlay.alpha = 0
+/*
+local overlay = fe.add_rectangle (tboard.x + tboard.margin, tboard.y + tboard.margin, tboard.width - 2 * tboard.margin, tboard.height - 2 * tboard.margin)
+overlay.set_rgb(200, 0, 0)
+overlay.alpha = 100
+*/

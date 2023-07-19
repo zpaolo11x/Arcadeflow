@@ -15,6 +15,7 @@ New properties:
 - natural_scroll_scroll = true or false reverses scrolling direction
 - enable_signals = enable/disable signal response for scrolling
 - signal_block = if true no further up or down signals are managed
+- pingpong = makes the text scroll up and down automatically
 */
 
 class textboard
@@ -49,7 +50,9 @@ class textboard
 
 	m_pong = null
 	m_ponging = null
-	m_ponghint = 0
+
+	m_ch1 = " "
+	m_ch2 = "  "
 
 	// Read only properties
 	m_line_height = null
@@ -57,7 +60,6 @@ class textboard
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
       if ( _surface == null ) _surface = ::fe
-		::print (_x+" "+_y+" "+_w+" "+_h+"\n")
 		
 		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
 
@@ -95,15 +97,7 @@ class textboard
 		m_blank_bot = 1.0
 		m_line_top = 1.0
 		m_line_bot = 1.0
-/*
-		m_blank_top = m_surf.add_rectangle(0, 0, _w, m_margin)
-		m_blank_top.set_rgb(0,0,0)
-		m_blank_top.alpha = 128
 
-		m_blank_bot = m_surf.add_rectangle(0, _h - m_margin, _w, m_margin)
-		m_blank_bot.set_rgb(0,0,0)
-		m_blank_bot.alpha = 128
-*/
 		m_object.word_wrap = true
 		m_object.char_size = _h / 4
 		refreshtext()
@@ -145,16 +139,20 @@ class textboard
 
 	function refreshtext(){
 		m_line_height = getlineheight()
+
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = m_surf.height + 4.0 * m_line_height
 		m_y_zero = m_object.y
-		m_object.msg = "#\n|\n"+m_text+"\n|\n#"
+		m_object.msg = m_ch1 + "\n" + m_ch2 + "\n" + m_text + "\n" + m_ch2 + "\n" + m_ch1
 
-		local marginbottom = ((m_surf.height - 2.0 * m_object.margin) % m_line_height) + m_object.margin
+		local m_area = m_surf.height - 2.0 * m_object.margin
+		local m_1 = m_object.glyph_size - (m_area % m_line_height)
+		m_visible_lines = ::floor(m_area * 1.0 / m_line_height) + (m_1 > 0 ? 0.0 : 1.0)
+
+		local marginbottom = m_surf.height - m_object.margin - m_visible_lines * m_line_height
 
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
-
 	}
 
 	function board_on_signal(sig){
@@ -172,8 +170,6 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
-				::print(split_complete(m_object.msg_wrapped,"\n")[0]+" "+split_complete(m_object.msg_wrapped,"\n")[1]+"\n")
-
 		if ((m_pong) && (!m_ponging)){
 			m_ponging = true
 			line_up()
@@ -184,9 +180,8 @@ class textboard
 				m_object.y += m_scroll_speed
 				m_move -= m_scroll_speed
 
-				//if (m_object.first_line_hint == 2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
-
-				if (split_complete(m_object.msg_wrapped,"\n")[0] == "|") m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+				if (tb_topchar() == m_ch2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+				if (tb_bottomchar() == m_ch1) m_shader.set_param("alphabot", (m_object.y - m_y_zero) * 1.0 / m_line_height)
 
 				if (m_move % m_line_height <= m_scroll_speed) {
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
@@ -196,8 +191,7 @@ class textboard
 					}				
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
-					if (split_complete(m_object.msg_wrapped,"\n")[0] == "#") {
-						::print("DOWNSTOP\n")
+					if (tb_topchar() == m_ch1) {
 						m_move = 0				
 						m_hint_delta = 0
 						if (m_ponging) line_up()
@@ -210,7 +204,8 @@ class textboard
 				m_move += m_scroll_speed
 	
 				//if (m_object.first_line_hint == 1)
-				if (split_complete(m_object.msg_wrapped,"\n")[0] == "#") m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+				if (tb_topchar() == m_ch1) m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
+				if (tb_bottomchar() == m_ch2) m_shader.set_param("alphabot", 1.0 + (m_object.y - m_y_zero) * 1.0 / m_line_height)
 	
 				if (m_move % m_line_height >= -m_scroll_speed){
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
@@ -220,9 +215,7 @@ class textboard
 					}
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
-					local splitarray = split_complete(m_object.msg_wrapped,"\n")
-					if (splitarray[splitarray.len()-2] == "#") {
-						::print("UPSTOP\n")
+					if (tb_bottomchar() == m_ch1) {
 						m_move = 0				
 						m_hint_delta = 0
 						if (m_ponging) line_down()
@@ -312,6 +305,11 @@ class textboard
 				refreshtext()
 				break
 
+			case "pingpong":
+				m_pong = value
+				m_ponging = false
+				break
+
 			default:
    			m_object[idx] = value
 		}
@@ -340,7 +338,7 @@ class textboard
 				break
 			
 			case "visible_lines":
-				return (::floor((m_surf.height - 2 * m_object.margin) * 1.0 / m_line_height))
+				return (m_visible_lines)
 				break
 
 			case "line_height":
@@ -390,29 +388,26 @@ class textboard
 		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
 	
-	function split_complete(str_in, separator) {
-	local outarray = []
-	local index = str_in.find(separator)
-	while (index != null) {
-		outarray.push(str_in.slice(0, index))
-		str_in = str_in.slice(index + separator.len())
-		index = str_in.find(separator)
+	function tb_topchar(){
+		local splitarray = ::split(m_object.msg_wrapped,"\n")
+		return (splitarray[0])
 	}
-	outarray.push(str_in)
-	return outarray
-}
+
+	function tb_bottomchar(){
+		local splitarray = ::split(m_object.msg_wrapped,"\n")
+		return (splitarray[splitarray.len() - 1])				
+	}
 
 	function line_down(){
 		//if (m_object.first_line_hint + m_hint_delta + 1 > 2){
-			if (split_complete(m_object.msg_wrapped,"\n")[0] == "#") return
+			if (tb_topchar() == m_ch1) return
 			m_hint_delta += 1
 			m_move += m_line_height
 		//}
 	}
 	function line_up(){
 		//if ((m_object.first_line_hint + m_hint_delta + m_step > 2) && (m_step > 0)){
-			local splitarray = split_complete(m_object.msg_wrapped,"\n")
-			if (splitarray[splitarray.len()-2] == "#") return				
+			if (tb_bottomchar() == m_ch1) return				
 			m_hint_delta -= 1
 			m_move -= m_line_height
 		//}
