@@ -226,9 +226,9 @@ class textboard
 	}
 
 	function expandtokens(val, var){
-		::print("Expanding tokens: "+m_expand_tokens+"\n")
+		//::print("Expanding tokens: "+m_expand_tokens+"\n")
 		if (!m_expand_tokens) return val
-		::print("EXPAND\n")
+		//::print("EXPAND\n")
 		local m_infos = infosarray(var)
 
 		local start = null
@@ -239,7 +239,7 @@ class textboard
 			start = expanded.find(item)
 			stop = null
 			while (start != null){
-				::print (start+"\n")
+				//::print (start+"\n")
 				stop = start + item.len()
 				expanded = expanded.slice(0, start) +m_infos[i] + expanded.slice(stop,expanded.len())
 				start = expanded.find(item)
@@ -272,7 +272,7 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
-::print(m_text+"\n")
+//::print(m_text+"\n")
 		if ((m_pong) && (!m_ponging)){
 			m_ponging = true
 			line_up()
@@ -409,7 +409,7 @@ class textboard
 				break
 
 			case "expand_tokens":
-				::print("Set expand_tokens to:"+value+"\n")
+				//::print("Set expand_tokens to:"+value+"\n")
 				m_expand_tokens = value
 				m_text = expandtokens(m_text0, 0)
 				refreshtext()
