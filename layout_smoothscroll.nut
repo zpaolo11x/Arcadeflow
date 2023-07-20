@@ -24,7 +24,7 @@ tboard.msg = text_to_show
 
 // Color and alpha definition
 tboard.set_bg_rgb(0,0,100)			// Color of the board background
-tboard.set_rgb(200, 200, 200)		// Color of the text
+tboard.set_rgb(255, 255, 255)		// Color of the text
 tboard.bg_alpha = 100				// Alpha of the background
 tboard.tx_alpha = 255				// Alpha of the text
 tboard.alpha = 255					// Alpha of the whole board
@@ -35,7 +35,7 @@ tboard.scroll_speed = 0.02 * tboard.line_height	// Scroll speed calculated on th
 tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
-tboard.lines_bottom = 1.0		// Faded lines at the bottom of the board
+tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
 tboard.pingpong = false			// Enable auto-scroll
 tboard.expand_tokens = true	// Enable/disable magic token expansion
