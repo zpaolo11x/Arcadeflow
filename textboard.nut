@@ -48,6 +48,7 @@ class textboard
 	m_tx_alpha = null
 	m_bg_alpha = null
 	m_alpha = null
+	m_expand_tokens = null
 
 	m_pong = null
 	m_ponging = null
@@ -111,9 +112,10 @@ class textboard
 		m_natural_scroll = false
 		m_enable_signals = false
 		m_signal_block = true
+		m_expand_tokens = true
 
 		m_text0 = _t
-		m_text = expandoverview(m_text0, 0)
+		m_text = expandtokens(m_text0, 0)
 		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
@@ -223,7 +225,9 @@ class textboard
 		m_shader.set_param("alphabot", 1.0)
 	}
 
-	function expandoverview(val, var){
+	function expandtokens(val, var){
+		::print("Expanding tokens: "+m_expand_tokens+"\n")
+		if (!m_expand_tokens) return val
 		::print("EXPAND\n")
 		local m_infos = infosarray(var)
 
@@ -246,8 +250,9 @@ class textboard
 	}
 
 	function board_on_transition(ttype, var, ttime){
+		if (!m_expand_tokens) return
 		if (ttype == Transition.ToNewSelection) {
-			m_text = expandoverview(m_text0, var)
+			m_text = expandtokens(m_text0, var)
 			refreshtext()
 		}
 	}
@@ -267,7 +272,7 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
-
+::print(m_text+"\n")
 		if ((m_pong) && (!m_ponging)){
 			m_ponging = true
 			line_up()
@@ -330,7 +335,7 @@ class textboard
 		{
 			case "msg":
 				m_text0 = value
-				m_text = expandoverview(m_text0, 0)
+				m_text = expandtokens(m_text0, 0)
 				refreshtext()
 				break
 			
@@ -403,6 +408,13 @@ class textboard
 				refreshtext()
 				break
 
+			case "expand_tokens":
+				::print("Set expand_tokens to:"+value+"\n")
+				m_expand_tokens = value
+				m_text = expandtokens(m_text0, 0)
+				refreshtext()
+				break
+
 			case "pingpong":
 				m_pong = value
 				m_ponging = false
@@ -465,6 +477,10 @@ class textboard
 
 			case "alpha":
 				return m_tx_alpha
+				break
+			
+			case "expand_tokens":
+				return m_expand_tokens
 				break
 
 			case "buffer_lines":

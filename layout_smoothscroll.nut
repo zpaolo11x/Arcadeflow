@@ -34,11 +34,11 @@ tboard.scroll_speed = 0.02 * tboard.line_height	// Scroll speed calculated on th
 
 tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
-tboard.signal_block = true	// Prevents or enable further signal management
+tboard.signal_block = true		// Prevents or enable further signal management
 tboard.lines_bottom = 1.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
 tboard.pingpong = false			// Enable auto-scroll
-
+tboard.expand_tokens = true	// Enable/disable magic token expansion
 
 // Reference text box to compare
 local textref = fe.add_text(text_to_show, tw, 0, tw, th)
