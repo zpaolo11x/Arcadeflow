@@ -55,71 +55,43 @@ class textboard
 	m_ch1 = " "
 	m_ch2 = "  "
 
-	m_tokens = ["DisplayName",
-					"ListSize",
-					"ListEntry",
-					"FilterName",
-					"Search",
-					"SortName",
-					"Name",
-					"Title",
-					"Emulator",
-					"CloneOf",
-					"Year",
-					"Manufacturer",
-					"Category",
-					"Players",
-					"Rotation",
-					"Control",
-					"Status",
-					"DisplayCount",
-					"DisplayType",
-					"AltRomname",
-					"AltTitle",
-					"PlayedTime",
-					"PlayedCount",
-					"SortValue",
-					"System",
-					"SystemN",
-					"Overview"
+	m_tokens = ["[DisplayName]",
+					"[ListSize]",
+					"[ListEntry]",
+					"[FilterName]",
+					"[Search]",
+					"[SortName]",
+					"[Name]",
+					"[Title]",
+					"[Emulator]",
+					"[CloneOf]",
+					"[Year]",
+					"[Manufacturer]",
+					"[Category]",
+					"[Players]",
+					"[Rotation]",
+					"[Control]",
+					"[Status]",
+					"[DisplayCount]",
+					"[DisplayType]",
+					"[AltRomname]",
+					"[AltTitle]",
+					"[PlayedTime]",
+					"[PlayedCount]",
+					"[SortValue]",
+					"[System]",
+					"[SystemN]",
+					"[Overview]"
 					]
-
-m_infos = [	::Info.DisplayName,
-				::Info.ListSize,
-				::Info.ListEntry,
-				::Info.FilterName,
-				::Info.Search,
-				::Info.SortName,
-				::Info.Name,
-				::Info.Title,
-				::Info.Emulator,
-				::Info.CloneOf,
-				::Info.Year,
-				::Info.Manufacturer,
-				::Info.Category,
-				::Info.Players,
-				::Info.Rotation,
-				::Info.Control,
-				::Info.Status,
-				::Info.DisplayCount,
-				::Info.DisplayType,
-				::Info.AltRomname,
-				::Info.AltTitle,
-				::Info.PlayedTime,
-				::Info.PlayedCount,
-				::Info.SortValue,
-				::Info.System,
-				::Info.SystemN,
-				::Info.Overview
-				]
 
 	// Read only properties
 	m_line_height = null
 	m_visible_lines = null
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
+
       if ( _surface == null ) _surface = ::fe
-		
+		//::print(Info.Name+"\n")
 		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
 
 		m_check = 0
@@ -141,7 +113,7 @@ m_infos = [	::Info.DisplayName,
 		m_signal_block = true
 
 		m_text0 = _t
-		m_text = expandoverview(m_text0)
+		m_text = expandoverview(m_text0, 0)
 		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
@@ -179,6 +151,37 @@ m_infos = [	::Info.DisplayName,
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
+	function infosarray(var){ 
+		return ([::fe.displays[::fe.list.display_index].name,
+					::fe.list.size,
+					::fe.list.index,
+					::fe.filters[::fe.list.filter_index].name,
+					::fe.list.search_rule,
+					::fe.list.sort_by,
+					::fe.game_info(Info.Name, var),
+					::fe.game_info(Info.Title, var),
+					::fe.game_info(Info.Emulator, var),
+					::fe.game_info(Info.CloneOf, var),
+					::fe.game_info(Info.Year, var),
+					::fe.game_info(Info.Manufacturer, var),
+					::fe.game_info(Info.Category, var),
+					::fe.game_info(Info.Players, var),
+					::fe.game_info(Info.Rotation, var),
+					::fe.game_info(Info.Control, var),
+					::fe.game_info(Info.Status, var),
+					::fe.game_info(Info.DisplayCount, var),
+					::fe.game_info(Info.DisplayType, var),
+					::fe.game_info(Info.AltRomname, var),
+					::fe.game_info(Info.AltTitle, var),
+					::fe.game_info(Info.PlayedTime, var),
+					::fe.game_info(Info.PlayedCount, var),
+					::fe.game_info(Info.SortValue, var),
+					::fe.game_info(Info.System, var),
+					::fe.game_info(Info.System, var),
+					::fe.game_info(Info.Overview, var)
+					])
+	}
+
 	function getlineheight()
 	{
 		local temp_msg = m_object.msg
@@ -197,15 +200,16 @@ m_infos = [	::Info.DisplayName,
 	}
 
 	function refreshtext(){
-		m_object.first_line_hint = 1
 		m_line_height = getlineheight()
-		m_hint_delta = 0
-		m_move = 0
 		
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = m_surf.height + 4.0 * m_line_height
 		m_y_zero = m_object.y
 		m_object.msg = m_ch1 + "\n" + m_ch2 + "\n" + m_text + "\n" + m_ch2 + "\n" + m_ch1
+
+		m_object.first_line_hint = 1
+		m_hint_delta = 0
+		m_move = 0
 
 		local m_area = m_surf.height - 2.0 * m_object.margin
 		local m_1 = m_object.glyph_size - (m_area % m_line_height)
@@ -216,10 +220,13 @@ m_infos = [	::Info.DisplayName,
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
-		m_shader.set_param("alphabottom", 1.0)
+		m_shader.set_param("alphabot", 1.0)
 	}
 
-	function expandoverview(val){
+	function expandoverview(val, var){
+		::print("EXPAND\n")
+		local m_infos = infosarray(var)
+
 		local start = null
 		local stop = null
 		local expanded = val
@@ -229,18 +236,18 @@ m_infos = [	::Info.DisplayName,
 			stop = null
 			while (start != null){
 				::print (start+"\n")
-				stop = start + 10
-				expanded = expanded.slice(0, start) + ::fe.game_info(m_infos[i]) + expanded.slice(stop,expanded.len())
+				stop = start + item.len()
+				expanded = expanded.slice(0, start) +m_infos[i] + expanded.slice(stop,expanded.len())
 				start = expanded.find(item)
 			}
 		}
-		::print ("\n"+expanded+"\n")
+		//::print ("\n"+expanded+"\n")
 		return expanded
 	}
 
 	function board_on_transition(ttype, var, ttime){
-		if (ttype == Transition.FromOldSelection) {
-			m_text = expandoverview(m_text0)
+		if (ttype == Transition.ToNewSelection) {
+			m_text = expandoverview(m_text0, var)
 			refreshtext()
 		}
 	}
@@ -260,6 +267,7 @@ m_infos = [	::Info.DisplayName,
 	}
 
 	function board_on_tick(tick_time){
+
 		if ((m_pong) && (!m_ponging)){
 			m_ponging = true
 			line_up()
@@ -322,7 +330,7 @@ m_infos = [	::Info.DisplayName,
 		{
 			case "msg":
 				m_text0 = value
-				m_text = expandoverview(m_text0)
+				m_text = expandoverview(m_text0, 0)
 				refreshtext()
 				break
 			
