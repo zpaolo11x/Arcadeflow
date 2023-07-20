@@ -155,6 +155,20 @@ class textboard
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 	}
 
+	function expandoverview(val){
+		local start = val.find("[Overview]")
+		local stop = null
+		local expanded = val
+		while (start != null){
+			::print (start+"\n")
+			stop = start + 10
+			expanded = expanded.slice(0, start) + ::fe.game_info(Info.Overview) + expanded.slice(stop,-1)
+			start = expanded.find("[Overview]")
+		}
+		::print ("\n"+expanded+"\n")
+		return expanded
+	}
+
 	function board_on_signal(sig){
 		if (!(m_enable_signals && m_object.visible)) return
 
@@ -231,7 +245,7 @@ class textboard
 		switch ( idx )
 		{
 			case "msg":
-				m_text = value
+				m_text = expandoverview(value)
 				refreshtext()
 				m_object.first_line_hint = 1
 				break
