@@ -33,6 +33,7 @@ class textboard
 	m_y_zero = null
 	m_step = null
 	m_text = null
+	m_text0 = null
 	m_margin = null
 	m_bufferlines = null
 	m_shader = null
@@ -53,6 +54,35 @@ class textboard
 
 	m_ch1 = " "
 	m_ch2 = "  "
+
+	m_tokens = ["DisplayName",
+					"ListSize",
+					"ListEntry",
+					"FilterName",
+					"Search",
+					"SortName",
+					"Name",
+					"Title",
+					"Emulator",
+					"CloneOf",
+					"Year",
+					"Manufacturer",
+					"Category",
+					"Players",
+					"Rotation",
+					"Control",
+					"Status",
+					"DisplayCount",
+					"DisplayType",
+					"AltRomname",
+					"AltTitle",
+					"PlayedTime",
+					"PlayedCount",
+					"SortValue",
+					"System",
+					"SystemN",
+					"Overview"
+					]
 
 	// Read only properties
 	m_line_height = null
@@ -81,12 +111,13 @@ class textboard
 		m_enable_signals = false
 		m_signal_block = true
 
-		m_text = _t
+		m_text0 = _t
+		m_text = expandoverview(m_text0)
 		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
 		m_surf.set_pos(_x, _y)
-		m_object = m_surf.add_text( "\n\n" + m_text + "\n\n", 0, 0, _w, _h )
+		m_object = m_surf.add_text( "", 0, 0, _w, _h )
 		m_object.margin = m_margin
 		m_object.set_bg_rgb(0,0,0)
 		m_object.set_rgb(255, 255, 255)
@@ -108,8 +139,6 @@ class textboard
 		m_shader.set_param("textalpha", 1)
 		m_shader.set_param("panelalpha", 0)
 		m_shader.set_param("wholealpha", 1)
-		m_shader.set_param("alphatop", m_blank_top)
-		m_shader.set_param("alphabot", m_blank_bot)
 
 		m_object.first_line_hint = 1
 
@@ -118,6 +147,7 @@ class textboard
 
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
+		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
 	function getlineheight()
@@ -138,8 +168,11 @@ class textboard
 	}
 
 	function refreshtext(){
+		m_object.first_line_hint = 1
 		m_line_height = getlineheight()
-
+		m_hint_delta = 0
+		m_move = 0
+		
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = m_surf.height + 4.0 * m_line_height
 		m_y_zero = m_object.y
@@ -153,6 +186,8 @@ class textboard
 
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
+		m_shader.set_param("alphatop", 0.0)
+		m_shader.set_param("alphabottom", 1.0)
 	}
 
 	function expandoverview(val){
@@ -162,11 +197,18 @@ class textboard
 		while (start != null){
 			::print (start+"\n")
 			stop = start + 10
-			expanded = expanded.slice(0, start) + ::fe.game_info(Info.Overview) + expanded.slice(stop,-1)
+			expanded = expanded.slice(0, start) + ::fe.game_info(Info.Overview) + expanded.slice(stop,expanded.len())
 			start = expanded.find("[Overview]")
 		}
 		::print ("\n"+expanded+"\n")
 		return expanded
+	}
+
+	function board_on_transition(ttype, var, ttime){
+		if (ttype == Transition.FromOldSelection) {
+			m_text = expandoverview(m_text0)
+			refreshtext()
+		}
 	}
 
 	function board_on_signal(sig){
@@ -245,9 +287,9 @@ class textboard
 		switch ( idx )
 		{
 			case "msg":
-				m_text = expandoverview(value)
+				m_text0 = value
+				m_text = expandoverview(m_text0)
 				refreshtext()
-				m_object.first_line_hint = 1
 				break
 			
 			case "visible":
