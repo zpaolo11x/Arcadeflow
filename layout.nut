@@ -11016,6 +11016,8 @@ hist_text.descr.visible = true
 hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
+hist_text.descr.expand_tokens = false
+hist_text.descr.enable_signals = false
 
 //TEST162
 /*
@@ -15836,6 +15838,7 @@ local clock1 = 0
 function tick(tick_time) {
 	//testpr("                                  "+AF.msgbox.obj.first_line_hint+"\n")
 	//TEST160
+	try{testpr(hist_text.descr.m_surf.redraw+"\n")}catch(err){}
 	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
 	//testpr(" ")
 	//try{testpr("LH:"+hist_text.descr.line_height+"\n")}catch(err){testpr("LH:xxx\n")}

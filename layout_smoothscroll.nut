@@ -30,7 +30,7 @@ tboard.tx_alpha = 255				// Alpha of the text
 tboard.alpha = 255					// Alpha of the whole board
 
 // Scroll parameters
-tboard.scroll_speed = 0.02 * tboard.line_height	// Scroll speed calculated on the base of line height
+tboard.scroll_speed = 9.0 * 0.02 * tboard.line_height	// Scroll speed calculated on the base of line height
 
 tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
