@@ -52,6 +52,7 @@ class textboard
 
 	m_pong = null
 	m_ponging = null
+	m_freezer = null
 
 	m_ch1 = " "
 	m_ch2 = "  "
@@ -147,6 +148,7 @@ class textboard
 
 		m_pong = false
 		m_ponging = false
+		m_freezer = 0
 
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
@@ -202,6 +204,7 @@ class textboard
 	}
 
 	function refreshtext(){
+		m_surf.redraw = true
 		m_line_height = getlineheight()
 		
 		m_object.y = - 2.0 * m_line_height
@@ -222,7 +225,8 @@ class textboard
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
-		m_shader.set_param("alphabot", 1.0)
+		m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
+		m_freezer = 2
 	}
 
 	function expandtokens(val, var){
@@ -273,11 +277,22 @@ class textboard
 
 	function board_on_tick(tick_time){
 //::print(m_text+"\n")
+
+		if (m_freezer == 1) {
+			m_freezer -- 
+			m_surf.clear = false
+			m_surf.redraw = false
+		}
+
+		if (m_freezer == 2) m_freezer --
+
 		if ((m_pong) && (!m_ponging)){
 			m_ponging = true
 			line_up()
 		}
+		//if ((m_move == 0) && (m_surf.redraw = true)) m_surf.redraw = false
 		if (m_move != 0) {
+			if (m_surf.redraw == false) m_surf.redraw = true
 			if (m_move > 0){
 				// TEXT GOES DOWN
 				m_object.y += m_scroll_speed
@@ -287,10 +302,12 @@ class textboard
 				if (tb_bottomchar() == m_ch1) m_shader.set_param("alphabot", (m_object.y - m_y_zero) * 1.0 / m_line_height)
 
 				if (m_move % m_line_height <= m_scroll_speed) {
+					::print("P"+m_hint_delta+"\n")
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta --
 						if (m_object.first_line_hint > 1) m_object.first_line_hint --
+						if (m_hint_delta == 0)	m_surf.redraw = m_surf.clear = false
 					}				
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
@@ -311,10 +328,12 @@ class textboard
 				if (tb_bottomchar() == m_ch2) m_shader.set_param("alphabot", 1.0 + (m_object.y - m_y_zero) * 1.0 / m_line_height)
 	
 				if (m_move % m_line_height >= -m_scroll_speed){
+					::print("P"+m_hint_delta+"\n")
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta ++
 						m_object.first_line_hint ++
+						if (m_hint_delta == 0)	m_surf.redraw = m_surf.clear = false
 					}
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
