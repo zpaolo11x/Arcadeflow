@@ -84,6 +84,35 @@ class textboard
 					"Overview"
 					]
 
+m_infos = [	::Info.DisplayName,
+				::Info.ListSize,
+				::Info.ListEntry,
+				::Info.FilterName,
+				::Info.Search,
+				::Info.SortName,
+				::Info.Name,
+				::Info.Title,
+				::Info.Emulator,
+				::Info.CloneOf,
+				::Info.Year,
+				::Info.Manufacturer,
+				::Info.Category,
+				::Info.Players,
+				::Info.Rotation,
+				::Info.Control,
+				::Info.Status,
+				::Info.DisplayCount,
+				::Info.DisplayType,
+				::Info.AltRomname,
+				::Info.AltTitle,
+				::Info.PlayedTime,
+				::Info.PlayedCount,
+				::Info.SortValue,
+				::Info.System,
+				::Info.SystemN,
+				::Info.Overview
+				]
+
 	// Read only properties
 	m_line_height = null
 	m_visible_lines = null
@@ -191,14 +220,19 @@ class textboard
 	}
 
 	function expandoverview(val){
-		local start = val.find("[Overview]")
+		local start = null
 		local stop = null
 		local expanded = val
-		while (start != null){
-			::print (start+"\n")
-			stop = start + 10
-			expanded = expanded.slice(0, start) + ::fe.game_info(Info.Overview) + expanded.slice(stop,expanded.len())
-			start = expanded.find("[Overview]")
+
+		foreach (i, item in m_tokens){
+			start = expanded.find(item)
+			stop = null
+			while (start != null){
+				::print (start+"\n")
+				stop = start + 10
+				expanded = expanded.slice(0, start) + ::fe.game_info(m_infos[i]) + expanded.slice(stop,expanded.len())
+				start = expanded.find(item)
+			}
 		}
 		::print ("\n"+expanded+"\n")
 		return expanded
