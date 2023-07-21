@@ -600,6 +600,13 @@ class textboard
 		m_pong_count = 0
 		m_pong_up = true
 	}
+
+	function refresh(){
+		m_shader.set_param("alphabot", tb_bottomchar() == m_ch2 ? 0.0 : 1.0)
+		m_shader.set_param("alphatop", tb_topchar() == m_ch1 ? 0.0 : 1.0)
+		m_surf.redraw = true
+		m_freezer = 2
+	}
 }
 
 fe.add_textboard <- textboard
