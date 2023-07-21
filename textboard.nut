@@ -299,8 +299,7 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
-		if (!m_surf.visible) return
-//::print(m_text+"\n")
+
 		if (m_freezer == 1) {
 			m_freezer -- 
 			m_surf.clear = false
@@ -308,6 +307,9 @@ class textboard
 		}
 
 		if (m_freezer == 2) m_freezer --
+
+		if (!m_surf.visible) return
+//::print(m_text+"\n")
 
 		if ((m_pong) && (!m_ponging)){
 			if (m_pong_count == 0) 
@@ -329,8 +331,12 @@ class textboard
 
 				if (tb_topchar() == m_ch2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
 				if (tb_bottomchar() == m_ch1) m_shader.set_param("alphabot", (m_object.y - m_y_zero) * 1.0 / m_line_height)
-
+				
+				if (tb_topchar() == m_ch2) ::print ("alpha:"+(1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)+"\n")
+				::print ("move:"+m_move+" lheight:" + m_line_height+"\n")
+				::print ("move mod:"+(m_move % m_line_height)+"\n")
 				if (m_move % m_line_height <= m_scroll_speed) {
+					::print("X\n")
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta --
@@ -340,6 +346,7 @@ class textboard
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
 					if (tb_topchar() == m_ch1) {
+						m_shader.set_param("alphatop", 0.0)
 						m_move = 0				
 						m_hint_delta = 0
 						if (m_ponging) pong_up()
@@ -365,6 +372,7 @@ class textboard
 					m_object.y = m_y_zero
 					m_move = m_line_move * m_line_height
 					if (tb_bottomchar() == m_ch1) {
+						m_shader.set_param("alphabot", 0.0)
 						m_move = 0				
 						m_hint_delta = 0
 						if (m_ponging) pong_down()
@@ -398,6 +406,7 @@ class textboard
 				m_surf.visible = value
 				// a change in visibility resets the pong status and message status
 				refreshtext()
+				if (!value) m_surf.redraw = false
 				break
 
 			case "scroll_speed":

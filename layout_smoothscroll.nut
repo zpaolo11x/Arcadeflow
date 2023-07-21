@@ -8,7 +8,7 @@ local bg = fe.add_rectangle(0,0,flw,flh )
 bg.set_rgb(0,100,100)
 bg.alpha = 255
 
-local text_to_show = "[Title]\n[Overview]"//\nLorem ipsum dolor sit amet, consectetur adipiscing elit.\n[Overview]\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
+local text_to_show = "[Title]\n[Overview]\nLorem ipsum dolor sit amet, consectetur adipiscing elit.\n[Overview]\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
 
 local tw = flw * 0.5
 local th = flh
@@ -19,7 +19,7 @@ local tboard = fe.add_textboard("", 0, 0, tw, th)
 tboard.align = Align.TopLeft
 tboard.char_size = floor(0.07 * th)
 tboard.margin = floor(0.06 * th)
-tboard.line_spacing = 1.0
+tboard.line_spacing = 1.25
 tboard.msg = text_to_show
 
 // Color and alpha definition
@@ -30,14 +30,14 @@ tboard.tx_alpha = 255				// Alpha of the text
 tboard.alpha = 255					// Alpha of the whole board
 
 // Scroll parameters
-tboard.scroll_speed = 1//0.002 * tboard.line_height	// Scroll speed calculated on the base of line height
+tboard.scroll_speed = 1.5//0.002 * tboard.line_height	// Scroll speed calculated on the base of line height
 
 tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
-tboard.pingpong = true			// Enable auto-scroll
+tboard.pingpong = false			// Enable auto-scroll
 tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 tboard.expand_tokens = true	// Enable/disable magic token expansion
 

@@ -11010,7 +11010,7 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_speed = 0.2 * hist_textT.linesize
+hist_text.descr.scroll_speed = 0.02 * 0.2 * hist_textT.linesize
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 hist_text.descr.expand_tokens = false
@@ -13801,14 +13801,13 @@ if (prf.OVERCUSTOM != "pics/") {
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
 //TEST162 RIMETTERE TEXTBOARD NORMALE
-AF.msgbox.obj = fe.add_textboard_NF("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_textboard("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
 AF.msgbox.obj.bg_alpha = 220
 AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
-AF.msgbox.obj.visible = false
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
@@ -13828,6 +13827,8 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 }
+
+AF.msgbox.obj.visible = false
 
 /*
 local overlayz = fe.add_rectangle (AF.msgbox.obj.x + AF.msgbox.obj.margin, AF.msgbox.obj.y+AF.msgbox.obj.margin,AF.msgbox.obj.width - 2 * AF.msgbox.obj.margin, AF.msgbox.obj.height-2*AF.msgbox.obj.margin)
@@ -15836,7 +15837,9 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-
+	testpr("MB"+AF.msgbox.obj.m_surf.redraw+" ")
+	try{	testpr("HT"+hist_text.descr.m_surf.redraw)}catch(err){}
+	testpr("\n")
 	//TEST160
 	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
 	//testpr(" ")
