@@ -18,7 +18,7 @@ New properties:
 - pingpong = makes the text scroll up and down automatically
 */
 
-class textboard
+class textboard_NF
 {
 	m_object = null
 	m_surf = null
@@ -530,4 +530,4 @@ class textboard
 	}
 }
 
-fe.add_textboard <- textboard
+fe.add_textboard_NF <- textboard_NF

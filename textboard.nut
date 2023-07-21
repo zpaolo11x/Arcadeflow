@@ -233,6 +233,12 @@ class textboard
 		m_shader.set_param("alphatop", 0.0)
 		m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
 		m_freezer = 2
+
+		if (m_pong) {
+			m_ponging = false
+			m_pong_count = 0
+			m_pong_up = true
+		}
 	}
 
 	function expandtokens(val, var){
@@ -273,7 +279,7 @@ class textboard
 	}
 
 	function board_on_signal(sig){
-		if (!(m_enable_signals && m_object.visible)) return
+		if (!(m_enable_signals && m_object.visible && !m_pong)) return
 
 		local step = m_natural_scroll ? -1 : 1
 		if (sig == "up") {
@@ -291,6 +297,7 @@ class textboard
 	}
 
 	function board_on_tick(tick_time){
+		if (!m_surf.visible) return
 //::print(m_text+"\n")
 		if (m_freezer == 1) {
 			m_freezer -- 
@@ -309,6 +316,7 @@ class textboard
 				if (m_pong_up) line_up() else line_down()
 			}
 		}
+		::print ("m_move:"+cbool(m_move)+" m_pong_count:"+m_pong_count+" char_size:"+m_object.char_size+"\n")
 		//if ((m_move == 0) && (m_surf.redraw = true)) m_surf.redraw = false
 		if (m_move != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
@@ -375,7 +383,6 @@ class textboard
 				refreshtext()
 				break
 			
-			case "visible":
 			case "shader":
 			case "y":
 			case "x":
@@ -383,6 +390,12 @@ class textboard
 			case "height":
 			case "zorder":
 				m_surf[idx] = value
+				break
+
+			case "visible":
+				m_surf.visible = value
+				// a change in visibility resets the pong status and message status
+				refreshtext()
 				break
 
 			case "scroll_speed":

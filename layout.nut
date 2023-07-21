@@ -7,6 +7,7 @@
 // Load file nut
 fe.do_nut("nut_file.nut")
 fe.do_nut("textboard.nut") //TEST162
+fe.do_nut("textboard_NOFREEZE.nut")
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -11014,6 +11015,8 @@ hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 hist_text.descr.expand_tokens = false
 hist_text.descr.enable_signals = false
+hist_text.descr.pingpong = true
+hist_text.descr.pingpong_delay = 3
 
 //TEST162
 /*
@@ -11486,6 +11489,7 @@ function history_show(h_startup)
 
 	if (h_startup) {
 		history_surface.visible = true
+		hist_text.descr.visible = true
 		history_redraw(true)
 		flowT.history = startfade(flowT.history, 0.05, 3.0)
 		flowT.histtext = startfade(flowT.histtext, 0.05, -3.0)
@@ -11537,6 +11541,7 @@ function history_redraw(status) {
 }
 
 history_surface.visible = false
+hist_text.descr.visible = false
 history_redraw(false)
 
 history_surface.alpha = 0
@@ -13795,7 +13800,8 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_textboard("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
+//TEST162 RIMETTERE TEXTBOARD NORMALE
+AF.msgbox.obj = fe.add_textboard_NF("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
@@ -13806,6 +13812,7 @@ AF.msgbox.obj.visible = false
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
+AF.msgbox.obj.expand_tokens = false
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
@@ -17011,6 +17018,7 @@ function tick(tick_time) {
 			shadowsurf_rt.shader = noshader
 			hist_text_surf.shader = noshader
 			history_surface.visible = false
+			hist_text.descr.visible = false
 			history_redraw(false)
 		}
 
