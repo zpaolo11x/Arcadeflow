@@ -275,7 +275,6 @@ class textboard
 			}
 			local index_offset = (ttype == Transition.ToNewSelection) ? var : 0
 			local filter_offset = (ttype == Transition.ToNewList) ? var : 0
-			::print (index_offset+" "+filter_offset+"\n")
 			m_text = expandtokens(m_text0, index_offset, filter_offset)
 			refreshtext()
 		}
