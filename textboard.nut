@@ -119,7 +119,7 @@ class textboard
 		m_expand_tokens = true
 
 		m_text0 = _t
-		m_text = expandtokens(m_text0, 0)
+		m_text = expandtokens(m_text0, 0, 0)
 		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
@@ -161,34 +161,34 @@ class textboard
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
-	function infosarray(var){ 
+	function infosarray(index_offset, filter_offset){ 
 		return ([::fe.displays[::fe.list.display_index].name,
 					::fe.list.size,
 					::fe.list.index,
 					::fe.filters[::fe.list.filter_index].name,
 					::fe.list.search_rule,
 					::fe.list.sort_by,
-					::fe.game_info(Info.Name, var),
-					::fe.game_info(Info.Title, var),
-					::fe.game_info(Info.Emulator, var),
-					::fe.game_info(Info.CloneOf, var),
-					::fe.game_info(Info.Year, var),
-					::fe.game_info(Info.Manufacturer, var),
-					::fe.game_info(Info.Category, var),
-					::fe.game_info(Info.Players, var),
-					::fe.game_info(Info.Rotation, var),
-					::fe.game_info(Info.Control, var),
-					::fe.game_info(Info.Status, var),
-					::fe.game_info(Info.DisplayCount, var),
-					::fe.game_info(Info.DisplayType, var),
-					::fe.game_info(Info.AltRomname, var),
-					::fe.game_info(Info.AltTitle, var),
-					::fe.game_info(Info.PlayedTime, var),
-					::fe.game_info(Info.PlayedCount, var),
-					::fe.game_info(Info.SortValue, var),
-					::fe.game_info(Info.System, var),
-					::fe.game_info(Info.System, var),
-					::fe.game_info(Info.Overview, var)
+					::fe.game_info(Info.Name, index_offset, filter_offset),
+					::fe.game_info(Info.Title, index_offset, filter_offset),
+					::fe.game_info(Info.Emulator, index_offset, filter_offset),
+					::fe.game_info(Info.CloneOf, index_offset, filter_offset),
+					::fe.game_info(Info.Year, index_offset, filter_offset),
+					::fe.game_info(Info.Manufacturer, index_offset, filter_offset),
+					::fe.game_info(Info.Category, index_offset, filter_offset),
+					::fe.game_info(Info.Players, index_offset, filter_offset),
+					::fe.game_info(Info.Rotation, index_offset, filter_offset),
+					::fe.game_info(Info.Control, index_offset, filter_offset),
+					::fe.game_info(Info.Status, index_offset, filter_offset),
+					::fe.game_info(Info.DisplayCount, index_offset, filter_offset),
+					::fe.game_info(Info.DisplayType, index_offset, filter_offset),
+					::fe.game_info(Info.AltRomname, index_offset, filter_offset),
+					::fe.game_info(Info.AltTitle, index_offset, filter_offset),
+					::fe.game_info(Info.PlayedTime, index_offset, filter_offset),
+					::fe.game_info(Info.PlayedCount, index_offset, filter_offset),
+					::fe.game_info(Info.SortValue, index_offset, filter_offset),
+					::fe.game_info(Info.System, index_offset, filter_offset),
+					::fe.game_info(Info.System, index_offset, filter_offset),
+					::fe.game_info(Info.Overview, index_offset, filter_offset)
 					])
 	}
 
@@ -241,11 +241,11 @@ class textboard
 		}
 	}
 
-	function expandtokens(val, var){
+	function expandtokens(val, index_offset, filter_offset){
 		//::print("Expanding tokens: "+m_expand_tokens+"\n")
 		if (!m_expand_tokens) return val
 		//::print("EXPAND\n")
-		local m_infos = infosarray(var)
+		local m_infos = infosarray(index_offset, filter_offset)
 
 		local start = null
 		local stop = null
@@ -267,13 +267,16 @@ class textboard
 
 	function board_on_transition(ttype, var, ttime){
 		if (!m_expand_tokens) return
-		if (ttype == Transition.ToNewSelection) {
+		if ((ttype == Transition.ToNewSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) {
 				m_ponging = false
 				m_pong_count = 0
 				m_pong_up = true
 			}
-			m_text = expandtokens(m_text0, var)
+			local index_offset = (ttype == Transition.ToNewSelection) ? var : 0
+			local filter_offset = (ttype == Transition.ToNewList) ? var : 0
+			::print (index_offset+" "+filter_offset+"\n")
+			m_text = expandtokens(m_text0, index_offset, filter_offset)
 			refreshtext()
 		}
 	}
@@ -316,7 +319,7 @@ class textboard
 				if (m_pong_up) line_up() else line_down()
 			}
 		}
-		::print ("m_move:"+cbool(m_move)+" m_pong_count:"+m_pong_count+" char_size:"+m_object.char_size+"\n")
+		//::print ("m_move:"+cbool(m_move)+" m_pong_count:"+m_pong_count+" char_size:"+m_object.char_size+"\n")
 		//if ((m_move == 0) && (m_surf.redraw = true)) m_surf.redraw = false
 		if (m_move != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
@@ -379,7 +382,7 @@ class textboard
 		{
 			case "msg":
 				m_text0 = value
-				m_text = expandtokens(m_text0, 0)
+				m_text = expandtokens(m_text0, 0, 0)
 				refreshtext()
 				break
 			
@@ -460,7 +463,7 @@ class textboard
 			case "expand_tokens":
 				//::print("Set expand_tokens to:"+value+"\n")
 				m_expand_tokens = value
-				m_text = expandtokens(m_text0, 0)
+				m_text = expandtokens(m_text0, 0, 0)
 				refreshtext()
 				break
 
