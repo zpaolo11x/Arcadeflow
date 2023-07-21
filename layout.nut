@@ -3346,7 +3346,6 @@ function msgbox_wraptext(text, columns){
 }
 
 function msgbox_scrollerrefresh(inline){
-	testpr("                           "+inline+"\n")
 	AF.msgbox.inline = inline
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
@@ -3360,12 +3359,9 @@ function msgbox_scrollerrefresh(inline){
 
 function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
-	testpr("XXXXXXXXX\n"+"*"+(AF.msgbox.title + "\n\n" + AF.msgbox.body)+"*")
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
-	testpr("*"+wrappedmessage+"*\n")
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len()
-	testpr("ALLLINES:"+AF.msgbox.numlines+"\n")
 	msgbox_scrollerrefresh(0)
 }
 
@@ -11043,8 +11039,6 @@ if (hist_text.title != null) {
 	hist_text.title.width = hist_text.title.width -2
 }
 
-testpr (hist_text.descr.char_size+"\n")
-
 function hist_text_rgb(r, g, b) {
 	foreach (item in hist_text) {
 		if (item != null) item.set_rgb(r, g, b)
@@ -13834,7 +13828,6 @@ overlayz.set_rgb(0,0,200)
 overlayz.alpha = 128
 overlayz.zorder = 250
 */
-	testpr("VISLINES:"+AF.msgbox.obj.visible_lines+"\n")
 
 
 /// SPLASH SCREEN UPDATE ///
@@ -15836,9 +15829,8 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-	//testpr("                                  "+AF.msgbox.obj.first_line_hint+"\n")
+
 	//TEST160
-	try{testpr(hist_text.descr.m_surf.redraw+"\n")}catch(err){}
 	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
 	//testpr(" ")
 	//try{testpr("LH:"+hist_text.descr.line_height+"\n")}catch(err){testpr("LH:xxx\n")}
