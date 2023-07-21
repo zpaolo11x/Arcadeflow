@@ -402,6 +402,14 @@ class textboard
 				m_surf[idx] = value
 				break
 
+			case "first_line_hint":
+				m_object.first_line_hint = value
+				m_shader.set_param("alphabot", tb_bottomchar() == m_ch2 ? 0.0 : 1.0)
+				m_shader.set_param("alphatop", tb_topchar() == m_ch1 ? 0.0 : 1.0)
+				m_surf.redraw = true
+				m_freezer = 2
+				break
+
 			case "visible":
 				m_surf.visible = value
 				// a change in visibility resets the pong status and message status

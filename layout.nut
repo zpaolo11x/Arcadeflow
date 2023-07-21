@@ -17616,7 +17616,7 @@ function on_signal(sig) {
 					AF.msgbox.obj.first_line_hint -= AF.msgbox.visiblelines
 				else
 					AF.msgbox.obj.first_line_hint = 1
-				AF.msgbox.obj.refresh()
+				//AF.msgbox.obj.refresh()
 				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
 				count.left ++
 			}
@@ -17628,7 +17628,7 @@ function on_signal(sig) {
 					AF.msgbox.obj.first_line_hint += AF.msgbox.visiblelines
 				else
 					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
-				AF.msgbox.obj.refresh()
+				//AF.msgbox.obj.refresh()
 				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
 				count.right ++
 			}
