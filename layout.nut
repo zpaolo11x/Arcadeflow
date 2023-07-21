@@ -11010,12 +11010,12 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_speed = 0.02 * 0.2 * hist_textT.linesize
+hist_text.descr.scroll_speed = 1//0.02 * 0.2 * hist_textT.linesize
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 hist_text.descr.expand_tokens = false
 hist_text.descr.enable_signals = false
-hist_text.descr.pingpong = true
+hist_text.descr.pingpong = false//true
 hist_text.descr.pingpong_delay = 3
 
 //TEST162
@@ -11460,18 +11460,18 @@ function history_updatetext() {
 	local tempdesc3 = "" //this comes from the overview
 	tempdesc3 = fe.game_info(Info.Overview)
 
-	if (tempdesc3 != "") tempdesc = tempdesc3 + "\n\n"
+	if (tempdesc3 != "") tempdesc = tempdesc3// + "\n\n"
 
 	local tempdesc2 = "" //This comes from the romlist
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc2 = tempdesc2 + item + "\n"
 	if ((tempdesc2 != "?") && (tempdesc2 != "")) {
-		tempdesc = tempdesc2 + "\n\n"
+		tempdesc = tempdesc2// + "\n\n"
 	}
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
-	hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
+	hist_text.descr.msg = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
 	hist_text.descr.first_line_hint = 1
 }
 
