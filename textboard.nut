@@ -302,7 +302,6 @@ class textboard
 				if (tb_bottomchar() == m_ch1) m_shader.set_param("alphabot", (m_object.y - m_y_zero) * 1.0 / m_line_height)
 
 				if (m_move % m_line_height <= m_scroll_speed) {
-					::print("P"+m_hint_delta+"\n")
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta --
@@ -328,7 +327,6 @@ class textboard
 				if (tb_bottomchar() == m_ch2) m_shader.set_param("alphabot", 1.0 + (m_object.y - m_y_zero) * 1.0 / m_line_height)
 	
 				if (m_move % m_line_height >= -m_scroll_speed){
-					::print("P"+m_hint_delta+"\n")
 					m_line_move = (m_move - (m_move % m_line_height)) / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta ++
