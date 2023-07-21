@@ -51,7 +51,10 @@ class textboard
 	m_expand_tokens = null
 
 	m_pong = null
+	m_pong_delay = null
+	m_pong_count = null
 	m_ponging = null
+	m_pong_up = null
 	m_freezer = null
 
 	m_ch1 = " "
@@ -149,6 +152,9 @@ class textboard
 		m_pong = false
 		m_ponging = false
 		m_freezer = 0
+		m_pong_delay = 1000
+		m_pong_count = 0
+		m_pong_up = true
 
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
@@ -256,6 +262,11 @@ class textboard
 	function board_on_transition(ttype, var, ttime){
 		if (!m_expand_tokens) return
 		if (ttype == Transition.ToNewSelection) {
+			if (m_pong) {
+				m_ponging = false
+				m_pong_count = 0
+				m_pong_up = true
+			}
 			m_text = expandtokens(m_text0, var)
 			refreshtext()
 		}
@@ -275,9 +286,12 @@ class textboard
 		}			
 	}
 
+	function cbool(inval){
+		return (inval ? "I":"O")
+	}
+
 	function board_on_tick(tick_time){
 //::print(m_text+"\n")
-
 		if (m_freezer == 1) {
 			m_freezer -- 
 			m_surf.clear = false
@@ -287,8 +301,13 @@ class textboard
 		if (m_freezer == 2) m_freezer --
 
 		if ((m_pong) && (!m_ponging)){
-			m_ponging = true
-			line_up()
+			if (m_pong_count == 0) 
+				m_pong_count = ::fe.layout.time + m_pong_delay
+			else if (m_pong_count <= ::fe.layout.time) {
+				m_pong_count = 0
+				m_ponging = true
+				if (m_pong_up) line_up() else line_down()
+			}
 		}
 		//if ((m_move == 0) && (m_surf.redraw = true)) m_surf.redraw = false
 		if (m_move != 0) {
@@ -313,7 +332,7 @@ class textboard
 					if (tb_topchar() == m_ch1) {
 						m_move = 0				
 						m_hint_delta = 0
-						if (m_ponging) line_up()
+						if (m_ponging) pong_up()
 					} else if (m_ponging) line_down()
 				}
 			}
@@ -338,7 +357,7 @@ class textboard
 					if (tb_bottomchar() == m_ch1) {
 						m_move = 0				
 						m_hint_delta = 0
-						if (m_ponging) line_down()
+						if (m_ponging) pong_down()
 					}
 					else if (m_ponging) line_up()
 				}
@@ -432,9 +451,15 @@ class textboard
 				refreshtext()
 				break
 
+			case "pingpong_delay":
+				m_pong_delay = value * 1000
+				break
+
 			case "pingpong":
 				m_pong = value
 				m_ponging = false
+				m_pong_count = 0
+				m_pong_up = true
 				break
 
 			default:
@@ -530,18 +555,26 @@ class textboard
 	}
 
 	function line_down(){
-		//if (m_object.first_line_hint + m_hint_delta + 1 > 2){
-			if (tb_topchar() == m_ch1) return
-			m_hint_delta += 1
-			m_move += m_line_height
-		//}
+		if (tb_topchar() == m_ch1) return
+		m_hint_delta += 1
+		m_move += m_line_height
 	}
 	function line_up(){
-		//if ((m_object.first_line_hint + m_hint_delta + m_step > 2) && (m_step > 0)){
-			if (tb_bottomchar() == m_ch1) return				
-			m_hint_delta -= 1
-			m_move -= m_line_height
-		//}
+		if (tb_bottomchar() == m_ch1) return				
+		m_hint_delta -= 1
+		m_move -= m_line_height
+	}
+
+	function pong_down(){
+		m_ponging = false
+		m_pong_count = 0
+		m_pong_up = false
+	}
+
+	function pong_up(){
+		m_ponging = false
+		m_pong_count = 0
+		m_pong_up = true
 	}
 }
 

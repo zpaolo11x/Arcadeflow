@@ -30,14 +30,15 @@ tboard.tx_alpha = 255				// Alpha of the text
 tboard.alpha = 255					// Alpha of the whole board
 
 // Scroll parameters
-tboard.scroll_speed = 0.02 * tboard.line_height	// Scroll speed calculated on the base of line height
+tboard.scroll_speed = 1//0.002 * tboard.line_height	// Scroll speed calculated on the base of line height
 
 tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
-tboard.pingpong = false			// Enable auto-scroll
+tboard.pingpong = true			// Enable auto-scroll
+tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 tboard.expand_tokens = true	// Enable/disable magic token expansion
 
 // Reference text box to compare
