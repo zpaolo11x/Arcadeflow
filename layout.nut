@@ -1117,6 +1117,7 @@ AF.prefs.l1.push([
 {v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45, 0.65, 0.75, -1.0], selection = 1},
 {v = 7.2, varname = "HISTORYPANEL", glyph = 0xe923, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true, false], selection = 0},
 {v = 7.2, varname = "DARKPANEL", glyph = 0xe923, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true, false, null], selection = 1},
+{v = 16.2, varname = "TEXTSCROLL", glyph = 0xe923, title = "Text scroll", help = "Select if you want to manually scroll history text, or automatically scroll", options = ["Manual", "Auto"], values = ["manual", "auto"], selection = 0},
 {v = 8.2, varname = "HISTMININAME", glyph = 0xe923, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false, true], selection = 0},
 {v = 14.5, varname = "CONTROLOVERLAY", glyph = 0xe923, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Always", "Never", "Arcade only"], values = ["always", "never", "arcade"], selection = 0},
 ])
@@ -11010,12 +11011,12 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_speed = 1//0.02 * 0.2 * hist_textT.linesize
+hist_text.descr.scroll_speed = prf.TEXTSCROLL == "manual" ? 0.2 * hist_textT.linesize : 0.005 * hist_textT.linesize
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 hist_text.descr.expand_tokens = false
 hist_text.descr.enable_signals = false
-hist_text.descr.pingpong = false//true
+hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
 
 //TEST162
@@ -11518,12 +11519,26 @@ function history_visible() {
 	return ((history_surface.visible) && (flowT.history[3] >= 0))
 }
 
-function af_on_scroll_up() {
-	if (hist_text.descr.first_line_hint > 1) hist_text.descr.line_down() //hist_text.descr.first_line_hint--
+function hist_text_down() {
+	if (hist_text.descr.first_line_hint > 1) {
+		if (prf.TEXTSCROLL == "auto"){
+			if (hist_text.descr.scrolling_direction == "up"){
+				hist_text.descr.pong_down()
+			}
+		}
+		else
+			hist_text.descr.line_down()
+	}
 }
 
-function af_on_scroll_down() {
-	hist_text.descr.line_up() //hist_text.descr.first_line_hint++
+function hist_text_up() {
+	if (prf.TEXTSCROLL == "auto"){
+		if (hist_text.descr.scrolling_direction == "down"){
+			hist_text.descr.pong_up()
+		}
+	}
+	else
+		hist_text.descr.line_up()
 }
 
 function history_exit() {
@@ -15837,8 +15852,9 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-	testpr("MB"+AF.msgbox.obj.m_surf.redraw+" ")
-	try{	testpr("HT"+hist_text.descr.m_surf.redraw)}catch(err){}
+	//testpr("MB"+AF.msgbox.obj.m_surf.redraw+" ")
+	//try{	testpr("HT"+hist_text.descr.m_surf.redraw)}catch(err){}
+	testpr(hist_text.descr.scrolling_direction+"\n")
 	testpr("\n")
 	//TEST160
 	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
@@ -18450,14 +18466,14 @@ function on_signal(sig) {
 
 			if (sig == "up") {
 				if (checkrepeat(count.up)) {
-					af_on_scroll_up()
+					hist_text_down()
 					count.up ++
 				}
 				return true
 			}
 			else if (sig == "down") {
 				if (checkrepeat(count.down)) {
-					af_on_scroll_down()
+					hist_text_up()
 					count.down ++
 				}
 				return true

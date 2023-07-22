@@ -35,7 +35,6 @@ class textboard
 	m_text = null
 	m_text0 = null
 	m_margin = null
-	m_bufferlines = null
 	m_shader = null
 
 	m_check = null
@@ -557,9 +556,9 @@ class textboard
 				return m_expand_tokens
 				break
 
-			case "buffer_lines":
-				return m_bufferlines
-				break
+			case "scrolling_direction":
+				return ((m_move == 0) ? "stop" : ((m_move > 0) ? "down" : "up")) 
+				break 
 
 			default:
 			   return m_object[idx]
