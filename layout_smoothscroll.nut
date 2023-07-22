@@ -19,7 +19,7 @@ local tboard = fe.add_textboard("", 0, 0, tw, th)
 tboard.align = Align.TopLeft
 tboard.char_size = floor(0.09 * th)
 tboard.margin = floor(0.06 * th)
-tboard.line_spacing = 1.15
+tboard.line_spacing = 1.05
 tboard.msg = text_to_show
 
 // Color and alpha definition

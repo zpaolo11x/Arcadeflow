@@ -133,7 +133,9 @@ class textboard
 		m_object.alpha = 255
 
 		m_overlay = ::fe.add_rectangle(_w,0,_w,1)
-		m_overlay2 = ::fe.add_rectangle(_w,0,_w,1)
+		m_overlay2 = ::fe.add_rectangle(_w,0,_w,_h)
+		m_overlay2.set_rgb(200,0,0)
+		m_overlay2.alpha = 120
 		overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
 
 		m_line_top = 1.0
@@ -225,7 +227,6 @@ class textboard
 		local t_hint = 1
 		m_object.first_line_hint = t_hint
 		while (t_hint == m_object.first_line_hint) {
-			::print(t_hint+" "+m_object.first_line_hint+"\n")
 			t_hint ++
 			m_object.first_line_hint = t_hint
 		}
@@ -265,14 +266,20 @@ class textboard
 		m_y_speed = null
 
 		m_margin_bottom = m_surf.height - m_object.margin - m_visible_lines * m_line_height
-
+		if (m_margin_bottom < 0) m_margin_bottom = 0
+		
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
+		m_shader.set_param("alphabot", 1.0)
 		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
 		m_freezer = 2
 
-		::print("line height:"+m_line_height+"\nmax hint:"+m_max_hint+"\nviewport max:"+m_viewport_max_y+"\n\n")
+		::print("line height:"+m_line_height+"\n")
+		::print("max hint:"+m_max_hint+"\n")
+		::print("viewport max:"+m_viewport_max_y+"\n")
+		::print("margin bottom:"+m_margin_bottom+"\n")
+		::print("\n")
 
 		if (m_pong) {
 			m_ponging = false
@@ -674,7 +681,6 @@ class textboard
 
 
 	function set_viewport(y){
-		::print(y+"\n")
 		//print ("y:"+y+" "+"max_y:"+m_viewport_max_y+"\n")
 		if (y <= 0) {
 			y = 0
@@ -683,16 +689,17 @@ class textboard
 			m_object.first_line_hint = 1
 		}
 		else if (y >= m_viewport_max_y){
-			::print("                    X\n")
 			y = m_viewport_max_y - m_line_height
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_object.first_line_hint = m_max_hint
 		}
 		else {
-			::print (y+" "+(m_viewport_max_y- m_line_height)+"\n")
 			if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-			if (y >= m_viewport_max_y - 2.0 * m_line_height) m_shader.set_param("alphabot", ((m_viewport_max_y - 2.0 * m_line_height) - y) * 1.0 / m_line_height)
+			if (y >= m_viewport_max_y - 2.0 * m_line_height) {
+				::print ((((m_viewport_max_y - 1.0 * m_line_height) - y)*1.0/m_line_height)+"\n") 
+				m_shader.set_param("alphabot",((((m_viewport_max_y - 1.0 * m_line_height) - y)*1.0/m_line_height)))
+				}//m_shader.set_param("alphabot", (1.0 - (y - (m_viewport_max_y - m_line_height) )* 1.0 / m_line_height))
 			m_object.y = m_y_zero - y % m_line_height
 			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
 			m_y_start = y
@@ -711,6 +718,7 @@ class textboard
 	}
 
 	function line_up(){
+		::print ("LINE UP           m_y_stop:"+m_y_stop+"\n")
 		if (m_y_stop < m_viewport_max_y - m_line_height - m_margin_bottom) m_y_stop += m_line_height
 	}
 
