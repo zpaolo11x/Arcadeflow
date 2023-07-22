@@ -18,7 +18,7 @@ New properties:
 - pingpong = makes the text scroll up and down automatically
 */
 
-class textboard
+class textboard_mk2
 {
 	// mk2 Objects
 	m_object = null
@@ -63,10 +63,12 @@ class textboard
 	m_pong_up = null
 	m_freezer = null
 
+	m_debug = false
+
 	//DEBUG
 	m_overlay = null
 	m_overlay2 = null
-	overnum = null
+	m_overnum = null
 
 	m_tokens = ["[DisplayName]",
 					"[ListSize]",
@@ -132,11 +134,13 @@ class textboard
 		m_object.bg_alpha = 255
 		m_object.alpha = 255
 
-		m_overlay = ::fe.add_rectangle(_w,0,_w,1)
-		m_overlay2 = ::fe.add_rectangle(_w,0,_w,_h)
-		m_overlay2.set_rgb(200,0,0)
-		m_overlay2.alpha = 120
-		overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
+		if (m_debug){
+			m_overlay = ::fe.add_rectangle(_w,0,_w,1)
+			m_overlay2 = ::fe.add_rectangle(_w,0,_w,_h)
+			m_overlay2.set_rgb(200,0,0)
+			m_overlay2.alpha = 120
+			m_overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
+		}
 
 		m_line_top = 1.0
 		m_line_bot = 1.0
@@ -220,20 +224,34 @@ class textboard
 		return (f2 - f1)
 	}
 
+	function split_complete(str_in, separator) {
+		local outarray = []
+		local index = str_in.find(separator)
+		while (index != null) {
+			outarray.push(str_in.slice(0, index))
+			str_in = str_in.slice(index + separator.len())
+			index = str_in.find(separator)
+		}
+		outarray.push(str_in)
+		return outarray
+	}
+
 	function get_max_hint(){
-
-		local temp_hint = m_object.first_line_hint
-
+		local t_hint0 = 1
 		local t_hint = 1
 		m_object.first_line_hint = t_hint
 		while (t_hint == m_object.first_line_hint) {
-			t_hint ++
+			//::print("B\n")
+			::print ("                        THINT:"+t_hint+"\n")
+			::print("****\n"+m_object.msg_wrapped+"***\n")
+			t_hint = t_hint + split_complete(m_object.msg_wrapped,"\n").len() - 1
 			m_object.first_line_hint = t_hint
+			if (split_complete(m_object.msg_wrapped,"\n").len() <= m_visible_lines) break
+			//::print(m_object.first_line_hint)
+			//::print(m_object.msg_wrapped+"\n")
 		}
 		local out = m_object.first_line_hint
 		
-		m_object.first_line_hint = temp_hint
-
 		return (out)
 	}
 
@@ -247,11 +265,17 @@ class textboard
 	function refreshtext(){
 		m_surf.redraw = true
 		m_object.y = 0
+		::print("1\n")
 		m_object.height = m_surf.height
+		::print("2\n")
 		m_object.msg = m_text
+		::print("3\n")
 		m_line_height = get_line_height()
-		m_max_hint = (m_text == "") ? 0 : get_max_hint() 
+		::print("4\n")
 		m_visible_lines = get_visible_lines()
+		::print("5\n")
+		m_max_hint = (m_text == "") ? 0 : get_max_hint() 
+		::print("6\n")
 		m_viewport_max_y = m_max_hint * m_line_height
 
 		m_object.y = - 2.0 * m_line_height
@@ -355,10 +379,13 @@ class textboard
 	}
 	
 	function board_on_tick(tick_time){
-		overnum.msg = m_object.first_line_hint
-		overnum.char_size = 20
-		m_overlay.y = m_viewport_max_y
-		m_overlay2.y = m_y_stop
+		if (m_debug) {
+			m_overnum.msg = m_object.first_line_hint
+			m_overnum.char_size = 20
+
+			m_overlay.y = m_viewport_max_y
+			m_overlay2.y = m_y_stop
+		}
 
 		if (m_freezer == 1) {
 			m_freezer -- 
@@ -480,6 +507,7 @@ class textboard
 		switch ( idx )
 		{
 			case "msg":
+				::print("                    msgchange\n")
 				m_text0 = value
 				m_text = expandtokens(m_text0, 0, 0)
 				refreshtext()
@@ -749,4 +777,4 @@ class textboard
 	}
 }
 
-fe.add_textboard <- textboard
+fe.add_textboard_mk2 <- textboard_mk2

@@ -12,7 +12,7 @@ local text_to_show = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n
 local tw = flw * 0.5
 local th = flh * 0.5
 
-local tboard = fe.add_textboard("", 0, 0, tw, th)
+local tboard = fe.add_textboard_mk2("", 0, 0, tw, th)
 
 // "standard" text parameters
 tboard.align = Align.TopLeft

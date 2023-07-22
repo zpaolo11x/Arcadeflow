@@ -8,6 +8,7 @@
 fe.do_nut("nut_file.nut")
 fe.do_nut("textboard.nut") //TEST162
 fe.do_nut("textboard_NOFREEZE.nut")
+fe.do_nut("textboard_mk2.nut")
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -1389,10 +1390,11 @@ function buildreadme(separator=false) {
 	readme.extend(historytext())
 
 	return readme
-
+/*
 	foreach (i, item in readme) {
 		print(item)
 	}
+*/
 }
 
 function savereadme() {
@@ -3392,7 +3394,7 @@ function msgbox_open(title, message, backfunction = null){
 	msgbox_newbody(message)
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
-	AF.msgbox.obj.first_line_hint = 1
+	//AF.msgbox.obj.first_line_hint = 1
 	msgbox_scrollerrefresh(0)
 }
 
@@ -10882,7 +10884,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				buttn = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 4 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 				ratng = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 5 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 
-				descr = fe.add_textboard("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard_mk2("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -11011,12 +11013,12 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_speed = prf.TEXTSCROLL == "manual" ? 0.2 * hist_textT.linesize : 0.005 * hist_textT.linesize
+//hist_text.descr.scroll_speed = prf.TEXTSCROLL == "manual" ? 0.2 * hist_textT.linesize : 0.005 * hist_textT.linesize
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 hist_text.descr.expand_tokens = false
 hist_text.descr.enable_signals = false
-hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
+//hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
 
 //TEST162
@@ -13816,7 +13818,7 @@ if (prf.OVERCUSTOM != "pics/") {
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
 //TEST162 RIMETTERE TEXTBOARD NORMALE
-AF.msgbox.obj = fe.add_textboard("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_textboard_mk2("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
@@ -13825,7 +13827,7 @@ AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
-AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
+//AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
 AF.msgbox.obj.expand_tokens = false
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
