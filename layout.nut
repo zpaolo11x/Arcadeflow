@@ -15854,8 +15854,8 @@ local clock1 = 0
 function tick(tick_time) {
 	//testpr("MB"+AF.msgbox.obj.m_surf.redraw+" ")
 	//try{	testpr("HT"+hist_text.descr.m_surf.redraw)}catch(err){}
-	testpr(hist_text.descr.scrolling_direction+"\n")
-	testpr("\n")
+	//testpr(hist_text.descr.scrolling_direction+"\n")
+	//testpr("\n")
 	//TEST160
 	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
 	//testpr(" ")
