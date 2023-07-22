@@ -271,7 +271,7 @@ class textboard
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
-		m_shader.set_param("alphabot", 1.0)
+		m_shader.set_param("alphabot", m_max_hint <= 1 ? 0.0 : 1.0)
 		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
 		m_freezer = 2
 
@@ -696,10 +696,7 @@ class textboard
 		}
 		else {
 			if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-			if (y >= m_viewport_max_y - 2.0 * m_line_height) {
-				::print ((((m_viewport_max_y - 1.0 * m_line_height) - y)*1.0/m_line_height)+"\n") 
-				m_shader.set_param("alphabot",((((m_viewport_max_y - 1.0 * m_line_height) - y)*1.0/m_line_height)))
-				}//m_shader.set_param("alphabot", (1.0 - (y - (m_viewport_max_y - m_line_height) )* 1.0 / m_line_height))
+			if (y >= m_viewport_max_y - 2.0 * m_line_height) m_shader.set_param("alphabot",((((m_viewport_max_y - 1.0 * m_line_height) - y)*1.0/m_line_height)))
 			m_object.y = m_y_zero - y % m_line_height
 			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
 			m_y_start = y
