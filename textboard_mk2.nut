@@ -20,27 +20,34 @@ New properties:
 
 class textboard
 {
+	// mk2 Objects
 	m_object = null
 	m_surf = null
-	m_blank_top = null
-	m_blank_bot = null
+
+	// mk2 Blanking parameters
 	m_line_top = null
 	m_line_bot = null
 
-	m_move = null
-	m_line_move = null
-	m_hint_delta = null
+	// mk2 Read only properties
+	m_line_height = null
+	m_visible_lines = null
+	m_viewport_max_y = null
+	m_max_hint = null
+
+	// mk2 Movement helpers
+	m_y_start = null
+	m_y_stop = null
+	m_y_speed = null
 	m_y_zero = null
-	m_step = null
+
+	//TEST mk2 text parameters
 	m_text = null
 	m_text0 = null
 	m_margin = null
+	m_margin_bottom = null
 	m_shader = null
 
-	m_check = null
-
 	// Reas/write properties
-	m_scroll_speed = null
 	m_natural_scroll = null
 	m_enable_signals = null
 	m_signal_block = null
@@ -56,8 +63,10 @@ class textboard
 	m_pong_up = null
 	m_freezer = null
 
-	m_ch1 = " "
-	m_ch2 = "  "
+	//DEBUG
+	m_overlay = null
+	m_overlay2 = null
+	overnum = null
 
 	m_tokens = ["[DisplayName]",
 					"[ListSize]",
@@ -88,29 +97,21 @@ class textboard
 					"[Overview]"
 					]
 
-	// Read only properties
-	m_line_height = null
-	m_visible_lines = null
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
 
       if ( _surface == null ) _surface = ::fe
-		//::print(Info.Name+"\n")
 		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
-
-		m_check = 0
 
 		m_tx_alpha = 255
 		m_bg_alpha = 0
 		m_alpha = 255
 
-		m_move = 0
-		m_line_move = 0
-		m_hint_delta = 0
-		m_y_zero = 0 //_y
-		m_step = 1
+		m_y_start = 0
+		m_y_stop = 0
+		m_y_speed = null
+		m_y_zero = 0
 
-		m_scroll_speed = 1
 		m_line_height = null
 		m_natural_scroll = false
 		m_enable_signals = false
@@ -119,6 +120,7 @@ class textboard
 
 		m_text0 = _t
 		m_text = expandtokens(m_text0, 0, 0)
+
 		m_margin = 0
 
 		m_surf = _surface.add_surface(_w, _h)
@@ -130,13 +132,16 @@ class textboard
 		m_object.bg_alpha = 255
 		m_object.alpha = 255
 
-		m_blank_top = 0.0
-		m_blank_bot = 1.0
+		m_overlay = ::fe.add_rectangle(_w,0,_w,1)
+		m_overlay2 = ::fe.add_rectangle(_w,0,_w,1)
+		overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
+
 		m_line_top = 1.0
 		m_line_bot = 1.0
 
 		m_object.word_wrap = true
 		m_object.char_size = _h / 4
+
 		refreshtext()
 
 		m_surf.shader = m_shader
@@ -158,6 +163,10 @@ class textboard
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
 		::fe.add_transition_callback( this, "board_on_transition" )
+	}
+
+	function m_absf(n) {
+		return (n >= 0 ? n : -n)
 	}
 
 	function infosarray(index_offset, filter_offset){ 
@@ -191,7 +200,7 @@ class textboard
 					])
 	}
 
-	function getlineheight()
+	function get_line_height()
 	{
 		local temp_msg = m_object.msg
 		local temp_first_line_hint = m_object.first_line_hint
@@ -202,36 +211,68 @@ class textboard
 		local f1 = m_object.msg_height
 		m_object.msg = "X\nX"
 		local f2 = m_object.msg_height
+
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
 		return (f2 - f1)
 	}
 
+	function get_max_hint(){
+
+		local temp_hint = m_object.first_line_hint
+
+		local t_hint = 1
+		m_object.first_line_hint = t_hint
+		while (t_hint == m_object.first_line_hint) {
+			::print(t_hint+" "+m_object.first_line_hint+"\n")
+			t_hint ++
+			m_object.first_line_hint = t_hint
+		}
+		local out = m_object.first_line_hint
+		
+		m_object.first_line_hint = temp_hint
+
+		return (out)
+	}
+
+	function get_visible_lines(){
+		local m_area = m_surf.height - 2.0 * m_object.margin
+		local m_1 = m_object.glyph_size - (m_area % m_line_height)
+		local visible_lines = ::floor(m_area * 1.0 / m_line_height) + (m_1 > 0 ? 0.0 : 1.0)
+		return (visible_lines)
+	}
+
 	function refreshtext(){
 		m_surf.redraw = true
-		m_line_height = getlineheight()
-		
+		m_object.y = 0
+		m_object.height = m_surf.height
+		m_object.msg = m_text
+		m_line_height = get_line_height()
+		m_max_hint = (m_text == "") ? 0 : get_max_hint() 
+		m_visible_lines = get_visible_lines()
+		m_viewport_max_y = m_max_hint * m_line_height
+
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = m_surf.height + 4.0 * m_line_height
 		m_y_zero = m_object.y
-		m_object.msg = m_ch1 + "\n" + m_ch2 + "\n" + m_text + "\n" + m_ch2 + "\n" + m_ch1
+		m_object.msg = " \n \n" + m_text + "\n \n "
 
-		m_object.first_line_hint = 1
-		m_hint_delta = 0
-		m_move = 0
+		m_object.first_line_hint = 1 //TEST TENERE?
 
-		local m_area = m_surf.height - 2.0 * m_object.margin
-		local m_1 = m_object.glyph_size - (m_area % m_line_height)
-		m_visible_lines = ::floor(m_area * 1.0 / m_line_height) + (m_1 > 0 ? 0.0 : 1.0)
+		m_y_start = 0
+		m_y_stop = 0
+		m_y_speed = null
 
-		local marginbottom = m_surf.height - m_object.margin - m_visible_lines * m_line_height
+		m_margin_bottom = m_surf.height - m_object.margin - m_visible_lines * m_line_height
 
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
-		m_shader.set_param("blankbot", marginbottom * 1.0 / m_surf.height, (marginbottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
+		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
-		m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
+		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
 		m_freezer = 2
+
+		::print("line height:"+m_line_height+"\nmax hint:"+m_max_hint+"\nviewport max:"+m_viewport_max_y+"\n\n")
 
 		if (m_pong) {
 			m_ponging = false
@@ -265,6 +306,7 @@ class textboard
 	}
 
 	function board_on_transition(ttype, var, ttime){
+		/*
 		if (!m_expand_tokens) return
 		if ((ttype == Transition.ToNewSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) {
@@ -277,12 +319,12 @@ class textboard
 			m_text = expandtokens(m_text0, index_offset, filter_offset)
 			refreshtext()
 		}
+		*/
 	}
 
 	function board_on_signal(sig){
 		if (!(m_enable_signals && m_object.visible && !m_pong)) return
 
-		local step = m_natural_scroll ? -1 : 1
 		if (sig == "up") {
 			if (m_natural_scroll) line_up() else line_down()
 			return m_signal_block
@@ -290,14 +332,26 @@ class textboard
 		if (sig == "down") {
 			if (m_natural_scroll) line_down() else line_up()
 			return m_signal_block
-		}			
+		}	
+		if (sig == "left"){
+			goto_start()
+			return m_signal_block
+		}		
+			if (sig == "right"){
+			goto_end()
+			return m_signal_block
+		}		
 	}
 
 	function cbool(inval){
 		return (inval ? "I":"O")
 	}
-
+	
 	function board_on_tick(tick_time){
+		overnum.msg = m_object.first_line_hint
+		overnum.char_size = 20
+		m_overlay.y = m_viewport_max_y
+		m_overlay2.y = m_y_stop
 
 		if (m_freezer == 1) {
 			m_freezer -- 
@@ -308,8 +362,39 @@ class textboard
 		if (m_freezer == 2) m_freezer --
 
 		if (!m_surf.visible) return
-//::print(m_text+"\n")
 
+		if (m_y_start != m_y_stop){
+			if (m_surf.redraw == false) m_surf.redraw = true
+			m_y_speed = 0.15 * (m_y_stop - m_y_start)
+			/*
+			if (m_absf(m_y_speed) > m_line_height) {
+				::print ("MAXSPEED\n")
+				m_y_speed = (m_y_speed > 0 ? 10 * m_line_height : -10 * m_line_height)
+			}
+			*/
+			if (m_absf(m_y_speed) > 0.0005 * m_line_height) {
+				if ((m_absf(m_y_start - m_y_stop)) > 10000000) {
+					/*
+					disp.xstart = disp.xstop
+					for (local i = 0; i < disp.images.len(); i++) {
+						disp.images[i].y = disp.pos0[i] + disp.xstop
+					}
+					disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
+					disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
+					*/
+				}
+				else {
+					set_viewport(m_y_start + m_y_speed)
+					m_y_start = m_y_start + m_y_speed
+				}
+			}
+			else {
+				m_y_start = m_y_stop
+				set_viewport (m_y_stop)
+			}
+		}
+//::print(m_text+"\n")
+/*
 		if ((m_pong) && (!m_ponging)){
 			if (m_pong_count == 0) 
 				m_pong_count = ::fe.layout.time + m_pong_delay
@@ -380,6 +465,7 @@ class textboard
 				}
 			}
 		}
+		*/
 	}
 
 	function _set( idx, value )
@@ -402,11 +488,13 @@ class textboard
 				break
 
 			case "first_line_hint":
+				/*
 				m_object.first_line_hint = value
 				m_shader.set_param("alphabot", tb_bottomchar() == m_ch2 ? 0.0 : 1.0)
 				m_shader.set_param("alphatop", tb_topchar() == m_ch1 ? 0.0 : 1.0)
 				m_surf.redraw = true
 				m_freezer = 2
+				*/
 				break
 
 			case "visible":
@@ -426,7 +514,6 @@ class textboard
 
 			case "natural_scroll":
 				m_natural_scroll = value
-				m_step = m_natural_scroll ? -1 : 1
 				break
 
 			case "enable_signals":
@@ -585,15 +672,56 @@ class textboard
 		return (splitarray[splitarray.len() - 1])				
 	}
 
-	function line_down(){
-		if (tb_topchar() == m_ch1) return
-		m_hint_delta += 1
-		m_move += m_line_height
+
+	function set_viewport(y){
+		::print(y+"\n")
+		//print ("y:"+y+" "+"max_y:"+m_viewport_max_y+"\n")
+		if (y <= 0) {
+			y = 0
+			m_y_start = m_y_stop = y
+			m_object.y = m_y_zero
+			m_object.first_line_hint = 1
+		}
+		else if (y >= m_viewport_max_y){
+			::print("                    X\n")
+			y = m_viewport_max_y - m_line_height
+			m_y_start = m_y_stop = y
+			m_object.y = m_y_zero
+			m_object.first_line_hint = m_max_hint
+		}
+		else {
+			::print (y+" "+(m_viewport_max_y- m_line_height)+"\n")
+			if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)
+			if (y >= m_viewport_max_y - 2.0 * m_line_height) m_shader.set_param("alphabot", ((m_viewport_max_y - 2.0 * m_line_height) - y) * 1.0 / m_line_height)
+			m_object.y = m_y_zero - y % m_line_height
+			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
+			m_y_start = y
+		}
+		//viewport1.y = y
+		//viewport2.y = y + m_object.margin
+		//print (viewport1.y+"\n")
 	}
+
+	function goto_start(){
+		goto_line(0)
+	}
+
+	function goto_end(){
+		goto_line(m_max_hint)
+	}
+
 	function line_up(){
-		if (tb_bottomchar() == m_ch1) return				
-		m_hint_delta -= 1
-		m_move -= m_line_height
+		if (m_y_stop < m_viewport_max_y - m_line_height - m_margin_bottom) m_y_stop += m_line_height
+	}
+
+	function line_down(){
+		if (m_y_stop > 0) m_y_stop -= m_line_height
+	}
+
+	function goto_line(n){
+		if (n <= 0) m_y_stop = 0
+		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y - m_line_height
+		else m_y_stop = n * m_line_height
 	}
 
 	function pong_down(){
