@@ -71,6 +71,7 @@ class textboard_mk2
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
+	textref2 = null
 
 	m_tokens = ["[DisplayName]",
 					"[ListSize]",
@@ -162,6 +163,17 @@ class textboard_mk2
 			m_overlay2.set_rgb(200,0,0)
 			m_overlay2.alpha = 120
 			m_overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
+		
+					// Reference text box to compare
+			textref2 = ::fe.add_text("", 0, m_surf.height, m_surf.width, m_surf.height)
+			textref2.align = m_object.align
+			textref2.char_size = m_object.char_size 
+			textref2.margin = m_object.margin
+			textref2.word_wrap = true
+			textref2.line_spacing = m_object.line_spacing
+			textref2.set_bg_rgb(200,100,0)
+			textref2.bg_alpha = 120
+		
 		}
 
 		m_line_top = 1.0
@@ -365,6 +377,14 @@ class textboard_mk2
 		m_object.height = m_surf.height
 		::print("2\n")
 		m_object.msg = m_text
+	
+		textref2.msg = m_text
+		textref2.align = m_object.align
+		textref2.char_size = m_object.char_size 
+		textref2.margin = m_object.margin
+		textref2.line_spacing = m_object.line_spacing
+		textref2.first_line_hint = 1
+
 		::print("3\n")
 		m_line_height = get_line_height()
 		::print("4\n")
@@ -490,7 +510,7 @@ class textboard_mk2
 
 
 		if (m_debug) {
-			m_overnum.msg = m_object.first_line_hint
+			m_overnum.msg = m_object.first_line_hint+" / "+m_max_hint
 			m_overnum.char_size = 20
 
 			m_overlay.y = m_viewport_max_y
@@ -849,25 +869,33 @@ class textboard_mk2
 	}
 
 	function goto_start(){
-		goto_line(0)
+		textref2.first_line_hint = 1
+		goto_line(1)
 	}
 
 	function goto_end(){
+		textref2.first_line_hint = m_max_hint
 		goto_line(m_max_hint)
 	}
 
 	function line_up(){
 		::print ("LINE UP           m_y_stop:"+m_y_stop+"\n")
-		if (m_y_stop < m_viewport_max_y ) m_y_stop += m_line_height
+		if (m_y_stop < m_viewport_max_y ) {
+			textref2.first_line_hint = textref2.first_line_hint + 1
+			m_y_stop += m_line_height
+		}
 	}
 
 	function line_down(){
 		::print ("LINE DN           m_y_stop:"+m_y_stop+"\n")
-		if (m_y_stop > 0) m_y_stop -= m_line_height
+		if (m_y_stop > 0) {
+			textref2.first_line_hint = textref2.first_line_hint - 1
+			m_y_stop -= m_line_height
+		}
 	}
 
 	function goto_line(n){
-		if (n <= 0) m_y_stop = 0
+		if (n <= 1) m_y_stop = 0
 		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y
 		else m_y_stop = n * m_line_height
 	}

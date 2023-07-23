@@ -1,8 +1,8 @@
 // This line loads the module nut file.
 fe.do_nut( "textboard_mk2.nut" )
 
-local flw = fe.layout.width
-local flh = fe.layout.height
+local flw = fe.layout.width = 640
+local flh = fe.layout.height = 400
 
 local bg = fe.add_rectangle(0,0,flw,flh )
 bg.set_rgb(0,100,100)
@@ -10,7 +10,7 @@ bg.alpha = 255
 
 function msgbox_test(){
 	local bodytext = ""
-	local max = 30
+	local max = 20
 	for (local i = 3; i < max; i++){
 		bodytext = bodytext + i + "\n"
 	}
@@ -28,9 +28,9 @@ local tboard = fe.add_textboard_mk2("", 0, 0, tw, th)
 
 // "standard" text parameters
 tboard.align = Align.TopLeft
-tboard.char_size = 11
-tboard.margin = 9
-tboard.line_spacing = 1.05
+tboard.char_size = 9
+tboard.margin = 4
+tboard.line_spacing = 1.0
 tboard.msg = text_to_show
 
 // Color and alpha definition
@@ -58,6 +58,8 @@ textref.char_size = tboard.char_size
 textref.margin = tboard.margin
 textref.word_wrap = true
 textref.line_spacing = tboard.line_spacing
+
+
 
 /*
 local overlay = fe.add_rectangle (tboard.x + tboard.margin, tboard.y + tboard.margin, tboard.width - 2 * tboard.margin, tboard.height - 2 * tboard.margin)
