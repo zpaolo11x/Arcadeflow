@@ -63,7 +63,7 @@ class textboard_mk2
 	m_pong_up = null
 	m_freezer = null
 
-	m_debug = true
+	m_debug = false
 
 	count = null
 
@@ -378,13 +378,14 @@ class textboard_mk2
 		::print("2\n")
 		m_object.msg = m_text
 	
-		textref2.msg = m_text
-		textref2.align = m_object.align
-		textref2.char_size = m_object.char_size 
-		textref2.margin = m_object.margin
-		textref2.line_spacing = m_object.line_spacing
-		textref2.first_line_hint = 1
-
+		if (m_debug) {		
+			textref2.msg = m_text
+			textref2.align = m_object.align
+			textref2.char_size = m_object.char_size 
+			textref2.margin = m_object.margin
+			textref2.line_spacing = m_object.line_spacing
+			textref2.first_line_hint = 1
+		}
 		::print("3\n")
 		m_line_height = get_line_height()
 		::print("4\n")
