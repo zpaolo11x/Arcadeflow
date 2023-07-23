@@ -40,6 +40,9 @@ class textboard_mk2
 	m_y_speed = null
 	m_y_zero = null
 
+	m_y_scroll = null
+	m_y_scroll_speed = null
+
 	//TEST mk2 text parameters
 	m_text = null
 	m_text0 = null
@@ -63,7 +66,7 @@ class textboard_mk2
 	m_pong_up = null
 	m_freezer = null
 
-	m_debug = false
+	m_debug = true
 
 	count = null
 
@@ -199,6 +202,7 @@ class textboard_mk2
 		m_pong_delay = 1000
 		m_pong_count = 0
 		m_pong_up = true
+		m_y_scroll_speed = 0
 
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
@@ -471,7 +475,7 @@ class textboard_mk2
 	}
 
 	function board_on_signal(sig){
-		if (!(m_enable_signals && m_object.visible && !m_pong)) return
+		if (!(m_enable_signals && m_object.visible)) return// && !m_pong)) return
 
 		if (sig == "up") {
 			if (checkrepeat(count.up)) {
@@ -503,10 +507,10 @@ class textboard_mk2
 	
 	function board_on_tick(tick_time){
 
-	if (count.right != 0) count.right = repeatsignal("right", count.right)
-	if (count.left != 0) count.left = repeatsignal("left", count.left)
-	if (count.up != 0) count.up = repeatsignal("up", count.up)
-	if (count.down != 0) count.down = repeatsignal("down", count.down)
+		if (count.right != 0) count.right = repeatsignal("right", count.right)
+		if (count.left != 0) count.left = repeatsignal("left", count.left)
+		if (count.up != 0) count.up = repeatsignal("up", count.up)
+		if (count.down != 0) count.down = repeatsignal("down", count.down)
 
 
 
@@ -528,7 +532,27 @@ class textboard_mk2
 
 		if (!m_surf.visible) return
 
-		if (m_y_start != m_y_stop){
+		if ((m_pong) && (!m_ponging)){
+			if (m_pong_count == 0) 
+				m_pong_count = ::fe.layout.time + m_pong_delay
+			else if (m_pong_count <= ::fe.layout.time) {
+				m_pong_count = 0
+				m_ponging = true
+				if (m_pong_up) m_y_scroll_speed = m_line_height * 0.01 else m_y_scroll_speed = -1.0 * m_line_height * 0.01
+			}
+		}
+		
+		
+
+
+		if (m_y_scroll_speed != 0) {
+			if (m_surf.redraw == false) m_surf.redraw = true
+			//m_y_start += m_y_scroll_speed
+			m_y_stop += m_y_scroll_speed
+			//set_viewport (m_y_stop)
+		}
+
+		if ((m_y_start != m_y_stop) || (m_y_scroll_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
 			m_y_speed = 0.15 * (m_y_stop - m_y_start)
 			/*
@@ -557,7 +581,9 @@ class textboard_mk2
 				m_y_start = m_y_stop
 				set_viewport (m_y_stop)
 			}
-		}
+		}		
+
+
 //::print(m_text+"\n")
 /*
 		if ((m_pong) && (!m_ponging)){
@@ -840,21 +866,30 @@ class textboard_mk2
 
 
 	function set_viewport(y){
-		if (y <= 0) {
+		::print ("y"+(y% m_line_height)+" ")
+		if (y <= 0) {//TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
+			::print("1\n")
 			y = 0
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_object.first_line_hint = 1
+			if (m_ponging) pong_up()
 		}
-		else if (y >= m_viewport_max_y){
+		else if (y >= m_viewport_max_y){ //TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
+			::print("2\n")
 			y = m_viewport_max_y
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_object.first_line_hint = m_max_hint
+			if (m_ponging) pong_down()
 		}
 		else {
+			::print("3    ")
 			m_object.y = m_y_zero - y % m_line_height
+			::print(m_object.y+"\n")
+			//TEST mettere questo non a tutti i cambi coordinata!
 			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
+			::print ("FLH:"+m_object.first_line_hint+"\n")
 			m_y_start = y
 		}
 		if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)

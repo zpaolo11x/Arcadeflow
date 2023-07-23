@@ -28,9 +28,9 @@ local tboard = fe.add_textboard_mk2("", 0, 0, tw, th)
 
 // "standard" text parameters
 tboard.align = Align.TopLeft
-tboard.char_size = 9
-tboard.margin = 4
-tboard.line_spacing = 1.0
+tboard.char_size = 12
+tboard.margin = 8
+tboard.line_spacing = 1.1
 tboard.msg = text_to_show
 
 // Color and alpha definition
@@ -47,7 +47,7 @@ tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
-tboard.pingpong = false			// Enable auto-scroll
+tboard.pingpong = true			// Enable auto-scroll
 tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 tboard.expand_tokens = false	// Enable/disable magic token expansion
 
