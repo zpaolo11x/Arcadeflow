@@ -65,6 +65,8 @@ class textboard_mk2
 
 	m_debug = true
 
+	count = null
+
 	//DEBUG
 	m_overlay = null
 	m_overlay2 = null
@@ -104,6 +106,26 @@ class textboard_mk2
 
       if ( _surface == null ) _surface = ::fe
 		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
+
+		count = {
+			right = 0
+			left = 0
+			up = 0
+			down = 0
+
+			movestart = 20 //was 25, 20 is snappier
+			movestep = 0
+			movestepslow = 6
+			movestepfast = 3 //3 o 4, 3 engages the limit sooner
+			movestepdelay = 6
+	
+			countstep = 0
+
+		}
+		
+		count.movestep = count.movestepslow
+
+
 
 		m_tx_alpha = 255
 		m_bg_alpha = 0
@@ -170,6 +192,30 @@ class textboard_mk2
 		::fe.add_ticks_callback( this, "board_on_tick" )
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
+
+	function repeatsignal(sig, counter) {
+		if (::fe.get_input_state(sig) == false) {
+			count.countstep = 0
+			count.movestep = count.movestepslow
+			return (0)
+		}
+		else {
+			::fe.signal(sig)
+			counter ++
+			if (counter - count.movestart == count.movestep + 1) {
+				counter = count.movestart
+				count.countstep ++
+				count.movestep = ::floor((count.movestepfast + (count.movestepslow - count.movestepfast) * ::pow(2.7182, -count.countstep / count.movestepdelay))+0.5)
+			}
+			return counter
+		}
+	}
+
+	function checkrepeat(counter) {
+		return ((counter == 0) || (counter == count.movestart))
+	}
+
+
 
 	function m_absf(n) {
 		return (n >= 0 ? n : -n)
@@ -271,6 +317,13 @@ class textboard_mk2
 		}
 
 		::print("STOP\n")
+
+					::print ("-------------------------------------------------------------------\n")
+			::print ("HINT0:"+hint0+" HINT:"+hint+"\n")
+			::print ("LINES0:"+lines0+" LINES:"+lines+"\n")
+			::print ("*\n"+m_object.msg_wrapped+"*\n")
+			
+
 		::print ((::fe.layout.time - t0)+"\n")
 		local hintmax = (overhint != 0) ? overhint : hint0
 
@@ -400,11 +453,17 @@ class textboard_mk2
 		if (!(m_enable_signals && m_object.visible && !m_pong)) return
 
 		if (sig == "up") {
-			if (m_natural_scroll) line_up() else line_down()
+			if (checkrepeat(count.up)) {
+				if (m_natural_scroll) line_up() else line_down()
+				count.up ++
+			}
 			return m_signal_block
 		}
 		if (sig == "down") {
-			if (m_natural_scroll) line_down() else line_up()
+			if (checkrepeat(count.down)) {
+				if (m_natural_scroll) line_down() else line_up()
+			count.down ++
+			}
 			return m_signal_block
 		}	
 		if (sig == "left"){
@@ -422,6 +481,14 @@ class textboard_mk2
 	}
 	
 	function board_on_tick(tick_time){
+
+	if (count.right != 0) count.right = repeatsignal("right", count.right)
+	if (count.left != 0) count.left = repeatsignal("left", count.left)
+	if (count.up != 0) count.up = repeatsignal("up", count.up)
+	if (count.down != 0) count.down = repeatsignal("down", count.down)
+
+
+
 		if (m_debug) {
 			m_overnum.msg = m_object.first_line_hint
 			m_overnum.char_size = 20
@@ -752,8 +819,6 @@ class textboard_mk2
 
 
 	function set_viewport(y){
-		::print("                          VP:"+y+"\n")
-		//print ("y:"+y+" "+"max_y:"+m_viewport_max_y+"\n")
 		if (y <= 0) {
 			y = 0
 			m_y_start = m_y_stop = y
@@ -771,10 +836,7 @@ class textboard_mk2
 			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
 			m_y_start = y
 		}
-		if (y <= m_line_height) {
-			::print("Z\n")
-			m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-		}
+		if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)
 		else if (y >= m_viewport_max_y - m_line_height) m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
 		else { 		//TEST CHECK
 			m_shader.set_param("alphatop",1.0)
@@ -800,6 +862,7 @@ class textboard_mk2
 	}
 
 	function line_down(){
+		::print ("LINE DN           m_y_stop:"+m_y_stop+"\n")
 		if (m_y_stop > 0) m_y_stop -= m_line_height
 	}
 

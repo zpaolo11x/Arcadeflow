@@ -3374,7 +3374,7 @@ function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
-	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len()
+	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() + 1 //TEST162 ci va o no il +1?
 	msgbox_scrollerrefresh(0)
 }
 
@@ -14847,7 +14847,6 @@ function buildutilitymenu() {
 					foreach (i, item in buildreadme(true)){
 						abouttext = abouttext + item
 					}
-					abouttext = abouttext + "\n" + AF.msgbox.separator2
 					msgbox_open(AF.msgbox.separator2, abouttext)				
 				}
 				else if (out == -1) {
@@ -17572,10 +17571,13 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	if (sig == "custom1"){
-		hist_text.descr.goto_start()
+		AF.msgbox.obj.goto_start()
 	}
 	if (sig == "custom2"){
-		hist_text.descr.goto_end()
+		AF.msgbox.obj.goto_end()
+	}
+	if (sig == "custom3"){
+		msgbox_open("START","Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP")
 	}
 		/*
 	if (sig == "custom1"){
@@ -17646,7 +17648,13 @@ function on_signal(sig) {
 			return true
 		}
 		else if (sig == "left") {
-			AF.msgbox.obj.goto_start()
+			testpr("LEFT\n")
+			if (checkrepeat(count.left)) {
+			testpr("CHECK\n")
+				AF.msgbox.obj.goto_start()
+				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
+				count.left ++
+			}
 			return true
 			if (checkrepeat(count.left)) { //Faster jump scroll
 				if (AF.msgbox.obj.first_line_hint > AF.msgbox.visiblelines) 
@@ -17660,7 +17668,11 @@ function on_signal(sig) {
 			return true
 		}
 		else if (sig == "right") {
-			AF.msgbox.obj.goto_end()
+			if (checkrepeat(count.right)) {
+				AF.msgbox.obj.goto_end()
+				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
+				count.right ++
+			}			
 			return true
 			if (checkrepeat(count.right)) { //Faster jump scroll
 				if (AF.msgbox.obj.first_line_hint + AF.msgbox.visiblelines <= AF.msgbox.numlines - AF.msgbox.visiblelines) 

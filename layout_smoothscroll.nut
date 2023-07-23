@@ -8,17 +8,29 @@ local bg = fe.add_rectangle(0,0,flw,flh )
 bg.set_rgb(0,100,100)
 bg.alpha = 255
 
+function msgbox_test(){
+	local bodytext = ""
+	local max = 30
+	for (local i = 3; i < max; i++){
+		bodytext = bodytext + i + "\n"
+	}
+	bodytext = bodytext + max
+	return("TOTAL:"+"\n\n"+ bodytext)
+}
+
 local text_to_show = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP"//Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
 local tw = flw * 0.5
-local th = flh * 0.5
+local th = flh * 0.25
+
+text_to_show = msgbox_test()
 
 local tboard = fe.add_textboard_mk2("", 0, 0, tw, th)
 
 // "standard" text parameters
 tboard.align = Align.TopLeft
-tboard.char_size = floor(0.09 * th)
-tboard.margin = floor(0.016 * th)
-tboard.line_spacing = 1.15
+tboard.char_size = 11
+tboard.margin = 9
+tboard.line_spacing = 1.05
 tboard.msg = text_to_show
 
 // Color and alpha definition
@@ -30,7 +42,7 @@ tboard.alpha = 255					// Alpha of the whole board
 
 // Scroll parameters
 
-tboard.natural_scroll = true	// Inverts scroll control direction for automatic signal management
+tboard.natural_scroll = false	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
