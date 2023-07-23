@@ -319,7 +319,7 @@ class textboard_mk2
 		::print("5\n")
 		m_max_hint = (m_text == "") ? 0 : get_max_hint()
 		::print("6\n")
-		m_viewport_max_y = m_max_hint * m_line_height
+		m_viewport_max_y = (m_max_hint - 1) * m_line_height
 
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = m_surf.height + 4.0 * m_line_height
@@ -752,6 +752,7 @@ class textboard_mk2
 
 
 	function set_viewport(y){
+		::print("                          VP:"+y+"\n")
 		//print ("y:"+y+" "+"max_y:"+m_viewport_max_y+"\n")
 		if (y <= 0) {
 			y = 0
@@ -760,19 +761,26 @@ class textboard_mk2
 			m_object.first_line_hint = 1
 		}
 		else if (y >= m_viewport_max_y){
-			y = m_viewport_max_y - m_line_height
+			y = m_viewport_max_y
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_object.first_line_hint = m_max_hint
 		}
 		else {
-			if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-			if (y >= m_viewport_max_y - 2.0 * m_line_height) m_shader.set_param("alphabot",((((m_viewport_max_y - 1.0 * m_line_height) - y)*1.0/m_line_height)))
 			m_object.y = m_y_zero - y % m_line_height
 			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
 			m_y_start = y
 		}
-		::print("FLH:"+m_object.first_line_hint+"\n")
+		if (y <= m_line_height) {
+			::print("Z\n")
+			m_shader.set_param("alphatop", y * 1.0 / m_line_height)
+		}
+		else if (y >= m_viewport_max_y - m_line_height) m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
+		else { 		//TEST CHECK
+			m_shader.set_param("alphatop",1.0)
+			m_shader.set_param("alphabot",1.0)
+		}
+		//::print("FLH:"+m_object.first_line_hint+"\n")
 		//viewport1.y = y
 		//viewport2.y = y + m_object.margin
 		//print (viewport1.y+"\n")
@@ -788,7 +796,7 @@ class textboard_mk2
 
 	function line_up(){
 		::print ("LINE UP           m_y_stop:"+m_y_stop+"\n")
-		if (m_y_stop < m_viewport_max_y - m_line_height - m_margin_bottom) m_y_stop += m_line_height
+		if (m_y_stop < m_viewport_max_y ) m_y_stop += m_line_height
 	}
 
 	function line_down(){
@@ -797,7 +805,7 @@ class textboard_mk2
 
 	function goto_line(n){
 		if (n <= 0) m_y_stop = 0
-		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y - m_line_height
+		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y
 		else m_y_stop = n * m_line_height
 	}
 
