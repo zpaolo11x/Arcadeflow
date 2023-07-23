@@ -870,19 +870,19 @@ class textboard_mk2
 	}
 
 	function goto_start(){
-		textref2.first_line_hint = 1
+		if (m_debug) textref2.first_line_hint = 1
 		goto_line(1)
 	}
 
 	function goto_end(){
-		textref2.first_line_hint = m_max_hint
+		if (m_debug) textref2.first_line_hint = m_max_hint
 		goto_line(m_max_hint)
 	}
 
 	function line_up(){
 		::print ("LINE UP           m_y_stop:"+m_y_stop+"\n")
 		if (m_y_stop < m_viewport_max_y ) {
-			textref2.first_line_hint = textref2.first_line_hint + 1
+			if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 			m_y_stop += m_line_height
 		}
 	}
@@ -890,7 +890,7 @@ class textboard_mk2
 	function line_down(){
 		::print ("LINE DN           m_y_stop:"+m_y_stop+"\n")
 		if (m_y_stop > 0) {
-			textref2.first_line_hint = textref2.first_line_hint - 1
+			if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 			m_y_stop -= m_line_height
 		}
 	}

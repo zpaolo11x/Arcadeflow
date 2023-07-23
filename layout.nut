@@ -17626,10 +17626,10 @@ function on_signal(sig) {
 				//if (AF.msgbox.obj.first_line_hint >= 1) 
 				//else
 				//	AF.msgbox.obj.first_line_hint = 1
-				if (AF.msgbox.inline >= 1) {
+				//if (AF.msgbox.inline >= 1) { //TEST162 e inline che fine fa?!?
 					msgbox_scrollerrefresh(AF.msgbox.inline - 1)
 					AF.msgbox.obj.line_down()
-				}
+				//}
 				count.up ++
 			}
 			return true
@@ -17639,10 +17639,10 @@ function on_signal(sig) {
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
 
-				if (AF.msgbox.inline <= AF.msgbox.numlines - AF.msgbox.visiblelines - 1) {
+				//if (AF.msgbox.inline <= AF.msgbox.numlines - AF.msgbox.visiblelines - 1) {
 					msgbox_scrollerrefresh(AF.msgbox.inline + 1)
 					AF.msgbox.obj.line_up()
-				}
+				//}
 				count.down ++
 			}
 			return true
