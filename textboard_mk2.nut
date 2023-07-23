@@ -63,7 +63,7 @@ class textboard_mk2
 	m_pong_up = null
 	m_freezer = null
 
-	m_debug = false
+	m_debug = true
 
 	//DEBUG
 	m_overlay = null
@@ -237,22 +237,65 @@ class textboard_mk2
 	}
 
 	function get_max_hint(){
+
+		local hint0 = 1
+		local hint = 1
+		m_object.first_line_hint = 1
+		local wraptext = ""
+		local lines = 0
+		local lines0 = 0
+		local overhint = 0
+
+		local t0 = ::fe.layout.time
+		::print("START\n")
+		m_object.first_line_hint = hint
+		lines = split_complete(m_object.msg_wrapped,"\n").len()
+		lines0 = lines
+			::print ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
+
+		while ((lines0 == lines) && (m_object.first_line_hint == hint)){
+			if (m_debug){
+			::print ("-------------------------------------------------------------------\n")
+			::print ("HINT0:"+hint0+" HINT:"+hint+"\n")
+			::print ("LINES0:"+lines0+" LINES:"+lines+"\n")
+			::print ("*\n"+m_object.msg_wrapped+"*\n")
+			}
+			hint0 = hint
+			hint = hint + lines - 1
+			lines0 = lines
+			m_object.first_line_hint = hint
+			if (m_object.first_line_hint != hint) overhint = m_object.first_line_hint
+			::print ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
+			::print ("-------------------------------------------------------------------\n")
+			lines = split_complete(m_object.msg_wrapped,"\n").len()	
+		}
+
+		::print("STOP\n")
+		::print ((::fe.layout.time - t0)+"\n")
+		local hintmax = (overhint != 0) ? overhint : hint0
+
+		return(hintmax)
+		/*
 		local t_hint0 = 1
 		local t_hint = 1
+		local numlines = 0
+		local temptext = ""
+		::print("visiblelines:"+m_visible_lines+"\n")
 		m_object.first_line_hint = t_hint
 		while (t_hint == m_object.first_line_hint) {
-			//::print("B\n")
-			::print ("                        THINT:"+t_hint+"\n")
-			::print("****\n"+m_object.msg_wrapped+"***\n")
-			t_hint = t_hint + split_complete(m_object.msg_wrapped,"\n").len() - 1
+			temptext = m_object.msg_wrapped
+			numlines = split_complete(temptext,"\n").len() - 1
+			::print("numlines:"+numlines+"\n")
+			::print(temptext+"\n\n")
+			t_hint = t_hint + numlines
 			m_object.first_line_hint = t_hint
-			if (split_complete(m_object.msg_wrapped,"\n").len() <= m_visible_lines) break
-			//::print(m_object.first_line_hint)
-			//::print(m_object.msg_wrapped+"\n")
 		}
 		local out = m_object.first_line_hint
-		
+		::print("\n"+m_object.first_line_hint+"\n")
+		::print("\n\n\n****\n"+m_object.msg_wrapped+"****\n\n\n")
+
 		return (out)
+	*/
 	}
 
 	function get_visible_lines(){
@@ -274,7 +317,7 @@ class textboard_mk2
 		::print("4\n")
 		m_visible_lines = get_visible_lines()
 		::print("5\n")
-		m_max_hint = (m_text == "") ? 0 : get_max_hint() 
+		m_max_hint = (m_text == "") ? 0 : get_max_hint()
 		::print("6\n")
 		m_viewport_max_y = m_max_hint * m_line_height
 
@@ -729,6 +772,7 @@ class textboard_mk2
 			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
 			m_y_start = y
 		}
+		::print("FLH:"+m_object.first_line_hint+"\n")
 		//viewport1.y = y
 		//viewport2.y = y + m_object.margin
 		//print (viewport1.y+"\n")

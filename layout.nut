@@ -1314,6 +1314,7 @@ function abouttext() {
 		if (AF.prefs.l0[i].label != "") {
 			about.push("#### " + AF.prefs.l0[i].label + "\n")
 			about.push(AF.prefs.l0[i].description + "\n")
+			
 			about.push("\n")
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				try {
@@ -1323,6 +1324,7 @@ function abouttext() {
 				}
 			}
 			about.push("\n")
+		
 		}
 	}
 	return (about)
@@ -1382,12 +1384,19 @@ function buildreadme(separator=false) {
 
 	if (separator) readme.insert(readme.len() - 2, AF.msgbox.separator1+"\n")
 
-	readme.extend(abouttext())
+	local optionstext = abouttext()
+	foreach(i, item in optionstext){
+		optionstext[i] = char_replace(item, "❗", "!")
+	}
+
+	readme.extend(optionstext)
 
 	if (separator) readme.push(AF.msgbox.separator1+"\n")
 
 	readme.push("## Previous versions history #\n\n")
 	readme.extend(historytext())
+
+	if (separator) readme.push(AF.msgbox.separator2)
 
 	return readme
 /*
@@ -17562,7 +17571,13 @@ function ra_selectemu(startemu) {
 
 /// On Signal ///
 function on_signal(sig) {
-
+	if (sig == "custom1"){
+		hist_text.descr.goto_start()
+	}
+	if (sig == "custom2"){
+		hist_text.descr.goto_end()
+	}
+		/*
 	if (sig == "custom1"){
 		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
 		msgbox_open("Title", "")
@@ -17570,10 +17585,12 @@ function on_signal(sig) {
 			msgbox_addlinetop(patchtext(item, "DONE", 10, 60))
 		}
 	}
-
+	*/
+	/*
 	if (sig == "custom2"){
 		splash_message(AF.splash.pulse, "Test Message")
 	}
+	*/
 	if (sig == "custom4"){
 		splash_message(AF.splash.pulse, "Test Message Long", 5)
 	}
@@ -17629,6 +17646,8 @@ function on_signal(sig) {
 			return true
 		}
 		else if (sig == "left") {
+			AF.msgbox.obj.goto_start()
+			return true
 			if (checkrepeat(count.left)) { //Faster jump scroll
 				if (AF.msgbox.obj.first_line_hint > AF.msgbox.visiblelines) 
 					AF.msgbox.obj.first_line_hint -= AF.msgbox.visiblelines
@@ -17641,6 +17660,8 @@ function on_signal(sig) {
 			return true
 		}
 		else if (sig == "right") {
+			AF.msgbox.obj.goto_end()
+			return true
 			if (checkrepeat(count.right)) { //Faster jump scroll
 				if (AF.msgbox.obj.first_line_hint + AF.msgbox.visiblelines <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
 					AF.msgbox.obj.first_line_hint += AF.msgbox.visiblelines
