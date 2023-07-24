@@ -35,12 +35,16 @@ class textboard_mk2
 	m_max_hint = null
 
 	// mk2 Movement helpers
+	// This are not set by the user
+	// who sets bong_speed and scroll_speed
 	m_y_start = null
 	m_y_stop = null
 	m_y_shift = null
 	m_y_zero = null
-
 	m_y_pong_speed = null
+
+	m_hint_new = null
+
 
 	//TEST mk2 text parameters
 	m_text = null
@@ -58,15 +62,20 @@ class textboard_mk2
 	m_alpha = null
 	m_expand_tokens = null
 
-	m_pong = null
 	m_pong_delay = null
 	m_pong_count = null
 	m_ponging = null
 	m_pong_up = null
 	m_freezer = null
+	
+	m_pong = null
+	m_scroll_pulse = null
 	m_pong_speed = null
 
 	m_debug = true
+
+	tick_time_0 = null
+	tick_elapse = null
 
 	count = null
 
@@ -107,7 +116,10 @@ class textboard_mk2
 
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
+		tick_time_0 = 0
+		tick_elapse = 0
 
+		::print ("RRATE:"+ScreenRefreshRate+"\n")
       if ( _surface == null ) _surface = ::fe
 		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
 
@@ -140,6 +152,8 @@ class textboard_mk2
 		m_y_shift = null
 		m_y_zero = 0
 		m_y_pong_speed = 0
+
+		m_scroll_pulse = 1.0
 
 		m_line_height = null
 		m_natural_scroll = false
@@ -196,6 +210,7 @@ class textboard_mk2
 		m_shader.set_param("wholealpha", 1)
 
 		m_object.first_line_hint = 1
+		m_hint_new = 1
 
 		m_pong = false
 		m_ponging = false
@@ -203,7 +218,7 @@ class textboard_mk2
 		m_pong_delay = 1000
 		m_pong_count = 0
 		m_pong_up = true
-		m_pong_speed = 0
+		m_pong_speed = 1.0
 
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
@@ -406,6 +421,7 @@ class textboard_mk2
 		m_object.msg = " \n \n" + m_text + "\n \n "
 
 		m_object.first_line_hint = 1 //TEST TENERE?
+		m_hint_new = 1
 
 		m_y_start = 0
 		m_y_stop = 0
@@ -507,13 +523,13 @@ class textboard_mk2
 	}
 	
 	function board_on_tick(tick_time){
-
+		tick_elapse = tick_time - tick_time_0
+		tick_time_0 = tick_time
+		::print (tick_elapse+"\n")
 		if (count.right != 0) count.right = repeatsignal("right", count.right)
 		if (count.left != 0) count.left = repeatsignal("left", count.left)
 		if (count.up != 0) count.up = repeatsignal("up", count.up)
 		if (count.down != 0) count.down = repeatsignal("down", count.down)
-
-
 
 		if (m_debug) {
 			m_overnum.msg = m_object.first_line_hint+" / "+m_max_hint
@@ -539,7 +555,8 @@ class textboard_mk2
 			else if (m_pong_count <= ::fe.layout.time) {
 				m_pong_count = 0
 				m_ponging = true
-				if (m_pong_up) m_y_pong_speed = m_pong_speed else m_y_pong_speed = -1.0 * m_pong_speed
+				//TEST162 verificare a casa se con l'fps funziona
+				if (m_pong_up) m_y_pong_speed = (m_pong_speed * m_line_height * 1.0 / 1000) else m_y_pong_speed = -1.0 * (m_pong_speed * m_line_height * 1.0 / 1000)
 			}
 		}
 		
@@ -549,13 +566,14 @@ class textboard_mk2
 		if (m_y_pong_speed != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
 			//m_y_start += m_y_pong_speed
-			m_y_stop += m_y_pong_speed
+			m_y_stop += m_y_pong_speed * tick_elapse
 			//set_viewport (m_y_stop)
 		}
 
 		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
-			m_y_shift = 0.15 * (m_y_stop - m_y_start)
+
+			m_y_shift = m_scroll_pulse * (m_y_stop - m_y_start) * ScreenRefreshRate * 1.0 / 60.0
 			/*
 			if (m_absf(m_y_shift) > m_line_height) {
 				::print ("MAXSPEED\n")
@@ -697,10 +715,6 @@ class textboard_mk2
 				if (!value) m_surf.redraw = false
 				break
 
-			case "pong_speed":
-				m_pong_speed = value
-				break
-
 			case "signal_block":
 				m_signal_block = value
 				break
@@ -730,6 +744,7 @@ class textboard_mk2
 				m_object.margin = value
 				refreshtext()
 				break
+
 			case "tx_alpha":
 				m_tx_alpha = value
 				m_shader.set_param("textalpha", value * 1.0 / 255)
@@ -773,6 +788,14 @@ class textboard_mk2
 				m_pong_up = true
 				break
 
+			case "scroll_pulse":
+				m_scroll_pulse = value
+				break
+
+			case "pingpong_speed":
+				m_pong_speed = value
+				break
+
 			default:
    			m_object[idx] = value
 		}
@@ -794,10 +817,6 @@ class textboard_mk2
 			
 			case "msg":
 				return m_text
-				break
-
-			case "scroll_speed":
-				return m_pong_speed
 				break
 			
 			case "visible_lines":
@@ -836,10 +855,6 @@ class textboard_mk2
 				return m_expand_tokens
 				break
 
-			case "scrolling_direction":
-				return ((m_move == 0) ? "stop" : ((m_move > 0) ? "down" : "up")) 
-				break 
-
 			default:
 			   return m_object[idx]
 		}
@@ -873,7 +888,8 @@ class textboard_mk2
 			y = 0
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
-			m_object.first_line_hint = 1
+			m_hint_new = 1
+			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			if (m_ponging) pong_up()
 		}
 		else if (y >= m_viewport_max_y){ //TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
@@ -881,7 +897,8 @@ class textboard_mk2
 			y = m_viewport_max_y
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
-			m_object.first_line_hint = m_max_hint
+			m_hint_new = m_max_hint
+			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			if (m_ponging) pong_down()
 		}
 		else {
@@ -889,8 +906,8 @@ class textboard_mk2
 			m_object.y = m_y_zero - y % m_line_height
 			::print(m_object.y+"\n")
 			//TEST mettere questo non a tutti i cambi coordinata!
-			m_object.first_line_hint = ::floor(y * 1.0 / m_line_height) + 1
-			::print ("FLH:"+m_object.first_line_hint+"\n")
+			m_hint_new = ::floor(y * 1.0 / m_line_height) + 1
+			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			m_y_start = y
 		}
 		if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)

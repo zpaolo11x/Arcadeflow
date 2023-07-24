@@ -45,12 +45,17 @@ tboard.alpha = 255					// Alpha of the whole board
 tboard.natural_scroll = false	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
+
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
-tboard.pingpong = true			// Enable auto-scroll
+
+tboard.pingpong = false			// Enable auto-scroll
 tboard.pingpong_delay = 3		// Autoscroll delay in seconds
+
+tboard.pingpong_speed = 1.0	// Autoscroll speed in lines per second 
+tboard.scroll_pulse = 0.15		// Initial scroll impulse between 0 and 1
+
 tboard.expand_tokens = false	// Enable/disable magic token expansion
-tboard.pong_speed = 0.2
 
 // Reference text box to compare
 local textref = fe.add_text(text_to_show, tw, 0, tw, flh)

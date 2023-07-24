@@ -2649,6 +2649,11 @@ local spdT = {
 	dataspeedout = 0.88
 }
 
+local spdT2 = {
+	disp = 0.15
+	zmenu = 0.2
+}
+
 // Video delay parameters to skip fade-in
 local vidstarter = 10000
 local delayvid = vidstarter - 60 * prf.THUMBVIDELAY
@@ -16239,8 +16244,12 @@ function tick(tick_time) {
 			timescale.delay = -1
 			if (prf.ADAPTSPEED) AF.tsc = 60.0 / (1000.0 / (timescale.sum / timescale.values))
 			else AF.tsc = 60.0 / ScreenRefreshRate
+			
 			foreach (item, value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
+			}
+			foreach (item, value in spdT2) {
+				spdT2[item] = value * AF.tsc
 			}
 
 			delayvid = round(vidstarter - 60 * prf.THUMBVIDELAY / AF.tsc, 1)
@@ -16262,7 +16271,7 @@ function tick(tick_time) {
 
 	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
-		disp.speed = (0.15 * (disp.xstop - disp.xstart))
+		disp.speed = (spdT2.disp * (disp.xstop - disp.xstart))
 		if (absf(disp.speed) > disp.tileh) {
 			disp.speed = (disp.speed > 0 ? 10 * disp.tileh : -10 * disp.tileh)
 		}
@@ -16299,7 +16308,7 @@ function tick(tick_time) {
 	// zmenu items scrolling routine
 	if (zmenu.xstart != zmenu.xstop) {
 
-		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (0.2 * (zmenu.xstop - zmenu.xstart))
+		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (spdT2.zmenu * (zmenu.xstop - zmenu.xstart))
 		if (absf(zmenu.speed) > 0.0005 * zmenu.tileh) {
 			for (local i = 0; i < zmenu.shown; i++) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
