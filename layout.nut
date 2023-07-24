@@ -3393,6 +3393,12 @@ function msgbox_newbody(text){
 	msgbox_refresh()
 }
 
+function msgbox_newdata(title, body){
+	AF.msgbox.title = title
+	AF.msgbox.body = body
+	msgbox_refresh()
+}
+
 function msgbox_addlinetop(text){
 	AF.msgbox.body = text + "\n" + AF.msgbox.body
 	msgbox_refresh()
@@ -3404,8 +3410,7 @@ function msgbox_addlinebottom(text){
 
 function msgbox_open(title, message, backfunction = null){
 	AF.msgbox.lock = false
-	msgbox_newtitle(title)
-	msgbox_newbody(message)
+	msgbox_newdata(title, message)
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
 	//AF.msgbox.obj.first_line_hint = 1
@@ -3417,8 +3422,7 @@ function msgbox_lock(status){
 }
 
 function msgbox_close(){
-	msgbox_newtitle("")
-	msgbox_newbody("")
+	msgbox_newdata("", "")
 	AF.msgbox.back = null
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false	
 }
@@ -11027,6 +11031,7 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
+hist_text.descr.scroll_pulse = 0.15
 //hist_text.descr.scroll_speed = prf.TEXTSCROLL == "manual" ? 0.2 * hist_textT.linesize : 0.005 * hist_textT.linesize
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
@@ -13841,6 +13846,7 @@ AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
+AF.msgbox.obj.scroll_pulse = 0.15
 //AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
 AF.msgbox.obj.expand_tokens = false
 
@@ -16089,8 +16095,10 @@ function tick(tick_time) {
 			outfile.write_line(endreport)
 			outfile.close_file()
 
-			msgbox_newtitle(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms)
-			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport + "\n" + AF.msgbox.separator1)
+			msgbox_newdata(
+				AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms,
+				"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport + "\n" + AF.msgbox.separator1
+			)
 
 			AFscrapeclear()
 			dispatcher = []
