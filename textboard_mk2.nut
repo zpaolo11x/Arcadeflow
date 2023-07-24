@@ -309,7 +309,7 @@ class textboard_mk2
 		return (f2 - f1)
 	}
 
-	function split_complete(str_in, separator) {
+	function m_split_complete(str_in, separator) {
 		local outarray = []
 		local index = str_in.find(separator)
 		while (index != null) {
@@ -334,7 +334,7 @@ class textboard_mk2
 		local t0 = ::fe.layout.time
 		::print("START\n")
 		m_object.first_line_hint = hint
-		lines = split_complete(m_object.msg_wrapped,"\n").len()
+		lines = m_split_complete(m_object.msg_wrapped,"\n").len()
 		lines0 = lines
 			::print ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
 
@@ -352,7 +352,7 @@ class textboard_mk2
 			if (m_object.first_line_hint != hint) overhint = m_object.first_line_hint
 			::print ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
 			::print ("-------------------------------------------------------------------\n")
-			lines = split_complete(m_object.msg_wrapped,"\n").len()	
+			lines = m_split_complete(m_object.msg_wrapped,"\n").len()	
 		}
 
 		::print("STOP\n")
@@ -376,7 +376,7 @@ class textboard_mk2
 		m_object.first_line_hint = t_hint
 		while (t_hint == m_object.first_line_hint) {
 			temptext = m_object.msg_wrapped
-			numlines = split_complete(temptext,"\n").len() - 1
+			numlines = m_split_complete(temptext,"\n").len() - 1
 			::print("numlines:"+numlines+"\n")
 			::print(temptext+"\n\n")
 			t_hint = t_hint + numlines
