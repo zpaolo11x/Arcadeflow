@@ -1,6 +1,8 @@
 16.2
 Added new "slate" color theme
-Added Dirksimple logo
+Added smooth scrolling to game history
+Added option to automatically scroll history 
+Added Dirksimple and Gaelco systems
 Added option to open displays menu on current category
 Revamped media downloader for scraper
 Fixed scraped media download hanging

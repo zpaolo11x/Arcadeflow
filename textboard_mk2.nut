@@ -37,10 +37,10 @@ class textboard_mk2
 	// mk2 Movement helpers
 	m_y_start = null
 	m_y_stop = null
-	m_y_speed = null
+	m_y_shift = null
 	m_y_zero = null
 
-	m_y_scroll_speed = null
+	m_y_pong_speed = null
 
 	//TEST mk2 text parameters
 	m_text = null
@@ -137,9 +137,9 @@ class textboard_mk2
 
 		m_y_start = 0
 		m_y_stop = 0
-		m_y_speed = null
+		m_y_shift = null
 		m_y_zero = 0
-		m_y_scroll_speed = 0
+		m_y_pong_speed = 0
 
 		m_line_height = null
 		m_natural_scroll = false
@@ -378,9 +378,9 @@ class textboard_mk2
 	function refreshtext(){
 		m_surf.redraw = true
 		m_object.y = 0
-		::print("1\n")
+		::print("r1\n")
 		m_object.height = m_surf.height
-		::print("2\n")
+		::print("r2\n")
 		m_object.msg = m_text
 	
 		if (m_debug) {		
@@ -391,13 +391,13 @@ class textboard_mk2
 			textref2.line_spacing = m_object.line_spacing
 			textref2.first_line_hint = 1
 		}
-		::print("3\n")
+		::print("r3\n")
 		m_line_height = get_line_height()
-		::print("4\n")
+		::print("r4\n")
 		m_visible_lines = get_visible_lines()
-		::print("5\n")
+		::print("r5\n")
 		m_max_hint = (m_text == "") ? 0 : get_max_hint()
-		::print("6\n")
+		::print("r6\n")
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
 
 		m_object.y = - 2.0 * m_line_height
@@ -409,7 +409,7 @@ class textboard_mk2
 
 		m_y_start = 0
 		m_y_stop = 0
-		m_y_speed = null
+		m_y_shift = null
 
 		m_margin_bottom = m_surf.height - m_object.margin - m_visible_lines * m_line_height
 		if (m_margin_bottom < 0) m_margin_bottom = 0
@@ -539,30 +539,30 @@ class textboard_mk2
 			else if (m_pong_count <= ::fe.layout.time) {
 				m_pong_count = 0
 				m_ponging = true
-				if (m_pong_up) m_y_scroll_speed = m_pong_speed else m_y_scroll_speed = -1.0 * m_pong_speed
+				if (m_pong_up) m_y_pong_speed = m_pong_speed else m_y_pong_speed = -1.0 * m_pong_speed
 			}
 		}
 		
 		
 
 
-		if (m_y_scroll_speed != 0) {
+		if (m_y_pong_speed != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
-			//m_y_start += m_y_scroll_speed
-			m_y_stop += m_y_scroll_speed
+			//m_y_start += m_y_pong_speed
+			m_y_stop += m_y_pong_speed
 			//set_viewport (m_y_stop)
 		}
 
-		if ((m_y_start != m_y_stop) || (m_y_scroll_speed != 0)){
+		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
-			m_y_speed = 0.15 * (m_y_stop - m_y_start)
+			m_y_shift = 0.15 * (m_y_stop - m_y_start)
 			/*
-			if (m_absf(m_y_speed) > m_line_height) {
+			if (m_absf(m_y_shift) > m_line_height) {
 				::print ("MAXSPEED\n")
-				m_y_speed = (m_y_speed > 0 ? 10 * m_line_height : -10 * m_line_height)
+				m_y_shift = (m_y_shift > 0 ? 10 * m_line_height : -10 * m_line_height)
 			}
 			*/
-			if (m_absf(m_y_speed) > 0.0005 * m_line_height) {
+			if (m_absf(m_y_shift) > 0.0005 * m_line_height) {
 				if ((m_absf(m_y_start - m_y_stop)) > 10000000) {
 					/*
 					disp.xstart = disp.xstop
@@ -574,8 +574,8 @@ class textboard_mk2
 					*/
 				}
 				else {
-					set_viewport(m_y_start + m_y_speed)
-					m_y_start = m_y_start + m_y_speed
+					set_viewport(m_y_start + m_y_shift)
+					m_y_start = m_y_start + m_y_shift
 				}
 			}
 			else {
