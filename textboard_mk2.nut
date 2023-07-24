@@ -573,7 +573,9 @@ class textboard_mk2
 		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
 
-			m_y_shift = m_scroll_pulse * (m_y_stop - m_y_start) * ScreenRefreshRate * 1.0 / 60.0
+			::print("                                                  pulse:"+(m_scroll_pulse * ScreenRefreshRate * 1.0 / 60.0)+"\n")
+
+			m_y_shift = m_scroll_pulse * (m_y_stop - m_y_start) * 60.0 / ScreenRefreshRate
 			/*
 			if (m_absf(m_y_shift) > m_line_height) {
 				::print ("MAXSPEED\n")
