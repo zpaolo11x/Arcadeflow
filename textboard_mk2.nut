@@ -72,7 +72,7 @@ class textboard_mk2
 	m_scroll_pulse = null
 	m_pong_speed = null
 
-	m_debug = false
+	m_debug = true
 
 	tick_time_0 = null
 	tick_elapse = null

@@ -11493,8 +11493,13 @@ function history_updatetext() {
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
-	hist_text.descr.msg = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
+	tempdesc = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
+
+	testpr("DESCR:"+tempdesc+"\n")
+
+	hist_text.descr.msg = tempdesc
 	hist_text.descr.first_line_hint = 1
+
 }
 
 function history_show(h_startup)

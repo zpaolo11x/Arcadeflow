@@ -19,10 +19,13 @@ function msgbox_test(){
 }
 
 local text_to_show = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP"//Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
+
+//text_to_show = "Endorsed by André Panza, this video game adaptation of Thai kick boxing features over 35 moves. Use the training gym to build up your character's abilities until you feel ready to take on an opponent. You also have the ability to customize your attacks. When you are ready, go to the ring to take on various opponents as you try to become the best kick boxer in the game. "
+
 local tw = flw * 0.5
 local th = flh * 0.25
 
-text_to_show = msgbox_test()
+//text_to_show = msgbox_test()
 
 local tboard = fe.add_textboard_mk2("", 0, 0, tw, th)
 
