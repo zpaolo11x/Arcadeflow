@@ -50,6 +50,7 @@ tboard.lines_top = 1.0			// Faded lines at the top of the board
 tboard.pingpong = true			// Enable auto-scroll
 tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 tboard.expand_tokens = false	// Enable/disable magic token expansion
+tboard.pong_speed = 0.2
 
 // Reference text box to compare
 local textref = fe.add_text(text_to_show, tw, 0, tw, flh)

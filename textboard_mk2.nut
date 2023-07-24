@@ -40,7 +40,6 @@ class textboard_mk2
 	m_y_speed = null
 	m_y_zero = null
 
-	m_y_scroll = null
 	m_y_scroll_speed = null
 
 	//TEST mk2 text parameters
@@ -65,6 +64,7 @@ class textboard_mk2
 	m_ponging = null
 	m_pong_up = null
 	m_freezer = null
+	m_pong_speed = null
 
 	m_debug = true
 
@@ -139,6 +139,7 @@ class textboard_mk2
 		m_y_stop = 0
 		m_y_speed = null
 		m_y_zero = 0
+		m_y_scroll_speed = 0
 
 		m_line_height = null
 		m_natural_scroll = false
@@ -202,7 +203,7 @@ class textboard_mk2
 		m_pong_delay = 1000
 		m_pong_count = 0
 		m_pong_up = true
-		m_y_scroll_speed = 0
+		m_pong_speed = 0
 
 		::fe.add_signal_handler( this, "board_on_signal" )
 		::fe.add_ticks_callback( this, "board_on_tick" )
@@ -538,7 +539,7 @@ class textboard_mk2
 			else if (m_pong_count <= ::fe.layout.time) {
 				m_pong_count = 0
 				m_ponging = true
-				if (m_pong_up) m_y_scroll_speed = m_line_height * 0.01 else m_y_scroll_speed = -1.0 * m_line_height * 0.01
+				if (m_pong_up) m_y_scroll_speed = m_pong_speed else m_y_scroll_speed = -1.0 * m_pong_speed
 			}
 		}
 		
@@ -601,8 +602,8 @@ class textboard_mk2
 			if (m_surf.redraw == false) m_surf.redraw = true
 			if (m_move > 0){
 				// TEXT GOES DOWN
-				m_object.y += m_scroll_speed
-				m_move -= m_scroll_speed
+				m_object.y += m_pong_speed
+				m_move -= m_pong_speed
 
 				if (tb_topchar() == m_ch2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
 				if (tb_bottomchar() == m_ch1) m_shader.set_param("alphabot", (m_object.y - m_y_zero) * 1.0 / m_line_height)
@@ -610,7 +611,7 @@ class textboard_mk2
 				if (tb_topchar() == m_ch2) ::print ("alpha:"+(1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)+"\n")
 				::print ("move:"+m_move+" lheight:" + m_line_height+"\n")
 				::print ("move mod:"+(m_move % m_line_height)+"\n")
-				if (m_move % m_line_height <= m_scroll_speed) {
+				if (m_move % m_line_height <= m_pong_speed) {
 					::print("X\n")
 					m_line_move = (m_move - (m_move % m_line_height)) * 1.0 / m_line_height
 					if (m_hint_delta != 0) {
@@ -630,14 +631,14 @@ class textboard_mk2
 			}
 			else if (m_move < 0) {
 				// TEXT GOES UP
-				m_object.y -= m_scroll_speed
-				m_move += m_scroll_speed
+				m_object.y -= m_pong_speed
+				m_move += m_pong_speed
 	
 				//if (m_object.first_line_hint == 1)
 				if (tb_topchar() == m_ch1) m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
 				if (tb_bottomchar() == m_ch2) m_shader.set_param("alphabot", 1.0 + (m_object.y - m_y_zero) * 1.0 / m_line_height)
 	
-				if (m_move % m_line_height >= -m_scroll_speed){
+				if (m_move % m_line_height >= -m_pong_speed){
 					m_line_move = (m_move - (m_move % m_line_height)) * 1.0 / m_line_height
 					if (m_hint_delta != 0) {
 						m_hint_delta ++
@@ -696,8 +697,8 @@ class textboard_mk2
 				if (!value) m_surf.redraw = false
 				break
 
-			case "scroll_speed":
-				m_scroll_speed = value
+			case "pong_speed":
+				m_pong_speed = value
 				break
 
 			case "signal_block":
@@ -796,7 +797,7 @@ class textboard_mk2
 				break
 
 			case "scroll_speed":
-				return m_scroll_speed
+				return m_pong_speed
 				break
 			
 			case "visible_lines":
