@@ -53,7 +53,7 @@ tboard.pingpong = false			// Enable auto-scroll
 tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 
 tboard.pingpong_speed = 1.0	// Autoscroll speed in lines per second 
-tboard.scroll_pulse = 0.05		// Initial scroll impulse between 0 and 1
+tboard.scroll_pulse = 0.15		// Initial scroll impulse between 0 and 1
 
 tboard.expand_tokens = false	// Enable/disable magic token expansion
 

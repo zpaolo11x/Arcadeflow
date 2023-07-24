@@ -138,9 +138,16 @@ class textboard_mk2
 			countstep = 0
 
 		}
-		
+		foreach(item, val in count) ::print(item+" "+val+"\n")
+
+		count.movestart = ::ceil(count.movestart * ScreenRefreshRate / 60.0)		
+		count.movestepslow = ::ceil(count.movestepslow * ScreenRefreshRate / 60.0)
+		count.movestepfast = ::ceil(count.movestepfast * ScreenRefreshRate / 60.0)
+		count.movestepdelay = ::ceil(count.movestepdelay * ScreenRefreshRate / 60.0)
+
 		count.movestep = count.movestepslow
 
+		foreach(item, val in count) ::print(item+" "+val+"\n")
 
 
 		m_tx_alpha = 255
