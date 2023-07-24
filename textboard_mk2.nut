@@ -72,7 +72,7 @@ class textboard_mk2
 	m_scroll_pulse = null
 	m_pong_speed = null
 
-	m_debug = true
+	m_debug = false
 
 	tick_time_0 = null
 	tick_elapse = null
@@ -322,7 +322,7 @@ class textboard_mk2
 	}
 
 	function get_max_hint(){
-
+		
 		local hint0 = 1
 		local hint = 1
 		m_object.first_line_hint = 1
@@ -455,6 +455,35 @@ class textboard_mk2
 			m_pong_count = 0
 			m_pong_up = true
 		}
+	}
+
+	function resetstatus()
+	{
+		m_surf.redraw = true
+		m_object.y = 0
+		
+		m_object.y = - 2.0 * m_line_height
+		m_y_zero = m_object.y
+
+		m_object.first_line_hint = 1 //TEST TENERE?
+		m_hint_new = 1
+
+		m_y_start = 0
+		m_y_stop = 0
+		m_y_shift = null
+
+		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
+		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
+		m_shader.set_param("alphatop", 0.0)
+		m_shader.set_param("alphabot", m_max_hint <= 1 ? 0.0 : 1.0)
+		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
+		m_freezer = 2
+	
+		if (m_pong) {
+			m_ponging = false
+			m_pong_count = 0
+			m_pong_up = true
+		}		
 	}
 
 	function expandtokens(val, index_offset, filter_offset){
@@ -610,81 +639,6 @@ class textboard_mk2
 				set_viewport (m_y_stop)
 			}
 		}		
-
-
-//::print(m_text+"\n")
-/*
-		if ((m_pong) && (!m_ponging)){
-			if (m_pong_count == 0) 
-				m_pong_count = ::fe.layout.time + m_pong_delay
-			else if (m_pong_count <= ::fe.layout.time) {
-				m_pong_count = 0
-				m_ponging = true
-				if (m_pong_up) line_up() else line_down()
-			}
-		}
-		//::print ("m_move:"+cbool(m_move)+" m_pong_count:"+m_pong_count+" char_size:"+m_object.char_size+"\n")
-		//if ((m_move == 0) && (m_surf.redraw = true)) m_surf.redraw = false
-		if (m_move != 0) {
-			if (m_surf.redraw == false) m_surf.redraw = true
-			if (m_move > 0){
-				// TEXT GOES DOWN
-				m_object.y += m_pong_speed
-				m_move -= m_pong_speed
-
-				if (tb_topchar() == m_ch2) m_shader.set_param("alphatop", 1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)
-				if (tb_bottomchar() == m_ch1) m_shader.set_param("alphabot", (m_object.y - m_y_zero) * 1.0 / m_line_height)
-				
-				if (tb_topchar() == m_ch2) ::print ("alpha:"+(1.0 - (m_object.y - m_y_zero) * 1.0 / m_line_height)+"\n")
-				::print ("move:"+m_move+" lheight:" + m_line_height+"\n")
-				::print ("move mod:"+(m_move % m_line_height)+"\n")
-				if (m_move % m_line_height <= m_pong_speed) {
-					::print("X\n")
-					m_line_move = (m_move - (m_move % m_line_height)) * 1.0 / m_line_height
-					if (m_hint_delta != 0) {
-						m_hint_delta --
-						if (m_object.first_line_hint > 1) m_object.first_line_hint --
-						if (m_hint_delta == 0)	m_freezer = 2
-					}				
-					m_object.y = m_y_zero
-					m_move = m_line_move * m_line_height
-					if (tb_topchar() == m_ch1) {
-						m_shader.set_param("alphatop", 0.0)
-						m_move = 0				
-						m_hint_delta = 0
-						if (m_ponging) pong_up()
-					} else if (m_ponging) line_down()
-				}
-			}
-			else if (m_move < 0) {
-				// TEXT GOES UP
-				m_object.y -= m_pong_speed
-				m_move += m_pong_speed
-	
-				//if (m_object.first_line_hint == 1)
-				if (tb_topchar() == m_ch1) m_shader.set_param("alphatop", - (m_object.y - m_y_zero) * 1.0 / m_line_height)
-				if (tb_bottomchar() == m_ch2) m_shader.set_param("alphabot", 1.0 + (m_object.y - m_y_zero) * 1.0 / m_line_height)
-	
-				if (m_move % m_line_height >= -m_pong_speed){
-					m_line_move = (m_move - (m_move % m_line_height)) * 1.0 / m_line_height
-					if (m_hint_delta != 0) {
-						m_hint_delta ++
-						m_object.first_line_hint ++
-						if (m_hint_delta == 0)	m_freezer = 2
-					}
-					m_object.y = m_y_zero
-					m_move = m_line_move * m_line_height
-					if (tb_bottomchar() == m_ch1) {
-						m_shader.set_param("alphabot", 0.0)
-						m_move = 0				
-						m_hint_delta = 0
-						if (m_ponging) pong_down()
-					}
-					else if (m_ponging) line_up()
-				}
-			}
-		}
-		*/
 	}
 
 	function _set( idx, value )
@@ -720,7 +674,7 @@ class textboard_mk2
 			case "visible":
 				m_surf.visible = value
 				// a change in visibility resets the pong status and message status
-				refreshtext()
+				resetstatus()
 				if (!value) m_surf.redraw = false
 				break
 
@@ -771,19 +725,22 @@ class textboard_mk2
 
 			case "lines_bottom":
 				m_line_bot = value
-				refreshtext()
+				resetstatus()
 				break
 			
 			case "lines_top":
 				m_line_top = value
-				refreshtext()
+				resetstatus()
 				break
 
 			case "expand_tokens":
-				//::print("Set expand_tokens to:"+value+"\n")
 				m_expand_tokens = value
 				m_text = expandtokens(m_text0, 0, 0)
 				refreshtext()
+				break
+
+			case "current_line":
+				goto_line(current_line)
 				break
 
 			case "pingpong_delay":
@@ -828,6 +785,10 @@ class textboard_mk2
 				return m_text
 				break
 			
+			case "current_line":
+				return (m_object.first_line_hint)
+				break
+
 			case "visible_lines":
 				return (m_visible_lines)
 				break

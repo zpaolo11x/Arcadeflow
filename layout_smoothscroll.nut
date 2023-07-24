@@ -31,7 +31,6 @@ tboard.align = Align.TopLeft
 tboard.char_size = 12
 tboard.margin = 8
 tboard.line_spacing = 1.1
-tboard.msg = text_to_show
 
 // Color and alpha definition
 tboard.set_bg_rgb(0,0,100)			// Color of the board background
@@ -56,6 +55,8 @@ tboard.pingpong_speed = 1.0	// Autoscroll speed in lines per second
 tboard.scroll_pulse = 0.15		// Initial scroll impulse between 0 and 1
 
 tboard.expand_tokens = false	// Enable/disable magic token expansion
+
+tboard.msg = text_to_show
 
 // Reference text box to compare
 local textref = fe.add_text(text_to_show, tw, 0, tw, flh)
