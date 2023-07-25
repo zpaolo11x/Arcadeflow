@@ -371,6 +371,7 @@ class textboard_mk2
 		local hint0 = 1
 		local hint = 1
 		m_object.first_line_hint = 1
+		
 		local wraptext = ""
 		local lines = 0
 		local lines0 = 0
@@ -405,10 +406,10 @@ class textboard_mk2
 
 		::print("STOP\n")
 
-					::print ("-------------------------------------------------------------------\n")
-			::print ("HINT0:"+hint0+" HINT:"+hint+"\n")
-			::print ("LINES0:"+lines0+" LINES:"+lines+"\n")
-			::print ("*\n"+m_object.msg_wrapped+"*\n")
+		::print ("-------------------------------------------------------------------\n")
+		::print ("HINT0:"+hint0+" HINT:"+hint+"\n")
+		::print ("LINES0:"+lines0+" LINES:"+lines+"\n")
+		::print ("*\n"+m_object.msg_wrapped+"*\n")
 			
 
 		::print ((::fe.layout.time - t0)+"\n")
