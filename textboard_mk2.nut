@@ -640,23 +640,12 @@ class textboard_mk2
 				refreshtext()
 				break
 			
-			case "shader":
 			case "y":
 			case "x":
 			case "width":
 			case "height":
 			case "zorder":
 				m_surf[idx] = value
-				break
-
-			case "first_line_hint":
-				/*
-				m_object.first_line_hint = value
-				m_shader.set_param("alphabot", tb_bottomchar() == m_ch2 ? 0.0 : 1.0)
-				m_shader.set_param("alphatop", tb_topchar() == m_ch1 ? 0.0 : 1.0)
-				m_surf.redraw = true
-				m_freezer = 2
-				*/
 				break
 
 			case "visible":
@@ -678,6 +667,8 @@ class textboard_mk2
 				m_enable_signals = value
 				break
 
+			case "first_line_hint":
+			case "shader":
 			case "word_wrap":
 				break
 
@@ -752,7 +743,6 @@ class textboard_mk2
 		switch ( idx )
 		{
 			case "visible":
-			case "shader":
 			case "x":
 			case "y":
 			case "width":
