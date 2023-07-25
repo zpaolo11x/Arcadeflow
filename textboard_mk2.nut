@@ -36,6 +36,8 @@ class textboard_mk2
 	m_full_text = null
 	m_full_lines = null
 
+	m_target_line = 1
+
 	// mk2 Movement helpers
 	// This are not set by the user
 	// who sets bong_speed and scroll_speed
@@ -77,6 +79,7 @@ class textboard_mk2
 	m_freezer = null
 	tick_time_0 = null
 	tick_elapse = null
+
 
 	m_count = null
 
@@ -474,7 +477,6 @@ class textboard_mk2
 		::print ("visible lines:"+m_visible_lines+"\n")
 		::print ("max hint:"+m_max_hint+"\n")
 		::print ("total num lines:"+m_full_lines+"\n")
-		::print ("new max hint:" + (m_full_lines - m_visible_lines) +"\n")
 
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
 
@@ -753,8 +755,8 @@ class textboard_mk2
 				refreshtext()
 				break
 
-			case "current_line":
-				goto_line(current_line)
+			case "target_line":
+				goto_line(target_line)
 				break
 
 			case "pingpong_delay":
@@ -798,8 +800,8 @@ class textboard_mk2
 				return m_text
 				break
 			
-			case "current_line":
-				return m_object.first_line_hint
+			case "target_line":
+				return m_target_line
 				break
 
 			case "visible_lines":
@@ -896,12 +898,14 @@ class textboard_mk2
 	function goto_start()
 	{
 		if (m_debug) textref2.first_line_hint = 1
+		m_target_line = 1
 		goto_line(1)
 	}
 
 	function goto_end()
 	{
 		if (m_debug) textref2.first_line_hint = m_max_hint
+		m_target_line = m_max_hint
 		goto_line(m_max_hint)
 	}
 
@@ -910,6 +914,7 @@ class textboard_mk2
 		if (m_y_stop < m_viewport_max_y ) {
 			if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 			m_y_stop += m_line_height
+			m_target_line ++
 		}
 	}
 
@@ -918,6 +923,7 @@ class textboard_mk2
 		if (m_y_stop > 0) {
 			if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 			m_y_stop -= m_line_height
+			m_target_line --
 		}
 	}
 
@@ -926,6 +932,7 @@ class textboard_mk2
 		if (n <= 1) m_y_stop = 0
 		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y
 		else m_y_stop = n * m_line_height
+		m_target_line = n
 	}
 
 	function pong_down()

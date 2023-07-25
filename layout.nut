@@ -3363,8 +3363,8 @@ function msgbox_wraptext(text, columns){
 	return out
 }
 
-function msgbox_scrollerrefresh(inline){
-	AF.msgbox.inline = inline
+function msgbox_scrollerrefresh(inline){ //TEST162 RIVEDERE?
+	//AF.msgbox.inline = inline
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
@@ -3380,7 +3380,7 @@ function msgbox_refresh(){
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() + 1 //TEST162 ci va o no il +1?
-	msgbox_scrollerrefresh(0)
+	msgbox_scrollerrefresh(1)
 }
 
 function msgbox_newtitle(text){
@@ -3414,7 +3414,7 @@ function msgbox_open(title, message, backfunction = null){
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
 	//AF.msgbox.obj.first_line_hint = 1
-	msgbox_scrollerrefresh(0)
+	msgbox_scrollerrefresh(1)
 }
 
 function msgbox_lock(status){
@@ -17593,10 +17593,10 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	if (sig == "custom1"){
-		AF.msgbox.obj.goto_start()
+		hist_text.descr.goto_start()
 	}
 	if (sig == "custom2"){
-		AF.msgbox.obj.goto_end()
+		hist_text.descr.goto_end()
 	}
 	if (sig == "custom3"){
 		msgbox_open("START","Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP")
@@ -17649,8 +17649,8 @@ function on_signal(sig) {
 				//else
 				//	AF.msgbox.obj.first_line_hint = 1
 				//if (AF.msgbox.inline >= 1) { //TEST162 e inline che fine fa?!?
-					msgbox_scrollerrefresh(AF.msgbox.obj.current_line - 1)
 					AF.msgbox.obj.line_down()
+					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				//}
 				count.up ++
 			}
@@ -17663,8 +17663,9 @@ function on_signal(sig) {
 
 				//if (AF.msgbox.inline <= AF.msgbox.numlines - AF.msgbox.visiblelines - 1) {
 					//msgbox_scrollerrefresh(AF.msgbox.inline + 1)
-					msgbox_scrollerrefresh(AF.msgbox.obj.current_line + 1)
+//					msgbox_scrollerrefresh(AF.msgbox.obj.current_line + 1)
 					AF.msgbox.obj.line_up()
+					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 
 				//}
 				count.down ++
@@ -17674,7 +17675,7 @@ function on_signal(sig) {
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) {
 				AF.msgbox.obj.goto_start()
-				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
+					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.left ++
 			}
 			return true
@@ -17684,7 +17685,7 @@ function on_signal(sig) {
 				else
 					AF.msgbox.obj.first_line_hint = 1
 				//AF.msgbox.obj.refresh()
-				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
+				msgbox_scrollerrefresh(1)//TEST162 CORREGGERE
 				count.left ++
 			}
 			return true
@@ -17692,7 +17693,7 @@ function on_signal(sig) {
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) {
 				AF.msgbox.obj.goto_end()
-				msgbox_scrollerrefresh(AF.msgbox.obj.full_lines - AF.msgbox.obj.visible_lines + 1)//TEST162 CORREGGERE
+					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.right ++
 			}			
 			return true
@@ -17702,7 +17703,7 @@ function on_signal(sig) {
 				else
 					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
 				//AF.msgbox.obj.refresh()
-				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
+				msgbox_scrollerrefresh(1)//TEST162 CORREGGERE
 				count.right ++
 			}
 			return true
