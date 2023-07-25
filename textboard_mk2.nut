@@ -33,6 +33,8 @@ class textboard_mk2
 	m_visible_lines = null
 	m_viewport_max_y = null
 	m_max_hint = null
+	m_full_text = null
+	m_full_lines = null
 
 	// mk2 Movement helpers
 	// This are not set by the user
@@ -79,7 +81,7 @@ class textboard_mk2
 	m_count = null
 
 	// DEBUG
-	m_debug = true
+	m_debug = false
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
@@ -351,6 +353,34 @@ class textboard_mk2
 		return input_text
 	}
 
+	function get_full_text(tbox){
+		local fulltext = ""
+		local starthint = tbox.first_line_hint
+
+		local hint = 1
+		tbox.first_line_hint = hint
+
+		local text_part = tbox.msg_wrapped
+		local numlines = m_split_complete(text_part, "\n").len() - 1
+
+		while (hint == tbox.first_line_hint){
+			fulltext += text_part
+			hint = hint + numlines
+			tbox.first_line_hint = hint
+			text_part = tbox.msg_wrapped
+		}
+
+		local deltalines = hint - tbox.first_line_hint
+		local endlines = m_split_complete(tbox.msg_wrapped,"\n")
+		for (local i = deltalines; i < endlines.len() - 2; i++) {
+			fulltext += endlines[i] + "\n"
+		}
+		fulltext += endlines[endlines.len() - 2]
+		tbox.first_line_hint = starthint
+
+		return fulltext
+
+	}
 
 	function get_max_hint(){
 		
@@ -434,7 +464,18 @@ class textboard_mk2
 
 		m_line_height = get_line_height()
 		m_visible_lines = get_visible_lines()
-		m_max_hint = (m_text == "") ? 0 : get_max_hint()
+		m_full_text = (m_text == "") ? "" : get_full_text(m_object)
+
+		m_full_lines = m_split_complete(m_full_text,"\n").len()
+		m_max_hint = m_full_lines - m_visible_lines + 1//(m_text == "") ? 0 : get_max_hint()
+
+		if (m_max_hint <= 0) m_max_hint = 1
+		::print ("\n\n")
+		::print ("visible lines:"+m_visible_lines+"\n")
+		::print ("max hint:"+m_max_hint+"\n")
+		::print ("total num lines:"+m_full_lines+"\n")
+		::print ("new max hint:" + (m_full_lines - m_visible_lines) +"\n")
+
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
 
 		m_object.y = - 2.0 * m_line_height
@@ -615,10 +656,12 @@ class textboard_mk2
 
 			m_y_shift = m_scroll_pulse * (m_y_stop - m_y_start) * 60.0 / ScreenRefreshRate
 			
+			/*
 			if (m_absf(m_y_shift) > m_line_height) {
 				m_y_shift = (m_y_shift > 0 ? m_line_height : -1.0 * m_line_height)
 			}
-			
+			*/
+
 			if (m_absf(m_y_shift) > 0.0005 * m_line_height) {
 				set_viewport(m_y_start + m_y_shift)
 				m_y_start = m_y_start + m_y_shift
