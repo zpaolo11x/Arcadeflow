@@ -72,7 +72,7 @@ class textboard_mk2
 	m_scroll_pulse = null
 	m_pong_speed = null
 
-	m_debug = true
+	m_debug = false
 
 	tick_time_0 = null
 	tick_elapse = null
@@ -118,6 +118,8 @@ class textboard_mk2
 	constructor (_t, _x, _y, _w, _h, _surface = null){
 		tick_time_0 = 0
 		tick_elapse = 0
+
+		::print(cleanuptext("Pàolò")+"\n")
 
 		::print ("RRATE:"+ScreenRefreshRate+"\n")
       if ( _surface == null ) _surface = ::fe
@@ -321,6 +323,49 @@ class textboard_mk2
 		return outarray
 	}
 
+	function m_char_replace(inputstring, old, new) {
+		local out = ""
+		local splitarray = m_split_complete (inputstring, old)
+		foreach (id, item in splitarray) {
+			out = out + (id > 0 ? new : "") + item
+		}
+		return out
+	}
+
+	function cleanuptext(input_text){
+		local char_table = {
+			a = ["à","á","â","ã","ä"],
+			c = ["ç"],
+			e = ["è","é","ê","ë"],
+			i = ["ì","í","î","ï"],
+			n = ["ñ"],
+			o = ["ò","ó","ô","õ","ö"],
+			s = ["š"],
+			u = ["ú","ù","û","ü"],
+			y = ["ý","ÿ"],
+			z = ["ž"],
+			A = ["À","Á","Â","Ã","Ä"],
+			C = ["Ç"],
+			E = ["È","É","Ê","Ë"],
+			I = ["Ì","Í","Î","Ï"],
+			N = ["Ñ"],
+			O = ["Ò","Ó","Ô","Õ","Ö"],
+			S = ["Š"],
+			U = ["Ú","Ù","Û","Ü"],
+			Y = ["Ý","Ÿ"],
+			Z = ["Ž"]
+		}
+
+		foreach (good_char, bad_char_array in char_table){
+			foreach (i, bad_char in bad_char_array){
+				input_text = m_char_replace(input_text, bad_char, good_char)
+			}
+		}
+
+		return input_text
+	}
+
+
 	function get_max_hint(){
 		
 		local hint0 = 1
@@ -330,6 +375,9 @@ class textboard_mk2
 		local lines = 0
 		local lines0 = 0
 		local overhint = 0
+
+		local oldmsg = m_object.msg
+		m_object.msg = cleanuptext(oldmsg)
 
 		local t0 = ::fe.layout.time
 		::print("START\n")
@@ -365,6 +413,8 @@ class textboard_mk2
 
 		::print ((::fe.layout.time - t0)+"\n")
 		local hintmax = (overhint != 0) ? overhint : hint0
+
+		m_object.msg = oldmsg
 
 		return(hintmax)
 		/*
@@ -561,7 +611,7 @@ class textboard_mk2
 	function board_on_tick(tick_time){
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
-		::print (tick_elapse+"\n")
+
 		if (count.right != 0) count.right = repeatsignal("right", count.right)
 		if (count.left != 0) count.left = repeatsignal("left", count.left)
 		if (count.up != 0) count.up = repeatsignal("up", count.up)
@@ -839,17 +889,6 @@ class textboard_mk2
 	{
 		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
-	
-	function tb_topchar(){
-		local splitarray = ::split(m_object.msg_wrapped,"\n")
-		return (splitarray[0])
-	}
-
-	function tb_bottomchar(){
-		local splitarray = ::split(m_object.msg_wrapped,"\n")
-		return (splitarray[splitarray.len() - 1])				
-	}
-
 
 	function set_viewport(y){
 		::print ("y"+(y% m_line_height)+" ")
@@ -934,13 +973,6 @@ class textboard_mk2
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = true
-	}
-
-	function refresh(){
-		m_shader.set_param("alphabot", tb_bottomchar() == m_ch2 ? 0.0 : 1.0)
-		m_shader.set_param("alphatop", tb_topchar() == m_ch1 ? 0.0 : 1.0)
-		m_surf.redraw = true
-		m_freezer = 2
 	}
 }
 
