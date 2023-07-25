@@ -1,4 +1,4 @@
-fe.layout.mouse_pointer = true
+/*fe.layout.mouse_pointer = true
 
 local flw = fe.layout.width
 local flh = fe.layout.height
@@ -33,7 +33,7 @@ for ( local i = 1; i < 200; i++ )
 txt.msg = text
 
 dbg.msg = txt.first_line_hint
-/*
+*/
 local flw = fe.layout.width = 400
 local flh = fe.layout.height = 300
 
@@ -82,4 +82,3 @@ function on_signal(sig){
 		return true
 	}
 }
-*/
