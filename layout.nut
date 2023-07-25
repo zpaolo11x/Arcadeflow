@@ -17649,7 +17649,7 @@ function on_signal(sig) {
 				//else
 				//	AF.msgbox.obj.first_line_hint = 1
 				//if (AF.msgbox.inline >= 1) { //TEST162 e inline che fine fa?!?
-					msgbox_scrollerrefresh(AF.msgbox.inline - 1)
+					msgbox_scrollerrefresh(AF.msgbox.obj.current_line - 1)
 					AF.msgbox.obj.line_down()
 				//}
 				count.up ++
@@ -17662,17 +17662,17 @@ function on_signal(sig) {
 				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
 
 				//if (AF.msgbox.inline <= AF.msgbox.numlines - AF.msgbox.visiblelines - 1) {
-					msgbox_scrollerrefresh(AF.msgbox.inline + 1)
+					//msgbox_scrollerrefresh(AF.msgbox.inline + 1)
+					msgbox_scrollerrefresh(AF.msgbox.obj.current_line + 1)
 					AF.msgbox.obj.line_up()
+
 				//}
 				count.down ++
 			}
 			return true
 		}
 		else if (sig == "left") {
-			testpr("LEFT\n")
 			if (checkrepeat(count.left)) {
-			testpr("CHECK\n")
 				AF.msgbox.obj.goto_start()
 				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
 				count.left ++
@@ -17692,7 +17692,7 @@ function on_signal(sig) {
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) {
 				AF.msgbox.obj.goto_end()
-				msgbox_scrollerrefresh(0)//TEST162 CORREGGERE
+				msgbox_scrollerrefresh(AF.msgbox.obj.full_lines - AF.msgbox.obj.visible_lines + 1)//TEST162 CORREGGERE
 				count.right ++
 			}			
 			return true

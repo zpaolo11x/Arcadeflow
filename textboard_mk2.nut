@@ -838,6 +838,14 @@ class textboard_mk2
 				return m_expand_tokens
 				break
 
+			case "full_text":
+				return m_full_text
+				break
+
+			case "full_lines":
+				return m_full_lines
+				break
+
 			default:
 			   return m_object[idx]
 		}
