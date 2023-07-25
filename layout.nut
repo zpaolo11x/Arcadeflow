@@ -13844,7 +13844,7 @@ if (prf.OVERCUSTOM != "pics/") {
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
 //TEST162 RIMETTERE TEXTBOARD NORMALE
-AF.msgbox.obj = fe.add_textboard_mk2("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_textboard_mk2("", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
@@ -13856,6 +13856,7 @@ AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msg
 AF.msgbox.obj.scroll_pulse = 0.15
 //AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
 AF.msgbox.obj.expand_tokens = false
+AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
@@ -13867,9 +13868,10 @@ AF.msgbox.scroller.alpha = 200
 AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
-	AF.msgbox.obj.char_size = 16
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
-	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
+	AF.msgbox.obj.char_size = 16
+	testpr("MESSAGEWRAPPED\n"+AF.msgbox.obj.msg_wrapped+"\n")
+	AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
 }
 
 AF.msgbox.obj.visible = false

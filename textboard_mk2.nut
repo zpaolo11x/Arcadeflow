@@ -315,14 +315,16 @@ class textboard_mk2
 
 		m_object.word_wrap = true
 		m_object.msg = "X"
-		m_object.first_line_hint = 0
+		m_object.first_line_hint = 1
 		local f1 = m_object.msg_height
+::print("f1:"+(f1)+"\n")
 		m_object.msg = "X\nX"
 		local f2 = m_object.msg_height
+::print("f2:"+(f2)+"\n")
 
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
-
+::print("LINEHEIGHT:"+(f2-f1)+"\n")
 		return (f2 - f1)
 	}
 
@@ -717,6 +719,7 @@ class textboard_mk2
 			case "word_wrap":
 				break
 
+			case "font":
 			case "line_spacing":
 			case "char_size":
 			case "margin":
