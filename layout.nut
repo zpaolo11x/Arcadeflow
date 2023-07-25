@@ -3370,7 +3370,9 @@ function msgbox_scrollerrefresh(inline){ //TEST162 check margin top e bottom che
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
 	}
 	else {
-		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (inline) * 1.0 / AF.msgbox.numlines)
+		testpr("XXX numlines:"+AF.msgbox.numlines+"\n")
+		testpr("XXX vislines:"+AF.msgbox.visiblelines+"\n")
+		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (inline - 1) * 1.0 / AF.msgbox.numlines)
 		AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
 	}
 }
@@ -3379,7 +3381,7 @@ function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
-	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() + 1 //TEST162 ci va o no il +1?
+	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() 
 	msgbox_scrollerrefresh(1)
 }
 
@@ -17650,6 +17652,7 @@ function on_signal(sig) {
 				//	AF.msgbox.obj.first_line_hint = 1
 				//if (AF.msgbox.inline >= 1) { //TEST162 e inline che fine fa?!?
 					AF.msgbox.obj.line_down()
+					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
 					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				//}
 				count.up ++
@@ -17665,6 +17668,7 @@ function on_signal(sig) {
 					//msgbox_scrollerrefresh(AF.msgbox.inline + 1)
 //					msgbox_scrollerrefresh(AF.msgbox.obj.current_line + 1)
 					AF.msgbox.obj.line_up()
+					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
 					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 
 				//}
@@ -17675,6 +17679,7 @@ function on_signal(sig) {
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) {
 				AF.msgbox.obj.goto_start()
+					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
 					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.left ++
 			}
@@ -17685,6 +17690,7 @@ function on_signal(sig) {
 				else
 					AF.msgbox.obj.first_line_hint = 1
 				//AF.msgbox.obj.refresh()
+					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
 				msgbox_scrollerrefresh(1)//TEST162 CORREGGERE
 				count.left ++
 			}
@@ -17693,6 +17699,7 @@ function on_signal(sig) {
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) {
 				AF.msgbox.obj.goto_end()
+					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
 					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.right ++
 			}			
@@ -17703,6 +17710,7 @@ function on_signal(sig) {
 				else
 					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
 				//AF.msgbox.obj.refresh()
+					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
 				msgbox_scrollerrefresh(1)//TEST162 CORREGGERE
 				count.right ++
 			}
