@@ -3363,7 +3363,7 @@ function msgbox_wraptext(text, columns){
 	return out
 }
 
-function msgbox_scrollerrefresh(inline){ //TEST162 RIVEDERE?
+function msgbox_scrollerrefresh(inline){ //TEST162 check margin top e bottom che siano uguali
 	//AF.msgbox.inline = inline
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
