@@ -45,8 +45,7 @@ class textboard_mk2
 
 	m_hint_new = null
 
-
-	//TEST mk2 text parameters
+	// mk2 text parameters
 	m_text = null
 	m_text0 = null
 	m_margin = null
@@ -62,95 +61,106 @@ class textboard_mk2
 	m_alpha = null
 	m_expand_tokens = null
 
+	// Pingpong properties
 	m_pong_delay = null
 	m_pong_count = null
 	m_ponging = null
 	m_pong_up = null
-	m_freezer = null
 	
 	m_pong = null
 	m_scroll_pulse = null
 	m_pong_speed = null
 
-	m_debug = false
-
+	// Performace management properties
+	m_freezer = null
 	tick_time_0 = null
 	tick_elapse = null
 
-	count = null
+	m_count = null
 
-	//DEBUG
+	// DEBUG
+	m_debug = true
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
 	textref2 = null
 
-	m_tokens = ["[DisplayName]",
-					"[ListSize]",
-					"[ListEntry]",
-					"[FilterName]",
-					"[Search]",
-					"[SortName]",
-					"[Name]",
-					"[Title]",
-					"[Emulator]",
-					"[CloneOf]",
-					"[Year]",
-					"[Manufacturer]",
-					"[Category]",
-					"[Players]",
-					"[Rotation]",
-					"[Control]",
-					"[Status]",
-					"[DisplayCount]",
-					"[DisplayType]",
-					"[AltRomname]",
-					"[AltTitle]",
-					"[PlayedTime]",
-					"[PlayedCount]",
-					"[SortValue]",
-					"[System]",
-					"[SystemN]",
-					"[Overview]"
-					]
+	m_tokens = [
+		"[DisplayName]",
+		"[ListSize]",
+		"[ListEntry]",
+		"[FilterName]",
+		"[Search]",
+		"[SortName]",
+		"[Name]",
+		"[Title]",
+		"[Emulator]",
+		"[CloneOf]",
+		"[Year]",
+		"[Manufacturer]",
+		"[Category]",
+		"[Players]",
+		"[Rotation]",
+		"[Control]",
+		"[Status]",
+		"[DisplayCount]",
+		"[DisplayType]",
+		"[AltRomname]",
+		"[AltTitle]",
+		"[PlayedTime]",
+		"[PlayedCount]",
+		"[SortValue]",
+		"[System]",
+		"[SystemN]",
+		"[Overview]"
+	]
 
+	m_char_table = {
+		a = ["à","á","â","ã","ä"],
+		c = ["ç"],
+		e = ["è","é","ê","ë"],
+		i = ["ì","í","î","ï"],
+		n = ["ñ"],
+		o = ["ò","ó","ô","õ","ö"],
+		s = ["š"],
+		u = ["ú","ù","û","ü"],
+		y = ["ý","ÿ"],
+		z = ["ž"],
+		A = ["À","Á","Â","Ã","Ä"],
+		C = ["Ç"],
+		E = ["È","É","Ê","Ë"],
+		I = ["Ì","Í","Î","Ï"],
+		N = ["Ñ"],
+		O = ["Ò","Ó","Ô","Õ","Ö"],
+		S = ["Š"],
+		U = ["Ú","Ù","Û","Ü"],
+		Y = ["Ý","Ÿ"],
+		Z = ["Ž"]
+	}
 
 	constructor (_t, _x, _y, _w, _h, _surface = null){
 		tick_time_0 = 0
 		tick_elapse = 0
 
-		::print(cleanuptext("Pàolò")+"\n")
-
-		::print ("RRATE:"+ScreenRefreshRate+"\n")
-      if ( _surface == null ) _surface = ::fe
+      if (_surface == null) _surface = ::fe
 		m_shader = ::fe.add_shader(Shader.Fragment, "textboard.glsl")
 
-		count = {
+		m_count = {
 			right = 0
 			left = 0
 			up = 0
 			down = 0
 
-			movestart = 20 //was 25, 20 is snappier
+			movestart = 20
 			movestep = 0
 			movestepslow = 6
-			movestepfast = 3 //3 o 4, 3 engages the limit sooner
+			movestepfast = 3
 			movestepdelay = 6
 	
 			countstep = 0
-
 		}
-		foreach(item, val in count) ::print(item+" "+val+"\n")
-
-		count.movestart = ::ceil(count.movestart * ScreenRefreshRate / 60.0)		
-		count.movestepslow = ::ceil(count.movestepslow * ScreenRefreshRate / 60.0)
-		count.movestepfast = ::ceil(count.movestepfast * ScreenRefreshRate / 60.0)
-		count.movestepdelay = ::ceil(count.movestepdelay * ScreenRefreshRate / 60.0)
-
-		count.movestep = count.movestepslow
-
-		foreach(item, val in count) ::print(item+" "+val+"\n")
-
+		foreach (item, value in m_count) m_count[item] = ::ceil(value * ScreenRefreshRate / 60.0)
+		m_count.movestep = m_count.movestepslow
 
 		m_tx_alpha = 255
 		m_bg_alpha = 0
@@ -191,7 +201,6 @@ class textboard_mk2
 			m_overlay2.alpha = 120
 			m_overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
 		
-					// Reference text box to compare
 			textref2 = ::fe.add_text("", 0, m_surf.height, m_surf.width, m_surf.height)
 			textref2.align = m_object.align
 			textref2.char_size = m_object.char_size 
@@ -200,7 +209,6 @@ class textboard_mk2
 			textref2.line_spacing = m_object.line_spacing
 			textref2.set_bg_rgb(200,100,0)
 			textref2.bg_alpha = 120
-		
 		}
 
 		m_line_top = 1.0
@@ -234,29 +242,31 @@ class textboard_mk2
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
-	function repeatsignal(sig, counter) {
+	function dbprint(text){
+		if (m_debug) ::print(text)
+	}
+
+	function m_repeatsignal(sig, counter) {
 		if (::fe.get_input_state(sig) == false) {
-			count.countstep = 0
-			count.movestep = count.movestepslow
+			m_count.countstep = 0
+			m_count.movestep = m_count.movestepslow
 			return (0)
 		}
 		else {
 			::fe.signal(sig)
 			counter ++
-			if (counter - count.movestart == count.movestep + 1) {
-				counter = count.movestart
-				count.countstep ++
-				count.movestep = ::floor((count.movestepfast + (count.movestepslow - count.movestepfast) * ::pow(2.7182, -count.countstep / count.movestepdelay))+0.5)
+			if (counter - m_count.movestart == m_count.movestep + 1) {
+				counter = m_count.movestart
+				m_count.countstep ++
+				m_count.movestep = ::floor((m_count.movestepfast + (m_count.movestepslow - m_count.movestepfast) * ::pow(2.7182, -m_count.countstep / m_count.movestepdelay))+0.5)
 			}
 			return counter
 		}
 	}
 
-	function checkrepeat(counter) {
-		return ((counter == 0) || (counter == count.movestart))
+	function m_checkrepeat(counter) {
+		return ((counter == 0) || (counter == m_count.movestart))
 	}
-
-
 
 	function m_absf(n) {
 		return (n >= 0 ? n : -n)
@@ -332,36 +342,12 @@ class textboard_mk2
 		return out
 	}
 
-	function cleanuptext(input_text){
-		local char_table = {
-			a = ["à","á","â","ã","ä"],
-			c = ["ç"],
-			e = ["è","é","ê","ë"],
-			i = ["ì","í","î","ï"],
-			n = ["ñ"],
-			o = ["ò","ó","ô","õ","ö"],
-			s = ["š"],
-			u = ["ú","ù","û","ü"],
-			y = ["ý","ÿ"],
-			z = ["ž"],
-			A = ["À","Á","Â","Ã","Ä"],
-			C = ["Ç"],
-			E = ["È","É","Ê","Ë"],
-			I = ["Ì","Í","Î","Ï"],
-			N = ["Ñ"],
-			O = ["Ò","Ó","Ô","Õ","Ö"],
-			S = ["Š"],
-			U = ["Ú","Ù","Û","Ü"],
-			Y = ["Ý","Ÿ"],
-			Z = ["Ž"]
-		}
-
-		foreach (good_char, bad_char_array in char_table){
+	function text_cleanup(input_text){
+		foreach (good_char, bad_char_array in m_char_table){
 			foreach (i, bad_char in bad_char_array){
 				input_text = m_char_replace(input_text, bad_char, good_char)
 			}
 		}
-
 		return input_text
 	}
 
@@ -371,74 +357,57 @@ class textboard_mk2
 		local hint0 = 1
 		local hint = 1
 		m_object.first_line_hint = 1
-		
+
 		local wraptext = ""
 		local lines = 0
 		local lines0 = 0
 		local overhint = 0
 
+		dbprint("OBJECT MESSAGE\n"+m_object.msg+"\n")
+
 		local oldmsg = m_object.msg
-		m_object.msg = cleanuptext(oldmsg)
+		m_object.msg = text_cleanup(oldmsg)
 
 		local t0 = ::fe.layout.time
-		::print("START\n")
+
 		m_object.first_line_hint = hint
 		lines = m_split_complete(m_object.msg_wrapped,"\n").len()
 		lines0 = lines
-			::print ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
+		
+		dbprint("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
 
 		while ((lines0 == lines) && (m_object.first_line_hint == hint)){
-			if (m_debug){
-			::print ("-------------------------------------------------------------------\n")
-			::print ("HINT0:"+hint0+" HINT:"+hint+"\n")
-			::print ("LINES0:"+lines0+" LINES:"+lines+"\n")
-			::print ("*\n"+m_object.msg_wrapped+"*\n")
-			}
+			dbprint("-------------------------------------------------------------------\n")
+			dbprint("HINT0:"+hint0+" HINT:"+hint+"\n")
+			dbprint("LINES0:"+lines0+" LINES:"+lines+"\n")
+			dbprint("*\n"+m_object.msg_wrapped+"*\n")
+			
 			hint0 = hint
 			hint = hint + lines - 1
 			lines0 = lines
 			m_object.first_line_hint = hint
 			if (m_object.first_line_hint != hint) overhint = m_object.first_line_hint
-			::print ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
-			::print ("-------------------------------------------------------------------\n")
+
+			dbprint ("hint:"+hint+" realflh:"+m_object.first_line_hint+"\n")
+			dbprint ("-------------------------------------------------------------------\n")
+
 			lines = m_split_complete(m_object.msg_wrapped,"\n").len()	
 		}
 
-		::print("STOP\n")
+		dbprint("STOP\n")
 
-		::print ("-------------------------------------------------------------------\n")
-		::print ("HINT0:"+hint0+" HINT:"+hint+"\n")
-		::print ("LINES0:"+lines0+" LINES:"+lines+"\n")
-		::print ("*\n"+m_object.msg_wrapped+"*\n")
+		dbprint("-------------------------------------------------------------------\n")
+		dbprint("HINT0:"+hint0+" HINT:"+hint+"\n")
+		dbprint("LINES0:"+lines0+" LINES:"+lines+"\n")
+		dbprint("*\n"+m_object.msg_wrapped+"*\n")
 			
 
-		::print ((::fe.layout.time - t0)+"\n")
-		local hintmax = (overhint != 0) ? overhint : hint0
+		dbprint((::fe.layout.time - t0)+"\n")
 
+		local hintmax = (overhint != 0) ? overhint : hint0
 		m_object.msg = oldmsg
 
 		return(hintmax)
-		/*
-		local t_hint0 = 1
-		local t_hint = 1
-		local numlines = 0
-		local temptext = ""
-		::print("visiblelines:"+m_visible_lines+"\n")
-		m_object.first_line_hint = t_hint
-		while (t_hint == m_object.first_line_hint) {
-			temptext = m_object.msg_wrapped
-			numlines = m_split_complete(temptext,"\n").len() - 1
-			::print("numlines:"+numlines+"\n")
-			::print(temptext+"\n\n")
-			t_hint = t_hint + numlines
-			m_object.first_line_hint = t_hint
-		}
-		local out = m_object.first_line_hint
-		::print("\n"+m_object.first_line_hint+"\n")
-		::print("\n\n\n****\n"+m_object.msg_wrapped+"****\n\n\n")
-
-		return (out)
-	*/
 	}
 
 	function get_visible_lines(){
@@ -451,11 +420,9 @@ class textboard_mk2
 	function refreshtext(){
 		m_surf.redraw = true
 		m_object.y = 0
-		::print("r1\n")
 		m_object.height = m_surf.height
-		::print("r2\n")
 		m_object.msg = m_text
-	
+
 		if (m_debug) {		
 			textref2.msg = m_text
 			textref2.align = m_object.align
@@ -464,13 +431,10 @@ class textboard_mk2
 			textref2.line_spacing = m_object.line_spacing
 			textref2.first_line_hint = 1
 		}
-		::print("r3\n")
+
 		m_line_height = get_line_height()
-		::print("r4\n")
 		m_visible_lines = get_visible_lines()
-		::print("r5\n")
 		m_max_hint = (m_text == "") ? 0 : get_max_hint()
-		::print("r6\n")
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
 
 		m_object.y = - 2.0 * m_line_height
@@ -495,11 +459,11 @@ class textboard_mk2
 		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
 		m_freezer = 2
 
-		::print("line height:"+m_line_height+"\n")
-		::print("max hint:"+m_max_hint+"\n")
-		::print("viewport max:"+m_viewport_max_y+"\n")
-		::print("margin bottom:"+m_margin_bottom+"\n")
-		::print("\n")
+		dbprint("line height:"+m_line_height+"\n")
+		dbprint("max hint:"+m_max_hint+"\n")
+		dbprint("viewport max:"+m_viewport_max_y+"\n")
+		dbprint("margin bottom:"+m_margin_bottom+"\n")
+		dbprint("\n")
 
 		if (m_pong) {
 			m_ponging = false
@@ -527,7 +491,6 @@ class textboard_mk2
 		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
 		m_shader.set_param("alphabot", m_max_hint <= 1 ? 0.0 : 1.0)
-		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
 		m_freezer = 2
 	
 		if (m_pong) {
@@ -538,11 +501,10 @@ class textboard_mk2
 	}
 
 	function expandtokens(val, index_offset, filter_offset){
-		//::print("Expanding tokens: "+m_expand_tokens+"\n")
 		if (!m_expand_tokens) return val
-		//::print("EXPAND\n")
-		local m_infos = infosarray(index_offset, filter_offset)
 
+		local m_infos = infosarray(index_offset, filter_offset)
+		
 		local start = null
 		local stop = null
 		local expanded = val
@@ -551,19 +513,17 @@ class textboard_mk2
 			start = expanded.find(item)
 			stop = null
 			while (start != null){
-				//::print (start+"\n")
 				stop = start + item.len()
 				expanded = expanded.slice(0, start) +m_infos[i] + expanded.slice(stop,expanded.len())
 				start = expanded.find(item)
 			}
 		}
-		//::print ("\n"+expanded+"\n")
 		return expanded
 	}
 
 	function board_on_transition(ttype, var, ttime){
-		/*
 		if (!m_expand_tokens) return
+
 		if ((ttype == Transition.ToNewSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) {
 				m_ponging = false
@@ -575,23 +535,23 @@ class textboard_mk2
 			m_text = expandtokens(m_text0, index_offset, filter_offset)
 			refreshtext()
 		}
-		*/
+		
 	}
 
 	function board_on_signal(sig){
 		if (!(m_enable_signals && m_object.visible)) return// && !m_pong)) return
 
 		if (sig == "up") {
-			if (checkrepeat(count.up)) {
+			if (m_checkrepeat(m_count.up)) {
 				if (m_natural_scroll) line_up() else line_down()
-				count.up ++
+				m_count.up ++
 			}
 			return m_signal_block
 		}
 		if (sig == "down") {
-			if (checkrepeat(count.down)) {
+			if (m_checkrepeat(m_count.down)) {
 				if (m_natural_scroll) line_down() else line_up()
-			count.down ++
+			m_count.down ++
 			}
 			return m_signal_block
 		}	
@@ -604,19 +564,15 @@ class textboard_mk2
 			return m_signal_block
 		}		
 	}
-
-	function cbool(inval){
-		return (inval ? "I":"O")
-	}
 	
 	function board_on_tick(tick_time){
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
 
-		if (count.right != 0) count.right = repeatsignal("right", count.right)
-		if (count.left != 0) count.left = repeatsignal("left", count.left)
-		if (count.up != 0) count.up = repeatsignal("up", count.up)
-		if (count.down != 0) count.down = repeatsignal("down", count.down)
+		if (m_count.right != 0) m_count.right = m_repeatsignal("right", m_count.right)
+		if (m_count.left != 0) m_count.left = m_repeatsignal("left", m_count.left)
+		if (m_count.up != 0) m_count.up = m_repeatsignal("up", m_count.up)
+		if (m_count.down != 0) m_count.down = m_repeatsignal("down", m_count.down)
 
 		if (m_debug) {
 			m_overnum.msg = m_object.first_line_hint+" / "+m_max_hint
@@ -642,7 +598,6 @@ class textboard_mk2
 			else if (m_pong_count <= ::fe.layout.time) {
 				m_pong_count = 0
 				m_ponging = true
-				//TEST162 verificare a casa se con l'fps funziona
 				if (m_pong_up) m_y_pong_speed = (m_pong_speed * m_line_height * 1.0 / 1000) else m_y_pong_speed = -1.0 * (m_pong_speed * m_line_height * 1.0 / 1000)
 			}
 		}
@@ -652,38 +607,21 @@ class textboard_mk2
 
 		if (m_y_pong_speed != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
-			//m_y_start += m_y_pong_speed
 			m_y_stop += m_y_pong_speed * tick_elapse
-			//set_viewport (m_y_stop)
 		}
 
 		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
 
-			::print("                                                  pulse:"+(m_scroll_pulse * ScreenRefreshRate * 1.0 / 60.0)+"\n")
-
 			m_y_shift = m_scroll_pulse * (m_y_stop - m_y_start) * 60.0 / ScreenRefreshRate
-			/*
+			
 			if (m_absf(m_y_shift) > m_line_height) {
-				::print ("MAXSPEED\n")
-				m_y_shift = (m_y_shift > 0 ? 10 * m_line_height : -10 * m_line_height)
+				m_y_shift = (m_y_shift > 0 ? m_line_height : -1.0 * m_line_height)
 			}
-			*/
+			
 			if (m_absf(m_y_shift) > 0.0005 * m_line_height) {
-				if ((m_absf(m_y_start - m_y_stop)) > 10000000) {
-					/*
-					disp.xstart = disp.xstop
-					for (local i = 0; i < disp.images.len(); i++) {
-						disp.images[i].y = disp.pos0[i] + disp.xstop
-					}
-					disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-					disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-					*/
-				}
-				else {
-					set_viewport(m_y_start + m_y_shift)
-					m_y_start = m_y_start + m_y_shift
-				}
+				set_viewport(m_y_start + m_y_shift)
+				m_y_start = m_y_start + m_y_shift
 			}
 			else {
 				m_y_start = m_y_stop
@@ -697,7 +635,6 @@ class textboard_mk2
 		switch ( idx )
 		{
 			case "msg":
-				::print("                    msgchange\n")
 				m_text0 = value
 				m_text = expandtokens(m_text0, 0, 0)
 				refreshtext()
@@ -745,17 +682,9 @@ class textboard_mk2
 				break
 
 			case "line_spacing":
-				m_object.line_spacing = value
-				refreshtext()
-				break
-
 			case "char_size":
-				m_object.char_size = value
-				refreshtext()
-				break
-
 			case "margin":
-				m_object.margin = value
+				m_object[idx] = value
 				refreshtext()
 				break
 
@@ -837,11 +766,11 @@ class textboard_mk2
 				break
 			
 			case "current_line":
-				return (m_object.first_line_hint)
+				return m_object.first_line_hint
 				break
 
 			case "visible_lines":
-				return (m_visible_lines)
+				return m_visible_lines
 				break
 
 			case "line_height":
@@ -865,11 +794,11 @@ class textboard_mk2
 				break
 
 			case "bg_alpha":
-				return m_tx_alpha
+				return m_bg_alpha
 				break
 
 			case "alpha":
-				return m_tx_alpha
+				return m_alpha
 				break
 			
 			case "expand_tokens":
@@ -892,9 +821,7 @@ class textboard_mk2
 	}
 
 	function set_viewport(y){
-		::print ("y"+(y% m_line_height)+" ")
 		if (y <= 0) {//TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
-			::print("1\n")
 			y = 0
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
@@ -903,7 +830,6 @@ class textboard_mk2
 			if (m_ponging) pong_up()
 		}
 		else if (y >= m_viewport_max_y){ //TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
-			::print("2\n")
 			y = m_viewport_max_y
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
@@ -912,9 +838,7 @@ class textboard_mk2
 			if (m_ponging) pong_down()
 		}
 		else {
-			::print("3    ")
 			m_object.y = m_y_zero - y % m_line_height
-			::print(m_object.y+"\n")
 			//TEST mettere questo non a tutti i cambi coordinata!
 			m_hint_new = ::floor(y * 1.0 / m_line_height) + 1
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
@@ -926,51 +850,52 @@ class textboard_mk2
 			m_shader.set_param("alphatop",1.0)
 			m_shader.set_param("alphabot",1.0)
 		}
-		//::print("FLH:"+m_object.first_line_hint+"\n")
-		//viewport1.y = y
-		//viewport2.y = y + m_object.margin
-		//print (viewport1.y+"\n")
 	}
 
-	function goto_start(){
+	function goto_start()
+	{
 		if (m_debug) textref2.first_line_hint = 1
 		goto_line(1)
 	}
 
-	function goto_end(){
+	function goto_end()
+	{
 		if (m_debug) textref2.first_line_hint = m_max_hint
 		goto_line(m_max_hint)
 	}
 
-	function line_up(){
-		::print ("LINE UP           m_y_stop:"+m_y_stop+"\n")
+	function line_up()
+	{
 		if (m_y_stop < m_viewport_max_y ) {
 			if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 			m_y_stop += m_line_height
 		}
 	}
 
-	function line_down(){
-		::print ("LINE DN           m_y_stop:"+m_y_stop+"\n")
+	function line_down()
+	{
 		if (m_y_stop > 0) {
 			if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 			m_y_stop -= m_line_height
 		}
 	}
 
-	function goto_line(n){
+	function goto_line(n)
+	{
 		if (n <= 1) m_y_stop = 0
 		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y
 		else m_y_stop = n * m_line_height
 	}
 
-	function pong_down(){
+	function pong_down()
+	{
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = false
 	}
 
-	function pong_up(){
+	function pong_up()
+	{
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = true

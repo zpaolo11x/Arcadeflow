@@ -18,7 +18,7 @@ function msgbox_test(){
 	return("TOTAL:"+"\n\n"+ bodytext)
 }
 
-local text_to_show = "Lorem ipsum dolor sit amet, è consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP"//Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
+local text_to_show = "[Name]\n\n[Overview]"//]" Lorem ipsum dolor sit amet, è consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP"//Proin nulla elit, dapibus id sapien in, rutrum congue quam. Sed id sapien congue, faucibus libero eu, varius orci. Cras vestibulum erat sed semper luctus.\nSTOP"
 
 //text_to_show = "Endorsed by André Panza, this video game adaptation of Thai kick boxing features over 35 moves. Use the training gym to build up your character's abilities until you feel ready to take on an opponent. You also have the ability to customize your attacks. When you are ready, go to the ring to take on various opponents as you try to become the best kick boxer in the game. "
 
@@ -31,7 +31,7 @@ local tboard = fe.add_textboard_mk2("", 0, 0, tw, th)
 
 // "standard" text parameters
 tboard.align = Align.TopLeft
-tboard.char_size = 12
+tboard.char_size = 20
 tboard.margin = 8
 tboard.line_spacing = 1.1
 
@@ -57,7 +57,7 @@ tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 tboard.pingpong_speed = 1.0	// Autoscroll speed in lines per second 
 tboard.scroll_pulse = 0.15		// Initial scroll impulse between 0 and 1
 
-tboard.expand_tokens = false	// Enable/disable magic token expansion
+tboard.expand_tokens = true	// Enable/disable magic token expansion
 
 tboard.msg = text_to_show
 
@@ -76,3 +76,5 @@ local overlay = fe.add_rectangle (tboard.x + tboard.margin, tboard.y + tboard.ma
 overlay.set_rgb(200, 0, 0)
 overlay.alpha = 100
 */
+
+print ("\n\n\n"+tboard.bg_alpha+"\n\n\n")
