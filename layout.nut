@@ -6,7 +6,7 @@
 
 // Load file nut
 fe.do_nut("nut_file.nut")
-fe.do_nut("textboard_mk2.nut")
+fe.do_nut("nut_textboard_mk2.nut")
 
 local comma = ','.tochar()
 local nbsp = "^"
