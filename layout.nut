@@ -11491,11 +11491,8 @@ function history_updatetext() {
 
 	tempdesc = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
 
-	testpr("DESCR:"+tempdesc+"\n")
-
 	hist_text.descr.msg = tempdesc
-	hist_text.descr.first_line_hint = 1
-
+	
 }
 
 function history_show(h_startup)
@@ -15847,7 +15844,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-	
+	testpr(hist_text.descr.m_ponging+"\n")
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
