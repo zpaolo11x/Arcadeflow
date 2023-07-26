@@ -15847,34 +15847,15 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-	//testpr("MB"+AF.msgbox.obj.m_surf.redraw+" ")
-	//try{	testpr("HT"+hist_text.descr.m_surf.redraw)}catch(err){}
-	//testpr(hist_text.descr.scrolling_direction+"\n")
-	//testpr("\n")
-	//TEST160
-	//try{testpr("LS:"+hist_textT.linesize)}catch(err){testpr("LS:xxx")}
-	//testpr(" ")
-	//try{testpr("LH:"+hist_text.descr.line_height+"\n")}catch(err){testpr("LH:xxx\n")}
-
-	/*
-	foreach (i, item in bgs.bgpic_array){
-		testpr(item.alpha+" ")
-	}
-	testpr("\n")
-*/
+	
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
 		alphasum = alphasum * (1.0 - (item.alpha * 1.0 / 255))
 	}
 	testpr(255*(1.0 - alphasum)+"\n")
-*/
-/*	clock1 = clock()
-	time1 = fe.layout.time
-	print(round(1000*(clock1 - clock0),1)+" "+(time1 - time0)+"\n")
-	time0 = time1
-	clock0 = clock1
-*/
+	*/
+
 	//if (surfdebug) printsrufaces()
 	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
@@ -15882,7 +15863,7 @@ function tick(tick_time) {
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-*/
+	*/
 
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
@@ -17561,32 +17542,6 @@ function ra_selectemu(startemu) {
 
 /// On Signal ///
 function on_signal(sig) {
-	if (sig == "custom1"){
-		hist_text.descr.goto_start()
-	}
-	if (sig == "custom2"){
-		hist_text.descr.goto_end()
-	}
-	if (sig == "custom3"){
-		msgbox_open("START","Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nQuisque lobortis euismod nunc id accumsan. In vitae ultrices neque. Morbi vestibulum nibh et velit euismod eleifend. Curabitur at sodales ligula. Aliquam dapibus ipsum purus, non sollicitudin arcu gravida non. Etiam eleifend eleifend nibh. Nullam a nisi quam. Sed at dui nulla. Curabitur euismod ut nisl non dignissim. Integer semper condimentum ipsum ac dapibus. Donec vulputate, magna eu dignissim suscipit, ante sapien commodo libero, vel lobortis ante justo sit amet neque. Morbi vitae viverra est.\nSTOP")
-	}
-		/*
-	if (sig == "custom1"){
-		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo","Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
-		msgbox_open("Title", "")
-		foreach(i, item in names){
-			msgbox_addlinetop(patchtext(item, "DONE", 10, 60))
-		}
-	}
-	*/
-	/*
-	if (sig == "custom2"){
-		splash_message(AF.splash.pulse, "Test Message")
-	}
-	*/
-	if (sig == "custom4"){
-		splash_message(AF.splash.pulse, "Test Message Long", 5)
-	}
 	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
