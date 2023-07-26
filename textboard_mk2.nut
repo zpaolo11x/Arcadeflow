@@ -317,14 +317,11 @@ class textboard_mk2
 		m_object.msg = "X"
 		m_object.first_line_hint = 1
 		local f1 = m_object.msg_height
-::print("f1:"+(f1)+"\n")
 		m_object.msg = "X\nX"
 		local f2 = m_object.msg_height
-::print("f2:"+(f2)+"\n")
-
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
-::print("LINEHEIGHT:"+(f2-f1)+"\n")
+
 		return (f2 - f1)
 	}
 
@@ -475,10 +472,6 @@ class textboard_mk2
 		m_max_hint = m_full_lines - m_visible_lines + 1//(m_text == "") ? 0 : get_max_hint()
 
 		if (m_max_hint <= 0) m_max_hint = 1
-		::print ("\n\n")
-		::print ("visible lines:"+m_visible_lines+"\n")
-		::print ("max hint:"+m_max_hint+"\n")
-		::print ("total num lines:"+m_full_lines+"\n")
 
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
 
@@ -487,7 +480,7 @@ class textboard_mk2
 		m_y_zero = m_object.y
 		m_object.msg = " \n \n" + m_text + "\n \n "
 
-		m_object.first_line_hint = 1 //TEST TENERE?
+		m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
 
 		m_y_start = 0
@@ -525,7 +518,7 @@ class textboard_mk2
 		m_object.y = - 2.0 * m_line_height
 		m_y_zero = m_object.y
 
-		m_object.first_line_hint = 1 //TEST TENERE?
+		m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
 
 		m_y_start = 0
@@ -867,7 +860,7 @@ class textboard_mk2
 	}
 
 	function set_viewport(y){
-		if (y <= 0) {//TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
+		if (y <= 0) {
 			y = 0
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
@@ -875,7 +868,7 @@ class textboard_mk2
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			if (m_ponging) pong_up()
 		}
-		else if (y >= m_viewport_max_y){ //TEST CHECK METTERE MARGINE O NON SI ATTIVA MAI
+		else if (y >= m_viewport_max_y){
 			y = m_viewport_max_y
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
@@ -885,14 +878,18 @@ class textboard_mk2
 		}
 		else {
 			m_object.y = m_y_zero - y % m_line_height
-			//TEST mettere questo non a tutti i cambi coordinata!
+
 			m_hint_new = ::floor(y * 1.0 / m_line_height) + 1
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			m_y_start = y
 		}
-		if (y <= m_line_height) m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-		else if (y >= m_viewport_max_y - m_line_height) m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
-		else { 		//TEST CHECK
+		if (y <= m_line_height) {
+			m_shader.set_param("alphatop", y * 1.0 / m_line_height)
+		}
+		else if (y >= m_viewport_max_y - m_line_height) {
+			m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
+		}
+		else { //TEST can be improved by not applying at every redraw
 			m_shader.set_param("alphatop",1.0)
 			m_shader.set_param("alphabot",1.0)
 		}
@@ -932,10 +929,18 @@ class textboard_mk2
 
 	function goto_line(n)
 	{
-		if (n <= 1) m_y_stop = 0
-		else if (n >= m_max_hint) m_y_stop = m_viewport_max_y
-		else m_y_stop = n * m_line_height
-		m_target_line = n
+		if (n <= 1) {
+			m_y_stop = 0
+			m_target_line = 1
+		}
+		else if (n >= m_max_hint) {
+			m_y_stop = m_viewport_max_y
+			m_target_line = m_max_hint
+		}
+		else {
+			m_y_stop = n * m_line_height
+			m_target_line = n
+		}
 	}
 
 	function pong_down()

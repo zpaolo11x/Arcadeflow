@@ -6,8 +6,6 @@
 
 // Load file nut
 fe.do_nut("nut_file.nut")
-fe.do_nut("textboard.nut") //TEST162
-fe.do_nut("textboard_NOFREEZE.nut")
 fe.do_nut("textboard_mk2.nut")
 
 local comma = ','.tochar()
@@ -3363,15 +3361,12 @@ function msgbox_wraptext(text, columns){
 	return out
 }
 
-function msgbox_scrollerrefresh(inline){ //TEST162 check margin top e bottom che siano uguali
-	//AF.msgbox.inline = inline
+function msgbox_scrollerrefresh(inline){
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
 	}
 	else {
-		testpr("XXX numlines:"+AF.msgbox.numlines+"\n")
-		testpr("XXX vislines:"+AF.msgbox.visiblelines+"\n")
 		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (inline - 1) * 1.0 / AF.msgbox.numlines)
 		AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
 	}
@@ -11034,15 +11029,14 @@ hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
 hist_text.descr.scroll_pulse = 0.15
-//hist_text.descr.scroll_speed = prf.TEXTSCROLL == "manual" ? 0.2 * hist_textT.linesize : 0.005 * hist_textT.linesize
+hist_text.descr.pingpong_speed = 0.5
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 hist_text.descr.expand_tokens = false
 hist_text.descr.enable_signals = false
-//hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
+hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
 
-//TEST162
 /*
 local olay = hist_text_surf.add_rectangle(hist_text.descr.x + hist_text.descr.margin, hist_text.descr.y + hist_text.descr.margin, hist_text.descr.width - 2.0 * hist_text.descr.margin, hist_text.descr.height - 2.0 * hist_text.descr.margin)
 olay.set_rgb(200,0,0)
@@ -11545,32 +11539,6 @@ function history_hide() {
 
 function history_visible() {
 	return ((history_surface.visible) && (flowT.history[3] >= 0))
-}
-
-function hist_text_down() {
-	if (hist_text.descr.first_line_hint > 1) {
-		if (prf.TEXTSCROLL == "auto"){
-			if (hist_text.descr.scrolling_direction == "up"){
-				hist_text.descr.pong_down()
-			}
-		}
-		else
-			hist_text.descr.line_down()
-	}
-}
-
-function hist_text_up() {
-	if (prf.TEXTSCROLL == "auto"){
-		if (hist_text.descr.scrolling_direction == "down"){
-			hist_text.descr.pong_up()
-		}
-	}
-	else
-		hist_text.descr.line_up()
-}
-
-function history_exit() {
-	history_hide()
 }
 
 function history_redraw(status) {
@@ -13843,7 +13811,6 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-//TEST162 RIMETTERE TEXTBOARD NORMALE
 AF.msgbox.obj = fe.add_textboard_mk2("", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
@@ -13854,7 +13821,6 @@ AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.scroll_pulse = 0.15
-//AF.msgbox.obj.scroll_speed = 0.25 * AF.msgbox.obj.char_size
 AF.msgbox.obj.expand_tokens = false
 AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
@@ -13864,7 +13830,6 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
-//TEST162 AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
@@ -15366,7 +15331,7 @@ function checkrepeat(counter) {
 if (prf.ALLGAMES != AF.config.collections) {
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
-		update_allgames_collections(false, prf) //TEST162 va bene col false? meglio true?
+		update_allgames_collections(false, prf) //TEST162 could be set to true?
 	}
 	//fe.signal("reload")
 	restartAM()
@@ -17645,75 +17610,34 @@ function on_signal(sig) {
 					msgbox_close()
 			}
 		}
-		else if (sig == "up") { // Scrolls the scrape report
+		else if (sig == "up") {
 			if (checkrepeat(count.up)) {
-				
-				//if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
-				//if (AF.msgbox.obj.first_line_hint >= 1) 
-				//else
-				//	AF.msgbox.obj.first_line_hint = 1
-				//if (AF.msgbox.inline >= 1) { //TEST162 e inline che fine fa?!?
-					AF.msgbox.obj.line_down()
-					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
-					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
-				//}
+				AF.msgbox.obj.line_down()
+				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.up ++
 			}
 			return true
 		}
-		else if (sig == "down") { // Scroll the scrape report
+		else if (sig == "down") {
 			if (checkrepeat(count.down)) {
-				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
-				//if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
-
-				//if (AF.msgbox.inline <= AF.msgbox.numlines - AF.msgbox.visiblelines - 1) {
-					//msgbox_scrollerrefresh(AF.msgbox.inline + 1)
-//					msgbox_scrollerrefresh(AF.msgbox.obj.current_line + 1)
-					AF.msgbox.obj.line_up()
-					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
-					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
-
-				//}
+				AF.msgbox.obj.line_up()
+				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.down ++
 			}
 			return true
 		}
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) {
-				AF.msgbox.obj.goto_start()
-					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
-					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
-				count.left ++
-			}
-			return true
-			if (checkrepeat(count.left)) { //Faster jump scroll
-				if (AF.msgbox.obj.first_line_hint > AF.msgbox.visiblelines) 
-					AF.msgbox.obj.first_line_hint -= AF.msgbox.visiblelines
-				else
-					AF.msgbox.obj.first_line_hint = 1
-				//AF.msgbox.obj.refresh()
-					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
-				msgbox_scrollerrefresh(1)//TEST162 CORREGGERE
+				AF.msgbox.obj.goto_line(AF.msgbox.obj.target_line - AF.msgbox.visiblelines)
+				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.left ++
 			}
 			return true
 		}
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) {
-				AF.msgbox.obj.goto_end()
-					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
-					msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
-				count.right ++
-			}			
-			return true
-			if (checkrepeat(count.right)) { //Faster jump scroll
-				if (AF.msgbox.obj.first_line_hint + AF.msgbox.visiblelines <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
-					AF.msgbox.obj.first_line_hint += AF.msgbox.visiblelines
-				else
-					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
-				//AF.msgbox.obj.refresh()
-					testpr("TL:"+AF.msgbox.obj.target_line+"\n")
-				msgbox_scrollerrefresh(1)//TEST162 CORREGGERE
+				AF.msgbox.obj.goto_line(AF.msgbox.obj.target_line + AF.msgbox.visiblelines)
+				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
 				count.right ++
 			}
 			return true
@@ -18534,14 +18458,14 @@ function on_signal(sig) {
 
 			if (sig == "up") {
 				if (checkrepeat(count.up)) {
-					hist_text_down()
+					hist_text.descr.line_down()
 					count.up ++
 				}
 				return true
 			}
 			else if (sig == "down") {
 				if (checkrepeat(count.down)) {
-					hist_text_up()
+					hist_text.descr.line_up()
 					count.down ++
 				}
 				return true
@@ -18575,7 +18499,7 @@ function on_signal(sig) {
 				return true
 			}
 			else if (sig == "back") {
-				history_exit()
+				history_hide()
 				return true
 			}
 			return false
