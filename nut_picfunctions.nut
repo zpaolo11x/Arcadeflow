@@ -16,6 +16,7 @@ local arrayline = ""
 local instr = ""
 local vector = []
 local datasplit = []
+local prevdata = ""
 local datemin = 0
 local datemax = 0
 local namestr = ""
@@ -29,11 +30,15 @@ while ( !manufile.eos() ) {
    instr = strip(manufile.read_line())
    datasplit = split(instr,"|")
 
+	if ((datasplit.len()>1) && (datasplit[0] != prevdata)) multilogo = 0
+
    if (datasplit.len()>1){
       multilogo = multilogo + 1
       datemin = split(datasplit[1],",")[0].tointeger()
       datemax = split(datasplit[1],",")[1].tointeger()
    } else multilogo = 0
+
+	prevdata = datasplit[0]
 
    vector = split(datasplit[0]," ")
    foreach (i, item in vector){
