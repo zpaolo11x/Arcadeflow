@@ -633,11 +633,9 @@ class textboard_mk2
 
 		if ((m_pong) && (!m_ponging)){
 			if (m_pong_count == 0){
-				::print("A\n")
 				m_pong_count = ::fe.layout.time + m_pong_delay
 			}
 			else if (m_pong_count <= ::fe.layout.time) {
-				::print("B\n")
 				m_pong_count = 0
 				m_ponging = true
 				if (m_pong_up) m_y_pong_speed = (m_pong_speed * m_line_height * 1.0 / 1000) else m_y_pong_speed = -1.0 * (m_pong_speed * m_line_height * 1.0 / 1000)

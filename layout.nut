@@ -13832,7 +13832,6 @@ AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.obj.char_size = 16
-	testpr("MESSAGEWRAPPED\n"+AF.msgbox.obj.msg_wrapped+"\n")
 	AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
 }
 
@@ -15844,7 +15843,6 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-	testpr(hist_text.descr.m_ponging+"\n")
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
