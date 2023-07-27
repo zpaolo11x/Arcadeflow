@@ -84,7 +84,7 @@ class textboard_mk2
 	m_count = null
 
 	// DEBUG
-	m_debug = false
+	m_debug = true
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
@@ -363,6 +363,7 @@ class textboard_mk2
 		tbox.first_line_hint = hint
 
 		local text_part = tbox.msg_wrapped
+		::print("firstpart\n***"+text_part+"***\n")
 		local numlines = m_split_complete(text_part, "\n").len() - 1
 
 		while (hint == tbox.first_line_hint){
@@ -370,16 +371,29 @@ class textboard_mk2
 			hint = hint + numlines
 			tbox.first_line_hint = hint
 			text_part = tbox.msg_wrapped
+					::print("\nfulltext\n***"+fulltext+"***\n")
+
 		}
 
 		local deltalines = hint - tbox.first_line_hint
+
+		::print("deltalines:"+deltalines+"\n")
+		::print ("***"+tbox.msg_wrapped+"***\n\n")
 		local endlines = m_split_complete(tbox.msg_wrapped,"\n")
-		for (local i = deltalines; i < endlines.len() - 2; i++) {
-			fulltext += endlines[i] + "\n"
+
+		foreach(i, item in endlines) ::print(i+"***"+item+"***\n")
+
+		if (deltalines != m_visible_lines){
+			for (local i = deltalines; i < endlines.len() - 2; i++) {
+				fulltext += endlines[i] + "\n"
+			}
+			fulltext += endlines[endlines.len() - 2]
+		} else {
+			fulltext = fulltext.slice(0, -1)
 		}
-		fulltext += endlines[endlines.len() - 2]
 		tbox.first_line_hint = starthint
 
+::print("\nfulltext\n***"+fulltext+"***\n")
 		return fulltext
 
 	}
@@ -501,6 +515,8 @@ class textboard_mk2
 		dbprint("max hint:"+m_max_hint+"\n")
 		dbprint("viewport max:"+m_viewport_max_y+"\n")
 		dbprint("margin bottom:"+m_margin_bottom+"\n")
+		dbprint("num lines:"+m_full_lines+"\n")
+		dbprint("visible lines:"+m_visible_lines+"\n")
 		dbprint("\n")
 
 		if (m_pong) {
@@ -557,6 +573,7 @@ class textboard_mk2
 				start = expanded.find(item)
 			}
 		}
+		::print ("\nEXPANDED:\n***"+expanded+"***\n")
 		return expanded
 	}
 

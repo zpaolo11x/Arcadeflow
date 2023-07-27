@@ -23,7 +23,7 @@ local text_to_show = "[Name]\n\n[Overview]"//]" Lorem ipsum dolor sit amet, è c
 //text_to_show = "Endorsed by André Panza, this video game adaptation of Thai kick boxing features over 35 moves. Use the training gym to build up your character's abilities until you feel ready to take on an opponent. You also have the ability to customize your attacks. When you are ready, go to the ring to take on various opponents as you try to become the best kick boxer in the game. "
 
 local tw = flw * 0.5
-local th = flh * 0.25
+local th = flh * 0.35
 
 //text_to_show = msgbox_test()
 
