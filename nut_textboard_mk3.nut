@@ -108,6 +108,7 @@ class textboard_mk3
 	
 			countstep = 0
 		}
+
 		foreach (item, value in m_count) m_count[item] = ::ceil(value * ScreenRefreshRate / 60.0)
 		m_count.movestep = m_count.movestepslow
 
@@ -173,7 +174,6 @@ class textboard_mk3
 		m_shader.set_param("panelalpha", 0)
 		m_shader.set_param("wholealpha", 1)
 
-		//m_object.first_line_hint = 1
 		m_hint_new = 1
 
 		m_pong = false
@@ -217,23 +217,6 @@ class textboard_mk3
 
 	function m_absf(n) {
 		return (n >= 0 ? n : -n)
-	}
-
-	function get_line_height()
-	{
-		local temp_msg = m_object.msg
-		local temp_first_line_hint = m_object.first_line_hint
-
-		m_object.word_wrap = true
-		m_object.msg = "X"
-		m_object.first_line_hint = 1
-		local f1 = m_object.msg_height
-		m_object.msg = "X\nX"
-		local f2 = m_object.msg_height
-		m_object.msg = temp_msg
-		m_object.first_line_hint = temp_first_line_hint
-
-		return (f2 - f1)
 	}
 
 	function m_split_complete(str_in, separator) {
@@ -281,7 +264,6 @@ class textboard_mk3
 			textref2.first_line_hint = 1
 		}
 
-		//::print("Old line height:"+get_line_height()+"\n")
 		m_line_height = m_object.line_size
 		m_visible_lines = m_object.lines
 		m_full_lines = m_object.lines_total
@@ -296,8 +278,8 @@ class textboard_mk3
 		m_y_zero = m_object.y
 
 		m_object.msg = " \n \n" + m_text + "\n \n "
-		m_object.word_wrap = true
-		m_object.first_line_hint = 1
+		//m_object.word_wrap = true
+		//m_object.first_line_hint = 1
 
 		//m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
@@ -645,15 +627,18 @@ class textboard_mk3
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			m_y_start = y
 		}
-		if (y <= m_line_height) {
-			m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-		}
-		else if (y >= m_viewport_max_y - m_line_height) {
-			m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
-		}
-		else { //TEST can be improved by not applying at every redraw
-			m_shader.set_param("alphatop",1.0)
-			m_shader.set_param("alphabot",1.0)
+
+
+		if ((y > m_line_height) && (y < m_viewport_max_y - m_line_height)){ //TEST can be improved by not applying at every redraw
+			m_shader.set_param("alphatop", 1.0)
+			m_shader.set_param("alphabot", 1.0)
+		} else {
+			if (y <= m_line_height) {
+				m_shader.set_param("alphatop", y * 1.0 / m_line_height)
+			}
+			if (y >= m_viewport_max_y - m_line_height) {
+				m_shader.set_param("alphabot", (((m_viewport_max_y - y) * 1.0 / m_line_height)))
+			}
 		}
 	}
 
