@@ -1,5 +1,5 @@
 // This line loads the module nut file.
-fe.do_nut( "textboard_mk2.nut" )
+fe.do_nut( "nut_textboard_mk2.nut" )
 
 local flw = fe.layout.width = 640
 local flh = fe.layout.height = 400

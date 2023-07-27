@@ -590,7 +590,7 @@ class textboard_mk2
 		if (sig == "down") {
 			if (m_checkrepeat(m_count.down)) {
 				if (m_natural_scroll) line_down() else line_up()
-			m_count.down ++
+				m_count.down ++
 			}
 			return m_signal_block
 		}	

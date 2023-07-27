@@ -173,7 +173,7 @@ class textboard_mk3
 		m_shader.set_param("panelalpha", 0)
 		m_shader.set_param("wholealpha", 1)
 
-		m_object.first_line_hint = 1
+		//m_object.first_line_hint = 1
 		m_hint_new = 1
 
 		m_pong = false
@@ -269,8 +269,8 @@ class textboard_mk3
 		m_object.y = 0
 		m_object.height = m_surf.height
 		m_object.msg = m_text
-
-		::print("Z:"+m_object.msg_wrapped+"\n")
+		m_object.word_wrap = true
+		m_object.first_line_hint = 1
 
 		if (m_debug) {		
 			textref2.msg = m_text
@@ -281,7 +281,8 @@ class textboard_mk3
 			textref2.first_line_hint = 1
 		}
 
-		m_line_height = get_line_height()
+		//::print("Old line height:"+get_line_height()+"\n")
+		m_line_height = m_object.line_size
 		m_visible_lines = m_object.lines
 		m_full_lines = m_object.lines_total
 		m_max_hint = m_full_lines - m_visible_lines + 1
@@ -293,9 +294,12 @@ class textboard_mk3
 		m_object.y = - 2.0 * m_line_height
 		m_object.height = m_surf.height + 4.0 * m_line_height
 		m_y_zero = m_object.y
-		m_object.msg = " \n \n" + m_text + "\n \n "
 
-		m_object.first_line_hint = 1 //TEST needed?
+		m_object.msg = " \n \n" + m_text + "\n \n "
+		m_object.word_wrap = true
+		m_object.first_line_hint = 1
+
+		//m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
 
 		m_y_start = 0
@@ -325,13 +329,14 @@ class textboard_mk3
 
 	function resetstatus()
 	{
+		m_object.first_line_hint = 1 //TEST needed?
+
 		m_surf.redraw = true
 		m_object.y = 0
 		
 		m_object.y = - 2.0 * m_line_height
 		m_y_zero = m_object.y
 
-		m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
 
 		m_y_start = 0
