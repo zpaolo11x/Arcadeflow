@@ -893,15 +893,18 @@ class textboard_mk2
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			m_y_start = y
 		}
-		if (y <= m_line_height) {
-			m_shader.set_param("alphatop", y * 1.0 / m_line_height)
-		}
-		else if (y >= m_viewport_max_y - m_line_height) {
-			m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
-		}
-		else { //TEST can be improved by not applying at every redraw
+
+
+		if ((y > m_line_height) && (y < m_viewport_max_y - m_line_height)){ //TEST can be improved by not applying at every redraw
 			m_shader.set_param("alphatop",1.0)
 			m_shader.set_param("alphabot",1.0)
+		} else {
+			if (y <= m_line_height) {
+				m_shader.set_param("alphatop", y * 1.0 / m_line_height)
+			}
+			if (y >= m_viewport_max_y - m_line_height) {
+				m_shader.set_param("alphabot",(((m_viewport_max_y - y)*1.0/m_line_height)))
+			}
 		}
 	}
 
