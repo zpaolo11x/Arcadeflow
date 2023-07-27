@@ -51,7 +51,7 @@ tboard.signal_block = true		// Prevents or enable further signal management
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
 
-tboard.pingpong = true			// Enable auto-scroll
+tboard.pingpong = false			// Enable auto-scroll
 tboard.pingpong_delay = 3		// Autoscroll delay in seconds
 
 tboard.pingpong_speed = 1.0	// Autoscroll speed in lines per second 
