@@ -240,13 +240,6 @@ class textboard_mk3
 		return out
 	}
 
-	function get_visible_lines(){
-		local m_area = m_surf.height - 2.0 * m_object.margin
-		local m_1 = m_object.glyph_size - (m_area % m_line_height)
-		local visible_lines = ::floor(m_area * 1.0 / m_line_height) + (m_1 > 0 ? 0.0 : 1.0)
-		return (visible_lines)
-	}
-
 	function refreshtext(){
 		m_surf.redraw = true
 		m_object.y = 0
@@ -627,7 +620,6 @@ class textboard_mk3
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			m_y_start = y
 		}
-
 
 		if ((y > m_line_height) && (y < m_viewport_max_y - m_line_height)){ //TEST can be improved by not applying at every redraw
 			m_shader.set_param("alphatop", 1.0)
