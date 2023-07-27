@@ -224,15 +224,12 @@ class textboard_mk3
 		local temp_msg = m_object.msg
 		local temp_first_line_hint = m_object.first_line_hint
 
-		m_object.msg = "X"
 		m_object.word_wrap = true
+		m_object.msg = "X"
 		m_object.first_line_hint = 1
 		local f1 = m_object.msg_height
-		::print(f1+"\n")
 		m_object.msg = "X\nX"
-		m_object.word_wrap = true
 		local f2 = m_object.msg_height
-		::print(f2+"\n")
 		m_object.msg = temp_msg
 		m_object.first_line_hint = temp_first_line_hint
 
@@ -289,8 +286,6 @@ class textboard_mk3
 		m_full_lines = m_object.lines_total
 		m_max_hint = m_full_lines - m_visible_lines + 1
 		
-		::print("TEST:"+((m_surf.height - 2 * m_object.margin-m_object.glyph_size)*1.0/(m_visible_lines-1))+"\n")
-
 		if (m_max_hint <= 0) m_max_hint = 1
 
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
@@ -323,7 +318,6 @@ class textboard_mk3
 		dbprint("max hint:"+m_max_hint+"\n")
 		dbprint("viewport max:"+m_viewport_max_y+"\n")
 		dbprint("margin bottom:"+m_margin_bottom+"\n")
-		dbprint("margin:"+m_object.margin+"\n")
 		dbprint("\n")
 
 		if (m_pong) pong_up()
