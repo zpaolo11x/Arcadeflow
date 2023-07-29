@@ -35,6 +35,7 @@ tboard.alpha = 255					// Alpha of the whole board
 tboard.natural_scroll = false	// Inverts scroll control direction for automatic signal management
 tboard.enable_signals = true	// Enable module signal control
 tboard.signal_block = true		// Prevents or enable further signal management
+tboard.enable_transition = true
 
 tboard.lines_bottom = 2.0		// Faded lines at the bottom of the board
 tboard.lines_top = 1.0			// Faded lines at the top of the board
