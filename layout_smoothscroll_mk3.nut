@@ -64,3 +64,9 @@ overlay.alpha = 100
 */
 
 print ("\n\n\n"+tboard.bg_alpha+"\n\n\n")
+
+fe.add_signal_handler( this, "on_signal" )
+
+function on_signal(sig){
+	if (sig == "custom1") tboard.alpha = 128
+}

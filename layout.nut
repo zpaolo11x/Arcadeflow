@@ -11034,6 +11034,7 @@ hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
 try{hist_text.descr.expand_tokens = false}catch(err){}
 hist_text.descr.enable_signals = false
+hist_text.descr.enable_transition = false
 hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
 
@@ -13816,6 +13817,8 @@ AF.msgbox.obj.bg_alpha = 220
 AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
+AF.msgbox.obj.enable_signals = false
+AF.msgbox.obj.enable_transition = false
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.scroll_pulse = 0.15
 try{AF.msgbox.obj.expand_tokens = false}catch(err){}
@@ -16861,7 +16864,7 @@ function tick(tick_time) {
 
 	if (checkfade (flowT.historydata)) {
 		flowT.historydata = fadeupdate(flowT.historydata)
-
+		testpr(flowT.historydata[1]+"\n")
 		if (endfade(flowT.historydata) == 1) {
 			testpr("UPDATETEXT\n")
 			history_updatetext()

@@ -58,6 +58,7 @@ class textboard_mk3
 	m_natural_scroll = null
 	m_enable_signals = null
 	m_signal_block = null
+	m_enable_transition = null
 	m_tx_alpha = null
 	m_bg_alpha = null
 	m_alpha = null
@@ -126,7 +127,8 @@ class textboard_mk3
 
 		m_line_height = null
 		m_natural_scroll = false
-		m_enable_signals = false
+		m_enable_signals = true
+		m_enable_transition = true
 		m_signal_block = true
 
 		m_text = _t
@@ -330,7 +332,7 @@ class textboard_mk3
 
 	function board_on_transition(ttype, var, ttime){
 		//TEST NEEDED FOR PING PONG?
-		if ((ttype == Transition.FromOldSelection) || (ttype == Transition.ToNewList)) {
+		if (m_enable_transition && (ttype == Transition.FromOldSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) pong_up()
 			refreshtext()
 		}
@@ -468,6 +470,10 @@ class textboard_mk3
 				m_enable_signals = value
 				break
 
+			case "enable_transition":
+				m_enable_transition = value
+				break
+
 			case "first_line_hint":
 			case "shader":
 			case "word_wrap":
@@ -559,6 +565,10 @@ class textboard_mk3
 				
 			case "enable_signals":
 				return m_enable_signals
+				break
+				
+			case "enable_transition":
+				return m_enable_transition
 				break
 				
 			case "signal_block":
