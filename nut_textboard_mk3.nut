@@ -81,7 +81,7 @@ class textboard_mk3
 	m_count = null
 
 	// DEBUG
-	m_debug = true
+	m_debug = false
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null

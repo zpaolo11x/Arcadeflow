@@ -84,7 +84,7 @@ class textboard_mk2
 	m_count = null
 
 	// DEBUG
-	m_debug = true
+	m_debug = false
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
@@ -164,6 +164,7 @@ class textboard_mk2
 	
 			countstep = 0
 		}
+		
 		foreach (item, value in m_count) m_count[item] = ::ceil(value * ScreenRefreshRate / 60.0)
 		m_count.movestep = m_count.movestepslow
 

@@ -6,7 +6,7 @@
 
 // Load file nut
 fe.do_nut("nut_file.nut")
-fe.do_nut("nut_textboard_mk2.nut")
+fe.do_nut("nut_textboard_mk3.nut")
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -10899,7 +10899,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				buttn = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 4 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 				ratng = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 5 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 
-				descr = fe.add_textboard_mk2("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard_mk3("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -11028,11 +11028,11 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_pulse = 0.15
+hist_text.descr.scroll_pulse = 0.08
 hist_text.descr.pingpong_speed = 0.5
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
-hist_text.descr.expand_tokens = false
+try{hist_text.descr.expand_tokens = false}catch(err){}
 hist_text.descr.enable_signals = false
 hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
@@ -11055,7 +11055,7 @@ if (hist_text.title != null) {
 	hist_text.title.margin = 0
 	hist_text.title.word_wrap = true
 	//hist_text.tags.align = Align.TopLeft
-	hist_text.descr.first_line_hint = 1
+	//TESTX hist_text.descr.first_line_hint = 1
 	hist_text.title.x = hist_text.title.x + 1 //Add fake 1 pixel margin to title
 	hist_text.title.width = hist_text.title.width -2
 }
@@ -11378,7 +11378,7 @@ function history_updatesnap() {
 
 function history_updatetext() {
 	hist_title.file_name = fe.get_art ("wheel")
-	hist_text.descr.first_line_hint = 1
+	//TESTX hist_text.descr.first_line_hint = 1
 
 	local char_rows = (((hist_titleT.w / hist_titleT.h) > 3.0) ? 2 : 3)
 	local charfontsize = 1.1 * hist_titleT.h / char_rows
@@ -13808,7 +13808,7 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_textboard_mk2("", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_textboard_mk3("", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
@@ -13818,7 +13818,7 @@ AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.scroll_pulse = 0.15
-AF.msgbox.obj.expand_tokens = false
+try{AF.msgbox.obj.expand_tokens = false}catch(err){}
 AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
@@ -16863,6 +16863,7 @@ function tick(tick_time) {
 		flowT.historydata = fadeupdate(flowT.historydata)
 
 		if (endfade(flowT.historydata) == 1) {
+			testpr("UPDATETEXT\n")
 			history_updatetext()
 			if (prf.CONTROLOVERLAY != "never") history_updateoverlay()
 			flowT.historydata = startfade(flowT.historydata, -0.101, 3.0)
