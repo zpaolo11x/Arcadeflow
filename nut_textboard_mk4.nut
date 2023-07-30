@@ -253,12 +253,10 @@ class textboard_mk4
 		m_i2.delta = deltain //TESTMI2
 		m_i2.filtern = 1
 		if (m_i2.delta > m_i2.maxoffset) {
-			::print("A\n")
 			m_i2.filtern = 0
 			m_i2.delta = m_i2.maxoffset
 		}
 		if (m_i2.delta < -m_i2.maxoffset) {
-			::print("B\n")
 			m_i2.filtern = 0
 			m_i2.delta = -m_i2.maxoffset
 		}
@@ -448,71 +446,19 @@ class textboard_mk4
 	function board_on_tick(tick_time){
 
 	if (m_i2.debug){
-		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * 1.0, 3, 3) //RED
-		local pippo2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.flow) * 1.0, 3, 3) //BLACK
-		local pippo3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.step) * 1.0, 3, 3) //WHITE
-		local pippo4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.maxoffset) * 1.0, 3, 3) //BLUE
+		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * 3.0, 3, 3) //RED
+		local pippo2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.flow) * 3.0, 3, 3) //BLACK
+		local pippo3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.step) * 3.0, 3, 3) //WHITE
+		local pippo4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.maxoffset) * 3.0, 3, 3) //BLUE
 		pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
 		pippo1.set_rgb(255, 0, 0)
 		pippo2.set_rgb(0, 0, 0)
 		pippo3.set_rgb(255, 255, 255)
 		pippo4.set_rgb(0, 0, 255)
-		m_i2.dbcounter = m_i2.dbcounter + 1//0.5
+		m_i2.dbcounter = m_i2.dbcounter + 0.5
 	}
 
-	// Impulse scrolling routines
-	if (m_i2.flow + m_i2.step != 0) {
-
-		if (m_i2.step > 0) m_i2.step = 0
-		if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
-		//if (m_i2.step < 0) m_i2.flow =//1.0 * m_i2.flow
-		//if (m_i2.flow - m_i2.step > m_viewport_max_y) m_i2.step =  m_i2.flow - m_viewport_max_y//1.0 * m_i2.flow
-
-		m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
-
-		m_i2.flow0 = (m_i2.step_f + m_i2.flow) * m_i2.scrollspeed - m_i2.step_f
-		m_i2.pos0 = m_i2.flow0 + m_i2.step
-
-		if ((m_i2.pos0 > m_i2.maxoffset)) {
-			m_i2.step = m_i2.step - (m_i2.pos0 - m_i2.maxoffset)
-			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
-		}
-		if (m_i2.pos0 < -m_i2.maxoffset) {
-			m_i2.step = m_i2.step - (m_i2.pos0 + m_i2.maxoffset)
-			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
-		}
-
-		m_i2.flow = (m_i2.step_f + m_i2.flow) * m_i2.scrollspeed - m_i2.step_f
-
-		m_i2.poshistory.push(m_i2.step)
-		m_i2.poshistory.remove(0)
-
-		if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
-			m_i2.flow = -m_i2.step
-			m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
-		}
-
-		m_i2.pos = m_i2.flow + m_i2.step
-
-		set_viewport(m_i2.flow)
-
-		//m_i2.TARGETX = m_i2.pos
-
-	}
-
-	if ((m_i2.pos != 0)) {
-		if ((m_i2.pos < 0.1) && (m_i2.pos > -0.1)) m_i2.pos = 0
-		m_i2.pos = m_i2.pos * m_i2.scrollspeed
-
-		if (m_i2.pos > m_i2.maxoffset) {
-			m_i2.pos = m_i2.maxoffset
-		}
-		if (m_i2.pos < -m_i2.maxoffset) {
-			m_i2.pos = -m_i2.maxoffset
-		}
-	}
-
-
+::print("A                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
@@ -553,13 +499,73 @@ class textboard_mk4
 				if (m_pong_up) m_y_pong_speed = (m_pong_speed * m_line_height * 1.0 / 1000) else m_y_pong_speed = -1.0 * (m_pong_speed * m_line_height * 1.0 / 1000)
 			}
 		}
-		
+
+::print("B                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
+
 		if (m_y_pong_speed != 0) {
 			//FREEZE if (m_surf.redraw == false) m_surf.redraw = true
 			//m_y_stop += m_y_pong_speed * tick_elapse
 			i2_impulse(-1.0 * m_y_pong_speed * tick_elapse)
 		}
 
+::print("C                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
+
+	// Impulse scrolling routines
+	if (m_i2.flow + m_i2.step != 0) {
+		if (m_i2.step > 0) m_i2.step = 0
+		if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
+		//if (m_i2.step < 0) m_i2.flow =//1.0 * m_i2.flow
+		//if (m_i2.flow - m_i2.step > m_viewport_max_y) m_i2.step =  m_i2.flow - m_viewport_max_y//1.0 * m_i2.flow
+
+		m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
+
+		m_i2.flow0 = (m_i2.step_f + m_i2.flow) * m_i2.scrollspeed - m_i2.step_f
+		m_i2.pos0 = m_i2.flow0 + m_i2.step
+
+		if ((m_i2.pos0 > m_i2.maxoffset)) {
+			m_i2.step = m_i2.step - (m_i2.pos0 - m_i2.maxoffset)
+			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
+		}
+		if (m_i2.pos0 < -m_i2.maxoffset) {
+			m_i2.step = m_i2.step - (m_i2.pos0 + m_i2.maxoffset)
+			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
+		}
+
+		m_i2.flow = (m_i2.step_f + m_i2.flow) * m_i2.scrollspeed - m_i2.step_f
+
+		m_i2.poshistory.push(m_i2.step)
+		m_i2.poshistory.remove(0)
+
+		if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
+			m_i2.flow = -m_i2.step
+			m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
+		}
+
+		m_i2.pos = m_i2.flow + m_i2.step
+
+		set_viewport(m_i2.flow)
+
+		//m_i2.TARGETX = m_i2.pos
+
+	}
+::print("D                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
+
+	if ((m_i2.pos != 0)) {
+		if ((m_i2.pos < 0.1) && (m_i2.pos > -0.1)) {
+			m_i2.pos = 0
+		}
+		m_i2.pos = m_i2.pos * m_i2.scrollspeed
+
+		if (m_i2.pos > m_i2.maxoffset) {
+			m_i2.pos = m_i2.maxoffset
+		}
+		if (m_i2.pos < -m_i2.maxoffset) {
+			m_i2.pos = -m_i2.maxoffset
+		}
+	}
+
+::print("E                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
+::print("\n")
 		/* CLASSIC TWEEN
 		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
@@ -763,22 +769,26 @@ class textboard_mk4
 	function set_viewport(y){
 		::print(y+"\n")
 		if (y <= 0) {
+::print("C1                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 			y = 0
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_hint_new = 1
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
-			if (m_ponging) pong_up()
+			if (m_ponging && (m_y_pong_speed < 0)) pong_up()
+::print("C11                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 		}
 		else if (y >= m_viewport_max_y){
+::print("C2                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 			y = m_viewport_max_y
 			m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_hint_new = m_max_hint
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
-			if (m_ponging) pong_down()
+			if (m_ponging && (m_y_pong_speed > 0)) pong_down()
 		}
 		else {
+::print("C3                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 			m_object.y = m_y_zero - y % m_line_height
 
 			m_hint_new = ::floor(y * 1.0 / m_line_height) + 1
