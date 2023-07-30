@@ -370,10 +370,12 @@ class textboard_mk3
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
 
-		if (m_count.right != 0) m_count.right = m_repeatsignal("right", m_count.right)
-		if (m_count.left != 0) m_count.left = m_repeatsignal("left", m_count.left)
-		if (m_count.up != 0) m_count.up = m_repeatsignal("up", m_count.up)
-		if (m_count.down != 0) m_count.down = m_repeatsignal("down", m_count.down)
+		if (m_enable_signals){
+			if (m_count.right != 0) m_count.right = m_repeatsignal("right", m_count.right)
+			if (m_count.left != 0) m_count.left = m_repeatsignal("left", m_count.left)
+			if (m_count.up != 0) m_count.up = m_repeatsignal("up", m_count.up)
+			if (m_count.down != 0) m_count.down = m_repeatsignal("down", m_count.down)
+		}
 
 		if (m_debug) {
 			m_overnum.msg = m_object.first_line_hint+" / "+m_max_hint
@@ -409,6 +411,8 @@ class textboard_mk3
 			m_y_stop += m_y_pong_speed * tick_elapse
 		}
 
+::print(m_y_shift+"\n")
+
 		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
 			if (m_surf.redraw == false) m_surf.redraw = true
 
@@ -420,6 +424,7 @@ class textboard_mk3
 			}
 			else {
 				m_y_start = m_y_stop
+				m_y_shift = 0
 				set_viewport (m_y_stop)
 			}
 		}		
