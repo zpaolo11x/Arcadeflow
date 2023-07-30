@@ -17545,7 +17545,7 @@ function on_signal(sig) {
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
-	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
+	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO) && !(AF.msgbox.obj.visible)) snd.mplinsound.playing = true
 
 	// Check if scraping has been interrupted
 	if (AF.scrape.purgedromdirlist != null) {
