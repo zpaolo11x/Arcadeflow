@@ -40,7 +40,7 @@ l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimension
 
 //EASE PRINT
 local easeprint = {
-	status = false
+	status = true
 	counter = 0
 }
 
