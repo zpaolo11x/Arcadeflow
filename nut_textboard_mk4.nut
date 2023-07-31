@@ -235,7 +235,7 @@ class textboard_mk4
 
 			TARGETX = 0
 
-			debug = false
+			debug = true
 			dbcounter = 0
 		}
 
@@ -342,7 +342,7 @@ class textboard_mk4
 		}
 
 		m_line_height = m_object.line_size
-		::print("lineheight:"+m_line_height+"\n")
+
 		m_visible_lines = m_object.lines
 		m_full_lines = m_object.lines_total
 		m_max_hint = m_full_lines - m_visible_lines + 1
@@ -455,7 +455,7 @@ class textboard_mk4
 	}
 	
 	function board_on_tick(tick_time){
-::print("step:"+m_i2.step+"\n")
+
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
@@ -475,8 +475,6 @@ class textboard_mk4
 		pippo7.set_rgb(0, 0, 255)
 		m_i2.dbcounter = m_i2.dbcounter + 0.5
 	}
-
-//::print("A                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
@@ -526,7 +524,6 @@ class textboard_mk4
 
 		// Impulse scrolling routines
 		if (m_i2.flow + m_i2.step != 0) {
-		::print("Operate\n")
 			if (m_i2.step > 0) m_i2.step = 0
 			if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
 
@@ -541,7 +538,6 @@ class textboard_mk4
 			m_i2.poshistory.remove(0)
 
 			if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
-				::print("                              C\n")
 				m_i2.flow = -m_i2.step
 				m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
 			}
@@ -550,23 +546,6 @@ class textboard_mk4
 
 			set_viewport(m_i2.flow)
 		}
-/*
-		if ((m_i2.pos != 0)) {
-			if ((m_i2.pos < 0.1) && (m_i2.pos > -0.1)) {
-				m_i2.pos = 0
-			}
-			m_i2.pos = m_i2.pos * (1.0 - m_scroll_pulse)
-
-			if (m_i2.pos > m_i2.maxoffset) {
-				::print("Z\n")
-				m_i2.pos = m_i2.maxoffset
-			}
-			if (m_i2.pos < -m_i2.maxoffset) {
-				::print("Y\n")
-				m_i2.pos = -m_i2.maxoffset
-			}
-		}
-*/
 	}
 
 	function _set( idx, value )
@@ -751,19 +730,15 @@ class textboard_mk4
 	}
 
 	function set_viewport(y){
-		//::print(y+"\n")
 		if (y <= 0) {
-//::print("C1                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 			y = 0
 			//m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_hint_new = 1
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			if (m_ponging && (m_y_pong_speed < 0)) pong_up()
-//::print("C11                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 		}
 		else if (y >= m_viewport_max_y){
-//::print("C2                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 			y = m_viewport_max_y
 			//m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
@@ -772,7 +747,6 @@ class textboard_mk4
 			if (m_ponging && (m_y_pong_speed > 0)) pong_down()
 		}
 		else {
-//::print("C3                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
 			m_object.y = m_y_zero - y % m_line_height
 
 			m_hint_new = ::floor(y * 1.0 / m_line_height) + 1
