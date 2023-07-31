@@ -226,7 +226,7 @@ class textboard_mk4
 			pos0 = 0
 			pos = 0
 			poshistory = null
-			samples = 13 //13 o 15?
+			samples = 10//13 //13 o 15?
 			filtern = 1
 			maxoffset = 100
 
