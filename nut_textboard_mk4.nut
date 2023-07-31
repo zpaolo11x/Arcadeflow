@@ -99,23 +99,6 @@ class textboard_mk4
 
 		i2_initialize()
 
-		// Initialise Impuls2 engine
-		m_i2.filterw = ::array(m_i2.samples, 1.0)
-		m_i2.filtersw = []
-
-		m_i2.filtersw.push(::array(m_i2.samples, 0.0))
-		m_i2.filtersw[0][m_i2.samples - 1] = 1.0
-		m_i2.filtersw.push(::array(m_i2.samples, 1.0))
-
-		foreach(i, item in m_i2.filtersw[1]) {
-			m_i2.filtersw[1][i] = m_i2.samples - i
-		}
-		for(local i = 0; i < (m_i2.samples - 1) * 0.5; i++) {
-			m_i2.filtersw[1][i] = i + 1
-		}
-
-		m_i2.poshistory = ::array(m_i2.samples, 0.0)
-
       if (_surface == null) _surface = ::fe
 		m_shader = ::fe.add_shader(Shader.Fragment, "glsl/textboard.glsl")
 
@@ -184,6 +167,7 @@ class textboard_mk4
 			textref2.set_bg_rgb(200,100,0)
 			textref2.bg_alpha = 120
 		}
+		
 
 		m_line_top = 1.0
 		m_line_bot = 1.0
@@ -239,22 +223,38 @@ class textboard_mk4
 			dbcounter = 0
 		}
 
-		// Initialise Impuls2 engine
+			// Initialise Impuls2 engine
+
+		// Create filterw: an array of sample weights all of value 1
+		// example with sample number = 5
 		m_i2.filterw = ::array(m_i2.samples, 1.0)
+		
+		// Create filtersw an array of arrays:
+		// [ [0,0,0,0,1],[1,1,1,1,1] ] 
+	
 		m_i2.filtersw = []
 
-		m_i2.filtersw.push(::array(m_i2.samples, 0.0))
+		m_i2.filtersw.push(::array(m_i2.samples, 0.0))		
 		m_i2.filtersw[0][m_i2.samples - 1] = 1.0
 		m_i2.filtersw.push(::array(m_i2.samples, 1.0))
+
+		// repopulate filtersw:
+		// [ [0,0,0,0,1],[5,4,3,2,1] ] 
 
 		foreach(i, item in m_i2.filtersw[1]) {
 			m_i2.filtersw[1][i] = m_i2.samples - i
 		}
+		// repopulate filtersw from 0 to 4 * 0.5 = 2
+		// [ [0,0,0,0,1],[1,2,3,2,1] ] 
+
 		for(local i = 0; i < (m_i2.samples - 1) * 0.5; i++) {
 			m_i2.filtersw[1][i] = i + 1
 		}
 
+		// At the end of the process filtersw[1] is a triangle
+
 		m_i2.poshistory = ::array(m_i2.samples, 0.0)
+
 	}
 
 	function i2_getfiltered(arrayin, arrayw) {
