@@ -97,29 +97,7 @@ class textboard_mk4
 
 		m_viewport_y = 0
 
-		m_i2 = {
-			delta = 0
-			step = 0
-			step_f = 0
-			flow0 = 0
-			flow = 0
-			pos0 = 0
-			pos = 0
-			poshistory = null
-			samples = 13 //13 o 15?
-			filtern = 1
-			maxoffset = null
-
-			filterw = null
-			filtersw = null
-
-			scrollspeed = 0.85//0.15 //TESTMI2
-
-			TARGETX = 0
-
-			debug = true
-			dbcounter = 0
-		}
+		i2_initialize()
 
 		// Initialise Impuls2 engine
 		m_i2.filterw = ::array(m_i2.samples, 1.0)
@@ -137,7 +115,6 @@ class textboard_mk4
 		}
 
 		m_i2.poshistory = ::array(m_i2.samples, 0.0)
-		m_i2.maxoffset = 100 //TEST DA MODIFICARE
 
       if (_surface == null) _surface = ::fe
 		m_shader = ::fe.add_shader(Shader.Fragment, "glsl/textboard.glsl")
@@ -170,7 +147,7 @@ class textboard_mk4
 		m_y_zero = 0
 		m_y_pong_speed = 0
 
-		m_scroll_pulse = 1.0
+		m_scroll_pulse = 0.15
 
 		m_line_height = null
 		m_natural_scroll = false
@@ -238,6 +215,48 @@ class textboard_mk4
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
+	function i2_initialize(){
+			
+		m_i2 = {
+			delta = 0
+			step = 0
+			step_f = 0
+			flow0 = 0
+			flow = 0
+			pos0 = 0
+			pos = 0
+			poshistory = null
+			samples = 13 //13 o 15?
+			filtern = 1
+			maxoffset = 100
+
+			filterw = null
+			filtersw = null
+
+			TARGETX = 0
+
+			debug = false
+			dbcounter = 0
+		}
+
+		// Initialise Impuls2 engine
+		m_i2.filterw = ::array(m_i2.samples, 1.0)
+		m_i2.filtersw = []
+
+		m_i2.filtersw.push(::array(m_i2.samples, 0.0))
+		m_i2.filtersw[0][m_i2.samples - 1] = 1.0
+		m_i2.filtersw.push(::array(m_i2.samples, 1.0))
+
+		foreach(i, item in m_i2.filtersw[1]) {
+			m_i2.filtersw[1][i] = m_i2.samples - i
+		}
+		for(local i = 0; i < (m_i2.samples - 1) * 0.5; i++) {
+			m_i2.filtersw[1][i] = i + 1
+		}
+
+		m_i2.poshistory = ::array(m_i2.samples, 0.0)
+	}
+
 	function i2_getfiltered(arrayin, arrayw) {
 		local sumv = 0
 		local sumw = 0
@@ -249,18 +268,8 @@ class textboard_mk4
 	}
 
 	function i2_impulse(deltain){
-		::print("                  pulse:"+deltain+"\n")
-		m_i2.delta = deltain //TESTMI2
+		m_i2.delta = deltain
 		m_i2.filtern = 1
-		if (m_i2.delta > m_i2.maxoffset) {
-			m_i2.filtern = 0
-			m_i2.delta = m_i2.maxoffset
-		}
-		if (m_i2.delta < -m_i2.maxoffset) {
-			m_i2.filtern = 0
-			m_i2.delta = -m_i2.maxoffset
-		}
-
 		m_i2.step += m_i2.delta
 	}
 
@@ -353,6 +362,8 @@ class textboard_mk4
 		//m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
 
+		i2_initialize()
+
 		m_y_start = 0
 		m_y_stop = 0
 		m_y_shift = null
@@ -439,14 +450,14 @@ class textboard_mk4
 			return m_signal_block
 		}
 		if (sig =="custom1"){
-			goto_line(3)
+			goto_line(10)
 		}
 	}
 	
 	function board_on_tick(tick_time){
-::print(m_viewport_y+" "+m_target_line+"\n")
+::print("step:"+m_i2.step+"\n")
 	if (m_i2.debug){
-		local multi = 2.0
+		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
 		local pippo2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.flow) * multi, 3, 3) //BLACK
 		local pippo3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.step) * multi, 3, 3) //WHITE
@@ -459,6 +470,9 @@ class textboard_mk4
 		pippo2.set_rgb(0, 0, 0)
 		pippo3.set_rgb(255, 255, 255)
 		pippo4.set_rgb(0, 0, 255)
+		pippo5.set_rgb(0, 0, 255)
+		pippo6.set_rgb(0, 0, 255)
+		pippo7.set_rgb(0, 0, 255)
 		m_i2.dbcounter = m_i2.dbcounter + 0.5
 	}
 
@@ -504,89 +518,55 @@ class textboard_mk4
 			}
 		}
 
-//::print("B                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
-
 		if (m_y_pong_speed != 0) {
 			//FREEZE if (m_surf.redraw == false) m_surf.redraw = true
 			//m_y_stop += m_y_pong_speed * tick_elapse
 			i2_impulse(-1.0 * m_y_pong_speed * tick_elapse)
 		}
 
-//::print("C                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
+		// Impulse scrolling routines
+		if (m_i2.flow + m_i2.step != 0) {
+		::print("Operate\n")
+			if (m_i2.step > 0) m_i2.step = 0
+			if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
 
-	// Impulse scrolling routines
-	if (m_i2.flow + m_i2.step != 0) {
-		if (m_i2.step > 0) m_i2.step = 0
-		if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
-		//if (m_i2.step < 0) m_i2.flow =//1.0 * m_i2.flow
-		//if (m_i2.flow - m_i2.step > m_viewport_max_y) m_i2.step =  m_i2.flow - m_viewport_max_y//1.0 * m_i2.flow
-
-		m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
-
-		m_i2.flow0 = (m_i2.step_f + m_i2.flow) * m_i2.scrollspeed - m_i2.step_f
-		m_i2.pos0 = m_i2.flow0 + m_i2.step
-
-		if ((m_i2.pos0 > m_i2.maxoffset)) {
-			m_i2.step = m_i2.step - (m_i2.pos0 - m_i2.maxoffset)
 			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
-		}
-		if (m_i2.pos0 < -m_i2.maxoffset) {
-			m_i2.step = m_i2.step - (m_i2.pos0 + m_i2.maxoffset)
-			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
-		}
 
-		m_i2.flow = (m_i2.step_f + m_i2.flow) * m_i2.scrollspeed - m_i2.step_f
+			m_i2.flow0 = (m_i2.step_f + m_i2.flow) * (1.0 - m_scroll_pulse) - m_i2.step_f
+			m_i2.pos0 = m_i2.flow0 + m_i2.step
 
-		m_i2.poshistory.push(m_i2.step)
-		m_i2.poshistory.remove(0)
+			m_i2.flow = (m_i2.step_f + m_i2.flow) * (1.0 - m_scroll_pulse) - m_i2.step_f
 
-		if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
-			m_i2.flow = -m_i2.step
-			m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
-		}
+			m_i2.poshistory.push(m_i2.step)
+			m_i2.poshistory.remove(0)
 
-		m_i2.pos = m_i2.flow + m_i2.step
-
-		set_viewport(m_i2.flow)
-
-		//m_i2.TARGETX = m_i2.pos
-
-	}
-//::print("D                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
-
-	if ((m_i2.pos != 0)) {
-		if ((m_i2.pos < 0.1) && (m_i2.pos > -0.1)) {
-			m_i2.pos = 0
-		}
-		m_i2.pos = m_i2.pos * m_i2.scrollspeed
-
-		if (m_i2.pos > m_i2.maxoffset) {
-			m_i2.pos = m_i2.maxoffset
-		}
-		if (m_i2.pos < -m_i2.maxoffset) {
-			m_i2.pos = -m_i2.maxoffset
-		}
-	}
-
-//::print("E                            m_ponging:"+m_ponging+" m_y_pong_speed:"+m_y_pong_speed+"\n")
-//::print("\n")
-		/* CLASSIC TWEEN
-		if ((m_y_start != m_y_stop) || (m_y_pong_speed != 0)){
-			if (m_surf.redraw == false) m_surf.redraw = true
-
-			m_y_shift = m_scroll_pulse * (m_y_stop - m_y_start) * 60.0 / ScreenRefreshRate
-
-			if (m_absf(m_y_shift) > 0.0005 * m_line_height) {
-				set_viewport(m_y_start + m_y_shift)
-				m_y_start = m_y_start + m_y_shift
+			if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
+				::print("                              C\n")
+				m_i2.flow = -m_i2.step
+				m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
 			}
-			else {
-				m_y_start = m_y_stop
-				m_y_shift = 0
-				set_viewport (m_y_stop)
+
+			m_i2.pos = m_i2.flow + m_i2.step
+
+			set_viewport(m_i2.flow)
+		}
+/*
+		if ((m_i2.pos != 0)) {
+			if ((m_i2.pos < 0.1) && (m_i2.pos > -0.1)) {
+				m_i2.pos = 0
 			}
-		}	
-		*/	
+			m_i2.pos = m_i2.pos * (1.0 - m_scroll_pulse)
+
+			if (m_i2.pos > m_i2.maxoffset) {
+				::print("Z\n")
+				m_i2.pos = m_i2.maxoffset
+			}
+			if (m_i2.pos < -m_i2.maxoffset) {
+				::print("Y\n")
+				m_i2.pos = -m_i2.maxoffset
+			}
+		}
+*/
 	}
 
 	function _set( idx, value )
@@ -818,7 +798,9 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = 1
 		m_target_line = 1
-		goto_line(1)
+		//m_i2.step = 0
+		i2_impulse(-m_i2.step)
+		//goto_line(1)
 	}
 
 	function goto_end()
@@ -830,49 +812,25 @@ class textboard_mk4
 
 	function line_up()
 	{
-		::print("LU"+m_y_stop+"\n")
-		//if (m_y_start + m_line_height < m_viewport_max_y ) {
-			if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
-			//m_y_stop += m_line_height
-			m_target_line ++
-			//i2_impulse(-1.0 * m_line_height)
-			m_i2.step = m_i2.step - m_line_height
-		//}
+		if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
+		if (m_target_line < m_max_hint) m_target_line ++
+		//m_i2.step = m_i2.step - m_line_height
+		i2_impulse( - m_line_height)
 	}
 
 	function line_down()
 	{
-		::print("LD"+m_y_stop+"\n")
-		//if (m_y_start - m_line_height > 0) {
-			if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
-			//m_y_stop -= m_line_height
-			m_target_line --
-			//i2_impulse(1.0 * m_line_height)
-			m_i2.step = m_i2.step + m_line_height
-
-		//}
-	
+		if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
+		if (m_target_line > 1) m_target_line --
+		//m_i2.step = m_i2.step + m_line_height
+		i2_impulse(m_line_height)
 	}
 
 	function goto_line(n)
 	{
-			m_i2.step = - n * m_line_height
-			//m_y_stop = n * m_line_height
-			m_target_line = n
-			return
-		if (n <= 1) {
-			m_y_stop = 0
-			m_target_line = 1
-		}
-		else if (n >= m_max_hint) {
-			m_y_stop = m_viewport_max_y
-			m_target_line = m_max_hint
-		}
-		else {
-			i2_impulse(m_viewport_y - n * m_line_height)
-			m_y_stop = n * m_line_height
-			m_target_line = n
-		}
+		m_i2.step = - (n - 1) * m_line_height
+		m_target_line = n < 1 ? 1 : (n > m_max_hint ? m_max_hint : n)
+		return
 	}
 
 	function pong_down()
