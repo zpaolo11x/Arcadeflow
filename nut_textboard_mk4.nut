@@ -167,7 +167,7 @@ class textboard_mk4
 			textref2.set_bg_rgb(200,100,0)
 			textref2.bg_alpha = 120
 		}
-		
+
 
 		m_line_top = 1.0
 		m_line_bot = 1.0
@@ -210,7 +210,7 @@ class textboard_mk4
 			pos0 = 0
 			pos = 0
 			poshistory = null
-			samples = 8//13 //13 o 15?
+			samples = 13//13 //13 o 15?
 			filtern = 1
 			maxoffset = 100
 
@@ -269,7 +269,10 @@ class textboard_mk4
 
 	function i2_impulse(deltain){
 		m_i2.delta = deltain
-		m_i2.filtern = 1
+		if (m_i2.flow + m_i2.step == 0) 
+			m_i2.filtern = 0
+		else
+			m_i2.filtern = 1
 		m_i2.step += m_i2.delta
 	}
 
@@ -455,7 +458,7 @@ class textboard_mk4
 	}
 	
 	function board_on_tick(tick_time){
-
+::print(m_i2.filtern+"\n")
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
@@ -523,10 +526,14 @@ class textboard_mk4
 		}
 
 		// Impulse scrolling routines
+		
+		// Flow and step are opposite sign, flow is the filtered curve, step is the staircase curve
+
 		if (m_i2.flow + m_i2.step != 0) {
 			if (m_i2.step > 0) m_i2.step = 0
 			if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
 
+			
 			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
 
 			m_i2.flow0 = (m_i2.step_f + m_i2.flow) * (1.0 - m_scroll_pulse) - m_i2.step_f
