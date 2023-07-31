@@ -210,7 +210,7 @@ class textboard_mk4
 			pos0 = 0
 			pos = 0
 			poshistory = null
-			samples = 13//13 //13 o 15?
+			samples = 13//9 //13 o 15?
 			filtern = 1
 			maxoffset = 100
 
@@ -458,7 +458,6 @@ class textboard_mk4
 	}
 	
 	function board_on_tick(tick_time){
-::print(m_i2.filtern+"\n")
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED

@@ -64,8 +64,6 @@ overlay.set_rgb(200, 0, 0)
 overlay.alpha = 100
 */
 
-print ("\n\n\n"+tboard.bg_alpha+"\n\n\n")
-
 fe.add_signal_handler( this, "on_signal" )
 
 function on_signal(sig){
