@@ -452,12 +452,14 @@ class textboard_mk4
 			goto_end()
 			return m_signal_block
 		}
-		if (sig =="custom1"){
-			goto_line(10)
+		if(sig=="custom1"){
+			goto_line(2)
+			return
 		}
 	}
 	
 	function board_on_tick(tick_time){
+		::print(m_i2.filtern+"\n")
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
@@ -808,7 +810,8 @@ class textboard_mk4
 
 	function goto_line(n)
 	{
-		m_i2.step = - (n - 1) * m_line_height
+		
+		i2_impulse(-((n - 1) * m_line_height - m_i2.step))
 		m_target_line = n < 1 ? 1 : (n > m_max_hint ? m_max_hint : n)
 		return
 	}
