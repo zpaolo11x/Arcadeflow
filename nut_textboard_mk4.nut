@@ -328,7 +328,7 @@ class textboard_mk4
 	}
 
 	function refreshtext(){
-		//FREEZE m_surf.redraw = true
+		m_surf.redraw = true
 		m_object.y = 0
 		m_object.height = m_surf.height
 		m_object.msg = m_text
@@ -396,7 +396,7 @@ class textboard_mk4
 	{
 		m_object.first_line_hint = 1 //TEST needed?
 
-		//FREEZE m_surf.redraw = true
+		m_surf.redraw = true
 		m_object.y = 0
 		
 		m_object.y = - 2.0 * m_line_height
@@ -459,7 +459,7 @@ class textboard_mk4
 	}
 	
 	function board_on_tick(tick_time){
-		::print(m_i2.filtern+"\n")
+		::print("RD:" + (m_surf.redraw ? "Y" : "O") +" CL:"+(m_surf.clear ? "Y" : "O")+"\n")
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
@@ -498,7 +498,6 @@ class textboard_mk4
 			m_overlay2.y = m_y_stop
 		}
 
-		/*FREEZE
 		if (m_freezer == 1) {
 			m_freezer -- 
 			m_surf.clear = false
@@ -506,7 +505,7 @@ class textboard_mk4
 		}
 
 		if (m_freezer == 2) m_freezer --
-		*/
+
 		if (!m_surf.visible) return
 
 		if ((m_pong) && (!m_ponging)){
@@ -521,7 +520,7 @@ class textboard_mk4
 		}
 
 		if (m_y_pong_speed != 0) {
-			//FREEZE if (m_surf.redraw == false) m_surf.redraw = true
+			if (m_surf.redraw == false) m_surf.redraw = true
 			//m_y_stop += m_y_pong_speed * tick_elapse
 			i2_impulse(-1.0 * m_y_pong_speed * tick_elapse)
 		}
@@ -531,6 +530,8 @@ class textboard_mk4
 		// Flow and step are opposite sign, flow is the filtered curve, step is the staircase curve
 
 		if (m_i2.flow + m_i2.step != 0) {
+			if (m_surf.redraw == false) m_surf.redraw = true
+
 			if (m_i2.step > 0) m_i2.step = 0
 			if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
 
@@ -548,6 +549,7 @@ class textboard_mk4
 			if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
 				m_i2.flow = -m_i2.step
 				m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
+				m_surf.redraw = false
 			}
 
 			m_i2.pos = m_i2.flow + m_i2.step
@@ -586,7 +588,7 @@ class textboard_mk4
 				m_surf.visible = value
 				// a change in visibility resets the pong status and message status
 				resetstatus()
-				//FREEZE if (!value) m_surf.redraw = false
+				if (!value) m_surf.redraw = false
 				break
 
 			case "signal_block":
