@@ -255,7 +255,7 @@ class textboard_mk4
 
 	function i2_impulse(deltain){
 		m_i2.delta = deltain
-		if (m_i2.smoothcurve - m_i2.stepcurve == 0) 
+		if (m_i2.smoothcurve + m_i2.stepcurve == 0) 
 			m_i2.filter = m_i2.f_pulse
 		else
 			m_i2.filter = m_i2.f_triangle
@@ -435,6 +435,10 @@ class textboard_mk4
 			goto_end()
 			return m_signal_block
 		}
+		if(sig=="custom1"){
+			goto_line(2)
+			return
+		}
 	}
 	
 	function board_on_tick(tick_time){
@@ -474,7 +478,7 @@ class textboard_mk4
 			m_overnum.char_size = 20
 
 			m_overlay.y = m_viewport_max_y
-			m_overlay2.y = m_i2.stepcurve
+			m_overlay2.y = -m_i2.stepcurve
 		}
 
 		if (m_freezer == 1) {
@@ -508,30 +512,30 @@ class textboard_mk4
 		
 		// smoothcurve and stepcurve are opposite sign, smoothcurve is the filtered curve, stepcurve is the staircase curve
 
-		if (m_i2.smoothcurve - m_i2.stepcurve != 0) {
+		if (m_i2.smoothcurve + m_i2.stepcurve != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
 
-			if (m_i2.stepcurve < 0) m_i2.stepcurve = 0
-			if (m_i2.stepcurve > m_viewport_max_y) m_i2.stepcurve = m_viewport_max_y
+			if (m_i2.stepcurve > 0) m_i2.stepcurve = 0
+			if (m_i2.stepcurve < -1.0 * m_viewport_max_y) m_i2.stepcurve = -1.0 * m_viewport_max_y
 
 			
 			m_i2.stepcurve_f = i2_getfiltered(m_i2.stepshistory, m_i2.filter)
 
-			m_i2.smoothcurve0 = (m_i2.smoothcurve - m_i2.stepcurve_f) * (1.0 - m_scroll_pulse) + m_i2.stepcurve_f
-			m_i2.pos0 = m_i2.smoothcurve0 - m_i2.stepcurve
+			m_i2.smoothcurve0 = (m_i2.stepcurve_f + m_i2.smoothcurve) * (1.0 - m_scroll_pulse) - m_i2.stepcurve_f
+			m_i2.pos0 = m_i2.smoothcurve0 + m_i2.stepcurve
 
-			m_i2.smoothcurve = (m_i2.smoothcurve - m_i2.stepcurve_f) * (1.0 - m_scroll_pulse) + m_i2.stepcurve_f
+			m_i2.smoothcurve = (m_i2.stepcurve_f + m_i2.smoothcurve) * (1.0 - m_scroll_pulse) - m_i2.stepcurve_f
 
 			m_i2.stepshistory.push(m_i2.stepcurve)
 			m_i2.stepshistory.remove(0)
 
-			if ((m_i2.smoothcurve - m_i2.stepcurve < 0.1) && (m_i2.smoothcurve - m_i2.stepcurve > -0.1)) {
-				m_i2.smoothcurve = m_i2.stepcurve
+			if ((m_i2.smoothcurve + m_i2.stepcurve < 0.1) && (m_i2.smoothcurve + m_i2.stepcurve > -0.1)) {
+				m_i2.smoothcurve = -m_i2.stepcurve
 				m_i2.stepshistory = ::array(m_i2.samples, m_i2.stepcurve)
 				m_surf.redraw = false
 			}
 
-			m_i2.pos = m_i2.smoothcurve - m_i2.stepcurve
+			m_i2.pos = m_i2.smoothcurve + m_i2.stepcurve
 
 			set_viewport(m_i2.smoothcurve)
 		}
@@ -759,7 +763,7 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = 1
 		m_target_line = 1
-		goto_line(1)
+		i2_impulse(-m_i2.stepcurve)
 	}
 
 	function goto_end()
@@ -773,20 +777,22 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 		if (m_target_line < m_max_hint) m_target_line ++
-		i2_impulse(m_line_height)
+		//m_i2.stepcurve = m_i2.stepcurve - m_line_height
+		i2_impulse( - m_line_height)
 	}
 
 	function line_down()
 	{
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 		if (m_target_line > 1) m_target_line --
-		i2_impulse(- m_line_height)
+		//m_i2.stepcurve = m_i2.stepcurve + m_line_height
+		i2_impulse(m_line_height)
 	}
 
 	function goto_line(n)
 	{
 		
-		i2_impulse(((n - 1) * m_line_height - m_i2.stepcurve))
+		i2_impulse(-((n - 1) * m_line_height - m_i2.stepcurve))
 		m_target_line = n < 1 ? 1 : (n > m_max_hint ? m_max_hint : n)
 		return
 	}
