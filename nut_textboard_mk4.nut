@@ -203,57 +203,44 @@ class textboard_mk4
 			
 		m_i2 = {
 			delta = 0
-			step = 0
-			step_f = 0
-			flow0 = 0
-			flow = 0
+			
+			stepcurve = 0
+			stepcurve_f = 0
+			stepshistory = null
+
+			smoothcurve0 = 0
+			smoothcurve = 0
+			
 			pos0 = 0
 			pos = 0
-			poshistory = null
+			
 			samples = 13//9 //13 o 15?
-			filtern = 1
-			maxoffset = 100
 
-			filterw = null
 			filtersw = null
 
-			TARGETX = 0
+			filter = []
+			f_pulse = []	
+			f_triangle = []
 
 			debug = true
 			dbcounter = 0
+
 		}
 
-			// Initialise Impuls2 engine
+		// Initialise Impuls2 engine
 
-		// Create filterw: an array of sample weights all of value 1
-		// example with sample number = 5
-		m_i2.filterw = ::array(m_i2.samples, 1.0)
-		
-		// Create filtersw an array of arrays:
-		// [ [0,0,0,0,1],[1,1,1,1,1] ] 
+		// Create pulse and triangle filters:
+		// [0,0,0,0,1] and [1,2,3,2,1] 
 	
-		m_i2.filtersw = []
+		m_i2.f_pulse = ::array(m_i2.samples, 0.0)		
+		m_i2.f_pulse[m_i2.samples - 1] = 1.0
 
-		m_i2.filtersw.push(::array(m_i2.samples, 0.0))		
-		m_i2.filtersw[0][m_i2.samples - 1] = 1.0
-		m_i2.filtersw.push(::array(m_i2.samples, 1.0))
-
-		// repopulate filtersw:
-		// [ [0,0,0,0,1],[5,4,3,2,1] ] 
-
-		foreach(i, item in m_i2.filtersw[1]) {
-			m_i2.filtersw[1][i] = m_i2.samples - i
-		}
-		// repopulate filtersw from 0 to 4 * 0.5 = 2
-		// [ [0,0,0,0,1],[1,2,3,2,1] ] 
-
-		for(local i = 0; i < (m_i2.samples - 1) * 0.5; i++) {
-			m_i2.filtersw[1][i] = i + 1
+		m_i2.f_triangle = ::array(m_i2.samples, 1.0)
+		for(local i = 0; i < (m_i2.samples - 1) * 0.5 + 1; i++) {
+			m_i2.f_triangle[i] = m_i2.f_triangle[m_i2.samples - i - 1] = i + 1
 		}
 
-		// At the end of the process filtersw[1] is a triangle
-
-		m_i2.poshistory = ::array(m_i2.samples, 0.0)
+		m_i2.stepshistory = ::array(m_i2.samples, 0.0)
 
 	}
 
@@ -269,11 +256,11 @@ class textboard_mk4
 
 	function i2_impulse(deltain){
 		m_i2.delta = deltain
-		if (m_i2.flow + m_i2.step == 0) 
-			m_i2.filtern = 0
+		if (m_i2.smoothcurve + m_i2.stepcurve == 0) 
+			m_i2.filter = m_i2.f_pulse
 		else
-			m_i2.filtern = 1
-		m_i2.step += m_i2.delta
+			m_i2.filter = m_i2.f_triangle
+		m_i2.stepcurve += m_i2.delta
 	}
 
 	function dbprint(text){
@@ -463,8 +450,8 @@ class textboard_mk4
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
-		local pippo2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.flow) * multi, 3, 3) //BLACK
-		local pippo3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.step) * multi, 3, 3) //WHITE
+		local pippo2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
+		local pippo3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
 		local pippo4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
 		local pippo5 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
 		local pippo6 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
@@ -527,34 +514,34 @@ class textboard_mk4
 
 		// Impulse scrolling routines
 		
-		// Flow and step are opposite sign, flow is the filtered curve, step is the staircase curve
+		// smoothcurve and stepcurve are opposite sign, smoothcurve is the filtered curve, stepcurve is the staircase curve
 
-		if (m_i2.flow + m_i2.step != 0) {
+		if (m_i2.smoothcurve + m_i2.stepcurve != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
 
-			if (m_i2.step > 0) m_i2.step = 0
-			if (m_i2.step < -1.0 * m_viewport_max_y) m_i2.step = -1.0 * m_viewport_max_y
+			if (m_i2.stepcurve > 0) m_i2.stepcurve = 0
+			if (m_i2.stepcurve < -1.0 * m_viewport_max_y) m_i2.stepcurve = -1.0 * m_viewport_max_y
 
 			
-			m_i2.step_f = i2_getfiltered(m_i2.poshistory, m_i2.filtersw[m_i2.filtern])
+			m_i2.stepcurve_f = i2_getfiltered(m_i2.stepshistory, m_i2.filter)
 
-			m_i2.flow0 = (m_i2.step_f + m_i2.flow) * (1.0 - m_scroll_pulse) - m_i2.step_f
-			m_i2.pos0 = m_i2.flow0 + m_i2.step
+			m_i2.smoothcurve0 = (m_i2.stepcurve_f + m_i2.smoothcurve) * (1.0 - m_scroll_pulse) - m_i2.stepcurve_f
+			m_i2.pos0 = m_i2.smoothcurve0 + m_i2.stepcurve
 
-			m_i2.flow = (m_i2.step_f + m_i2.flow) * (1.0 - m_scroll_pulse) - m_i2.step_f
+			m_i2.smoothcurve = (m_i2.stepcurve_f + m_i2.smoothcurve) * (1.0 - m_scroll_pulse) - m_i2.stepcurve_f
 
-			m_i2.poshistory.push(m_i2.step)
-			m_i2.poshistory.remove(0)
+			m_i2.stepshistory.push(m_i2.stepcurve)
+			m_i2.stepshistory.remove(0)
 
-			if ((m_i2.flow + m_i2.step < 0.1) && (m_i2.flow + m_i2.step > -0.1)) {
-				m_i2.flow = -m_i2.step
-				m_i2.poshistory = ::array(m_i2.samples, m_i2.step)
+			if ((m_i2.smoothcurve + m_i2.stepcurve < 0.1) && (m_i2.smoothcurve + m_i2.stepcurve > -0.1)) {
+				m_i2.smoothcurve = -m_i2.stepcurve
+				m_i2.stepshistory = ::array(m_i2.samples, m_i2.stepcurve)
 				m_surf.redraw = false
 			}
 
-			m_i2.pos = m_i2.flow + m_i2.step
+			m_i2.pos = m_i2.smoothcurve + m_i2.stepcurve
 
-			set_viewport(m_i2.flow)
+			set_viewport(m_i2.smoothcurve)
 		}
 	}
 
@@ -782,8 +769,8 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = 1
 		m_target_line = 1
-		//m_i2.step = 0
-		i2_impulse(-m_i2.step)
+		//m_i2.stepcurve = 0
+		i2_impulse(-m_i2.stepcurve)
 		//goto_line(1)
 	}
 
@@ -798,7 +785,7 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 		if (m_target_line < m_max_hint) m_target_line ++
-		//m_i2.step = m_i2.step - m_line_height
+		//m_i2.stepcurve = m_i2.stepcurve - m_line_height
 		i2_impulse( - m_line_height)
 	}
 
@@ -806,14 +793,14 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 		if (m_target_line > 1) m_target_line --
-		//m_i2.step = m_i2.step + m_line_height
+		//m_i2.stepcurve = m_i2.stepcurve + m_line_height
 		i2_impulse(m_line_height)
 	}
 
 	function goto_line(n)
 	{
 		
-		i2_impulse(-((n - 1) * m_line_height - m_i2.step))
+		i2_impulse(-((n - 1) * m_line_height - m_i2.stepcurve))
 		m_target_line = n < 1 ? 1 : (n > m_max_hint ? m_max_hint : n)
 		return
 	}
