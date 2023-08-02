@@ -441,21 +441,26 @@ class textboard_mk4
 
 	if (m_i2.debug){
 		local multi = 1.0
-		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
-		local pippo2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
-		local pippo3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
-		local pippo4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
-		local pippo5 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
-		local pippo6 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
-		local pippo7 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 4.0 * (m_line_height) * multi, 3, 3) //BLUE
-		pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
-		pippo1.set_rgb(255, 0, 0)
-		pippo2.set_rgb(0, 0, 0)
-		pippo3.set_rgb(255, 255, 255)
-		pippo4.set_rgb(0, 0, 255)
-		pippo5.set_rgb(0, 0, 255)
-		pippo6.set_rgb(0, 0, 255)
-		pippo7.set_rgb(0, 0, 255)
+		local tr_pos = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
+		local tr_smooth = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
+		local tr_step = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
+		local tr_line1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
+		local tr_line2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
+		local tr_line3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
+		local tr_line4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 4.0 * (m_line_height) * multi, 3, 3) //BLUE
+
+		tr_line1.zorder = tr_line2.zorder = tr_line3.zorder = tr_line4.zorder = 20000
+		tr_step.zorder = 20002
+		tr_smooth.zorder = 20003
+		tr_pos.zorder = 20001
+
+		tr_pos.set_rgb(255, 0, 0)
+		tr_smooth.set_rgb(0, 0, 0)
+		tr_step.set_rgb(255, 255, 255)
+		tr_line1.set_rgb(0, 0, 255)
+		tr_line2.set_rgb(0, 0, 255)
+		tr_line3.set_rgb(0, 0, 255)
+		tr_line4.set_rgb(0, 0, 255)
 		m_i2.dbcounter = m_i2.dbcounter + 0.5
 	}
 
