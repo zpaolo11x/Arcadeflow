@@ -85,7 +85,7 @@ class textboard_mk4
 	m_count = null
 
 	// DEBUG
-	m_debug = false
+	m_debug = true
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
@@ -230,8 +230,7 @@ class textboard_mk4
 		// Initialise Impuls2 engine
 
 		// Create pulse and triangle filters:
-		// [0,0,0,0,1] and [1,2,3,2,1] 
-	
+		// [0,0,0,0,1] and [1,2,3,2,1] 	
 		m_i2.f_pulse = ::array(m_i2.samples, 0.0)		
 		m_i2.f_pulse[m_i2.samples - 1] = 1.0
 
@@ -346,10 +345,7 @@ class textboard_mk4
 		m_y_zero = m_object.y
 
 		m_object.msg = " \n \n" + m_text + "\n \n "
-		//m_object.word_wrap = true
-		//m_object.first_line_hint = 1
 
-		//m_object.first_line_hint = 1 //TEST needed?
 		m_hint_new = 1
 
 		i2_initialize()
@@ -446,7 +442,7 @@ class textboard_mk4
 	}
 	
 	function board_on_tick(tick_time){
-		::print("RD:" + (m_surf.redraw ? "Y" : "O") +" CL:"+(m_surf.clear ? "Y" : "O")+"\n")
+
 	if (m_i2.debug){
 		local multi = 1.0
 		local pippo1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
@@ -482,7 +478,7 @@ class textboard_mk4
 			m_overnum.char_size = 20
 
 			m_overlay.y = m_viewport_max_y
-			m_overlay2.y = m_y_stop
+			m_overlay2.y = -m_i2.stepcurve
 		}
 
 		if (m_freezer == 1) {
@@ -729,7 +725,6 @@ class textboard_mk4
 	function set_viewport(y){
 		if (y <= 0) {
 			y = 0
-			//m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_hint_new = 1
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
@@ -737,7 +732,6 @@ class textboard_mk4
 		}
 		else if (y >= m_viewport_max_y){
 			y = m_viewport_max_y
-			//m_y_start = m_y_stop = y
 			m_object.y = m_y_zero
 			m_hint_new = m_max_hint
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
@@ -769,9 +763,7 @@ class textboard_mk4
 	{
 		if (m_debug) textref2.first_line_hint = 1
 		m_target_line = 1
-		//m_i2.stepcurve = 0
 		i2_impulse(-m_i2.stepcurve)
-		//goto_line(1)
 	}
 
 	function goto_end()
