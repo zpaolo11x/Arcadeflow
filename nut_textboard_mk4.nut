@@ -85,7 +85,7 @@ class textboard_mk4
 	m_count = null
 
 	// DEBUG
-	m_debug = true
+	m_debug = false
 	m_overlay = null
 	m_overlay2 = null
 	m_overnum = null
@@ -222,7 +222,7 @@ class textboard_mk4
 			f_pulse = []	
 			f_triangle = []
 
-			debug = true
+			debug = false
 			dbcounter = 0
 
 		}
