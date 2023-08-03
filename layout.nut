@@ -2206,7 +2206,6 @@ local count = {
 count.movestep = count.movestepslow
 
 local globalposnew = 0
-local	surfacePos = 0
 
 local impulse2 = {
 	delta = 0
@@ -2219,6 +2218,7 @@ local impulse2 = {
 	samples = 13 //13 o 15?
 	filtern = 1
 	maxoffset = null
+	moving = true
 }
 
 local filterw = array(impulse2.samples, 1.0)
@@ -15737,7 +15737,6 @@ function on_transition(ttype, var0, ttime) {
 
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
-			surfacePos += (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 
 			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 			impulse2.filtern = 1
@@ -15846,6 +15845,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
+
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16556,6 +16556,7 @@ function tick(tick_time) {
 		easeprint.counter = easeprint.counter + 0.5
 	}
 
+	impulse2.moving = (impulse2.flow + impulse2.step != 0)
 	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
 		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
@@ -16610,18 +16611,6 @@ function tick(tick_time) {
 
 			}
 			globalposnew = tilez[focusindex.new].obj.x
-		}
-	}
-
-	if ((surfacePos != 0)) {
-		if ((surfacePos < 0.1) && (surfacePos > -0.1)) surfacePos = 0
-		surfacePos = surfacePos * spdT.scrollspeed
-
-		if (surfacePos > impulse2.maxoffset) {
-			surfacePos = impulse2.maxoffset
-		}
-		if (surfacePos < -impulse2.maxoffset) {
-			surfacePos = -impulse2.maxoffset
 		}
 	}
 
@@ -16741,13 +16730,13 @@ function tick(tick_time) {
 		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
-	if (frost.canfreeze && (surfacePos == 0) && !bglay.surf_1.redraw && !data_surface.redraw){
+	if (frost.canfreeze && !impulse2.moving && !bglay.surf_1.redraw && !data_surface.redraw){
 		frost_freeze(true)
 		frost.canfreeze = false
 	}
 
 	// menu showing, frost not redrawing, and some items are moving or have moved
-	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || (surfacePos != 0))){
+	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || impulse2.moving)){
 		frost_freeze(false)
 		frost.canfreeze = true
 	}
