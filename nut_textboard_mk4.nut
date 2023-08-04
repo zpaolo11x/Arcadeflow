@@ -255,8 +255,10 @@ class textboard_mk4
 
 	function i2_impulse(deltain){
 		m_i2.delta = deltain
-		if (m_i2.smoothcurve - m_i2.stepcurve == 0) 
+		if (::fabs(m_i2.smoothcurve - m_i2.stepcurve) <= 2) { //TEST WAS == 0
+			::print("X\n")
 			m_i2.filter = m_i2.f_pulse
+		}
 		else
 			m_i2.filter = m_i2.f_triangle
 		m_i2.stepcurve += m_i2.delta
@@ -530,7 +532,7 @@ class textboard_mk4
 			m_i2.stepshistory.push(m_i2.stepcurve)
 			m_i2.stepshistory.remove(0)
 
-			if ((m_i2.smoothcurve - m_i2.stepcurve < 0.1) && (m_i2.smoothcurve - m_i2.stepcurve > -0.1)) {
+			if ((m_i2.smoothcurve - m_i2.stepcurve < 0.5) && (m_i2.smoothcurve - m_i2.stepcurve > -0.5)) { //TEST WAS 0.1
 				m_i2.smoothcurve = m_i2.stepcurve
 				m_i2.stepshistory = ::array(m_i2.samples, m_i2.stepcurve)
 				m_surf.redraw = false

@@ -3373,11 +3373,16 @@ function msgbox_scrollerrefresh(inline){
 }
 
 function msgbox_refresh(){
+	AF.msgbox.obj.msg = AF.msgbox.title + "\n\n" + AF.msgbox.body
+	AF.msgbox.numlines = AF.msgbox.obj.visible_lines
+	msgbox_scrollerrefresh(1)
+	/*
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
 	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() 
 	msgbox_scrollerrefresh(1)
+	*/
 }
 
 function msgbox_newtitle(text){
