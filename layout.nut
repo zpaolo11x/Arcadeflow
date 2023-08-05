@@ -3363,8 +3363,6 @@ function msgbox_wraptext(text, columns){
 }
 
 function msgbox_scrollerrefresh(inline){
-	testpr("inline:"+inline+"\n")
-	testpr("visilines:"+AF.msgbox.visiblelines+" numlines:"+AF.msgbox.numlines+"\n")
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
