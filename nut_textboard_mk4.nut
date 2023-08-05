@@ -322,6 +322,7 @@ class textboard_mk4
 		m_object.msg = m_text
 		m_object.word_wrap = true
 		m_object.first_line_hint = 1
+		m_target_line = 1
 
 		if (m_debug) {		
 			textref2.msg = m_text
@@ -380,6 +381,7 @@ class textboard_mk4
 	function resetstatus()
 	{
 		m_object.first_line_hint = 1 //TEST needed?
+		m_target_line = 1
 
 		m_surf.redraw = true
 		m_object.y = 0
