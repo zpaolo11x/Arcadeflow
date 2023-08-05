@@ -1350,7 +1350,7 @@ function historytext() {
 	return history
 }
 
-function buildreadme(separator=false) {
+function buildreadme(separator = false, include_history = true) {
 	local infile = null
 	local readme = []
 
@@ -1389,10 +1389,11 @@ function buildreadme(separator=false) {
 
 	readme.extend(optionstext)
 
-	if (separator) readme.push(AF.msgbox.separator1+"\n")
-
-	readme.push("## Previous versions history #\n\n")
-	readme.extend(historytext())
+	if (include_history){
+		if (separator) readme.push(AF.msgbox.separator1+"\n")
+		readme.push("## Previous versions history #\n\n")
+		readme.extend(historytext())
+	}
 
 	if (separator) readme.push(AF.msgbox.separator2)
 
@@ -3362,6 +3363,7 @@ function msgbox_wraptext(text, columns){
 }
 
 function msgbox_scrollerrefresh(inline){
+	testpr("visilines:"+AF.msgbox.visiblelines+" numlines:"+AF.msgbox.numlines+"\n")
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
@@ -3374,7 +3376,7 @@ function msgbox_scrollerrefresh(inline){
 
 function msgbox_refresh(){
 	AF.msgbox.obj.msg = AF.msgbox.title + "\n\n" + AF.msgbox.body
-	AF.msgbox.numlines = AF.msgbox.obj.visible_lines
+	AF.msgbox.numlines = AF.msgbox.obj.full_lines
 	msgbox_scrollerrefresh(1)
 	/*
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
@@ -14833,7 +14835,7 @@ function buildutilitymenu() {
 			function(out) {
 				if (out == 0) {
 					local abouttext = ""
-					foreach (i, item in buildreadme(true)){
+					foreach (i, item in buildreadme(true, false)){
 						abouttext = abouttext + item
 					}
 					msgbox_open(AF.msgbox.separator2, abouttext)				
