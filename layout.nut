@@ -15852,7 +15852,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-testpr(impulse2.filtern+"\n")
+
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
