@@ -214,7 +214,7 @@ class textboard_mk4
 			pos0 = 0
 			pos = 0
 			
-			samples = 13//9 //13 o 15?
+			samples = 5//13//9 //13 o 15?
 
 			filtersw = null
 
@@ -255,11 +255,13 @@ class textboard_mk4
 
 	function i2_impulse(deltain){
 		m_i2.delta = deltain
+		/*
 		if (::fabs(m_i2.smoothcurve - m_i2.stepcurve) <= 2) { //TEST WAS == 0
 			::print("X\n")
 			m_i2.filter = m_i2.f_pulse
 		}
 		else
+		*/
 			m_i2.filter = m_i2.f_triangle
 		m_i2.stepcurve += m_i2.delta
 	}
@@ -448,6 +450,7 @@ class textboard_mk4
 		local tr_pos = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
 		local tr_smooth = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
 		local tr_step = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
+		local tr_step_f = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve_f) * multi, 3, 3) //WHITE
 		local tr_line1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
 		local tr_line2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
 		local tr_line3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
@@ -455,12 +458,14 @@ class textboard_mk4
 
 		tr_line1.zorder = tr_line2.zorder = tr_line3.zorder = tr_line4.zorder = 20000
 		tr_step.zorder = 20002
-		tr_smooth.zorder = 20003
+		tr_smooth.zorder = 20004
 		tr_pos.zorder = 20001
+		tr_step_f.zorder = 20003
 
 		tr_pos.set_rgb(255, 0, 0)
 		tr_smooth.set_rgb(0, 0, 0)
 		tr_step.set_rgb(255, 255, 255)
+		tr_step_f.set_rgb(255, 255, 0)
 		tr_line1.set_rgb(0, 0, 255)
 		tr_line2.set_rgb(0, 0, 255)
 		tr_line3.set_rgb(0, 0, 255)

@@ -15311,7 +15311,6 @@ function z_listrefreshtiles() {
 }
 
 function repeatsignal(sig, counter) {
-	testpr(count.movestep+"\n")
 	if (fe.get_input_state(sig) == false) {
 		count.countstep = 0
 		count.movestep = count.movestepslow
@@ -15853,7 +15852,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-
+testpr(impulse2.filtern+"\n")
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16861,9 +16860,8 @@ function tick(tick_time) {
 
 	if (checkfade (flowT.historydata)) {
 		flowT.historydata = fadeupdate(flowT.historydata)
-		testpr(flowT.historydata[1]+"\n")
+
 		if (endfade(flowT.historydata) == 1) {
-			testpr("UPDATETEXT\n")
 			history_updatetext()
 			if (prf.CONTROLOVERLAY != "never") history_updateoverlay()
 			flowT.historydata = startfade(flowT.historydata, -0.101, 3.0)
