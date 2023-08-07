@@ -3375,8 +3375,8 @@ function msgbox_scrollerrefresh(inline){
 
 function msgbox_refresh(){
 	AF.msgbox.obj.msg = AF.msgbox.title + "\n\n" + AF.msgbox.body
-	AF.msgbox.numlines = AF.msgbox.obj.full_lines
-	AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
+	AF.msgbox.numlines = AF.msgbox.obj.lines_total
+	AF.msgbox.visiblelines = AF.msgbox.obj.lines
 	msgbox_scrollerrefresh(1)
 	/*
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
@@ -13837,12 +13837,12 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
-AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
+AF.msgbox.visiblelines = AF.msgbox.obj.lines
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.obj.char_size = 16
-	AF.msgbox.visiblelines = AF.msgbox.obj.visible_lines
+	AF.msgbox.visiblelines = AF.msgbox.obj.lines
 }
 
 AF.msgbox.obj.visible = false

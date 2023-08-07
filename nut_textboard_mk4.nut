@@ -30,10 +30,10 @@ class textboard_mk4
 
 	// mk2 Read only properties
 	m_line_height = null
-	m_visible_lines = null
+	m_lines = null
 	m_viewport_max_y = null
 	m_max_hint = null
-	m_full_lines = null
+	m_lines_total = null
 
 	m_target_line = 1
 
@@ -337,9 +337,9 @@ class textboard_mk4
 
 		m_line_height = m_object.line_size
 
-		m_visible_lines = m_object.lines
-		m_full_lines = m_object.lines_total
-		m_max_hint = m_full_lines - m_visible_lines + 1
+		m_lines = m_object.lines
+		m_lines_total = m_object.lines_total
+		m_max_hint = m_lines_total - m_lines + 1
 		
 		if (m_max_hint <= 0) m_max_hint = 1
 
@@ -359,7 +359,7 @@ class textboard_mk4
 		m_y_stop = 0
 		m_y_shift = null
 
-		m_margin_bottom = m_surf.height - m_object.margin - m_visible_lines * m_line_height
+		m_margin_bottom = m_surf.height - m_object.margin - m_lines * m_line_height
 		if (m_margin_bottom < 0) m_margin_bottom = 0
 		
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
@@ -370,8 +370,8 @@ class textboard_mk4
 		m_freezer = 2
 
 		dbprint("line height:"+m_line_height+"\n")
-		dbprint("visible lines:"+m_visible_lines+"\n")
-		dbprint("all lines:"+m_full_lines+"\n")
+		dbprint("visible lines:"+m_lines+"\n")
+		dbprint("all lines:"+m_lines_total+"\n")
 		dbprint("max hint:"+m_max_hint+"\n")
 		dbprint("viewport max:"+m_viewport_max_y+"\n")
 		dbprint("margin bottom:"+m_margin_bottom+"\n")
@@ -677,8 +677,8 @@ class textboard_mk4
 				return m_target_line
 				break
 
-			case "visible_lines":
-				return m_visible_lines
+			case "lines":
+				return m_lines
 				break
 
 			case "line_height":
@@ -713,8 +713,8 @@ class textboard_mk4
 				return m_alpha
 				break
 
-			case "full_lines":
-				return m_full_lines
+			case "lines_total":
+				return m_lines_total
 				break
 
 			default:
