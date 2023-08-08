@@ -16672,10 +16672,15 @@ function tick(tick_time) {
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
 					tilez[i].AR.vids = prf.VID169 ? 9.0 / 16.0 : getvidAR(tilez[i].offset, tilez[i].vidsz, tilez[i].refsnapz, 0)
-
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
-					if (!prf.MORPHASPECT) update_snapcrop (i, 0, 0, z_list.index, tilez[i].AR.vids, tilez[i].AR.crop)
 
+					if(prf.BOXARTMODE && (tilez[i].vidsz.file_name == "") && (tilez[i].refsnapz.file_name == "")){
+						//no snap or video in boxart mode, so no change in aspect
+						tilez[i].AR.vids = tilez[i].AR.snap
+					}
+
+
+					if (!prf.MORPHASPECT) update_snapcrop (i, 0, 0, z_list.index, tilez[i].AR.vids, tilez[i].AR.crop)
 				}
 				if (prf.AMENABLE) {
 					if (attract.rolltext) tilez[i].gr_vidsz.video_playing = false
