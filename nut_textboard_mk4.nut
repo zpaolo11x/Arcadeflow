@@ -91,7 +91,7 @@ class textboard_mk4
 	m_overnum = null
 	textref2 = null
 
-	constructor (_t, _x, _y, _w, _h, _surface = null){
+	constructor (_t, _x, _y, _w, _h, _surface = null) {
 		tick_time_0 = 0
 		tick_elapse = 0
 
@@ -151,7 +151,7 @@ class textboard_mk4
 		m_object.bg_alpha = 255
 		m_object.alpha = 255
 
-		if (m_debug){
+		if (m_debug) {
 			m_overlay = ::fe.add_rectangle(_w,0,_w,1)
 			m_overlay2 = ::fe.add_rectangle(_w,0,_w,_h)
 			m_overlay2.set_rgb(200,0,0)
@@ -199,7 +199,7 @@ class textboard_mk4
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
-	function i2_initialize(){
+	function i2_initialize() {
 		m_i2 = {
 			delta = 0
 			
@@ -248,7 +248,7 @@ class textboard_mk4
 		return sumv * 1.0 / sumw
 	}
 
-	function i2_impulse(deltain){
+	function i2_impulse(deltain) {
 		m_i2.delta = deltain
 		/*
 		if (::fabs(m_i2.smoothcurve - m_i2.stepcurve) <= 2) { //TEST WAS == 0
@@ -261,7 +261,7 @@ class textboard_mk4
 		m_i2.stepcurve += m_i2.delta
 	}
 
-	function dbprint(text){
+	function dbprint(text) {
 		if (m_debug) ::print(text)
 	}
 
@@ -291,7 +291,7 @@ class textboard_mk4
 		return (n >= 0 ? n : -n)
 	}
 
-	function refreshtext(){
+	function refreshtext() {
 		m_surf.redraw = true
 		m_object.y = 0
 		m_object.height = m_surf.height
@@ -381,7 +381,7 @@ class textboard_mk4
 		
 	}
 
-	function board_on_transition(ttype, var, ttime){
+	function board_on_transition(ttype, var, ttime) {
 		//TEST NEEDED FOR PING PONG?
 		if (m_enable_transition && (ttype == Transition.FromOldSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) pong_up()
@@ -389,7 +389,7 @@ class textboard_mk4
 		}	
 	}
 
-	function board_on_signal(sig){
+	function board_on_signal(sig) {
 		if (!(m_enable_signals && m_object.visible)) return// && !m_pong)) return
 
 		if (sig == "up") {
@@ -406,19 +406,19 @@ class textboard_mk4
 			}
 			return m_signal_block
 		}	
-		if (sig == "left"){
+		if (sig == "left") {
 			goto_start()
 			return m_signal_block
 		}		
-		if (sig == "right"){
+		if (sig == "right") {
 			goto_end()
 			return m_signal_block
 		}
 	}
 	
-	function board_on_tick(tick_time){
+	function board_on_tick(tick_time) {
 
-		if (m_i2.debug){
+		if (m_i2.debug) {
 			local multi = 1.0
 			local tr_pos = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
 			local tr_smooth = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
@@ -449,7 +449,7 @@ class textboard_mk4
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
 
-		if (m_enable_signals){
+		if (m_enable_signals) {
 			if (m_count.right != 0) m_count.right = m_repeatsignal("right", m_count.right)
 			if (m_count.left != 0) m_count.left = m_repeatsignal("left", m_count.left)
 			if (m_count.up != 0) m_count.up = m_repeatsignal("up", m_count.up)
@@ -474,8 +474,8 @@ class textboard_mk4
 
 		if (!m_surf.visible) return
 
-		if ((m_pong) && (!m_ponging)){
-			if (m_pong_count == 0){
+		if ((m_pong) && (!m_ponging)) {
+			if (m_pong_count == 0) {
 				m_pong_count = ::fe.layout.time + m_pong_delay
 			}
 			else if (m_pong_count <= ::fe.layout.time) {
@@ -521,10 +521,8 @@ class textboard_mk4
 		}
 	}
 
-	function _set( idx, value )
-	{
-		switch ( idx )
-		{
+	function _set( idx, value ) {
+		switch ( idx ) {
 			case "font":
 			case "line_spacing":
 			case "char_size":
@@ -626,10 +624,8 @@ class textboard_mk4
 		}
 	}
 
-	function _get( idx )
-	{
-		switch ( idx )
-		{
+	function _get( idx ) {
+		switch ( idx ) {
 			case "visible":
 			case "x":
 			case "y":
@@ -692,15 +688,15 @@ class textboard_mk4
 		}
 	}
 
-	function set_rgb( r, g, b ){
+	function set_rgb( r, g, b ) {
 		m_shader.set_param("textcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
 
-	function set_bg_rgb( r, g, b ){
+	function set_bg_rgb( r, g, b ) {
 		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
 
-	function set_viewport(y){
+	function set_viewport(y) {
 		if (y <= 0) {
 			y = 0
 			m_object.y = m_y_zero
@@ -708,7 +704,7 @@ class textboard_mk4
 			if (m_object.first_line_hint != m_hint_new) m_object.first_line_hint = m_hint_new
 			if (m_ponging && (m_y_pong_speed < 0)) pong_up()
 		}
-		else if (y >= m_viewport_max_y){
+		else if (y >= m_viewport_max_y) {
 			y = m_viewport_max_y
 			m_object.y = m_y_zero
 			m_hint_new = m_max_hint
@@ -723,7 +719,7 @@ class textboard_mk4
 			//m_y_start = y
 		}
 
-		if ((y > m_line_height) && (y < m_viewport_max_y - m_line_height)){ //TEST can be improved by not applying at every redraw
+		if ((y > m_line_height) && (y < m_viewport_max_y - m_line_height)) { //TEST can be improved by not applying at every redraw
 			m_shader.set_param("alphatop", 1.0)
 			m_shader.set_param("alphabot", 1.0)
 		} else {
@@ -737,52 +733,44 @@ class textboard_mk4
 		m_viewport_y = y
 	}
 
-	function goto_start()
-	{
+	function goto_start() {
 		if (m_debug) textref2.first_line_hint = 1
 		m_target_line = 1
 		goto_line(1)
 	}
 
-	function goto_end()
-	{
+	function goto_end() {
 		if (m_debug) textref2.first_line_hint = m_max_hint
 		m_target_line = m_max_hint
 		goto_line(m_max_hint)
 	}
 
-	function line_up()
-	{
+	function line_up() {
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 		if (m_target_line < m_max_hint) m_target_line ++
 		i2_impulse(m_line_height)
 	}
 
-	function line_down()
-	{
+	function line_down() {
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 		if (m_target_line > 1) m_target_line --
 		i2_impulse(- m_line_height)
 	}
 
-	function goto_line(n)
-	{
-		
+	function goto_line(n) {
 		i2_impulse(((n - 1) * m_line_height - m_i2.stepcurve))
 		m_target_line = n < 1 ? 1 : (n > m_max_hint ? m_max_hint : n)
 		return
 	}
 
-	function pong_down()
-	{
+	function pong_down() {
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = false
 		m_y_pong_speed = 0
 	}
 
-	function pong_up()
-	{
+	function pong_up() {
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = true
