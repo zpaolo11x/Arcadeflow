@@ -200,7 +200,6 @@ class textboard_mk4
 	}
 
 	function i2_initialize(){
-			
 		m_i2 = {
 			delta = 0
 			
@@ -216,15 +215,12 @@ class textboard_mk4
 			
 			samples = 5//13//9 //13 o 15?
 
-			filtersw = null
-
 			filter = []
 			f_pulse = []	
 			f_triangle = []
 
 			debug = false
 			dbcounter = 0
-
 		}
 
 		// Initialise Impuls2 engine
@@ -240,7 +236,6 @@ class textboard_mk4
 		}
 
 		m_i2.stepshistory = ::array(m_i2.samples, 0.0)
-
 	}
 
 	function i2_getfiltered(arrayin, arrayw) {
@@ -262,7 +257,7 @@ class textboard_mk4
 		}
 		else
 		*/
-			m_i2.filter = m_i2.f_triangle
+		m_i2.filter = m_i2.f_triangle
 		m_i2.stepcurve += m_i2.delta
 	}
 
@@ -294,27 +289,6 @@ class textboard_mk4
 
 	function m_absf(n) {
 		return (n >= 0 ? n : -n)
-	}
-
-	function m_split_complete(str_in, separator) {
-		local outarray = []
-		local index = str_in.find(separator)
-		while (index != null) {
-			outarray.push(str_in.slice(0, index))
-			str_in = str_in.slice(index + separator.len())
-			index = str_in.find(separator)
-		}
-		outarray.push(str_in)
-		return outarray
-	}
-
-	function m_char_replace(inputstring, old, new) {
-		local out = ""
-		local splitarray = m_split_complete (inputstring, old)
-		foreach (id, item in splitarray) {
-			out = out + (id > 0 ? new : "") + item
-		}
-		return out
 	}
 
 	function refreshtext(){
@@ -366,7 +340,7 @@ class textboard_mk4
 		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
 		m_shader.set_param("alphabot", m_max_hint <= 1 ? 0.0 : 1.0)
-		//m_shader.set_param("alphabot", tb_bottomchar() == m_ch1 ? 0.0 : 1.0)
+
 		m_freezer = 2
 
 		dbprint("line height:"+m_line_height+"\n")
@@ -412,8 +386,7 @@ class textboard_mk4
 		if (m_enable_transition && (ttype == Transition.FromOldSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) pong_up()
 			refreshtext()
-		}
-		
+		}	
 	}
 
 	function board_on_signal(sig){
@@ -437,7 +410,7 @@ class textboard_mk4
 			goto_start()
 			return m_signal_block
 		}		
-			if (sig == "right"){
+		if (sig == "right"){
 			goto_end()
 			return m_signal_block
 		}
@@ -445,33 +418,33 @@ class textboard_mk4
 	
 	function board_on_tick(tick_time){
 
-	if (m_i2.debug){
-		local multi = 1.0
-		local tr_pos = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
-		local tr_smooth = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
-		local tr_step = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
-		local tr_step_f = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve_f) * multi, 3, 3) //WHITE
-		local tr_line1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
-		local tr_line2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
-		local tr_line3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
-		local tr_line4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 4.0 * (m_line_height) * multi, 3, 3) //BLUE
+		if (m_i2.debug){
+			local multi = 1.0
+			local tr_pos = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
+			local tr_smooth = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
+			local tr_step = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
+			local tr_step_f = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve_f) * multi, 3, 3) //WHITE
+			local tr_line1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
+			local tr_line2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
+			local tr_line3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
+			local tr_line4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 4.0 * (m_line_height) * multi, 3, 3) //BLUE
 
-		tr_line1.zorder = tr_line2.zorder = tr_line3.zorder = tr_line4.zorder = 20000
-		tr_step.zorder = 20002
-		tr_smooth.zorder = 20004
-		tr_pos.zorder = 20001
-		tr_step_f.zorder = 20003
+			tr_line1.zorder = tr_line2.zorder = tr_line3.zorder = tr_line4.zorder = 20000
+			tr_step.zorder = 20002
+			tr_smooth.zorder = 20004
+			tr_pos.zorder = 20001
+			tr_step_f.zorder = 20003
 
-		tr_pos.set_rgb(255, 0, 0)
-		tr_smooth.set_rgb(0, 0, 0)
-		tr_step.set_rgb(255, 255, 255)
-		tr_step_f.set_rgb(255, 255, 0)
-		tr_line1.set_rgb(0, 0, 255)
-		tr_line2.set_rgb(0, 0, 255)
-		tr_line3.set_rgb(0, 0, 255)
-		tr_line4.set_rgb(0, 0, 255)
-		m_i2.dbcounter = m_i2.dbcounter + 0.5
-	}
+			tr_pos.set_rgb(255, 0, 0)
+			tr_smooth.set_rgb(0, 0, 0)
+			tr_step.set_rgb(255, 255, 255)
+			tr_step_f.set_rgb(255, 255, 0)
+			tr_line1.set_rgb(0, 0, 255)
+			tr_line2.set_rgb(0, 0, 255)
+			tr_line3.set_rgb(0, 0, 255)
+			tr_line4.set_rgb(0, 0, 255)
+			m_i2.dbcounter = m_i2.dbcounter + 0.5
+		}
 
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
@@ -514,14 +487,11 @@ class textboard_mk4
 
 		if (m_y_pong_speed != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
-			//m_y_stop += m_y_pong_speed * tick_elapse
 			i2_impulse(-1.0 * m_y_pong_speed * tick_elapse)
 		}
 
 		// Impulse scrolling routines
 		
-		// smoothcurve and stepcurve are opposite sign, smoothcurve is the filtered curve, stepcurve is the staircase curve
-
 		if (m_i2.smoothcurve - m_i2.stepcurve != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
 
@@ -722,13 +692,11 @@ class textboard_mk4
 		}
 	}
 
-	function set_rgb( r, g, b )
-	{
+	function set_rgb( r, g, b ){
 		m_shader.set_param("textcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
 
-	function set_bg_rgb( r, g, b )
-	{
+	function set_bg_rgb( r, g, b ){
 		m_shader.set_param("panelcolor", r*1.0/255, g*1.0/255, b*1.0/255)
 	}
 

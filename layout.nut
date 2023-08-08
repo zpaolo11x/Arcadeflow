@@ -16679,7 +16679,6 @@ function tick(tick_time) {
 						tilez[i].AR.vids = tilez[i].AR.snap
 					}
 
-
 					if (!prf.MORPHASPECT) update_snapcrop (i, 0, 0, z_list.index, tilez[i].AR.vids, tilez[i].AR.crop)
 				}
 				if (prf.AMENABLE) {
