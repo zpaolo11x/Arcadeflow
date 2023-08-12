@@ -12195,8 +12195,11 @@ function getscrollerstop(fade = true){
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
+	
 	zmenu.i2 = i2_create(9)
+	zmenu.i2.pulse_speed = spdT2.zmenu
 	disp.i2 = i2_create(13)
+	disp.i2.pulse_speed = spdT2.disp
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
@@ -16426,6 +16429,10 @@ function tick(tick_time) {
 			zmenu.noteitems[i].y = zmenu.pos0[i] + newpos
 			zmenu.glyphs[i].y = zmenu.pos0[i] + newpos
 			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + newpos
+			
+			zmenu.scrollerstart =  (-1 * newpos / zmenu.virtualheight) * zmenu.height
+			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
+	
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	
