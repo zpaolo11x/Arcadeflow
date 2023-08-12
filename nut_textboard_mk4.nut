@@ -1,21 +1,54 @@
 // TEXT BOARD OBJECT
 
 /*
-Add text board to a layout by first enabling the module using:
-fe.do_nut ("path_to/textboard.nut")
+
+Copy nut_textboard_mk4.nut and textboard.glsl in your layout with this structure:
+
+layout_folder/
+	nut_textboard.nut
+	glsl/
+		textboard.glsl
+
+Add text board to a layout by first enabling the module 
+adding this line at the beginning of your layout nut file:
+
+fe.do_nut ("nut_textboard_mk4.nut")
+
 then add a textboard object the same way a text object is added:
 fe.add_textboard(text, x, y, width, height)
 
-Differences from text object:
-- textboard is always word wrapped
-- default char size is such that at least two or three lines of text are always visible
+if your object lays on a surface, call it as a parameter:
+fe.add_textboard(text, x, y, width, height, surface)
 
-New properties:
-- scroll_speed = speed of scrolling when going up or down
-- natural_scroll_scroll = true or false reverses scrolling direction
-- enable_signals = enable/disable signal response for scrolling
+Properties:
+
+Textboard shares all the properties of a text object plus some others:
+
+- tx_alpha = alpha value of the text alone
+- bg_alpha = alpha value of the background alone
+- alpha = composite alpha of the whole text object
+
+- lines_bottom = lines to fade out at the bottom of the box
+- lines_top = lines to fade out at the top of the box
+
+- target_line = set/get this value to a desired target line
+
+- scroll_pulse = (0 to 1) speed of scrolling when manually moving up or down
+- natural_scroll = true or false reverses scrolling direction
+- enable_signals = enable/disable signal response for scrolling (up/down goes up or down, left/right jumps to top and bottom)
+- enable_transition = enable/disable automatic transition update when text box uses magic tokens
 - signal_block = if true no further up or down signals are managed
+
 - pingpong = makes the text scroll up and down automatically
+- pingpong_speed = scroll speed in lines per second
+- pingpong_delay = delay to start movement in seconds
+
+There are some methods you can call using, for example, your_object.goto_start()
+
+- goto_start(), goto_end() smoothly moves to first or last line
+- line_up(), line_down() smoothly move text up or down by one line
+- goto_line(n) smoothly moves to line n (lines start from 1)
+
 */
 
 class textboard_mk4
