@@ -2806,6 +2806,12 @@ function i2_jumpto(i2_in, new_pos){
 	i2_in.stepcurve = new_pos
 }
 
+function i2_setpos(i2_in, new_pos){
+	//i2_in.filter = i2_in.f_triangle
+	i2_in.stepcurve = i2_in.smoothcurve = new_pos
+	i2_in.stepshistory = array(i2_in.samples, new_pos)
+}
+
 function i2_getfiltered(arrayin, arrayw) {
 	local sumv = 0
 	local sumw = 0
@@ -11830,6 +11836,8 @@ local disp = {
 	gmenu1in = null
 
 	menuthresh = 10000
+
+	i2 = null
 }
 
 disp.width = disp.tilew
@@ -12187,7 +12195,8 @@ function getscrollerstop(fade = true){
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
-	zmenu.i2 = i2_create(5)
+	zmenu.i2 = i2_create(9)
+	disp.i2 = i2_create(13)
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
@@ -12567,6 +12576,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
 		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
+		i2_setpos(disp.i2, disp.xstop)
 		disp.xstart = disp.xstop
 		foreach (id, item in disp.images) {
 			item.y = disp.pos0[id] + disp.xstop
@@ -12608,7 +12618,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 
 	zmenu.xstart = zmenu.xstop = getxstop()
-	i2_jumpto(zmenu.i2, zmenu.xstop)
+	i2_setpos(zmenu.i2, zmenu.xstop)
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -16360,6 +16370,19 @@ function tick(tick_time) {
 		}
 	}
 
+	if (i2_move(disp.i2)){
+		local newpos = i2_newpos(disp.i2)
+		for (local i = 0; i < disp.images.len(); i++) {
+			disp.images[i].y = disp.pos0[i] + newpos
+		}
+		
+		disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
+		disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
+
+		disp.xstart = newpos
+	
+	}
+/*
 	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
 		disp.speed = (spdT2.disp * (disp.xstop - disp.xstart))
@@ -16395,7 +16418,7 @@ function tick(tick_time) {
 			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
 		}
 	}
-
+*/
 	if (i2_move(zmenu.i2)){
 		local newpos = i2_newpos(zmenu.i2)
 		for (local i = 0; i < zmenu.shown; i++) {
@@ -17988,6 +18011,7 @@ function on_signal(sig) {
 
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
+				i2_jumpto(disp.i2, disp.xstop)
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
