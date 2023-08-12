@@ -15,10 +15,10 @@ adding this line at the beginning of your layout nut file:
 fe.do_nut ("nut_textboard_mk4.nut")
 
 then add a textboard object the same way a text object is added:
-fe.add_textboard(text, x, y, width, height)
+fe.add_textboard_mk4(text, x, y, width, height)
 
 if your object lays on a surface, call it as a parameter:
-fe.add_textboard(text, x, y, width, height, surface)
+fe.add_textboard_mk4(text, x, y, width, height, surface)
 
 Properties:
 
