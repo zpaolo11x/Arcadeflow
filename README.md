@@ -12,7 +12,10 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 
 ## What's new in v 16.2 #
 
-- Added Dirksimple logo
+- Added new "slate" color theme
+- Added smooth scrolling to game history
+- Added option to automatically scroll history
+- Added Dirksimple and Gaelco systems
 - Added option to open displays menu on current category
 - Revamped media downloader for scraper
 - Fixed scraped media download hanging
@@ -95,6 +98,7 @@ Unique to Arcadeflow, you can also sort your games by last played or last added 
 ## Displays Menu #
 
 Arcadeflow sports a customizable Displays Menu. You can have it as a single list with just text, or you can let Arcadeflow add a system logo based on the Display name. Arcadeflow can categorize displays in groups automatically (Arcade, Console, Computer, Handheld, Pinball, Other), but if you want to force one display in a category, just add "#arcade", "#console" etc to the Display name. You can also enable artwork from the menu-art folder. You can also force positioning a layout at the top putting "!" at the beginning of the name.
+Displays menu is categorised, but if you add #MENU at the end od a display name, it will show in the main menu with categories and not in the submenus.
 
 ## Search and Multifilter #
 
@@ -156,10 +160,10 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Game Boy color correction' : Apply a colorized palette to Game Boy games based on the system name or forced to your preference
 - 'MSX crt color correction' : Apply a palette correction to MSX media that was captured with MSX2 palette
 
-#### BACKGROUND
+#### ! BACKGROUND !
 Chose the layout background theme in main page and in History page, or select custom backgrounds
 
-- 'Color theme' : Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered
+- '! Color theme !' : Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered
 - 'Custom overlay' : Insert custom PNG to be overlayed over everything
 - 'Custom main BG image' : Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)
 - 'Format of main BG image' : Select if the custom background must be cropped to fill the screen or stretched
@@ -224,7 +228,7 @@ Customize the utility menu entries that you want to see in the menu
 - 'Customize Utility Menu' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
 - 'Reset Utility Menu' : Reset sorting and selection of Utility Menu entries
 
-#### ❗ DISPLAYS MENU PAGE ❗
+#### ! DISPLAYS MENU PAGE !
 Arcadeflow has its own Displays Menu page that can be configured here
 
 - 'Enable Arcadeflow Displays Menu page' : If you disable Arcadeflow menu page you can use other layouts as displays menu
@@ -239,12 +243,12 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Categorized Displays Menu' : Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections
 - 'Add Exit Arcadeflow to menu' : Add an entry to exit Arcadeflow from the displays menu page
 - Behavior
-- '❗ Open on current category ❗' : With categorised displays menu, open in the current category instead of main menu
+- '! Open on current category !' : With categorised displays menu, open in the current category instead of main menu
 - 'Open the Displays Menu at startup' : Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode
 - 'Exit AF when leaving Menu' : The esc button from Displays Menu triggers the exit from Arcadeflow
 - 'Enter Menu when leaving display' : The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
 
-#### HISTORY PAGE
+#### ! HISTORY PAGE !
 Configure the History page where larger thumbnail and game history data are shown
 
 - Video Effects
@@ -255,6 +259,7 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Text panel size' : Select the size of the history panel at the expense of snapshot area
 - 'Text panel style' : Select the look of the history text panel
 - 'Game panel style' : Select the look of the history game panel
+- '! Text scroll !' : Select if you want to manually scroll history text, or automatically scroll
 - 'Detailed game data' : Show extra data after the game name before the history text
 - 'Control panel overlay' : Show controller and buttons overlay on history page
 
@@ -299,7 +304,7 @@ Configure the appearence of a second monitor
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
-#### ❗ SCRAPE AND METADATA ❗
+#### ! SCRAPE AND METADATA !
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
 - SCRAPING
@@ -311,7 +316,7 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Media Scrape Options' : You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
-- '❗ Scrape Timeout ❗' : Set the number of seconds to wait for each scrape operation to complete
+- '! Scrape Timeout !' : Set the number of seconds to wait for each scrape operation to complete
 - SCREENSCRAPER
 - 'SS Username' : Enter your screenscraper.fr username
 - 'SS Password' : Enter your screenscraper.fr password
@@ -377,13 +382,13 @@ Save or reload options configurations
 - 'Save current options' : Save the current options configuration in a custom named file
 - 'Load options from external file' : Restore AF options from a previously saved file
 
-#### ❗ DEBUG ❗
+#### ! DEBUG !
 This section is for debug purposes only
 
 - 'FPS counter' : DBGON FPS COUNTER
 - 'DEBUG mode' : Enter DBGON mode, increased output logging
 - 'AM options page' : Shows the default Attract-Mode options page
-- '❗ Test message box ❗' : For developer use only...
+- '! Test message box !' : For developer use only...
 - 'Generate readme file' : For developer use only...
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
@@ -1118,7 +1123,7 @@ This section is for debug purposes only
 - Added a new options system using Arcadeflow menu system instead of Attract Mode options page.
 - Fixed bugs with glyphs on menus
 - Added Spanish translation thanks to Jate from the forum
-- Added Português (BR) translation thanks to ReBirFh from the forum
+- Added Portugues (BR) translation thanks to ReBirFh from the forum
 - Fixed bugs in the LCD filter
 - Added different placeholder screnshots when no screenshot is avilable
 - Added file browser for chosing custom images and sound
