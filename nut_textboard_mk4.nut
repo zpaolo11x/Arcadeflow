@@ -130,7 +130,7 @@ class textboard_mk4
 
 		m_viewport_y = 0
 
-		i2_initialize()
+		mi2_initialize()
 
       if (_surface == null) _surface = ::fe
 		m_shader = ::fe.add_shader(Shader.Fragment, "glsl/textboard.glsl")
@@ -232,7 +232,7 @@ class textboard_mk4
 		::fe.add_transition_callback( this, "board_on_transition" )
 	}
 
-	function i2_initialize() {
+	function mi2_initialize() {
 		m_i2 = {
 			delta = 0
 			
@@ -271,7 +271,7 @@ class textboard_mk4
 		m_i2.stepshistory = ::array(m_i2.samples, 0.0)
 	}
 
-	function i2_getfiltered(arrayin, arrayw) {
+	function mi2_getfiltered(arrayin, arrayw) {
 		local sumv = 0
 		local sumw = 0
 		foreach (i, item in arrayin) {
@@ -281,7 +281,7 @@ class textboard_mk4
 		return sumv * 1.0 / sumw
 	}
 
-	function i2_impulse(deltain) {
+	function mi2_impulse(deltain) {
 		m_i2.delta = deltain
 		/*
 		if (::fabs(m_i2.smoothcurve - m_i2.stepcurve) <= 2) { //TEST WAS == 0
@@ -360,7 +360,7 @@ class textboard_mk4
 
 		m_hint_new = 1
 
-		i2_initialize()
+		mi2_initialize()
 
 		m_y_start = 0
 		m_y_stop = 0
@@ -520,7 +520,7 @@ class textboard_mk4
 
 		if (m_y_pong_speed != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
-			i2_impulse(-1.0 * m_y_pong_speed * tick_elapse)
+			mi2_impulse(-1.0 * m_y_pong_speed * tick_elapse)
 		}
 
 		// Impulse scrolling routines
@@ -532,7 +532,7 @@ class textboard_mk4
 			if (m_i2.stepcurve > m_viewport_max_y) m_i2.stepcurve = m_viewport_max_y
 
 			
-			m_i2.stepcurve_f = i2_getfiltered(m_i2.stepshistory, m_i2.filter)
+			m_i2.stepcurve_f = mi2_getfiltered(m_i2.stepshistory, m_i2.filter)
 
 			m_i2.smoothcurve0 = (m_i2.smoothcurve - m_i2.stepcurve_f) * (1.0 - m_scroll_pulse) + m_i2.stepcurve_f
 			m_i2.pos0 = m_i2.smoothcurve0 - m_i2.stepcurve
@@ -781,17 +781,17 @@ class textboard_mk4
 	function line_up() {
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 		if (m_target_line < m_max_hint) m_target_line ++
-		i2_impulse(m_line_height)
+		mi2_impulse(m_line_height)
 	}
 
 	function line_down() {
 		if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 		if (m_target_line > 1) m_target_line --
-		i2_impulse(- m_line_height)
+		mi2_impulse(- m_line_height)
 	}
 
 	function goto_line(n) {
-		i2_impulse(((n - 1) * m_line_height - m_i2.stepcurve))
+		mi2_impulse(((n - 1) * m_line_height - m_i2.stepcurve))
 		m_target_line = n < 1 ? 1 : (n > m_max_hint ? m_max_hint : n)
 		return
 	}

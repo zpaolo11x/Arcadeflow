@@ -5,6 +5,19 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
+
+function create_tab(in_v){
+	local ciccio = {
+		pippo = "0"
+		pluto = "1"
+		paperino = in_v
+	}
+	return (ciccio)
+}
+
+local topolino = create_tab(3)
+print(topolino+"\n")
+
 fe.do_nut("nut_file.nut")
 fe.do_nut("nut_textboard_mk4.nut")
 
@@ -446,7 +459,7 @@ function splash_progress(i, init, max) {
 
 if (FeVersionNum < 300) splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.0+",5)
 
-try{print(AF.splash.text.lines)} catch(err) {
+try{print("testlines"+AF.splash.text.lines+"\n")} catch(err) {
 	fe.overlay.edit_dialog("Arcadeflow requires AM+ build #352+","")
 }
 
@@ -2736,6 +2749,107 @@ if (UI.vertical) {
 }
 local key_selected = [0, 0]
 local keyboard_entrytext = ""
+
+/// IMPULSE2 ENGINE ///
+
+function i2_create(in_samples){
+	local i2_in = {
+		delta = 0
+		
+		stepcurve = 0
+		stepcurve_f = 0
+		stepshistory = null
+
+		smoothcurve0 = 0
+		smoothcurve = 0
+		
+		pulse_speed = 0.2
+
+		pos0 = 0
+		pos = 0
+		
+		samples = 5
+
+		filter = []
+		f_pulse = []	
+		f_triangle = []
+
+		limit_lo = -100000000
+		limit_hi = 10000000
+	}
+
+	i2_in.samples = in_samples
+
+	// Create pulse and triangle filters:
+	// [0,0,0,0,1] and [1,2,3,2,1] 	
+	i2_in.f_pulse = array(i2_in.samples, 0.0)		
+	i2_in.f_pulse[i2_in.samples - 1] = 1.0
+
+	i2_in.f_triangle = array(i2_in.samples, 1.0)
+	for(local i = 0; i < (i2_in.samples - 1) * 0.5 + 1; i++) {
+		i2_in.f_triangle[i] = i2_in.f_triangle[i2_in.samples - i - 1] = i + 1
+	}
+
+	i2_in.stepshistory = array(i2_in.samples, 0.0)
+
+	return (i2_in)
+}
+
+function i2_pulse(i2_in, delta_in){
+	i2_in.delta = delta_in //SERVE???
+	i2_in.filter = i2_in.f_triangle
+	i2_in.stepcurve += i2_in.delta
+}
+
+function i2_jumpto(i2_in, new_pos){
+	i2_in.filter = i2_in.f_triangle
+	i2_in.stepcurve = new_pos
+}
+
+function i2_getfiltered(arrayin, arrayw) {
+	local sumv = 0
+	local sumw = 0
+	foreach (i, item in arrayin) {
+		sumv += arrayin[i] * arrayw[i]
+		sumw += arrayw[i]
+	}
+	return sumv * 1.0 / sumw
+}
+
+function i2_move(i2_in){
+	if (i2_in == null) return false
+	return (i2_in.smoothcurve != i2_in.stepcurve)
+}
+
+function i2_newpos(i2_in){
+
+	// CLAMP MAX AND MIN TARGET
+	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
+	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
+	
+	i2_in.stepcurve_f = i2_getfiltered(i2_in.stepshistory, i2_in.filter)
+
+	//CLAMP MAX SPEED HERE???
+
+	i2_in.smoothcurve0 = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
+	i2_in.pos0 = i2_in.smoothcurve0 - i2_in.stepcurve
+
+	i2_in.smoothcurve = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
+
+	i2_in.stepshistory.push(i2_in.stepcurve)
+	i2_in.stepshistory.remove(0)
+
+	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST WAS 0.1
+		i2_in.smoothcurve = i2_in.stepcurve
+		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
+		//m_surf.redraw = false
+	}
+
+	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
+
+	//RETURN THE NEW POSITION
+	return(i2_in.smoothcurve)
+}
 
 /// RELOCATED FUNCTIONS ///
 
@@ -11911,7 +12025,10 @@ zmenu = {
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
+
+	i2 = null
 }
+
 zmenu.speed = zmenu.tileh * 0.1
 
 local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
@@ -12070,6 +12187,7 @@ function getscrollerstop(fade = true){
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
+	zmenu.i2 = i2_create(5)
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
@@ -12490,6 +12608,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 
 	zmenu.xstart = zmenu.xstop = getxstop()
+	i2_jumpto(zmenu.i2, zmenu.xstop)
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -16277,6 +16396,18 @@ function tick(tick_time) {
 		}
 	}
 
+	if (i2_move(zmenu.i2)){
+		local newpos = i2_newpos(zmenu.i2)
+		for (local i = 0; i < zmenu.shown; i++) {
+			zmenu.items[i].y = zmenu.pos0[i] + newpos
+			zmenu.noteitems[i].y = zmenu.pos0[i] + newpos
+			zmenu.glyphs[i].y = zmenu.pos0[i] + newpos
+			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + newpos
+		}
+		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
+	
+	}
+/*
 	// zmenu items scrolling routine
 	if (zmenu.xstart != zmenu.xstop) {
 
@@ -16307,7 +16438,7 @@ function tick(tick_time) {
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	}
-
+*/
 	// Attract mode management
 	if (prf.AMENABLE) {
 		if (attract.start) {
@@ -17877,6 +18008,8 @@ function on_signal(sig) {
 			}
 
 			zmenu.xstop = getxstop()
+			i2_jumpto(zmenu.i2, zmenu.xstop)
+
 			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && (prfmenu.level == 2) && ((sig == "right") || (sig == "left"))))
 
 			for (local i = 0; i < zmenu.shown; i++) {
