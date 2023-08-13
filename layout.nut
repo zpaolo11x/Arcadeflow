@@ -1894,7 +1894,7 @@ local z_var = 0
 
 // Fade data: [0 - FADE COUNTER, 1 - FADE VALUE, 2 - FADE STARTER, 3 - FADE INCREASER, 4 - FADE EASER]
 // FADE COUNTER counts from 0 to 1 (if FADE INCREASER > 0) or from 1 to 0 (FADE INCREASER < 0) linearly
-// FADE VALUE is a fade value calculated from FADE COUNTER based on FADE EASER: 0.0 linear, n.0 ease start, -n.0 ease stop
+// FADE VALUE is a fade value calculated from FADE COUNTER based on FADE EASER: 1.0 linear, n.0 ease start, -n.0 ease stop
 // FADE STARTER is the counter value at which the fade is when changing fade,
 // it should be equal to FADE VALUE and FADE COUNTER when initializing the variable,
 // is used for incremental non-linear fading and shouldn't be touched if not by startfade function
@@ -12107,8 +12107,8 @@ disp.bgshadowb = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgrad
 										disp.bgtileh)
 
 
-disp.bgshadowt.set_rgb(0, 0, 200)
-disp.bgshadowb.set_rgb(0, 0, 200)
+disp.bgshadowt.set_rgb(0, 0, 0)
+disp.bgshadowb.set_rgb(0, 0, 0)
 disp.bgshadowt.alpha = 180 // + 0 * 255 + 0 * 100
 disp.bgshadowb.alpha = 180 // + 0 * 255 + 0 * 150
 
@@ -17098,7 +17098,7 @@ testpr(disp.bgshadowb.alpha+" "+flowT.dispshadow1[1]+" "+flowT.dispshadow1[3]+"\
 		flowT.dispshadow1 = fadeupdate(flowT.dispshadow1)
 
 		if (endfade(flowT.dispshadow1) == 0) {
-			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 1.0)
+			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 2.0)
 		}
 		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow1[1]
 	}
@@ -18047,7 +18047,7 @@ function on_signal(sig) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
 			
 				i2_jumpto(disp.i2, disp.xstop)
-				flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.1, 1.0)
+				flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
