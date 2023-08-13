@@ -1922,6 +1922,7 @@ local flowT = {
 	zmenush = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenutx = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenudecoration = [0.0, 0.0, 0.0, 0.0, 0.0]
+	dispshadow = [0.0, 1.0, 0.0, 0.0, 0.0]
 
 	// Blur effect intensity
 	frostblur = [0.0, 0.0, 0.0, 0.0, 0.0]
@@ -11811,6 +11812,9 @@ local disp = {
 	bgshadowt = null
 	bgshadowb = null
 
+	bgshadowt2 = null
+	bgshadowb2 = null
+
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	xstart = 0
@@ -12090,12 +12094,12 @@ zmenu.simbg.alpha = 40
 zmenu.simbg.set_rgb(0, 0, 0)
 if (prf.DMPIMAGES == "WALLS") zmenu.simbg.zorder = 1000
 
-disp.bgshadowt = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientTc.png",
+disp.bgshadowt = disp.bgshadowt2 = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientTc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
 										disp.bgtileh)
-disp.bgshadowb = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientBc.png",
+disp.bgshadowb = disp.bgshadowb2 = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientBc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
@@ -12103,10 +12107,15 @@ disp.bgshadowb = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgrad
 
 disp.bgshadowt.set_rgb(0, 0, 0)
 disp.bgshadowb.set_rgb(0, 0, 0)
-disp.bgshadowt.alpha = 180 + 0 * 255 + 0 * 100
-disp.bgshadowb.alpha = 180 + 0 * 255 + 0 * 150
-disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
-if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = 900
+disp.bgshadowt.alpha = 180 // + 0 * 255 + 0 * 100
+disp.bgshadowb.alpha = 180 // + 0 * 255 + 0 * 150
+disp.bgshadowt2.set_rgb(0, 0, 0)
+disp.bgshadowb2.set_rgb(0, 0, 0)
+disp.bgshadowt2.alpha = 0 // 180 + 0 * 255 + 0 * 100
+disp.bgshadowb2.alpha = 0 // 180 + 0 * 255 + 0 * 150
+
+disp.bgshadowt2.blend_mode = disp.bgshadowb2.blend_mode = disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
+if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = disp.bgshadowt2.zorder = disp.bgshadowb2.zorder = 900
 
 local zmenu_surface = zmenu_surface_container.add_surface (zmenu.width, zmenu.height)
 
@@ -16379,9 +16388,10 @@ function tick(tick_time) {
 			disp.images[i].y = disp.pos0[i] + newpos
 		}
 		
+		/*
 		disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
 		disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-
+		*/
 		disp.xstart = newpos
 	
 	}
@@ -16985,7 +16995,7 @@ function tick(tick_time) {
 	}
 
 
-	if ((zmenu.xstart == zmenu.xstop) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
+	if ((!i2_move(zmenu.i2)) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
 		AF.zmenu_freezecount = 1
 	}
 
@@ -17075,6 +17085,18 @@ function tick(tick_time) {
 		flowT.groupbg = fadeupdate(flowT.groupbg)
 
 		groupalpha(255 * flowT.groupbg[1])
+	}
+
+	if (checkfade(flowT.dispshadow)){
+		flowT.dispshadow = fadeupdate(flowT.dispshadow)
+
+		if (endfade(flowT.dispshadow) == 0) {
+			flowT.dispshadow = startfade(flowT.dispshadow, 0.1, 1.0)
+			disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
+			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
+		}
+
+		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow[1]
 	}
 
 	// attract mode surface fade
@@ -18019,6 +18041,7 @@ function on_signal(sig) {
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
 				i2_jumpto(disp.i2, disp.xstop)
+				flowT.dispshadow = startfade(flowT.dispshadow, -0.1, 1.0)
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
