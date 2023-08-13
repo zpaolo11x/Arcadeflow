@@ -1922,7 +1922,8 @@ local flowT = {
 	zmenush = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenutx = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenudecoration = [0.0, 0.0, 0.0, 0.0, 0.0]
-	dispshadow = [0.0, 1.0, 0.0, 0.0, 0.0]
+
+	dispshadow1 = [0.0, 1.0, 0.0, 0.0, 0.0]
 
 	// Blur effect intensity
 	frostblur = [0.0, 0.0, 0.0, 0.0, 0.0]
@@ -2846,7 +2847,7 @@ function i2_newpos(i2_in,dbprint){
 	i2_in.stepshistory.push(i2_in.stepcurve)
 	i2_in.stepshistory.remove(0)
 
-	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.01) && (i2_in.smoothcurve - i2_in.stepcurve > -0.01)) { //TEST162 WAS 0.1
+	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
 		i2_in.smoothcurve = i2_in.stepcurve
 		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
 		//m_surf.redraw = false
@@ -9533,7 +9534,7 @@ function optionsmenu_lev3() {
 //Second menu level
 function optionsmenu_lev2() {
 	prfmenu.level = 2
-	zmenu.selected = prfmenu.outres1
+	zmenu.oldselected = zmenu.selected = prfmenu.outres1
 
 	updatemenu(prfmenu.level, prfmenu.outres1)
 
@@ -9698,6 +9699,7 @@ function optionsmenu_lev1() {
 	function() {
 		for (local i = zmenu.selected; i < items.len(); i++) {
 			if (zmenu.data[i].liner) {
+				zmenu.oldselected = zmenu.selected
 				zmenu.selected = i + 1
 				break
 			}
@@ -11812,9 +11814,6 @@ local disp = {
 	bgshadowt = null
 	bgshadowb = null
 
-	bgshadowt2 = null
-	bgshadowb2 = null
-
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	xstart = 0
@@ -11966,6 +11965,7 @@ zmenu = {
 	selected = 0 			// Index of the selected entry
 	firstitem = 0			// Index of the menu first item
 	target = []				// array of target values {up, down, upforce, downforce}
+	oldselected = 0
 
 	midscroll = false 	// Proxies of the call parameters, used outside of the menu creation routine
 	singleline = false
@@ -12095,39 +12095,31 @@ zmenu.simbg.alpha = 40
 zmenu.simbg.set_rgb(0, 0, 0)
 if (prf.DMPIMAGES == "WALLS") zmenu.simbg.zorder = 1000
 
-disp.bgshadowt = disp.bgshadowt2 = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientTc.png",
+disp.bgshadowt = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientTc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
 										disp.bgtileh)
-disp.bgshadowb = disp.bgshadowb2 = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientBc.png",
+disp.bgshadowb = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgradientBc.png",
 										zmenu.tilew -1.0 * disp.width,
 										0,
 										disp.tilew,
 										disp.bgtileh)
 
-disp.bgshadowt.set_rgb(0, 0, 0)
-disp.bgshadowb.set_rgb(0, 0, 0)
-disp.bgshadowt.alpha = 0*255//180 // + 0 * 255 + 0 * 100
-disp.bgshadowb.alpha = 0*255//180 // + 0 * 255 + 0 * 150
-disp.bgshadowt2.set_rgb(0, 0, 0)
-disp.bgshadowb2.set_rgb(0, 0, 0)
-disp.bgshadowt2.alpha = 0*255 // 180 + 0 * 255 + 0 * 100
-disp.bgshadowb2.alpha = 0*255 // 180 + 0 * 255 + 0 * 150
 
-disp.bgshadowt2.blend_mode = disp.bgshadowb2.blend_mode = disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
-if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = disp.bgshadowt2.zorder = disp.bgshadowb2.zorder = 900
+disp.bgshadowt.set_rgb(0, 0, 200)
+disp.bgshadowb.set_rgb(0, 0, 200)
+disp.bgshadowt.alpha = 180 // + 0 * 255 + 0 * 100
+disp.bgshadowb.alpha = 180 // + 0 * 255 + 0 * 150
+
+disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
+if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = 900
 
 local zmenu_surface = zmenu_surface_container.add_surface (zmenu.width, zmenu.height)
 
 zmenu_surface.add_image(AF.folder + "pics/black.png", 0, 0, zmenu_surface.width, zmenu_surface.height)
 zmenu.selectedbar = zmenu_surface.add_rectangle(0, 0, zmenu.width, zmenu.tileh)
 zmenu.selectedbar.set_rgb(255, 255, 255)
-
-local selectedbarshader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
-zmenu.selectedbar.shader = selectedbarshader
-selectedbarshader.set_texture_param("texture")
-selectedbarshader.set_param ("pixelheight", 1.0 / zmenu.selectedbar.height)
 
 zmenu.sidelabel = zmenu_surface.add_text("", zmenu.pad, 0, zmenu.width - 2 * zmenu.pad, zmenu.tileh)
 zmenu.sidelabel.char_size = overlay.labelcharsize * 0.8
@@ -12277,7 +12269,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
 	else if (zmenu.alwaysskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
 
-	disp.bgshadowb2.visible = disp.bgshadowt2.visible = disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && opts.dmpart && (prf.DMPIMAGES == "WALLS")
+	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && opts.dmpart && (prf.DMPIMAGES == "WALLS")
 
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
 
@@ -12587,9 +12579,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 	}
 	// Define the current selection, skipping if it's a liner
-	zmenu.selected = presel
-	if (!zmenu.alwaysskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
-	else if (zmenu.alwaysskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
+	zmenu.selected = zmenu.oldselected = presel
+	if (!zmenu.alwaysskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.oldselected = zmenu.target[zmenu.selected].down
+	else if (zmenu.alwaysskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.oldselected = zmenu.target[zmenu.selected].downforce
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
@@ -12601,6 +12593,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 		disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
 		disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
+		disp.bgshadowt.alpha = disp.bgshadowb.alpha = 180
+		//TEST162 RESET FLOW HERE?
+		//TEST162 add alpha here
 		//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 	}
 
@@ -12613,8 +12608,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	zmenu.selectedbar.height = zmenu.items[zmenu.selected].height
-	selectedbarshader.set_param ("pixelheight", 1.0 / zmenu.selectedbar.height)
-	testpr((1.0 / zmenu.selectedbar.height)+"\n")
 	//zmenu.selectedbar.width = zmenu.tilew + ((opts.shrink && zmenu.sim) ? -1 * disp.width : 0)
 
 	//this substitutes the row above to have shorter bar
@@ -12744,9 +12737,11 @@ function zmenunavigate_up(signal, alwaysskip = false) {
 	local tvalue = alwaysskip ? "upforce" : "up"
 
 	if (zmenu.selected - zmenu.target[zmenu.selected][tvalue] > 0){
+		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 	}
 	else if (count[signal] == 0){
+		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 		count.forceup = false
 	 }
@@ -12762,9 +12757,11 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 	local tvalue = alwaysskip ? "downforce" : "down"
 
 	if (zmenu.target[zmenu.selected][tvalue] - zmenu.selected > 0){
+		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 	}
 	else if (count[signal] == 0){
+		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 		count.forcedown = false
 	 }
@@ -16005,7 +16002,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-
+testpr(disp.bgshadowb.alpha+" "+flowT.dispshadow1[1]+" "+flowT.dispshadow1[3]+"\n")
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16391,15 +16388,15 @@ function tick(tick_time) {
 	}
 
 	if (i2_move(disp.i2)){
-		local newpos = i2_newpos(disp.i2,true)
+		local newpos = i2_newpos(disp.i2,false)
 		for (local i = 0; i < disp.images.len(); i++) {
 			disp.images[i].y = disp.pos0[i] + newpos
 			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
 		}
 		//testpr("\n")
-		
-		disp.bgshadowb.y = disp.pos0[zmenu.selected] + newpos + disp.images[zmenu.selected].height//disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-		disp.bgshadowt.y = disp.pos0[zmenu.selected] + newpos - disp.bgshadowt.height //disp.images[zmenu.selected].y - disp.bgshadowt.height
+
+		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
+		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
 		
 		disp.xstart = newpos
 	
@@ -17096,19 +17093,16 @@ function tick(tick_time) {
 		groupalpha(255 * flowT.groupbg[1])
 	}
 
-	/*
-	if (checkfade(flowT.dispshadow)){
-		flowT.dispshadow = fadeupdate(flowT.dispshadow)
 
-		if (endfade(flowT.dispshadow) == 0) {
-			flowT.dispshadow = startfade(flowT.dispshadow, 0.1, 1.0)
-			disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
+	if (checkfade(flowT.dispshadow1)){
+		flowT.dispshadow1 = fadeupdate(flowT.dispshadow1)
+
+		if (endfade(flowT.dispshadow1) == 0) {
+			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 1.0)
 		}
-
-		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow[1]
+		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow1[1]
 	}
-*/
+
 	// attract mode surface fade
 	if (checkfade(flowT.attract)) {
 		flowT.attract = fadeupdate(flowT.attract)
@@ -18029,6 +18023,7 @@ function on_signal(sig) {
 			if (checkrepeat(count.left)) {
 				menucheck = true
 				if (zmenu.reactleft == null) {
+					zmenu.oldselected = zmenu.selected
 					zmenu.selected = zmenu.firstitem
 					zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 				}
@@ -18050,8 +18045,9 @@ function on_signal(sig) {
 
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
+			
 				i2_jumpto(disp.i2, disp.xstop)
-				flowT.dispshadow = startfade(flowT.dispshadow, -0.1, 1.0)
+				flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.1, 1.0)
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
