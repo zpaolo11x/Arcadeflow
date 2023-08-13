@@ -12107,12 +12107,12 @@ disp.bgshadowb = disp.bgshadowb2 = zmenu_surface_container.add_image(AF.folder +
 
 disp.bgshadowt.set_rgb(0, 0, 0)
 disp.bgshadowb.set_rgb(0, 0, 0)
-disp.bgshadowt.alpha = 180 // + 0 * 255 + 0 * 100
-disp.bgshadowb.alpha = 180 // + 0 * 255 + 0 * 150
+disp.bgshadowt.alpha = 0*255//180 // + 0 * 255 + 0 * 100
+disp.bgshadowb.alpha = 0*255//180 // + 0 * 255 + 0 * 150
 disp.bgshadowt2.set_rgb(0, 0, 0)
 disp.bgshadowb2.set_rgb(0, 0, 0)
-disp.bgshadowt2.alpha = 0 // 180 + 0 * 255 + 0 * 100
-disp.bgshadowb2.alpha = 0 // 180 + 0 * 255 + 0 * 150
+disp.bgshadowt2.alpha = 0*255 // 180 + 0 * 255 + 0 * 100
+disp.bgshadowb2.alpha = 0*255 // 180 + 0 * 255 + 0 * 150
 
 disp.bgshadowt2.blend_mode = disp.bgshadowb2.blend_mode = disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
 if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = disp.bgshadowt2.zorder = disp.bgshadowb2.zorder = 900
@@ -12271,7 +12271,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
 	else if (zmenu.alwaysskip && (zmenu.data[0].skip || zmenu.data[0].liner)) zmenu.firstitem = zmenu.target[0].downforce
 
-	disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && opts.dmpart && (prf.DMPIMAGES == "WALLS")
+	disp.bgshadowb2.visible = disp.bgshadowt2.visible = disp.bgshadowb.visible = disp.bgshadowt.visible = zmenu.dmp && opts.dmpart && (prf.DMPIMAGES == "WALLS")
 
 	if ((!zmenu.showing) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
 
@@ -16388,10 +16388,10 @@ function tick(tick_time) {
 			disp.images[i].y = disp.pos0[i] + newpos
 		}
 		
-		/*
-		disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-		disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-		*/
+		
+		disp.bgshadowb.y = disp.pos0[zmenu.selected] + newpos + disp.images[zmenu.selected].height//disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
+		disp.bgshadowt.y = disp.pos0[zmenu.selected] + newpos - disp.bgshadowt.height //disp.images[zmenu.selected].y - disp.bgshadowt.height
+		
 		disp.xstart = newpos
 	
 	}
@@ -17087,6 +17087,7 @@ function tick(tick_time) {
 		groupalpha(255 * flowT.groupbg[1])
 	}
 
+	/*
 	if (checkfade(flowT.dispshadow)){
 		flowT.dispshadow = fadeupdate(flowT.dispshadow)
 
@@ -17098,7 +17099,7 @@ function tick(tick_time) {
 
 		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow[1]
 	}
-
+*/
 	// attract mode surface fade
 	if (checkfade(flowT.attract)) {
 		flowT.attract = fadeupdate(flowT.attract)
