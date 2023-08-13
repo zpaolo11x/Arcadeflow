@@ -2846,14 +2846,14 @@ function i2_newpos(i2_in){
 	i2_in.stepshistory.push(i2_in.stepcurve)
 	i2_in.stepshistory.remove(0)
 
-	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST WAS 0.1
+	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.001) && (i2_in.smoothcurve - i2_in.stepcurve > -0.001)) { //TEST162 WAS 0.1
 		i2_in.smoothcurve = i2_in.stepcurve
 		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
 		//m_surf.redraw = false
 	}
 
 	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
-
+	testpr(i2_in.smoothcurve+"\n")
 	//RETURN THE NEW POSITION
 	return(i2_in.smoothcurve)
 }
@@ -12048,6 +12048,7 @@ local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
 zmenu_surface_container.set_pos (zmenu.x, zmenu.y)
 
 zmenu_surface_container.zorder = 10
+zmenu_surface_container.mipmap = 1
 
 local zmenu_sh = {
 	surf_clamp = null
@@ -12107,12 +12108,12 @@ disp.bgshadowb = disp.bgshadowb2 = zmenu_surface_container.add_image(AF.folder +
 
 disp.bgshadowt.set_rgb(0, 0, 0)
 disp.bgshadowb.set_rgb(0, 0, 0)
-disp.bgshadowt.alpha = 0*255//180 // + 0 * 255 + 0 * 100
-disp.bgshadowb.alpha = 0*255//180 // + 0 * 255 + 0 * 150
+disp.bgshadowt.alpha = 255//180 // + 0 * 255 + 0 * 100
+disp.bgshadowb.alpha = 255//180 // + 0 * 255 + 0 * 150
 disp.bgshadowt2.set_rgb(0, 0, 0)
 disp.bgshadowb2.set_rgb(0, 0, 0)
-disp.bgshadowt2.alpha = 0*255 // 180 + 0 * 255 + 0 * 100
-disp.bgshadowb2.alpha = 0*255 // 180 + 0 * 255 + 0 * 150
+disp.bgshadowt2.alpha = 255 // 180 + 0 * 255 + 0 * 100
+disp.bgshadowb2.alpha = 255 // 180 + 0 * 255 + 0 * 150
 
 disp.bgshadowt2.blend_mode = disp.bgshadowb2.blend_mode = disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
 if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = disp.bgshadowt2.zorder = disp.bgshadowb2.zorder = 900
