@@ -2828,7 +2828,7 @@ function i2_move(i2_in){
 	return (i2_in.smoothcurve != i2_in.stepcurve)
 }
 
-function i2_newpos(i2_in){
+function i2_newpos(i2_in,dbprint){
 
 	// CLAMP MAX AND MIN TARGET
 	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
@@ -2846,14 +2846,14 @@ function i2_newpos(i2_in){
 	i2_in.stepshistory.push(i2_in.stepcurve)
 	i2_in.stepshistory.remove(0)
 
-	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.001) && (i2_in.smoothcurve - i2_in.stepcurve > -0.001)) { //TEST162 WAS 0.1
+	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.01) && (i2_in.smoothcurve - i2_in.stepcurve > -0.01)) { //TEST162 WAS 0.1
 		i2_in.smoothcurve = i2_in.stepcurve
 		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
 		//m_surf.redraw = false
 	}
 
 	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
-	testpr(i2_in.smoothcurve+"\n")
+	if(dbprint)testpr(i2_in.smoothcurve+"\n")
 	//RETURN THE NEW POSITION
 	return(i2_in.smoothcurve)
 }
@@ -12048,7 +12048,7 @@ local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
 zmenu_surface_container.set_pos (zmenu.x, zmenu.y)
 
 zmenu_surface_container.zorder = 10
-zmenu_surface_container.mipmap = 1
+//TEST162 SI O NO? zmenu_surface_container.mipmap = 1
 
 local zmenu_sh = {
 	surf_clamp = null
@@ -12108,12 +12108,12 @@ disp.bgshadowb = disp.bgshadowb2 = zmenu_surface_container.add_image(AF.folder +
 
 disp.bgshadowt.set_rgb(0, 0, 0)
 disp.bgshadowb.set_rgb(0, 0, 0)
-disp.bgshadowt.alpha = 255//180 // + 0 * 255 + 0 * 100
-disp.bgshadowb.alpha = 255//180 // + 0 * 255 + 0 * 150
+disp.bgshadowt.alpha = 0*255//180 // + 0 * 255 + 0 * 100
+disp.bgshadowb.alpha = 0*255//180 // + 0 * 255 + 0 * 150
 disp.bgshadowt2.set_rgb(0, 0, 0)
 disp.bgshadowb2.set_rgb(0, 0, 0)
-disp.bgshadowt2.alpha = 255 // 180 + 0 * 255 + 0 * 100
-disp.bgshadowb2.alpha = 255 // 180 + 0 * 255 + 0 * 150
+disp.bgshadowt2.alpha = 0*255 // 180 + 0 * 255 + 0 * 100
+disp.bgshadowb2.alpha = 0*255 // 180 + 0 * 255 + 0 * 150
 
 disp.bgshadowt2.blend_mode = disp.bgshadowb2.blend_mode = disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
 if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = disp.bgshadowt2.zorder = disp.bgshadowb2.zorder = 900
@@ -12123,6 +12123,11 @@ local zmenu_surface = zmenu_surface_container.add_surface (zmenu.width, zmenu.he
 zmenu_surface.add_image(AF.folder + "pics/black.png", 0, 0, zmenu_surface.width, zmenu_surface.height)
 zmenu.selectedbar = zmenu_surface.add_rectangle(0, 0, zmenu.width, zmenu.tileh)
 zmenu.selectedbar.set_rgb(255, 255, 255)
+
+local selectedbarshader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
+zmenu.selectedbar.shader = selectedbarshader
+selectedbarshader.set_texture_param("texture")
+selectedbarshader.set_param ("pixelheight", 1.0 / zmenu.selectedbar.height)
 
 zmenu.sidelabel = zmenu_surface.add_text("", zmenu.pad, 0, zmenu.width - 2 * zmenu.pad, zmenu.tileh)
 zmenu.sidelabel.char_size = overlay.labelcharsize * 0.8
@@ -12608,6 +12613,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	zmenu.selectedbar.height = zmenu.items[zmenu.selected].height
+	selectedbarshader.set_param ("pixelheight", 1.0 / zmenu.selectedbar.height)
+	testpr((1.0 / zmenu.selectedbar.height)+"\n")
 	//zmenu.selectedbar.width = zmenu.tilew + ((opts.shrink && zmenu.sim) ? -1 * disp.width : 0)
 
 	//this substitutes the row above to have shorter bar
@@ -16384,11 +16391,12 @@ function tick(tick_time) {
 	}
 
 	if (i2_move(disp.i2)){
-		local newpos = i2_newpos(disp.i2)
+		local newpos = i2_newpos(disp.i2,true)
 		for (local i = 0; i < disp.images.len(); i++) {
 			disp.images[i].y = disp.pos0[i] + newpos
+			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
 		}
-		
+		//testpr("\n")
 		
 		disp.bgshadowb.y = disp.pos0[zmenu.selected] + newpos + disp.images[zmenu.selected].height//disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
 		disp.bgshadowt.y = disp.pos0[zmenu.selected] + newpos - disp.bgshadowt.height //disp.images[zmenu.selected].y - disp.bgshadowt.height
@@ -16434,7 +16442,7 @@ function tick(tick_time) {
 	}
 */
 	if (i2_move(zmenu.i2)){
-		local newpos = i2_newpos(zmenu.i2)
+		local newpos = i2_newpos(zmenu.i2,false)
 		for (local i = 0; i < zmenu.shown; i++) {
 			zmenu.items[i].y = zmenu.pos0[i] + newpos
 			zmenu.noteitems[i].y = zmenu.pos0[i] + newpos
