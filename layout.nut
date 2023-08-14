@@ -12118,9 +12118,13 @@ if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = 90
 local zmenu_surface = zmenu_surface_container.add_surface (zmenu.width, zmenu.height)
 
 zmenu_surface.add_image(AF.folder + "pics/black.png", 0, 0, zmenu_surface.width, zmenu_surface.height)
-zmenu.selectedbar = zmenu_surface.add_rectangle(0, 0, zmenu.width, zmenu.tileh)
+zmenu.selectedbar = zmenu_surface.add_image("pics/white.png",0, 0, zmenu.width, zmenu.tileh)
 zmenu.selectedbar.set_rgb(255, 255, 255)
-
+/*
+zmenu.selectedbar.shader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
+zmenu.selectedbar.shader.set_texture_param("texture")
+zmenu.selectedbar.shader.set_param("pixelheight", 1.0 / zmenu.selectedbar.height)
+*/
 zmenu.sidelabel = zmenu_surface.add_text("", zmenu.pad, 0, zmenu.width - 2 * zmenu.pad, zmenu.tileh)
 zmenu.sidelabel.char_size = overlay.labelcharsize * 0.8
 zmenu.sidelabel.margin = 2
@@ -12528,6 +12532,11 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 					}
 					else if (prf.DMPIMAGES == "WALLS") {
 						disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
+						/*
+						disp.images[i].shader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
+						disp.images[i].shader.set_texture_param("texture")
+						disp.images[i].shader.set_param("pixelheight", 1.0 / disp.images[i].height)
+						*/
 					}
 					disp.images[i].preserve_aspect_ratio = true
 					disp.images[i].video_flags = Vid.NoAudio
@@ -12540,6 +12549,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				}
 				else if (prf.DMPIMAGES == "WALLS") {
 					disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
+					disp.images[i].shader.set_param("pixelheight", 1.0 / disp.images[i].height)
 				}
 				disp.images[i].file_name = filename
 				disp.images[i].visible = true
@@ -12608,6 +12618,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	zmenu.selectedbar.height = zmenu.items[zmenu.selected].height
+	//zmenu.selectedbar.shader.set_param("pixelheight", 1.0 / zmenu.selectedbar.height)
 	//zmenu.selectedbar.width = zmenu.tilew + ((opts.shrink && zmenu.sim) ? -1 * disp.width : 0)
 
 	//this substitutes the row above to have shorter bar

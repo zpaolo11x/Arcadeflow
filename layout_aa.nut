@@ -17,7 +17,6 @@ srf2.width = 16 * scale
 srf2.height = 16 * scale
 local pic2 = srf2.add_image("16.png",0,0,16,16)
 
-
 local selectedbarshader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
 selectedbarshader.set_texture_param("texture")
 selectedbarshader.set_param ("pixelheight", 1.0 / 16.0)
