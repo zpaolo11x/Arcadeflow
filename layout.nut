@@ -17100,6 +17100,9 @@ testpr(disp.bgshadowb.alpha+" "+flowT.dispshadow1[1]+" "+flowT.dispshadow1[3]+"\
 		if (endfade(flowT.dispshadow1) == 0) {
 			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 2.0)
 		}
+		else if (endfade(flowT.dispshadow1) == 1) {
+			zmenu.oldselected = zmenu.selected
+		}		
 		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow1[1]
 	}
 
@@ -18047,7 +18050,8 @@ function on_signal(sig) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
 			
 				i2_jumpto(disp.i2, disp.xstop)
-				flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
+
+				if (zmenu.selected != zmenu.oldselected) flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
