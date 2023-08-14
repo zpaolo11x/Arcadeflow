@@ -18043,7 +18043,6 @@ function on_signal(sig) {
 		}
 
 		if (menucheck && ((sig == "up") || (sig == "down") || (sig == "left") || (sig == "right"))) {
-			::print("mcheck\n")
 			if (zmenu_surface.redraw == false) zmenu_freeze(false)
 			AF.zmenu_freezecount = 0
 
