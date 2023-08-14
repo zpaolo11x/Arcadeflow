@@ -6,18 +6,6 @@
 
 // Load file nut
 
-function create_tab(in_v){
-	local ciccio = {
-		pippo = "0"
-		pluto = "1"
-		paperino = in_v
-	}
-	return (ciccio)
-}
-
-local topolino = create_tab(3)
-print(topolino+"\n")
-
 fe.do_nut("nut_file.nut")
 fe.do_nut("nut_textboard_mk4.nut")
 
@@ -16023,13 +16011,13 @@ function tick(tick_time) {
 	*/
 
 	//if (surfdebug) printsrufaces()
-
+	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-	
+	*/
 
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
@@ -17013,7 +17001,7 @@ function tick(tick_time) {
 
 
 	if ((!i2_move(zmenu.i2)) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
-		AF.zmenu_freezecount = 1
+		AF.zmenu_freezecount = 1 //TEST162 OR MAYBE 2?
 	}
 
 
@@ -18055,7 +18043,9 @@ function on_signal(sig) {
 		}
 
 		if (menucheck && ((sig == "up") || (sig == "down") || (sig == "left") || (sig == "right"))) {
+			::print("mcheck\n")
 			if (zmenu_surface.redraw == false) zmenu_freeze(false)
+			AF.zmenu_freezecount = 0
 
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
