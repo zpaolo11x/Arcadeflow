@@ -508,14 +508,10 @@ class textboard_mk4
 		if (!m_surf.visible) return
 
 		if ((m_pong) && (!m_ponging)) {
-			::print("a"+m_pong_count+" "+::fe.layout.time+"\n")
 			if (m_pong_count == 0) {
-				::print("b\n")
 				m_pong_count = ::fe.layout.time + m_pong_delay
-				::print(m_pong_count+"\n")
 			}
 			else if (m_pong_count <= ::fe.layout.time) {
-				::print("c\n")
 				m_ponging = true
 				m_pong_count = 0
 				if (m_pong_up) m_y_pong_speed = -(m_pong_speed * m_line_height * 1.0 / 1000) else m_y_pong_speed = 1.0 * (m_pong_speed * m_line_height * 1.0 / 1000)
@@ -734,9 +730,7 @@ class textboard_mk4
 	}
 
 	function set_viewport(y) {
-		::print("             y:"+y+"\n")
 		if (y <= 0) {
-			::print("Y1\n")
 			y = 0
 			m_object.y = m_y_zero
 			m_hint_new = 1
@@ -744,7 +738,6 @@ class textboard_mk4
 			if (m_ponging && (m_y_pong_speed > 0)) pong_up()
 		}
 		else if (y >= m_viewport_max_y) {
-			::print("Y2\n")
 			y = m_viewport_max_y
 			m_object.y = m_y_zero
 			m_hint_new = m_max_hint
