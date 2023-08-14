@@ -16013,7 +16013,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-testpr(disp.bgshadowb.alpha+" "+flowT.dispshadow1[1]+" "+flowT.dispshadow1[3]+"\n")
+
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16023,13 +16023,13 @@ testpr(disp.bgshadowb.alpha+" "+flowT.dispshadow1[1]+" "+flowT.dispshadow1[3]+"\
 	*/
 
 	//if (surfdebug) printsrufaces()
-	/*
+
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
 	(zmenu_surface.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-	*/
+	
 
 	// Freeze artwork counter
 	foreach (i, item in tilez) {

@@ -804,7 +804,6 @@ class textboard_mk4
 	}
 
 	function pong_down() {
-		::print("DOWN\n")
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = false
@@ -812,7 +811,6 @@ class textboard_mk4
 	}
 
 	function pong_up() {
-		::print("UP\n")
 		m_ponging = false
 		m_pong_count = 0
 		m_pong_up = true
