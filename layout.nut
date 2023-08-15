@@ -7378,6 +7378,13 @@ function picsize(obj, sizex, sizey, offx, offy) {
 	obj.origin_y = obj.height * 0.5 + offy * obj.height
 }
 
+function piczoom(image_obj, rate){
+	image_obj.subimg_x = image_obj.texture_width * rate
+	image_obj.subimg_y = image_obj.texture_height * rate
+	image_obj.subimg_width = image_obj.texture_width * (1.0 - 2.0 * rate)
+	image_obj.subimg_height = image_obj.texture_height * (1.0 - 2.0 * rate)
+}
+
 function recalculate(str) {
 	if (str.len() == 0) return ""
 	str = str.tolower()
@@ -11801,6 +11808,8 @@ local disp = {
 	noskip = []
 	bgshadowt = null
 	bgshadowb = null
+	dispzoom = []
+	zoomrate = 0.05
 
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
@@ -12514,6 +12523,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 					disp.images.push(null)
 					disp.pos0.push(null)
+					disp.dispzoom.push(null)
 					// Create the image item and apply all default values to that
 					if (prf.DMPIMAGES == "ARTWORK") {
 						disp.images[i] = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 + pad + disp.noskip[i] * disp.spacing, disp.tilew - 2.0 * pad, disp.tileh - 2.0 * pad)
@@ -12538,6 +12548,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				else if (prf.DMPIMAGES == "WALLS") {
 					disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
 					disp.images[i].shader.set_param("pixelheight", 1.0 / disp.images[i].height)
+					disp.dispzoom[i] = [0.0, 0.0, 0.0, 0.0, 0.0]
 				}
 				disp.images[i].file_name = filename
 				disp.images[i].visible = true
@@ -12589,9 +12600,13 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		foreach (id, item in disp.images) {
 			item.y = disp.pos0[id] + disp.xstop
 		}
-		disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-		disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-		disp.bgshadowt.alpha = disp.bgshadowb.alpha = 180
+		if (prf.DMPIMAGES == "WALLS") {
+			disp.dispzoom[zmenu.selected] = [0.0, 1.0, 0.0, 0.0, 0.0]
+			piczoom(disp.images[zmenu.selected], disp.zoomrate)
+			disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
+			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
+			disp.bgshadowt.alpha = disp.bgshadowb.alpha = 180
+		}
 		//TEST162 RESET FLOW HERE?
 		//TEST162 add alpha here
 		//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
@@ -17092,11 +17107,20 @@ function tick(tick_time) {
 		groupalpha(255 * flowT.groupbg[1])
 	}
 
+	if (zmenu.showing && zmenu.dmp && (prf.DMPIMAGES == "WALLS")){
+		foreach (i, item in disp.dispzoom){
+			if (checkfade(disp.dispzoom[i])){
+				disp.dispzoom[i] = fadeupdate(disp.dispzoom[i])
+				piczoom(disp.images[i], disp.dispzoom[i][1] * disp.zoomrate)
+			}
+		}
+	}
 
 	if (checkfade(flowT.dispshadow1)){
 		flowT.dispshadow1 = fadeupdate(flowT.dispshadow1)
 
 		if (endfade(flowT.dispshadow1) == 0) {
+			disp.dispzoom[zmenu.selected] = startfade(disp.dispzoom[zmenu.selected], 0.1, 1.0)
 			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 2.0)
 		}
 		else if (endfade(flowT.dispshadow1) == 1) {
@@ -17731,6 +17755,7 @@ function ra_selectemu(startemu) {
 	})
 }
 
+
 /// On Signal ///
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
@@ -18051,7 +18076,11 @@ function on_signal(sig) {
 			
 				i2_jumpto(disp.i2, disp.xstop)
 
-				if (zmenu.selected != zmenu.oldselected) flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
+				if (zmenu.selected != zmenu.oldselected) {
+					disp.dispzoom[zmenu.oldselected] = startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
+
+					flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
+				}
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
