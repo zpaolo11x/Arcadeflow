@@ -282,6 +282,7 @@ class textboard_mk4
 	}
 
 	function mi2_impulse(deltain) {
+		m_freezer = 0
 		m_i2.delta = deltain
 		/*
 		if (::fabs(m_i2.smoothcurve - m_i2.stepcurve) <= 2) { //TEST WAS == 0
