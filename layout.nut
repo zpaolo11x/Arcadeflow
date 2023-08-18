@@ -10681,8 +10681,8 @@ function groupalpha(alphain) {
 	data_surface.alpha = alphain
 	data_surface_sh_rt.alpha = themeT.mainshadow * alphain / 255.0
 	foreach (i, item in tilez) {
-		item.alphafade = alphain
-		item.obj.alpha = item.alphazero * item.alphafade / 255.0
+			item.alphafade = alphain
+			item.obj.alpha = item.alphazero * item.alphafade / 255.0
 	}
 }
 
@@ -17103,7 +17103,6 @@ function tick(tick_time) {
 
 	if (checkfade(flowT.groupbg)) {
 		flowT.groupbg = fadeupdate(flowT.groupbg)
-
 		groupalpha(255 * flowT.groupbg[1])
 	}
 
