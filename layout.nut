@@ -40,6 +40,7 @@ l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimension
 */
 
 //EASE PRINT
+
 local easeprint = {
 	status = false
 	counter = 0
@@ -10681,8 +10682,8 @@ function groupalpha(alphain) {
 	data_surface.alpha = alphain
 	data_surface_sh_rt.alpha = themeT.mainshadow * alphain / 255.0
 	foreach (i, item in tilez) {
-			item.alphafade = alphain
-			item.obj.alpha = item.alphazero * item.alphafade / 255.0
+		item.alphafade = alphain
+		item.obj.alpha = item.alphazero * item.alphafade / 255.0
 	}
 }
 
