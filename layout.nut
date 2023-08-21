@@ -3489,7 +3489,7 @@ function msgbox_scrollerrefresh(inline){
 }
 
 function msgbox_refresh(){
-	AF.msgbox.obj.msg = AF.msgbox.title + "\n\n" + AF.msgbox.body
+	AF.msgbox.obj.msg = char_replace(AF.msgbox.title + "\n\n" + AF.msgbox.body, nbsp, " ")
 	AF.msgbox.numlines = AF.msgbox.obj.lines_total
 	AF.msgbox.visiblelines = AF.msgbox.obj.lines
 	msgbox_scrollerrefresh(1)
@@ -4568,6 +4568,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
+	testpr("A\n")
 	msgbox_open("Update All Games Collections", "", function(){
 		fe.signal("back")
 		fe.signal("back")
