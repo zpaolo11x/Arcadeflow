@@ -7880,6 +7880,7 @@ frost.surf_1 = frost.surf_2.add_surface(frostpic.w, frostpic.h)
 
 frost.surf_1.mipmap = 1
 frost.pic = frost.surf_1.add_clone(fl.surf)
+frost.pic.alpha = 255
 frost.pic.mipmap = 1
 frost.pic.set_pos (frost.picT.x, frost.picT.y, frost.picT.w, frost.picT.h)
 
