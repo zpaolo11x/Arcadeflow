@@ -47,7 +47,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = true
+	timer = false
 	name = ""
 	t1 = 0
 	t2 = 0
@@ -6747,7 +6747,7 @@ function getallgamesdb(logopic) {
 	if (prf.SPLASHON) {
 		AF.bootplane1 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
 		AF.bootplane1.alpha = 128
-		AF.bootplane1.set_rgb(200, 0, 0)
+		AF.bootplane1.set_rgb(0, 0, 0)
 	} else {
 		//textobj = fe.add_text("", logopic.x + logopic.width * (1.0 - text_ratio) * 0.5, logopic.y + logopic.height - text_charsize * 0.5, logopic.width * text_ratio, text_charsize * 1.2)
 		AF.boottext = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
@@ -13981,7 +13981,7 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_textboard_mk4("", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
@@ -13989,10 +13989,10 @@ AF.msgbox.obj.bg_alpha = 220
 AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
-AF.msgbox.obj.enable_signals = false
+try{AF.msgbox.obj.enable_signals = false}catch(err){}
 try{AF.msgbox.obj.enable_transition = false}catch(err){}
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
-AF.msgbox.obj.scroll_pulse = 0.20005
+try{AF.msgbox.obj.scroll_pulse = 0.20005}catch(err){}
 try{AF.msgbox.obj.expand_tokens = false}catch(err){}
 AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
@@ -17784,32 +17784,32 @@ function on_signal(sig) {
 		}
 		else if (sig == "up") {
 			if (checkrepeat(count.up)) {
-				AF.msgbox.obj.line_down()
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+				AF.msgbox.obj.first_line_hint--//AF.msgbox.obj.line_down()
+				msgbox_scrollerrefresh(AF.msgbox.obj.first_line_hint)
 				count.up ++
 			}
 			return true
 		}
 		else if (sig == "down") {
 			if (checkrepeat(count.down)) {
-				AF.msgbox.obj.line_up()
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+				AF.msgbox.obj.first_line_hint++//AF.msgbox.obj.line_up()
+				msgbox_scrollerrefresh(AF.msgbox.obj.first_line_hint)
 				count.down ++
 			}
 			return true
 		}
 		else if (sig == "left") {
 			if (checkrepeat(count.left)) {
-				AF.msgbox.obj.goto_line(AF.msgbox.obj.target_line - AF.msgbox.visiblelines)
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+				AF.msgbox.obj.first_line_hint = (AF.msgbox.obj.first_line_hint - AF.msgbox.visiblelines)
+				msgbox_scrollerrefresh(AF.msgbox.obj.first_line_hint)
 				count.left ++
 			}
 			return true
 		}
 		else if (sig == "right") {
 			if (checkrepeat(count.right)) {
-				AF.msgbox.obj.goto_line(AF.msgbox.obj.target_line + AF.msgbox.visiblelines)
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+				AF.msgbox.obj.first_line_hint = (AF.msgbox.obj.first_line_hint + AF.msgbox.visiblelines)
+				msgbox_scrollerrefresh(AF.msgbox.obj.first_line_hint)
 				count.right ++
 			}
 			return true
