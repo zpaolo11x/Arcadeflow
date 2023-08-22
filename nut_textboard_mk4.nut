@@ -504,7 +504,11 @@ class textboard_mk4
 			m_surf.redraw = false
 		}
 
-		if (m_freezer == 2) m_freezer --
+		if (m_freezer == 2) {
+			m_surf.clear = true
+			m_surf.redraw = true		
+			m_freezer --
+		}
 
 		if (!m_surf.visible) return
 

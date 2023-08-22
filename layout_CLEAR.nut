@@ -5,9 +5,7 @@
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
-
 fe.do_nut("nut_file.nut")
-fe.do_nut("nut_textboard_mk4.nut")
 
 local comma = ','.tochar()
 local nbsp = "^"
@@ -40,7 +38,6 @@ l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimension
 */
 
 //EASE PRINT
-
 local easeprint = {
 	status = false
 	counter = 0
@@ -142,7 +139,6 @@ local AF = {
 		numlines = 0
 		visiblelines = 0
 		lock = false
-		inline = 0
 	}
 	
 	tsc = 1.0 // Scaling of timer for different parameters
@@ -447,10 +443,6 @@ function splash_progress(i, init, max) {
 }
 
 if (FeVersionNum < 300) splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.0+",5)
-
-try{print("testlines"+AF.splash.text.lines+"\n")} catch(err) {
-	fe.overlay.edit_dialog("Arcadeflow requires AM+ build #352+","")
-}
 
 /// Config management ///
 
@@ -1122,7 +1114,6 @@ AF.prefs.l1.push([
 {v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45, 0.65, 0.75, -1.0], selection = 1},
 {v = 7.2, varname = "HISTORYPANEL", glyph = 0xe923, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true, false], selection = 0},
 {v = 7.2, varname = "DARKPANEL", glyph = 0xe923, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true, false, null], selection = 1},
-{v = 16.2, varname = "TEXTSCROLL", glyph = 0xe923, title = "Text scroll", help = "Select if you want to manually scroll history text, or automatically scroll", options = ["Manual", "Auto"], values = ["manual", "auto"], selection = 0},
 {v = 8.2, varname = "HISTMININAME", glyph = 0xe923, title = "Detailed game data", help = "Show extra data after the game name before the history text", options = ["Yes", "No"], values = [false, true], selection = 0},
 {v = 14.5, varname = "CONTROLOVERLAY", glyph = 0xe923, title = "Control panel overlay", help = "Show controller and buttons overlay on history page", options = ["Always", "Never", "Arcade only"], values = ["always", "never", "arcade"], selection = 0},
 ])
@@ -1318,7 +1309,6 @@ function abouttext() {
 		if (AF.prefs.l0[i].label != "") {
 			about.push("#### " + AF.prefs.l0[i].label + "\n")
 			about.push(AF.prefs.l0[i].description + "\n")
-			
 			about.push("\n")
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				try {
@@ -1328,7 +1318,6 @@ function abouttext() {
 				}
 			}
 			about.push("\n")
-		
 		}
 	}
 	return (about)
@@ -1356,7 +1345,7 @@ function historytext() {
 	return history
 }
 
-function buildreadme(separator = false, include_history = true) {
+function buildreadme(separator=false) {
 	local infile = null
 	local readme = []
 
@@ -1388,27 +1377,18 @@ function buildreadme(separator = false, include_history = true) {
 
 	if (separator) readme.insert(readme.len() - 2, AF.msgbox.separator1+"\n")
 
-	local optionstext = abouttext()
-	foreach(i, item in optionstext){
-		optionstext[i] = char_replace(item, "❗", "!")
-	}
+	readme.extend(abouttext())
 
-	readme.extend(optionstext)
+	if (separator) readme.push(AF.msgbox.separator1+"\n")
 
-	if (include_history){
-		if (separator) readme.push(AF.msgbox.separator1+"\n")
-		readme.push("## Previous versions history #\n\n")
-		readme.extend(historytext())
-	}
-
-	if (separator) readme.push(AF.msgbox.separator2)
+	readme.push("## Previous versions history #\n\n")
+	readme.extend(historytext())
 
 	return readme
-/*
+
 	foreach (i, item in readme) {
 		print(item)
 	}
-*/
 }
 
 function savereadme() {
@@ -1883,7 +1863,7 @@ local z_var = 0
 
 // Fade data: [0 - FADE COUNTER, 1 - FADE VALUE, 2 - FADE STARTER, 3 - FADE INCREASER, 4 - FADE EASER]
 // FADE COUNTER counts from 0 to 1 (if FADE INCREASER > 0) or from 1 to 0 (FADE INCREASER < 0) linearly
-// FADE VALUE is a fade value calculated from FADE COUNTER based on FADE EASER: 1.0 linear, n.0 ease start, -n.0 ease stop
+// FADE VALUE is a fade value calculated from FADE COUNTER based on FADE EASER: 0.0 linear, n.0 ease start, -n.0 ease stop
 // FADE STARTER is the counter value at which the fade is when changing fade,
 // it should be equal to FADE VALUE and FADE COUNTER when initializing the variable,
 // is used for incremental non-linear fading and shouldn't be touched if not by startfade function
@@ -1911,8 +1891,6 @@ local flowT = {
 	zmenush = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenutx = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenudecoration = [0.0, 0.0, 0.0, 0.0, 0.0]
-
-	dispshadow1 = [0.0, 1.0, 0.0, 0.0, 0.0]
 
 	// Blur effect intensity
 	frostblur = [0.0, 0.0, 0.0, 0.0, 0.0]
@@ -2215,6 +2193,7 @@ local count = {
 count.movestep = count.movestepslow
 
 local globalposnew = 0
+local	surfacePos = 0
 
 local impulse2 = {
 	delta = 0
@@ -2227,7 +2206,6 @@ local impulse2 = {
 	samples = 13 //13 o 15?
 	filtern = 1
 	maxoffset = null
-	moving = true
 }
 
 local filterw = array(impulse2.samples, 1.0)
@@ -2656,11 +2634,6 @@ local spdT = {
 	dataspeedout = 0.88
 }
 
-local spdT2 = {
-	disp = 0.15
-	zmenu = 0.2
-}
-
 // Video delay parameters to skip fade-in
 local vidstarter = 10000
 local delayvid = vidstarter - 60 * prf.THUMBVIDELAY
@@ -2740,113 +2713,6 @@ if (UI.vertical) {
 }
 local key_selected = [0, 0]
 local keyboard_entrytext = ""
-
-/// IMPULSE2 ENGINE ///
-
-function i2_create(in_samples){
-	local i2_in = {
-		delta = 0
-		
-		stepcurve = 0
-		stepcurve_f = 0
-		stepshistory = null
-
-		smoothcurve0 = 0
-		smoothcurve = 0
-		
-		pulse_speed = 0.2
-
-		pos0 = 0
-		pos = 0
-		
-		samples = 5
-
-		filter = []
-		f_pulse = []	
-		f_triangle = []
-
-		limit_lo = -100000000
-		limit_hi = 10000000
-	}
-
-	i2_in.samples = in_samples
-
-	// Create pulse and triangle filters:
-	// [0,0,0,0,1] and [1,2,3,2,1] 	
-	i2_in.f_pulse = array(i2_in.samples, 0.0)		
-	i2_in.f_pulse[i2_in.samples - 1] = 1.0
-
-	i2_in.f_triangle = array(i2_in.samples, 1.0)
-	for(local i = 0; i < (i2_in.samples - 1) * 0.5 + 1; i++) {
-		i2_in.f_triangle[i] = i2_in.f_triangle[i2_in.samples - i - 1] = i + 1
-	}
-
-	i2_in.stepshistory = array(i2_in.samples, 0.0)
-
-	return (i2_in)
-}
-
-function i2_pulse(i2_in, delta_in){
-	i2_in.delta = delta_in //SERVE???
-	i2_in.filter = i2_in.f_triangle
-	i2_in.stepcurve += i2_in.delta
-}
-
-function i2_jumpto(i2_in, new_pos){
-	i2_in.filter = i2_in.f_triangle
-	i2_in.stepcurve = new_pos
-}
-
-function i2_setpos(i2_in, new_pos){
-	//i2_in.filter = i2_in.f_triangle
-	i2_in.stepcurve = i2_in.smoothcurve = new_pos
-	i2_in.stepshistory = array(i2_in.samples, new_pos)
-}
-
-function i2_getfiltered(arrayin, arrayw) {
-	local sumv = 0
-	local sumw = 0
-	foreach (i, item in arrayin) {
-		sumv += arrayin[i] * arrayw[i]
-		sumw += arrayw[i]
-	}
-	return sumv * 1.0 / sumw
-}
-
-function i2_move(i2_in){
-	if (i2_in == null) return false
-	return (i2_in.smoothcurve != i2_in.stepcurve)
-}
-
-function i2_newpos(i2_in,dbprint){
-
-	// CLAMP MAX AND MIN TARGET
-	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
-	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
-	
-	i2_in.stepcurve_f = i2_getfiltered(i2_in.stepshistory, i2_in.filter)
-
-	//CLAMP MAX SPEED HERE???
-
-	i2_in.smoothcurve0 = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
-	i2_in.pos0 = i2_in.smoothcurve0 - i2_in.stepcurve
-
-	i2_in.smoothcurve = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
-
-	i2_in.stepshistory.push(i2_in.stepcurve)
-	i2_in.stepshistory.remove(0)
-
-	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
-		i2_in.smoothcurve = i2_in.stepcurve
-		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
-		//m_surf.redraw = false
-	}
-
-	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
-	if(dbprint)testpr(i2_in.smoothcurve+"\n")
-	//RETURN THE NEW POSITION
-	return(i2_in.smoothcurve)
-}
 
 /// RELOCATED FUNCTIONS ///
 
@@ -3432,11 +3298,10 @@ function msgbox_addlinebelow(text, row = 1){
 }
 
 function msgbox_wrapline(text, columns) {
-	if (text == "") return ""
+	if (text == "") return "\n"
 
    local lines = []
    local currentline = ""
-	local linesnum = 0
 
    // Split the text into words
    local words = split(text," ")
@@ -3445,7 +3310,6 @@ function msgbox_wrapline(text, columns) {
 		// If adding the word exceeds the column limit, start a new line
       if (currentline.len() + word.len() > columns) {
          lines.push(strip(currentline))
-			linesnum ++
          currentline = ""
       }
       // Add the word to the current line
@@ -3455,12 +3319,11 @@ function msgbox_wrapline(text, columns) {
 	// Add the remaining line
 	if (currentline.len() > 0) {
 		lines.push(strip(currentline))
-		linesnum ++
 	}
 
 	local out = ""
-	foreach (i, item in lines){
-		out = out + item + ((i == linesnum - 1) ? "" : "\n")
+	foreach (item in lines){
+		out = out + item + "\n"
 	}
 
    // Return the formatted lines
@@ -3470,36 +3333,29 @@ function msgbox_wrapline(text, columns) {
 function msgbox_wraptext(text, columns){
 	local lines = split_complete(text,"\n")
 	local out = ""
-	local linesnum = lines.len()
-	foreach(i, line in lines){
-		out = out + msgbox_wrapline(line, columns) + ((i == linesnum - 1) ? "" : "\n")
+	foreach(line in lines){
+		out = out + msgbox_wrapline(line, columns)
 	}
 	return out
 }
 
-function msgbox_scrollerrefresh(inline){
+function msgbox_scrollerrefresh(){
 	if (AF.msgbox.visiblelines >= AF.msgbox.numlines) {
 		AF.msgbox.scroller.y = fl.y + 50 * UI.scalerate
 		AF.msgbox.scroller.height = fl.h - 2 * 50 * UI.scalerate
 	}
 	else {
-		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (inline - 1) * 1.0 / AF.msgbox.numlines)
+		AF.msgbox.scroller.y = fl.y + floor (50 * UI.scalerate + (fl.h - 2 * 50 * UI.scalerate) * (AF.msgbox.obj.first_line_hint - 1) * 1.0 / AF.msgbox.numlines)
 		AF.msgbox.scroller.height = floor (min (AF.msgbox.visiblelines * (fl.h - 2 * 50 * UI.scalerate) * 1.0 / AF.msgbox.numlines, fl.h - 2 * 50 * UI.scalerate))
 	}
 }
 
 function msgbox_refresh(){
-	AF.msgbox.obj.msg = char_replace(AF.msgbox.title + "\n\n" + AF.msgbox.body, nbsp, " ")
-	AF.msgbox.numlines = AF.msgbox.obj.lines_total
-	AF.msgbox.visiblelines = AF.msgbox.obj.lines
-	msgbox_scrollerrefresh(1)
-	/*
-	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
+	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body + "\n", AF.msgbox.columns)
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
-	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() 
-	msgbox_scrollerrefresh(1)
-	*/
+	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() - 2
+	msgbox_scrollerrefresh()
 }
 
 function msgbox_newtitle(text){
@@ -3509,12 +3365,6 @@ function msgbox_newtitle(text){
 
 function msgbox_newbody(text){
 	AF.msgbox.body = text
-	msgbox_refresh()
-}
-
-function msgbox_newdata(title, body){
-	AF.msgbox.title = title
-	AF.msgbox.body = body
 	msgbox_refresh()
 }
 
@@ -3529,11 +3379,12 @@ function msgbox_addlinebottom(text){
 
 function msgbox_open(title, message, backfunction = null){
 	AF.msgbox.lock = false
-	msgbox_newdata(title, message)
+	msgbox_newtitle(title)
+	msgbox_newbody(message)
 	AF.msgbox.back = backfunction
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = true
-	//AF.msgbox.obj.first_line_hint = 1
-	msgbox_scrollerrefresh(1)
+	AF.msgbox.obj.first_line_hint = 1
+	msgbox_scrollerrefresh()
 }
 
 function msgbox_lock(status){
@@ -3541,7 +3392,8 @@ function msgbox_lock(status){
 }
 
 function msgbox_close(){
-	msgbox_newdata("", "")
+	msgbox_newtitle("")
+	msgbox_newbody("")
 	AF.msgbox.back = null
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false	
 }
@@ -4568,8 +4420,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	testpr("A\n")
-	msgbox_open("Update All Games Collections", "", function(){ //TEST162 CHANGE TITLE!
+	msgbox_open("Update All Games Collections", "", function(){
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -7380,13 +7231,6 @@ function picsize(obj, sizex, sizey, offx, offy) {
 	obj.origin_y = obj.height * 0.5 + offy * obj.height
 }
 
-function piczoom(image_obj, rate){
-	image_obj.subimg_x = image_obj.texture_width * rate
-	image_obj.subimg_y = image_obj.texture_height * rate
-	image_obj.subimg_width = image_obj.texture_width * (1.0 - 2.0 * rate)
-	image_obj.subimg_height = image_obj.texture_height * (1.0 - 2.0 * rate)
-}
-
 function recalculate(str) {
 	if (str.len() == 0) return ""
 	str = str.tolower()
@@ -9531,7 +9375,7 @@ function optionsmenu_lev3() {
 //Second menu level
 function optionsmenu_lev2() {
 	prfmenu.level = 2
-	zmenu.oldselected = zmenu.selected = prfmenu.outres1
+	zmenu.selected = prfmenu.outres1
 
 	updatemenu(prfmenu.level, prfmenu.outres1)
 
@@ -9696,7 +9540,6 @@ function optionsmenu_lev1() {
 	function() {
 		for (local i = zmenu.selected; i < items.len(); i++) {
 			if (zmenu.data[i].liner) {
-				zmenu.oldselected = zmenu.selected
 				zmenu.selected = i + 1
 				break
 			}
@@ -11013,7 +10856,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 8 * hist_textT.linesize, hist_textT.w, hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", 0, 9.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9.25 * hist_textT.linesize,hist_text_surf)
+				descr = hist_text_surf.add_text("", 0, 9 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9 * hist_textT.linesize)
 			}
 		}
 		else if (hist.panel_ar <= 1.0) { // DEFAULT PANEL STRUCTURE, UP TO AR = 1.0
@@ -11030,7 +10873,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				buttn = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 4 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 				ratng = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 5 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
+				descr = hist_text_surf.add_text("", 0, 7 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7 * hist_textT.linesize)
 			}
 
 		}
@@ -11051,7 +10894,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 9 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3 * hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, 0.25 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 0.25 * hist_textT.linesize, hist_text_surf)
+				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, 0 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h)
 			}
 
 		}
@@ -11073,7 +10916,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.75 * hist_textT.linesize), hist_text_surf)
+				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.5 * hist_textT.linesize))
 			}
 
 		}
@@ -11094,7 +10937,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				tags  = hist_text_surf.add_text("", 0, 6.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
 			//	compl = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 6 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
+				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize)
 			}
 		}
 		else  { // LONG PANEL STRUCTURE AR > 1.0
@@ -11113,7 +10956,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3.0 * hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
+				descr = hist_text_surf.add_text("", hist_textT.w * hist_textT.split2, 1.5 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - hist_textT.linesize)
 			}
 		}
 	}
@@ -11130,20 +10973,29 @@ else { //LOW RES MODE
 		buttn = null
 		ratng = null
 		tags = null
-		descr = fe.add_textboard_mk4("", 0, 0, (UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w * 0.58 : hist_textT.w, hist_textT.h, hist_text_surf)
+		descr = hist_text_surf.add_text("", 0, 0, (UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w * 0.58 : hist_textT.w, hist_textT.h)
 	}
 }
-
-
-
-//local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad4.glsl")
-//gradshader.set_texture_param("texture")
+local gradshader = fe.add_shader (Shader.Fragment, "glsl/blackgrad3.glsl")
+gradshader.set_texture_param("texture")
 //gradshader.set_param ("limits", 0.2, 0.05, 0.5)
 //gradshader.set_param ("limits", (40 * UI.scalerate * 1.7) / hist_textT.h, 40 * UI.scalerate * 5.0 / hist_textT.h)
 
+function descrshader(enable) {
+	if (!UI.vertical) {
+		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.25 / hist_textT.h : 0.0, hist_textT.linesize * 3.0 / hist_textT.h)
+		gradshader.set_param ("blanker", 0.0, (hist_text.descr.y + 3) * 1.0 / hist_textT.h)
+	}
+	else {
+		gradshader.set_param ("limits", enable ? hist_textT.linesize * 1.25 / hist_textT.h : 0.0, hist_textT.linesize * 3.0 / hist_textT.h)
+		gradshader.set_param ("blanker", hist_text.descr.x * 1.0 / hist_textT.w, (hist_text.descr.y + 3) * 1.0 / hist_textT.h)
+	}
+}
+
+descrshader(false)
 
 foreach (item in hist_text) {
-	if ((item != null) && (item != "descr")){
+	if (item != null) {
 		item.word_wrap = false
 		item.char_size = hist_textT.charsize
 		item.visible = true
@@ -11153,41 +11005,17 @@ foreach (item in hist_text) {
 	}
 }
 
-hist_text.descr.char_size = hist_textT.charsize
 hist_text.descr.line_spacing = 1.15
-hist_text.descr.align = Align.TopCentre
-hist_text.descr.word_wrap = true
-hist_text.descr.margin = 0.3 * hist_textT.linesize
-hist_text.descr.visible = true
-hist_text.descr.scroll_pulse = 0.15
-hist_text.descr.pingpong_speed = 0.5
-hist_text.descr.lines_bottom = 3.0
-hist_text.descr.lines_top = 0.7
-try{hist_text.descr.expand_tokens = false}catch(err){}
-hist_text.descr.enable_signals = false
-try{hist_text.descr.enable_transition = false}catch(err){}
-hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
-hist_text.descr.pingpong_delay = 3
-
-/*
-local olay = hist_text_surf.add_rectangle(hist_text.descr.x + hist_text.descr.margin, hist_text.descr.y + hist_text.descr.margin, hist_text.descr.width - 2.0 * hist_text.descr.margin, hist_text.descr.height - 2.0 * hist_text.descr.margin)
-olay.set_rgb(200,0,0)
-olay.alpha = 100
-local olay2 = hist_text_surf.add_rectangle(hist_text.descr.x, hist_text.descr.y, hist_text.descr.width, hist_text.descr.height)
-olay2.set_rgb(0,200,0)
-olay2.alpha = 100
-*/
-
 pixelizefont(hist_text.descr, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize), 0.7 * 1.15)
-//hist_text.descr.y = hist_text.descr.y + floor(0.25 * hist_textT.linesize)
-//hist_text.descr.height = hist_text.descr.height - floor(0.25 * hist_textT.linesize)
+hist_text.descr.y = hist_text.descr.y + 0.25 * hist_textT.linesize
+hist_text.descr.height = hist_text.descr.height - 0.25 * hist_textT.linesize
 
 if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
 	hist_text.title.margin = 0
 	hist_text.title.word_wrap = true
 	//hist_text.tags.align = Align.TopLeft
-	//TESTX hist_text.descr.first_line_hint = 1
+	hist_text.descr.first_line_hint = 1
 	hist_text.title.x = hist_text.title.x + 1 //Add fake 1 pixel margin to title
 	hist_text.title.width = hist_text.title.width -2
 }
@@ -11234,11 +11062,11 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)) {
 }
 
 if (prf.HISTORYPANEL) {
-	//TEST162 hist_text_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
+	hist_text_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 	hist_text_surf.set_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 }
 else {
-	//TEST162 hist_text_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
+	hist_text_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	hist_text_surf.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 }
 
@@ -11510,7 +11338,7 @@ function history_updatesnap() {
 
 function history_updatetext() {
 	hist_title.file_name = fe.get_art ("wheel")
-	//TESTX hist_text.descr.first_line_hint = 1
+	hist_text.descr.first_line_hint = 1
 
 	local char_rows = (((hist_titleT.w / hist_titleT.h) > 3.0) ? 2 : 3)
 	local charfontsize = 1.1 * hist_titleT.h / char_rows
@@ -11531,7 +11359,7 @@ function history_updatetext() {
 	hist_titletxt_bd.visible = hist_titletxt.visible = (hist_title.subimg_height == 0)
 	if (prf.HISTORYPANEL) hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
-	//TEST162 hist_text.descr.shader = gradshader
+	hist_text_surf.shader = gradshader
 
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
@@ -11546,20 +11374,19 @@ function history_updatetext() {
 		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
 	}
 	else if (prf.SMALLSCREEN) {
-		local temptext = ""
-		temptext = z_list.gametable[z_list.index].z_title + "\n\n"
-		temptext = temptext + "©" + z_list.gametable[z_list.index].z_year + " " + gly(0xe906) + z_list.gametable[z_list.index].z_manufacturer
-		temptext = temptext + gly(0xe90b) + z_list.gametable[z_list.index].z_system + "\n"
-		temptext = temptext + gly(0xe902) + z_list.gametable[z_list.index].z_category + " "
-		temptext = temptext + gly(0xe905) + z_list.gametable[z_list.index].z_series + "\n"
-		temptext = temptext + gly(0xe903) + " "
+		hist_text.descr.msg = z_list.gametable[z_list.index].z_title + "\n\n"
+		hist_text.descr.msg = hist_text.descr.msg + "©" + z_list.gametable[z_list.index].z_year + " " + gly(0xe906) + z_list.gametable[z_list.index].z_manufacturer
+		hist_text.descr.msg = hist_text.descr.msg + gly(0xe90b) + z_list.gametable[z_list.index].z_system + "\n"
+		hist_text.descr.msg = hist_text.descr.msg + gly(0xe902) + z_list.gametable[z_list.index].z_category + " "
+		hist_text.descr.msg = hist_text.descr.msg + gly(0xe905) + z_list.gametable[z_list.index].z_series + "\n"
+		hist_text.descr.msg = hist_text.descr.msg + gly(0xe903) + " "
 		foreach (i, item in z_list.gametable2[z_list.index].z_tags) {
-			temptext = temptext + item
+			hist_text.descr.msg = hist_text.descr.msg + item
 			if (i < z_list.gametable2[z_list.index].z_tags.len() - 1)
-				temptext = temptext + ", "
+				hist_text.descr.msg = hist_text.descr.msg + ", "
 		}
-		temptext = temptext + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
-		hist_text.descr.msg = temptext
+		hist_text.descr.msg = hist_text.descr.msg + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
+
 	}
 	else {
 		hist_text.title.msg = z_list.gametable[z_list.index].z_title
@@ -11610,21 +11437,24 @@ function history_updatetext() {
 	local tempdesc3 = "" //this comes from the overview
 	tempdesc3 = fe.game_info(Info.Overview)
 
-	if (tempdesc3 != "") tempdesc = tempdesc3// + "\n\n"
+	if (tempdesc3 != "") tempdesc = tempdesc3 + "\n\n"
 
 	local tempdesc2 = "" //This comes from the romlist
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc2 = tempdesc2 + item + "\n"
 	if ((tempdesc2 != "?") && (tempdesc2 != "")) {
-		tempdesc = tempdesc2// + "\n\n"
+		tempdesc = tempdesc2 + "\n\n"
 	}
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
-	tempdesc = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
+	hist_text.descr.msg = tempdesc + "ROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus + "\n"
+	hist_text.descr.align = Align.TopCentre
+	hist_text.descr.word_wrap = true
+	hist_text.descr.first_line_hint = 1
+	hist_text.descr.margin = 0.3 * hist_textT.linesize
 
-	hist_text.descr.msg = tempdesc
-	
+	descrshader(false)
 }
 
 function history_show(h_startup)
@@ -11641,7 +11471,6 @@ function history_show(h_startup)
 
 	if (h_startup) {
 		history_surface.visible = true
-		hist_text.descr.visible = true
 		history_redraw(true)
 		flowT.history = startfade(flowT.history, 0.05, 3.0)
 		flowT.histtext = startfade(flowT.histtext, 0.05, -3.0)
@@ -11670,6 +11499,20 @@ function history_visible() {
 	return ((history_surface.visible) && (flowT.history[3] >= 0))
 }
 
+function af_on_scroll_up() {
+	if (hist_text.descr.first_line_hint > 1) hist_text.descr.first_line_hint--
+	if (hist_text.descr.first_line_hint == 1) descrshader(false)
+}
+
+function af_on_scroll_down() {
+	if (hist_text.descr.first_line_hint == 1) descrshader(true)
+	hist_text.descr.first_line_hint++
+}
+
+function history_exit() {
+	history_hide()
+}
+
 function history_redraw(status) {
 	history_surface.redraw = status
 	hist_text_surf.redraw = status
@@ -11681,7 +11524,6 @@ function history_redraw(status) {
 }
 
 history_surface.visible = false
-hist_text.descr.visible = false
 history_redraw(false)
 
 history_surface.alpha = 0
@@ -11810,8 +11652,6 @@ local disp = {
 	noskip = []
 	bgshadowt = null
 	bgshadowb = null
-	dispzoom = []
-	zoomrate = 0.05
 
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
@@ -11838,8 +11678,6 @@ local disp = {
 	gmenu1in = null
 
 	menuthresh = 10000
-
-	i2 = null
 }
 
 disp.width = disp.tilew
@@ -11964,7 +11802,6 @@ zmenu = {
 	selected = 0 			// Index of the selected entry
 	firstitem = 0			// Index of the menu first item
 	target = []				// array of target values {up, down, upforce, downforce}
-	oldselected = 0
 
 	midscroll = false 	// Proxies of the call parameters, used outside of the menu creation routine
 	singleline = false
@@ -12036,10 +11873,7 @@ zmenu = {
 	dmp = false // True when Display Menu Page is on
 	mfm = false // True when multifilter menu is on
 	sim = false // True if similar games menu is on
-
-	i2 = null
 }
-
 zmenu.speed = zmenu.tileh * 0.1
 
 local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
@@ -12047,7 +11881,6 @@ local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
 zmenu_surface_container.set_pos (zmenu.x, zmenu.y)
 
 zmenu_surface_container.zorder = 10
-//TEST162 SI O NO? zmenu_surface_container.mipmap = 1
 
 local zmenu_sh = {
 	surf_clamp = null
@@ -12105,25 +11938,19 @@ disp.bgshadowb = zmenu_surface_container.add_image(AF.folder + "pics/grads/wgrad
 										disp.tilew,
 										disp.bgtileh)
 
-
 disp.bgshadowt.set_rgb(0, 0, 0)
 disp.bgshadowb.set_rgb(0, 0, 0)
-disp.bgshadowt.alpha = 180 // + 0 * 255 + 0 * 100
-disp.bgshadowb.alpha = 180 // + 0 * 255 + 0 * 150
-
+disp.bgshadowt.alpha = 180 + 0 * 255 + 0 * 100
+disp.bgshadowb.alpha = 180 + 0 * 255 + 0 * 150
 disp.bgshadowt.blend_mode = disp.bgshadowb.blend_mode = BlendMode.Overlay
 if (prf.DMPIMAGES == "WALLS") disp.bgshadowt.zorder = disp.bgshadowb.zorder = 900
 
 local zmenu_surface = zmenu_surface_container.add_surface (zmenu.width, zmenu.height)
 
 zmenu_surface.add_image(AF.folder + "pics/black.png", 0, 0, zmenu_surface.width, zmenu_surface.height)
-zmenu.selectedbar = zmenu_surface.add_image("pics/white.png",0, 0, zmenu.width, zmenu.tileh)
+zmenu.selectedbar = zmenu_surface.add_rectangle(0, 0, zmenu.width, zmenu.tileh)
 zmenu.selectedbar.set_rgb(255, 255, 255)
-/*
-zmenu.selectedbar.shader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
-zmenu.selectedbar.shader.set_texture_param("texture")
-zmenu.selectedbar.shader.set_param("pixelheight", 1.0 / zmenu.selectedbar.height)
-*/
+
 zmenu.sidelabel = zmenu_surface.add_text("", zmenu.pad, 0, zmenu.width - 2 * zmenu.pad, zmenu.tileh)
 zmenu.sidelabel.char_size = overlay.labelcharsize * 0.8
 zmenu.sidelabel.margin = 2
@@ -12205,11 +12032,6 @@ function getscrollerstop(fade = true){
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
-	
-	zmenu.i2 = i2_create(9)
-	zmenu.i2.pulse_speed = spdT2.zmenu
-	disp.i2 = i2_create(13)
-	disp.i2.pulse_speed = spdT2.disp
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
@@ -12525,18 +12347,12 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 					disp.images.push(null)
 					disp.pos0.push(null)
-					disp.dispzoom.push(null)
 					// Create the image item and apply all default values to that
 					if (prf.DMPIMAGES == "ARTWORK") {
 						disp.images[i] = zmenu_surface_container.add_image("", disp.x + pad + disp.width * 0.5 - 0.5 * disp.tilew,  disp.height * 0.5 - disp.tileh * 0.5 + pad + disp.noskip[i] * disp.spacing, disp.tilew - 2.0 * pad, disp.tileh - 2.0 * pad)
 					}
 					else if (prf.DMPIMAGES == "WALLS") {
 						disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
-						/*
-						disp.images[i].shader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
-						disp.images[i].shader.set_texture_param("texture")
-						disp.images[i].shader.set_param("pixelheight", 1.0 / disp.images[i].height)
-						*/
 					}
 					disp.images[i].preserve_aspect_ratio = true
 					disp.images[i].video_flags = Vid.NoAudio
@@ -12549,8 +12365,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				}
 				else if (prf.DMPIMAGES == "WALLS") {
 					disp.images[i].set_pos(disp.x, disp.noskip[i] * disp.bgtileh)
-					disp.images[i].shader.set_param("pixelheight", 1.0 / disp.images[i].height)
-					disp.dispzoom[i] = [0.0, 0.0, 0.0, 0.0, 0.0]
 				}
 				disp.images[i].file_name = filename
 				disp.images[i].visible = true
@@ -12590,27 +12404,19 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 	}
 	// Define the current selection, skipping if it's a liner
-	zmenu.selected = zmenu.oldselected = presel
-	if (!zmenu.alwaysskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.oldselected = zmenu.target[zmenu.selected].down
-	else if (zmenu.alwaysskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.oldselected = zmenu.target[zmenu.selected].downforce
+	zmenu.selected = presel
+	if (!zmenu.alwaysskip && zmenu.data[zmenu.selected].liner) zmenu.selected = zmenu.target[zmenu.selected].down
+	else if (zmenu.alwaysskip && (zmenu.data[zmenu.selected].skip || zmenu.data[zmenu.selected].liner)) zmenu.selected = zmenu.target[zmenu.selected].downforce
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
 		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
-		i2_setpos(disp.i2, disp.xstop)
 		disp.xstart = disp.xstop
 		foreach (id, item in disp.images) {
 			item.y = disp.pos0[id] + disp.xstop
 		}
-		if (prf.DMPIMAGES == "WALLS") {
-			disp.dispzoom[zmenu.selected] = [0.0, 1.0, 0.0, 0.0, 0.0]
-			piczoom(disp.images[zmenu.selected], disp.zoomrate)
-			disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-			disp.bgshadowt.alpha = disp.bgshadowb.alpha = 180
-		}
-		//TEST162 RESET FLOW HERE?
-		//TEST162 add alpha here
+		disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
+		disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
 		//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 	}
 
@@ -12623,7 +12429,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	zmenu.selectedbar.height = zmenu.items[zmenu.selected].height
-	//zmenu.selectedbar.shader.set_param("pixelheight", 1.0 / zmenu.selectedbar.height)
 	//zmenu.selectedbar.width = zmenu.tilew + ((opts.shrink && zmenu.sim) ? -1 * disp.width : 0)
 
 	//this substitutes the row above to have shorter bar
@@ -12647,7 +12452,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 
 	zmenu.xstart = zmenu.xstop = getxstop()
-	i2_setpos(zmenu.i2, zmenu.xstop)
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -12753,11 +12557,9 @@ function zmenunavigate_up(signal, alwaysskip = false) {
 	local tvalue = alwaysskip ? "upforce" : "up"
 
 	if (zmenu.selected - zmenu.target[zmenu.selected][tvalue] > 0){
-		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 	}
 	else if (count[signal] == 0){
-		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 		count.forceup = false
 	 }
@@ -12773,11 +12575,9 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 	local tvalue = alwaysskip ? "downforce" : "down"
 
 	if (zmenu.target[zmenu.selected][tvalue] - zmenu.selected > 0){
-		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 	}
 	else if (count[signal] == 0){
-		zmenu.oldselected = zmenu.selected
 		zmenu.selected = zmenu.target[zmenu.selected][tvalue]
 		count.forcedown = false
 	 }
@@ -13982,20 +13782,16 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_textboard_mk4("", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_text("123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
+AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)
 AF.msgbox.obj.bg_alpha = 220
 AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
+AF.msgbox.obj.visible = false
 AF.msgbox.obj.zorder = 100
-AF.msgbox.obj.enable_signals = false
-try{AF.msgbox.obj.enable_transition = false}catch(err){}
-AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
-AF.msgbox.obj.scroll_pulse = 0.20005
-try{AF.msgbox.obj.expand_tokens = false}catch(err){}
-AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
@@ -14003,23 +13799,13 @@ AF.msgbox.scroller.zorder = 101
 AF.msgbox.scroller.visible = false
 AF.msgbox.scroller.alpha = 200
 
-AF.msgbox.visiblelines = AF.msgbox.obj.lines
+AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
-	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.obj.char_size = 16
-	AF.msgbox.visiblelines = AF.msgbox.obj.lines
+	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
+	AF.msgbox.visiblelines = split(AF.msgbox.obj.msg_wrapped,"\n").len()
 }
-
-AF.msgbox.obj.visible = false
-
-/*
-local overlayz = fe.add_rectangle (AF.msgbox.obj.x + AF.msgbox.obj.margin, AF.msgbox.obj.y+AF.msgbox.obj.margin,AF.msgbox.obj.width - 2 * AF.msgbox.obj.margin, AF.msgbox.obj.height-2*AF.msgbox.obj.margin)
-overlayz.set_rgb(0,0,200)
-overlayz.alpha = 128
-overlayz.zorder = 250
-*/
-
 
 /// SPLASH SCREEN UPDATE ///
 
@@ -14081,7 +13867,7 @@ if (prf.FPSON) {
 	fps.tick000 = 0
 	fps.x0 = 0
 
-	fe.add_ticks_callback("monitortick")
+	fe.add_ticks_callback(this, "monitortick")
 }
 
 function monitortick(tick_time) {
@@ -15001,9 +14787,10 @@ function buildutilitymenu() {
 			function(out) {
 				if (out == 0) {
 					local abouttext = ""
-					foreach (i, item in buildreadme(true, false)){
+					foreach (i, item in buildreadme(true)){
 						abouttext = abouttext + item
 					}
+					abouttext = abouttext + "\n" + AF.msgbox.separator2
 					msgbox_open(AF.msgbox.separator2, abouttext)				
 				}
 				else if (out == -1) {
@@ -15503,7 +15290,7 @@ function checkrepeat(counter) {
 if (prf.ALLGAMES != AF.config.collections) {
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
-		update_allgames_collections(false, prf) //TEST162 could be set to true?
+		update_allgames_collections(false, prf) //TEST162 va bene col false? meglio true?
 	}
 	//fe.signal("reload")
 	restartAM()
@@ -15528,9 +15315,9 @@ function get_date_string() {
 	return datestr
 }
 
-fe.add_signal_handler("on_signal")
-fe.add_transition_callback("on_transition")
-fe.add_ticks_callback("tick")
+fe.add_signal_handler(this, "on_signal")
+fe.add_transition_callback(this, "on_transition")
+fe.add_ticks_callback(this, "tick")
 
 /*
 try {print("fl.surf:" + fl.surf.parents + "\n")} catch(err) {}
@@ -15910,6 +15697,7 @@ function on_transition(ttype, var0, ttime) {
 
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
+			surfacePos += (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 
 			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 			impulse2.filtern = 1
@@ -16018,15 +15806,27 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-
+	//TEST160
+	
+	/*
+	foreach (i, item in bgs.bgpic_array){
+		testpr(item.alpha+" ")
+	}
+	testpr("\n")
+*/
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
 		alphasum = alphasum * (1.0 - (item.alpha * 1.0 / 255))
 	}
 	testpr(255*(1.0 - alphasum)+"\n")
-	*/
-
+*/
+/*	clock1 = clock()
+	time1 = fe.layout.time
+	print(round(1000*(clock1 - clock0),1)+" "+(time1 - time0)+"\n")
+	time0 = time1
+	clock0 = clock1
+*/
 	//if (surfdebug) printsrufaces()
 	/*
 	testpr((zmenu_surface_container.redraw ? "Y" : "N")+
@@ -16034,7 +15834,7 @@ function tick(tick_time) {
 	(zmenu_sh.surf_rt.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
-	*/
+*/
 
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
@@ -16221,10 +16021,8 @@ function tick(tick_time) {
 			outfile.write_line(endreport)
 			outfile.close_file()
 
-			msgbox_newdata(
-				AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms,
-				"COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport + "\n" + AF.msgbox.separator1
-			)
+			msgbox_newtitle(AF.scrape.romlist + " " + AF.scrape.totalroms + "/" + AF.scrape.totalroms)
+			msgbox_newbody("COMPLETED - PRESS ESC TO RELOAD LAYOUT\n" + AF.msgbox.separator2 + "\n" + endreport + "\n" + AF.msgbox.separator1)
 
 			AFscrapeclear()
 			dispatcher = []
@@ -16378,12 +16176,8 @@ function tick(tick_time) {
 			timescale.delay = -1
 			if (prf.ADAPTSPEED) AF.tsc = 60.0 / (1000.0 / (timescale.sum / timescale.values))
 			else AF.tsc = 60.0 / ScreenRefreshRate
-			
 			foreach (item, value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
-			}
-			foreach (item, value in spdT2) {
-				spdT2[item] = value * AF.tsc
 			}
 
 			delayvid = round(vidstarter - 60 * prf.THUMBVIDELAY / AF.tsc, 1)
@@ -16403,24 +16197,9 @@ function tick(tick_time) {
 		}
 	}
 
-	if (i2_move(disp.i2)){
-		local newpos = i2_newpos(disp.i2,false)
-		for (local i = 0; i < disp.images.len(); i++) {
-			disp.images[i].y = disp.pos0[i] + newpos
-			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
-		}
-		//testpr("\n")
-
-		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
-		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
-		
-		disp.xstart = newpos
-	
-	}
-/*
 	// display images scrolling routine
 	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
-		disp.speed = (spdT2.disp * (disp.xstop - disp.xstart))
+		disp.speed = (0.15 * (disp.xstop - disp.xstart))
 		if (absf(disp.speed) > disp.tileh) {
 			disp.speed = (disp.speed > 0 ? 10 * disp.tileh : -10 * disp.tileh)
 		}
@@ -16453,27 +16232,11 @@ function tick(tick_time) {
 			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
 		}
 	}
-*/
-	if (i2_move(zmenu.i2)){
-		local newpos = i2_newpos(zmenu.i2,false)
-		for (local i = 0; i < zmenu.shown; i++) {
-			zmenu.items[i].y = zmenu.pos0[i] + newpos
-			zmenu.noteitems[i].y = zmenu.pos0[i] + newpos
-			zmenu.glyphs[i].y = zmenu.pos0[i] + newpos
-			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + newpos
-			
-			zmenu.scrollerstart =  (-1 * newpos / zmenu.virtualheight) * zmenu.height
-			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
-	
-		}
-		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
-	
-	}
-/*
+
 	// zmenu items scrolling routine
 	if (zmenu.xstart != zmenu.xstop) {
 
-		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (spdT2.zmenu * (zmenu.xstop - zmenu.xstart))
+		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (0.2 * (zmenu.xstop - zmenu.xstart))
 		if (absf(zmenu.speed) > 0.0005 * zmenu.tileh) {
 			for (local i = 0; i < zmenu.shown; i++) {
 				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
@@ -16500,7 +16263,7 @@ function tick(tick_time) {
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 	}
-*/
+
 	// Attract mode management
 	if (prf.AMENABLE) {
 		if (attract.start) {
@@ -16760,7 +16523,6 @@ function tick(tick_time) {
 		easeprint.counter = easeprint.counter + 0.5
 	}
 
-	impulse2.moving = (impulse2.flow + impulse2.step != 0)
 	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
 		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
@@ -16818,6 +16580,18 @@ function tick(tick_time) {
 		}
 	}
 
+	if ((surfacePos != 0)) {
+		if ((surfacePos < 0.1) && (surfacePos > -0.1)) surfacePos = 0
+		surfacePos = surfacePos * spdT.scrollspeed
+
+		if (surfacePos > impulse2.maxoffset) {
+			surfacePos = impulse2.maxoffset
+		}
+		if (surfacePos < -impulse2.maxoffset) {
+			surfacePos = -impulse2.maxoffset
+		}
+	}
+
 	// fade of bg video
 	if ((prf.LAYERVIDEO)) {
 		if (vidposbg != 0) {
@@ -16869,14 +16643,10 @@ function tick(tick_time) {
 					if ((prf.AUDIOVIDSNAPS) && (!history_visible()) && (!zmenu.showing)) tilez[i].gr_vidsz.video_flags = Vid.Default
 
 					tilez[i].AR.vids = prf.VID169 ? 9.0 / 16.0 : getvidAR(tilez[i].offset, tilez[i].vidsz, tilez[i].refsnapz, 0)
+
 					//TEST87 DA COJTROLLARE SI PUO' SOSTITUIRE CON UNO SNAPCROP DEL VIDEO
-
-					if(prf.BOXARTMODE && (tilez[i].vidsz.file_name == "") && (tilez[i].refsnapz.file_name == "")){
-						//no snap or video in boxart mode, so no change in aspect
-						tilez[i].AR.vids = tilez[i].AR.snap
-					}
-
 					if (!prf.MORPHASPECT) update_snapcrop (i, 0, 0, z_list.index, tilez[i].AR.vids, tilez[i].AR.crop)
+
 				}
 				if (prf.AMENABLE) {
 					if (attract.rolltext) tilez[i].gr_vidsz.video_playing = false
@@ -16938,13 +16708,13 @@ function tick(tick_time) {
 		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
-	if (frost.canfreeze && !impulse2.moving && !bglay.surf_1.redraw && !data_surface.redraw){
+	if (frost.canfreeze && (surfacePos == 0) && !bglay.surf_1.redraw && !data_surface.redraw){
 		frost_freeze(true)
 		frost.canfreeze = false
 	}
 
 	// menu showing, frost not redrawing, and some items are moving or have moved
-	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || impulse2.moving)){
+	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || (surfacePos != 0))){
 		frost_freeze(false)
 		frost.canfreeze = true
 	}
@@ -17017,8 +16787,8 @@ function tick(tick_time) {
 	}
 
 
-	if ((!i2_move(zmenu.i2)) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
-		AF.zmenu_freezecount = 1 //TEST162 OR MAYBE 2?
+	if ((zmenu.xstart == zmenu.xstop) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
+		AF.zmenu_freezecount = 1
 	}
 
 
@@ -17105,29 +16875,8 @@ function tick(tick_time) {
 
 	if (checkfade(flowT.groupbg)) {
 		flowT.groupbg = fadeupdate(flowT.groupbg)
+
 		groupalpha(255 * flowT.groupbg[1])
-	}
-
-	if (zmenu.showing && zmenu.dmp && (prf.DMPIMAGES == "WALLS")){
-		foreach (i, item in disp.dispzoom){
-			if (checkfade(disp.dispzoom[i])){
-				disp.dispzoom[i] = fadeupdate(disp.dispzoom[i])
-				piczoom(disp.images[i], disp.dispzoom[i][1] * disp.zoomrate)
-			}
-		}
-	}
-
-	if (checkfade(flowT.dispshadow1)){
-		flowT.dispshadow1 = fadeupdate(flowT.dispshadow1)
-
-		if (endfade(flowT.dispshadow1) == 0) {
-			disp.dispzoom[zmenu.selected] = startfade(disp.dispzoom[zmenu.selected], 0.1, 1.0)
-			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 2.0)
-		}
-		else if (endfade(flowT.dispshadow1) == 1) {
-			zmenu.oldselected = zmenu.selected
-		}		
-		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow1[1]
 	}
 
 	// attract mode surface fade
@@ -17235,7 +16984,6 @@ function tick(tick_time) {
 			shadowsurf_rt.shader = noshader
 			hist_text_surf.shader = noshader
 			history_surface.visible = false
-			hist_text.descr.visible = false
 			history_redraw(false)
 		}
 
@@ -17756,15 +17504,28 @@ function ra_selectemu(startemu) {
 	})
 }
 
-
 /// On Signal ///
 function on_signal(sig) {
-	debugpr("\n Si:" + sig)
 
+	if (sig == "custom1"){
+		local names = ["Super Nintendo Entertainment System", "Genesis","MasterSystem","PC Engine","Neo Geo"]
+		msgbox_open("Title", "")
+		foreach(i, item in names){
+			msgbox_addlinetop(patchtext(item, "DONE", 10, 60))
+		}
+	}
+
+	if (sig == "custom2"){
+		splash_message(AF.splash.pulse, "Test Message")
+	}
+	if (sig == "custom4"){
+		splash_message(AF.splash.pulse, "Test Message Long", 5)
+	}
+	debugpr("\n Si:" + sig)
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
-	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO) && !(AF.msgbox.obj.visible)) snd.mplinsound.playing = true
+	if ((((sig == "up") && checkrepeat(count.up)) || ((sig == "down") && checkrepeat(count.down))) && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mplinsound.playing = true
 
 	// Check if scraping has been interrupted
 	if (AF.scrape.purgedromdirlist != null) {
@@ -17783,34 +17544,41 @@ function on_signal(sig) {
 					msgbox_close()
 			}
 		}
-		else if (sig == "up") {
+		else if (sig == "up") { // Scrolls the scrape report
 			if (checkrepeat(count.up)) {
-				AF.msgbox.obj.line_down()
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+				if (AF.msgbox.obj.first_line_hint > 1) AF.msgbox.obj.first_line_hint--
+				msgbox_scrollerrefresh()
 				count.up ++
 			}
 			return true
 		}
-		else if (sig == "down") {
+		else if (sig == "down") { // Scroll the scrape report
 			if (checkrepeat(count.down)) {
-				AF.msgbox.obj.line_up()
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+				if (AF.msgbox.obj.first_line_hint <= AF.msgbox.numlines - AF.msgbox.visiblelines) AF.msgbox.obj.first_line_hint++
+				msgbox_scrollerrefresh()
 				count.down ++
 			}
 			return true
 		}
 		else if (sig == "left") {
-			if (checkrepeat(count.left)) {
-				AF.msgbox.obj.goto_line(AF.msgbox.obj.target_line - AF.msgbox.visiblelines)
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+			if (checkrepeat(count.left)) { //Faster jump scroll
+				if (AF.msgbox.obj.first_line_hint > AF.msgbox.visiblelines) 
+					AF.msgbox.obj.first_line_hint -= AF.msgbox.visiblelines
+				else
+					AF.msgbox.obj.first_line_hint = 1
+				msgbox_scrollerrefresh()
 				count.left ++
 			}
 			return true
 		}
 		else if (sig == "right") {
-			if (checkrepeat(count.right)) {
-				AF.msgbox.obj.goto_line(AF.msgbox.obj.target_line + AF.msgbox.visiblelines)
-				msgbox_scrollerrefresh(AF.msgbox.obj.target_line)
+			if (checkrepeat(count.right)) { //Faster jump scroll
+				if (AF.msgbox.obj.first_line_hint + AF.msgbox.visiblelines <= AF.msgbox.numlines - AF.msgbox.visiblelines) 
+					AF.msgbox.obj.first_line_hint += AF.msgbox.visiblelines
+				else
+					AF.msgbox.obj.first_line_hint = AF.msgbox.numlines - AF.msgbox.visiblelines + 1
+
+				msgbox_scrollerrefresh()
 				count.right ++
 			}
 			return true
@@ -17820,7 +17588,6 @@ function on_signal(sig) {
 		}
 		return true
 	}
-
 
 	// Block signal response during update checks
 	if (AF.updatechecking) return
@@ -18052,7 +17819,6 @@ function on_signal(sig) {
 			if (checkrepeat(count.left)) {
 				menucheck = true
 				if (zmenu.reactleft == null) {
-					zmenu.oldselected = zmenu.selected
 					zmenu.selected = zmenu.firstitem
 					zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 				}
@@ -18071,18 +17837,9 @@ function on_signal(sig) {
 
 		if (menucheck && ((sig == "up") || (sig == "down") || (sig == "left") || (sig == "right"))) {
 			if (zmenu_surface.redraw == false) zmenu_freeze(false)
-			AF.zmenu_freezecount = 0
 
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
-			
-				i2_jumpto(disp.i2, disp.xstop)
-
-				if (zmenu.selected != zmenu.oldselected) {
-					disp.dispzoom[zmenu.oldselected] = startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
-
-					flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
-				}
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
 			if ((prfmenu.showing) && (!prfmenu.rgbshowing))	{
@@ -18103,8 +17860,6 @@ function on_signal(sig) {
 			}
 
 			zmenu.xstop = getxstop()
-			i2_jumpto(zmenu.i2, zmenu.xstop)
-
 			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && (prfmenu.level == 2) && ((sig == "right") || (sig == "left"))))
 
 			for (local i = 0; i < zmenu.shown; i++) {
@@ -18643,14 +18398,14 @@ function on_signal(sig) {
 
 			if (sig == "up") {
 				if (checkrepeat(count.up)) {
-					hist_text.descr.line_down()
+					af_on_scroll_up()
 					count.up ++
 				}
 				return true
 			}
 			else if (sig == "down") {
 				if (checkrepeat(count.down)) {
-					hist_text.descr.line_up()
+					af_on_scroll_down()
 					count.down ++
 				}
 				return true
@@ -18684,7 +18439,7 @@ function on_signal(sig) {
 				return true
 			}
 			else if (sig == "back") {
-				history_hide()
+				history_exit()
 				return true
 			}
 			return false

@@ -14081,7 +14081,7 @@ if (prf.FPSON) {
 	fps.tick000 = 0
 	fps.x0 = 0
 
-	fe.add_ticks_callback("monitortick")
+	fe.add_ticks_callback(this, "monitortick")
 }
 
 function monitortick(tick_time) {
@@ -15528,9 +15528,9 @@ function get_date_string() {
 	return datestr
 }
 
-fe.add_signal_handler("on_signal")
-fe.add_transition_callback("on_transition")
-fe.add_ticks_callback("tick")
+fe.add_signal_handler(this, "on_signal")
+fe.add_transition_callback(this, "on_transition")
+fe.add_ticks_callback(this, "tick")
 
 /*
 try {print("fl.surf:" + fl.surf.parents + "\n")} catch(err) {}
@@ -17761,6 +17761,16 @@ function ra_selectemu(startemu) {
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
 
+//TEST162
+
+if(sig=="custom1") {
+	local tempprf = generateprefstable()
+	updateallgamescollections(tempprf)
+	//refreshselectedromlists(tempprf)
+}
+if(sig=="custom2"){
+	msgbox_open("Update All Games Collections", "")
+}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
