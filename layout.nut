@@ -6747,7 +6747,7 @@ function getallgamesdb(logopic) {
 	if (prf.SPLASHON) {
 		AF.bootplane1 = fe.add_rectangle(fl.x, fl.y, fl.w, fl.h)
 		AF.bootplane1.alpha = 128
-		AF.bootplane1.set_rgb(200, 0, 0)
+		AF.bootplane1.set_rgb(0, 0, 0)
 	} else {
 		//textobj = fe.add_text("", logopic.x + logopic.width * (1.0 - text_ratio) * 0.5, logopic.y + logopic.height - text_charsize * 0.5, logopic.width * text_ratio, text_charsize * 1.2)
 		AF.boottext = fe.add_text("", fl.x, fl.y, fl.w, fl.h)
@@ -7763,7 +7763,7 @@ local tilez = []
 
 fl.surf = fe.add_surface(fl.w_os, fl.h_os)
 fl.surf.redraw = true
-fl.surf.alpha = 255
+fl.surf.alpha = 0//TEST162 was 255
 
 // fl.surf.mipmap = 1
 // fl.surf.zorder = -1000

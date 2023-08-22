@@ -60,16 +60,19 @@ atari 2600,256,192,2600,CRT,NONE,4,3,CONSOLE,Atari,1977,Atari 2600,26,rom,joysti
 2600
 vcs 2600
 atari vcs 2600
+atari2600
 
 atari 5200,320,240,5200,CRT,NONE,4,3,CONSOLE,Atari,1982,Atari 5200,40,rom,joystick (8-way),1
 5200
 vcs 5200
 atari vcs 5200
+atari5200
 
 atari 7800,320,240,7800,CRT,NONE,4,3,CONSOLE,Atari,1986,Atari 7800,41,rom,joystick (8-way),2
 7800
 vcs 7800
 atari vcs 7800
+atari7800
 
 atari falcon 030,320,200,FLC,CRT,NONE,4,3,COMPUTER,Atari,1992,Falcon 030,42,rom,joystick (8-way),1
 falcon 030
@@ -91,6 +94,7 @@ lynx ii
 
 atari lynx,160,102,LYNX,LCD,NONE,-160,102,HANDHELD,Atari,1989,Lynx,28,rom,joystick (8-way),2
 lynx
+atarilynx
 
 atari st,320,200,ST,CRT,NONE,4,3,COMPUTER,Atari,1985,Atari ST,42,rom,joystick (8-way),1
 
@@ -114,6 +118,7 @@ swan crystal
 
 bandai wonderswan color,224,144,WSWC,LCD,NONE,-224,144,HANDHELD,Bandai,1999,WonderSwan Color,46,rom,joystick (8-way),2
 wonderswan color
+wonderswancolor
 
 bandai wonderswan,224,144,WSW,LCD,LCDBW,-224,144,HANDHELD,Bandai,2000,WonderSwan,45,rom,joystick (8-way),2
 wonderswan
@@ -212,6 +217,7 @@ a1200
 
 commodore amiga cd32,320,200,CD32,CRT,NONE,4,3,CONSOLE,Commodore,1993,Amiga CD32,130,iso,joystick (8-way),4
 amiga cd32
+amigacd32
 
 commodore amiga,320,200,AMY,CRT,NONE,4,3,COMPUTER,Commodore,1985,Amiga,64,rom,joystick (8-way),1
 amiga
@@ -224,6 +230,7 @@ c128
 commodore cdtv,320,200,CDTV,CRT,NONE,4,3,CONSOLE,Commodore,1991,CDTV,129,rom,joystick (8-way),1
 cdtv
 amiga cdtv
+amigacdtv
 
 commodore pet,0,0,PET,CRT,NONE,4,3,COMPUTER,Commodore,1977,C PET,240,rom,joystick (8-way),1
 pet
@@ -417,6 +424,7 @@ nec pc engine cd,256,224,PCECD,CRT,NONE,4,3,CONSOLE,NEC,1988,PC Engine CD,114,is
 pc engine cd
 pc engine-cd
 nec pc engine-cd
+pcenginecd
 
 nec pc engine duo,256,224,PCE2,CRT,NONE,4,3,CONSOLE,NEC,1992,PC Engine Duo,114,iso,joystick (8-way),2
 pc engine duo
@@ -429,6 +437,7 @@ pc engine lt
 
 nec pc engine,256,224,PCE,CRT,NONE,4,3,CONSOLE,NEC,1987,PC Engine,31,rom,joystick (8-way),2
 pc engine
+pcengine
 
 nec pc-88,0,0,PC88,CRT,NONE,4,3,COMPUTER,NEC,1981,NEC PC-8800,221,rom,joystick (8-way),1
 nec pc-8800
@@ -436,6 +445,7 @@ nec pc-8801
 pc-88
 pc-8800
 pc-8801
+pc88
 
 nec pc-98,0,0,PC98,CRT,NONE,4,3,COMPUTER,NEC,1982,NEC PC-9800,208,rom,joystick (8-way),1
 nec pc-9800
@@ -443,6 +453,7 @@ nec pc-9801
 pc-98
 pc-9800
 pc-9801
+pc98
 
 nec pcfx,0,0,PC-FX,CRT,NONE,4,3,CONSOLE,NEC,1994,NEC PC-FX,72,rom,joystick (8-way),6
 pc-fx
@@ -484,6 +495,7 @@ turbografx cd
 
 neo geo cd,320,224,NGCD,CRT,NONE,4,3,CONSOLE,SNK,1994,Neo Geo CD,70,iso,joystick (8-way),4
 snk neo geo cd
+neogeocd
 
 neo geo mvs,320,224,MVS,CRT,NONE,-4,3,ARCADE,SNK,1990,Neo Geo MVS,68,rom,joystick (8-way),4
 snk neo geo mvs
@@ -494,9 +506,11 @@ snk neogeo mvs
 
 neo geo pocket color,160,152,NGPC,LCD,NONE,0,0,HANDHELD,SNK,1999,Neo Geo Pocket Color,82,rom,joystick (8-way),2
 snk neo geo pocket color
+ngpc
 
 neo geo pocket,160,152,NGP,LCD,LCDBW,0,0,HANDHELD,SNK,1998,Neo Geo Pocket,25,rom,joystick (8-way),2
 snk neo geo pocket
+ngp
 
 neo geo,320,224,NEOGEO,CRT,NONE,4,3,CONSOLE,SNK,1990,Neo Geo,142,rom,joystick (8-way),4
 snk neo geo
