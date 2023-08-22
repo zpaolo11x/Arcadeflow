@@ -326,7 +326,7 @@ class textboard_mk4
 	}
 
 	function refreshtext() {
-		m_surf.redraw = true
+		m_surf.redraw = true	
 		m_object.y = 0
 		m_object.height = m_surf.height
 		m_object.msg = m_text

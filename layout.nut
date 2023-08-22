@@ -4569,7 +4569,7 @@ function resetlastplayed() {
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
 	testpr("A\n")
-	msgbox_open("Update All Games Collections", "", function(){
+	msgbox_open("Update All Games Collections", "", function(){ //TEST162 CHANGE TITLE!
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -17760,6 +17760,17 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
+
+//TEST162
+
+if(sig=="custom1") {
+	local tempprf = generateprefstable()
+	updateallgamescollections(tempprf)
+	//refreshselectedromlists(tempprf)
+}
+if(sig=="custom2"){
+	msgbox_open("Update All Games Collections", "")
+}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
