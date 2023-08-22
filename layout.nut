@@ -47,7 +47,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = true
+	timer = false
 	name = ""
 	t1 = 0
 	t2 = 0
