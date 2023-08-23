@@ -2805,6 +2805,7 @@ function i2_jumpto(i2_in, new_pos){
 function i2_setpos(i2_in, new_pos){
 	//i2_in.filter = i2_in.f_triangle
 	i2_in.stepcurve = i2_in.smoothcurve = new_pos
+	i2_in.buffer = array(i2_in.poles, new_pos)
 	i2_in.stepshistory = array(i2_in.samples, new_pos)
 }
 
