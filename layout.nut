@@ -2743,70 +2743,40 @@ local keyboard_entrytext = ""
 
 /// IMPULSE2 ENGINE ///
 
-function i2_create(in_samples, in_poles){
+function i2_create(in_poles = 3){
 	local i2_in = {
 		delta = 0
 		
 		stepcurve = 0
-		stepcurve_f = 0
-		stepshistory = null
-
-		smoothcurve0 = 0
 		smoothcurve = 0
-		
+		pos = 0
+
 		pulse_speed = 0.2
 
-		pos0 = 0
-		pos = 0
-		
-		samples = 5
-
-		poles = 3
-		buffer = null
+		poles = in_poles
+		buffer = array(in_poles, 0.0)
 
 		filter = []
-		f_pulse = []	
-		f_triangle = []
 
 		limit_lo = -100000000
 		limit_hi = 10000000
 	}
-
-	i2_in.samples = in_samples
-	i2_in.poles = in_poles
-	i2_in.buffer = array(i2_in.poles, 0.0)
-
-	// Create pulse and triangle filters:
-	// [0,0,0,0,1] and [1,2,3,2,1] 	
-	i2_in.f_pulse = array(i2_in.samples, 0.0)		
-	i2_in.f_pulse[i2_in.samples - 1] = 1.0
-
-	i2_in.f_triangle = array(i2_in.samples, 1.0)
-	for(local i = 0; i < (i2_in.samples - 1) * 0.5 + 1; i++) {
-		i2_in.f_triangle[i] = i2_in.f_triangle[i2_in.samples - i - 1] = i + 1
-	}
-
-	i2_in.stepshistory = array(i2_in.samples, 0.0)
 
 	return (i2_in)
 }
 
 function i2_pulse(i2_in, delta_in){
 	i2_in.delta = delta_in //SERVE???
-	i2_in.filter = i2_in.f_triangle
 	i2_in.stepcurve += i2_in.delta
 }
 
 function i2_jumpto(i2_in, new_pos){
-	i2_in.filter = i2_in.f_triangle
 	i2_in.stepcurve = new_pos
 }
 
 function i2_setpos(i2_in, new_pos){
-	//i2_in.filter = i2_in.f_triangle
 	i2_in.stepcurve = i2_in.smoothcurve = new_pos
 	i2_in.buffer = array(i2_in.poles, new_pos)
-	i2_in.stepshistory = array(i2_in.samples, new_pos)
 }
 
 function i2_getfiltered(arrayin, arrayw) {
@@ -2838,23 +2808,8 @@ function i2_newpos(i2_in,dbprint){
 
 	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
 
-/*
-	i2_in.stepcurve_f = i2_getfiltered(i2_in.stepshistory, i2_in.filter)
-
-	//CLAMP MAX SPEED HERE???
-
-	i2_in.smoothcurve0 = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
-	i2_in.pos0 = i2_in.smoothcurve0 - i2_in.stepcurve
-
-	i2_in.smoothcurve = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
-
-*/
-	i2_in.stepshistory.push(i2_in.stepcurve)
-	i2_in.stepshistory.remove(0)
-
 	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
 		i2_in.smoothcurve = i2_in.stepcurve
-		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
 	}
 
 	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
@@ -12221,9 +12176,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
 	
-	zmenu.i2 = i2_create(9, 3)
+	zmenu.i2 = i2_create(3)
 	zmenu.i2.pulse_speed = spdT2.zmenu
-	disp.i2 = i2_create(13, 4)
+	disp.i2 = i2_create(4)
 	disp.i2.pulse_speed = spdT2.disp
 
 	zmenu.data = menudata
