@@ -16729,7 +16729,7 @@ function tick(tick_time) {
 
 	//EASE PRINT
 	if (easeprint.status){
-		local escale = 0.5
+		local escale = 0.1
 		local pippo1 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.tilepos) * escale, 3, 3) //RED
 		local pippo2 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.flow) * escale, 3, 3) //BLACK
 		local pippo3 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.maxoffset) * escale, 3, 3) //WHITE
@@ -16753,7 +16753,7 @@ function tick(tick_time) {
 		pippo6.set_rgb(0, 255, 255)
 
 
-		easeprint.counter = easeprint.counter + 1.0//0.5
+		easeprint.counter = easeprint.counter + 0.5
 	}
 
 	impulse2.moving = (impulse2.flow + impulse2.step != 0)
@@ -16770,7 +16770,7 @@ function tick(tick_time) {
 	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
 		testpr("MV_2 "+impulse2.flow+" "+impulse2.step+"\n")
-		//TESTMOVE = true
+		TESTMOVE = true
 		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
 
 		impulse2.flow0 = (impulse2.step_f + impulse2.flow) * spdT.scrollspeed - impulse2.step_f
