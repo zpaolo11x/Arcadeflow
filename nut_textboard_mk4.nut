@@ -248,6 +248,9 @@ class textboard_mk4
 			
 			samples = 5//13//9 //13 o 15?
 
+			poles = 4
+			buffer = null
+
 			filter = []
 			f_pulse = []	
 			f_triangle = []
@@ -255,6 +258,8 @@ class textboard_mk4
 			debug = false
 			dbcounter = 0
 		}
+
+		m_i2.buffer = ::array(m_i2.poles, 0.0)
 
 		// Initialise Impuls2 engine
 
@@ -536,14 +541,21 @@ class textboard_mk4
 			if (m_i2.stepcurve < 0) m_i2.stepcurve = 0
 			if (m_i2.stepcurve > m_viewport_max_y) m_i2.stepcurve = m_viewport_max_y
 
-			
+	m_i2.buffer[0] = m_i2.buffer[0] + m_scroll_pulse * (m_i2.stepcurve - m_i2.buffer[0])
+	for (local i = 1; i < m_i2.poles; i++){
+		m_i2.buffer[i] = m_i2.buffer[i] + m_scroll_pulse * (m_i2.buffer[i-1] - m_i2.buffer[i])
+	}
+
+	m_i2.smoothcurve = m_i2.buffer[m_i2.poles - 1]
+
+	/*		
 			m_i2.stepcurve_f = mi2_getfiltered(m_i2.stepshistory, m_i2.filter)
 
 			m_i2.smoothcurve0 = (m_i2.smoothcurve - m_i2.stepcurve_f) * (1.0 - m_scroll_pulse) + m_i2.stepcurve_f
 			m_i2.pos0 = m_i2.smoothcurve0 - m_i2.stepcurve
 
 			m_i2.smoothcurve = (m_i2.smoothcurve - m_i2.stepcurve_f) * (1.0 - m_scroll_pulse) + m_i2.stepcurve_f
-
+*/
 			m_i2.stepshistory.push(m_i2.stepcurve)
 			m_i2.stepshistory.remove(0)
 

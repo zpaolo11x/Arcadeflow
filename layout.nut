@@ -2855,7 +2855,6 @@ function i2_newpos(i2_in,dbprint){
 	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
 		i2_in.smoothcurve = i2_in.stepcurve
 		i2_in.stepshistory = array(i2_in.samples, i2_in.stepcurve)
-		//m_surf.redraw = false
 	}
 
 	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
@@ -11175,7 +11174,7 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_pulse = 0.15
+hist_text.descr.scroll_pulse = 0.25//0.15
 hist_text.descr.pingpong_speed = 0.5
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
@@ -14009,7 +14008,7 @@ AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.enable_signals = false
 try{AF.msgbox.obj.enable_transition = false}catch(err){}
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
-AF.msgbox.obj.scroll_pulse = 0.25
+AF.msgbox.obj.scroll_pulse = 0.35//0.25
 try{AF.msgbox.obj.expand_tokens = false}catch(err){}
 AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
