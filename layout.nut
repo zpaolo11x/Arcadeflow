@@ -42,7 +42,7 @@ l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimension
 //EASE PRINT
 
 local easeprint = {
-	status = false
+	status = true
 	counter = 0
 }
 
@@ -2216,6 +2216,87 @@ count.movestep = count.movestepslow
 
 local globalposnew = 0
 
+
+/// IMPULSE2 ENGINE ///
+
+function i2_create(in_poles = 3){
+	local i2_in = {
+		delta = 0
+		
+		stepcurve = 0
+		smoothcurve = 0
+		pos = 0
+
+		pulse_speed = 0.2
+
+		poles = in_poles
+		buffer = array(in_poles, 0.0)
+
+		filter = []
+
+		limit_lo = -100000000
+		limit_hi = 10000000
+	}
+
+	return (i2_in)
+}
+
+function i2_pulse(i2_in, delta_in){
+	i2_in.delta = delta_in //SERVE???
+	i2_in.stepcurve += i2_in.delta
+}
+
+function i2_jumpto(i2_in, new_pos){
+	i2_in.stepcurve = new_pos
+}
+
+function i2_setpos(i2_in, new_pos){
+	i2_in.stepcurve = i2_in.smoothcurve = new_pos
+	i2_in.buffer = array(i2_in.poles, new_pos)
+}
+
+function i2_getfiltered(arrayin, arrayw) {
+	local sumv = 0
+	local sumw = 0
+	foreach (i, item in arrayin) {
+		sumv += arrayin[i] * arrayw[i]
+		sumw += arrayw[i]
+	}
+	return sumv * 1.0 / sumw
+}
+
+function i2_move(i2_in){
+	if (i2_in == null) return false
+	return (i2_in.smoothcurve != i2_in.stepcurve)
+}
+
+function i2_newpos(i2_in,dbprint){
+
+	// CLAMP MAX AND MIN TARGET
+	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
+	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
+	
+
+	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer[0])
+	for (local i = 1; i < i2_in.poles; i++){
+		i2_in.buffer[i] = i2_in.buffer[i] + i2_in.pulse_speed * (i2_in.buffer[i-1] - i2_in.buffer[i])
+	}
+
+	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
+
+	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
+		i2_in.smoothcurve = i2_in.stepcurve
+	}
+
+	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
+	if(dbprint)testpr(i2_in.smoothcurve+"\n")
+	//RETURN THE NEW POSITION
+	return(i2_in.smoothcurve)
+}
+
+local tiles_i2 = i2_create(4)
+tiles_i2.pulse_speed = 0.21
+
 local impulse2 = {
 	delta = 0
 	step = 0
@@ -2740,83 +2821,6 @@ if (UI.vertical) {
 }
 local key_selected = [0, 0]
 local keyboard_entrytext = ""
-
-/// IMPULSE2 ENGINE ///
-
-function i2_create(in_poles = 3){
-	local i2_in = {
-		delta = 0
-		
-		stepcurve = 0
-		smoothcurve = 0
-		pos = 0
-
-		pulse_speed = 0.2
-
-		poles = in_poles
-		buffer = array(in_poles, 0.0)
-
-		filter = []
-
-		limit_lo = -100000000
-		limit_hi = 10000000
-	}
-
-	return (i2_in)
-}
-
-function i2_pulse(i2_in, delta_in){
-	i2_in.delta = delta_in //SERVE???
-	i2_in.stepcurve += i2_in.delta
-}
-
-function i2_jumpto(i2_in, new_pos){
-	i2_in.stepcurve = new_pos
-}
-
-function i2_setpos(i2_in, new_pos){
-	i2_in.stepcurve = i2_in.smoothcurve = new_pos
-	i2_in.buffer = array(i2_in.poles, new_pos)
-}
-
-function i2_getfiltered(arrayin, arrayw) {
-	local sumv = 0
-	local sumw = 0
-	foreach (i, item in arrayin) {
-		sumv += arrayin[i] * arrayw[i]
-		sumw += arrayw[i]
-	}
-	return sumv * 1.0 / sumw
-}
-
-function i2_move(i2_in){
-	if (i2_in == null) return false
-	return (i2_in.smoothcurve != i2_in.stepcurve)
-}
-
-function i2_newpos(i2_in,dbprint){
-
-	// CLAMP MAX AND MIN TARGET
-	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
-	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
-	
-
-	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer[0])
-	for (local i = 1; i < i2_in.poles; i++){
-		i2_in.buffer[i] = i2_in.buffer[i] + i2_in.pulse_speed * (i2_in.buffer[i-1] - i2_in.buffer[i])
-	}
-
-	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
-
-	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
-		i2_in.smoothcurve = i2_in.stepcurve
-	}
-
-	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
-	if(dbprint)testpr(i2_in.smoothcurve+"\n")
-	//RETURN THE NEW POSITION
-	return(i2_in.smoothcurve)
-}
 
 /// RELOCATED FUNCTIONS ///
 
@@ -8624,6 +8628,7 @@ function tile_freeze(i, status) {
 }
 
 impulse2.flow = 0.5
+i2_setpos(tiles_i2, 0.5)
 
 /// No list blanker ///
 
@@ -15059,6 +15064,8 @@ function resetvarsandpositions() {
 	var = 0
 	tilesTablePos.Offset = 0
 
+	i2_setpos(tiles_i2, 0.5)
+
 	impulse2.flow = 0.5
 	impulse2.step = 0
 	impulse2.delta = 0
@@ -15880,6 +15887,8 @@ function on_transition(ttype, var0, ttime) {
 
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
+
+			i2_pulse(tiles_i2, (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift)
 
 			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 			impulse2.filtern = 1
@@ -16718,16 +16727,36 @@ function tick(tick_time) {
 
 	//EASE PRINT
 	if (easeprint.status){
-		local pippo1 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.tilepos) * 0.1, 3, 3) //RED
-		local pippo2 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.flow) * 0.1, 3, 3) //BLACK
-		local pippo3 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.maxoffset) * 0.1, 3, 3) //WHITE
-		local pippo4 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (impulse2.maxoffset) * 0.1, 3, 3) //BLUE
+		local escale = 0.5
+		local pippo1 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.tilepos) * escale, 3, 3) //RED
+		local pippo2 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.flow) * escale, 3, 3) //BLACK
+		local pippo3 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.maxoffset) * escale, 3, 3) //WHITE
+		local pippo4 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (impulse2.maxoffset) * escale, 3, 3) //BLUE
+
+		local pippo5 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles_i2.stepcurve) * escale, 3, 3) //BLUE
+		local pippo6 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles_i2.smoothcurve) * escale, 3, 3) //BLUE
+		local pippo7 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles_i2.pos) * escale, 3, 3) //BLUE
+
+
 		pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
+		pippo5.zorder = pippo6.zorder = pippo7.zorder = 20001
+
 		pippo1.set_rgb(255, 0, 0)
 		pippo2.set_rgb(0, 0, 0)
 		pippo3.set_rgb(255, 255, 255)
 		pippo4.set_rgb(0, 0, 255)
-		easeprint.counter = easeprint.counter + 0.5
+
+		pippo5.set_rgb(255, 0, 255)
+		pippo6.set_rgb(0, 255, 0)
+		pippo6.set_rgb(0, 255, 255)
+
+
+		easeprint.counter = easeprint.counter + 1.0//0.5
+	}
+
+
+	if (i2_move(tiles_i2)){
+		local newpos = i2_newpos(tiles_i2,false)
 	}
 
 	impulse2.moving = (impulse2.flow + impulse2.step != 0)
