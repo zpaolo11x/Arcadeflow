@@ -8628,7 +8628,8 @@ function tile_freeze(i, status) {
 }
 
 impulse2.flow = 0.5
-i2_setpos(tiles_i2, 0.5)
+//i2_setpos(tiles_i2, 0.5)
+tiles_i2.smoothcurve = 0.5
 
 /// No list blanker ///
 
@@ -15064,7 +15065,8 @@ function resetvarsandpositions() {
 	var = 0
 	tilesTablePos.Offset = 0
 
-	i2_setpos(tiles_i2, 0.5)
+	//i2_setpos(tiles_i2, 0.5)
+	tiles_i2.smoothcurve = 0.5
 
 	impulse2.flow = 0.5
 	impulse2.step = 0
@@ -16754,14 +16756,21 @@ function tick(tick_time) {
 		easeprint.counter = easeprint.counter + 1.0//0.5
 	}
 
+	impulse2.moving = (impulse2.flow + impulse2.step != 0)
+
+	local TESTMOVE = false
+	local NEWPULSE = true
 
 	if (i2_move(tiles_i2)){
+		testpr("MV_1\n")
+		TESTMOVE = true
 		local newpos = i2_newpos(tiles_i2,false)
 	}
 
-	impulse2.moving = (impulse2.flow + impulse2.step != 0)
 	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
+		testpr("MV_2 "+impulse2.flow+" "+impulse2.step+"\n")
+		//TESTMOVE = true
 		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
 
 		impulse2.flow0 = (impulse2.step_f + impulse2.flow) * spdT.scrollspeed - impulse2.step_f
@@ -16789,9 +16798,12 @@ function tick(tick_time) {
 		}
 
 		impulse2.tilepos = impulse2.flow + impulse2.step
+	}
 
+	if (TESTMOVE){
+		local TESTPOS = NEWPULSE ? - tiles_i2.pos : impulse2.tilepos
 		for (local i = 0; i < tiles.total; i++) {
-			tilez[i].obj.x = impulse2.tilepos - surfacePosOffset + tilesTablePos.X[i]
+			tilez[i].obj.x = TESTPOS - surfacePosOffset + tilesTablePos.X[i]
 			tilez[i].obj.y = tilesTablePos.Y[i]
 
 			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
