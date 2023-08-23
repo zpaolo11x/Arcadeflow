@@ -2657,8 +2657,8 @@ local spdT = {
 }
 
 local spdT2 = {
-	disp = 0.4//0.15
-	zmenu = 0.3//0.2
+	disp = 0.3//0.15
+	zmenu = 0.25//0.2
 }
 
 // Video delay parameters to skip fade-in
@@ -12222,7 +12222,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
 	
-	zmenu.i2 = i2_create(9, 4)
+	zmenu.i2 = i2_create(9, 3)
 	zmenu.i2.pulse_speed = spdT2.zmenu
 	disp.i2 = i2_create(13, 4)
 	disp.i2.pulse_speed = spdT2.disp
