@@ -18093,7 +18093,7 @@ function on_signal(sig) {
 			
 				i2_jumpto(disp.i2, disp.xstop)
 
-				if ((zmenu.selected != zmenu.oldselected) && (prf.DMPIMAGES == "WALL")){
+				if ((zmenu.selected != zmenu.oldselected) && (prf.DMPIMAGES == "WALLS")){
 					disp.dispzoom[zmenu.oldselected] = startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
 
 					flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
