@@ -2657,8 +2657,8 @@ local spdT = {
 }
 
 local spdT2 = {
-	disp = 0.15
-	zmenu = 0.2
+	disp = 0.4//0.15
+	zmenu = 0.3//0.2
 }
 
 // Video delay parameters to skip fade-in
@@ -2743,7 +2743,7 @@ local keyboard_entrytext = ""
 
 /// IMPULSE2 ENGINE ///
 
-function i2_create(in_samples){
+function i2_create(in_samples, in_poles){
 	local i2_in = {
 		delta = 0
 		
@@ -2761,6 +2761,9 @@ function i2_create(in_samples){
 		
 		samples = 5
 
+		poles = 3
+		buffer = null
+
 		filter = []
 		f_pulse = []	
 		f_triangle = []
@@ -2770,6 +2773,8 @@ function i2_create(in_samples){
 	}
 
 	i2_in.samples = in_samples
+	i2_in.poles = in_poles
+	i2_in.buffer = array(i2_in.poles, 0.0)
 
 	// Create pulse and triangle filters:
 	// [0,0,0,0,1] and [1,2,3,2,1] 	
@@ -2824,6 +2829,15 @@ function i2_newpos(i2_in,dbprint){
 	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
 	
+
+	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer[0])
+	for (local i = 1; i < i2_in.poles; i++){
+		i2_in.buffer[i] = i2_in.buffer[i] + i2_in.pulse_speed * (i2_in.buffer[i-1] - i2_in.buffer[i])
+	}
+
+	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
+
+/*
 	i2_in.stepcurve_f = i2_getfiltered(i2_in.stepshistory, i2_in.filter)
 
 	//CLAMP MAX SPEED HERE???
@@ -2833,6 +2847,7 @@ function i2_newpos(i2_in,dbprint){
 
 	i2_in.smoothcurve = (i2_in.smoothcurve - i2_in.stepcurve_f) * (1.0 - i2_in.pulse_speed) + i2_in.stepcurve_f
 
+*/
 	i2_in.stepshistory.push(i2_in.stepcurve)
 	i2_in.stepshistory.remove(0)
 
@@ -12206,9 +12221,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
 	
-	zmenu.i2 = i2_create(9)
+	zmenu.i2 = i2_create(9, 4)
 	zmenu.i2.pulse_speed = spdT2.zmenu
-	disp.i2 = i2_create(13)
+	disp.i2 = i2_create(13, 4)
 	disp.i2.pulse_speed = spdT2.disp
 
 	zmenu.data = menudata
@@ -18078,7 +18093,7 @@ function on_signal(sig) {
 			
 				i2_jumpto(disp.i2, disp.xstop)
 
-				if (zmenu.selected != zmenu.oldselected) {
+				if ((zmenu.selected != zmenu.oldselected) && (prf.DMPIMAGES == "WALL")){
 					disp.dispzoom[zmenu.oldselected] = startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
 
 					flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
