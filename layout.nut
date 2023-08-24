@@ -15270,7 +15270,8 @@ function finaltileupdate() {
 		//tile_redraw(focusindex.new, true)
 		//TEST162 
 		// added to avoid freezing the old item, but how does it work if there are more items under
-		// update cycle? would be better to avoid freezing everyrhing in changetiledata. 
+		// update cycle? would be better to avoid freezing everyrhing in changetiledata.
+		// or just reset all effects when update is necessary 
 		tilez[focusindex.old].freezecount = 0 
 		tilez[focusindex.new].freezecount = 0
 
