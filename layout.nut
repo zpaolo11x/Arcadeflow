@@ -42,7 +42,7 @@ l'AR poi viene clampato o snapcroppato, a quel punto viene definita la dimension
 //EASE PRINT
 
 local easeprint = {
-	status = true
+	status = false
 	counter = 0
 }
 
@@ -2332,10 +2332,6 @@ function i2_newpos(i2_in,dbprint){
 	//RETURN THE NEW POSITION
 	return(i2_in.smoothcurve)
 }
-
-local tiles_i2 = i2_create(4)
-tiles_i2.pulse_speed_1 = 0.1
-tiles_i2.pulse_speed_p = 0.21
 
 local impulse2 = {
 	delta = 0
@@ -8261,13 +8257,17 @@ local tiles = {
 	count = UI.cols * UI.rows
 	offscreen = (UI.vertical ? 3 * UI.rows : 4 * UI.rows)
 	total = null
+	i2 = i2_create(4)
 }
 tiles.total = tiles.count + 2 * tiles.offscreen
 
 local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding)
 
 impulse2.maxoffset = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
-tiles_i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
+
+tiles.i2.pulse_speed_1 = 0.1
+tiles.i2.pulse_speed_p = 0.21
+tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
 local snap_glow = []
 local snap_grad = []
@@ -8669,8 +8669,7 @@ function tile_freeze(i, status) {
 }
 
 impulse2.flow = 0.5
-//i2_setpos(tiles_i2, 0.5)
-tiles_i2.smoothcurve = 0.5
+tiles.i2.smoothcurve = 0.5
 
 /// No list blanker ///
 
@@ -15106,8 +15105,7 @@ function resetvarsandpositions() {
 	var = 0
 	tilesTablePos.Offset = 0
 
-	//i2_setpos(tiles_i2, 0.5)
-	tiles_i2.smoothcurve = 0.5
+	tiles.i2.smoothcurve = 0.5
 
 	impulse2.flow = 0.5
 	impulse2.step = 0
@@ -15931,7 +15929,7 @@ function on_transition(ttype, var0, ttime) {
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
 
-			i2_pulse(tiles_i2, (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift)
+			i2_pulse(tiles.i2, (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift)
 
 			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 			impulse2.filtern = 1
@@ -16778,9 +16776,9 @@ function tick(tick_time) {
 		local pippo3 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.maxoffset) * escale, 3, 3) //WHITE
 		local pippo4 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (impulse2.maxoffset) * escale, 3, 3) //BLUE
 
-		local pippo5 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles_i2.stepcurve) * escale, 3, 3) //BLUE
-		local pippo6 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles_i2.smoothcurve) * escale, 3, 3) //BLUE
-		local pippo7 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles_i2.pos) * escale, 3, 3) //BLUE
+		local pippo5 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles.i2.stepcurve) * escale, 3, 3) //BLUE
+		local pippo6 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles.i2.smoothcurve) * escale, 3, 3) //BLUE
+		local pippo7 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles.i2.pos) * escale, 3, 3) //BLUE
 
 
 		pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
@@ -16804,9 +16802,9 @@ function tick(tick_time) {
 	local TESTMOVE = false
 	local NEWPULSE = true
 
-	if (i2_move(tiles_i2)){
+	if (i2_move(tiles.i2)){
 		TESTMOVE = true
-		local newpos = i2_newpos(tiles_i2,false)
+		local newpos = i2_newpos(tiles.i2,false)
 	}
 
 	// Impulse scrolling routines
@@ -16844,7 +16842,7 @@ function tick(tick_time) {
 	}
 
 	if (TESTMOVE){
-		local TESTPOS = NEWPULSE ? - tiles_i2.pos : impulse2.tilepos
+		local TESTPOS = NEWPULSE ? - tiles.i2.pos : impulse2.tilepos
 		for (local i = 0; i < tiles.total; i++) {
 			tilez[i].obj.x = TESTPOS - surfacePosOffset + tilesTablePos.X[i]
 			tilez[i].obj.y = tilesTablePos.Y[i]
@@ -17816,12 +17814,12 @@ function on_signal(sig) {
 	debugpr("\n Si:" + sig)
 //TEST162
 if (sig == "custom1"){
-	tiles_i2.poles = 4
-	i2_pulse(tiles_i2, 300)
+	tiles.i2.poles = 4
+	i2_pulse(tiles.i2, 300)
 }
 if (sig == "custom2"){
-	tiles_i2.poles = 1
-	i2_pulse(tiles_i2, 300)
+	tiles.i2.poles = 1
+	i2_pulse(tiles.i2, 300)
 }
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
