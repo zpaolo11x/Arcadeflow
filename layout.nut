@@ -2228,8 +2228,9 @@ function i2_create(in_poles = 3){
 		pos = 0
 		pos_t = 0
 
-		pulse_speed0 = 0.2
 		pulse_speed = 0.2
+		pulse_speed_1 = 0.2
+		pulse_speed_p = 0.2
 
 		poles0 = in_poles
 		poles = in_poles
@@ -2251,7 +2252,7 @@ function i2_pulse(i2_in, delta_in){
 	
 	if (fabs(delta_in) > i2_in.maxdelta){
 		testpr("i2_POLE\n")
-		i2_in.pulse_speed = i2_in.pulse_speed0 * 0.5
+		i2_in.pulse_speed = i2_in.pulse_speed_1
 		i2_in.poles = 1
 		i2_in.delta = i2_in.maxdelta * (delta_in < 0 ? -1 : 1)
 	}
@@ -2260,7 +2261,7 @@ function i2_pulse(i2_in, delta_in){
 			i2_in.buffer = array(i2_in.poles0, i2_in.buffer[0])
 			i2_in.buffer_t = array(i2_in.poles0, i2_in.buffer[0])
 		}
-		i2_in.pulse_speed = i2_in.pulse_speed0
+		i2_in.pulse_speed = i2_in.pulse_speed_p
 		i2_in.poles = i2_in.poles0
 		i2_in.delta = delta_in //SERVE???
 	}
@@ -2333,7 +2334,8 @@ function i2_newpos(i2_in,dbprint){
 }
 
 local tiles_i2 = i2_create(4)
-tiles_i2.pulse_speed0 = tiles_i2.pulse_speed = 0.21
+tiles_i2.pulse_speed_1 = 0.1
+tiles_i2.pulse_speed_p = 0.21
 
 local impulse2 = {
 	delta = 0
@@ -12222,9 +12224,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	opts = cleanmenuopts(opts)
 	
 	zmenu.i2 = i2_create(3)
-	zmenu.i2.pulse_speed = zmenu.i2.pulse_speed0 = spdT2.zmenu
+	zmenu.i2.pulse_speed_p = zmenu.i2.pulse_speed_1 = spdT2.zmenu
 	disp.i2 = i2_create(4)
-	disp.i2.pulse_speed = disp.i2.pulse_speed0 = spdT2.disp
+	disp.i2.pulse_speed_p = disp.i2.pulse_speed_1 = spdT2.disp
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
