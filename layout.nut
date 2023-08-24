@@ -2226,23 +2226,42 @@ function i2_create(in_poles = 3){
 		stepcurve = 0
 		smoothcurve = 0
 		pos = 0
+		pos_t = 0
 
 		pulse_speed = 0.2
 
+		poles0 = in_poles
 		poles = in_poles
 		buffer = array(in_poles, 0.0)
+		buffer_t = array(in_poles, 0.0)
 
 		filter = []
 
-		limit_lo = -100000000
-		limit_hi = 10000000
+		limit_lo = -10000000
+		limit_hi =  10000000
+		maxdelta =  10000000
+		
 	}
 
 	return (i2_in)
 }
 
 function i2_pulse(i2_in, delta_in){
-	i2_in.delta = delta_in //SERVE???
+	
+	if (fabs(delta_in) > i2_in.maxdelta){
+		testpr("i2_POLE\n")
+		i2_in.poles = 1
+		i2_in.delta = i2_in.maxdelta * (delta_in < 0 ? -1 : 1)
+	}
+	else {
+		if (i2_in.poles == 1) {
+			i2_in.buffer = array(i2_in.poles0, i2_in.buffer[0])
+			i2_in.buffer_t = array(i2_in.poles0, i2_in.buffer[0])
+		}
+		i2_in.poles = i2_in.poles0
+		i2_in.delta = delta_in //SERVE???
+	}
+
 	i2_in.stepcurve += i2_in.delta
 }
 
@@ -2253,6 +2272,7 @@ function i2_jumpto(i2_in, new_pos){
 function i2_setpos(i2_in, new_pos){
 	i2_in.stepcurve = i2_in.smoothcurve = new_pos
 	i2_in.buffer = array(i2_in.poles, new_pos)
+	i2_in.buffer_t = array(i2_in.poles, new_pos)
 }
 
 function i2_getfiltered(arrayin, arrayw) {
@@ -2271,11 +2291,26 @@ function i2_move(i2_in){
 }
 
 function i2_newpos(i2_in,dbprint){
-
 	// CLAMP MAX AND MIN TARGET
 	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
 	
+	//calcualte temp position
+	i2_in.buffer_t[0] = i2_in.buffer_t[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer_t[0])
+	for (local i = 1; i < i2_in.poles; i++){
+		i2_in.buffer_t[i] = i2_in.buffer_t[i] + i2_in.pulse_speed * (i2_in.buffer_t[i-1] - i2_in.buffer_t[i])
+	}
+
+	i2_in.pos_t = i2_in.buffer_t[i2_in.poles - 1] - i2_in.stepcurve
+
+	if (i2_in.pos_t > i2_in.maxdelta){
+		testpr("i2_3\n")
+		i2_in.stepcurve = i2_in.stepcurve + (i2_in.pos_t - i2_in.maxdelta)
+	}
+	if (i2_in.pos_t < -i2_in.maxdelta){
+		testpr("i2_4\n")
+		i2_in.stepcurve = i2_in.stepcurve + (i2_in.pos_t + i2_in.maxdelta)
+	}
 
 	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer[0])
 	for (local i = 1; i < i2_in.poles; i++){
@@ -8227,6 +8262,7 @@ tiles.total = tiles.count + 2 * tiles.offscreen
 local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding)
 
 impulse2.maxoffset = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
+tiles_i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
 local snap_glow = []
 local snap_grad = []
@@ -15895,10 +15931,12 @@ function on_transition(ttype, var0, ttime) {
 			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
 			impulse2.filtern = 1
 			if (impulse2.delta > impulse2.maxoffset) {
+				testpr("OLD_SUPERJIMP1\n")
 				impulse2.filtern = 0
 				impulse2.delta = impulse2.maxoffset
 			}
 			if (impulse2.delta < -impulse2.maxoffset) {
+				testpr("OLD_SUPERJIMP2\n")
 				impulse2.filtern = 0
 				impulse2.delta = -impulse2.maxoffset
 			}
@@ -16762,14 +16800,12 @@ function tick(tick_time) {
 	local NEWPULSE = true
 
 	if (i2_move(tiles_i2)){
-		testpr("MV_1\n")
 		TESTMOVE = true
 		local newpos = i2_newpos(tiles_i2,false)
 	}
 
 	// Impulse scrolling routines
 	if (impulse2.flow + impulse2.step != 0) {
-		testpr("MV_2 "+impulse2.flow+" "+impulse2.step+"\n")
 		TESTMOVE = true
 		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
 
@@ -16778,10 +16814,12 @@ function tick(tick_time) {
 
 		if ((impulse2.tilepos0 > impulse2.maxoffset)) {
 			//impulse2.filtern = 0
+			testpr("MAXOFFSET_3\n")
 			impulse2.step = impulse2.step - (impulse2.tilepos0 - impulse2.maxoffset)
 			impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
 		}
 		if (impulse2.tilepos0 < -impulse2.maxoffset) {
+			testpr("MAXOFFSET_4\n")
 			//impulse2.filtern = 0
 			impulse2.step = impulse2.step - (impulse2.tilepos0 + impulse2.maxoffset)
 			impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
@@ -17771,7 +17809,15 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
-
+//TEST162
+if (sig == "custom1"){
+	tiles_i2.poles = 4
+	i2_pulse(tiles_i2, 300)
+}
+if (sig == "custom2"){
+	tiles_i2.poles = 1
+	i2_pulse(tiles_i2, 300)
+}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
