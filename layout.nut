@@ -47,7 +47,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = false
+	timer = true
 	name = ""
 	t1 = 0
 	t2 = 0
@@ -7269,6 +7269,7 @@ function z_list_indexchange(newindex) {
 	z_var = newindex - z_list.index
 	z_list.newindex = newindex
 	if (z_list.size != 0) fe.list.index = z_list.gametable[modwrap((newindex), z_list.size)].z_felistindex
+	testpr("XXX\n")
 	z_updatefilternumbers(z_list.newindex)
 }
 
@@ -15195,6 +15196,7 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
+	testpr("changedata "+i)
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15242,9 +15244,11 @@ function changetiledata(i, index, update) {
 		// Update visibility of horizontal or vertical shadows, glow, indicator etc
 		update_thumbdecor(indexTemp, var, tilez[indexTemp].AR.crop)
 		if (tilez[indexTemp].bd_mx_alpha != 0) update_borderglow(indexTemp, var, tilez[indexTemp].AR.crop)
+		testpr(" freeze")
 		tilez[indexTemp].freezecount = 2
 	}
 	tilez[indexTemp].obj.zorder = -2
+			testpr("\n")
 
 	tilesTablePos.X[indexTemp] = (i / UI.rows) * (UI.widthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix * 0.5
 	tilesTablePos.Y[indexTemp] = (i%UI.rows) * (UI.coreheight + UI.padding) + carrierT.y + UI.tileheight * 0.5
@@ -15264,6 +15268,10 @@ function finaltileupdate() {
 		tile_freeze(focusindex.new, false)
 		//tile_clear(focusindex.new, true)
 		//tile_redraw(focusindex.new, true)
+		//TEST162 
+		// added to avoid freezing the old item, but how does it work if there are more items under
+		// update cycle? would be better to avoid freezing everyrhing in changetiledata. 
+		tilez[focusindex.old].freezecount = 0 
 		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
@@ -15319,6 +15327,7 @@ function z_listrefreshtiles() {
 		local index = - (floor(tiles.total / 2) - 1) + corrector
 
 		for (local i = 0; i < tiles.total; i++) {
+			testpr("BB"+i+"\n")
 			changetiledata(i, index, true)
 			index++
 		}
@@ -15831,7 +15840,6 @@ function on_transition(ttype, var0, ttime) {
 				changetiledata(i, index, ((ttype == Transition.ToNewList) || ((ttype == Transition.ToNewSelection) && ((((column.stop > column.start) && (i / UI.rows >= tiles.total / UI.rows - column.offset)) || ((column.stop < column.start) && (i / UI.rows < -column.offset)))))))
 				index ++
 			}
-
 			finaltileupdate()
 
 		}
@@ -16640,6 +16648,8 @@ function tick(tick_time) {
 
 	// Manage tiles zoom and unzoom
 	foreach (i, item in tilesTableUpdate) {
+		testpr(checkfade(tilesTableUpdate[i]) ? "X": "-")
+		testpr((tilez[i].obj.redraw) ? "R": "-")
 		if (checkfade(tilesTableUpdate[i])) {
 			tilesTableUpdate[i] = fadeupdate(tilesTableUpdate[i])
 			local updatetemp = tilesTableUpdate[i]
@@ -16668,6 +16678,7 @@ function tick(tick_time) {
 			}
 		}
 	}
+	testpr("\n")
 
 	foreach (i, item in tilesTableZoom) {
 		//testpr(round(tilez[i].obj.width,1)+""+(tilez[i].obj.redraw ? "O" : "X")+" ")
@@ -16850,6 +16861,7 @@ function tick(tick_time) {
 			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
+				testpr("                                   A\n")
 				tile_freeze(i, true)
 			}
 			else if (!tilez[i].offlist) {
