@@ -15243,7 +15243,11 @@ function changetiledata(i, index, update) {
 
 		// Update visibility of horizontal or vertical shadows, glow, indicator etc
 		update_thumbdecor(indexTemp, var, tilez[indexTemp].AR.crop)
-		if (tilez[indexTemp].bd_mx_alpha != 0) update_borderglow(indexTemp, var, tilez[indexTemp].AR.crop)
+		if (tilez[indexTemp].bd_mx_alpha != 0) {
+			testpr (" BDMIX")
+			update_borderglow(indexTemp, var, tilez[indexTemp].AR.crop)
+			tilesTableUpdate[indexTemp] = [0.0, 0.0, 0.0, 0.0, 0.0]
+		}
 		testpr(" freeze")
 		tilez[indexTemp].freezecount = 2
 	}
@@ -15271,8 +15275,9 @@ function finaltileupdate() {
 		//TEST162 
 		// added to avoid freezing the old item, but how does it work if there are more items under
 		// update cycle? would be better to avoid freezing everyrhing in changetiledata.
-		// or just reset all effects when update is necessary 
-		tilez[focusindex.old].freezecount = 0 
+		// or just reset all effects when update is necessary
+		// EDIT Added forced fade update to update routin 
+		//tilez[focusindex.old].freezecount = 0 
 		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
