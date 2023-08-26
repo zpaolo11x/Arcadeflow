@@ -8268,8 +8268,8 @@ local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding
 
 impulse2.maxoffset = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
-tiles.i2.pulse_speed_1 = spdT2.scroll_p
-tiles.i2.pulse_speed_p = spdT2.scroll_1
+tiles.i2.pulse_speed_1 = spdT2.scroll_1
+tiles.i2.pulse_speed_p = spdT2.scroll_p
 tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
 local snap_glow = []
