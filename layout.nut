@@ -1703,7 +1703,10 @@ function check_buttons() {
 			}
 		}
 	}
-	if (conflict) 	splash_message (AF.splash.pulse, "WARNING\n\nConflict in Arcadeflow\nbutton assignment", 3)
+	if (conflict) 	{
+		print("WARNING: Conflict in Arcadeflow button assignment\n")
+		splash_message (AF.splash.pulse, "*WARNING*\nConflict in Arcadeflow\nbutton assignment", 3)
+	}
 }
 
 check_buttons()
