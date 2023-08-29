@@ -2220,7 +2220,7 @@ count.movestep = count.movestepslow
 local globalposnew = 0
 
 
-/// i2 PULSE ENGINE ///
+/// IMPULSE2 ENGINE ///
 
 function i2_create(in_poles = 3){
 	local i2_in = {
@@ -2297,7 +2297,7 @@ function i2_move(i2_in){
 	return (i2_in.smoothcurve != i2_in.stepcurve)
 }
 
-function i2_newpos(i2_in){
+function i2_newpos(i2_in,dbprint){
 	// CLAMP MAX AND MIN TARGET
 	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
@@ -2331,10 +2331,40 @@ function i2_newpos(i2_in){
 	}
 
 	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
-
+	if(dbprint)testpr(i2_in.smoothcurve+"\n")
 	//RETURN THE NEW POSITION
 	return(i2_in.smoothcurve)
 }
+
+local impulse2 = {
+	delta = 0
+	step = 0
+	step_f = 0
+	flow0 = 0
+	flow = 0
+	tilepos = 0
+	tilepos0 = 0
+	samples = 13 //13 o 15?
+	filtern = 1
+	maxoffset = null
+	moving = true
+}
+
+local filterw = array(impulse2.samples, 1.0)
+local filtersw = []
+
+filtersw.push(array(impulse2.samples, 0.0))
+filtersw[0][impulse2.samples - 1] = 1.0
+filtersw.push(array(impulse2.samples, 1.0))
+
+foreach(i, item in filtersw[1]) {
+	filtersw[1][i] = impulse2.samples - i
+}
+for(local i = 0; i < (impulse2.samples - 1) * 0.5; i++) {
+	filtersw[1][i] = i + 1
+}
+
+local srfposhistory = array(impulse2.samples, 0.0)
 
 function getfiltered(arrayin, arrayw) {
 	local sumv = 0
@@ -8239,6 +8269,8 @@ tiles.total = tiles.count + 2 * tiles.offscreen
 
 local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding)
 
+impulse2.maxoffset = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
+
 tiles.i2.pulse_speed_1 = spdT2.scroll_1
 tiles.i2.pulse_speed_p = spdT2.scroll_p
 tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
@@ -8642,6 +8674,7 @@ function tile_freeze(i, status) {
 	}
 }
 
+impulse2.flow = 0.5
 tiles.i2.smoothcurve = 0.5
 
 /// No list blanker ///
@@ -15079,7 +15112,12 @@ function resetvarsandpositions() {
 	tilesTablePos.Offset = 0
 
 	tiles.i2.smoothcurve = 0.5
-	//TEST162 RESET tiles.i2
+
+	impulse2.flow = 0.5
+	impulse2.step = 0
+	impulse2.delta = 0
+	impulse2.filtern = 0
+	srfposhistory = array(impulse2.samples, impulse2.step)
 
 	column.offset = 0
 	centercorr.val = 0
@@ -15911,6 +15949,21 @@ function on_transition(ttype, var0, ttime) {
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
 
 			i2_pulse(tiles.i2, (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift)
+
+			impulse2.delta = (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift
+			impulse2.filtern = 1
+			if (impulse2.delta > impulse2.maxoffset) {
+				testpr("OLD_SUPERJIMP1\n")
+				impulse2.filtern = 0
+				impulse2.delta = impulse2.maxoffset
+			}
+			if (impulse2.delta < -impulse2.maxoffset) {
+				testpr("OLD_SUPERJIMP2\n")
+				impulse2.filtern = 0
+				impulse2.delta = -impulse2.maxoffset
+			}
+
+			impulse2.step += impulse2.delta
 		}
 	}
 
@@ -16392,7 +16445,7 @@ function tick(tick_time) {
 	}
 
 	if (i2_move(disp.i2)){
-		local newpos = i2_newpos(disp.i2)
+		local newpos = i2_newpos(disp.i2,false)
 		for (local i = 0; i < disp.images.len(); i++) {
 			disp.images[i].y = disp.pos0[i] + newpos
 			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
@@ -16443,7 +16496,7 @@ function tick(tick_time) {
 	}
 */
 	if (i2_move(zmenu.i2)){
-		local newpos = i2_newpos(zmenu.i2)
+		local newpos = i2_newpos(zmenu.i2,false)
 		for (local i = 0; i < zmenu.shown; i++) {
 			zmenu.items[i].y = zmenu.pos0[i] + newpos
 			zmenu.noteitems[i].y = zmenu.pos0[i] + newpos
@@ -16740,12 +16793,23 @@ function tick(tick_time) {
 	//EASE PRINT
 	if (easeprint.status){
 		local escale = 0.1
+		local pippo1 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.tilepos) * escale, 3, 3) //RED
+		local pippo2 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.flow) * escale, 3, 3) //BLACK
+		local pippo3 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 + (impulse2.maxoffset) * escale, 3, 3) //WHITE
+		local pippo4 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (impulse2.maxoffset) * escale, 3, 3) //BLUE
 
 		local pippo5 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles.i2.stepcurve) * escale, 3, 3) //BLUE
 		local pippo6 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles.i2.smoothcurve) * escale, 3, 3) //BLUE
 		local pippo7 = fe.add_rectangle(easeprint.counter, fl.h_os * 0.5 - (tiles.i2.pos) * escale, 3, 3) //BLUE
 
+
+		pippo1.zorder = pippo2.zorder = pippo3.zorder = pippo4.zorder = 20000
 		pippo5.zorder = pippo6.zorder = pippo7.zorder = 20001
+
+		pippo1.set_rgb(255, 0, 0)
+		pippo2.set_rgb(0, 0, 0)
+		pippo3.set_rgb(255, 255, 255)
+		pippo4.set_rgb(0, 0, 255)
 
 		pippo5.set_rgb(255, 0, 255)
 		pippo6.set_rgb(0, 255, 0)
@@ -16755,12 +16819,54 @@ function tick(tick_time) {
 		easeprint.counter = easeprint.counter + 0.5
 	}
 
-	if (i2_move(tiles.i2)){
-		local newpos = i2_newpos(tiles.i2)
-		// newpos is not used but i2_newpos updates all parameters like .pos
+	impulse2.moving = (impulse2.flow + impulse2.step != 0)
 
+	local TESTMOVE = false
+	local NEWPULSE = true
+
+	if (i2_move(tiles.i2)){
+		TESTMOVE = true
+		local newpos = i2_newpos(tiles.i2,false)
+	}
+
+	// Impulse scrolling routines
+	if (impulse2.flow + impulse2.step != 0) {
+		TESTMOVE = true
+		impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
+
+		impulse2.flow0 = (impulse2.step_f + impulse2.flow) * spdT.scrollspeed - impulse2.step_f
+		impulse2.tilepos0 = impulse2.flow0 + impulse2.step
+
+		if ((impulse2.tilepos0 > impulse2.maxoffset)) {
+			//impulse2.filtern = 0
+			testpr("MAXOFFSET_3\n")
+			impulse2.step = impulse2.step - (impulse2.tilepos0 - impulse2.maxoffset)
+			impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
+		}
+		if (impulse2.tilepos0 < -impulse2.maxoffset) {
+			testpr("MAXOFFSET_4\n")
+			//impulse2.filtern = 0
+			impulse2.step = impulse2.step - (impulse2.tilepos0 + impulse2.maxoffset)
+			impulse2.step_f = getfiltered(srfposhistory, filtersw[impulse2.filtern])
+		}
+
+		impulse2.flow = (impulse2.step_f + impulse2.flow) * spdT.scrollspeed - impulse2.step_f
+
+		srfposhistory.push(impulse2.step)
+		srfposhistory.remove(0)
+
+		if ((impulse2.flow + impulse2.step < 0.1) && (impulse2.flow + impulse2.step > -0.1)) {
+			impulse2.flow = -impulse2.step
+			srfposhistory = array(impulse2.samples, impulse2.step)
+		}
+
+		impulse2.tilepos = impulse2.flow + impulse2.step
+	}
+
+	if (TESTMOVE){
+		local TESTPOS = NEWPULSE ? - tiles.i2.pos : impulse2.tilepos
 		for (local i = 0; i < tiles.total; i++) {
-			tilez[i].obj.x = - tiles.i2.pos - surfacePosOffset + tilesTablePos.X[i]
+			tilez[i].obj.x = TESTPOS - surfacePosOffset + tilesTablePos.X[i]
 			tilez[i].obj.y = tilesTablePos.Y[i]
 
 			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
@@ -16869,7 +16975,7 @@ function tick(tick_time) {
 
 	// context menu fade in fade out
 
-	if ((overmenu.visible) && (flowT.overmenu[3] >= 0) && i2_move(tiles.i2)) {
+	if ((overmenu.visible) && (flowT.overmenu[3] >= 0) && (impulse2.flow + impulse2.step != 0)) {
 		overmenu.x = globalposnew - overmenuwidth * 0.5
 	}
 
@@ -16907,13 +17013,13 @@ function tick(tick_time) {
 		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
-	if (frost.canfreeze && !i2_move(tiles.i2) && !bglay.surf_1.redraw && !data_surface.redraw){
+	if (frost.canfreeze && !impulse2.moving && !bglay.surf_1.redraw && !data_surface.redraw){
 		frost_freeze(true)
 		frost.canfreeze = false
 	}
 
 	// menu showing, frost not redrawing, and some items are moving or have moved
-	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || i2_move(tiles.i2))){
+	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || impulse2.moving)){
 		frost_freeze(false)
 		frost.canfreeze = true
 	}
