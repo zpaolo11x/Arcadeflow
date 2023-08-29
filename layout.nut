@@ -47,7 +47,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = true
+	timer = false
 	name = ""
 	t1 = 0
 	t2 = 0
@@ -2334,16 +2334,6 @@ function i2_newpos(i2_in){
 
 	//RETURN THE NEW POSITION
 	return(i2_in.smoothcurve)
-}
-
-function getfiltered(arrayin, arrayw) {
-	local sumv = 0
-	local sumw = 0
-	foreach (i, item in arrayin) {
-		sumv += arrayin[i] * arrayw[i]
-		sumw += arrayw[i]
-	}
-	return sumv * 1.0 / sumw
 }
 
 local colormapper = {
