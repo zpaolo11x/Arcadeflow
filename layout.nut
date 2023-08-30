@@ -16382,9 +16382,9 @@ function tick(tick_time) {
 	}
 
 	if (i2_move(disp.i2)){
-		local newpos = i2_newpos(disp.i2)
+		i2_newpos(disp.i2)
 		for (local i = 0; i < disp.images.len(); i++) {
-			disp.images[i].y = disp.pos0[i] + newpos
+			disp.images[i].y = disp.pos0[i] + disp.i2.smoothcurve
 			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
 		}
 		//testpr("\n")
@@ -16392,7 +16392,7 @@ function tick(tick_time) {
 		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
 		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
 		
-		disp.xstart = newpos
+		disp.xstart = disp.i2.smoothcurve
 	
 	}
 /*
