@@ -11807,7 +11807,7 @@ local disp = {
 
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
-	xstart = 0
+	//xstart = 0
 	xstop = 0
 	bgtileh = 0
 	speed = null
@@ -11835,7 +11835,7 @@ local disp = {
 }
 
 disp.width = disp.tilew
-disp.speed = disp.tileh * 0.1
+//disp.speed = disp.tileh * 0.1
 disp.spacing = disp0.h
 disp.x = overlay.w - disp.tilew
 disp.bgtileh = floor(disp.tilew * 9.0 / 16.0)
@@ -12586,7 +12586,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
 		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
 		i2_setpos(disp.i2, disp.xstop)
-		disp.xstart = disp.xstop
+		//disp.xstart = disp.xstop
 		foreach (id, item in disp.images) {
 			item.y = disp.pos0[id] + disp.xstop
 		}
@@ -16401,7 +16401,7 @@ function tick(tick_time) {
 		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
 		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
 		
-		disp.xstart = disp.i2.smoothcurve
+		//disp.xstart = disp.i2.smoothcurve
 	
 	}
 /*
