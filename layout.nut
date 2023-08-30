@@ -9079,7 +9079,7 @@ function overmenu_show() {
 	if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 
 	overmenu.visible = true
-	flowT.overmenu = startfade(flowT.overmenu, 0.095, 0.0)
+	startfade(flowT.overmenu, 0.095, 0.0)
 }
 
 function overmenu_hide(strict) {
@@ -9090,7 +9090,7 @@ function overmenu_hide(strict) {
 		return
 	}
 	else
-	 flowT.overmenu = startfade(flowT.overmenu, -0.08, -3.0)
+	 startfade(flowT.overmenu, -0.08, -3.0)
 }
 
 /// Controls Overlays Construction (Listbox) ///
@@ -9162,11 +9162,11 @@ fe.overlay.set_custom_controls(overlay.label, overlay.listbox)
 
 function mfmbgshow() {
 	frost.surf_rt.shader = shader_fr.alpha
-	flowT.filterbg = startfade(flowT.filterbg, 0.08, 0.0)
+	startfade(flowT.filterbg, 0.08, 0.0)
 }
 
 function mfmbghide() {
-	flowT.filterbg = startfade(flowT.filterbg, -0.10, 0.0)
+	startfade(flowT.filterbg, -0.10, 0.0)
 }
 
 function frostshow() {
@@ -9175,13 +9175,13 @@ function frostshow() {
 	frostshaders(true)
 
 	overlay.background.visible = true
-	flowT.zmenubg = startfade(flowT.zmenubg, 0.08, 0.0)
-	flowT.frostblur = startfade(flowT.frostblur, 0.08, 0.0)
+	startfade(flowT.zmenubg, 0.08, 0.0)
+	startfade(flowT.frostblur, 0.08, 0.0)
 }
 
 function frosthide() {
-	flowT.zmenubg = startfade(flowT.zmenubg, -0.10, 0.0)
-	flowT.frostblur = startfade(flowT.frostblur, -0.10, 0.0)
+	startfade(flowT.zmenubg, -0.10, 0.0)
+	startfade(flowT.frostblur, -0.10, 0.0)
 }
 
 function frostshaders(turnon) {
@@ -9207,8 +9207,8 @@ function frost_freeze(status){
 
 function videosnap_hide() {
 	for (local i = 0; i < tiles.total; i++) {
-		gr_vidszTableFade[i] = startfade(gr_vidszTableFade[i], -0.1, 1.0)
-		aspectratioMorph[i] = startfade(aspectratioMorph[i], -0.1, 1.0)
+		startfade(gr_vidszTableFade[i], -0.1, 1.0)
+		startfade(aspectratioMorph[i], -0.1, 1.0)
 		vidpos[i] = 0
 	}
 }
@@ -9219,8 +9219,8 @@ function videosnap_restore() {
 		vidindex[focusindex.new] = tilez[focusindex.new].offset
 	}
 	else {
-		gr_vidszTableFade[focusindex.new] = startfade(gr_vidszTableFade[focusindex.new], 0.03, 1.0)
-		aspectratioMorph[focusindex.new] = startfade(aspectratioMorph[focusindex.new], 0.06, 1.0)
+		startfade(gr_vidszTableFade[focusindex.new], 0.03, 1.0)
+		startfade(aspectratioMorph[focusindex.new], 0.06, 1.0)
 	}
 }
 
@@ -9242,8 +9242,8 @@ function overlay_show(var0) {
 	overlay.glyph.visible = false
 	overlay.background.visible = overlay.sidelabel.visible = overlay.label.visible = overlay.wline.visible = true
 	foreach (item in overlay.shadows) item.visible = true
-	flowT.zmenutx = startfade(flowT.zmenutx, 0.05, 0.0)
-	flowT.zmenush = startfade(flowT.zmenush, 0.05, 0.0)
+	startfade(flowT.zmenutx, 0.05, 0.0)
+	startfade(flowT.zmenush, 0.05, 0.0)
 }
 
 function overlay_hide() {
@@ -9433,7 +9433,7 @@ function optionsmenu_lev3() {
 	else if (AF.prefs.l1[prfmenu.outres0][prfmenu.outres1].selection == AF.req.keyboard) {
 		// TEXT INPUT OPTION WITH KEYBOARD (selection = AF.req.keyboard)
 		zmenuhide()
-		flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.2, 0.0)
+		startfade(flowT.zmenudecoration, 0.2, 0.0)
 
 		keyboard_select (0, UI.vertical ? 1 : 0)
 
@@ -9655,7 +9655,7 @@ function optionsmenu_lev1() {
 					flowT.fg = startfade(flowT.fg, -0.02, -1.0)
 					flowT.data = startfade(flowT.data, 0.02, -1.0)
 					*/
-					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+					startfade(flowT.groupbg, 0.02, -1.0)
 				}
 			}
 		}
@@ -9693,7 +9693,7 @@ function optionsmenu_boot() {
 
 function savecurrentoptions() {
 	zmenuhide()
-	flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.2, 0.0)
+	startfade(flowT.zmenudecoration, 0.2, 0.0)
 
 	keyboard_select (0, UI.vertical ? 1 : 0)
 
@@ -10251,12 +10251,12 @@ function keyboard_show(text_base, entrytext, f_type, f_back, f_done) {
 
 	// Show keyboard graphics
 	// keyboard_surface.alpha = 255
-	flowT.keyboard = startfade(flowT.keyboard, 0.1, 0.0)
+	startfade(flowT.keyboard, 0.1, 0.0)
 }
 
 function keyboard_hide() {
-	flowT.keyboard = startfade(flowT.keyboard, -0.1, 0.0)
-	if (!umvisible && !prfmenu.showing) flowT.zmenudecoration = startfade(flowT.zmenudecoration, -0.2, 0.0)
+	startfade(flowT.keyboard, -0.1, 0.0)
+	if (!umvisible && !prfmenu.showing) startfade(flowT.zmenudecoration, -0.2, 0.0)
 	// keyboard_surface.alpha = 0
 }
 
@@ -10472,7 +10472,7 @@ function tags_menu() {
 		}
 		else if (out == tagsmenu.len() - 1) { //ADD NEW TAG
 			zmenuhide()
-			flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.2, 0.0)
+			startfade(flowT.zmenudecoration, 0.2, 0.0)
 			add_new_tag()
 		}
 		else {
@@ -11605,7 +11605,7 @@ function history_updatetext() {
 
 function history_show(h_startup)
 {
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
+	startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	if (prf.THUMBVIDEO) videosnap_hide()
@@ -11619,16 +11619,16 @@ function history_show(h_startup)
 		history_surface.visible = true
 		hist_text.descr.visible = true
 		history_redraw(true)
-		flowT.history = startfade(flowT.history, 0.05, 3.0)
-		flowT.histtext = startfade(flowT.histtext, 0.05, -3.0)
+		startfade(flowT.history, 0.05, 3.0)
+		startfade(flowT.histtext, 0.05, -3.0)
 
-		flowT.groupbg = startfade(flowT.groupbg, -0.08, -3.0)
+		startfade(flowT.groupbg, -0.08, -3.0)
 		flowT.historyscroll = [0.5, 0.5, 0.5, 0.0, 0.0]
 	}
 }
 
 function history_hide() {
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.015, -5.0)
+	startfade(tilesTableZoom[focusindex.new], 0.015, -5.0)
 
 	if (prf.AUDIOVIDHISTORY && prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
 
@@ -11636,10 +11636,10 @@ function history_hide() {
 	if (prf.THUMBVIDEO) videosnap_restore()
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
 
-	flowT.history = startfade(flowT.history, -0.05, -3.0)
-	flowT.histtext = startfade(flowT.histtext, -0.5, 0.0)
+	startfade(flowT.history, -0.05, -3.0)
+	startfade(flowT.histtext, -0.5, 0.0)
 
-	flowT.groupbg = startfade(flowT.groupbg, 0.06, 3.0)
+	startfade(flowT.groupbg, 0.06, 3.0)
 }
 
 function history_visible() {
@@ -11713,7 +11713,14 @@ function fadeupdate(fadearray) {
 	local increase_sign = t_increaser > 0 ? 1.0 : -1.0
 	local ease_sign = t_easer > 0 ? 1.0 : -1.0
 
-	if (t_counter > 1.0) return ([0.0, 0.5 * (increase_sign + 1.0), t_increaser, 0.0, 0.0])
+	if (t_counter > 1.0) {
+		fadearray[0] = 0.0
+		fadearray[1] = 0.5 * (increase_sign + 1.0)
+		fadearray[2] = t_increaser
+		fadearray[3] = 0.0
+		fadearray[4] = 0.0
+		return
+	 } 
 
 	if (t_easer == 0)
 		t_value = 1.0 - 0.5 * (1.0 + increase_sign) + increase_sign * t_counter
@@ -11722,7 +11729,13 @@ function fadeupdate(fadearray) {
 	else if (t_easer < 0)
 		t_value = (1.0 - increase_sign) * 0.5 + increase_sign * (1.0 - pow((1 - fabs(t_counter)), (-1.0 * t_easer)))
 
-	return ([t_counter, t_value, t_starter, t_increaser, t_easer])
+	fadearray[0] = t_counter
+	fadearray[1] = t_value
+	fadearray[2] = t_starter
+	fadearray[3] = t_increaser
+	fadearray[4] = t_easer
+
+//	return ([t_counter, t_value, t_starter, t_increaser, t_easer])
 }
 
 function checkfade(fadearray) {
@@ -11744,17 +11757,20 @@ function startfade(fadearray, t_in_increaser, t_in_easer) {
 	if (t_in_easer > 0) {
 		// Reverse update counter value with respect to input data
 		t_counter = pow((increase_sign * (t_value - (1.0 - increase_sign) * 0.5)), (1.0 / t_in_easer))
-		return ([t_counter, t_value, t_starter, t_in_increaser, t_in_easer])
 	}
 	else if (t_in_easer < 0) {
 		// Reverse update counter value with respect to input data
 		t_counter = 1.0 - pow((1.0 - increase_sign * (t_value - (1.0 - increase_sign) * 0.5)), (-1.0 / t_in_easer))
-		return ([t_counter, t_value, t_starter, t_in_increaser, t_in_easer])
 	}
 	else {
 		t_counter = increase_sign * (t_value - 1.0 + 0.5 * (1.0 + increase_sign))
-		return ([t_counter, t_value, t_starter, t_in_increaser, t_in_easer])
 	}
+	
+	fadearray[0] = t_counter
+	fadearray[1] = t_value
+	fadearray[2] = t_starter
+	fadearray[3] = t_in_increaser
+	fadearray[4] = t_in_easer
 }
 
 function endfade(fadearray) {
@@ -11767,9 +11783,9 @@ function history_changegame(direction) {
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO))  tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	hist.scrollreset = true
 	hist.direction = direction
-	flowT.historyscroll = startfade(flowT.historyscroll, 0.0601, 0.0)
-	flowT.historyblack = startfade(flowT.historyblack, flowT.historyscroll[3] * 2.0, -3.0)
-	flowT.historydata = startfade(flowT.historydata, 0.101, 0.0)
+	startfade(flowT.historyscroll, 0.0601, 0.0)
+	startfade(flowT.historyblack, flowT.historyscroll[3] * 2.0, -3.0)
+	startfade(flowT.historydata, 0.101, 0.0)
 }
 
 /// Display Menu Page ///
@@ -12174,7 +12190,7 @@ function getxstop(){
 }
 
 function getscrollerstop(fade = true){
-	if (fade && (zmenu.height < zmenu.virtualheight)) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
+	if (fade && (zmenu.height < zmenu.virtualheight)) startfade(flowT.scroller, 0.1, 0.0)
 	return (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
 }
 
@@ -12257,8 +12273,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// Unhide overlay drop shadows and start fading of menu elements
 	foreach (item in overlay.shadows) item.visible = true
-	flowT.zmenudecoration = startfade(flowT.zmenudecoration, 0.08, 0.0)
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
+	startfade(flowT.zmenudecoration, 0.08, 0.0)
+	startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 	foreach (i, item in zmenu.data) try {zmenu.data[i].note = zmenu.data[i].note.toupper()} catch(err) {}
 	foreach (item in disp.images) {
@@ -12286,8 +12302,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	overlay.sidelabel.visible = overlay.label.visible = overlay.glyph.visible = overlay.wline.visible = true
 
-	flowT.zmenutx = startfade(flowT.zmenutx, 0.05, 0.0)
-	flowT.zmenush = startfade(flowT.zmenush, 0.05, 0.0)
+	startfade(flowT.zmenutx, 0.05, 0.0)
+	startfade(flowT.zmenush, 0.05, 0.0)
 
 	// Change menu height if options menu is visible
 	if (prfmenu.showing) {
@@ -12709,7 +12725,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 }
 
 function zmenuhide() {
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
+	startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 	foreach (item in disp.images) item.file_name = AF.folder + "pics/transparent.png"
 
@@ -12718,9 +12734,9 @@ function zmenuhide() {
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = true
 
 	// Fade out zmenu text objects and zmenu shadow objects
-	flowT.zmenutx = startfade(flowT.zmenutx, -0.15, 0.0)
-	flowT.zmenush = startfade(flowT.zmenush, -0.2, 0.0)
-	flowT.zmenudecoration = startfade(flowT.zmenudecoration, -0.2, 0.0)
+	startfade(flowT.zmenutx, -0.15, 0.0)
+	startfade(flowT.zmenush, -0.2, 0.0)
+	startfade(flowT.zmenudecoration, -0.2, 0.0)
 
 	zmenu.showing = false
 }
@@ -13176,7 +13192,7 @@ function displayungrouped() {
 			frosthide()
 			zmenuhide()
 			if (prf.DMPATSTART) {
-				flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+				startfade(flowT.groupbg, 0.02, -1.0)
 			}
 			local targetdisplay = menuarray[displayout].dispindex
 
@@ -13188,7 +13204,7 @@ function displayungrouped() {
 				frosthide()
 				zmenuhide()
 				if (prf.DMPATSTART) {
-					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+					startfade(flowT.groupbg, 0.02, -1.0)
 				}
 			} else {
 				utilitymenu (umpresel)
@@ -13266,7 +13282,7 @@ function displaygrouped2() {
 	function(gmenu1) {
 		if (gmenu1 != -1) {
 			if (prf.DMPATSTART) {
-				flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+				startfade(flowT.groupbg, 0.02, -1.0)
 			}
 			local targetdisplay = menuarray[gmenu1].dispindex
 			jumptodisplay (targetdisplay)
@@ -13332,7 +13348,7 @@ function displaygrouped1(){
 				disp.gmenu1in = 0
 
 				if (prf.DMPATSTART) {
-					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+					startfade(flowT.groupbg, 0.02, -1.0)
 				}
 				local targetdisplay = disp.structure["MENU"].disps[disp.gmenu0 - disp.menuthresh].dispindex
 				jumptodisplay (targetdisplay)
@@ -13347,7 +13363,7 @@ function displaygrouped1(){
 				frosthide()
 				zmenuhide()
 				if (prf.DMPATSTART) {
-					flowT.groupbg = startfade(flowT.groupbg, 0.02, -1.0)
+					startfade(flowT.groupbg, 0.02, -1.0)
 				}
 			}
 			else {
@@ -13458,15 +13474,15 @@ function hideallbutbg() {
 	// Returns true if the file is NOT available
 	if (prf.REDCROSS && !z_list.gametable[z_list.index].z_fileisavailable) return true
 
-	flowT.groupbg = startfade(flowT.groupbg, -2.0, 0.0)
-	flowT.history = startfade(flowT.history, -2.0, 0.0)
-	flowT.histtext = startfade(flowT.histtext, -2.0, 0.0)
+	startfade(flowT.groupbg, -2.0, 0.0)
+	startfade(flowT.history, -2.0, 0.0)
+	startfade(flowT.histtext, -2.0, 0.0)
 
 	return false
 }
 
 function layoutfadein() {
-	tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
+	startfade(tilesTableZoom[focusindex.new], 0.15, 5.0)
 
 	if (prf.SPLASHON) {
 		flowT.groupbg = [0.0, 0.0, 0.0, 0.016, 3.0]
@@ -13561,8 +13577,8 @@ function attractkick() {
 	attractitem.text1.visible = attractitem.text2.visible = true
 	attractitem.snap.shader = attractitem.shader_2_lottes
 
-	flowT.attract = startfade(flowT.attract, 0.1, 0.0)
-	if (prf.AMSHOWLOGO) flowT.logo = startfade(flowT.logo, 0.1, 0.0)
+	startfade(flowT.attract, 0.1, 0.0)
+	if (prf.AMSHOWLOGO) startfade(flowT.logo, 0.1, 0.0)
 }
 
 function attractupdatesnap() {
@@ -15235,18 +15251,18 @@ function finaltileupdate() {
 		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
-			tilesTableZoom[focusindex.old] = startfade(tilesTableZoom[focusindex.old], -0.055, 1.0)
-			tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
+			startfade(tilesTableZoom[focusindex.old], -0.055, 1.0)
+			startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 		}
 
-		tilesTableUpdate[focusindex.old] = startfade(tilesTableUpdate[focusindex.old], -0.055, 1.0)
-		tilesTableUpdate[focusindex.new] = startfade(tilesTableUpdate[focusindex.new], 0.035, -5.0)
+		startfade(tilesTableUpdate[focusindex.old], -0.055, 1.0)
+		startfade(tilesTableUpdate[focusindex.new], 0.035, -5.0)
 
 		//activate video load counter
 		if ((prf.THUMBVIDEO)) {
 			if (focusindex.old != focusindex.new) {
-				gr_vidszTableFade[focusindex.old] = startfade(gr_vidszTableFade[focusindex.old], prf.LOGOSONLY ? -0.04 : -0.01, 1.0)
-				aspectratioMorph[focusindex.old] = startfade(aspectratioMorph[focusindex.old], -0.08, 1.0)
+				startfade(gr_vidszTableFade[focusindex.old], prf.LOGOSONLY ? -0.04 : -0.01, 1.0)
+				startfade(aspectratioMorph[focusindex.old], -0.08, 1.0)
 			}
 			vidpos[focusindex.old] = 0
 
@@ -15255,8 +15271,8 @@ function finaltileupdate() {
 				vidindex[focusindex.new] = tilez[focusindex.new].offset
 			}
 			else {
-				gr_vidszTableFade[focusindex.new] = startfade(gr_vidszTableFade[focusindex.new], 0.03, 1.0)
-				aspectratioMorph[focusindex.new] = startfade(aspectratioMorph[focusindex.new], 0.06, 1.0)
+				startfade(gr_vidszTableFade[focusindex.new], 0.03, 1.0)
+				startfade(aspectratioMorph[focusindex.new], 0.06, 1.0)
 			}
 		}
 		tilez[focusindex.old].obj.zorder = -2
@@ -15593,7 +15609,7 @@ function on_transition(ttype, var0, ttime) {
 	}
 
 	if (ttype == Transition.FromGame) {
-		flowT.groupbg = startfade(flowT.groupbg, 0.06, 3.0)
+		startfade(flowT.groupbg, 0.06, 3.0)
 	}
 
 	if ((ttype == Transition.ShowOverlay) && (prf.THEMEAUDIO)) snd.wooshsound.playing = true
@@ -15603,7 +15619,7 @@ function on_transition(ttype, var0, ttime) {
 
 		//background video delay load
 			vidposbg = vidstarter
-			vidbgfade = startfade(vidbgfade, -0.1, 1.0)
+			startfade(vidbgfade, -0.1, 1.0)
 		}
 	}
 
@@ -15679,10 +15695,10 @@ function on_transition(ttype, var0, ttime) {
 		// fade.display = fade.displayzoom = 1
 		displayname.msg = fe.filters[fe.list.filter_index].name
 
-		flowT.alphadisplay = startfade(flowT.alphadisplay, 0.04, -2.0)
+		startfade(flowT.alphadisplay, 0.04, -2.0)
 		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
-		flowT.zoomdisplay = startfade(flowT.zoomdisplay, 0.015, -2.0)
+		startfade(flowT.zoomdisplay, 0.015, -2.0)
 	}
 
 	// DISPLAY CHANGE REACTION
@@ -15690,10 +15706,10 @@ function on_transition(ttype, var0, ttime) {
 		// fade.display = fade.displayzoom = 1
 		displayname.msg = displaynamelogo(z_disp[fe.list.display_index].cleanname)
 
-		flowT.alphadisplay = startfade(flowT.alphadisplay, 0.04, -2.0)
+		startfade(flowT.alphadisplay, 0.04, -2.0)
 		displaynamesurf.surf.redraw = true
 		flowT.zoomdisplay = [0.0, 0.0, 0.0, 0.0, 0.0]
-		flowT.zoomdisplay = startfade(flowT.zoomdisplay, 0.015, -2.0)
+		startfade(flowT.zoomdisplay, 0.015, -2.0)
 
 		// restore global settings
 		prf.CROPSNAPS = prfzero.CROPSNAPS
@@ -15824,10 +15840,10 @@ function on_transition(ttype, var0, ttime) {
 		if (l1 != l2) {
 			// Update the letter item, checking if it can use a system font
 			letterobj.msg = systemfont(l2, false)
-			flowT.alphaletter = startfade(flowT.alphaletter, 0.06, -2.0)
+			startfade(flowT.alphaletter, 0.06, -2.0)
 			letterobjsurf.surf.redraw = true
 			flowT.zoomletter = [0.0, 0.0, 0.0, 0.0, 0.0]
-			flowT.zoomletter = startfade(flowT.zoomletter, 0.03, -2.0)
+			startfade(flowT.zoomletter, 0.03, -2.0)
 		}
 
 		//bgs.bgpic_array[0].file_name = fe.get_art((prf.BOXARTMODE ? "flyer" : "snap"), tilez[focusindex.new].loshz.index_offset + var, 0, Art.ImagesOnly)
@@ -15844,11 +15860,11 @@ function on_transition(ttype, var0, ttime) {
 			}
 			
 			if (prf.LOWSPECMODE){
-				bgs.flowalpha[0] = startfade(bgs.flowalpha[0], 0.18, -4.0)
-				bgs.flowalpha[1] = startfade(bgs.flowalpha[1], 0.075, -4.0)
+				startfade(bgs.flowalpha[0], 0.18, -4.0)
+				startfade(bgs.flowalpha[1], 0.075, -4.0)
 			} else {
-				bgs.flowalpha[0] = startfade(bgs.flowalpha[0], 0.15, -4.0)
-				bgs.flowalpha[1] = startfade(bgs.flowalpha[1], 0.05, -4.0)
+				startfade(bgs.flowalpha[0], 0.15, -4.0)
+				startfade(bgs.flowalpha[1], 0.05, -4.0)
 			} 
 
 			for (local i = 0; i < dat.stacksize - 2; i++) {
@@ -15892,7 +15908,7 @@ function on_transition(ttype, var0, ttime) {
 			//bgs.flowalpha [bgs.stacksize - 1] = 255
 
 			bgs.flowalpha[bgs.stacksize - 1] = [0, 0, 0.0, 0.0, 0.0, 0.0]
-			bgs.flowalpha[bgs.stacksize - 1] = startfade(bgs.flowalpha[bgs.stacksize - 1], 0.015, -4.0)
+			startfade(bgs.flowalpha[bgs.stacksize - 1], 0.015, -4.0)
 
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
@@ -16505,7 +16521,7 @@ function tick(tick_time) {
 
 		if (attract.gametimer) {
 			if ((tick_time - attract.timer) > attract.game_interval) {
-				flowT.gametoblack = startfade(flowT.gametoblack, 0.1, 0.0)
+				startfade(flowT.gametoblack, 0.1, 0.0)
 			}
 		}
 
@@ -16545,7 +16561,7 @@ function tick(tick_time) {
 	// crossfade of the blurred background
 	for (local i = 0; i < bgs.stacksize; i++) {
 		if (checkfade(bgs.flowalpha[i])) {
-			bgs.flowalpha[i] = fadeupdate(bgs.flowalpha[i])
+			fadeupdate(bgs.flowalpha[i])
 			bgs.bgpic_array[i].alpha = 255 * bgs.flowalpha[i][1]
 			if (prf.LAYERSNAP) bgs.bgvid_array[i].alpha = 255 * bgs.flowalpha[i][1]
 		}
@@ -16556,9 +16572,9 @@ function tick(tick_time) {
 	// Check fade progressions
 
 	if (checkfade(flowT.alphaletter)) {
-		flowT.alphaletter = fadeupdate(flowT.alphaletter)
+		fadeupdate(flowT.alphaletter)
 		if (endfade(flowT.alphaletter) == 1.0) {
-			flowT.alphaletter = startfade(flowT.alphaletter, -0.06, 2.0)
+			startfade(flowT.alphaletter, -0.06, 2.0)
 		}
 		if (endfade(flowT.alphaletter) == 0.0) {
 			letterobjsurf.surf.redraw = false
@@ -16567,16 +16583,16 @@ function tick(tick_time) {
 	}
 
 	if (checkfade(flowT.zoomletter)) {
-		flowT.zoomletter = fadeupdate(flowT.zoomletter)
+		fadeupdate(flowT.zoomletter)
 		local scalesurf = 0.5 + 0.5 * flowT.zoomletter[1]
 		//letterobj.charsize = lettersize.name * (1.0 + flowT.zoomletter[1])
 		letterobjsurf.surf.set_pos(fl.x + 0.5 * (fl.w - letterobjsurf.w * scalesurf), letterobjsurf.y0 + 0.5 * letterobjsurf.h - 0.5 * letterobjsurf.h * scalesurf, letterobjsurf.w * scalesurf, letterobjsurf.h * scalesurf)
 	}
 
 	if (checkfade(flowT.alphadisplay)) {
-		flowT.alphadisplay = fadeupdate(flowT.alphadisplay)
+		fadeupdate(flowT.alphadisplay)
 		if ((endfade(flowT.alphadisplay) == 1.0)) {
-			flowT.alphadisplay = startfade(flowT.alphadisplay, -0.04, 2.0)
+			startfade(flowT.alphadisplay, -0.04, 2.0)
 		}
 		if ((endfade(flowT.alphadisplay) == 0.0)) {
 			displaynamesurf.surf.redraw = false
@@ -16585,7 +16601,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade(flowT.zoomdisplay)) {
-		flowT.zoomdisplay = fadeupdate(flowT.zoomdisplay)
+		fadeupdate(flowT.zoomdisplay)
 		//displayname.char_size = lettersize.display * (1.0 + flowT.zoomdisplay[1])
 		local scalesurf = 0.25 + 0.75 * flowT.zoomdisplay[1]
 		displaynamesurf.surf.set_pos(fl.x + 0.5 * (fl.w - displaynamesurf.w * scalesurf), fl.y + 0.5 * (fl.h - displaynamesurf.h * scalesurf), displaynamesurf.w * scalesurf, displaynamesurf.h * scalesurf)
@@ -16596,7 +16612,7 @@ function tick(tick_time) {
 		testpr(checkfade(tilesTableUpdate[i]) ? "X": "-")
 		testpr((tilez[i].obj.redraw) ? "R": "-")
 		if (checkfade(tilesTableUpdate[i])) {
-			tilesTableUpdate[i] = fadeupdate(tilesTableUpdate[i])
+			fadeupdate(tilesTableUpdate[i])
 			local updatetemp = tilesTableUpdate[i]
 
 			// hide glow image and border image when zero is reached
@@ -16628,7 +16644,7 @@ function tick(tick_time) {
 	foreach (i, item in tilesTableZoom) {
 		//testpr(round(tilez[i].obj.width,1)+""+(tilez[i].obj.redraw ? "O" : "X")+" ")
 		if (checkfade(tilesTableZoom[i])) {
-			tilesTableZoom[i] = fadeupdate(tilesTableZoom[i])
+			fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
 
 			// update size and glow alpha
@@ -16640,7 +16656,7 @@ function tick(tick_time) {
 	// Manage video fade and unfade, anc crop fade
 	foreach (i, item in aspectratioMorph) {
 		if (checkfade (aspectratioMorph[i])) {
-			aspectratioMorph[i] = fadeupdate (aspectratioMorph[i])
+			fadeupdate (aspectratioMorph[i])
 			local fadetemp = aspectratioMorph[i]
 
 			local aspectmorph = (tilez[i].AR.crop + fadetemp[1] * (tilez[i].AR.vids - tilez[i].AR.crop))
@@ -16658,7 +16674,7 @@ function tick(tick_time) {
 		}
 
 		if (checkfade(gr_vidszTableFade[i])) {
-			gr_vidszTableFade[i] = fadeupdate(gr_vidszTableFade[i])
+			fadeupdate(gr_vidszTableFade[i])
 			local fadetemp = gr_vidszTableFade[i]
 
 			// hide glow image and border image when zero is reached
@@ -16784,7 +16800,7 @@ function tick(tick_time) {
 					squarizertop = true
 				}
 				if (vidposbg == fadevid) {
-					vidbgfade = startfade(vidbgfade, 0.03, 1.0)
+					startfade(vidbgfade, 0.03, 1.0)
 					vidposbg = 0
 				}
 			}
@@ -16795,14 +16811,14 @@ function tick(tick_time) {
 					squarizertop = true
 				}
 				if (vidposbg == 10000 - 10 - 10) {
-					vidbgfade = startfade(vidbgfade, 0.03, 1.0)
+					startfade(vidbgfade, 0.03, 1.0)
 					vidposbg = 0
 				}
 			}
 		}
 
 		if (checkfade(vidbgfade)) {
-			vidbgfade = fadeupdate(vidbgfade)
+			fadeupdate(vidbgfade)
 			local fadetemp = vidbgfade
 			// update size and glow alpha
 			bgs.bgvid_top.alpha = 255 * (fadetemp[1])
@@ -16843,8 +16859,8 @@ function tick(tick_time) {
 			}
 
 			if ((vidpos[i] == fadevid)) {
-				gr_vidszTableFade[i] = startfade(gr_vidszTableFade[i], 0.03, 1.0)
-				aspectratioMorph[i] = startfade(aspectratioMorph[i], 0.06, 1.0)
+				startfade(gr_vidszTableFade[i], 0.03, 1.0)
+				startfade(aspectratioMorph[i], 0.06, 1.0)
 				vidpos[i] = 0
 				//tilez[i].gr_vidsz.alpha = tilez[i].vidsz.alpha = 255.0 * (1 - 0.01 * vidpos[i] * (1 / fadevid))
 				//else
@@ -16867,9 +16883,9 @@ function tick(tick_time) {
 	}
 
 	if (checkfade(flowT.scroller)){
-		flowT.scroller = fadeupdate(flowT.scroller)
+		fadeupdate(flowT.scroller)
 		if (endfade (flowT.scroller) == 1) {
-			flowT.scroller = startfade(flowT.scroller, -0.02, 5.0)
+			startfade(flowT.scroller, -0.02, 5.0)
 		}
 		zmenu.scroller.alpha = (zmenu.scrolleralpha * flowT.scroller[1])
 		zmenu.scroller.width = 2 * flowT.scroller[1] * zmenu.scrollerside + 1
@@ -16877,7 +16893,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.keyboard)) {
-		flowT.keyboard = fadeupdate(flowT.keyboard)
+		fadeupdate(flowT.keyboard)
 		if (endfade (flowT.keyboard) == 0) {
 			keyboard_surface.visible = false
 			keyboard_surface.redraw = false
@@ -16886,7 +16902,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.zmenudecoration)) {
-		flowT.zmenudecoration = fadeupdate(flowT.zmenudecoration)
+		fadeupdate(flowT.zmenudecoration)
 		if (endfade (flowT.zmenudecoration) == 0) {
 			foreach (item in overlay.shadows) item.visible = false
 		}
@@ -16909,7 +16925,7 @@ function tick(tick_time) {
 			frost_freeze(false)
 			frost.canfreeze = false
 		}
-		flowT.zmenubg = fadeupdate(flowT.zmenubg)
+		fadeupdate(flowT.zmenubg)
 		if (endfade (flowT.zmenubg) == 0) {
 			overlay.background.visible = false
 			frost.surf_rt.alpha = 0
@@ -16925,7 +16941,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.filterbg)) {
-		flowT.filterbg = fadeupdate(flowT.filterbg)
+		fadeupdate(flowT.filterbg)
 		if (endfade (flowT.filterbg) == 0) {
 			frost.surf_rt.shader.set_param ("alpha", 0.0)
 			frost.surf_rt.shader = noshader
@@ -16935,7 +16951,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.frostblur)) {
-		flowT.frostblur = fadeupdate(flowT.frostblur)
+		fadeupdate(flowT.frostblur)
 
 		frost.surf_1.shader.set_param ("kernelData", frostpic.matrix, frostpic.sigma * flowT.frostblur[1])
 		frost.pic.shader.set_param ("kernelData", frostpic.matrix, frostpic.sigma * flowT.frostblur[1])
@@ -16943,7 +16959,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.zmenush)) {
-		flowT.zmenush = fadeupdate(flowT.zmenush)
+		fadeupdate(flowT.zmenush)
 		if (endfade (flowT.zmenush) == 0) {
 			zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
 			zmenu_sh.surf_rt.visible = false
@@ -16953,7 +16969,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.zmenutx)) {
-		flowT.zmenutx = fadeupdate(flowT.zmenutx)
+		fadeupdate(flowT.zmenutx)
 		if (endfade (flowT.zmenutx) == 0) {
 			//zmenu_surface_container.redraw = zmenu_surface.redraw = false
 			zmenu_freeze(true)
@@ -16978,10 +16994,10 @@ function tick(tick_time) {
 
 
 	if (checkfade (flowT.historyblack)) {
-		flowT.historyblack = fadeupdate(flowT.historyblack)
+		fadeupdate(flowT.historyblack)
 
 		if (endfade(flowT.historyblack) == 1) {
-			flowT.historyblack = startfade(flowT.historyblack, -flowT.historyscroll[3] * 2.0, 3.0)
+			startfade(flowT.historyblack, -flowT.historyscroll[3] * 2.0, 3.0)
 		}
 
 		hist_screensurf.set_rgb (255 * (1.0 - flowT.historyblack[1]), 255 * (1.0 - flowT.historyblack[1]), 255 * (1.0 - flowT.historyblack[1]))
@@ -16991,7 +17007,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.historyscroll)) {
-		flowT.historyscroll = fadeupdate(flowT.historyscroll)
+		fadeupdate(flowT.historyscroll)
 
 		if (endfade(flowT.historyscroll) == 1) {
 			history_updatesnap()
@@ -17015,12 +17031,12 @@ function tick(tick_time) {
 	}
 
 	if (checkfade (flowT.historydata)) {
-		flowT.historydata = fadeupdate(flowT.historydata)
+		fadeupdate(flowT.historydata)
 
 		if (endfade(flowT.historydata) == 1) {
 			history_updatetext()
 			if (prf.CONTROLOVERLAY != "never") history_updateoverlay()
-			flowT.historydata = startfade(flowT.historydata, -0.101, 3.0)
+			startfade(flowT.historydata, -0.101, 3.0)
 		}
 
 		hist_text_alpha (255 * (1.0 - flowT.historydata[1]))
@@ -17036,7 +17052,7 @@ function tick(tick_time) {
 	}
 
 	if (checkfade(flowT.overmenu)) {
-		flowT.overmenu = fadeupdate(flowT.overmenu)
+		fadeupdate(flowT.overmenu)
 
 		if (endfade(flowT.overmenu) == 0) {
 			overmenu_hide(false)
@@ -17047,7 +17063,7 @@ function tick(tick_time) {
 
 	// splash logo fade in fade out
 	if (checkfade(flowT.logo)) {
-		flowT.logo = fadeupdate(flowT.logo)
+		fadeupdate(flowT.logo)
 		if (endfade(flowT.logo) == 0) {
 
 			if (prf.DMPATSTART && prf.DMPENABLED) 	{
@@ -17059,25 +17075,25 @@ function tick(tick_time) {
 	}
 
 	if (checkfade(flowT.groupbg)) {
-		flowT.groupbg = fadeupdate(flowT.groupbg)
+		fadeupdate(flowT.groupbg)
 		groupalpha(255 * flowT.groupbg[1])
 	}
 
 	if (zmenu.showing && zmenu.dmp && (prf.DMPIMAGES == "WALLS")){
 		foreach (i, item in disp.dispzoom){
 			if (checkfade(disp.dispzoom[i])){
-				disp.dispzoom[i] = fadeupdate(disp.dispzoom[i])
+				fadeupdate(disp.dispzoom[i])
 				piczoom(disp.images[i], disp.dispzoom[i][1] * disp.zoomrate)
 			}
 		}
 	}
 
 	if (checkfade(flowT.dispshadow1)){
-		flowT.dispshadow1 = fadeupdate(flowT.dispshadow1)
+		fadeupdate(flowT.dispshadow1)
 
 		if (endfade(flowT.dispshadow1) == 0) {
-			disp.dispzoom[zmenu.selected] = startfade(disp.dispzoom[zmenu.selected], 0.1, 1.0)
-			flowT.dispshadow1 = startfade(flowT.dispshadow1, 0.1, 2.0)
+			startfade(disp.dispzoom[zmenu.selected], 0.1, 1.0)
+			startfade(flowT.dispshadow1, 0.1, 2.0)
 		}
 		else if (endfade(flowT.dispshadow1) == 1) {
 			zmenu.oldselected = zmenu.selected
@@ -17087,7 +17103,7 @@ function tick(tick_time) {
 
 	// attract mode surface fade
 	if (checkfade(flowT.attract)) {
-		flowT.attract = fadeupdate(flowT.attract)
+		fadeupdate(flowT.attract)
 
 		if (endfade(flowT.attract) == 0) {
 			if (prf.THUMBVIDEO) videosnap_restore()
@@ -17112,21 +17128,21 @@ function tick(tick_time) {
 	// Fade to black games in attract mode
 	if (checkfade(flowT.gametoblack)) {
 
-		flowT.gametoblack = fadeupdate(flowT.gametoblack)
+		fadeupdate(flowT.gametoblack)
 
 		if (endfade(flowT.gametoblack) == 1) {
 
 			attractitem.snap.alpha = 255
 			attractupdatesnap()
 			attract.timer = tick_time
-			flowT.gametoblack = startfade(flowT.gametoblack, -0.02, 0.0)
+			startfade(flowT.gametoblack, -0.02, 0.0)
 		}
 
 		attractitem.black.alpha = 255 * flowT.gametoblack[1]
 	}
 
 	if (checkfade(flowT.bootfade)){
-		flowT.bootfade = fadeupdate(flowT.bootfade)
+		fadeupdate(flowT.bootfade)
 
 		if (endfade(flowT.bootfade) == 1) {
 			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
@@ -17143,7 +17159,7 @@ function tick(tick_time) {
 		//if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -1.0)
 		//SMASH VARIANT if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
 
-		flowT.blacker = fadeupdate(flowT.blacker)
+		fadeupdate(flowT.blacker)
 
 		if (endfade(flowT.blacker) == 1) {
 			//layoutblacker.visible = false
@@ -17172,14 +17188,14 @@ function tick(tick_time) {
 
 	// history text fade
 	if (checkfade(flowT.histtext)) {
-		flowT.histtext = fadeupdate(flowT.histtext)
+		fadeupdate(flowT.histtext)
 
 		//hist_text.y = hist_textT.h * (1.0 - flowT.histtext[1])
 	}
 
 	// history page fade in fade out
 	if (checkfade(flowT.history)) {
-		flowT.history = fadeupdate(flowT.history)
+		fadeupdate(flowT.history)
 
 		if (endfade(flowT.history) == 0) {
 			hist_title.file_name = AF.folder + "pics/transparent.png"
@@ -18042,9 +18058,8 @@ if (sig == "custom2"){
 				i2_jumpto(disp.i2, disp.xstop)
 
 				if ((zmenu.selected != zmenu.oldselected) && (prf.DMPIMAGES == "WALLS")){
-					disp.dispzoom[zmenu.oldselected] = startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
-
-					flowT.dispshadow1 = startfade(flowT.dispshadow1, -0.2, -3.0)
+					startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
+					startfade(flowT.dispshadow1, -0.2, -3.0)
 				}
 				//disp.bgshadowt.visible = disp.bgshadowb.visible = !(disp.images[zmenu.selected].file_name == "")
 			}
@@ -18180,7 +18195,7 @@ if (sig == "custom2"){
 			flowT.fg = startfade(flowT.fg, 1.02, -1.0)
 			flowT.data = startfade(flowT.data, -1.02, -1.0)
 			*/
-			flowT.groupbg = startfade(flowT.groupbg, -1.02, -1.0)
+			startfade(flowT.groupbg, -1.02, -1.0)
 		}
 
 		frostshow()
@@ -18783,7 +18798,7 @@ if (sig == "custom2"){
 							if (z_list.size > 0) z_list_updategamedata(z_list.gametable[z_list.index].z_felistindex)
 							updatebgsnap(focusindex.new)
 						}
-						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
+						startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 
 						scroll.step = UI.rows
 						scroller2.visible = scrollineglow.visible = false
@@ -18792,7 +18807,7 @@ if (sig == "custom2"){
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 
 						if (prf.SCROLLERTYPE == "labellist") {
-							tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
+							startfade(tilesTableZoom[focusindex.new], 0.035, -5.0)
 						}
 						scroll.sortjump = false
 						if ((!prf.LIVEJUMP) && (prf.SCROLLERTYPE == "labellist")){
@@ -18829,7 +18844,7 @@ if (sig == "custom2"){
 					// if you go down and label list is not active, activate scroll.jump
 					else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
-						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
+						startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 						scroll.jump = true
 						scroll.step = UI.rows * (UI.cols - 2)
@@ -18839,7 +18854,7 @@ if (sig == "custom2"){
 					// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
 					else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
-						tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
+						startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
 						scroll.jump = false
 						scroller2.visible = scrollineglow.visible = false
