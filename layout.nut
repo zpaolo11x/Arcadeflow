@@ -2292,12 +2292,12 @@ function i2_getfiltered(arrayin, arrayw) {
 	return sumv * 1.0 / sumw
 }
 
-function i2_move(i2_in){
+function i2_moving(i2_in){
 	if (i2_in == null) return false
 	return (i2_in.smoothcurve != i2_in.stepcurve)
 }
 
-function i2_newpos(i2_in){
+function i2_updatepos(i2_in){
 	// CLAMP MAX AND MIN TARGET
 	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
@@ -2331,9 +2331,6 @@ function i2_newpos(i2_in){
 	}
 
 	i2_in.pos = i2_in.smoothcurve - i2_in.stepcurve
-
-	//RETURN THE NEW POSITION
-	return(i2_in.smoothcurve)
 }
 
 local colormapper = {
@@ -16381,8 +16378,8 @@ function tick(tick_time) {
 		}
 	}
 
-	if (i2_move(disp.i2)){
-		i2_newpos(disp.i2)
+	if (i2_moving(disp.i2)){
+		i2_updatepos(disp.i2)
 		for (local i = 0; i < disp.images.len(); i++) {
 			disp.images[i].y = disp.pos0[i] + disp.i2.smoothcurve
 			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
@@ -16432,15 +16429,15 @@ function tick(tick_time) {
 		}
 	}
 */
-	if (i2_move(zmenu.i2)){
-		local newpos = i2_newpos(zmenu.i2)
+	if (i2_moving(zmenu.i2)){
+		i2_updatepos(zmenu.i2)
 		for (local i = 0; i < zmenu.shown; i++) {
-			zmenu.items[i].y = zmenu.pos0[i] + newpos
-			zmenu.noteitems[i].y = zmenu.pos0[i] + newpos
-			zmenu.glyphs[i].y = zmenu.pos0[i] + newpos
-			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + newpos
+			zmenu.items[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
+			zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
+			zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
+			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.i2.smoothcurve
 			
-			zmenu.scrollerstart =  (-1 * newpos / zmenu.virtualheight) * zmenu.height
+			zmenu.scrollerstart =  (-1 * zmenu.i2.smoothcurve / zmenu.virtualheight) * zmenu.height
 			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
 	
 		}
@@ -16745,9 +16742,8 @@ function tick(tick_time) {
 		easeprint.counter = easeprint.counter + 0.5
 	}
 
-	if (i2_move(tiles.i2)){
-		local newpos = i2_newpos(tiles.i2)
-		// newpos is not used but i2_newpos updates all parameters like .pos
+	if (i2_moving(tiles.i2)){
+		i2_updatepos(tiles.i2)
 
 		for (local i = 0; i < tiles.total; i++) {
 			tilez[i].obj.x = - tiles.i2.pos - surfacePosOffset + tilesTablePos.X[i]
@@ -16859,7 +16855,7 @@ function tick(tick_time) {
 
 	// context menu fade in fade out
 
-	if ((overmenu.visible) && (flowT.overmenu[3] >= 0) && i2_move(tiles.i2)) {
+	if ((overmenu.visible) && (flowT.overmenu[3] >= 0) && i2_moving(tiles.i2)) {
 		overmenu.x = globalposnew - overmenuwidth * 0.5
 	}
 
@@ -16897,13 +16893,13 @@ function tick(tick_time) {
 		foreach (item in overlay.shadows) item.alpha = 60 * (flowT.zmenudecoration[1])
 	}
 
-	if (frost.canfreeze && !i2_move(tiles.i2) && !bglay.surf_1.redraw && !data_surface.redraw){
+	if (frost.canfreeze && !i2_moving(tiles.i2) && !bglay.surf_1.redraw && !data_surface.redraw){
 		frost_freeze(true)
 		frost.canfreeze = false
 	}
 
 	// menu showing, frost not redrawing, and some items are moving or have moved
-	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || i2_move(tiles.i2))){
+	if (zmenu.showing && !frost.surf_rt.redraw && (bglay.surf_1.redraw || data_surface.redraw || i2_moving(tiles.i2))){
 		frost_freeze(false)
 		frost.canfreeze = true
 	}
@@ -16976,7 +16972,7 @@ function tick(tick_time) {
 	}
 
 
-	if ((!i2_move(zmenu.i2)) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
+	if ((!i2_moving(zmenu.i2)) && (zmenu.scroller.alpha == 0) && (zmenu_surface.redraw == true) && (!zmenu.simvid.visible || (zmenu.simvid.visible && (zmenu.simvid.file_name == AF.folder + "pics/transparent.png")))){
 		AF.zmenu_freezecount = 1 //TEST162 OR MAYBE 2?
 	}
 
