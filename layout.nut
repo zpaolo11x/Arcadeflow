@@ -11978,9 +11978,7 @@ zmenu = {
 	scrollerupdate = true
 
 	pos0 = []				// Scroll control items
-	xstart = 0
 	xstop = 0
-	speed = null
 
 	tilew = overlay.w
 	tileh0 = overlay.rowheight
@@ -12031,8 +12029,6 @@ zmenu = {
 
 	i2 = null
 }
-
-zmenu.speed = zmenu.tileh * 0.1
 
 local zmenu_surface_container = fe.add_surface (zmenu.width, zmenu.height)
 
@@ -12638,7 +12634,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 
-	zmenu.xstart = zmenu.xstop = getxstop()
+	zmenu.xstop = getxstop()
 	i2_setpos(zmenu.i2, zmenu.xstop)
 
 	// Initialize positions
