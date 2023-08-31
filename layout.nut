@@ -12195,7 +12195,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	opts = cleanmenuopts(opts)
 	
 	zmenu.i2 = i2_create(3)
-	zmenu.i2.pulse_speed_p = zmenu.i2.pulse_speed_1 = spdT2.zmenu
+	zmenu.i2.pulse_speed_p = zmenu.i2.pulse_speed_1 = spdT2.zmenu //zmenu and disp never use pulse 1
 	disp.i2 = i2_create(4)
 	disp.i2.pulse_speed_p = disp.i2.pulse_speed_1 = spdT2.disp
 
