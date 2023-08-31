@@ -11972,7 +11972,7 @@ zmenu = {
 	scroller = null
 	scrollerside = floor(4 * UI.scalerate) == 0 ? 1 : floor(4 * UI.scalerate)
 	scrolleralpha = 200
-	scrollerstart = 0
+//	scrollerstart = 0
 	scrollerstop = 0
 	scrollerpos = 0
 	scrollerupdate = true
@@ -12709,7 +12709,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	}
 	flowT.scroller = [0.0, 0.0, 0.0, 0.0, 0.0]
 	zmenu.scroller.alpha = 0
-	zmenu.scrollerstart = zmenu.scrollerstop = getscrollerstop(zmenu.scrollerupdate)
+	zmenu.scrollerstop = getscrollerstop(zmenu.scrollerupdate)
 	zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
 	zmenu.scrollerupdate = true
 	//if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
@@ -16449,8 +16449,8 @@ function tick(tick_time) {
 			zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
 			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.i2.smoothcurve
 			
-			zmenu.scrollerstart =  (-1 * zmenu.i2.smoothcurve / zmenu.virtualheight) * zmenu.height
-			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
+			zmenu.scrollerstop =  (-1 * zmenu.i2.smoothcurve / zmenu.virtualheight) * zmenu.height
+			zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
 	
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
