@@ -2326,7 +2326,7 @@ function i2_updatepos(i2_in){
 
 	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
 
-	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) { //TEST162 WAS 0.1
+	if ((i2_in.smoothcurve - i2_in.stepcurve < 0.1) && (i2_in.smoothcurve - i2_in.stepcurve > -0.1)) {
 		i2_in.smoothcurve = i2_in.stepcurve
 	}
 
@@ -6708,6 +6708,7 @@ function z_checkhidden(i) {
 }
 
 function getallgamesdb(logopic) {
+	testpr("                                     getallagemsdb\n")
 	timestart("GamesDB")
 
 	local showalpha = 0
@@ -17151,10 +17152,6 @@ function tick(tick_time) {
 
 	// Fade whole layout from black
 	if (checkfade(flowT.blacker)) {
-		//TEST162 used to slow zoom in, not used from this version
-		//if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -0.035, -1.0)
-		//SMASH VARIANT if (flowT.blacker[0] == 0.0) tilesTableZoom[focusindex.new] = startfade(tilesTableZoom[focusindex.new], -20.0, -1.0)
-
 		fadeupdate(flowT.blacker)
 
 		if (endfade(flowT.blacker) == 1) {
@@ -17727,15 +17724,6 @@ function ra_selectemu(startemu) {
 /// On Signal ///
 function on_signal(sig) {
 	debugpr("\n Si:" + sig)
-//TEST162
-if (sig == "custom1"){
-	tiles.i2.poles = 4
-	i2_pulse(tiles.i2, 300)
-}
-if (sig == "custom2"){
-	tiles.i2.poles = 1
-	i2_pulse(tiles.i2, 300)
-}
 
 	if ((sig == "back") && (zmenu.showing) && (prf.THEMEAUDIO)) snd.mbacksound.playing = true
 
