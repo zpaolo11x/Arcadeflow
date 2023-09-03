@@ -2252,7 +2252,7 @@ function i2_create(in_poles = 3){
 }
 
 function i2_pulse(i2_in, delta_in){
-	testpr("                                         IN: "+i2_in.pulse_speed+"\n")
+	testpr("                                                             IN: "+i2_in.pulse_speed+"\n")
 	if (fabs(delta_in) > i2_in.maxdelta){
 		testpr("i2_POLE\n")
 		i2_in.pulse_speed = i2_in.pulse_speed_1
@@ -2268,12 +2268,13 @@ function i2_pulse(i2_in, delta_in){
 		i2_in.poles = i2_in.poles0
 		i2_in.delta = delta_in //SERVE???
 	}
-	testpr("                                         OUT: "+i2_in.pulse_speed+"\n")
+	testpr("                                                             OUT: "+i2_in.pulse_speed+"\n")
 
 	i2_in.stepcurve += i2_in.delta
 }
 
 function i2_jumpto(i2_in, new_pos){
+	i2_in.pulse_speed = i2_in.pulse_speed_p
 	i2_in.stepcurve = new_pos
 }
 
@@ -2736,7 +2737,7 @@ local spdT = {
 
 local spdT2 = {
 	disp = 0.3//0.15
-	zmenu = 0.925//0.2
+	zmenu = 0.25//0.2
 	scroll_p = 0.21
 	scroll_1 = 0.1
 }
