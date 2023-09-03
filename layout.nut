@@ -2274,8 +2274,12 @@ function i2_pulse(i2_in, delta_in){
 }
 
 function i2_jumpto(i2_in, new_pos){
-	i2_in.pulse_speed = i2_in.pulse_speed_p
-	i2_in.stepcurve = new_pos
+	// Old code:
+	//i2_in.pulse_speed = i2_in.pulse_speed_p
+	//i2_in.stepcurve = new_pos
+
+	// Better remap it to the pulse function
+	i2_pulse(i2_in, new_pos - i2_in.stepcurve)
 }
 
 function i2_setpos(i2_in, new_pos){
