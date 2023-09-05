@@ -8,7 +8,7 @@
 
 fe.do_nut("nut_file.nut")
 fe.do_nut("nut_textboard_mk4.nut")
-
+print("REFRESHRATE:"+ ScreenRefreshRate+"\n")
 local comma = ','.tochar()
 local nbsp = "^"
 
@@ -129,7 +129,7 @@ local AF = {
 	}
 
 	updatechecking = false
-	
+
 	msgbox = {
 		obj = null
 		scroller = null
@@ -144,7 +144,7 @@ local AF = {
 		lock = false
 		inline = 0
 	}
-	
+
 	tsc = 1.0 // Scaling of timer for different parameters
 
 	scrape = null
@@ -208,7 +208,7 @@ function AFscrapeclear() {
 		report = {}
 		threads = 0
 	}
-	
+
 }
 
 AFscrapeclear()
@@ -354,7 +354,7 @@ function splash_message(command, message = "", seconds = 1) {
 		AF.splash.text.msg = ""
 		AF.splash.text.visible = AF.splash.bg.visible = false
 		fe.layout.redraw()
-		return			
+		return
 	}
 }
 
@@ -1318,7 +1318,7 @@ function abouttext() {
 		if (AF.prefs.l0[i].label != "") {
 			about.push("#### " + AF.prefs.l0[i].label + "\n")
 			about.push(AF.prefs.l0[i].description + "\n")
-			
+
 			about.push("\n")
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				try {
@@ -1328,7 +1328,7 @@ function abouttext() {
 				}
 			}
 			about.push("\n")
-		
+
 		}
 	}
 	return (about)
@@ -2225,7 +2225,7 @@ local globalposnew = 0
 function i2_create(in_poles = 3){
 	local i2_in = {
 		delta = 0
-		
+
 		stepcurve = 0
 		smoothcurve = 0
 		pos = 0
@@ -2245,7 +2245,7 @@ function i2_create(in_poles = 3){
 		limit_lo = -10000000
 		limit_hi =  10000000
 		maxdelta =  10000000
-		
+
 	}
 
 	return (i2_in)
@@ -2307,7 +2307,7 @@ function i2_updatepos(i2_in){
 	// CLAMP MAX AND MIN TARGET
 	if (i2_in.stepcurve < i2_in.limit_lo) i2_in.stepcurve = i2_in.limit_lo
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
-	
+
 	//calcualte temp position
 	i2_in.buffer_t[0] = i2_in.buffer_t[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer_t[0])
 	for (local i = 1; i < i2_in.poles; i++){
@@ -2746,6 +2746,9 @@ local spdT2 = {
 	scroll_1 = 0.1
 }
 
+testpr("                                                                  SCROLL1:"+spdT2.scroll_1+"\n")
+testpr("                                                                  ZMENU1:"+spdT2.zmenu+"\n")
+testpr("                                                                  DISP1:"+spdT2.disp+"\n")
 // Video delay parameters to skip fade-in
 local vidstarter = 10000
 local delayvid = vidstarter - 60 * prf.THUMBVIDELAY
@@ -3396,7 +3399,7 @@ function msgbox_replacelinebelow(text, row = 1){
 	foreach(i, item in msgarray){
 		AF.msgbox.body = AF.msgbox.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
 	}
-	msgbox_refresh()	
+	msgbox_refresh()
 }
 
 function msgbox_addlinebelow(text, row = 1){
@@ -3406,7 +3409,7 @@ function msgbox_addlinebelow(text, row = 1){
 	foreach(i, item in msgarray){
 		AF.msgbox.body = AF.msgbox.body + item + ((i < msgarray.len() - 1) ? "\n" : "")
 	}
-	msgbox_refresh()	
+	msgbox_refresh()
 }
 
 function msgbox_wrapline(text, columns) {
@@ -3418,7 +3421,7 @@ function msgbox_wrapline(text, columns) {
 
    // Split the text into words
    local words = split(text," ")
-	
+
 	foreach (word in words) {
 		// If adding the word exceeds the column limit, start a new line
       if (currentline.len() + word.len() > columns) {
@@ -3475,7 +3478,7 @@ function msgbox_refresh(){
 	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
 	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
 	AF.msgbox.obj.first_line_hint = 1
-	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len() 
+	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len()
 	msgbox_scrollerrefresh(1)
 	*/
 }
@@ -3521,14 +3524,14 @@ function msgbox_lock(status){
 function msgbox_close(){
 	msgbox_newdata("", "")
 	AF.msgbox.back = null
-	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false	
+	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
 }
 
 function patchtext(string1, string2, width2, columns) {
 	// Packs together string1 and string2, string1 starts at position 0,
 	// string 2 starts at with2 from the right. Columns is the total width
-	// of the text line. If string1 is larger than the allowed space it's cut 
-	// in half and a custom character is inserted  
+	// of the text line. If string1 is larger than the allowed space it's cut
+	// in half and a custom character is inserted
 	local out = ""
 	local separator = "…"
 	local separatorsize = 1
@@ -4236,7 +4239,7 @@ function XMLtoAM(prefst, emulatorname) {
 	}
 	local XMLT = parseXML (xmlpath)
 	if (XMLT == null) {
-		return	
+		return
 	}
 
 	foreach (id2, item2 in XMLT) {
@@ -4949,9 +4952,9 @@ function cleandatabase(temppref) {
 	msgbox_addlinetop("Database Cleanup\n" + AF.msgbox.separator1)
 
 	foreach(item, val in z_list.db1) {
-		
+
 		msgbox_addlinebelow(patchtext(item, "CLEAN", 7, AF.msgbox.columns), 2)
-		
+
 		fe.layout.redraw()
 		// Check if each db entry has an emulator and a romlist
 		has_emulator = file_exist(AF.emulatorsfolder + item + ".cfg")
@@ -4979,7 +4982,7 @@ function cleandatabase(temppref) {
 			}
 		}
 	}
-	
+
 	msgbox_addlinetop("Romlist Refresh and dB Rebuild\n" + AF.msgbox.separator1 + "\n")
 
 	// Now save the updated db files
@@ -5475,7 +5478,7 @@ function processcategory(categoryname){
 
 	if (catmatch) {
 		if (cathierarchy.len() == 1) {
-			return [[strip(categoryname), ""]] 
+			return [[strip(categoryname), ""]]
 		} else {
 			return [cathierarchy.map(function(val){return(strip(val))})]
 		}
@@ -6749,7 +6752,7 @@ function getallgamesdb(logopic) {
 	while (showalpha < AF.bootalpha){
 		if (fe.layout.time - time0 >= 1000 / ScreenRefreshRate) {
 			showalpha = showalpha + 7
-			if (prf.SPLASHON) 
+			if (prf.SPLASHON)
 				AF.logo.alpha = showalpha
 			else
 				AF.boottext.alpha = showalpha
@@ -8235,6 +8238,7 @@ local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding
 
 tiles.i2.pulse_speed_1 = spdT2.scroll_1
 tiles.i2.pulse_speed_p = spdT2.scroll_p
+testpr("                                                                  SCROLL2:"+spdT2.scroll_1+"\n")
 tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
 local snap_glow = []
@@ -11607,7 +11611,7 @@ function history_updatetext() {
 	tempdesc = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
 
 	hist_text.descr.msg = tempdesc
-	
+
 }
 
 function history_show(h_startup)
@@ -11727,7 +11731,7 @@ function fadeupdate(fadearray) {
 		fadearray[3] = 0.0
 		fadearray[4] = 0.0
 		return
-	 } 
+	 }
 
 	if (t_easer == 0)
 		t_value = 1.0 - 0.5 * (1.0 + increase_sign) + increase_sign * t_counter
@@ -11772,7 +11776,7 @@ function startfade(fadearray, t_in_increaser, t_in_easer) {
 	else {
 		t_counter = increase_sign * (t_value - 1.0 + 0.5 * (1.0 + increase_sign))
 	}
-	
+
 	fadearray[0] = t_counter
 	fadearray[1] = t_value
 	fadearray[2] = t_starter
@@ -12200,11 +12204,13 @@ function getscrollerstop(fade = true){
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
 	menudata = cleanupmenudata(menudata)
 	opts = cleanmenuopts(opts)
-	
+
 	zmenu.i2 = i2_create(3)
 	zmenu.i2.pulse_speed_p = zmenu.i2.pulse_speed_1 = spdT2.zmenu //zmenu and disp never use pulse 1
 	disp.i2 = i2_create(4)
 	disp.i2.pulse_speed_p = disp.i2.pulse_speed_1 = spdT2.disp
+testpr("                                                                  ZMENU2:"+spdT2.zmenu+"\n")
+testpr("                                                                  DISP2:"+spdT2.disp+"\n")
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
@@ -12999,7 +13005,7 @@ function checkforupdates(force) {
 	//load latest update version
 	//fe.overlay.splash_message("Checking for updates...")
 	splash_message(AF.splash.start, "Checking for updates...")
-	
+
 	AF.updatechecking = true
 
 	local ver_in = ""
@@ -13346,7 +13352,7 @@ function displaygrouped1(){
 		else if (disp.gmenu0 != -1) {
 
 			if (disp.gmenu0 >= disp.menuthresh) {
-				
+
 				zmenu.jumplevel = 1
 				disp.gmenu1in = 0
 
@@ -13400,7 +13406,7 @@ function builddisplaystructure() {
 	foreach (i, item in z_disp) {
 		// Display "i" is in_menu so group count is increased or initialised
 		if (item.inmenu) {
-			
+
 				try {disp.structure[item.group].size ++}
 				catch(err) {
 					disp.structure[item.group] <- {
@@ -13413,7 +13419,7 @@ function builddisplaystructure() {
 				}
 				// item (the z_disp table with display data) is added to the group
 				disp.structure[item.group].disps.push(item)
-			
+
 		}
 	}
 
@@ -13461,7 +13467,7 @@ function displaygrouped() {
 	// main list and sublists by sorting, grouping etc
 	if ((disp.gmenu0out == -100) || (!prf.DMPSKIPCATEGORY) || (zmenu.dmpoverride)) { //TEST162 con skipcat
 		zmenu.dmpoverride = false
-		displaygrouped1() 
+		displaygrouped1()
 	}
 	else {
 		zmenu.dmp = true
@@ -14999,7 +15005,7 @@ function buildutilitymenu() {
 					foreach (i, item in buildreadme(true, false)){
 						abouttext = abouttext + item
 					}
-					msgbox_open(AF.msgbox.separator2, abouttext)				
+					msgbox_open(AF.msgbox.separator2, abouttext)
 				}
 				else if (out == -1) {
 					utilitymenu (umpresel)
@@ -15245,12 +15251,12 @@ function finaltileupdate() {
 		tile_freeze(focusindex.new, false)
 		//tile_clear(focusindex.new, true)
 		//tile_redraw(focusindex.new, true)
-		//TEST162 
+		//TEST162
 		// added to avoid freezing the old item, but how does it work if there are more items under
 		// update cycle? would be better to avoid freezing everyrhing in changetiledata.
 		// or just reset all effects when update is necessary
-		// EDIT Added forced fade update to update routin 
-		//tilez[focusindex.old].freezecount = 0 
+		// EDIT Added forced fade update to update routin
+		//tilez[focusindex.old].freezecount = 0
 		tilez[focusindex.new].freezecount = 0
 
 		if (!history_visible() && (scroll.jump == false) && (scroll.sortjump == false) && (zmenu.showing == false)) {
@@ -15861,14 +15867,14 @@ function on_transition(ttype, var0, ttime) {
 				bgs.bg_index[i] = bgs.bg_index[i + 1]
 				if (prf.MULTIMON) mon2.pic_array[i].swap(mon2.pic_array[i + 1])
 			}
-			
+
 			if (prf.LOWSPECMODE){
 				startfade(bgs.flowalpha[0], 0.18, -4.0)
 				startfade(bgs.flowalpha[1], 0.075, -4.0)
 			} else {
 				startfade(bgs.flowalpha[0], 0.15, -4.0)
 				startfade(bgs.flowalpha[1], 0.05, -4.0)
-			} 
+			}
 
 			for (local i = 0; i < dat.stacksize - 2; i++) {
 				dat.var_array[i] = dat.var_array[i + 1]
@@ -16284,7 +16290,7 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				scraprt("ID" + i + " COMPLETED " + item.gamedata.filename + "\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				
+
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
@@ -16372,7 +16378,7 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 			timescale.delay = -1
 			if (prf.ADAPTSPEED) AF.tsc = 60.0 / (1000.0 / (timescale.sum / timescale.values))
 			else AF.tsc = 60.0 / ScreenRefreshRate
-			
+
 			foreach (item, value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
 			}
@@ -16397,6 +16403,10 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 		}
 	}
 
+	// Refresh tiles pulse speed
+	tiles.i2.pulse_speed_1 = spdT2.scroll_1
+	tiles.i2.pulse_speed_p = spdT2.scroll_p
+
 	if (i2_moving(disp.i2)){
 		i2_updatepos(disp.i2)
 		for (local i = 0; i < disp.images.len(); i++) {
@@ -16407,9 +16417,9 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 
 		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
 		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
-		
+
 		//disp.xstart = disp.i2.smoothcurve
-	
+
 	}
 /*
 	// display images scrolling routine
@@ -16455,13 +16465,13 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 			zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
 			zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
 			zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.i2.smoothcurve
-			
+
 			zmenu.scrollerstop =  (-1 * zmenu.i2.smoothcurve / zmenu.virtualheight) * zmenu.height
 			zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
-	
+
 		}
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
-	
+
 	}
 /*
 	// zmenu items scrolling routine
@@ -17100,7 +17110,7 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 		}
 		else if (endfade(flowT.dispshadow1) == 1) {
 			zmenu.oldselected = zmenu.selected
-		}		
+		}
 		disp.bgshadowb.alpha = disp.bgshadowt.alpha = 180 * flowT.dispshadow1[1]
 	}
 
@@ -17150,9 +17160,9 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 		if (endfade(flowT.bootfade) == 1) {
 			flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
 		}
-		if (prf.SPLASHON) 
+		if (prf.SPLASHON)
 			AF.logo.alpha = 255 - AF.bootalpha * (1.0 - flowT.bootfade[1])
-		else 
+		else
 			AF.boottext.alpha = AF.bootalpha * (1.0 - flowT.bootfade[1])
 	}
 
@@ -17179,9 +17189,9 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 		if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
 
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
-		if (prf.SPLASHON) 
+		if (prf.SPLASHON)
 			AF.logo.alpha = 255 - AF.bootalpha * (1.0 - flowT.blacker[1])
-		else 
+		else
 			AF.boottext.alpha = AF.bootalpha * (1.0 - flowT.blacker[1])
 		}
 
@@ -17698,7 +17708,7 @@ function ra_selectemu(startemu) {
 
 	emumenu.sort(@(a, b) a.text <=> b.text)
 	startpos = emumenu.map(function(value){return(value.text)}).find(currentemu)
-	
+
 	frostshow()
 	zmenudraw3(emumenu, ltxt("Select emulator", AF.LNG), 0xeafa, startpos, {},
 	function(result) {
@@ -17746,7 +17756,7 @@ function on_signal(sig) {
 	if (AF.msgbox.obj.visible == true){
 		if (sig == "back"){
 			if (!AF.msgbox.lock){
-				if (AF.msgbox.back != null) 
+				if (AF.msgbox.back != null)
 					AF.msgbox.back()
 				else
 					msgbox_close()
@@ -18044,7 +18054,7 @@ function on_signal(sig) {
 
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
 				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
-			
+
 				i2_jumpto(disp.i2, disp.xstop)
 
 				if ((zmenu.selected != zmenu.oldselected) && (prf.DMPIMAGES == "WALLS")){
