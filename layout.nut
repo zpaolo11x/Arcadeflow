@@ -145,7 +145,7 @@ local AF = {
 		inline = 0
 	}
 
-	tsc = 1.0 // Scaling of timer for different parameters
+	tsc = 60.0 / ScreenRefreshRate // Pre-scaling of timer for different parameters
 
 	scrape = null
 
@@ -2309,9 +2309,9 @@ function i2_updatepos(i2_in){
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
 
 	//calcualte temp position
-	i2_in.buffer_t[0] = i2_in.buffer_t[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer_t[0])
+	i2_in.buffer_t[0] = i2_in.buffer_t[0] + i2_in.pulse_speed * AF.tsc * (i2_in.stepcurve - i2_in.buffer_t[0])
 	for (local i = 1; i < i2_in.poles; i++){
-		i2_in.buffer_t[i] = i2_in.buffer_t[i] + i2_in.pulse_speed * (i2_in.buffer_t[i-1] - i2_in.buffer_t[i])
+		i2_in.buffer_t[i] = i2_in.buffer_t[i] + i2_in.pulse_speed * AF.tsc * (i2_in.buffer_t[i-1] - i2_in.buffer_t[i])
 	}
 
 	i2_in.pos_t = i2_in.buffer_t[i2_in.poles - 1] - i2_in.stepcurve
@@ -2325,9 +2325,9 @@ function i2_updatepos(i2_in){
 		i2_in.stepcurve = i2_in.stepcurve + (i2_in.pos_t + i2_in.maxdelta)
 	}
 
-	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * (i2_in.stepcurve - i2_in.buffer[0])
+	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * AF.tsc * (i2_in.stepcurve - i2_in.buffer[0])
 	for (local i = 1; i < i2_in.poles; i++){
-		i2_in.buffer[i] = i2_in.buffer[i] + i2_in.pulse_speed * (i2_in.buffer[i-1] - i2_in.buffer[i])
+		i2_in.buffer[i] = i2_in.buffer[i] + i2_in.pulse_speed * AF.tsc * (i2_in.buffer[i-1] - i2_in.buffer[i])
 	}
 
 	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
@@ -16382,10 +16382,11 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 			foreach (item, value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
 			}
+			/*
 			foreach (item, value in spdT2) {
 				spdT2[item] = value * AF.tsc
 			}
-
+			*/
 			delayvid = round(vidstarter - 60 * prf.THUMBVIDELAY / AF.tsc, 1)
 			fadevid = round(delayvid - 35 / AF.tsc, 1)
 
@@ -16402,10 +16403,10 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 
 		}
 	}
-
+testpr("ASC:"+AF.tsc+"\n")
 	// Refresh tiles pulse speed
-	tiles.i2.pulse_speed_1 = spdT2.scroll_1
-	tiles.i2.pulse_speed_p = spdT2.scroll_p
+	//tiles.i2.pulse_speed_1 = spdT2.scroll_1
+	//tiles.i2.pulse_speed_p = spdT2.scroll_p
 
 	if (i2_moving(disp.i2)){
 		i2_updatepos(disp.i2)
