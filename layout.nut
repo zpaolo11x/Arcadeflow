@@ -2311,7 +2311,7 @@ function i2_updatepos(i2_in){
 
 	//calcualte temp position
 	i2_in.buffer_t[0] = i2_in.stepcurve + i2_in.pulse_speed * (i2_in.buffer_t[0] - i2_in.stepcurve)
-	
+
 	for (local i = 1; i < i2_in.poles; i++){
 		i2_in.buffer_t[i] = i2_in.buffer_t[i-1] + i2_in.pulse_speed * (i2_in.buffer_t[i] - i2_in.buffer_t[i-1])
 	}
@@ -2743,7 +2743,7 @@ local spdT = {}
 
 local tauT = {
 	//time constants in milliseconds
-	dataspeedout = 135 
+	dataspeedout = 135
 	dataspeedin = 180
 
 	disp = 46
@@ -16396,8 +16396,8 @@ try{testpr("                                                                    
 			}
 			// Refresh tiles pulse speed, this is not needed from menu and others because they are updated at each call
 			// TEST162 try to make this in the call routine or embedded in i2 management
-			tiles.i2.pulse_speed_1 = 1.0 - spdT.scroll_1
-			tiles.i2.pulse_speed_p = 1.0 - spdT.scroll_p
+			tiles.i2.pulse_speed_1 = spdT.scroll_1
+			tiles.i2.pulse_speed_p = spdT.scroll_p
 
 			/*
 			foreach (item, value in spdT) {
