@@ -146,6 +146,7 @@ local AF = {
 	}
 
 	tsc = 60.0 / ScreenRefreshRate // Pre-scaling of timer for different parameters
+	fps = ScreenRefreshRate
 
 	scrape = null
 
@@ -2309,9 +2310,10 @@ function i2_updatepos(i2_in){
 	if (i2_in.stepcurve > i2_in.limit_hi) i2_in.stepcurve = i2_in.limit_hi
 
 	//calcualte temp position
-	i2_in.buffer_t[0] = i2_in.buffer_t[0] + i2_in.pulse_speed * AF.tsc * (i2_in.stepcurve - i2_in.buffer_t[0])
+	i2_in.buffer_t[0] = i2_in.stepcurve + i2_in.pulse_speed * (i2_in.buffer_t[0] - i2_in.stepcurve)
+	
 	for (local i = 1; i < i2_in.poles; i++){
-		i2_in.buffer_t[i] = i2_in.buffer_t[i] + i2_in.pulse_speed * AF.tsc * (i2_in.buffer_t[i-1] - i2_in.buffer_t[i])
+		i2_in.buffer_t[i] = i2_in.buffer_t[i-1] + i2_in.pulse_speed * (i2_in.buffer_t[i] - i2_in.buffer_t[i-1])
 	}
 
 	i2_in.pos_t = i2_in.buffer_t[i2_in.poles - 1] - i2_in.stepcurve
@@ -2325,9 +2327,9 @@ function i2_updatepos(i2_in){
 		i2_in.stepcurve = i2_in.stepcurve + (i2_in.pos_t + i2_in.maxdelta)
 	}
 
-	i2_in.buffer[0] = i2_in.buffer[0] + i2_in.pulse_speed * AF.tsc * (i2_in.stepcurve - i2_in.buffer[0])
+	i2_in.buffer[0] = i2_in.stepcurve + i2_in.pulse_speed * (i2_in.buffer[0] - i2_in.stepcurve)
 	for (local i = 1; i < i2_in.poles; i++){
-		i2_in.buffer[i] = i2_in.buffer[i] + i2_in.pulse_speed * AF.tsc * (i2_in.buffer[i-1] - i2_in.buffer[i])
+		i2_in.buffer[i] = i2_in.buffer[i-1] + i2_in.pulse_speed * (i2_in.buffer[i] - i2_in.buffer[i-1])
 	}
 
 	i2_in.smoothcurve = i2_in.buffer[i2_in.poles - 1]
@@ -2732,23 +2734,28 @@ centercorr.zero = floor(centercorr.zero + 0.5) // Added to align centercorr.zero
 centercorr.val = 0
 centercorr.shift = centercorr.zero
 
-// transitions speeds
-local spdT = {
-	scrollspeed = 0.91
-	dataspeedin = 0.91
-	dataspeedout = 0.88
+
+function tau_to_speed(tau, fps){
+	return (pow(2.7182, -1.0 / (tau * fps / 1000.0)))
 }
 
-local spdT2 = {
-	disp = 0.3//0.15
-	zmenu = 0.25//0.2
-	scroll_p = 0.21
-	scroll_1 = 0.1
+local spdT = {}
+
+local tauT = {
+	//time constants in milliseconds
+	dataspeedout = 135 
+	dataspeedin = 180
+
+	disp = 46
+	zmenu = 58
+	scroll_p = 70
+	scroll_1 = 155
+}
+// Preliminary tau to spd transformation
+foreach (item, value in tauT){
+	spdT.rawset(item, tau_to_speed(value, ScreenRefreshRate))
 }
 
-testpr("                                                                  SCROLL1:"+spdT2.scroll_1+"\n")
-testpr("                                                                  ZMENU1:"+spdT2.zmenu+"\n")
-testpr("                                                                  DISP1:"+spdT2.disp+"\n")
 // Video delay parameters to skip fade-in
 local vidstarter = 10000
 local delayvid = vidstarter - 60 * prf.THUMBVIDELAY
@@ -8236,9 +8243,9 @@ tiles.total = tiles.count + 2 * tiles.offscreen
 
 local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding)
 
-tiles.i2.pulse_speed_1 = spdT2.scroll_1
-tiles.i2.pulse_speed_p = spdT2.scroll_p
-testpr("                                                                  SCROLL2:"+spdT2.scroll_1+"\n")
+tiles.i2.pulse_speed_1 = spdT.scroll_1
+tiles.i2.pulse_speed_p = spdT.scroll_p
+
 tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
 
 local snap_glow = []
@@ -12206,11 +12213,9 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	opts = cleanmenuopts(opts)
 
 	zmenu.i2 = i2_create(3)
-	zmenu.i2.pulse_speed_p = zmenu.i2.pulse_speed_1 = spdT2.zmenu //zmenu and disp never use pulse 1
+	zmenu.i2.pulse_speed_p = zmenu.i2.pulse_speed_1 = spdT.zmenu //zmenu and disp never use pulse 1
 	disp.i2 = i2_create(4)
-	disp.i2.pulse_speed_p = disp.i2.pulse_speed_1 = spdT2.disp
-testpr("                                                                  ZMENU2:"+spdT2.zmenu+"\n")
-testpr("                                                                  DISP2:"+spdT2.disp+"\n")
+	disp.i2.pulse_speed_p = disp.i2.pulse_speed_1 = spdT.disp
 
 	zmenu.data = menudata
 	zmenu.singleline = opts.singleline
@@ -14090,7 +14095,7 @@ function monitortick(tick_time) {
 //X fps.monitor.msg = fps.monitor.msg + "\ncols:" + cols + " cczero:" + centercorr.zero + "\n"
 	fps.monitor2.x ++
 	if (fps.monitor2.x - fps.x0 == fps.tickinterval) {
-		fps.monitor.msg = (fps.tickinterval * 1000 / (tick_time - fps.tick000)) + " " + 60.0 / AF.tsc + " " + AF.tsc
+		fps.monitor.msg = (fps.tickinterval * 1000 / (tick_time - fps.tick000)) + " " + AF.fps + " " + AF.tsc
 		fps.monitor2.y = (fl.h_os / 60) * (60 - fps.tickinterval * 1000 / (tick_time - fps.tick000))
 		fps.tick000 = tick_time
 		fps.x0 = fps.monitor2.x
@@ -16018,7 +16023,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(err){}
+try{testpr("                                                                         "+tiles.i2.pulse_speed+"\n")}catch(err){testpr("                                                                         XXXX\n")}
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16376,12 +16381,29 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 		// Update variables when limit is reached
 		if (timescale.values == timescale.limits) {
 			timescale.delay = -1
-			if (prf.ADAPTSPEED) AF.tsc = 60.0 / (1000.0 / (timescale.sum / timescale.values))
-			else AF.tsc = 60.0 / ScreenRefreshRate
+			if (prf.ADAPTSPEED) {
+				AF.fps = 1000.0 / (timescale.sum / timescale.values)
+				AF.tsc = 60.0 / AF.fps
+			}
+			else {
+				AF.fps = ScreenRefreshRate
+				AF.tsc = 60.0 / ScreenRefreshRate
+			}
 
+			//Refresg taus on the base of new calculated frame rate
+			foreach (item, value in tauT){
+				spdT.rawset(item, tau_to_speed(value, AF.fps))
+			}
+			// Refresh tiles pulse speed, this is not needed from menu and others because they are updated at each call
+			// TEST162 try to make this in the call routine or embedded in i2 management
+			tiles.i2.pulse_speed_1 = 1.0 - spdT.scroll_1
+			tiles.i2.pulse_speed_p = 1.0 - spdT.scroll_p
+
+			/*
 			foreach (item, value in spdT) {
 				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
 			}
+			*/
 			/*
 			foreach (item, value in spdT2) {
 				spdT2[item] = value * AF.tsc
@@ -16403,10 +16425,6 @@ try{testpr("                                "+zmenu.i2.pulse_speed+"\n")}catch(e
 
 		}
 	}
-testpr("ASC:"+AF.tsc+"\n")
-	// Refresh tiles pulse speed
-	//tiles.i2.pulse_speed_1 = spdT2.scroll_1
-	//tiles.i2.pulse_speed_p = spdT2.scroll_p
 
 	if (i2_moving(disp.i2)){
 		i2_updatepos(disp.i2)
