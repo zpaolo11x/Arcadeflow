@@ -9,7 +9,7 @@ layout_folder/
 	glsl/
 		textboard.glsl
 
-Add text board to a layout by first enabling the module 
+Add text board to a layout by first enabling the module
 adding this line at the beginning of your layout nut file:
 
 fe.do_nut ("nut_textboard_mk4.nut")
@@ -103,7 +103,7 @@ class textboard_mk4
 	m_pong_count = null
 	m_ponging = null
 	m_pong_up = null
-	
+
 	m_pong = null
 	m_scroll_pulse = null
 	m_pong_speed = null
@@ -146,7 +146,7 @@ class textboard_mk4
 			movestepslow = 6
 			movestepfast = 3
 			movestepdelay = 6
-	
+
 			countstep = 0
 		}
 
@@ -190,10 +190,10 @@ class textboard_mk4
 			m_overlay2.set_rgb(200,0,0)
 			m_overlay2.alpha = 120
 			m_overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
-		
+
 			textref2 = ::fe.add_text("", 0, m_surf.height, m_surf.width, m_surf.height)
 			textref2.align = m_object.align
-			textref2.char_size = m_object.char_size 
+			textref2.char_size = m_object.char_size
 			textref2.margin = m_object.margin
 			textref2.word_wrap = true
 			textref2.line_spacing = m_object.line_spacing
@@ -235,11 +235,11 @@ class textboard_mk4
 	function mi2_initialize() {
 		m_i2 = {
 			delta = 0
-			
+
 			stepcurve = 0
 			smoothcurve = 0
 			pos = 0
-			
+
 			poles = 4
 			buffer = ::array(4, 0.0)
 
@@ -296,7 +296,7 @@ class textboard_mk4
 	}
 
 	function refreshtext() {
-		m_surf.redraw = true	
+		m_surf.redraw = true
 		m_object.y = 0
 		m_object.height = m_surf.height
 		m_object.msg = m_text
@@ -304,10 +304,10 @@ class textboard_mk4
 		m_object.first_line_hint = 1
 		m_target_line = 1
 
-		if (m_debug) {		
+		if (m_debug) {
 			textref2.msg = m_text
 			textref2.align = m_object.align
-			textref2.char_size = m_object.char_size 
+			textref2.char_size = m_object.char_size
 			textref2.margin = m_object.margin
 			textref2.line_spacing = m_object.line_spacing
 			textref2.first_line_hint = 1
@@ -318,7 +318,7 @@ class textboard_mk4
 		m_lines = m_object.lines
 		m_lines_total = m_object.lines_total
 		m_max_hint = m_lines_total - m_lines + 1
-		
+
 		if (m_max_hint <= 0) m_max_hint = 1
 
 		m_viewport_max_y = (m_max_hint - 1) * m_line_height
@@ -339,7 +339,7 @@ class textboard_mk4
 
 		m_margin_bottom = m_surf.height - m_object.margin - m_lines * m_line_height
 		if (m_margin_bottom < 0) m_margin_bottom = 0
-		
+
 		m_shader.set_param("blanktop", m_object.margin * 1.0 / m_surf.height, (m_object.margin + m_line_height * m_line_top) * 1.0 / m_surf.height)
 		m_shader.set_param("blankbot", m_margin_bottom * 1.0 / m_surf.height, (m_margin_bottom + m_line_height * m_line_bot) * 1.0 / m_surf.height)
 		m_shader.set_param("alphatop", 0.0)
@@ -365,7 +365,7 @@ class textboard_mk4
 
 		m_surf.redraw = true
 		m_object.y = 0
-		
+
 		m_object.y = - 2.0 * m_line_height
 		m_y_zero = m_object.y
 
@@ -380,9 +380,9 @@ class textboard_mk4
 		m_shader.set_param("alphatop", 0.0)
 		m_shader.set_param("alphabot", m_max_hint <= 1 ? 0.0 : 1.0)
 		m_freezer = 2
-	
+
 		if (m_pong) pong_up()
-		
+
 	}
 
 	function board_on_transition(ttype, var, ttime) {
@@ -390,7 +390,7 @@ class textboard_mk4
 		if (m_enable_transition && (ttype == Transition.FromOldSelection) || (ttype == Transition.ToNewList)) {
 			if (m_pong) pong_up()
 			refreshtext()
-		}	
+		}
 	}
 
 	function board_on_signal(sig) {
@@ -409,17 +409,17 @@ class textboard_mk4
 			m_count.down ++
 			}
 			return m_signal_block
-		}	
+		}
 		if (sig == "left") {
 			goto_start()
 			return m_signal_block
-		}		
+		}
 		if (sig == "right") {
 			goto_end()
 			return m_signal_block
 		}
 	}
-	
+
 	function board_on_tick(tick_time) {
 
 		if (m_i2.debug) {
@@ -466,14 +466,14 @@ class textboard_mk4
 		}
 
 		if (m_freezer == 1) {
-			m_freezer -- 
+			m_freezer --
 			m_surf.clear = false
 			m_surf.redraw = false
 		}
 
 		if (m_freezer == 2) {
 			m_surf.clear = true
-			m_surf.redraw = true		
+			m_surf.redraw = true
 			m_freezer --
 		}
 
@@ -496,19 +496,20 @@ class textboard_mk4
 		}
 
 		// Impulse scrolling routines
-		
+
 		if (m_i2.smoothcurve - m_i2.stepcurve != 0) {
 			if (m_surf.redraw == false) m_surf.redraw = true
 
 			if (m_i2.stepcurve < 0) m_i2.stepcurve = 0
 			if (m_i2.stepcurve > m_viewport_max_y) m_i2.stepcurve = m_viewport_max_y
+::print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: "+m_scroll_pulse+"\n")
+::print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: "+(m_scroll_pulse * (60.0 / ScreenRefreshRate))+"\n")
+			m_i2.buffer[0] = m_i2.buffer[0] + m_scroll_pulse * (60.0 / ScreenRefreshRate) * (m_i2.stepcurve - m_i2.buffer[0])
+			for (local i = 1; i < m_i2.poles; i++){
+				m_i2.buffer[i] = m_i2.buffer[i] + m_scroll_pulse * (60.0 / ScreenRefreshRate) * (m_i2.buffer[i-1] - m_i2.buffer[i])
+			}
 
-	m_i2.buffer[0] = m_i2.buffer[0] + m_scroll_pulse * (m_i2.stepcurve - m_i2.buffer[0])
-	for (local i = 1; i < m_i2.poles; i++){
-		m_i2.buffer[i] = m_i2.buffer[i] + m_scroll_pulse * (m_i2.buffer[i-1] - m_i2.buffer[i])
-	}
-
-	m_i2.smoothcurve = m_i2.buffer[m_i2.poles - 1]
+			m_i2.smoothcurve = m_i2.buffer[m_i2.poles - 1]
 
 
 			if ((m_i2.smoothcurve - m_i2.stepcurve < 0.1) && (m_i2.smoothcurve - m_i2.stepcurve > -0.1)) { //TEST WAS 0.1
@@ -578,7 +579,7 @@ class textboard_mk4
 				m_tx_alpha = value
 				m_shader.set_param("textalpha", value * 1.0 / 255)
 				break
-			
+
 			case "bg_alpha":
 				m_bg_alpha = value
 				m_shader.set_param("panelalpha", value * 1.0 / 255)
@@ -593,7 +594,7 @@ class textboard_mk4
 				m_line_bot = value
 				resetstatus()
 				break
-			
+
 			case "lines_top":
 				m_line_top = value
 				resetstatus()
@@ -635,11 +636,11 @@ class textboard_mk4
 			case "zorder":
 				return m_surf[idx]
 				break
-			
+
 			case "msg":
 				return m_text
 				break
-			
+
 			case "target_line":
 				return m_target_line
 				break
@@ -651,19 +652,19 @@ class textboard_mk4
 			case "line_height":
 				return m_line_height
 				break
-				
+
 			case "natural_scroll":
 				return m_natural_scroll
 				break
-				
+
 			case "enable_signals":
 				return m_enable_signals
 				break
-				
+
 			case "enable_transition":
 				return m_enable_transition
 				break
-				
+
 			case "signal_block":
 				return m_signal_block
 				break
