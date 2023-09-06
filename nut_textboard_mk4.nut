@@ -106,6 +106,7 @@ class textboard_mk4
 
 	m_pong = null
 	m_scroll_pulse = null
+	m_time_constant = null
 	m_pong_speed = null
 
 	// Performace management properties
@@ -164,6 +165,7 @@ class textboard_mk4
 		m_y_pong_speed = 0
 
 		m_scroll_pulse = 0.15
+		m_time_constant = 200 //TEST CAMBIARE
 
 		m_line_height = null
 		m_natural_scroll = false
@@ -502,11 +504,12 @@ class textboard_mk4
 
 			if (m_i2.stepcurve < 0) m_i2.stepcurve = 0
 			if (m_i2.stepcurve > m_viewport_max_y) m_i2.stepcurve = m_viewport_max_y
-::print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: "+m_scroll_pulse+"\n")
-::print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX: "+(m_scroll_pulse * (60.0 / ScreenRefreshRate))+"\n")
-			m_i2.buffer[0] = m_i2.buffer[0] + m_scroll_pulse * (60.0 / ScreenRefreshRate) * (m_i2.stepcurve - m_i2.buffer[0])
+
+			//m_i2.buffer[0] = m_i2.buffer[0] + m_scroll_pulse * (60.0 / ScreenRefreshRate) * (m_i2.stepcurve - m_i2.buffer[0])
+			m_i2.buffer[0] = m_i2.stepcurve + m_scroll_pulse * (m_i2.buffer[0] - m_i2.stepcurve)
 			for (local i = 1; i < m_i2.poles; i++){
-				m_i2.buffer[i] = m_i2.buffer[i] + m_scroll_pulse * (60.0 / ScreenRefreshRate) * (m_i2.buffer[i-1] - m_i2.buffer[i])
+				//m_i2.buffer[i] = m_i2.buffer[i] + m_scroll_pulse * (60.0 / ScreenRefreshRate) * (m_i2.buffer[i-1] - m_i2.buffer[i])
+				m_i2.buffer[i] = m_i2.buffer[i-1] + m_scroll_pulse * (m_i2.buffer[i] - m_i2.buffer[i-1])
 			}
 
 			m_i2.smoothcurve = m_i2.buffer[m_i2.poles - 1]
@@ -615,6 +618,11 @@ class textboard_mk4
 
 			case "scroll_pulse":
 				m_scroll_pulse = value
+				break
+
+			case "time_constant":
+				m_time_constant = value
+				m_scroll_pulse = ::pow(2.7182, -1.0 / (value * ScreenRefreshRate / 1000.0))
 				break
 
 			case "pingpong_speed":

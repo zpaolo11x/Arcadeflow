@@ -2311,7 +2311,6 @@ function i2_updatepos(i2_in){
 
 	//calcualte temp position
 	i2_in.buffer_t[0] = i2_in.stepcurve + i2_in.pulse_speed * (i2_in.buffer_t[0] - i2_in.stepcurve)
-
 	for (local i = 1; i < i2_in.poles; i++){
 		i2_in.buffer_t[i] = i2_in.buffer_t[i-1] + i2_in.pulse_speed * (i2_in.buffer_t[i] - i2_in.buffer_t[i-1])
 	}
@@ -11153,7 +11152,8 @@ hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
 hist_text.descr.margin = 0.3 * hist_textT.linesize
 hist_text.descr.visible = true
-hist_text.descr.scroll_pulse = 0.25//0.15
+//TEST162 hist_text.descr.scroll_pulse = 0.25//0.15
+hist_text.descr.time_constant = 200
 hist_text.descr.pingpong_speed = 0.5
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
@@ -13999,7 +13999,9 @@ AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.enable_signals = false
 try{AF.msgbox.obj.enable_transition = false}catch(err){}
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
-AF.msgbox.obj.scroll_pulse = 0.35//0.25
+//TEST162 AF.msgbox.obj.scroll_pulse = 0.35//0.25
+AF.msgbox.obj.time_constant = 200
+
 try{AF.msgbox.obj.expand_tokens = false}catch(err){}
 AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
