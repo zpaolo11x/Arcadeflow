@@ -7,7 +7,7 @@
 // Load file nut
 
 fe.do_nut("nut_file.nut")
-fe.do_nut("nut_textboard_mk4.nut")
+fe.do_nut("nut_textboard.nut")
 print("REFRESHRATE:"+ ScreenRefreshRate+"\n")
 local comma = ','.tochar()
 local nbsp = "^"
@@ -11006,7 +11006,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 8 * hist_textT.linesize, hist_textT.w, hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", 0, 9.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9.25 * hist_textT.linesize,hist_text_surf)
+				descr = fe.add_textboard("", 0, 9.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 9.25 * hist_textT.linesize,hist_text_surf)
 			}
 		}
 		else if (hist.panel_ar <= 1.0) { // DEFAULT PANEL STRUCTURE, UP TO AR = 1.0
@@ -11023,7 +11023,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				buttn = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 4 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 				ratng = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 5 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", 0, 7.25 * hist_textT.linesize, hist_textT.w, hist_textT.h - 7.25 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -11044,7 +11044,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 9 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3 * hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, 0.25 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 0.25 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 0.25 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 0.25 * hist_textT.linesize, hist_text_surf)
 			}
 
 		}
@@ -11066,7 +11066,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.75 * hist_textT.linesize), hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, hist_titleT.h + 0.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - (hist_titleT.h + 0.75 * hist_textT.linesize), hist_text_surf)
 			}
 
 		}
@@ -11087,7 +11087,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 				tags  = hist_text_surf.add_text("", 0, 6.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 2.0 * hist_textT.linesize)
 
 			//	compl = hist_text_surf.add_text("", hist_textT.w - hist_textT.col2, 6 * hist_textT.linesize, hist_textT.col2, hist_textT.linesize)
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
 			}
 		}
 		else  { // LONG PANEL STRUCTURE AR > 1.0
@@ -11106,7 +11106,7 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)){
 
 				tags  = hist_text_surf.add_text("", 0, 7.5 * hist_textT.linesize, hist_textT.w * hist_textT.split2, 3.0 * hist_textT.linesize)
 
-				descr = fe.add_textboard_mk4("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
+				descr = fe.add_textboard("", hist_textT.w * hist_textT.split2, 1.75 * hist_textT.linesize, hist_textT.w * (1.0 - hist_textT.split2), hist_textT.h - 1.25 * hist_textT.linesize, hist_text_surf)
 			}
 		}
 	}
@@ -11123,7 +11123,7 @@ else { //LOW RES MODE
 		buttn = null
 		ratng = null
 		tags = null
-		descr = fe.add_textboard_mk4("", 0, 0, (UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w * 0.58 : hist_textT.w, hist_textT.h, hist_text_surf)
+		descr = fe.add_textboard("", 0, 0, (UI.vertical && ((prf.HISTORYSIZE == 0.45) || (prf.HISTORYSIZE == -1))) ? hist_textT.w * 0.58 : hist_textT.w, hist_textT.h, hist_text_surf)
 	}
 }
 
@@ -13987,7 +13987,7 @@ if (prf.OVERCUSTOM != "pics/") {
 }
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
-AF.msgbox.obj = fe.add_textboard_mk4("", fl.x, fl.y, fl.w, fl.h)
+AF.msgbox.obj = fe.add_textboard("", fl.x, fl.y, fl.w, fl.h)
 AF.msgbox.obj.margin = 50 * UI.scalerate
 AF.msgbox.obj.word_wrap = true
 AF.msgbox.obj.set_bg_rgb (40, 40, 40)

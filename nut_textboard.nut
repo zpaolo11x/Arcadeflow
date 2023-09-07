@@ -2,7 +2,7 @@
 
 /*
 
-Copy nut_textboard_mk4.nut and textboard.glsl in your layout with this structure:
+Copy nut_textboard.nut and textboard.glsl in your layout with this structure:
 
 layout_folder/
 	nut_textboard.nut
@@ -12,13 +12,13 @@ layout_folder/
 Add text board to a layout by first enabling the module
 adding this line at the beginning of your layout nut file:
 
-fe.do_nut ("nut_textboard_mk4.nut")
+fe.do_nut ("nut_textboard.nut")
 
 then add a textboard object the same way a text object is added:
-fe.add_textboard_mk4(text, x, y, width, height)
+fe.add_textboard(text, x, y, width, height)
 
 if your object lays on a surface, call it as a parameter:
-fe.add_textboard_mk4(text, x, y, width, height, surface)
+fe.add_textboard(text, x, y, width, height, surface)
 
 Properties:
 
@@ -51,7 +51,7 @@ There are some methods you can call using, for example, your_object.goto_start()
 
 */
 
-class textboard_mk4
+class textboard
 {
 	// mk2 Objects
 	m_object = null
@@ -164,8 +164,8 @@ class textboard_mk4
 		m_y_zero = 0
 		m_y_pong_speed = 0
 
-		m_scroll_pulse = 0.15
-		m_time_constant = 200 //TEST CAMBIARE
+		m_time_constant = 75
+		m_scroll_pulse = ::pow(2.7182, -1.0 / (75 * ScreenRefreshRate / 1000.0))
 
 		m_line_height = null
 		m_natural_scroll = false
@@ -616,10 +616,6 @@ class textboard_mk4
 				pong_up()
 				break
 
-			case "scroll_pulse":
-				m_scroll_pulse = value
-				break
-
 			case "time_constant":
 				m_time_constant = value
 				m_scroll_pulse = ::pow(2.7182, -1.0 / (value * ScreenRefreshRate / 1000.0))
@@ -788,4 +784,4 @@ class textboard_mk4
 	}
 }
 
-fe.add_textboard_mk4 <- textboard_mk4
+fe.add_textboard <- textboard
