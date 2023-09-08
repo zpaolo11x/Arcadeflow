@@ -8,7 +8,7 @@
 
 fe.do_nut("nut_file.nut")
 fe.do_nut("nut_textboard.nut")
-print("REFRESHRATE:"+ ScreenRefreshRate+"\n")
+
 local comma = ','.tochar()
 local nbsp = "^"
 
@@ -2253,9 +2253,8 @@ function i2_create(in_poles = 3){
 }
 
 function i2_pulse(i2_in, delta_in){
-	testpr("                                                             IN: "+i2_in.pulse_speed+"\n")
 	if (fabs(delta_in) > i2_in.maxdelta){
-		testpr("i2_POLE\n")
+
 		i2_in.pulse_speed = i2_in.pulse_speed_1
 		i2_in.poles = 1
 		i2_in.delta = i2_in.maxdelta * (delta_in < 0 ? -1 : 1)
@@ -2269,7 +2268,6 @@ function i2_pulse(i2_in, delta_in){
 		i2_in.poles = i2_in.poles0
 		i2_in.delta = delta_in //SERVE???
 	}
-	testpr("                                                             OUT: "+i2_in.pulse_speed+"\n")
 
 	i2_in.stepcurve += i2_in.delta
 }
@@ -2318,11 +2316,9 @@ function i2_updatepos(i2_in){
 	i2_in.pos_t = i2_in.buffer_t[i2_in.poles - 1] - i2_in.stepcurve
 
 	if (i2_in.pos_t > i2_in.maxdelta){
-		testpr("i2_3\n")
 		i2_in.stepcurve = i2_in.stepcurve + (i2_in.pos_t - i2_in.maxdelta)
 	}
 	if (i2_in.pos_t < -i2_in.maxdelta){
-		testpr("i2_4\n")
 		i2_in.stepcurve = i2_in.stepcurve + (i2_in.pos_t + i2_in.maxdelta)
 	}
 
@@ -6723,7 +6719,6 @@ function z_checkhidden(i) {
 }
 
 function getallgamesdb(logopic) {
-	testpr("                                     getallagemsdb\n")
 	timestart("GamesDB")
 
 	local showalpha = 0
@@ -7247,7 +7242,6 @@ function z_list_indexchange(newindex) {
 	z_var = newindex - z_list.index
 	z_list.newindex = newindex
 	if (z_list.size != 0) fe.list.index = z_list.gametable[modwrap((newindex), z_list.size)].z_felistindex
-	testpr("XXX\n")
 	z_updatefilternumbers(z_list.newindex)
 }
 
@@ -15180,7 +15174,6 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
-	testpr("changedata "+i)
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15228,15 +15221,12 @@ function changetiledata(i, index, update) {
 		// Update visibility of horizontal or vertical shadows, glow, indicator etc
 		update_thumbdecor(indexTemp, var, tilez[indexTemp].AR.crop)
 		if (tilez[indexTemp].bd_mx_alpha != 0) {
-			testpr (" BDMIX")
 			update_borderglow(indexTemp, var, tilez[indexTemp].AR.crop)
 			tilesTableUpdate[indexTemp] = [0.0, 0.0, 0.0, 0.0, 0.0]
 		}
-		testpr(" freeze")
 		tilez[indexTemp].freezecount = 2
 	}
 	tilez[indexTemp].obj.zorder = -2
-			testpr("\n")
 
 	tilesTablePos.X[indexTemp] = (i / UI.rows) * (UI.widthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix * 0.5
 	tilesTablePos.Y[indexTemp] = (i%UI.rows) * (UI.coreheight + UI.padding) + carrierT.y + UI.tileheight * 0.5
@@ -15317,7 +15307,6 @@ function z_listrefreshtiles() {
 		local index = - (floor(tiles.total / 2) - 1) + corrector
 
 		for (local i = 0; i < tiles.total; i++) {
-			testpr("BB"+i+"\n")
 			changetiledata(i, index, true)
 			index++
 		}
@@ -16023,7 +16012,7 @@ local clock1 = 0
 */
 /// On Tick ///
 function tick(tick_time) {
-try{testpr("                                                                         "+tiles.i2.pulse_speed+"\n")}catch(err){testpr("                                                                         XXXX\n")}
+
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16430,9 +16419,7 @@ try{testpr("                                                                    
 		i2_updatepos(disp.i2)
 		for (local i = 0; i < disp.images.len(); i++) {
 			disp.images[i].y = disp.pos0[i] + disp.i2.smoothcurve
-			//testpr(disp.images[i].y+" "+disp.images[i].height+" ")
 		}
-		//testpr("\n")
 
 		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
 		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
@@ -16641,8 +16628,6 @@ try{testpr("                                                                    
 
 	// Manage tiles zoom and unzoom
 	foreach (i, item in tilesTableUpdate) {
-		testpr(checkfade(tilesTableUpdate[i]) ? "X": "-")
-		testpr((tilez[i].obj.redraw) ? "R": "-")
 		if (checkfade(tilesTableUpdate[i])) {
 			fadeupdate(tilesTableUpdate[i])
 			local updatetemp = tilesTableUpdate[i]
@@ -16671,10 +16656,8 @@ try{testpr("                                                                    
 			}
 		}
 	}
-	testpr("\n")
 
 	foreach (i, item in tilesTableZoom) {
-		//testpr(round(tilez[i].obj.width,1)+""+(tilez[i].obj.redraw ? "O" : "X")+" ")
 		if (checkfade(tilesTableZoom[i])) {
 			fadeupdate(tilesTableZoom[i])
 			local zoomtemp = tilesTableZoom[i]
@@ -16683,7 +16666,6 @@ try{testpr("                                                                    
 			picsize(tilez[i].obj, UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), UI.tilewidth + (UI.zoomedwidth - UI.tilewidth) * (zoomtemp[1]), 0, -(UI.zoomedvshift * 1.0 / UI.zoomedwidth))
 		}
 	}
-	//testpr("\n")
 
 	// Manage video fade and unfade, anc crop fade
 	foreach (i, item in aspectratioMorph) {
@@ -16800,7 +16782,6 @@ try{testpr("                                                                    
 			local to_offscreen = ((tilez[i].obj.x + tilez[i].obj.width * 0.5 < 0) || (tilez[i].obj.x - tilez[i].obj.width * 0.5 > fl.w_os))
 			if (tilez[i].obj.visible && tilez[i].offlist) {
 				tilez[i].obj.visible = false
-				testpr("                                   A\n")
 				tile_freeze(i, true)
 			}
 			else if (!tilez[i].offlist) {
