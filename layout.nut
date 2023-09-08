@@ -7874,11 +7874,11 @@ shader_fr = {
 }
 
 shader_fr.v.set_texture_param("texture")
-shader_fr.v.set_param ("kernelData", frostpic.matrix, frostpic.sigma)
+shader_fr.v.set_param ("kernelData", frostpic.matrix, frostpic.sigma * 0.0)
 shader_fr.v.set_param ("offsetFactor", 0.000, 1.0 / frostpic.h)
 
 shader_fr.h.set_texture_param("texture")
-shader_fr.h.set_param ("kernelData", frostpic.matrix, frostpic.sigma)
+shader_fr.h.set_param ("kernelData", frostpic.matrix, frostpic.sigma * 0.0)
 shader_fr.h.set_param ("offsetFactor", 1.0 / frostpic.w, 0.000)
 
 frost.surf_2.set_pos(-overlay.x * frost.scaler, -overlay.y * frost.scaler, fl.w_os * frost.scaler, fl.h_os * frost.scaler)
@@ -9196,6 +9196,7 @@ function frosthide() {
 }
 
 function frostshaders(turnon) {
+	testpr("frostshader:"+turnon+"\n")
 	if (turnon) {
 		frost.surf_rt.visible = true
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
@@ -16940,12 +16941,14 @@ function tick(tick_time) {
 		}
 		fadeupdate(flowT.zmenubg)
 		if (endfade (flowT.zmenubg) == 0) {
+			testpr("EF_1\n")
 			overlay.background.visible = false
 			frost.surf_rt.alpha = 0
 			frostshaders(false)
 		}
 
 		if (endfade (flowT.zmenubg) == 1) {
+			testpr("EF_0\n")
 			frost.canfreeze = true
 		}
 
@@ -16965,10 +16968,11 @@ function tick(tick_time) {
 
 	if (checkfade (flowT.frostblur)) {
 		fadeupdate(flowT.frostblur)
-
+		testpr("redraw:"+(frost.surf_1.redraw ? "Y" : "N")+" frostblur:"+flowT.frostblur[1]+"\n")
+		testpr(frost.surf_1.alpha+" "+frost.pic.alpha+" "+frost.surf_rt.alpha+"\n")
 		frost.surf_1.shader.set_param ("kernelData", frostpic.matrix, frostpic.sigma * flowT.frostblur[1])
 		frost.pic.shader.set_param ("kernelData", frostpic.matrix, frostpic.sigma * flowT.frostblur[1])
-
+		testpr((frostpic.sigma * flowT.frostblur[1])+"\n")
 	}
 
 	if (checkfade (flowT.zmenush)) {
