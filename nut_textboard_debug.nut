@@ -118,6 +118,13 @@ class textboard
 
 	m_count = null
 
+	// DEBUG
+	m_debug = false
+	m_overlay = null
+	m_overlay2 = null
+	m_overnum = null
+	textref2 = null
+
 	constructor (_t, _x, _y, _w, _h, _surface = null) {
 		tick_time_0 = 0
 		tick_elapse = 0
@@ -179,6 +186,24 @@ class textboard
 		m_object.bg_alpha = 255
 		m_object.alpha = 255
 
+		if (m_debug) {
+			m_overlay = ::fe.add_rectangle(_w,0,_w,1)
+			m_overlay2 = ::fe.add_rectangle(_w,0,_w,_h)
+			m_overlay2.set_rgb(200,0,0)
+			m_overlay2.alpha = 120
+			m_overnum = ::fe.add_text(m_object.first_line_hint,0,::fe.layout.height*0.5, ::fe.layout.width*0.5,::fe.layout.height*0.5)
+
+			textref2 = ::fe.add_text("", 0, m_surf.height, m_surf.width, m_surf.height)
+			textref2.align = m_object.align
+			textref2.char_size = m_object.char_size
+			textref2.margin = m_object.margin
+			textref2.word_wrap = true
+			textref2.line_spacing = m_object.line_spacing
+			textref2.set_bg_rgb(200,100,0)
+			textref2.bg_alpha = 120
+		}
+
+
 		m_line_top = 1.0
 		m_line_bot = 1.0
 
@@ -220,6 +245,7 @@ class textboard
 			poles = 4
 			buffer = ::array(4, 0.0)
 
+			debug = false
 			dbcounter = 0
 		}
 
@@ -239,6 +265,10 @@ class textboard
 		m_freezer = 0
 		m_i2.delta = deltain
 		m_i2.stepcurve += m_i2.delta
+	}
+
+	function dbprint(text) {
+		if (m_debug) ::print(text)
 	}
 
 	function m_repeatsignal(sig, counter) {
@@ -276,6 +306,15 @@ class textboard
 		m_object.first_line_hint = 1
 		m_target_line = 1
 
+		if (m_debug) {
+			textref2.msg = m_text
+			textref2.align = m_object.align
+			textref2.char_size = m_object.char_size
+			textref2.margin = m_object.margin
+			textref2.line_spacing = m_object.line_spacing
+			textref2.first_line_hint = 1
+		}
+
 		m_line_height = m_object.line_size
 
 		m_lines = m_object.lines
@@ -309,6 +348,14 @@ class textboard
 		m_shader.set_param("alphabot", m_max_hint <= 1 ? 0.0 : 1.0)
 
 		m_freezer = 2
+
+		dbprint("line height:"+m_line_height+"\n")
+		dbprint("visible lines:"+m_lines+"\n")
+		dbprint("all lines:"+m_lines_total+"\n")
+		dbprint("max hint:"+m_max_hint+"\n")
+		dbprint("viewport max:"+m_viewport_max_y+"\n")
+		dbprint("margin bottom:"+m_margin_bottom+"\n")
+		dbprint("\n")
 
 		if (m_pong) pong_up()
 	}
@@ -377,6 +424,31 @@ class textboard
 
 	function board_on_tick(tick_time) {
 
+		if (m_i2.debug) {
+			local multi = 1.0
+			local tr_pos = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.pos) * multi, 3, 3) //RED
+			local tr_smooth = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.smoothcurve) * multi, 3, 3) //BLACK
+			local tr_step = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_i2.stepcurve) * multi, 3, 3) //WHITE
+			local tr_line1 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - (m_line_height) * multi, 3, 3) //BLUE
+			local tr_line2 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 2.0 * (m_line_height) * multi, 3, 3) //BLUE
+			local tr_line3 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 3.0 * (m_line_height) * multi, 3, 3) //BLUE
+			local tr_line4 = ::fe.add_rectangle(m_i2.dbcounter, ::fe.layout.height * 0.5 - 4.0 * (m_line_height) * multi, 3, 3) //BLUE
+
+			tr_line1.zorder = tr_line2.zorder = tr_line3.zorder = tr_line4.zorder = 20000
+			tr_step.zorder = 20002
+			tr_smooth.zorder = 20004
+			tr_pos.zorder = 20001
+
+			tr_pos.set_rgb(255, 0, 0)
+			tr_smooth.set_rgb(0, 0, 0)
+			tr_step.set_rgb(255, 255, 255)
+			tr_line1.set_rgb(0, 0, 255)
+			tr_line2.set_rgb(0, 0, 255)
+			tr_line3.set_rgb(0, 0, 255)
+			tr_line4.set_rgb(0, 0, 255)
+			m_i2.dbcounter = m_i2.dbcounter + 0.5
+		}
+
 		tick_elapse = tick_time - tick_time_0
 		tick_time_0 = tick_time
 
@@ -385,6 +457,14 @@ class textboard
 			if (m_count.left != 0) m_count.left = m_repeatsignal("left", m_count.left)
 			if (m_count.up != 0) m_count.up = m_repeatsignal("up", m_count.up)
 			if (m_count.down != 0) m_count.down = m_repeatsignal("down", m_count.down)
+		}
+
+		if (m_debug) {
+			m_overnum.msg = m_object.first_line_hint+" / "+m_max_hint
+			m_overnum.char_size = 20
+
+			m_overlay.y = m_viewport_max_y
+			m_overlay2.y = m_i2.stepcurve
 		}
 
 		if (m_freezer == 1) {
@@ -455,6 +535,7 @@ class textboard
 				m_object[idx] = value
 				refreshtext()
 				break
+
 
 			case "msg":
 				m_text = value
@@ -659,21 +740,25 @@ class textboard
 	}
 
 	function goto_start() {
+		if (m_debug) textref2.first_line_hint = 1
 		m_target_line = 1
 		goto_line(1)
 	}
 
 	function goto_end() {
+		if (m_debug) textref2.first_line_hint = m_max_hint
 		m_target_line = m_max_hint
 		goto_line(m_max_hint)
 	}
 
 	function line_up() {
+		if (m_debug) textref2.first_line_hint = textref2.first_line_hint + 1
 		if (m_target_line < m_max_hint) m_target_line ++
 		mi2_impulse(m_line_height)
 	}
 
 	function line_down() {
+		if (m_debug) textref2.first_line_hint = textref2.first_line_hint - 1
 		if (m_target_line > 1) m_target_line --
 		mi2_impulse(- m_line_height)
 	}
