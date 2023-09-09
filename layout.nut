@@ -1405,11 +1405,7 @@ function buildreadme(separator = false, include_history = true) {
 	if (separator) readme.push(AF.msgbox.separator2)
 
 	return readme
-/*
-	foreach (i, item in readme) {
-		print(item)
-	}
-*/
+
 }
 
 function savereadme() {
@@ -3192,11 +3188,6 @@ function parseXML(inputpath) {
 					gameext = patharray2[patharray2.len() - 1]
 					gamepath = gamepathwext.slice(0, -1 - gameext.len())
 
-					/*
-					local gp1 = split(gamepath, "(")
-					gamepath = gp1[0]
-					*/
-
 					XMLT[gamepath] <- {
 						name = ""
 						rating = ""
@@ -3476,13 +3467,6 @@ function msgbox_refresh(){
 	AF.msgbox.numlines = AF.msgbox.obj.lines_total
 	AF.msgbox.visiblelines = AF.msgbox.obj.lines
 	msgbox_scrollerrefresh(1)
-	/*
-	local wrappedmessage = msgbox_wraptext(AF.msgbox.title + "\n\n" + AF.msgbox.body, AF.msgbox.columns)
-	AF.msgbox.obj.msg = char_replace(wrappedmessage, nbsp, " ")
-	AF.msgbox.obj.first_line_hint = 1
-	AF.msgbox.numlines = split_complete(wrappedmessage, "\n").len()
-	msgbox_scrollerrefresh(1)
-	*/
 }
 
 function msgbox_newtitle(text){
@@ -6739,7 +6723,7 @@ function getallgamesdb(logopic) {
 		AF.boottext.word_wrap = true
 		AF.boottext.alpha = AF.bootalpha
 	}
-	fe.overlay.splash_message("") //TEST162 maybe useless
+	fe.overlay.splash_message("") //TEST162 keep for compatibility with WSL
 
 	local emulatorarray = []
 	local emulatordir = DirectoryListing(AF.emulatorsfolder, false).results
@@ -7746,7 +7730,7 @@ local tilez = []
 
 fl.surf = fe.add_surface(fl.w_os, fl.h_os)
 fl.surf.redraw = true
-fl.surf.alpha = 0//TEST162 was 255
+fl.surf.alpha = 0
 
 // fl.surf.mipmap = 1
 // fl.surf.zorder = -1000
@@ -9196,7 +9180,6 @@ function frosthide() {
 }
 
 function frostshaders(turnon) {
-	testpr("frostshader:"+turnon+"\n")
 	if (turnon) {
 		frost.surf_rt.visible = true
 		frost.surf_rt.redraw = frost.surf_2.redraw = frost.surf_1.redraw = true
@@ -9663,10 +9646,6 @@ function optionsmenu_lev1() {
 				frosthide()
 				zmenuhide()
 				if ((prf.DMPATSTART) && (prf.DMPENABLED)) {
-					/*
-					flowT.fg = startfade(flowT.fg, -0.02, -1.0)
-					flowT.data = startfade(flowT.data, 0.02, -1.0)
-					*/
 					startfade(flowT.groupbg, 0.02, -1.0)
 				}
 			}
@@ -11157,15 +11136,6 @@ try{hist_text.descr.enable_transition = false}catch(err){}
 hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
 
-/*
-local olay = hist_text_surf.add_rectangle(hist_text.descr.x + hist_text.descr.margin, hist_text.descr.y + hist_text.descr.margin, hist_text.descr.width - 2.0 * hist_text.descr.margin, hist_text.descr.height - 2.0 * hist_text.descr.margin)
-olay.set_rgb(200,0,0)
-olay.alpha = 100
-local olay2 = hist_text_surf.add_rectangle(hist_text.descr.x, hist_text.descr.y, hist_text.descr.width, hist_text.descr.height)
-olay2.set_rgb(0,200,0)
-olay2.alpha = 100
-*/
-
 pixelizefont(hist_text.descr, floor(hist_textT.charsize), 0.5 * floor(hist_textT.charsize), 0.7 * 1.15)
 //hist_text.descr.y = hist_text.descr.y + floor(0.25 * hist_textT.linesize)
 //hist_text.descr.height = hist_text.descr.height - floor(0.25 * hist_textT.linesize)
@@ -11222,11 +11192,9 @@ if ((!prf.SMALLSCREEN) && (!prf.HISTMININAME)) {
 }
 
 if (prf.HISTORYPANEL) {
-	//TEST162 hist_text_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 	hist_text_surf.set_rgb(themeT.historytextcolor, themeT.historytextcolor, themeT.historytextcolor)
 }
 else {
-	//TEST162 hist_text_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	hist_text_surf.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 }
 
@@ -11518,8 +11486,6 @@ function history_updatetext() {
 
 	hist_titletxt_bd.visible = hist_titletxt.visible = (hist_title.subimg_height == 0)
 	if (prf.HISTORYPANEL) hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
-
-	//TEST162 hist_text.descr.shader = gradshader
 
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
@@ -12119,11 +12085,7 @@ local zmenu_surface = zmenu_surface_container.add_surface (zmenu.width, zmenu.he
 zmenu_surface.add_image(AF.folder + "pics/black.png", 0, 0, zmenu_surface.width, zmenu_surface.height)
 zmenu.selectedbar = zmenu_surface.add_image("pics/white.png",0, 0, zmenu.width, zmenu.tileh)
 zmenu.selectedbar.set_rgb(255, 255, 255)
-/*
-zmenu.selectedbar.shader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
-zmenu.selectedbar.shader.set_texture_param("texture")
-zmenu.selectedbar.shader.set_param("pixelheight", 1.0 / zmenu.selectedbar.height)
-*/
+
 zmenu.sidelabel = zmenu_surface.add_text("", zmenu.pad, 0, zmenu.width - 2 * zmenu.pad, zmenu.tileh)
 zmenu.sidelabel.char_size = overlay.labelcharsize * 0.8
 zmenu.sidelabel.margin = 2
@@ -12532,11 +12494,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 					}
 					else if (prf.DMPIMAGES == "WALLS") {
 						disp.images[i] = zmenu_surface_container.add_image("", disp.x, disp.noskip[i] * disp.bgtileh, disp.tilew, disp.bgtileh)
-						/*
-						disp.images[i].shader = fe.add_shader (Shader.Fragment, "glsl/aapixel.glsl")
-						disp.images[i].shader.set_texture_param("texture")
-						disp.images[i].shader.set_param("pixelheight", 1.0 / disp.images[i].height)
-						*/
 					}
 					disp.images[i].preserve_aspect_ratio = true
 					disp.images[i].video_flags = Vid.NoAudio
@@ -13772,10 +13729,6 @@ if (!prf.CUSTOMLOGO) {
 
 AF.logo.visible = prf.SPLASHON
 
-/// Layout fade from black ///
-
-//TEST162 flowT.blacker = [0.0, 0.0, 0.0, 0.09, 1.0]
-
 /// BGM Start ///
 
 if (prf.BACKGROUNDTUNE != "") snd.bgtuneplay = true
@@ -14013,14 +13966,6 @@ if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0
 }
 
 AF.msgbox.obj.visible = false
-
-/*
-local overlayz = fe.add_rectangle (AF.msgbox.obj.x + AF.msgbox.obj.margin, AF.msgbox.obj.y+AF.msgbox.obj.margin,AF.msgbox.obj.width - 2 * AF.msgbox.obj.margin, AF.msgbox.obj.height-2*AF.msgbox.obj.margin)
-overlayz.set_rgb(0,0,200)
-overlayz.alpha = 128
-overlayz.zorder = 250
-*/
-
 
 /// SPLASH SCREEN UPDATE ///
 
@@ -15091,7 +15036,6 @@ function resetvarsandpositions() {
 	tilesTablePos.Offset = 0
 
 	tiles.i2.smoothcurve = 0.5
-	//TEST162 RESET tiles.i2
 
 	column.offset = 0
 	centercorr.val = 0
@@ -15146,25 +15090,6 @@ function updatetiles() {
 		centercorr.shift = - centercorr.zero - (column.start) * (UI.widthmix + UI.padding)
 	}
 
-/*
-	// check if the target of jump is in the deltacol group going LEFT
-	if ((column.stop < deltacol) && (var < 0)) {
-		if (column.stop == deltacol - 1)
-			centercorr.shift = centercorr.zero + (deltacol - 1) * (UI.widthmix + UI.padding)
-		else
-			centercorr.shift = - (UI.widthmix + UI.padding)
-	}
-	// check if the start of jump is in the the deltacol group going RIGHT
-	else if ((column.start < deltacol) && (var > 0)) {
-		if (column.start == deltacol - 1) {
-			centercorr.shift = - centercorr.zero - (deltacol - 1) * (UI.widthmix + UI.padding)
-		}
-		else {
-			centercorr.shift = (UI.widthmix + UI.padding)
-		}
-	}
-*/
-	//if ((z_list.index + var <= deltacol * rows - 1)) {
 	if ((column.stop < deltacol)) {
 		centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.widthmix + UI.padding)
 	}
@@ -15676,11 +15601,6 @@ function on_transition(ttype, var0, ttime) {
 
 	}
 
-	/*
-	if ((ttype == Transition.ToNewSelection)) {
-		update_thumbdecor (focusindex.new, 0, getAR(tilez[focusindex.new].offset, tilez[focusindex.new].snapz, 0, prf.BOXARTMODE))
-	}
-	*/
 	logotitle = null
 	boxtitle = null
 
@@ -16005,12 +15925,7 @@ if (surfdebug) {
 	debugoverlay.bg_alpha = 128
 	debugoverlay.align = Align.Left
 }
-/*
-local clock0 = clock()
-local time0 = fe.layout.time
-local time1 = 0
-local clock1 = 0
-*/
+
 /// On Tick ///
 function tick(tick_time) {
 
@@ -16389,16 +16304,6 @@ function tick(tick_time) {
 			tiles.i2.pulse_speed_1 = spdT.scroll_1
 			tiles.i2.pulse_speed_p = spdT.scroll_p
 
-			/*
-			foreach (item, value in spdT) {
-				spdT[item] = 1.0 - (1.0 - value) * AF.tsc
-			}
-			*/
-			/*
-			foreach (item, value in spdT2) {
-				spdT2[item] = value * AF.tsc
-			}
-			*/
 			delayvid = round(vidstarter - 60 * prf.THUMBVIDELAY / AF.tsc, 1)
 			fadevid = round(delayvid - 35 / AF.tsc, 1)
 
@@ -16425,46 +16330,8 @@ function tick(tick_time) {
 		disp.bgshadowb.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y + disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].height
 		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
 
-		//disp.xstart = disp.i2.smoothcurve
-
 	}
-/*
-	// display images scrolling routine
-	if ((disp.xstart != disp.xstop) && (prf.DMPIMAGES != null) && (zmenu.dmp)) {
-		disp.speed = (spdT2.disp * (disp.xstop - disp.xstart))
-		if (absf(disp.speed) > disp.tileh) {
-			disp.speed = (disp.speed > 0 ? 10 * disp.tileh : -10 * disp.tileh)
-		}
-		if (absf(disp.speed) > 0.0005 * disp.tileh) {
-			if ((absf(disp.xstart - disp.xstop)) > disp.spacing * (fe.displays.len() - 2)) {
-				disp.xstart = disp.xstop
-				for (local i = 0; i < disp.images.len(); i++) {
-					disp.images[i].y = disp.pos0[i] + disp.xstop
-				}
-				disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-				disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-
-			}
-			else {
-				for (local i = 0; i < disp.images.len(); i++) {
-					disp.images[i].y = disp.pos0[i] + disp.xstart + disp.speed
-				}
-				disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-				disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-
-				disp.xstart = disp.xstart + disp.speed
-			}
-		}
-		else {
-			disp.xstart = disp.xstop
-			for (local i = 0; i < disp.images.len(); i++) {
-				disp.images[i].y = disp.pos0[i] + disp.xstop
-			}
-			disp.bgshadowb.y = disp.images[zmenu.selected].y + disp.images[zmenu.selected].height
-			disp.bgshadowt.y = disp.images[zmenu.selected].y - disp.bgshadowt.height
-		}
-	}
-*/
+	
 	if (i2_moving(zmenu.i2)){
 		i2_updatepos(zmenu.i2)
 		for (local i = 0; i < zmenu.shown; i++) {
@@ -16480,38 +16347,7 @@ function tick(tick_time) {
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 
 	}
-/*
-	// zmenu items scrolling routine
-	if (zmenu.xstart != zmenu.xstop) {
-
-		zmenu.speed = zmenu.singleline ? (zmenu.xstop - zmenu.xstart) : (spdT2.zmenu * (zmenu.xstop - zmenu.xstart))
-		if (absf(zmenu.speed) > 0.0005 * zmenu.tileh) {
-			for (local i = 0; i < zmenu.shown; i++) {
-				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstart + zmenu.speed
-				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstart + zmenu.speed
-			}
-			zmenu.xstart = zmenu.xstart + zmenu.speed
-			zmenu.scrollerstart =  (-1 * zmenu.xstart / zmenu.virtualheight) * zmenu.height
-			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
-		}
-		else {
-			zmenu.xstart = zmenu.xstop
-			zmenu.scrollerstart = zmenu.scrollerstop
-			zmenu.scroller.y = clamp(zmenu.scrollerstart, 0, zmenu.height - zmenu.scroller.height)
-			//flowT.scroller = startfade(flowT.scroller, -0.1, 0.0)
-			zmenu.speed = 0
-			for (local i = 0; i < zmenu.shown; i++) {
-				zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
-				zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
-			}
-		}
-		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
-	}
-*/
+	
 	// Attract mode management
 	if (prf.AMENABLE) {
 		if (attract.start) {
@@ -16941,14 +16777,12 @@ function tick(tick_time) {
 		}
 		fadeupdate(flowT.zmenubg)
 		if (endfade (flowT.zmenubg) == 0) {
-			testpr("EF_1\n")
 			overlay.background.visible = false
 			frost.surf_rt.alpha = 0
 			frostshaders(false)
 		}
 
 		if (endfade (flowT.zmenubg) == 1) {
-			testpr("EF_0\n")
 			frost.canfreeze = true
 		}
 
@@ -16968,11 +16802,8 @@ function tick(tick_time) {
 
 	if (checkfade (flowT.frostblur)) {
 		fadeupdate(flowT.frostblur)
-		testpr("redraw:"+(frost.surf_1.redraw ? "Y" : "N")+" frostblur:"+flowT.frostblur[1]+"\n")
-		testpr(frost.surf_1.alpha+" "+frost.pic.alpha+" "+frost.surf_rt.alpha+"\n")
 		frost.surf_1.shader.set_param ("kernelData", frostpic.matrix, frostpic.sigma * flowT.frostblur[1])
 		frost.pic.shader.set_param ("kernelData", frostpic.matrix, frostpic.sigma * flowT.frostblur[1])
-		testpr((frostpic.sigma * flowT.frostblur[1])+"\n")
 	}
 
 	if (checkfade (flowT.zmenush)) {
@@ -18195,10 +18026,6 @@ function on_signal(sig) {
 		if (keyboard_visible()) return true
 
 		if (prf.DMPATSTART) {
-			/*
-			flowT.fg = startfade(flowT.fg, 1.02, -1.0)
-			flowT.data = startfade(flowT.data, -1.02, -1.0)
-			*/
 			startfade(flowT.groupbg, -1.02, -1.0)
 		}
 
