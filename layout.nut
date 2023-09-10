@@ -6825,7 +6825,6 @@ function z_listboot() {
 	debugpr("z_listboot\n")
 	z_list.romlistemulators = romlistemulators()
 	local romlistboot = fe.displays[fe.list.display_index].name
-	//TEST160 RIMOSSO z_updatetagstable()
 
 	z_list.boot = []
 	z_list.boot2 = []
@@ -11143,8 +11142,6 @@ if (hist_text.title != null) {
 	hist_text.title.align = Align.MiddleCentre
 	hist_text.title.margin = 0
 	hist_text.title.word_wrap = true
-	//hist_text.tags.align = Align.TopLeft
-	//TESTX hist_text.descr.first_line_hint = 1
 	hist_text.title.x = hist_text.title.x + 1 //Add fake 1 pixel margin to title
 	hist_text.title.width = hist_text.title.width -2
 }
@@ -11465,7 +11462,6 @@ function history_updatesnap() {
 
 function history_updatetext() {
 	hist_title.file_name = fe.get_art ("wheel")
-	//TESTX hist_text.descr.first_line_hint = 1
 
 	local char_rows = (((hist_titleT.w / hist_titleT.h) > 3.0) ? 2 : 3)
 	local charfontsize = 1.1 * hist_titleT.h / char_rows
@@ -15685,7 +15681,7 @@ function on_transition(ttype, var0, ttime) {
 	// UPDATE TILES FROM OLD SELECTION
 	if (ttype == Transition.FromOldSelection) {
 		if (checklivejump()) {
-			updatebgsnap(focusindex.new) //TEST160
+			updatebgsnap(focusindex.new)
 		}
 	}
 
@@ -15804,7 +15800,7 @@ function on_transition(ttype, var0, ttime) {
 				dat.gameyear_array[i].msg = gameyearstring (dat.var_array[i])
 				dat.manufacturername_array[i].msg = gamemanufacturer (dat.var_array[i])
 
-				dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year) //TEST160 VA BENE? CLEANUP
+				dat.manufacturer_array[i].msg = manufacturer_vec_name (z_list.boot[dat.var_array[i]].z_manufacturer, z_list.boot[dat.var_array[i]].z_year)
 				dat.meta_array[i].msg = metastring(dat.var_array[i])
 			}
 
