@@ -11130,9 +11130,8 @@ hist_text.descr.time_constant = 58
 hist_text.descr.pingpong_speed = 0.5
 hist_text.descr.lines_bottom = 3.0
 hist_text.descr.lines_top = 0.7
-try{hist_text.descr.expand_tokens = false}catch(err){}
 hist_text.descr.enable_signals = false
-try{hist_text.descr.enable_transition = false}catch(err){}
+hist_text.descr.enable_transition = false
 hist_text.descr.pingpong = (prf.TEXTSCROLL == "auto")
 hist_text.descr.pingpong_delay = 3
 
@@ -11785,7 +11784,7 @@ local disp = {
 
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
-	//xstart = 0
+
 	xstop = 0
 	bgtileh = 0
 	speed = null
@@ -12555,7 +12554,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
 		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
 		i2_setpos(disp.i2, disp.xstop)
-		//disp.xstart = disp.xstop
+
 		foreach (id, item in disp.images) {
 			item.y = disp.pos0[id] + disp.xstop
 		}
@@ -12681,8 +12680,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	zmenu.scrollerstop = getscrollerstop(zmenu.scrollerupdate)
 	zmenu.scroller.y = clamp(zmenu.scrollerstop, 0, zmenu.height - zmenu.scroller.height)
 	zmenu.scrollerupdate = true
-	//if (zmenu.height < zmenu.virtualheight) flowT.scroller = startfade(flowT.scroller, 0.1, 0.0)
-	//zmenu.scrollerstart = zmenu.scrollerstop = (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
+
 	zmenu.scrollerpos = opts.shrink ? zmenu.width - disp.width : zmenu.width
 	zmenu.scroller.zorder = 200
 
@@ -13944,11 +13942,10 @@ AF.msgbox.obj.align = Align.TopLeft
 AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.enable_signals = false
-try{AF.msgbox.obj.enable_transition = false}catch(err){}
+AF.msgbox.obj.enable_transition = false
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
 AF.msgbox.obj.time_constant = 39
 
-try{AF.msgbox.obj.expand_tokens = false}catch(err){}
 AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
