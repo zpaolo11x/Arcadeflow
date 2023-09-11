@@ -11781,7 +11781,7 @@ local disp = {
 	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 
-	xstop = 0
+	newpos = 0
 	bgtileh = 0
 	speed = null
 
@@ -11951,7 +11951,7 @@ zmenu = {
 	scrollerupdate = true
 
 	pos0 = []				// Scroll control items
-	xstop = 0
+	newpos = 0
 
 	tilew = overlay.w
 	tileh0 = overlay.rowheight
@@ -12126,8 +12126,8 @@ function cleanmenuopts(menuopts){
 	return menuopts
 }
 
-function getxstop(){
-	local xstop = 0
+function zmenu_newpos(){
+	local newpos = 0
 	local menucorrect = 0
 
 	// Lower portion
@@ -12142,21 +12142,21 @@ function getxstop(){
 
 	if (zmenu.midscroll) menucorrect = 0
 
-	xstop = floor(menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected])
+	newpos = floor(menucorrect + (zmenu.height - zmenu.tileh) * 0.5 - zmenu.pos0[zmenu.selected])
 
 	if ((zmenu.virtualheight <= zmenu.height) && !zmenu.midscroll) {
-		xstop = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
+		newpos = floor(zmenu.height * 0.5 - zmenu.virtualheight * 0.5)
 	}
 
 	zmenu.scroller.height = (zmenu.height / zmenu.virtualheight) * zmenu.height
-	//zmenu.scroller.y = (-1 * xstop/zmenu.virtualheight) * zmenu.height
+	//zmenu.scroller.y = (-1 * newpos/zmenu.virtualheight) * zmenu.height
 
-	return xstop
+	return newpos
 }
 
 function getscrollerstop(fade = true){
 	if (fade && (zmenu.height < zmenu.virtualheight)) startfade(flowT.scroller, 0.1, 0.0)
-	return (-1 * zmenu.xstop/zmenu.virtualheight) * zmenu.height
+	return (-1 * zmenu.newpos/zmenu.virtualheight) * zmenu.height
 }
 
 function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = null, right = null) {
@@ -12548,11 +12548,11 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	// UPDATE IMAGES POSITION ACCORDING TO NEW SELECTION!
 	if (zmenu.dmp && (prf.DMPIMAGES != null)) {
-		disp.xstop = - disp.noskip[zmenu.selected] * disp.spacing
-		i2_setpos(disp.i2, disp.xstop)
+		disp.newpos = - disp.noskip[zmenu.selected] * disp.spacing
+		i2_setpos(disp.i2, disp.newpos)
 
 		foreach (id, item in disp.images) {
-			item.y = disp.pos0[id] + disp.xstop
+			item.y = disp.pos0[id] + disp.newpos
 		}
 		if (prf.DMPIMAGES == "WALLS") {
 			disp.dispzoom[zmenu.selected] = [0.0, 1.0, 0.0, 0.0, 0.0]
@@ -12598,15 +12598,15 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 
 	zmenu_surface_container.visible = zmenu_sh.surf_rt.visible = true
 
-	zmenu.xstop = getxstop()
-	i2_setpos(zmenu.i2, zmenu.xstop)
+	zmenu.newpos = zmenu_newpos()
+	i2_setpos(zmenu.i2, zmenu.newpos)
 
 	// Initialize positions
 	for (local i = 0; i < zmenu.shown; i++) {
-		zmenu.items[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.xstop
-		zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.xstop
+		zmenu.items[i].y = zmenu.pos0[i] + zmenu.newpos
+		zmenu.glyphs[i].y = zmenu.pos0[i] + zmenu.newpos
+		zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.newpos
+		zmenu.strikelines[i].y = zmenu.pos0[i] + 0.5 * zmenu.strikeh + zmenu.newpos
 	}
 
 	for (local i = 0; i < zmenu.shown; i++) {
@@ -12740,7 +12740,7 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 
 }
 
-zmenu.xstop = 0
+zmenu.newpos = 0
 
 zmenu_freeze(true)
 zmenu_sh.surf_rt.redraw = zmenu_sh.surf_2.redraw = zmenu_sh.surf_1.redraw = false
@@ -15702,7 +15702,7 @@ function on_transition(ttype, var0, ttime) {
 		overlay_hide()
 		//TEST ADD THIS FOR FAVS?	zoompos = 1
 
-		zmenu.xstop = 0
+		zmenu.newpos = 0
 
 	}
 
@@ -17881,9 +17881,9 @@ function on_signal(sig) {
 			AF.zmenu_freezecount = 0
 
 			if ((prf.DMPIMAGES != null) && zmenu.dmp) {
-				disp.xstop = -disp.noskip[zmenu.selected] * disp.spacing
+				disp.newpos = -disp.noskip[zmenu.selected] * disp.spacing
 
-				i2_jumpto(disp.i2, disp.xstop)
+				i2_jumpto(disp.i2, disp.newpos)
 
 				if ((zmenu.selected != zmenu.oldselected) && (prf.DMPIMAGES == "WALLS")){
 					startfade(disp.dispzoom[zmenu.oldselected], -0.1, 1.0)
@@ -17908,8 +17908,8 @@ function on_signal(sig) {
 				prfmenu.helppic.file_name = prfmenu.browserdir[zmenu.selected]
 			}
 
-			zmenu.xstop = getxstop()
-			i2_jumpto(zmenu.i2, zmenu.xstop)
+			zmenu.newpos = zmenu_newpos()
+			i2_jumpto(zmenu.i2, zmenu.newpos)
 
 			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && (prfmenu.level == 2) && ((sig == "right") || (sig == "left"))))
 
