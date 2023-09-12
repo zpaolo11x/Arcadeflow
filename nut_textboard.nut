@@ -33,7 +33,7 @@ Textboard shares all the properties of a text object plus some others:
 
 - target_line = set/get this value to a desired target line
 
-- scroll_pulse = (0 to 1) speed of scrolling when manually moving up or down
+- time_constant = this is the time constant for manual scroll, in milliseconds
 - natural_scroll = true or false reverses scrolling direction
 - enable_signals = enable/disable signal response for scrolling (up/down goes up or down, left/right jumps to top and bottom)
 - enable_transition = enable/disable automatic transition update when text box uses magic tokens
