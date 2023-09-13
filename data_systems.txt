@@ -271,6 +271,12 @@ elan enterprise
 entex adventure vision,150,40,ADV,CRT,NONE,4,3,CONSOLE,Entex,1983,Adventure Vision,78,rom,joystick (8-way),4
 adventure vision
 
+epoch cassette vision
+
+epoch cassette vision jr
+
+epoch super cassette vision
+
 exelvision exl 100,320,250,EXL1,CRT,NONE,4,3,COMPUTER,Exelvision,1984,EXL 100,96,rom,joystick (8-way),1
 exl 100
 exelvision exl100
