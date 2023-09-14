@@ -1,1 +1,19 @@
+Texas Instruments TI-83
+https://docs.libretro.com/library/numero/
+LOGO BG
 
+Arduboy (Handheld)
+https://github.com/Ar-zz-duboy/Arduboy
+LOGO BG
+
+CHIP-8 (Handheld)
+https://docs.libretro.com/library/jaxe/
+LOGO
+
+WASM-4 (Handheld)
+https://docs.libretro.com/library/wasm-4/
+LOGO
+
+Elektronika - BK-0010 (Computer)
+https://docs.libretro.com/library/bk/ 
+LOGO BG
