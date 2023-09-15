@@ -192,7 +192,7 @@ philips cdi
 cd-i
 philips cd-i
 
-chip8,64,32,CP-8,LCD,NONE,0,0,HANDHELD,Joseph Weisbecker,1978,CHIP-8,null,rom,joystick (8-way),2
+chip8,64,32,CP-8,LCD,LCDBW,0,0,HANDHELD,Joseph Weisbecker,1978,CHIP-8,null,rom,joystick (8-way),2
 chip-8
 
 coleco adam,0,0,ADAM,CRT,NONE,4,3,COMPUTER,Coleco,1983,Adam,89,rom,joystick (8-way),1
@@ -332,7 +332,7 @@ futurepinball
 
 gaelco,0,0,GAE,CRT,NONE,-4,3,ARCADE,Gaelco,null,Gaelco,75,rom,null,null
 
-game master,0,0,GMAS,LCD,NONE,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
+game master,0,0,GMAS,LCD,LCDBW,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
 systema 2000
 super game
 game tronic
@@ -377,11 +377,11 @@ odyssey
 mame,0,0,ARC,CRT,NONE,-4,3,ARCADE,Various,null,MAME,75,rom,null,null
 m.a.m.e.
 
-mb microvision,16,16,MVIS,LCD,NONE,0,0,HANDHELD,Milton Bradley,1979,Microvision,null,null,null,null
+mb microvision,16,16,MVIS,LCD,LCDBW,0,0,HANDHELD,Milton Bradley,1979,Microvision,null,null,null,null
 microvision
 milton bradley microvision
 
-mega duck,160,144,DUCK,LCD,NONE,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
+mega duck,160,144,DUCK,LCD,LCDGBC,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
 mega duck wg-108
 cougar boy
 
@@ -1031,12 +1031,12 @@ ti-99 4a
 ti99
 ti-99
 
-ti83,64,96,TI83,LCD,NONE,0,0,HANDHELD,Texas Instruments,1996,TI83,null,rom,joystick (8-way),1
+ti83,64,96,TI83,LCD,LCDBW,0,0,HANDHELD,Texas Instruments,1996,TI83,null,rom,joystick (8-way),1
 ti-83
 texas instruments ti83
 texas instruments ti-83
 
-tiger game com,200,160,GCOM,LCD,NONE,0,0,HANDHELD,Tiger,1997,Game Com,121,rom,joystick (8-way),4
+tiger game com,200,160,GCOM,LCD,LCDBW,0,0,HANDHELD,Tiger,1997,Game Com,121,rom,joystick (8-way),4
 game com
 game.com
 tiger game.com
@@ -1083,7 +1083,7 @@ socrates
 wasm-4,160,160,WASM,LCD,NONE,0,0,HANDHELD,Aduros,2021,WASM-4,262,rom,joystick (8-way),2
 wasm4
 
-watara supervision,160,160,WSVIS,LCD,NONE,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
+watara supervision,160,160,WSVIS,LCD,LCDGB,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
 quickshot supervision
 supervision
 
