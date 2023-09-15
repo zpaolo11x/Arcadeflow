@@ -46,6 +46,9 @@ mattel aquarius
 arcade,0,0,ARC,CRT,NONE,-4,3,ARCADE,Various,null,Arcade,75,rom,null,null
 coin op
 
+arduboy,128,64,ABOY,LCD,NONE,0,0,HANDHELD,Kevin Bates,2015,Arduboy,263,rom,joystick (8-way),2
+arduboy fx
+
 atari 8bit,0,0,A8BIT,CRT,NONE,4,3,COMPUTER,Atari,1979,Atari 8 Bit,43,rom,joystick (8-way),1
 atari 8 bit
 atari8bit
@@ -189,6 +192,9 @@ philips cdi
 cd-i
 philips cd-i
 
+chip8,64,32,CP-8,LCD,NONE,0,0,HANDHELD,Joseph Weisbecker,1978,CHIP-8,null,rom,joystick (8-way),2
+chip-8
+
 coleco adam,0,0,ADAM,CRT,NONE,4,3,COMPUTER,Coleco,1983,Adam,89,rom,joystick (8-way),1
 adam
 
@@ -260,6 +266,16 @@ dirksimple,0,0,DRKS,CRT,NONE,4,3,ARCADE,Various,null,Dirksimple,49,dossier,null,
 
 dragon 32,320,200,DR32,CRT,NONE,4,3,COMPUTER,Dragon Data,1982,Dragon 32,91,rom,joystick (8-way),1
 dragon32
+
+elektronika bk,256,256,BK10,CRT,NONE,4,3,COMPUTER,Elektronika,1984,Elektronika BK-0010,93,rom,joystick (8-way),1
+elektronika bk-0010
+elektronika bk0010
+bk-0010
+bk0010
+elektronika bk-0010-01
+elektronika bk0010-01
+bk-0010-01
+bk0010-01
 
 emerson arcadia 2001,128,104,ARC,CRT,NONE,4,3,CONSOLE,Emerson,1982,Arcadia 2001,94,rom,joystick (8-way),1
 arcadia 2001
@@ -1012,6 +1028,11 @@ ti-99 4a
 ti99
 ti-99
 
+ti83,64,96,TI83,LCD,NONE,0,0,HANDHELD,Texas Instruments,1996,TI83,null,rom,joystick (8-way),1
+ti-83
+texas instruments ti83
+texas instruments ti-83
+
 tiger game com,200,160,GCOM,LCD,NONE,0,0,HANDHELD,Tiger,1997,Game Com,121,rom,joystick (8-way),4
 game com
 game.com
@@ -1055,6 +1076,9 @@ visualpinball
 
 vtech socrates,0,0,SOCR,CRT,NONE,4,3,CONSOLE,VTech,1988,Socrates,null,rom,null,null
 socrates
+
+wasm-4,160,160,WASM,LCD,NONE,0,0,HANDHELD,Aduros,2021,WASM-4,262,rom,joystick (8-way),2
+wasm4
 
 watara supervision,160,160,WSVIS,LCD,NONE,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
 quickshot supervision
