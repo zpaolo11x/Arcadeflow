@@ -739,6 +739,9 @@ pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64
 pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
 aamber pegasus
 
+pico-8,128,128,PIC8,LCD,NONE,0,0,HANDHELD,Lexaloffle Games,2015,PICO-8,234,rom,joystick (8-way),2
+pico8
+
 pinball arcade,0,0,PAR,CRT,NONE,4,3,PINBALL,Various,null,Pinball Arcade,200,fichier,null,null
 
 pinball fx2,0,0,PFX2,CRT,NONE,4,3,PINBALL,Various,null,Pinball FX2,143,fichier,null,null
