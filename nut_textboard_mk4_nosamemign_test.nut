@@ -330,7 +330,7 @@ class textboard_mk4
 			textref2.first_line_hint = 1
 		}
 
-		m_line_height = m_object.line_size
+		m_line_height = m_object.line_height
 
 		m_visible_lines = m_object.lines
 		m_full_lines = m_object.lines_total
