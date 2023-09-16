@@ -447,7 +447,10 @@ function splash_progress(i, init, max) {
 	}
 }
 
-if (FeVersionNum < 306) splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
+if (FeVersionNum < 306) {
+	print ("Arcadeflow requires AM+ 3.0.6+\n")
+	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
+}
 
 /// Config management ///
 
