@@ -447,11 +447,7 @@ function splash_progress(i, init, max) {
 	}
 }
 
-if (FeVersionNum < 300) splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.0+",5)
-
-try{print("testlines"+AF.splash.text.lines+"\n")} catch(err) {
-	fe.overlay.edit_dialog("Arcadeflow requires AM+ build #352+","")
-}
+if (FeVersionNum < 306) splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
 
 /// Config management ///
 
