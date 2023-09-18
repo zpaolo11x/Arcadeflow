@@ -12,6 +12,7 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 
 ## What's new in v 16.2 #
 
+- AF requires AM+ 3.0.6
 - Added new "slate" color theme
 - Added smooth scrolling to game history
 - Added option to automatically scroll history
