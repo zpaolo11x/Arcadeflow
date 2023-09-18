@@ -16,6 +16,7 @@ local arrayline = ""
 local instr = ""
 local vector = []
 local datasplit = []
+local prevdata = ""
 local datemin = 0
 local datemax = 0
 local namestr = ""
@@ -29,11 +30,15 @@ while ( !manufile.eos() ) {
    instr = strip(manufile.read_line())
    datasplit = split(instr,"|")
 
+	if ((datasplit.len()>1) && (datasplit[0] != prevdata)) multilogo = 0
+
    if (datasplit.len()>1){
       multilogo = multilogo + 1
       datemin = split(datasplit[1],",")[0].tointeger()
       datemax = split(datasplit[1],",")[1].tointeger()
    } else multilogo = 0
+
+	prevdata = datasplit[0]
 
    vector = split(datasplit[0]," ")
    foreach (i, item in vector){
@@ -99,8 +104,10 @@ function manufacturer_vec(s){
 // USED ONE
 function manufacturer_vec_name(name,year){
    local s = name
-   if ((year!="") && (year!="?")) year = year.tointeger() else year = 1990 //ARBITRARY!
+   try{year = year.tointeger()}catch(err){year = 1990}
+	//if ((year!="") && (year!="?") && (year!="19??")) year = year.tointeger() else year = 1990 //ARBITRARY!
 
+ 
    local sout = manufacturer_parser (s)
 
    local valueout = ""
@@ -657,7 +664,6 @@ function getcatnames_SS(){
          }
       }
    }
-
    return (catnames)
 }
 
@@ -944,7 +950,7 @@ function getcatnames(){
 function categorynamepurge(cat){
    local s0 = cat[0] + cat[1]
    local s2 = split( s0, "*_/: .()-,<>?&+'" )
-	local sout =""
+	local sout = ""
 	if ( s2.len() > 1 ) {
 		for (local i=0;i<s2.len();i++){
 		 if (s2[i] != "Mature")  sout = sout + s2[i]
@@ -952,6 +958,7 @@ function categorynamepurge(cat){
 		sout = sout.tolower()
 	}
 	else sout = strip(s0).tolower()
+
 	return sout
 }
 

@@ -74,6 +74,7 @@ Unique to Arcadeflow, you can also sort your games by last played or last added 
 ## Displays Menu #
 
 Arcadeflow sports a customizable Displays Menu. You can have it as a single list with just text, or you can let Arcadeflow add a system logo based on the Display name. Arcadeflow can categorize displays in groups automatically (Arcade, Console, Computer, Handheld, Pinball, Other), but if you want to force one display in a category, just add "#arcade", "#console" etc to the Display name. You can also enable artwork from the menu-art folder. You can also force positioning a layout at the top putting "!" at the beginning of the name.
+Displays menu is categorised, but if you add #MENU at the end od a display name, it will show in the main menu with categories and not in the submenus.
 
 ## Search and Multifilter #
 

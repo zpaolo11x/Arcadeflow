@@ -40,11 +40,14 @@ apple macintosh,0,0,MAC,CRT,NONE,4,3,COMPUTER,Apple,1984,Macintosh,146,rom,joyst
 macintosh
 mac
 
-aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,aquarius,null,null,joystick (8-way),1
+aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,Aquarius,null,null,joystick (8-way),1
 mattel aquarius
 
 arcade,0,0,ARC,CRT,NONE,-4,3,ARCADE,Various,null,Arcade,75,rom,null,null
 coin op
+
+arduboy,128,64,ABOY,LCD,NONE,0,0,HANDHELD,Kevin Bates,2015,Arduboy,263,rom,joystick (8-way),2
+arduboy fx
 
 atari 8bit,0,0,A8BIT,CRT,NONE,4,3,COMPUTER,Atari,1979,Atari 8 Bit,43,rom,joystick (8-way),1
 atari 8 bit
@@ -60,16 +63,19 @@ atari 2600,256,192,2600,CRT,NONE,4,3,CONSOLE,Atari,1977,Atari 2600,26,rom,joysti
 2600
 vcs 2600
 atari vcs 2600
+atari2600
 
 atari 5200,320,240,5200,CRT,NONE,4,3,CONSOLE,Atari,1982,Atari 5200,40,rom,joystick (8-way),1
 5200
 vcs 5200
 atari vcs 5200
+atari5200
 
 atari 7800,320,240,7800,CRT,NONE,4,3,CONSOLE,Atari,1986,Atari 7800,41,rom,joystick (8-way),2
 7800
 vcs 7800
 atari vcs 7800
+atari7800
 
 atari falcon 030,320,200,FLC,CRT,NONE,4,3,COMPUTER,Atari,1992,Falcon 030,42,rom,joystick (8-way),1
 falcon 030
@@ -91,6 +97,7 @@ lynx ii
 
 atari lynx,160,102,LYNX,LCD,NONE,-160,102,HANDHELD,Atari,1989,Lynx,28,rom,joystick (8-way),2
 lynx
+atarilynx
 
 atari st,320,200,ST,CRT,NONE,4,3,COMPUTER,Atari,1985,Atari ST,42,rom,joystick (8-way),1
 
@@ -114,6 +121,7 @@ swan crystal
 
 bandai wonderswan color,224,144,WSWC,LCD,NONE,-224,144,HANDHELD,Bandai,1999,WonderSwan Color,46,rom,joystick (8-way),2
 wonderswan color
+wonderswancolor
 
 bandai wonderswan,224,144,WSW,LCD,LCDBW,-224,144,HANDHELD,Bandai,2000,WonderSwan,45,rom,joystick (8-way),2
 wonderswan
@@ -184,6 +192,9 @@ philips cdi
 cd-i
 philips cd-i
 
+chip8,64,32,CP-8,LCD,LCDBW,0,0,HANDHELD,Joseph Weisbecker,1978,CHIP-8,null,rom,joystick (8-way),2
+chip-8
+
 coleco adam,0,0,ADAM,CRT,NONE,4,3,COMPUTER,Coleco,1983,Adam,89,rom,joystick (8-way),1
 adam
 
@@ -212,6 +223,7 @@ a1200
 
 commodore amiga cd32,320,200,CD32,CRT,NONE,4,3,CONSOLE,Commodore,1993,Amiga CD32,130,iso,joystick (8-way),4
 amiga cd32
+amigacd32
 
 commodore amiga,320,200,AMY,CRT,NONE,4,3,COMPUTER,Commodore,1985,Amiga,64,rom,joystick (8-way),1
 amiga
@@ -224,6 +236,7 @@ c128
 commodore cdtv,320,200,CDTV,CRT,NONE,4,3,CONSOLE,Commodore,1991,CDTV,129,rom,joystick (8-way),1
 cdtv
 amiga cdtv
+amigacdtv
 
 commodore pet,0,0,PET,CRT,NONE,4,3,COMPUTER,Commodore,1977,C PET,240,rom,joystick (8-way),1
 pet
@@ -249,8 +262,20 @@ dataeast
 data east classics
 dataeast classics
 
+dirksimple,0,0,DRKS,CRT,NONE,4,3,ARCADE,Various,null,Dirksimple,49,dossier,null,null
+
 dragon 32,320,200,DR32,CRT,NONE,4,3,COMPUTER,Dragon Data,1982,Dragon 32,91,rom,joystick (8-way),1
 dragon32
+
+elektronika bk,256,256,BK10,CRT,NONE,4,3,COMPUTER,Elektronika,1984,Elektronika BK-0010,93,rom,joystick (8-way),1
+elektronika bk-0010
+elektronika bk0010
+bk-0010
+bk0010
+elektronika bk-0010-01
+elektronika bk0010-01
+bk-0010-01
+bk0010-01
 
 emerson arcadia 2001,128,104,ARC,CRT,NONE,4,3,CONSOLE,Emerson,1982,Arcadia 2001,94,rom,joystick (8-way),1
 arcadia 2001
@@ -261,6 +286,15 @@ elan enterprise
 
 entex adventure vision,150,40,ADV,CRT,NONE,4,3,CONSOLE,Entex,1983,Adventure Vision,78,rom,joystick (8-way),4
 adventure vision
+
+epoch cassette vision,0,0,CVIS,CRT,NONE,4,3,CONSOLE,Epoch,1981,Cassette Vision,null,rom,joystick (8-way),2
+cassette vision
+
+epoch cassette vision jr,0,0,CVJR,CRT,NONE,4,3,CONSOLE,Epoch,1982,Cassette Vision Jr,null,rom,joystick (8-way),2
+cassette vision jr
+
+epoch super cassette vision,309,246,SCVIS,CRT,NONE,4,3,CONSOLE,Epoch,1984,Super Cassette Vision,67,rom,joystick (8-way),2
+super cassette vision
 
 exelvision exl 100,320,250,EXL1,CRT,NONE,4,3,COMPUTER,Exelvision,1984,EXL 100,96,rom,joystick (8-way),1
 exl 100
@@ -296,7 +330,9 @@ acan
 future pinball,0,0,FPIN,CRT,NONE,4,3,PINBALL,Various,null,Future Pinball,199,fichier,null,null
 futurepinball
 
-game master,0,0,GMAS,LCD,NONE,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
+gaelco,0,0,GAE,CRT,NONE,-4,3,ARCADE,Gaelco,null,Gaelco,75,rom,null,null
+
+game master,0,0,GMAS,LCD,LCDBW,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
 systema 2000
 super game
 game tronic
@@ -341,11 +377,11 @@ odyssey
 mame,0,0,ARC,CRT,NONE,-4,3,ARCADE,Various,null,MAME,75,rom,null,null
 m.a.m.e.
 
-mb microvision,16,16,MVIS,LCD,NONE,0,0,HANDHELD,Milton Bradley,1979,Microvision,null,null,null,null
+mb microvision,16,16,MVIS,LCD,LCDBW,0,0,HANDHELD,Milton Bradley,1979,Microvision,null,null,null,null
 microvision
 milton bradley microvision
 
-mega duck,160,144,DUCK,LCD,NONE,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
+mega duck,160,144,DUCK,LCD,LCDGBC,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
 mega duck wg-108
 cougar boy
 
@@ -413,6 +449,7 @@ nec pc engine cd,256,224,PCECD,CRT,NONE,4,3,CONSOLE,NEC,1988,PC Engine CD,114,is
 pc engine cd
 pc engine-cd
 nec pc engine-cd
+pcenginecd
 
 nec pc engine duo,256,224,PCE2,CRT,NONE,4,3,CONSOLE,NEC,1992,PC Engine Duo,114,iso,joystick (8-way),2
 pc engine duo
@@ -425,6 +462,7 @@ pc engine lt
 
 nec pc engine,256,224,PCE,CRT,NONE,4,3,CONSOLE,NEC,1987,PC Engine,31,rom,joystick (8-way),2
 pc engine
+pcengine
 
 nec pc-88,0,0,PC88,CRT,NONE,4,3,COMPUTER,NEC,1981,NEC PC-8800,221,rom,joystick (8-way),1
 nec pc-8800
@@ -432,6 +470,7 @@ nec pc-8801
 pc-88
 pc-8800
 pc-8801
+pc88
 
 nec pc-98,0,0,PC98,CRT,NONE,4,3,COMPUTER,NEC,1982,NEC PC-9800,208,rom,joystick (8-way),1
 nec pc-9800
@@ -439,6 +478,7 @@ nec pc-9801
 pc-98
 pc-9800
 pc-9801
+pc98
 
 nec pcfx,0,0,PC-FX,CRT,NONE,4,3,CONSOLE,NEC,1994,NEC PC-FX,72,rom,joystick (8-way),6
 pc-fx
@@ -480,6 +520,7 @@ turbografx cd
 
 neo geo cd,320,224,NGCD,CRT,NONE,4,3,CONSOLE,SNK,1994,Neo Geo CD,70,iso,joystick (8-way),4
 snk neo geo cd
+neogeocd
 
 neo geo mvs,320,224,MVS,CRT,NONE,-4,3,ARCADE,SNK,1990,Neo Geo MVS,68,rom,joystick (8-way),4
 snk neo geo mvs
@@ -490,9 +531,11 @@ snk neogeo mvs
 
 neo geo pocket color,160,152,NGPC,LCD,NONE,0,0,HANDHELD,SNK,1999,Neo Geo Pocket Color,82,rom,joystick (8-way),2
 snk neo geo pocket color
+ngpc
 
 neo geo pocket,160,152,NGP,LCD,LCDBW,0,0,HANDHELD,SNK,1998,Neo Geo Pocket,25,rom,joystick (8-way),2
 snk neo geo pocket
+ngp
 
 neo geo,320,224,NEOGEO,CRT,NONE,4,3,CONSOLE,SNK,1990,Neo Geo,142,rom,joystick (8-way),4
 snk neo geo
@@ -695,6 +738,9 @@ pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64
 
 pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
 aamber pegasus
+
+pico-8,128,128,PIC8,LCD,NONE,0,0,CONSOLE,Lexaloffle Games,2015,PICO-8,234,rom,joystick (8-way),2
+pico8
 
 pinball arcade,0,0,PAR,CRT,NONE,4,3,PINBALL,Various,null,Pinball Arcade,200,fichier,null,null
 
@@ -985,7 +1031,12 @@ ti-99 4a
 ti99
 ti-99
 
-tiger game com,200,160,GCOM,LCD,NONE,0,0,HANDHELD,Tiger,1997,Game Com,121,rom,joystick (8-way),4
+ti83,64,96,TI83,LCD,LCDBW,0,0,HANDHELD,Texas Instruments,1996,TI83,null,rom,joystick (8-way),1
+ti-83
+texas instruments ti83
+texas instruments ti-83
+
+tiger game com,200,160,GCOM,LCD,LCDBW,0,0,HANDHELD,Tiger,1997,Game Com,121,rom,joystick (8-way),4
 game com
 game.com
 tiger game.com
@@ -1029,7 +1080,10 @@ visualpinball
 vtech socrates,0,0,SOCR,CRT,NONE,4,3,CONSOLE,VTech,1988,Socrates,null,rom,null,null
 socrates
 
-watara supervision,160,160,WSVIS,LCD,NONE,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
+wasm-4,160,160,WASM,LCD,NONE,0,0,HANDHELD,Aduros,2021,WASM-4,262,rom,joystick (8-way),2
+wasm4
+
+watara supervision,160,160,WSVIS,LCD,LCDGB,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
 quickshot supervision
 supervision
 
@@ -1066,3 +1120,5 @@ zmenuhandheld,0,0,HND,HND,NONE,0,0,HANDHELD,null,null,_handheld,null,null,null,n
 zmenupinball,0,0,PBL,PBL,NONE,0,0,PINBALL,null,null,_pinball,null,null,null,null
 
 zmenucollections,0,0,COL,COL,NONE,0,0,COLLECTIONS,null,null,_collections,null,null,null,null
+
+settings,0,0,SET,SET,NONE,0,0,SETTINGS,null,null,settings,null,null,null,null

@@ -1,16 +1,20 @@
-|System|
-|Category|
-|Arcade|
-|Played|1 - Played|
-|Favourite|
-|Players|
-|Controls|
-|Tags|
-|Scraped|
-|Series|
-|Rating|
-|Orientation|
-|Manufacturer|
-|Buttons|
-|Year|
-|Region|
+return(
+   {
+      "Category" : []
+      "Arcade" : []
+      "Series" : []
+      "Tags" : []
+      "Scraped" : []
+      "Region" : []
+      "System" : []
+      "Manufacturer" : []
+      "Orientation" : []
+      "Played" : ["1 - Played"]
+      "Controls" : []
+      "Rating" : []
+      "Year" : []
+      "Favourite" : []
+      "Buttons" : []
+      "Players" : []
+   }
+)
