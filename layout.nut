@@ -8593,7 +8593,7 @@ for (local i = 0; i < tiles.total; i++) {
 
 function tile_redraw(i, status) {
 	tilez[i].obj.redraw = status
-	tilez[i].gr_overlay.redraw = status
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.redraw = status
 	tilez[i].glomx.redraw = status
 	tilez[i].sh_mx.redraw = status
 
@@ -8604,7 +8604,7 @@ function tile_redraw(i, status) {
 
 function tile_clear(i, status) {
 	tilez[i].obj.clear = status
-	tilez[i].gr_overlay.clear = status
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.clear = status
 	tilez[i].glomx.clear = status
 	tilez[i].sh_mx.clear = status
 	foreach (item in tilez[i].surfs) {
@@ -8614,7 +8614,7 @@ function tile_clear(i, status) {
 
 function tile_freeze(i, status) {
 	tilez[i].obj.clear = tilez[i].obj.redraw = !status
-	tilez[i].gr_overlay.clear = tilez[i].gr_overlay.redraw = !status
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.clear = tilez[i].gr_overlay.redraw = !status
 	tilez[i].glomx.clear = tilez[i].glomx.redraw = !status
 	tilez[i].sh_mx.clear = tilez[i].sh_mx.redraw = !status
 	foreach (item in tilez[i].surfs) {
