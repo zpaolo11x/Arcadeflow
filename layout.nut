@@ -11388,27 +11388,28 @@ function history_updatesnap() {
 	hist_screen.file_name = fe.get_art ("snap")
 
 	if (prf.AUDIOVIDHISTORY && (prf.BACKGROUNDTUNE != "")) snd.bgtuneplay = false
+	local tempshader = (islcd(0, 0) ? "shader_lcd" : (prf.CRTGEOMETRY ? "shader_lottes" : "noshader"))
 	hist_screen.shader = (islcd(0, 0) ? shader_lcd : (prf.CRTGEOMETRY ? shader_lottes : noshader))
-
 	local crt_deformed = (!islcd(0, 0) && prf.CRTGEOMETRY)
-
 	local remapdata = colormapper[recolorise(0, 0)]
 
-	hist_screen.shader.set_param ("remap", remapdata.remap)
+	if (tempshader == "shader_lcd") {
+		hist_screen.shader.set_param ("remap", remapdata.remap)
+		hist_screen.shader.set_param ("lcdcolor", remapdata.lcdcolor)
+		hist_screen.shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
+		hist_screen.shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)		
+		hist_screen.shader.set_param ("plusminus", (recolorise(0, 0) == "NONE" || recolorise (0, 0) == "LCDGBA") ? -1.0 : 1.0)
+	}
+
+	if (tempshader == "shader_lottes") {
+		hist_screen.shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
+	}
+	
 	hist_glow_shader.set_param ("remap", remapdata.remap)
-
-	hist_screen.shader.set_param ("lcdcolor", remapdata.lcdcolor)
 	hist_glow_shader.set_param ("lcdcolor", remapdata.lcdcolor)
-
 	hist_glow_shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
 	hist_glow_shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)
-	hist_screen.shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
-	hist_screen.shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)
-
-	hist_screen.shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
 	hist_glow_shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
-
-	if (islcd(0, 0)) hist_screen.shader.set_param ("plusminus", (recolorise(0, 0) == "NONE" || recolorise (0, 0) == "LCDGBA") ? -1.0 : 1.0)
 
 	shadowsurf_1.shader = shadowshader.h
 	shadowsurf_2.shader = shadowshader.v
