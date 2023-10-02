@@ -1007,7 +1007,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "NEWGAME", glyph = 0xe936, title = "New game indicator", help = "Games not played are marked with a glyph", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "TAGSHOW", glyph = 0xe936, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "TAGNAME", glyph = 0xe936, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = ["Tag"], values = "", selection = AF.req.keyboard},
-{v = 7.2, varname = "GBRECOLOR", glyph = 0xe90c, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference", options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL", "NONE"], selection = 0},
+{v = 7.2, varname = "GBRECOLOR", glyph = 0xe90c, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference", options = ["Automatic", "GB Classic", "GB Pocket", "GB Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL", "NONE"], selection = 0},
 {v = 10.3, varname = "CRTRECOLOR", glyph = 0xe90c, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette", options = ["Yes", "No"], values = [true, false], selection = 1},
 ])
 
@@ -14933,8 +14933,8 @@ function buildutilitymenu() {
 			while (!aboutfile.eos()) {
 				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
 			}
-			aboutmenu[0] = {text = "What's New", liner = true}
-			aboutmenu.insert(0,{text = "Open Readme", glyph = 0xe926})
+			aboutmenu[0] = {text = ltxt("What's New", AF.LNG), liner = true}
+			aboutmenu.insert(0,{text = ltxt("Open Readme", AF.LNG), glyph = 0xe926})
 
 			zmenudraw3(aboutmenu, "Arcadeflow " + AF.version, 0xea09, 0, {},
 			function(out) {

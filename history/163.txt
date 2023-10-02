@@ -1,2 +1,4 @@
 16.3
-Fixed crash when disabling gradient 
+Fixed crash when disabling gradient
+Updated translation file
+Completed Italian translation
