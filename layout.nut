@@ -12954,7 +12954,7 @@ function checkforupdates(force) {
 
 	//load latest update version
 	//fe.overlay.splash_message("Checking for updates...")
-	splash_message(AF.splash.start, "Checking for updates...")
+	splash_message(AF.splash.start, ltxt("Checking for updates...",AF.LNG))
 
 	AF.updatechecking = true
 

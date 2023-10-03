@@ -34,6 +34,9 @@ DE = "Sprache"
 
 // OPTIONS SECTION
 
+     "Checking for updates...":{
+IT = "Verifica aggiornamenti..."
+}
      "Layout language":{
 IT = "Lingua del layout"
 ES = "Idioma del layout"
