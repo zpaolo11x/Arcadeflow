@@ -590,6 +590,7 @@ function parseconfig() {
 			tempval = split(item, " ")
 			if (tempval.len() > 1) {
 				if (tempval[1].find("Arcadeflow") == 0) {
+					fe.overlay.splash_message("") //TEST163
 					if (AF.WARN) splash_message(AF.splash.pulse, "*WARNING*\nDon't use Arcadeflow as displays menu layout", 5)
 					warning = true
 				}
