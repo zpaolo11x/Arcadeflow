@@ -582,6 +582,7 @@ function parseconfig() {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
 				fe.overlay.splash_message("") //TEST163
+				print("WARNING 1\n")
 				if (AF.WARN) splash_message(AF.splash.pulse, "*WARNING*\nSet Image Cache Size to zero to avoid issues", 5)
 				warning = true
 			}
@@ -591,6 +592,7 @@ function parseconfig() {
 			if (tempval.len() > 1) {
 				if (tempval[1].find("Arcadeflow") == 0) {
 					fe.overlay.splash_message("") //TEST163
+				print("WARNING 2\n")
 					if (AF.WARN) splash_message(AF.splash.pulse, "*WARNING*\nDon't use Arcadeflow as displays menu layout", 5)
 					warning = true
 				}
