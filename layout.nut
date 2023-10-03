@@ -81,6 +81,8 @@ local AF = {
 
 	LNG = ""
 
+	WARN = true
+
 	dat_freeze = true
 	dat_freezecount = 0
 	bgs_freezecount = 0
@@ -248,6 +250,9 @@ fe.do_nut("nut_language2.nut")
 AF.LNG = "EN"
 try {AF.LNG = loadlanguage()} catch(err) {}
 
+local warningfile = ReadTextFile (fe.path_expand( AF.folder+"pref_warnings.txt"))
+try {AF.WARN = (warningfile.read_line() == "TRUE")} catch(ERR){}
+print(AF.WARN+"\n")
 // font definition
 local uifonts = {
 	gui = "fonts/font_Roboto-Allcaps-EXT4X.ttf"
@@ -576,7 +581,7 @@ function parseconfig() {
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
-				splash_message(AF.splash.pulse, "*WARNING*\nSet Image Cache Size to zero to avoid issues", 5)
+				if (AF.WARN) splash_message(AF.splash.pulse, "*WARNING*\nSet Image Cache Size to zero to avoid issues", 5)
 				warning = true
 			}
 		}
@@ -584,7 +589,7 @@ function parseconfig() {
 			tempval = split(item, " ")
 			if (tempval.len() > 1) {
 				if (tempval[1].find("Arcadeflow") == 0) {
-					splash_message(AF.splash.pulse, "*WARNING*\nDon't use Arcadeflow as displays menu layout", 5)
+					if (AF.WARN) splash_message(AF.splash.pulse, "*WARNING*\nDon't use Arcadeflow as displays menu layout", 5)
 					warning = true
 				}
 			}
@@ -954,6 +959,12 @@ function monitorlist() {
 	return (out)
 }
 
+function savewarnings(){
+	local warningfile = WriteTextFile (fe.path_expand( AF.folder+"pref_warnings.txt"))
+	warningfile.write_line(AF.WARN ? "FALSE" : "TRUE")
+	AF.WARN = !AF.WARN
+}
+
 local menucounter = 0
 local sorter = {}
 
@@ -1273,6 +1284,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
 {v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
+{v = 16.3, varname = "WARNINGS", glyph = 0xe998, title = !AF.WARN ? "Enable warning screens" : "Disable warning screens", help = "Enable or disable warning screens for AM options clashing with AF", options = "", values = function() {savewarnings()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
 {v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options", options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
 ])
