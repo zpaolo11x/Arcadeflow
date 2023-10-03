@@ -2760,7 +2760,7 @@ IT = "Installa branch"
 IT = "Installa release"
 }
      "What's New":{
-IT = "Ultime novità"
+IT = "Ultime novita'"
 }
      "Open Readme":{
 IT = "Apri Readme"

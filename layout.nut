@@ -578,7 +578,7 @@ function parseconfig() {
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
-				AF.WARN = AF.WARN + item + "\n"
+				AF.WARN = AF.WARN + item + "  (Should be 0)\n"
 				warning = true
 			}
 		}
@@ -586,7 +586,7 @@ function parseconfig() {
 			tempval = split(item, " ")
 			if (tempval.len() > 1) {
 				if (tempval[1].find("Arcadeflow") == 0) {
-					AF.WARN = AF.WARN + item + "\n"					
+					AF.WARN = AF.WARN + item + "  (Don't use AF as menu layout)\n"					
 					warning = true
 				}
 			}
@@ -594,7 +594,7 @@ function parseconfig() {
 		if (item.find("startup_mode") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "default") {
-				AF.WARN = AF.WARN + item + "\n"								
+				AF.WARN = AF.WARN + item + "  (Use Default startup mode)\n"								
 				warning = true
 			}
 		}
