@@ -581,6 +581,7 @@ function parseconfig() {
 		if (item.find("image_cache_mbytes") == 0) {
 			tempval = split(item, " ")[1]
 			if (tempval != "0") {
+				fe.overlay.splash_message("") //TEST163
 				if (AF.WARN) splash_message(AF.splash.pulse, "*WARNING*\nSet Image Cache Size to zero to avoid issues", 5)
 				warning = true
 			}
