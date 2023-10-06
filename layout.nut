@@ -14947,7 +14947,7 @@ function buildutilitymenu() {
 				foreach (i, item in warnarray){
 					aboutmenu.insert(0, {text = item})
 				}
-					aboutmenu.insert(0, {text = "Warnings", liner = true})
+					aboutmenu.insert(0, {text = "Options Warnings", liner = true})
 			}
 			
 			aboutmenu.insert(0,{text = ltxt("Open Readme", AF.LNG), glyph = 0xe926})
