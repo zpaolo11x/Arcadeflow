@@ -24,6 +24,24 @@ function split_complete(str_in, separator) {
 	return outarray
 }
 
+function char_replace(inputstring, old, new) {
+	local out = ""
+	local splitarray = split_complete (inputstring, old)
+	foreach (id, item in splitarray) {
+		out = out + (id > 0 ? new : "") + item
+	}
+	return out
+}
+
+function subst_replace(inputstring, old, new) {
+	local st = inputstring.find(old)
+	while (st != null) {
+		inputstring = (inputstring.slice(0, st) + new + inputstring.slice(st + old.len()))
+		st = inputstring.find(old, st + new.len())
+	}
+	return inputstring
+}
+
 function strepeat(character, length){
 	local out = ""
 	for (local i = 0; i < length; i++) out += character
@@ -572,30 +590,31 @@ function parseconfig() {
 
 	local warning = false
 	local tempval = null
+	local warnstatus = false
+
+	local warningstrings = {
+		"image_cache_mbytes": {checktest = false, checkval = "0", comment = "Should be 0"}
+		"menu_layout": {checktest = true, checkval = "Arcadeflow", comment = "Don't use AF as menu layout"}
+		"startup_mode": {checktest = false, checkval = "default", comment = "Use Default startup mode"}
+		"power_saving": {checktest = false, checkval = "no", comment = "Power Saving can cause glitches"}
+		}
 
 	foreach(i, item in postdisplays) {
 		item = strip(item) //Remove leading tabs
-		if (item.find("image_cache_mbytes") == 0) {
-			tempval = split(item, " ")[1]
-			if (tempval != "0") {
-				AF.WARN = AF.WARN + item + "  (Should be 0)\n"
-				warning = true
-			}
-		}
-		if (item.find("menu_layout") == 0) {
-			tempval = split(item, " ")
-			if (tempval.len() > 1) {
-				if (tempval[1].find("Arcadeflow") == 0) {
-					AF.WARN = AF.WARN + item + "  (Don't use AF as menu layout)\n"					
-					warning = true
+		warnstatus = false
+		foreach (checkstring, checktable in warningstrings){
+			if (item.find(checkstring) == 0){
+				tempval = split(item, " ")
+				if (tempval.len() > 1){
+					if (checktable.checktest) 
+						warnstatus = (tempval[1].find(checktable.checkval) == 0)
+					else
+						warnstatus = (tempval[1] != checktable.checkval)
+					if (warnstatus) {
+						AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"					
+						warning = true
+					}
 				}
-			}
-		}
-		if (item.find("startup_mode") == 0) {
-			tempval = split(item, " ")[1]
-			if (tempval != "default") {
-				AF.WARN = AF.WARN + item + "  (Use Default startup mode)\n"								
-				warning = true
 			}
 		}
 		if (item.find("exit_command") == 0) {
@@ -3099,15 +3118,6 @@ function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
 
 /// XML import routines ///
 
-function char_replace(inputstring, old, new) {
-	local out = ""
-	local splitarray = split_complete (inputstring, old)
-	foreach (id, item in splitarray) {
-		out = out + (id > 0 ? new : "") + item
-	}
-	return out
-}
-
 function manufacturer_cleanup(inputstring) {
 	// Remove NBSP
 	local nbsp = 0xc2
@@ -3136,15 +3146,6 @@ function string_enum(string, text) {
 		}
 	}
 	return (num)
-}
-
-function subst_replace(inputstring, old, new) {
-	local st = inputstring.find(old)
-	while (st != null) {
-		inputstring = (inputstring.slice(0, st) + new + inputstring.slice(st + old.len()))
-		st = inputstring.find(old)
-	}
-	return inputstring
 }
 
 function clean_desc(inputstring) {
@@ -14941,11 +14942,8 @@ function buildutilitymenu() {
 			aboutmenu[0] = {text = ltxt("What's New", AF.LNG), liner = true}
 			
 			if (AF.WARN != ""){
-				print("*"+AF.WARN+"*\n")
 				local warnarray = split(AF.WARN, "\n")
 				warnarray.reverse()
-				print (warnarray.len()+"\n")
-				print_variable(warnarray,"","")
 				foreach (i, item in warnarray){
 					aboutmenu.insert(0, {text = item})
 				}
