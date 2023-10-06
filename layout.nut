@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.2
+// Arcadeflow - v 16.4
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.3" // AF version in string form
+	version = "16.4" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -984,7 +984,7 @@ local sorter = {}
 AF.prefs.l0.push({label = "GENERAL", glyph = 0xe993, description = "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc"})
 AF.prefs.l1.push([
 {v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout", options = languagearray(), values = languagetokenarray(), selection = 1},
-{v = 10.5, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 16.4, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No", "Power Only"], values = [true, false, null], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
 {v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
@@ -13050,23 +13050,28 @@ function jumptodisplay(targetdisplay) {
 }
 
 function powermenu(parsefunction){
-	zmenudraw3(prf.POWERMENU ? [
+	zmenudraw3(
+	(prf.POWERMENU == true) ? [
 		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 		{text = ltxt("Power", AF.LNG), liner = true},
 		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
 		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
 		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
-	] : [
+	] : (prf.POWERMENU == false) ? [
 		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+	] : [
+		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
+		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
+		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},		
 	],
-	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
+	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, (prf.POWERMENU == null) ? 0 : 1, {center = true},
 	function(result) {
-		if (result == 0) fe.signal("exit_to_desktop")
-		else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
-		else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
-		else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
+		if ((prf.POWERMENU != null) && (result == 0)) fe.signal("exit_to_desktop")
+		else if (((prf.POWERMENU == true) && (result == 3)) || ((prf.POWERMENU == null) && (result == 0))) powerman("SHUTDOWN")
+		else if (((prf.POWERMENU == true) && (result == 4)) || ((prf.POWERMENU == null) && (result == 1))) powerman("REBOOT")
+		else if (((prf.POWERMENU == true) && (result == 5)) || ((prf.POWERMENU == null) && (result == 2))) powerman("SUSPEND")
 		else { parsefunction() }
 	})
 }
