@@ -984,7 +984,7 @@ local sorter = {}
 AF.prefs.l0.push({label = "GENERAL", glyph = 0xe993, description = "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc"})
 AF.prefs.l1.push([
 {v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout", options = languagearray(), values = languagetokenarray(), selection = 1},
-{v = 16.4, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No", "Power Only"], values = [true, false, null], selection = 1},
+{v = 16.4, varname = "POWERMENU", glyph = 0xe9b6, title = "Power and Exit menu", help = "Customise exit menu with power options", options = ["Exit and Power", "Exit only", "Power only"], values = [true, false, null], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
 {v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},

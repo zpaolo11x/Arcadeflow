@@ -51,13 +51,20 @@ BR = "Define o idioma do layout"
 FR = "Choisissez la langue du layout"
 DE = "Sprache des Layouts auswählen"
 }
-     "Power menu":{
-IT = "Menu arresto"
-DE = "Power Menü"
+     "Power and Exit menu":{
+IT = "Menu arresto e uscita"
 }
-     "Enable or disable power options in exit menu":{
-IT = "Abilita un menu per spegnere o riavviare la macchina uscendo da Arcadeflow"
-DE = "Aktivieren/Deaktivieren der Power Optionen im Exit-Menü"
+     "Customise exit menu with power options":{
+IT = "Personalizza il menu di uscita con opzioni di spegniemnto"
+}
+     "Exit and Power":{
+IT = "Uscita e Spegnimento"
+}
+     "Exit only":{
+IT = "Solo Uscita"
+}
+     "Power only":{
+IT = "Solo Spegnimento"
 }
      "GENERAL":{
 IT = "GENERALE"

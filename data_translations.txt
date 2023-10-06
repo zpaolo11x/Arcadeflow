@@ -38,13 +38,17 @@ BR | Define o idioma do layout
 FR | Choisissez la langue du layout
 DE | Sprache des Layouts auswählen
 
-EN | Power menu
-IT | Menu arresto
-DE | Power Menü
+EN | Power and Exit menu
+IT | Menu arresto e uscita
 
-EN | Enable or disable power options in exit menu
-IT | Abilita un menu per spegnere o riavviare la macchina uscendo da Arcadeflow
-DE | Aktivieren/Deaktivieren der Power Optionen im Exit-Menü
+EN | Customise exit menu with power options
+IT | Personalizza il menu di uscita con opzioni di spegniemnto
+
+EN | Exit and Power
+
+EN | Exit only
+
+EN | Power only
 
 EN | GENERAL
 IT | GENERALE
