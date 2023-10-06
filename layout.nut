@@ -24,6 +24,24 @@ function split_complete(str_in, separator) {
 	return outarray
 }
 
+function char_replace(inputstring, old, new) {
+	local out = ""
+	local splitarray = split_complete (inputstring, old)
+	foreach (id, item in splitarray) {
+		out = out + (id > 0 ? new : "") + item
+	}
+	return out
+}
+
+function subst_replace(inputstring, old, new) {
+	local st = inputstring.find(old)
+	while (st != null) {
+		inputstring = (inputstring.slice(0, st) + new + inputstring.slice(st + old.len()))
+		st = inputstring.find(old, st + new.len())
+	}
+	return inputstring
+}
+
 function strepeat(character, length){
 	local out = ""
 	for (local i = 0; i < length; i++) out += character
@@ -76,11 +94,12 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.2" // AF version in string form
+	version = "16.3" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
-
+	WARN = ""
+	
 	dat_freeze = true
 	dat_freezecount = 0
 	bgs_freezecount = 0
@@ -571,33 +590,38 @@ function parseconfig() {
 
 	local warning = false
 	local tempval = null
+	local warnstatus = false
+
+	local warningstrings = {
+		"image_cache_mbytes": {checktest = false, checkval = "0", comment = "Should be 0"}
+		"menu_layout": {checktest = true, checkval = "Arcadeflow", comment = "Don't use AF as menu layout"}
+		"startup_mode": {checktest = false, checkval = "default", comment = "Use Default startup mode"}
+		"power_saving": {checktest = false, checkval = "no", comment = "Power Saving can cause glitches"}
+		}
+
 	foreach(i, item in postdisplays) {
 		item = strip(item) //Remove leading tabs
-		if (item.find("image_cache_mbytes") == 0) {
-			tempval = split(item, " ")[1]
-			if (tempval != "0") {
-				splash_message(AF.splash.pulse, "*WARNING*\nSet Image Cache Size to zero to avoid issues", 5)
-				warning = true
-			}
-		}
-		if (item.find("menu_layout") == 0) {
-			tempval = split(item, " ")
-			if (tempval.len() > 1) {
-				if (tempval[1].find("Arcadeflow") == 0) {
-					splash_message(AF.splash.pulse, "*WARNING*\nDon't use Arcadeflow as displays menu layout", 5)
-					warning = true
+		warnstatus = false
+		foreach (checkstring, checktable in warningstrings){
+			if (item.find(checkstring) == 0){
+				tempval = split(item, " ")
+				if (tempval.len() > 1){
+					if (checktable.checktest) 
+						warnstatus = (tempval[1].find(checktable.checkval) == 0)
+					else
+						warnstatus = (tempval[1] != checktable.checkval)
+					if (warnstatus) {
+						AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"					
+						warning = true
+					}
 				}
 			}
-		}
-		if (item.find("startup_mode") == 0) {
-			tempval = split(item, " ")[1]
-			if (tempval != "default") warning = true
 		}
 		if (item.find("exit_command") == 0) {
 			exitcommand = strip(item.slice(12, item.len()))
 		}
 	}
-	if (warning) print("\n\nWARNING: some options in attract.cfg clash with Arcadeflow\n\n")
+	if (warning) print("\n\nWARNING: some options in attract.cfg clash with Arcadeflow\n\n"+AF.WARN+"\n")
 
 	local out = {
 		header = predisplays
@@ -1007,7 +1031,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "NEWGAME", glyph = 0xe936, title = "New game indicator", help = "Games not played are marked with a glyph", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "TAGSHOW", glyph = 0xe936, title = "Show tag indicator", help = "Shows a tag attached to thumbnails that contains any tag", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "TAGNAME", glyph = 0xe936, title = "Custom tag name", help = "You can see a tag glyph overlayed to the thumbs, chose the tag name to use", options = ["Tag"], values = "", selection = AF.req.keyboard},
-{v = 7.2, varname = "GBRECOLOR", glyph = 0xe90c, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference", options = ["Automatic", "Classic", "Pocket", "Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL", "NONE"], selection = 0},
+{v = 7.2, varname = "GBRECOLOR", glyph = 0xe90c, title = "Game Boy color correction", help = "Apply a colorized palette to Game Boy games based on the system name or forced to your preference", options = ["Automatic", "GB Classic", "GB Pocket", "GB Light", "None"], values = ["AUTO", "LCDGBC", "LCDGBP", "LCDGBL", "NONE"], selection = 0},
 {v = 10.3, varname = "CRTRECOLOR", glyph = 0xe90c, title = "MSX crt color correction", help = "Apply a palette correction to MSX media that was captured with MSX2 palette", options = ["Yes", "No"], values = [true, false], selection = 1},
 ])
 
@@ -3094,15 +3118,6 @@ function afsort2(arr_in, arr_keyval, arr_extval, reverse) {
 
 /// XML import routines ///
 
-function char_replace(inputstring, old, new) {
-	local out = ""
-	local splitarray = split_complete (inputstring, old)
-	foreach (id, item in splitarray) {
-		out = out + (id > 0 ? new : "") + item
-	}
-	return out
-}
-
 function manufacturer_cleanup(inputstring) {
 	// Remove NBSP
 	local nbsp = 0xc2
@@ -3131,15 +3146,6 @@ function string_enum(string, text) {
 		}
 	}
 	return (num)
-}
-
-function subst_replace(inputstring, old, new) {
-	local st = inputstring.find(old)
-	while (st != null) {
-		inputstring = (inputstring.slice(0, st) + new + inputstring.slice(st + old.len()))
-		st = inputstring.find(old)
-	}
-	return inputstring
 }
 
 function clean_desc(inputstring) {
@@ -8593,7 +8599,7 @@ for (local i = 0; i < tiles.total; i++) {
 
 function tile_redraw(i, status) {
 	tilez[i].obj.redraw = status
-	tilez[i].gr_overlay.redraw = status
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.redraw = status
 	tilez[i].glomx.redraw = status
 	tilez[i].sh_mx.redraw = status
 
@@ -8604,7 +8610,7 @@ function tile_redraw(i, status) {
 
 function tile_clear(i, status) {
 	tilez[i].obj.clear = status
-	tilez[i].gr_overlay.clear = status
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.clear = status
 	tilez[i].glomx.clear = status
 	tilez[i].sh_mx.clear = status
 	foreach (item in tilez[i].surfs) {
@@ -8614,7 +8620,7 @@ function tile_clear(i, status) {
 
 function tile_freeze(i, status) {
 	tilez[i].obj.clear = tilez[i].obj.redraw = !status
-	tilez[i].gr_overlay.clear = tilez[i].gr_overlay.redraw = !status
+	if (prf.SNAPGRADIENT) tilez[i].gr_overlay.clear = tilez[i].gr_overlay.redraw = !status
 	tilez[i].glomx.clear = tilez[i].glomx.redraw = !status
 	tilez[i].sh_mx.clear = tilez[i].sh_mx.redraw = !status
 	foreach (item in tilez[i].surfs) {
@@ -11388,27 +11394,28 @@ function history_updatesnap() {
 	hist_screen.file_name = fe.get_art ("snap")
 
 	if (prf.AUDIOVIDHISTORY && (prf.BACKGROUNDTUNE != "")) snd.bgtuneplay = false
+	local tempshader = (islcd(0, 0) ? "shader_lcd" : (prf.CRTGEOMETRY ? "shader_lottes" : "noshader"))
 	hist_screen.shader = (islcd(0, 0) ? shader_lcd : (prf.CRTGEOMETRY ? shader_lottes : noshader))
-
 	local crt_deformed = (!islcd(0, 0) && prf.CRTGEOMETRY)
-
 	local remapdata = colormapper[recolorise(0, 0)]
 
-	hist_screen.shader.set_param ("remap", remapdata.remap)
+	if (tempshader == "shader_lcd") {
+		hist_screen.shader.set_param ("remap", remapdata.remap)
+		hist_screen.shader.set_param ("lcdcolor", remapdata.lcdcolor)
+		hist_screen.shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
+		hist_screen.shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)		
+		hist_screen.shader.set_param ("plusminus", (recolorise(0, 0) == "NONE" || recolorise (0, 0) == "LCDGBA") ? -1.0 : 1.0)
+	}
+
+	if (tempshader == "shader_lottes") {
+		hist_screen.shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
+	}
+	
 	hist_glow_shader.set_param ("remap", remapdata.remap)
-
-	hist_screen.shader.set_param ("lcdcolor", remapdata.lcdcolor)
 	hist_glow_shader.set_param ("lcdcolor", remapdata.lcdcolor)
-
 	hist_glow_shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
 	hist_glow_shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)
-	hist_screen.shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
-	hist_screen.shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)
-
-	hist_screen.shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
 	hist_glow_shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
-
-	if (islcd(0, 0)) hist_screen.shader.set_param ("plusminus", (recolorise(0, 0) == "NONE" || recolorise (0, 0) == "LCDGBA") ? -1.0 : 1.0)
 
 	shadowsurf_1.shader = shadowshader.h
 	shadowsurf_2.shader = shadowshader.v
@@ -12953,7 +12960,7 @@ function checkforupdates(force) {
 
 	//load latest update version
 	//fe.overlay.splash_message("Checking for updates...")
-	splash_message(AF.splash.start, "Checking for updates...")
+	splash_message(AF.splash.start, ltxt("Checking for updates...",AF.LNG))
 
 	AF.updatechecking = true
 
@@ -14932,8 +14939,18 @@ function buildutilitymenu() {
 			while (!aboutfile.eos()) {
 				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
 			}
-			aboutmenu[0] = {text = "What's New", liner = true}
-			aboutmenu.insert(0,{text = "Open Readme", glyph = 0xe926})
+			aboutmenu[0] = {text = ltxt("What's New", AF.LNG), liner = true}
+			
+			if (AF.WARN != ""){
+				local warnarray = split(AF.WARN, "\n")
+				warnarray.reverse()
+				foreach (i, item in warnarray){
+					aboutmenu.insert(0, {text = item})
+				}
+					aboutmenu.insert(0, {text = "Options Warnings", liner = true})
+			}
+			
+			aboutmenu.insert(0,{text = ltxt("Open Readme", AF.LNG), glyph = 0xe926})
 
 			zmenudraw3(aboutmenu, "Arcadeflow " + AF.version, 0xea09, 0, {},
 			function(out) {

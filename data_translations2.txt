@@ -34,6 +34,9 @@ DE = "Sprache"
 
 // OPTIONS SECTION
 
+     "Checking for updates...":{
+IT = "Verifica aggiornamenti..."
+}
      "Layout language":{
 IT = "Lingua del layout"
 ES = "Idioma del layout"
@@ -239,6 +242,12 @@ ES = "Selecciona el tipo de barra de desplazamiento"
 BR = "Define a aparência da barra de rolagem"
 FR = "Précisez l'apparence de la barre de défilement"
 DE = "Wähle wie die Bildlaufleiste aussehen soll"
+}
+     "Scroll updates":{
+IT = "Aggiorna scorrimento"
+}
+     "Immediately updates the tiles while you scroll":{
+IT = "Aggiorna le miniature durante lo scorrimento"
 }
      "Strip article from sort":{
 IT = "Ordina ignorando gli articoli"
@@ -591,6 +600,12 @@ IT = "Riporta la lista delle regioni alle condizioni iniziali"
 ES = "Restablece la lista de región a la opción inicial"
 DE = "Sortierung und Auswahl der Region-Einträge zurücksetzen"
 }
+     "Scrape Timeout":{
+IT = "Timout scraping"
+}
+     "Set the number of seconds to wait for each scrape operation to complete":{
+IT = "Imposta quanti secondi attendere per ogni operazione di scraping"
+}
      "SCREENSCRAPER":{
 IT = "SCREENSCRAPER"
 ES = "SCREENSCRAPER"
@@ -681,6 +696,12 @@ DE = "Aktualisere aktuelle ROMLISTE"
 IT = "Aggiorna la romlist con le rom aggiunte/rimosse, non resetta i dati"
 DE = "Aktualisiere die ROMLISTE mit hinzugefügten/gelöschten roms, resettet nicht die aktuellen Daten"
 }
+     "Erase romlist database":{
+IT = "Cancella database romlist"
+}
+     "Doesn't rescan the romlist, bur erases all game database information":{
+IT = "Cancella il database della romlist senza rigenerarla"
+}
      "Reset current romlist":{
 IT = "Reset di questa romlist"
 DE = "Resete aktuelle ROMLISTE"
@@ -752,6 +773,12 @@ DE = "Erzwinge die Aktualisierung aller Spiele Sammlungen, verwenden wenn Displa
      "DANGER ZONE":{
 IT = "ZONA PERICOLOSA"
 DE = "GEFAHRENZONE"
+}
+     "Cleanup database":{
+IT = "Ripulisci database"
+}
+     "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry":{
+IT = "Aggiorna la scansione di tutte le romlist, quindi rimuove voci inutilizzate dal database"
 }
      "Enable game hiding":{
 IT = "Abilita nascondi giochi"
@@ -901,25 +928,25 @@ IT = "Nessun ordinamento"
 ES = "Sin ordenar"
 DE = "Keine Sortierung"
 }
-     "By display name":{
-IT = "Per nome del display"
-ES = "Por nombre del display"
-DE = "Nach Display Name"
+     "Display name":{
+IT = "Nome del display"
+ES = "Nombre del display"
+DE = "Display Name"
 }
-     "By system year":{
-IT = "Per anno del sistema"
-ES = "Por año del sistema"
-DE = "Nach Systemjahr"
+     "System year":{
+IT = "Anno del sistema"
+ES = "Año del sistema"
+DE = "Systemjahr"
 }
-     "By system brand then name":{
-IT = "Per marca e nome sistema"
-ES = "Por marca y nombre del sistema"
-DE = "Nach Systemmarke, dann Name"
+     "System brand then name":{
+IT = "Marca e nome sistema"
+ES = "Marca y nombre del sistema"
+DE = "Systemmarke, dann Name"
 }
-     "By system brand then year":{
-IT = "Per marca e anno sistema"
-ES = "Por marca y año del sistema"
-DE = "Nach Systemmarke, dann Jahr"
+     "System brand then year":{
+IT = "Marca e anno sistema"
+ES = "Marca y año del sistema"
+DE = "Systemmarke, dann Jahr"
 }
      "Show group separators":{
 IT = "Mostra i separatori"
@@ -1009,6 +1036,12 @@ DE = "Füge einen Menüpunkt zum Verlassen von Arcadeflow zum Displays Menü hin
 IT = "Comportamento"
 ES = "Comportamiento"
 DE = "Verhalten"
+}
+     "Open on current category":{
+IT = "Apri alla categoria corrente"
+}
+     "With categorised displays menu, open in the current category instead of main menu":{
+IT = "Nel menu per categorie, inizia dalla cateoria corrente invece che dal menu principale"
 }
      "Open the Displays Menu at startup":{
 IT = "Apri il Menu Display all'avvio"
@@ -1178,6 +1211,12 @@ ES = "Añade un resplandor alrededor de la miniatura del juego seleccionado"
 BR = "Adiciona um brilho luminoso em torno da miniatura do jogo selecionado"
 FR = "Ajoute un effet de lueur autour de la capture miniature du jeu sélectioné."
 DE = "Fügt einen leuchtenden Schein um das ausgewählte Vorschaubild hinzu"
+}
+     "Snap border":{
+IT = "Bordo miniature"
+}
+     "Add a white border around the selected game thumbnail":{
+IT = "Aggiugne un bordo bianco intorno alla miniatura del gioco selezionato"
 }
      "Logo smooth shadow":{
 IT = "Ombre morbide nel logo"
@@ -1392,6 +1431,12 @@ ES = "Si no hay imagen para el título del juego, el layout puede generarla auto
 BR = "Se não existir nenhuma arte de título para o jogo, o layout gera uma automaticamente"
 FR = "S'il ny a pas de logo pour le jeu, un peu être générer automatiquement"
 DE = "Wenn keine Grafik für den Spieltitel vorhanden ist, kann dieser vom layout generiert werden"
+}
+     "Vertical arcade videos":{
+IT = "Video Vertical Arcade"
+}
+     "Enable this option if you are using 9:16 videos from the Vertical Arcade project":{
+IT = "Ottimizza il layout per i video del progetto Vertical Arcade"
 }
      "New game indicator":{
 IT = "Indicatore di gioco nuovo"
@@ -1794,6 +1839,12 @@ DE = "Benutzerdefinierter Pfad Cores"
 IT = "Inserisci il percorso di una cartella dei core se non utilizzi la directory standard"
 DE = "Gib ein benutzerdefiniertes Verzeichnis für RA Cores an, wenn nicht das Standardverzeichnis verwendet wird"
 }
+     "Custom Info folder":{
+IT = "Directory info custom"
+}
+     "Enter a custom folder for RA info files if not using standard locations":{
+IT = "Inserisci il percorso di una cartella info se non utilizzi la directory standard"
+}
      "SEARCH & FILTERS":{
 IT = "RICERCA E FILTRI"
 ES = "BUSCAR"
@@ -1983,6 +2034,12 @@ ES = "Selecciona el aspecto del panel de juego de la pantalla del Historial"
 BR = "Define aa parência do painel do jogo na tela do History"
 FR = "Choisissez le look du panneau de jeu dans l'écran d'histoire"
 DE = "Aussehen des History Game Panels auswählen"
+}
+     "Text scroll":{
+IT = "Scorrimento testo"
+}
+     "Select if you want to manually scroll history text, or automatically scroll":{
+IT = "Imposta scorrimento manuale o automatico per il testo nella pagina history"
 }
      "Detailed game data":{
 IT = "Dettagli del gioco"
@@ -2693,6 +2750,21 @@ IT = "Arcadeflow aggiornato a"
 ES = "Arcadeflow actualizado a"
 DE = "Arcadeflow aktualisiert auf"
 }
+     "Install from repository":{
+IT = "Installa da repository"
+}
+     "Install branch":{
+IT = "Installa branch"
+}
+     "Install release":{
+IT = "Installa release"
+}
+     "What's New":{
+IT = "Ultime novita'"
+}
+     "Open Readme":{
+IT = "Apri Readme"
+}
      "Quit":{
 IT = "Esci"
 ES = "Salir"
@@ -3242,6 +3314,9 @@ IT = "Intenso"
 ES = "Intenso"
 FR = "Intense"
 DE = "Knallig"
+}
+     "Slate":{
+IT = "Lavagna"
 }
      "From start":{
 IT = "All'avvio"

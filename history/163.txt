@@ -1,0 +1,5 @@
+16.3
+Fixed crash when disabling gradient
+Updated translation file
+Completed Italian translation
+Moved warning messages to About Arcadeflow
