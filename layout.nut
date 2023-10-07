@@ -17370,7 +17370,7 @@ function parsevolume(op) {
 	local out = 0
 	local out2 = ""
 	if (OS == "OSX") {
-		out = round((split(op, ":,")[1].tofloat() * 16.0/10.0), 1).tointeger()
+		out = round((split(op, ":,")[1].tofloat()), 1).tointeger()
 		AF.soundvolume = out
 	}
 	else if (OS == "Windows") {
@@ -17378,7 +17378,7 @@ function parsevolume(op) {
 			out = op
 			out = split (out, " ")
 			out = out[out.len() - 1]
-			AF.soundvolume = round(out.tofloat() * 16.0/10.0, 1).tointeger()
+			AF.soundvolume = round(out.tofloat(), 1).tointeger()
 		}
 	}
 	else {
@@ -17386,7 +17386,7 @@ function parsevolume(op) {
 			out = op
 			out = split (out, "[%")
 			out = out[1]
-			AF.soundvolume = round(out.tofloat() * 16.0/10.0, 1).tointeger()
+			AF.soundvolume = round(out.tofloat(), 1).tointeger()
 		}
 	}
 }
@@ -17764,7 +17764,8 @@ function on_signal(sig) {
 			)
 		}
 		frostshow()
-		zmenudraw3(volarray, "Volume", 0xea26, vsteps - AF.soundvolume, {center = true, midscroll = true, singleline = true},
+		testpr(AF.soundvolume+"\n")
+		zmenudraw3(volarray, "Volume", 0xea26, vsteps - AF.soundvolume * 16.0 / 100, {center = true, midscroll = true, singleline = true},
 			function(out) {
 				//if (out != -1) {
 					AF.soundvolume = (vsteps - zmenu.selected)*100.0/vsteps
