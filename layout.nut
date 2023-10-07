@@ -17753,13 +17753,13 @@ function on_signal(sig) {
 		else if (OS == "Windows") fe.plugin_command (AF.folder + "\\SetVol.exe", "report", "parsevolume")
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
-		local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (uifonts.pixel * overlay.charsize))) - 4
+		local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (0.55 * uifonts.pixel * overlay.charsize))) - 4
 
 		local volarray = []
 		local amparray = [0xea26, 0xea26, 0xea26, 0xea26, 0xea26,0xea27, 0xea27, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
 		for (local i = 0; i <= vsteps; i++) {
 			volarray.push(
-				{text = textrate(vsteps - i, vsteps, spaces, "Ⓞ ", "Ⓟ "),
+				{text = textrate(vsteps - i, vsteps, spaces, "Ⓠ ", "Ⓡ "),
 				glyph = amparray[i]}
 			)
 		}
