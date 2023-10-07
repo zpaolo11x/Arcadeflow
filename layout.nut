@@ -17770,7 +17770,7 @@ function on_signal(sig) {
 				//if (out != -1) {
 					AF.soundvolume = (vsteps - zmenu.selected)*100.0/vsteps
 					if (OS == "OSX") system ("osascript -e \"Set Volume output volume " + AF.soundvolume + "\"")
-					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + AF.soundvolume + " unmute")
+					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + integerp(AF.soundvolume) + " unmute")
 					else system ("amixer set Master " + AF.soundvolume + "%")
 				//}
 				zmenuhide()
