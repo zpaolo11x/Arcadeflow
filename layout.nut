@@ -12230,6 +12230,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 	}
 
+	zmenu.scroller.visible = !zmenu.singleline
+
 	// Update first item index if the first item is a liner or a skippable item.
 	zmenu.firstitem = 0
 	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
@@ -12743,7 +12745,6 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 	}
 	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	count[signal] ++
-
 }
 
 zmenu.newpos = 0
@@ -16348,6 +16349,9 @@ function tick(tick_time) {
 	
 	if (i2_moving(zmenu.i2)){
 		i2_updatepos(zmenu.i2)
+
+		if (zmenu.singleline) i2_setpos(zmenu.i2, zmenu.newpos)
+
 		for (local i = 0; i < zmenu.shown; i++) {
 			zmenu.items[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
 			zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
@@ -17931,8 +17935,8 @@ function on_signal(sig) {
 
 			zmenu.newpos = zmenu_newpos()
 			i2_jumpto(zmenu.i2, zmenu.newpos)
-
 			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && (prfmenu.level == 2) && ((sig == "right") || (sig == "left"))))
+
 
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
