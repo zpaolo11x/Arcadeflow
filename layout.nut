@@ -17764,7 +17764,7 @@ function on_signal(sig) {
 			)
 		}
 		frostshow()
-		testpr(AF.soundvolume+"\n")
+
 		zmenudraw3(volarray, "Volume", 0xea26, vsteps - AF.soundvolume * 16.0 / 100, {center = true, midscroll = true, singleline = true},
 			function(out) {
 				//if (out != -1) {
