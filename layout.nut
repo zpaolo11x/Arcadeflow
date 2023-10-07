@@ -17370,7 +17370,7 @@ function parsevolume(op) {
 	local out = 0
 	local out2 = ""
 	if (OS == "OSX") {
-		out = round((split(op, ":,")[1].tofloat() * 0.1), 1).tointeger()
+		out = round((split(op, ":,")[1].tofloat() * 16.0/10.0), 1).tointeger()
 		AF.soundvolume = out
 	}
 	else if (OS == "Windows") {
@@ -17378,7 +17378,7 @@ function parsevolume(op) {
 			out = op
 			out = split (out, " ")
 			out = out[out.len() - 1]
-			AF.soundvolume = round(out.tofloat() * 0.1, 1).tointeger()
+			AF.soundvolume = round(out.tofloat() * 16.0/10.0, 1).tointeger()
 		}
 	}
 	else {
@@ -17386,7 +17386,7 @@ function parsevolume(op) {
 			out = op
 			out = split (out, "[%")
 			out = out[1]
-			AF.soundvolume = round(out.tofloat() * 0.1, 1).tointeger()
+			AF.soundvolume = round(out.tofloat() * 16.0/10.0, 1).tointeger()
 		}
 	}
 }
@@ -17747,6 +17747,8 @@ function on_signal(sig) {
 	// Button press: volume editor
 	if ((sig == prf.VOLUMEBUTTON) && !zmenu.showing) {
 		local currvol = 0
+		local vsteps = 16
+
 		if (OS == "OSX") fe.plugin_command ("osascript", "-e \"get volume settings\"", "parsevolume")
 		else if (OS == "Windows") fe.plugin_command (AF.folder + "\\SetVol.exe", "report", "parsevolume")
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
@@ -17754,21 +17756,21 @@ function on_signal(sig) {
 		local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (uifonts.pixel * overlay.charsize))) - 4
 
 		local volarray = []
-		local amparray = [0xea26, 0xea26, 0xea26, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
-		for (local i = 0; i <= 10; i++) {
+		local amparray = [0xea26, 0xea26, 0xea26, 0xea26, 0xea26,0xea27, 0xea27, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
+		for (local i = 0; i <= vsteps; i++) {
 			volarray.push(
-				{text = textrate(10 - i, 10, spaces, "Ⓞ ", "Ⓟ "),
+				{text = textrate(vsteps - i, vsteps, spaces, "Ⓞ ", "Ⓟ "),
 				glyph = amparray[i]}
 			)
 		}
 		frostshow()
-		zmenudraw3(volarray, "Volume", 0xea26, 10 - AF.soundvolume, {center = true, midscroll = true, singleline = true},
+		zmenudraw3(volarray, "Volume", 0xea26, vsteps - AF.soundvolume, {center = true, midscroll = true, singleline = true},
 			function(out) {
 				//if (out != -1) {
-					AF.soundvolume = 10 - zmenu.selected
-					if (OS == "OSX") system ("osascript -e \"Set Volume output volume " + (AF.soundvolume * 10) + "\"")
-					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + AF.soundvolume * 10 + " unmute")
-					else system ("amixer set Master " + AF.soundvolume * 10 + "%")
+					AF.soundvolume = (vsteps - zmenu.selected)*100.0/vsteps
+					if (OS == "OSX") system ("osascript -e \"Set Volume output volume " + AF.soundvolume + "\"")
+					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + AF.soundvolume + " unmute")
+					else system ("amixer set Master " + AF.soundvolume + "%")
 				//}
 				zmenuhide()
 				frosthide()
