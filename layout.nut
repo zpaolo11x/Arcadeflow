@@ -17764,12 +17764,12 @@ function on_signal(sig) {
 		frostshow()
 		zmenudraw3(volarray, "Volume", 0xea26, 10 - AF.soundvolume, {center = true, midscroll = true, singleline = true},
 			function(out) {
-				if (out != -1) {
-					AF.soundvolume = 10 - out
+				//if (out != -1) {
+					AF.soundvolume = 10 - zmenu.selected
 					if (OS == "OSX") system ("osascript -e \"Set Volume " + (0.7 * AF.soundvolume) + "\"")
 					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + AF.soundvolume * 10 + " unmute")
 					else system ("amixer set Master " + AF.soundvolume * 10 + "%")
-				}
+				//}
 				zmenuhide()
 				frosthide()
 			}
