@@ -17765,10 +17765,10 @@ function on_signal(sig) {
 		}
 		frostshow()
 
-		zmenudraw3(volarray, "Volume", 0xea26, vsteps - AF.soundvolume * 16.0 / 100, {center = true, midscroll = true, singleline = true},
+		zmenudraw3(volarray, "Volume", 0xea26, vsteps - floor((AF.soundvolume * 16.0 / 100)+0.5), {center = true, midscroll = true, singleline = true},
 			function(out) {
 				//if (out != -1) {
-					AF.soundvolume = (vsteps - zmenu.selected)*100.0/vsteps
+					AF.soundvolume = floor(((vsteps - zmenu.selected)*100.0/vsteps)+0.5)
 					if (OS == "OSX") system ("osascript -e \"Set Volume output volume " + AF.soundvolume + "\"")
 					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + integerp(AF.soundvolume) + " unmute")
 					else system ("amixer set Master " + AF.soundvolume + "%")
