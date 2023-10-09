@@ -17382,7 +17382,7 @@ function parsevolume(op) {
 		}
 	}
 	else {
-		if (op.find("Front Left: Playback") != null) {
+		if ((op.find("Front Left: Playback") != null) || (op.find("Mono: Playback") != null)){
 			out = op
 			out = split (out, "[%")
 			out = out[1]
