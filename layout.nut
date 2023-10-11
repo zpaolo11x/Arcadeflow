@@ -4541,9 +4541,17 @@ function resetlastplayed() {
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
 	msgbox_open("Refresh current Romlist", "", function(){ //TEST162 CHANGE TITLE!
-		fe.signal("back")
-		fe.signal("back")
-		fe.set_display(fe.list.display_index)
+		if (tempprf.ALLGAMES) {
+			updateallgamescollections(tempprf)
+			//msgbox_addlinebelow("Updating All Gams Collectins", 1)
+			//buildconfig(tempprf.ALLGAMES, tempprf)
+			//update_allgames_collections(true, tempprf)
+		}
+		else {
+			fe.signal("back")
+			fe.signal("back")
+			fe.set_display(fe.list.display_index)
+		}
 	})
 	msgbox_lock(true)
 
@@ -4551,13 +4559,8 @@ function refreshselectedromlists(tempprf) {
 		msgbox_addlinebelow(patchtext("List " + item, "DONE", 5, AF.msgbox.columns), 1)
 		refreshromlist(item, false)
 	}
-	if (tempprf.ALLGAMES) {
-		msgbox_addlinebelow("Updating All Gams Collectins", 1)
-		buildconfig(tempprf.ALLGAMES, tempprf)
-		update_allgames_collections(true, tempprf)
-	}
 
-	msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+	msgbox_addlinetop("Update complete - Press ESC to " + (tempprf.ALLGAMES ? "refresh collections" : "restart") + "\n" + AF.msgbox.separator2)
 
 	msgbox_lock(false)
 	// this function doesn't need to reboot the layout
