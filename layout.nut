@@ -4540,7 +4540,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	msgbox_open("Update All Games Collections", "", function(){ //TEST162 CHANGE TITLE!
+	msgbox_open("Refresh current Romlist", "", function(){ //TEST162 CHANGE TITLE!
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -4548,12 +4548,17 @@ function refreshselectedromlists(tempprf) {
 	msgbox_lock(true)
 
 	foreach (item, val in z_list.romlistemulators) {
+		msgbox_addlinebelow(patchtext("List " + item, "DONE", 5, AF.msgbox.columns), 1)
 		refreshromlist(item, false)
 	}
 	if (tempprf.ALLGAMES) {
+		msgbox_addlinebelow("Updating All Gams Collectins", 1)
 		buildconfig(tempprf.ALLGAMES, tempprf)
 		update_allgames_collections(true, tempprf)
 	}
+
+	msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+
 	msgbox_lock(false)
 	// this function doesn't need to reboot the layout
 	// since it's run from the options menu where reboot
