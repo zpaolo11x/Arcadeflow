@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.2
+// Arcadeflow - v 16.4
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.3" // AF version in string form
+	version = "16.4" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -984,7 +984,7 @@ local sorter = {}
 AF.prefs.l0.push({label = "GENERAL", glyph = 0xe993, description = "Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc"})
 AF.prefs.l1.push([
 {v = 10.2, varname = "LAYOUTLANGUAGE", glyph = 0xe9ca, title = "Layout language", help = "Chose the language of the layout", options = languagearray(), values = languagetokenarray(), selection = 1},
-{v = 10.5, varname = "POWERMENU", glyph = 0xe9b6, title = "Power menu", help = "Enable or disable power options in exit menu", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 16.4, varname = "POWERMENU", glyph = 0xe9b6, title = "Power and Exit menu", help = "Customise exit menu with power options", options = ["Exit and Power", "Exit only", "Power only"], values = [true, false, null], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
 {v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
@@ -4540,20 +4540,28 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	msgbox_open("Update All Games Collections", "", function(){ //TEST162 CHANGE TITLE!
-		fe.signal("back")
-		fe.signal("back")
-		fe.set_display(fe.list.display_index)
+	msgbox_open("Refresh current Romlist", "", function(){ //TEST162 CHANGE TITLE!
+		if (tempprf.ALLGAMES) {
+			updateallgamescollections(tempprf)
+			//msgbox_addlinebelow("Updating All Gams Collectins", 1)
+			//buildconfig(tempprf.ALLGAMES, tempprf)
+			//update_allgames_collections(true, tempprf)
+		}
+		else {
+			fe.signal("back")
+			fe.signal("back")
+			fe.set_display(fe.list.display_index)
+		}
 	})
 	msgbox_lock(true)
 
 	foreach (item, val in z_list.romlistemulators) {
+		msgbox_addlinebelow(patchtext("List " + item, "DONE", 5, AF.msgbox.columns), 1)
 		refreshromlist(item, false)
 	}
-	if (tempprf.ALLGAMES) {
-		buildconfig(tempprf.ALLGAMES, tempprf)
-		update_allgames_collections(true, tempprf)
-	}
+
+	msgbox_addlinetop("Update complete - Press ESC to " + (tempprf.ALLGAMES ? "refresh collections" : "restart") + "\n" + AF.msgbox.separator2)
+
 	msgbox_lock(false)
 	// this function doesn't need to reboot the layout
 	// since it's run from the options menu where reboot
@@ -12230,6 +12238,8 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 		}
 	}
 
+	zmenu.scroller.visible = !zmenu.singleline
+
 	// Update first item index if the first item is a liner or a skippable item.
 	zmenu.firstitem = 0
 	if (!zmenu.alwaysskip && zmenu.data[0].liner) zmenu.firstitem = zmenu.target[0].down
@@ -12743,7 +12753,6 @@ function zmenunavigate_down(signal, alwaysskip = false) {
 	}
 	zmenu.sidelabel.msg = zmenu.data[zmenu.selected].note
 	count[signal] ++
-
 }
 
 zmenu.newpos = 0
@@ -13050,23 +13059,28 @@ function jumptodisplay(targetdisplay) {
 }
 
 function powermenu(parsefunction){
-	zmenudraw3(prf.POWERMENU ? [
+	zmenudraw3(
+	(prf.POWERMENU == true) ? [
 		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
 		{text = ltxt("Power", AF.LNG), liner = true},
 		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
 		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
 		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
-	] : [
+	] : (prf.POWERMENU == false) ? [
 		{text = ltxt("Yes", AF.LNG), glyph = 0xea10},
 		{text = ltxt("No", AF.LNG), glyph = 0xea0f},
+	] : [
+		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
+		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
+		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},		
 	],
-	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, 1, {center = true},
+	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, (prf.POWERMENU == null) ? 0 : 1, {center = true},
 	function(result) {
-		if (result == 0) fe.signal("exit_to_desktop")
-		else if (prf.POWERMENU && (result == 3)) powerman("SHUTDOWN")
-		else if (prf.POWERMENU && (result == 4)) powerman("REBOOT")
-		else if (prf.POWERMENU && (result == 5)) powerman("SUSPEND")
+		if ((prf.POWERMENU != null) && (result == 0)) fe.signal("exit_to_desktop")
+		else if (((prf.POWERMENU == true) && (result == 3)) || ((prf.POWERMENU == null) && (result == 0))) powerman("SHUTDOWN")
+		else if (((prf.POWERMENU == true) && (result == 4)) || ((prf.POWERMENU == null) && (result == 1))) powerman("REBOOT")
+		else if (((prf.POWERMENU == true) && (result == 5)) || ((prf.POWERMENU == null) && (result == 2))) powerman("SUSPEND")
 		else { parsefunction() }
 	})
 }
@@ -16343,6 +16357,9 @@ function tick(tick_time) {
 	
 	if (i2_moving(zmenu.i2)){
 		i2_updatepos(zmenu.i2)
+
+		if (zmenu.singleline) i2_setpos(zmenu.i2, zmenu.newpos)
+
 		for (local i = 0; i < zmenu.shown; i++) {
 			zmenu.items[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
 			zmenu.noteitems[i].y = zmenu.pos0[i] + zmenu.i2.smoothcurve
@@ -17361,7 +17378,7 @@ function parsevolume(op) {
 	local out = 0
 	local out2 = ""
 	if (OS == "OSX") {
-		out = round((split(op, ":,")[1].tofloat() * 0.1), 1).tointeger()
+		out = round((split(op, ":,")[1].tofloat()), 1).tointeger()
 		AF.soundvolume = out
 	}
 	else if (OS == "Windows") {
@@ -17369,15 +17386,15 @@ function parsevolume(op) {
 			out = op
 			out = split (out, " ")
 			out = out[out.len() - 1]
-			AF.soundvolume = round(out.tofloat() * 0.1, 1).tointeger()
+			AF.soundvolume = round(out.tofloat(), 1).tointeger()
 		}
 	}
 	else {
-		if (op.find("Front Left: Playback") != null) {
+		if ((op.find("Front Left: Playback") != null) || (op.find("Mono: Playback") != null)){
 			out = op
 			out = split (out, "[%")
 			out = out[1]
-			AF.soundvolume = round(out.tofloat() * 0.1, 1).tointeger()
+			AF.soundvolume = round(out.tofloat(), 1).tointeger()
 		}
 	}
 }
@@ -17738,29 +17755,32 @@ function on_signal(sig) {
 	// Button press: volume editor
 	if ((sig == prf.VOLUMEBUTTON) && !zmenu.showing) {
 		local currvol = 0
+		local vsteps = 16
+
 		if (OS == "OSX") fe.plugin_command ("osascript", "-e \"get volume settings\"", "parsevolume")
 		else if (OS == "Windows") fe.plugin_command (AF.folder + "\\SetVol.exe", "report", "parsevolume")
 		else fe.plugin_command ("amixer", "get Master", "parsevolume")
 
-		local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (uifonts.pixel * overlay.charsize))) - 4
+		local spaces = floor(0.5 * (zmenu.tilew * 1.0 / (0.55 * uifonts.pixel * overlay.charsize))) - 4
 
 		local volarray = []
-		local amparray = [0xea26, 0xea26, 0xea26, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
-		for (local i = 0; i <= 10; i++) {
+		local amparray = [0xea26, 0xea26, 0xea26, 0xea26, 0xea26,0xea27, 0xea27, 0xea27, 0xea27, 0xea27, 0xea28, 0xea28, 0xea28, 0xea28, 0xea28, 0xea29, 0xea2a]
+		for (local i = 0; i <= vsteps; i++) {
 			volarray.push(
-				{text = textrate(10 - i, 10, spaces, "Ⓞ ", "Ⓟ "),
+				{text = textrate(vsteps - i, vsteps, spaces, "Ⓠ ", "Ⓡ "),
 				glyph = amparray[i]}
 			)
 		}
 		frostshow()
-		zmenudraw3(volarray, "Volume", 0xea26, 10 - AF.soundvolume, {center = true, midscroll = true, singleline = true},
+
+		zmenudraw3(volarray, "Volume", 0xea26, vsteps - floor((AF.soundvolume * 16.0 / 100)+0.5), {center = true, midscroll = true, singleline = true},
 			function(out) {
-				if (out != -1) {
-					AF.soundvolume = 10 - out
-					if (OS == "OSX") system ("osascript -e \"Set Volume " + (0.7 * AF.soundvolume) + "\"")
-					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + AF.soundvolume * 10 + " unmute")
-					else system ("amixer set Master " + AF.soundvolume * 10 + "%")
-				}
+				//if (out != -1) {
+					AF.soundvolume = floor(((vsteps - zmenu.selected)*100.0/vsteps)+0.5)
+					if (OS == "OSX") system ("osascript -e \"Set Volume output volume " + AF.soundvolume + "\"")
+					else if (OS == "Windows") system ("\"" + AF.folder + "\\SetVol.exe\" " + integerp(AF.soundvolume) + " unmute")
+					else system ("amixer set Master " + AF.soundvolume + "%")
+				//}
 				zmenuhide()
 				frosthide()
 			}
@@ -17926,8 +17946,8 @@ function on_signal(sig) {
 
 			zmenu.newpos = zmenu_newpos()
 			i2_jumpto(zmenu.i2, zmenu.newpos)
-
 			zmenu.scrollerstop = getscrollerstop(!(prfmenu.showing && (prfmenu.level == 2) && ((sig == "right") || (sig == "left"))))
+
 
 			for (local i = 0; i < zmenu.shown; i++) {
 				if (!zmenu.singleline) {
