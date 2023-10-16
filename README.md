@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.3 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.4 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,12 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.3 #
+## What's new in v 16.4 #
 
-- Fixed crash when disabling gradient
-- Updated translation file
-- Completed Italian translation
-- Moved warning messages to About Arcadeflow
+- Added option to show only power menu
+- Added report message for romlist refresh
+- Fixed volume menu jumping
 
 ## Emulator system identifier #
 
@@ -102,11 +101,11 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
-#### GENERAL
+#### ! GENERAL !
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
-- 'Power menu' : Enable or disable power options in exit menu
+- '! Power and Exit menu !' : Customise exit menu with power options
 - Layout
 - 'Rows in horizontal' : Number of rows to use in 'horizontal' mode
 - 'Rows in vertical' : Number of rows to use in 'vertical' mode
@@ -388,6 +387,13 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.3*
+
+- Fixed crash when disabling gradient
+- Updated translation file
+- Completed Italian translation
+- Moved warning messages to About Arcadeflow
 
 *v16.2*
 
