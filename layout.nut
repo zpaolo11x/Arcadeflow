@@ -3771,7 +3771,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
-	//TEST120 Should we add the retry check to the arcade scrape portion or not???
+
 	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
 		// If stripped rom fails, try with non-stripped rom
 		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
@@ -4540,7 +4540,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	msgbox_open("Refresh current Romlist", "", function(){ //TEST162 CHANGE TITLE!
+	msgbox_open("Refresh current Romlist", "", function(){
 		if (tempprf.ALLGAMES) {
 			updateallgamescollections(tempprf)
 			//msgbox_addlinebelow("Updating All Gams Collectins", 1)
@@ -6302,9 +6302,6 @@ function mfz_menu2(presel) {
 	//2nd level menu is never translated and is always sorted by value
 	local valcurrent = null
 
-	//TEST160 ERA USATO PER VALCURRENT???
-	//TEST160 RIMOSSO if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
-
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu[mf.cat1].submenu, 2, false, true)
 	local namearray = mfzdat.names
 	local indexarray = mfzdat.index
@@ -6618,12 +6615,7 @@ function mfz_apply(startlist) {
 
 	z_updatefilternumbers(z_list.index)
 	data_freeze(false)
-	//frost.canfreeze = true
-	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
-	/*
-			z_listrefreshtiles()
-			updatebgsnap (focusindex.new)
-	*/
+
 	timestop("mfz_apply")
 }
 
@@ -11792,8 +11784,8 @@ local disp = {
 	dispzoom = []
 	zoomrate = 0.05
 
-	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
-	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
+	tilew = floor(disp0.w * 780.0/1600.0)
+	tileh = floor(disp0.w * 780.0/1600.0)
 
 	newpos = 0
 	bgtileh = 0
@@ -15605,9 +15597,6 @@ function on_transition(ttype, var0, ttime) {
 			} catch(err) {}
 		mfz_apply(true)
 
-		//TEST160 moved here from mfz_apply... REMOVED
-		//z_listrefreshtiles()
-		//updatebgsnap (focusindex.new)
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
