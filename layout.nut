@@ -11861,15 +11861,29 @@ function update_allgames_collections(verbose, tempprf) {
 		if (verbose) msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
-		testpr("A\n")
+
+		local timecounter = -20
+
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
 		local listfields = []
 		local outfiles = {}
 		local sysname = ""
 		local cursysname = ""
+
+		local time0 = fe.layout.time
 		while (!listfile.eos()) {
+
 			listline = listfile.read_line()
+
+			if (fe.layout.time - time0 >= 1000 / ScreenRefreshRate){
+				timecounter = timecounter + 1
+				if (timecounter >= 20) timecounter = -20
+				msgbox_newtitle(textrate(fabs(timecounter), 20, AF.msgbox.columns, "|", "\\"))
+				fe.layout.redraw()
+				time0 = fe.layout.time
+			}
+
 			if ((listline == "") || (listline[0].tochar() == "#")) {
 				print("")
 				continue
