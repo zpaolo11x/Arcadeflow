@@ -11847,9 +11847,7 @@ function update_allgames_collections(verbose, tempprf) {
 				foreach (item2, val2 in disp.structure[val.group].disps) {
 					if ((val2.inmenu) && (!doneromlists_coll.rawin(val2.romlist))) {
 						doneromlists_coll.rawset(val2.romlist, 0)
-						if (verbose) {
-							msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
-						}
+						if (verbose) msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
 						fe.layout.redraw()
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 						if (!doneromlists_all.rawin(val2.romlist)) allgamesromlist += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
@@ -11857,12 +11855,13 @@ function update_allgames_collections(verbose, tempprf) {
 					}
 				}
 				system ((OS == "Windows" ? "type" : "cat") + strline + " > \"" + filename + "\"")
-				msgbox_addlinetop("")
+				if (verbose) msgbox_addlinetop("")
 			}
 		}
-		msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+		if (verbose) msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
+		testpr("A\n")
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
 		local listfields = []
@@ -11882,13 +11881,15 @@ function update_allgames_collections(verbose, tempprf) {
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname} catch(err) {sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
-						if (verbose && (sysname != cursysname)) {
-							splash_message (AF.item.pulse, "Collection:" + item + "\nSystem:" + sysname + "\n")
-							cursysname = sysname
-						}
-					if (!outfiles.rawin(item)) {
+			
+					if (verbose && (sysname != cursysname)) {
+						msgbox_addlinetop(patchtext(item +" - " + sysname, " DONE", 5, AF.msgbox.columns))
+						fe.layout.redraw()
+						cursysname = sysname
+					}
 
-						outfiles.rawset(item, WriteTextFile(AF.romlistfolder + item + ".txt"))
+					if (!outfiles.rawin(item)) {
+						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
 						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
 					}
 					outfiles[item].write_line(listline + "\n")
@@ -11896,6 +11897,7 @@ function update_allgames_collections(verbose, tempprf) {
 			}
 		}
 		foreach (item in outfiles) item.close_file()
+		if (verbose) msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
 	}
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
