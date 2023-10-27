@@ -162,6 +162,9 @@ local AF = {
 		visiblelines = 0
 		lock = false
 		inline = 0
+
+		pulsetime0 = 0
+		pulsecounter = 0
 	}
 
 	tsc = 60.0 / ScreenRefreshRate // Pre-scaling of timer for different parameters
@@ -3516,6 +3519,27 @@ function msgbox_close(){
 	msgbox_newdata("", "")
 	AF.msgbox.back = null
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
+}
+
+function msgbox_pulse_title(title_string, reset = false){
+	local speed = 20
+	local chars = floor((AF.msgbox.columns - title_string.len() - 2) * 0.5)
+testpr(title+"\n")
+testpr(title_string+"\n")
+
+	if (reset) { //Initialise pulse
+		AF.msgbox.pulsetime0 = fe.layout.time
+		AF.msgbox.pulsecounter = -speed
+		msgbox_newtitle(title_string)
+	} else {
+		if (fe.layout.time - AF.msgbox.pulsetime0 >= 1000 / ScreenRefreshRate){
+			AF.msgbox.pulsecounter ++
+			if (AF.msgbox.pulsecounter >= speed) AF.msgbox.pulsecounter = -speed
+			msgbox_newtitle(title_string + "  " + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "\\", "|") + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "|", "\\") )
+			fe.layout.redraw()
+			AF.msgbox.pulsetime0 = fe.layout.time
+		}
+	}
 }
 
 function patchtext(string1, string2, width2, columns) {
@@ -11826,6 +11850,8 @@ function update_allgames_collections(verbose, tempprf) {
 	fe.layout.redraw()
 	builddisplaystructure()
 	local allgamesromlist = ""
+	if(verbose) msgbox_pulse_title("Update All Games Collections", true)
+
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
@@ -11834,6 +11860,7 @@ function update_allgames_collections(verbose, tempprf) {
 		foreach (item, val in z_af_collections.tab) {
 			// The all games collections are generated only if they are not in "OTHER"
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
+			if (verbose) msgbox_pulse_title("Update All Games Collections")
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
 				if (verbose) msgbox_addlinetop("Collection:" + item + "\n" + AF.msgbox.separator1)
@@ -11845,6 +11872,9 @@ function update_allgames_collections(verbose, tempprf) {
 				local doneromlists_coll = {}
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
+
+					if (verbose) msgbox_pulse_title("Update All Games Collections")
+
 					if ((val2.inmenu) && (!doneromlists_coll.rawin(val2.romlist))) {
 						doneromlists_coll.rawset(val2.romlist, 0)
 						if (verbose) msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
@@ -11858,11 +11888,12 @@ function update_allgames_collections(verbose, tempprf) {
 				if (verbose) msgbox_addlinetop("")
 			}
 		}
-		if (verbose) msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+		if (verbose) {
+			msgbox_newtitle("Update All Games Collections")
+			msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+		}
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
-
-		local timecounter = -20
 
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
@@ -11871,18 +11902,11 @@ function update_allgames_collections(verbose, tempprf) {
 		local sysname = ""
 		local cursysname = ""
 
-		local time0 = fe.layout.time
 		while (!listfile.eos()) {
 
 			listline = listfile.read_line()
 
-			if (fe.layout.time - time0 >= 1000 / ScreenRefreshRate){
-				timecounter = timecounter + 1
-				if (timecounter >= 20) timecounter = -20
-				msgbox_newtitle("Update All Games Collections  " + textrate(fabs(timecounter), 20, 15, "\\", "|") + textrate(fabs(timecounter), 20, 15, "|", "\\") )
-				fe.layout.redraw()
-				time0 = fe.layout.time
-			}
+			if (verbose) msgbox_pulse_title("Update All Games Collections")
 
 			if ((listline == "") || (listline[0].tochar() == "#")) {
 				print("")
