@@ -11879,7 +11879,7 @@ function update_allgames_collections(verbose, tempprf) {
 			if (fe.layout.time - time0 >= 1000 / ScreenRefreshRate){
 				timecounter = timecounter + 1
 				if (timecounter >= 20) timecounter = -20
-				msgbox_newtitle(textrate(fabs(timecounter), 20, AF.msgbox.columns, "|", "\\"))
+				msgbox_newtitle("Update All Games Collections  " + textrate(fabs(timecounter), 20, 15, "\\", "|") + textrate(fabs(timecounter), 20, 15, "|", "\\") )
 				fe.layout.redraw()
 				time0 = fe.layout.time
 			}
@@ -11911,7 +11911,10 @@ function update_allgames_collections(verbose, tempprf) {
 			}
 		}
 		foreach (item in outfiles) item.close_file()
-		if (verbose) msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+		if (verbose) {
+			msgbox_newtitle("Update All Games Collections")
+			msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
+		}
 	}
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
