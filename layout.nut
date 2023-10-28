@@ -3524,9 +3524,7 @@ function msgbox_close(){
 function msgbox_pulse_title(title_string, reset = false){
 	local speed = 20
 	local chars = floor((AF.msgbox.columns - title_string.len() - 2) * 0.5)
-testpr(title+"\n")
-testpr(title_string+"\n")
-
+	
 	if (reset) { //Initialise pulse
 		AF.msgbox.pulsetime0 = fe.layout.time
 		AF.msgbox.pulsecounter = -speed
