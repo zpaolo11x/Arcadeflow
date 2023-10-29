@@ -1,2 +1,3 @@
 16.5
 Fixed collections update with master romlist
+Fixed CRC extraction from zip files
