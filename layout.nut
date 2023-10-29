@@ -3524,7 +3524,7 @@ function msgbox_close(){
 function msgbox_pulse_title(title_string, reset = false){
 	local speed = 20
 	local chars = floor((AF.msgbox.columns - title_string.len() - 2) * 0.5)
-	
+
 	if (reset) { //Initialise pulse
 		AF.msgbox.pulsetime0 = fe.layout.time
 		AF.msgbox.pulsecounter = -speed
@@ -3673,7 +3673,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		execss = AF.subfolder + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
-		if (romcrc != null) execss += "&crc=" + romcrc
+		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
 		if (romsize != null) execss += "&romtaille=" + romsize
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
@@ -3684,14 +3684,13 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		execss = "curl -s \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
-		if (romcrc != null) execss += "&crc=" + romcrc
+		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
 		if (romsize != null) execss += "&romtaille=" + romsize
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
-
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
@@ -3780,6 +3779,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
+
 	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
 	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])

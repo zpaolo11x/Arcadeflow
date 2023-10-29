@@ -679,8 +679,9 @@ function getromcrc_lookup4(filepath){
 			//TEST162 add here code for zip crc extraction
 			local archext = split(filepath,".").top()
 			if (archext == "zip"){
+				local zerobit = "00000000"
 				local out = get_zip_data(filepath)
-   			return ([format("%X",out.crc).slice(-8),format("%x",out.crc).slice(-8),out.size])
+   			return ([(zerobit + format("%X",out.crc)).slice(-8),(zerobit + format("%x",out.crc)).slice(-8),out.size])
 			}
 			blb = zip_extract_file(filepath, zipcontent[0] )
 		}
