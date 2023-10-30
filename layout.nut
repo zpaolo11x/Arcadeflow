@@ -782,11 +782,20 @@ function debugpr(instring) {
 	if (DBGON) print(instring)
 }
 
+local download = {
+	list = [],
+	num = 0,
+	numpre = 0,
+	blanks = null
+	time0 = 0
+	time1 = 0
+	timestep = (OS == "Windows" ? 5000 : 500)
+}
 local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	print(dispatchernum + " " + instring)
+	print("DS:" + dispatchernum + " DL:" + download.num + " WIP:" + instring)
 }
 function testpr(instring) {
 	print(instring)
@@ -894,15 +903,7 @@ function printblanks(){
 }
 //printblanks()
 
-local download = {
-	list = [],
-	num = 0,
-	numpre = 0,
-	blanks = loadvar("data_blanks.txt")
-	time0 = 0
-	time1 = 0
-	timestep = (OS == "Windows" ? 5000 : 500)
-}
+download.blanks = loadvar("data_blanks.txt")
 
 function checkmsec(delay){
 	download.time1 = fe.layout.time
@@ -3720,12 +3721,14 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
 		echoprint("*" + jsarray[0] + "*\n")
 		dispatcher[scrapeid].jsonstatus = "ERROR"
+		
 		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
 		}
+		
 		return
 	}
 	jsarray.push(")")
@@ -3957,7 +3960,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 		// scrapelist fields (in this case no need to use listline!)
 		// The data can be written to "inputitem" which is the link to the original data table
 		local isarcade = dispatcher[scrapeid].gamedata.isarcade
-		if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME")  && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
+		if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME") && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
 			if ((dispatcher[scrapeid].gamedata.scrapestatus != "ERROR")) {
 
 				//listline = gname + ";" //Name
@@ -4081,6 +4084,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			}
 		}
 	}
+	scraprt("ID" + scrapeid + "     scrapegame2 END\n")
 }
 
 // Define the new list data
@@ -16168,11 +16172,12 @@ function tick(tick_time) {
 
 			endreport += ("\n")
 			if (AF.scrape.timeoutroms.len() > 0) endreport += (AF.msgbox.separator1 + "\nTIMEOUT\n")
+			print_variable(AF.scrape.timeoutroms,"","")
 			foreach(ix, itemx in AF.scrape.timeoutroms) {
 				endreport += ("- " + itemx.z_name + "\n")
 			}
 
-					foreach (item, content in AF.scrape.report) {
+			foreach (item, content in AF.scrape.report) {
 				endreport += (AF.msgbox.separator1 + "\n" + item + "\n")
 				foreach (i2, item2 in content.names) {
 					endreport += ("- " + item2 + "\n [" + content.matches[i2] + "]\n")
@@ -16250,10 +16255,11 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
 
-				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
-				scraprt("ID" + i + " COMPLETED " + item.gamedata.filename + "\n")
-				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
+				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
 
+				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
+				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
+				
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
