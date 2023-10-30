@@ -3589,7 +3589,7 @@ dispatcher = []
 dispatchernum = 0
 
 function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
-	scraprt("ID" + scrapeid + "             createjsonA START\n")
+	scraprt("ID" + scrapeid + "             createjsonA START")
 	local unicorrect = unicorrect()
 
 	try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
@@ -3609,7 +3609,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
-	scraprt("ID" + scrapeid + "             createjsonA suspend\n")
+	scraprt(" - suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjsonA resumed\n")
 
@@ -3653,7 +3653,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 }
 
 function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
-	scraprt("ID" + scrapeid + "             createjson START\n")
+	scraprt("ID" + scrapeid + "             createjson START")
 	local unicorrect = unicorrect()
 
 	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
@@ -3695,7 +3695,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
-	scraprt("ID" + scrapeid + "             createjson suspend\n")
+	scraprt(" - suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
 
@@ -4211,6 +4211,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 				AF.scrape.purgedromdirlist.push(item)
 			}
 		}
+		testpr("TOTALROMS"+AF.scrape.totalroms+"\n")
 		AF.scrape.purgedromdirlist.reverse()
 	}
 }
@@ -16255,8 +16256,10 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
 
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
+				testpr("                OLD:" + AF.scrape.doneroms + " " + item.gamedata.scrapestatus + " NEW:")
 
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
+				testpr(AF.scrape.doneroms+"\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
 				
 				msgbox_newtitle(dispatch_header)
