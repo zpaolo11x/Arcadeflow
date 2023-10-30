@@ -162,9 +162,6 @@ local AF = {
 		visiblelines = 0
 		lock = false
 		inline = 0
-
-		pulsetime0 = 0
-		pulsecounter = 0
 	}
 
 	tsc = 60.0 / ScreenRefreshRate // Pre-scaling of timer for different parameters
@@ -782,20 +779,11 @@ function debugpr(instring) {
 	if (DBGON) print(instring)
 }
 
-local download = {
-	list = [],
-	num = 0,
-	numpre = 0,
-	blanks = null
-	time0 = 0
-	time1 = 0
-	timestep = (OS == "Windows" ? 5000 : 500)
-}
 local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	print("DS:" + dispatchernum + " DL:" + download.num + " " + instring)
+	print(dispatchernum + " " + instring)
 }
 function testpr(instring) {
 	print(instring)
@@ -903,7 +891,15 @@ function printblanks(){
 }
 //printblanks()
 
-download.blanks = loadvar("data_blanks.txt")
+local download = {
+	list = [],
+	num = 0,
+	numpre = 0,
+	blanks = loadvar("data_blanks.txt")
+	time0 = 0
+	time1 = 0
+	timestep = (OS == "Windows" ? 5000 : 500)
+}
 
 function checkmsec(delay){
 	download.time1 = fe.layout.time
@@ -3522,25 +3518,6 @@ function msgbox_close(){
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
 }
 
-function msgbox_pulse_title(title_string, reset = false){
-	local speed = 20
-	local chars = floor((AF.msgbox.columns - title_string.len() - 2) * 0.5)
-
-	if (reset) { //Initialise pulse
-		AF.msgbox.pulsetime0 = fe.layout.time
-		AF.msgbox.pulsecounter = -speed
-		msgbox_newtitle(title_string)
-	} else {
-		if (fe.layout.time - AF.msgbox.pulsetime0 >= 1000 / ScreenRefreshRate){
-			AF.msgbox.pulsecounter ++
-			if (AF.msgbox.pulsecounter >= speed) AF.msgbox.pulsecounter = -speed
-			msgbox_newtitle(title_string + "  " + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "\\", "|") + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "|", "\\") )
-			fe.layout.redraw()
-			AF.msgbox.pulsetime0 = fe.layout.time
-		}
-	}
-}
-
 function patchtext(string1, string2, width2, columns) {
 	// Packs together string1 and string2, string1 starts at position 0,
 	// string 2 starts at with2 from the right. Columns is the total width
@@ -3674,7 +3651,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		execss = AF.subfolder + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
-		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
+		if (romcrc != null) execss += "&crc=" + romcrc
 		if (romsize != null) execss += "&romtaille=" + romsize
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
@@ -3685,13 +3662,14 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		execss = "curl -s \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
-		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
+		if (romcrc != null) execss += "&crc=" + romcrc
 		if (romsize != null) execss += "&romtaille=" + romsize
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
+
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
@@ -3721,14 +3699,12 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
 		echoprint("*" + jsarray[0] + "*\n")
 		dispatcher[scrapeid].jsonstatus = "ERROR"
-		
-		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
+		if (jsarray[0] == "The maximum threads is already used  ") {
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
 		}
-		
 		return
 	}
 	jsarray.push(")")
@@ -3782,7 +3758,6 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-
 	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
 	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
@@ -3796,7 +3771,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
-
+	//TEST120 Should we add the retry check to the arcade scrape portion or not???
 	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
 		// If stripped rom fails, try with non-stripped rom
 		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
@@ -3960,7 +3935,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 		// scrapelist fields (in this case no need to use listline!)
 		// The data can be written to "inputitem" which is the link to the original data table
 		local isarcade = dispatcher[scrapeid].gamedata.isarcade
-		if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME") && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
+		if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME")  && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
 			if ((dispatcher[scrapeid].gamedata.scrapestatus != "ERROR")) {
 
 				//listline = gname + ";" //Name
@@ -4084,7 +4059,6 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			}
 		}
 	}
-	scraprt("ID" + scrapeid + "     scrapegame2 END\n")
 }
 
 // Define the new list data
@@ -4566,7 +4540,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	msgbox_open("Refresh current Romlist", "", function(){
+	msgbox_open("Refresh current Romlist", "", function(){ //TEST162 CHANGE TITLE!
 		if (tempprf.ALLGAMES) {
 			updateallgamescollections(tempprf)
 			//msgbox_addlinebelow("Updating All Gams Collectins", 1)
@@ -6328,6 +6302,9 @@ function mfz_menu2(presel) {
 	//2nd level menu is never translated and is always sorted by value
 	local valcurrent = null
 
+	//TEST160 ERA USATO PER VALCURRENT???
+	//TEST160 RIMOSSO if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu[mf.cat1].submenu, 2, false, true)
 	local namearray = mfzdat.names
 	local indexarray = mfzdat.index
@@ -6641,7 +6618,12 @@ function mfz_apply(startlist) {
 
 	z_updatefilternumbers(z_list.index)
 	data_freeze(false)
-
+	//frost.canfreeze = true
+	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
+	/*
+			z_listrefreshtiles()
+			updatebgsnap (focusindex.new)
+	*/
 	timestop("mfz_apply")
 }
 
@@ -11810,8 +11792,8 @@ local disp = {
 	dispzoom = []
 	zoomrate = 0.05
 
-	tilew = floor(disp0.w * 780.0/1600.0)
-	tileh = floor(disp0.w * 780.0/1600.0)
+	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
+	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 
 	newpos = 0
 	bgtileh = 0
@@ -11852,8 +11834,6 @@ function update_allgames_collections(verbose, tempprf) {
 	fe.layout.redraw()
 	builddisplaystructure()
 	local allgamesromlist = ""
-	if(verbose) msgbox_pulse_title("Update All Games Collections", true)
-
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
@@ -11862,7 +11842,6 @@ function update_allgames_collections(verbose, tempprf) {
 		foreach (item, val in z_af_collections.tab) {
 			// The all games collections are generated only if they are not in "OTHER"
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
-			if (verbose) msgbox_pulse_title("Update All Games Collections")
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
 				if (verbose) msgbox_addlinetop("Collection:" + item + "\n" + AF.msgbox.separator1)
@@ -11874,12 +11853,11 @@ function update_allgames_collections(verbose, tempprf) {
 				local doneromlists_coll = {}
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
-
-					if (verbose) msgbox_pulse_title("Update All Games Collections")
-
 					if ((val2.inmenu) && (!doneromlists_coll.rawin(val2.romlist))) {
 						doneromlists_coll.rawset(val2.romlist, 0)
-						if (verbose) msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
+						if (verbose) {
+							msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
+						}
 						fe.layout.redraw()
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 						if (!doneromlists_all.rawin(val2.romlist)) allgamesromlist += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
@@ -11887,29 +11865,20 @@ function update_allgames_collections(verbose, tempprf) {
 					}
 				}
 				system ((OS == "Windows" ? "type" : "cat") + strline + " > \"" + filename + "\"")
-				if (verbose) msgbox_addlinetop("")
+				msgbox_addlinetop("")
 			}
 		}
-		if (verbose) {
-			msgbox_newtitle("Update All Games Collections")
-			msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
-		}
+		msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
-
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
 		local listfields = []
 		local outfiles = {}
 		local sysname = ""
 		local cursysname = ""
-
 		while (!listfile.eos()) {
-
 			listline = listfile.read_line()
-
-			if (verbose) msgbox_pulse_title("Update All Games Collections")
-
 			if ((listline == "") || (listline[0].tochar() == "#")) {
 				print("")
 				continue
@@ -11921,15 +11890,13 @@ function update_allgames_collections(verbose, tempprf) {
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname} catch(err) {sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
-			
-					if (verbose && (sysname != cursysname)) {
-						msgbox_addlinetop(patchtext(item +" - " + sysname, " DONE", 5, AF.msgbox.columns))
-						fe.layout.redraw()
-						cursysname = sysname
-					}
-
+						if (verbose && (sysname != cursysname)) {
+							splash_message (AF.item.pulse, "Collection:" + item + "\nSystem:" + sysname + "\n")
+							cursysname = sysname
+						}
 					if (!outfiles.rawin(item)) {
-						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
+
+						outfiles.rawset(item, WriteTextFile(AF.romlistfolder + item + ".txt"))
 						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
 					}
 					outfiles[item].write_line(listline + "\n")
@@ -11937,10 +11904,6 @@ function update_allgames_collections(verbose, tempprf) {
 			}
 		}
 		foreach (item in outfiles) item.close_file()
-		if (verbose) {
-			msgbox_newtitle("Update All Games Collections")
-			msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
-		}
 	}
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
@@ -15642,6 +15605,9 @@ function on_transition(ttype, var0, ttime) {
 			} catch(err) {}
 		mfz_apply(true)
 
+		//TEST160 moved here from mfz_apply... REMOVED
+		//z_listrefreshtiles()
+		//updatebgsnap (focusindex.new)
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
@@ -16176,7 +16142,7 @@ function tick(tick_time) {
 				endreport += ("- " + itemx.z_name + "\n")
 			}
 
-			foreach (item, content in AF.scrape.report) {
+					foreach (item, content in AF.scrape.report) {
 				endreport += (AF.msgbox.separator1 + "\n" + item + "\n")
 				foreach (i2, item2 in content.names) {
 					endreport += ("- " + item2 + "\n [" + content.matches[i2] + "]\n")
@@ -16254,11 +16220,10 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
 
-				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
-
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
+				scraprt("ID" + i + " COMPLETED " + item.gamedata.filename + "\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				
+
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
