@@ -3720,7 +3720,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
 		echoprint("*" + jsarray[0] + "*\n")
 		dispatcher[scrapeid].jsonstatus = "ERROR"
-		if (jsarray[0] == "The maximum threads is already used  ") {
+		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
 			//dispatchernum ++
@@ -16195,7 +16195,7 @@ function tick(tick_time) {
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < (OS == "Windows" ? 5 : 20))) {
 			// Increase the number of thread counts
 			AF.scrape.threads ++
 			// Add a new data structure to the scrape dispatcher
