@@ -16093,6 +16093,7 @@ function tick(tick_time) {
 					texeA += "curl -s -f --create-dirs \"" + item.ADBurl + "\" -o \"" + item.ADBfile + "\" ; "
 					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
+				testpr(texeA+"\n")
 				system(texeA)
 
 				item.status = "ADB_downloading"
@@ -16111,6 +16112,7 @@ function tick(tick_time) {
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
 
+				testpr(texeSS+"\n")
 				system(texeSS)
 
 				item.status = "SS_downloading"
