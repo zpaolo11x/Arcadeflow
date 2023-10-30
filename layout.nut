@@ -3725,6 +3725,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
+			print_variable(dispatcher[scrapeid].rominputitem,"","")
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
 		}
@@ -3796,7 +3797,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
-
+testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
 		// If stripped rom fails, try with non-stripped rom
 		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
@@ -16243,7 +16244,7 @@ function tick(tick_time) {
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
 		if (download.num != download.numpre) {
 			msgbox_newtitle(dispatch_header)
@@ -16254,10 +16255,11 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
-
+testpr(item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
-				testpr("                OLD:" + AF.scrape.doneroms + " " + item.gamedata.scrapestatus + " NEW:")
+				testpr("ALL:" + AF.scrape.totalroms + "\n")
 
+				testpr("                OLD:" + AF.scrape.doneroms + " " + item.gamedata.scrapestatus + " NEW:")
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				testpr(AF.scrape.doneroms+"\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
