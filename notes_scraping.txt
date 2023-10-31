@@ -88,17 +88,16 @@ per ogni rom nel dispatcher fa tutte queste operazioni:
 |						se jsonstatus è RETRY mette gamedata.scrapestatus a true
 |						altrimenti
 |						se è fallito lo scrape con la strippedrom
-|						lancia createjson
-|									> createjson
-|									THREADS ++
-|									curl routine per SS
-|									pollstatus = true
-|									suspend
-|						suspend
-|															
-|						done viene messo a true
-|						ritorna
-|						<
+||						lancia createjson
+||									> createjson
+||									THREADS ++
+||									curl routine per SS
+||									pollstatus = true
+||									suspend
+||						suspend
+||QUI FINISCE IL LOOP	e si torna a girare, aggiungere dispatch ecc
+|						se invece non è fallito con la strippedrom vediamo che succede
+
 
 
 "C:\Z\ATTRACT MODE\layouts\Flow\curldownload.vbs" "C:\Z\ATTRACT MODE\layouts\Flow\dlds\0videodldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=motaromk9&sspassword=12345678&systemeid=4&jeuid=2742&media=video-normalized" "C:\Z\MEDIAS\snes\video\3 Ninjas Kick Back (USA).mp4"
