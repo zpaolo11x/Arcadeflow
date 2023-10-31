@@ -83,7 +83,7 @@ per ogni rom nel dispatcher fa tutte queste operazioni:
 |									se non ci sono errori procede a creare json_out.nut
 |									jsonstatus = SCRAPED, ritorna 
 |									<
-|riprende getromdata
+| riprende getromdata
 |						resume
 |						se jsonstatus è RETRY mette gamedata.scrapestatus a true
 |						altrimenti
