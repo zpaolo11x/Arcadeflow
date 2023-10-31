@@ -3589,7 +3589,7 @@ dispatcher = []
 dispatchernum = 0
 
 function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
-	scraprt("ID" + scrapeid + "             createjsonA START")
+	scraprt("ID" + scrapeid + "             createjsonA START\n")
 	local unicorrect = unicorrect()
 
 	try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
@@ -3653,7 +3653,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 }
 
 function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
-	scraprt("ID" + scrapeid + "             createjson START")
+	scraprt("ID" + scrapeid + "             createjson START\n")
 	local unicorrect = unicorrect()
 
 	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
