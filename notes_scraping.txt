@@ -71,19 +71,34 @@ per ogni rom nel dispatcher fa tutte queste operazioni:
 | riprende createjson
 |									resume
 |									THREADS --
-|									se non c'è json.nut jsonstatus = ERROR, ritorna
+|									se non c'è json.nut jsonstatus = ERROR, ritorna 
+|									<
 |									legge il json.nut e costruisce jsarray
 |									se ci sono errori jsonstatus = ERROR, ritorna
-|									*** CODICE PER jsonstatus = RETRY!!!!
+|									<
+|									Controlla se deve fare RETRY, se si:
+|									reinserisce l'item nella purgedromdirlist
+|									ritorna
+|									<
 |									se non ci sono errori procede a creare json_out.nut
-|									jsonstatus = SCRAPED, ritorna
+|									jsonstatus = SCRAPED, ritorna 
 |									<
 |riprende getromdata
 |						resume
 |						se jsonstatus è RETRY mette gamedata.scrapestatus a true
-|						altrimenti...
+|						altrimenti
+|						se è fallito lo scrape con la strippedrom
+|						lancia createjson
+|									> createjson
+|									THREADS ++
+|									curl routine per SS
+|									pollstatus = true
+|									suspend
+|						suspend
+|															
 |						done viene messo a true
 |						ritorna
+|						<
 
 
 "C:\Z\ATTRACT MODE\layouts\Flow\curldownload.vbs" "C:\Z\ATTRACT MODE\layouts\Flow\dlds\0videodldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=motaromk9&sspassword=12345678&systemeid=4&jeuid=2742&media=video-normalized" "C:\Z\MEDIAS\snes\video\3 Ninjas Kick Back (USA).mp4"
