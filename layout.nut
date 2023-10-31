@@ -3609,7 +3609,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
-	scraprt(" - suspend\n")
+	scraprt("             createjsonA suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjsonA resumed\n")
 
@@ -3695,13 +3695,19 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
-	scraprt(" - suspend\n")
+	scraprt("             createjson suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
+
+	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
+		dispatcher[scrapeid].jsonstatus = "ERROR"
+		return
+	}
 
 	local jsarray = []
 	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "json.nut")
 	local linein = null
+
 	while (!jsfilein.eos()) {
 		linein = jsfilein.read_line()
 		if (linein == "") continue
@@ -3712,10 +3718,6 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		}
 	}
 
-	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
-		dispatcher[scrapeid].jsonstatus = "ERROR"
-		return
-	}
 
   	if (jsarray[0].slice(0, 1) != "{") {
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
@@ -3728,10 +3730,10 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 			print_variable(dispatcher[scrapeid].rominputitem,"","")
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
-		}
-		
+		}	
 		return
 	}
+
 	jsarray.push(")")
 	jsarray[0] = "return(" + jsarray[0]
 
@@ -3798,7 +3800,10 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
-	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
+	if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+	}
+	else {
 		// If stripped rom fails, try with non-stripped rom
 		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
 			stripmatch = false
@@ -3809,9 +3814,12 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 			scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
 			suspend()
 			scraprt("ID" + scrapeid + "         getromdata resumed\n")
+			if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+				dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+			}
 		}
-
-		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
+		
+		if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
 
 			local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
 			// Scraped rom has correct CRC, no more scraping needed
@@ -3834,8 +3842,10 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 				scraprt("ID" + scrapeid + "         getromdata suspend 2\n")
 				suspend()
 				scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
-
-				if (dispatcher[scrapeid].jsonstatus != "ERROR") {
+				if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+					dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+				}
+				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
 					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
 				}
@@ -3850,10 +3860,7 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
 		}
 	}
-	else if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-		echoprint("RETRY\n")
-		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-	}
+
 
 	dispatcher[scrapeid].done = true
 
@@ -3864,7 +3871,7 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 	return //gamedata
 }
 
-function scrapegame2(scrapeid, inputitem, forceskip) {
+function scrapegame(scrapeid, inputitem) {
 	// Updates the dispatcher with the current scraping game
 	dispatcher[AF.scrape.dispatchid].rominputitem = inputitem
 
@@ -3946,68 +3953,55 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 		crc = null
 	}
 
-	// Scraping data structure has been created and now we check if we have
-	// to actually scrape this game or not
+	// Scraping data structure has been created 
 
-	if (scrapethis && !forceskip) {
-		scraprt("ID" + scrapeid + "     scrapegame2 CALL getromdata\n")
+	scraprt("ID" + scrapeid + "     scrapegame CALL getromdata\n")
+	dispatcher[scrapeid].getromdata.call(scrapeid, AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname, gd[0], gd[1], garcade, AF.scrape.regionprefs, AF.emulatordata[inputitem.z_emulator].rompath + gnamewext)
+	scraprt("ID" + scrapeid + "     scrapegame suspend\n")
+	suspend()
+	scraprt("ID" + scrapeid + "     scrapegame resume\n")
 
-		dispatcher[scrapeid].getromdata.call(scrapeid, AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname, gd[0], gd[1], garcade, AF.scrape.regionprefs, AF.emulatordata[inputitem.z_emulator].rompath + gnamewext)
-		scraprt("ID" + scrapeid + "     scrapegame2 suspend\n")
-		suspend()
-		scraprt("ID" + scrapeid + "     scrapegame2 resume\n")
+	// Now the results from the scrape are back, let's analyse and put them in the
+	// scrapelist fields (in this case no need to use listline!)
+	// The data can be written to "inputitem" which is the link to the original data table
+	local isarcade = dispatcher[scrapeid].gamedata.isarcade
+	if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME") && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
+		if ((dispatcher[scrapeid].gamedata.scrapestatus != "ERROR")) {
 
-		// Now the results from the scrape are back, let's analyse and put them in the
-		// scrapelist fields (in this case no need to use listline!)
-		// The data can be written to "inputitem" which is the link to the original data table
-		local isarcade = dispatcher[scrapeid].gamedata.isarcade
-		if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME") && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
-			if ((dispatcher[scrapeid].gamedata.scrapestatus != "ERROR")) {
+			//listline = gname + ";" //Name
+			inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
+			inputitem.z_title = subst_replace(inputitem.z_title, "\"", "'")
 
-				//listline = gname + ";" //Name
-				inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
-				inputitem.z_title = subst_replace(inputitem.z_title, "\"", "'")
+			inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
+			inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
+			inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, "\"", "'")
 
-				inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
-				inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
-				inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, "\"", "'")
+			inputitem.z_category = isarcade ? dispatcher[scrapeid].gamedata.adb_genre : dispatcher[scrapeid].gamedata.genre //Category
+			inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
+			inputitem.z_rotation = isarcade ? dispatcher[scrapeid].gamedata.adb_screenorientation : dispatcher[scrapeid].gamedata.a_rotation //Rotation
+			inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
 
-				inputitem.z_category = isarcade ? dispatcher[scrapeid].gamedata.adb_genre : dispatcher[scrapeid].gamedata.genre //Category
-				inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
-				inputitem.z_rotation = isarcade ? dispatcher[scrapeid].gamedata.adb_screenorientation : dispatcher[scrapeid].gamedata.a_rotation //Rotation
-				inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
+			inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
+			inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
+			inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
+			inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
+			inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
 
-				inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
-				inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
-				inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
-				inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
-				inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
+			inputitem.z_buttons = isarcade ? dispatcher[scrapeid].gamedata.adb_inputbuttons.tostring() : dispatcher[scrapeid].gamedata.a_buttons.tostring()
+			inputitem.z_series = isarcade ? dispatcher[scrapeid].gamedata.adb_serie : dispatcher[scrapeid].gamedata.series //Series
 
-				inputitem.z_buttons = isarcade ? dispatcher[scrapeid].gamedata.adb_inputbuttons.tostring() : dispatcher[scrapeid].gamedata.a_buttons.tostring()
-				inputitem.z_series = isarcade ? dispatcher[scrapeid].gamedata.adb_serie : dispatcher[scrapeid].gamedata.series //Series
-
-				inputitem.z_region = isarcade ? "" : dispatcher[scrapeid].gamedata.regions //Region
-				inputitem.z_rating = dispatcher[scrapeid].gamedata.rating.tostring() //Rating
-			}
-			else {
-				// dispatcher scrapestatus is an error. If no previous scraping was done this is transferred to the rom scrape status
-				if (inputitem.z_scrapestatus == "NONE") inputitem.z_scrapestatus = "ERROR"
-			}
+			inputitem.z_region = isarcade ? "" : dispatcher[scrapeid].gamedata.regions //Region
+			inputitem.z_rating = dispatcher[scrapeid].gamedata.rating.tostring() //Rating
 		}
-		else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
-			inputitem.z_scrapestatus = "NOGAME"
+		else {
+			// dispatcher scrapestatus is an error. If no previous scraping was done this is transferred to the rom scrape status
+			if (inputitem.z_scrapestatus == "NONE") inputitem.z_scrapestatus = "ERROR"
 		}
 	}
-	else {
-		local tempreason = ""
-		try {tempreason = " " + inputitem.z_scrapestatus} catch(err) {}
-
-		dispatcher[scrapeid].gamedata.scrapestatus = "SKIP " + strip(tempreason)
-		inputitem.z_scrapestatus = "ERROR"
-
-		dispatcher[scrapeid].skip = true
-		dispatcher[scrapeid].done = true
+	else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
+		inputitem.z_scrapestatus = "NOGAME"
 	}
+	
 
 	if (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY") {
 		try {
@@ -4025,7 +4019,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 	}
 
 	// MEDIA DOWNLOAD
-	if ((scrapethis && !forceskip) && (dispatcher[scrapeid].gamedata.scrapestatus!="ERROR")) {
+	if ((scrapethis) && (dispatcher[scrapeid].gamedata.scrapestatus!="ERROR")) {
 		debugpr("gamedata.scrapestatus:" + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
 		debugpr("gamedata.media table size:" + dispatcher[scrapeid].gamedata.media.len() + "\n")
 		foreach (emuartcat, emuartfolder in AF.emulatordata[inputitem.z_emulator].artworktable) {
@@ -4085,7 +4079,7 @@ function scrapegame2(scrapeid, inputitem, forceskip) {
 			}
 		}
 	}
-	scraprt("ID" + scrapeid + "     scrapegame2 END\n")
+	scraprt("ID" + scrapeid + "     scrapegame END\n")
 }
 
 // Define the new list data
@@ -16152,7 +16146,8 @@ function tick(tick_time) {
 		}
 	}
 
-	// Scraping
+	/// Scraping tick loop ///
+
 	// When the scrapelist is populated, scraper starts running through it
 	if (AF.scrape.purgedromdirlist != null) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
@@ -16204,44 +16199,42 @@ function tick(tick_time) {
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
 		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)) {
-			// Increase the number of thread counts
-			AF.scrape.threads ++
-			// Add a new data structure to the scrape dispatcher
-			dispatcher.push({
-				scrapegame2 = newthread(scrapegame2)
-				getromdata = newthread(getromdata)
-				createjsonA = newthread(createjsonA)
-				createjson = newthread(createjson)
-				pollstatus = false
-				pollstatusA = false
-				rominputitem = ""
-				gamedata = null
-				jsonstatus = null
-				done = false
-				quit = AF.scrape.quit
-				skip = false
-				time0 = fe.layout.time
-			})
 
-			local t0 = fe.layout.time
-
-			scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
-
-			// Run the scrapegame2 function in the currently dispatched scrape
-			// passing the last item on the purgedlist to the function
-			//dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop(), AF.scrape.quit)
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
 				AF.scrape.quit = false
 			}
 			else {
+				// Increase the number of thread counts
+				AF.scrape.threads ++
+				// Add a new data structure to the scrape dispatcher
+				scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
+				dispatcher.push({
+					scrapegame = newthread(scrapegame)		// This is the main function that controls the scraping process
+					getromdata = newthread(getromdata)		// Manages the scrape iterations
+					createjsonA = newthread(createjsonA)	// Creates the json file for arcade database fames
+					createjson = newthread(createjson)		// Creates the json file for screenscraper games
+					pollstatus = false
+					pollstatusA = false
+					rominputitem = ""
+					gamedata = null
+					jsonstatus = null
+					done = false									// True if the scraping process has finished
+					quit = AF.scrape.quit						// True if the user quit the scraping
+					skip = false									// Skips the current rom
+					time0 = fe.layout.time
+				})
 				// Increase number of dispatch count
 				dispatchernum ++
-				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame2\n")
-				dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop(), AF.scrape.quit)
+
+				// Run the scrapegame function in the currently dispatched scrape
+				// passing the last item on the purgedlist to the function		
+				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame\n")
+				dispatcher[AF.scrape.dispatchid].scrapegame.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop())
+
+				// Increase the number of the id for the next scrape
+				AF.scrape.dispatchid ++
 			}
-			// Increase the number of the id for the next scrape
-			AF.scrape.dispatchid ++
 		}
 	}
 
@@ -16257,7 +16250,7 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
-testpr(item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
+testpr(i+" done: "+item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
 				testpr("ALL:" + AF.scrape.totalroms + " DONE:"+AF.scrape.doneroms+"\n")
 
@@ -16271,8 +16264,8 @@ testpr(item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUES
 
 				AF.scrape.threads --
 				dispatchernum --
-				scraprt("ID" + i + " main WAKEUP scrapegame2\n")
-				if ((!item.quit) && (!item.skip)) item.scrapegame2.wakeup()
+				scraprt("ID" + i + " main WAKEUP scrapegame\n")
+				if ((!item.quit) && (!item.skip)) item.scrapegame.wakeup()
 				//scraprt("ID" + i + " main continue second check\n")
 
 				item.time0 = -1

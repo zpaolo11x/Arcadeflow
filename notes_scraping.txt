@@ -1,0 +1,128 @@
+
+Lo scrape tick loop cosa fa?
+
+- Controlla la purgedromdirlist, se siamo in quit mode cancella la purgedromdirlist, e rimette .quit a false.
+- Se non siamo in quit mode il tick loop popola il dispatcher. Dispatcher contiene le variabili per un certo gioco, più le funzioni per gestirlo.
+
+ATTENZIONE: se qualcosa popola il dispatcher o la purgedromdirlist mentre siamo in quit mode cosa succede? Riparte solo con quella roba quindi probabilmente è ok
+
+- Dopo aver aggiunto il gioco al dispatcher, viene lanciata scrapegame passandogli il tracking (dispatchid) e l'ultimo elemento della scrapelist. Il loop poi si chiude aumentando il dispatchid mentre scrapegame lavora in parallelo!!!
+
+Quindi: 
+scrape tick loop
+aggiorna dispatcher
+lancia scrapegame
+v|			> scrapegame
+dispatchid aumentata
+download tick loop
+
+scrapegame cosa fa?
+
+- Popola romimputitem nel dispatcher con l'inputitem preso dalla lista e passato come parametro
+- Crea la struttura "gamedata" che contiene tutta la roba utile per lo scraping
+- Chiama getromdata con tutti i parametri regionali e di scraping del caso
+
+getromdata è la funzione che dovrebbe popolare la struttura di gamedata
+
+Quindi: 
+scrape tick loop
+aggiorna dispatcher
+lancia scrapegame
+			> scrapegame
+			crea gamedata
+			lancia getromdata
+						> getromdata
+dispatchid aumentata
+download tick loop
+
+getromdata cosa fa? (caso NON ARCADE)
+
+- calcola il crc della rom
+- chiama createjson e si mette in attesa
+
+Quindi: 
+scrape tick loop
+aggiorna dispatcher
+lancia scrapegame
+			> scrapegame
+			crea gamedata
+			lancia getromdata
+						> getromdata
+						calcola crc
+						lancia createjson
+									> createjson								
+dispatchid aumentata
+download tick loop
+
+createjson cosa fa?
+
+- prepara la curl routine per SS, la esegue
+- imposta pollstatus a true e si mette in attesa
+
+Quindi: 
+scrape tick loop
+aggiorna dispatcher
+lancia scrapegame e va avanti
+|			> scrapegame
+|			crea gamedata
+|			lancia getromdata
+|						> getromdata
+|						calcola crc
+|						lancia createjson
+|									> createjson
+|									curl routine per SS
+|									pollstatus = true
+v									suspend								
+dispatchid aumentata
+download tick loop
+
+A questo punto la palla passa al download tick loop che controlla i file scaricati ma soprattutto lo stato dei json
+
+Fa passare tutto il dispatcher, e se un'item non è "done" controlla tre casi:
+
+1. pollstatus è attivo, e c'è già il file json.txt
+2. pollstatusA per gli arcade, stessa cosa
+3. timeout check
+
+Caso 1
+
+- spegne pollstatus
+- risveglia createjson e aspetta, poi risveglia getromdata e aspetta
+
+"//" sono cose che girano nel tick loop in parallelo al resto
+
+scrape tick loop
+aggiorna dispatcher
+lancia scrapegame e va avanti
+			> scrapegame
+			crea gamedata
+			lancia getromdata
+			suspend
+						> getromdata
+						calcola crc
+						lancia createjson
+						suspend
+									> createjson
+									curl routine per SS
+									pollstatus = true
+									suspend								
+// dispatchid aumentata
+
+// download tick loop
+// il file json.txt è pronto
+// pollstatus false
+   riprende createjson
+									resume
+									se non c'è json.nut jsonstatus = ERROR, ritorna
+									legge il json.nut e costruisce jsarray
+									se ci sono errori jsonstatus = ERROR, ritorna
+									*** CODICE PER jsonstatus = RETRY!!!!
+									se non ci sono errori procede a creare json_out.nut
+									jsonstatus = SCRAPED, ritorna
+									<
+   riprende getromdata
+						resume
+						se jsonstatus è RETRY mette gamedata.scrapestatus a true
+						altrimenti...
+						done viene messo a true
+						ritorna

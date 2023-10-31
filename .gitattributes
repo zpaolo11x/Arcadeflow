@@ -14,3 +14,4 @@ pref_mf_*.txt export-ignore
 /blanks export-ignore
 test_*.* export-ignore
 nut_*_test.* export-ignore
+notes_*.* export-ignore
