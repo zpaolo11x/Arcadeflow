@@ -230,6 +230,7 @@ function AFscrapeclear() {
 		requests = ""
 		report = {}
 		threads = 0
+		threadmax = 4
 	}
 
 }
@@ -3692,12 +3693,14 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (romfilename != null) execss += "&romnom=" + romfilename
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
+	AF.scrape.threads ++
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
 	scraprt("             createjson suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
+	AF.scrape.threads --
 
 	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
 		dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -16067,7 +16070,7 @@ function tick(tick_time) {
 	}
 
 	// Media download cue for arcade games
-	if ( (download.list.len() > 0) && checkmsec(download.timestep) ){ //TEST162 cambiare con download.num?
+	if ( (download.list.len() > 0) && checkmsec(download.timestep)){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
@@ -16092,7 +16095,7 @@ function tick(tick_time) {
 
 				item.status = "ADB_downloading"
 			}
-			else if (item.status == "start_download_SS"){
+			else if ((item.status == "start_download_SS") && (AF.scrape.threads < AF.scrape.threadmax)){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
@@ -16105,7 +16108,7 @@ function tick(tick_time) {
 					texeSS += "curl -s -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfile + "\" ; "
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
-
+				AF.scrape.threads ++
 				testpr(texeSS+"\n")
 				system(texeSS)
 
@@ -16138,6 +16141,7 @@ function tick(tick_time) {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
 					download.num --
+					AF.scrape.threads --
 				}
 			}
 		}
@@ -16198,15 +16202,15 @@ function tick(tick_time) {
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < AF.scrape.threadmax)) {
 
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
 				AF.scrape.quit = false
 			}
 			else {
-				// Increase the number of thread counts
-				AF.scrape.threads ++
+				// Increase the number of threads counts
+				//TEST165 MOVED AF.scrape.threads ++
 				// Add a new data structure to the scrape dispatcher
 				scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
 				dispatcher.push({
@@ -16239,7 +16243,7 @@ function tick(tick_time) {
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
 		if (download.num != download.numpre) {
 			msgbox_newtitle(dispatch_header)
@@ -16250,7 +16254,7 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
-testpr(i+" done: "+item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
+				testpr(i+" done: "+item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
 				testpr("ALL:" + AF.scrape.totalroms + " DONE:"+AF.scrape.doneroms+"\n")
 
@@ -16262,7 +16266,7 @@ testpr(i+" done: "+item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST16
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
-				AF.scrape.threads --
+				//TEST165 MOVED AF.scrape.threads --
 				dispatchernum --
 				scraprt("ID" + i + " main WAKEUP scrapegame\n")
 				if ((!item.quit) && (!item.skip)) item.scrapegame.wakeup()
@@ -16303,7 +16307,7 @@ testpr(i+" done: "+item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST16
 					try {remove(AF.folder + "json/" + i + "jsonA_out.nut")} catch(err) {}
 
 					item.pollstatusA = item.pollstatus = false
-					AF.scrape.threads --
+					AF.scrape.threads -- //TEST165 RIMUOVERE?
 					dispatchernum --
 
 					item.gamedata = null
