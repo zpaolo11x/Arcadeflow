@@ -16259,7 +16259,7 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
 testpr(item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
-				testpr("ALL:" + AF.scrape.totalroms + "\n")
+				testpr("ALL:" + AF.scrape.totalroms + " DONE:"+AF.scrape.doneroms+"\n")
 
 				testpr("                OLD:" + AF.scrape.doneroms + " " + item.gamedata.scrapestatus + " NEW:")
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
