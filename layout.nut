@@ -230,7 +230,9 @@ function AFscrapeclear() {
 		requests = ""
 		report = {}
 		threads = 0
-		threadsmax = 6
+		threads_dl = 0
+		threadsmax = 20
+		threadsmax_dl = 20
 	}
 }
 
@@ -16082,7 +16084,7 @@ function tick(tick_time) {
 				if (OS == "Windows") {
 					// OUTPUT
 					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
-					texeA = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
+					texeA = "\"" + AF.folder + "curldownload.vbs\" \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
 				}
 				else {
 					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
@@ -16094,20 +16096,20 @@ function tick(tick_time) {
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && (AF.scrape.threads < AF.scrape.threadsmax)){
+			else if ((item.status == "start_download_SS") && (AF.scrape.threads_dl < AF.scrape.threadsmax_dl)){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
+					texeSS = "\"" + AF.folder + "curldownload.vbs\" \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
 					texeSS += "curl -s -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfile + "\" ; "
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
-				AF.scrape.threads ++
+				AF.scrape.threads_dl ++
 				testpr(texeSS+"\n")
 				system(texeSS)
 
@@ -16140,7 +16142,7 @@ function tick(tick_time) {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
 					download.num --
-					AF.scrape.threads --
+					AF.scrape.threads_dl --
 				}
 			}
 		}
