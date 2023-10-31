@@ -97,21 +97,21 @@ lancia scrapegame e va avanti
 			> scrapegame
 			crea gamedata
 			lancia getromdata
-			suspend
 						> getromdata
 						calcola crc
 						lancia createjson
-						suspend
 									> createjson
 									curl routine per SS
 									pollstatus = true
-									suspend								
-// dispatchid aumentata
+									suspend
+						suspend								
+			suspend
+dispatchid aumentata
 
-// download tick loop
-// il file json.txt è pronto
-// pollstatus false
-   riprende createjson
+download tick loop
+il file json.txt è pronto
+pollstatus false
+riprende createjson
 									resume
 									se non c'è json.nut jsonstatus = ERROR, ritorna
 									legge il json.nut e costruisce jsarray
@@ -120,7 +120,7 @@ lancia scrapegame e va avanti
 									se non ci sono errori procede a creare json_out.nut
 									jsonstatus = SCRAPED, ritorna
 									<
-   riprende getromdata
+riprende getromdata
 						resume
 						se jsonstatus è RETRY mette gamedata.scrapestatus a true
 						altrimenti...

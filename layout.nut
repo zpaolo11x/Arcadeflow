@@ -230,9 +230,8 @@ function AFscrapeclear() {
 		requests = ""
 		report = {}
 		threads = 0
-		threadmax = 4
+		threadsmax = 6
 	}
-
 }
 
 AFscrapeclear()
@@ -796,7 +795,7 @@ local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	print("DS:" + dispatchernum + " DL:" + download.num + " " + instring)
+	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads + " " + instring)
 }
 function testpr(instring) {
 	print(instring)
@@ -3610,7 +3609,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
-	scraprt("             createjsonA suspend\n")
+	scraprt("ID" + scrapeid + "             createjsonA suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjsonA resumed\n")
 
@@ -3693,11 +3692,12 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (romfilename != null) execss += "&romnom=" + romfilename
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
+
 	AF.scrape.threads ++
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
-	scraprt("             createjson suspend\n")
+	scraprt("ID" + scrapeid + "             createjson suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
 	AF.scrape.threads --
@@ -15984,7 +15984,6 @@ if (surfdebug) {
 
 /// On Tick ///
 function tick(tick_time) {
-
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16095,7 +16094,7 @@ function tick(tick_time) {
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && (AF.scrape.threads < AF.scrape.threadmax)){
+			else if ((item.status == "start_download_SS") && (AF.scrape.threads < AF.scrape.threadsmax)){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
@@ -16202,7 +16201,7 @@ function tick(tick_time) {
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < AF.scrape.threadmax)) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < AF.scrape.threadsmax)) {
 
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
@@ -16235,7 +16234,6 @@ function tick(tick_time) {
 				// passing the last item on the purgedlist to the function		
 				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame\n")
 				dispatcher[AF.scrape.dispatchid].scrapegame.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop())
-
 				// Increase the number of the id for the next scrape
 				AF.scrape.dispatchid ++
 			}
