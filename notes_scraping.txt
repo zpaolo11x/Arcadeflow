@@ -84,3 +84,6 @@ per ogni rom nel dispatcher fa tutte queste operazioni:
 |						altrimenti...
 |						done viene messo a true
 |						ritorna
+
+
+"C:\Z\ATTRACT MODE\layouts\Flow\curldownload.vbs" "C:\Z\ATTRACT MODE\layouts\Flow\dlds\0videodldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=motaromk9&sspassword=12345678&systemeid=4&jeuid=2742&media=video-normalized" "C:\Z\MEDIAS\snes\video\3 Ninjas Kick Back (USA).mp4"
