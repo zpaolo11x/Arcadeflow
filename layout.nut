@@ -3599,7 +3599,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = AF.subfolder + "\\curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = "\"" + AF.subfolder + "\\curlscrape.vbs\" \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
 		execss += "&use_parent=1\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.txt\""
 	}
@@ -3673,7 +3673,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = AF.subfolder + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss = "\"" + AF.subfolder + "\\curlscrape.vbs\" \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
 		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
