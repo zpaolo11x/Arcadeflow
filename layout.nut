@@ -211,6 +211,7 @@ function AFscrapeclear() {
 		regiontable = ["wor", "us", "eu", "ss", "jp"]
 		regionprefs = [] //This will be populated by options table
 		checktable = {}
+		
 		purgedromdirlist = null
 		listoflists = null
 		emudata = null
@@ -221,14 +222,18 @@ function AFscrapeclear() {
 		scrapelist_lines = null
 		romlist_file = null
 		romlist_lines = null
+		
 		quit = false
+		
 		totalroms = 0
 		doneroms = 0
 		timeoutroms = []
+		
 		onegame = ""
 		dispatchid = 0
 		requests = ""
 		report = {}
+
 		threads = 0
 		threads_dl = 0
 		threadsmax = 1
@@ -3761,16 +3766,16 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 function updatethreads(threads_in){
 	testpr("                                                     "+threads_in+"\n")
 	if (threads_in == 1){
-		AF.scrape.threads = 1
-		AF.scrape.threads_dl = 1
+		AF.scrape.threadsmax = 1
+		AF.scrape.threadsmax_dl = 1
 	}
 	else if (threads_in == 2){
-		AF.scrape.threads = 1
-		AF.scrape.threads_dl = 1
+		AF.scrape.threadsmax = 1
+		AF.scrape.threadsmax_dl = 1
 	}
 	else {
-		AF.scrape.threads = 2
-		AF.scrape.threads_dl = threads_in - 2
+		AF.scrape.threadsmax = 20
+		AF.scrape.threadsmax_dl = threads_in - 2
 	}
 }
 
