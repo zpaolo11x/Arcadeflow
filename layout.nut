@@ -207,7 +207,6 @@ local AF = {
 
 function AFscrapeclear() {
 	AF.scrape = {
-		stack = []
 		regiontable = ["wor", "us", "eu", "ss", "jp"]
 		regionprefs = [] //This will be populated by options table
 		checktable = {}
@@ -235,9 +234,15 @@ function AFscrapeclear() {
 		report = {}
 
 		threads = 0
+		threadsmax = 20
+
 		threads_dl = 0
-		threadsmax = 1
-		threadsmax_dl = 0
+		threadsmax_dl = 20
+		
+		SSthreads = 0
+		SSthreadsMAX = 6
+
+		SSjsonstack = []
 	}
 }
 
@@ -3700,14 +3705,14 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
 
-	AF.scrape.threads ++
+	AF.scrape.SSthreads ++
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
 	scraprt("ID" + scrapeid + "             createjson suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
-	AF.scrape.threads --
+	AF.scrape.SSthreads --
 
 	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
 		dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -3818,6 +3823,11 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local stripmatch = true
 	local skipcrc = false
 	skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+	
+	if (AF.scrape.SSthreads >= AF.scrape.SSthreadsMAX) {
+		AF.scrape.SSjsonstack.push([scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia])
+		suspend()
+	}
 	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
 	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
@@ -3852,7 +3862,7 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
 				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-				updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
+				//TEST165 RIABILITARE updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 			}
 			else {
 				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
@@ -16235,7 +16245,7 @@ function tick(tick_time) {
 			}
 			else {
 				// Increase the number of threads counts
-				//TEST165 MOVED AF.scrape.threads ++
+				AF.scrape.threads ++
 				// Add a new data structure to the scrape dispatcher
 				scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
 				dispatcher.push({
@@ -16266,6 +16276,12 @@ function tick(tick_time) {
 		}
 	}
 
+	// Scrape json stack management for SS
+	if ((AF.scrape.SSjsonstack.len() > 0) && (AF.scrape.SSthreads < AF.scrape.SSthreadsMAX)){
+		local tempjson = AF.scrape.SSjsonstack.pop()
+		dispatcher[tempjson[0]].getromdata.wakeup()
+	}
+
 	if ((dispatchernum != 0) || (download.num != 0)){
 		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dl + " " + AF.scrape.threads + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
@@ -16290,7 +16306,8 @@ function tick(tick_time) {
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
-				//TEST165 MOVED AF.scrape.threads --
+				//TEST165 questo non è uguale a dispatchernum col nuovo sistema???
+				AF.scrape.threads --
 				dispatchernum --
 				scraprt("ID" + i + " main WAKEUP scrapegame\n")
 				if ((!item.quit) && (!item.skip)) item.scrapegame.wakeup()
