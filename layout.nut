@@ -231,8 +231,8 @@ function AFscrapeclear() {
 		report = {}
 		threads = 0
 		threads_dl = 0
-		threadsmax = 20
-		threadsmax_dl = 20
+		threadsmax = 1
+		threadsmax_dl = 0
 	}
 }
 
@@ -3758,6 +3758,22 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	return
 }
 
+function updatethreads(threads_in){
+	testpr("                                                     "+threads_in+"\n")
+	if (threads_in == 1){
+		AF.scrape.threads = 1
+		AF.scrape.threads_dl = 1
+	}
+	else if (threads_in == 2){
+		AF.scrape.threads = 1
+		AF.scrape.threads_dl = 1
+	}
+	else {
+		AF.scrape.threads = 2
+		AF.scrape.threads_dl = threads_in - 2
+	}
+}
+
 function getromdata(scrapeid, ss_username, ss_password, romname, systemid, systemmedia, isarcade, regionprefs, rompath) {
 	scraprt("ID" + scrapeid + "         getromdata START " + rompath + "\n")
 
@@ -3831,6 +3847,7 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
 				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+				updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 			}
 			else {
 				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
@@ -3852,6 +3869,7 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 				}
 				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+					updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
 				}
 			}
@@ -3926,6 +3944,7 @@ function scrapegame(scrapeid, inputitem) {
 		extradata = ""
 		scrapestatus = "NONE"
 		requests = ""
+		SSthreads = 0
 		regionprefs = AF.scrape.regionprefs
 
 		// SS Arcade scrape data
@@ -16243,7 +16262,7 @@ function tick(tick_time) {
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dl + " " + AF.scrape.threads + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
 		if (download.num != download.numpre) {
 			msgbox_newtitle(dispatch_header)

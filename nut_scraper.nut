@@ -319,6 +319,10 @@ function parsejson(scrapeid, gamedata){
    } catch(err) {}
 
    try {
+      gamedata.SSthreads = jstab.response.ssuser.maxthreads.tointeger()
+   } catch(err) {}
+
+   try {
       gamedata.notgame = jstab.response.jeu.notgame == "true"
    } catch(err) {
       gamedata.notgame = false
