@@ -3599,9 +3599,9 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = "\"" + AF.subfolder + "\\curlscrape.vbs\" \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = AF.subfolder + "curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
-		execss += "&use_parent=1\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.txt\""
+		execss += "&use_parent=1\" \"" + AF.subfolder + "json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "json\\" + scrapeid + "jsonA.txt\""
 	}
 	else {
 		execss = "curl -s \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
@@ -3673,7 +3673,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = "\"" + AF.subfolder + "\\curlscrape.vbs\" \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss = AF.subfolder + "curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
 		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
@@ -3681,7 +3681,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
-		execss += "\" \"" + AF.subfolder + "\\json\\" + scrapeid + "json.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "json.txt\""
+		execss += "\" \"" + AF.subfolder + "json\\" + scrapeid + "json.nut\" \"" + AF.subfolder + "json\\" + scrapeid + "json.txt\""
 	}
 	else {
 		execss = "curl -s \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
@@ -16084,7 +16084,7 @@ function tick(tick_time) {
 				if (OS == "Windows") {
 					// OUTPUT
 					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
-					texeA = "\"" + AF.folder + "curldownload.vbs\" \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
+					texeA = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
 				}
 				else {
 					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
@@ -16102,7 +16102,7 @@ function tick(tick_time) {
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = "\"" + AF.folder + "curldownload.vbs\" \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
+					texeSS = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
