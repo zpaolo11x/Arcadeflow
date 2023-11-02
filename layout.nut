@@ -235,15 +235,8 @@ function AFscrapeclear() {
 
 		threads = 0
 		threadsmax = 20
-
-		threads_dl = 0
-		threadsmax_dl = 20
-		
-		SSthreads = 0
-		SSthreadsMAX = 6
-
-		SSjsonstack = []
 	}
+
 }
 
 AFscrapeclear()
@@ -3705,14 +3698,12 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
 
-	AF.scrape.SSthreads ++
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
 	scraprt("ID" + scrapeid + "             createjson suspend\n")
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
-	AF.scrape.SSthreads --
 
 	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
 		dispatcher[scrapeid].jsonstatus = "ERROR"
@@ -3722,7 +3713,6 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	local jsarray = []
 	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "json.nut")
 	local linein = null
-
 	while (!jsfilein.eos()) {
 		linein = jsfilein.read_line()
 		if (linein == "") continue
@@ -3737,18 +3727,15 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
   	if (jsarray[0].slice(0, 1) != "{") {
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
 		echoprint("*" + jsarray[0] + "*\n")
-		dispatcher[scrapeid].jsonstatus = "ERROR"
-		
+		dispatcher[scrapeid].jsonstatus = "ERROR"		
 		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
-			print_variable(dispatcher[scrapeid].rominputitem,"","")
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
 		}	
 		return
 	}
-
 	jsarray.push(")")
 	jsarray[0] = "return(" + jsarray[0]
 
@@ -3816,18 +3803,12 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
 	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-
 	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
 	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
 	local stripmatch = true
 	local skipcrc = false
 	skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
-	
-	if (AF.scrape.SSthreads >= AF.scrape.SSthreadsMAX) {
-		AF.scrape.SSjsonstack.push([scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia])
-		suspend()
-	}
 	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
 	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
@@ -3835,7 +3816,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
-testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
+
 	if (dispatcher[scrapeid].jsonstatus == "RETRY") {
 		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
 	}
@@ -3879,12 +3860,13 @@ testpr("jsonstatus:"+dispatcher[scrapeid].jsonstatus+"\n")
 				scraprt("ID" + scrapeid + "         getromdata suspend 2\n")
 				suspend()
 				scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
+
 				if (dispatcher[scrapeid].jsonstatus == "RETRY") {
 					dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
 				}
 				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-					updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
+					//TEST165 RIABILITARE updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
 				}
 			}
@@ -4245,7 +4227,6 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 				AF.scrape.purgedromdirlist.push(item)
 			}
 		}
-		testpr("TOTALROMS"+AF.scrape.totalroms+"\n")
 		AF.scrape.purgedromdirlist.reverse()
 	}
 }
