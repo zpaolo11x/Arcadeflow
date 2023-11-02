@@ -4070,7 +4070,6 @@ function scrapegame(scrapeid, inputitem) {
 						ADBfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
-						time0 = fe.layout.time
 					}
 
 					if (tempdata.len() > 0) {
@@ -16107,6 +16106,8 @@ function tick(tick_time) {
 					texeA += "curl -s -f --create-dirs \"" + item.ADBurl + "\" -o \"" + item.ADBfile + "\" ; "
 					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
+				item.time0 = fe.layout.time
+
 				testpr(texeA+"\n")
 				system(texeA)
 
