@@ -4070,6 +4070,7 @@ function scrapegame(scrapeid, inputitem) {
 						ADBfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
+						time0 = fe.layout.time
 					}
 
 					if (tempdata.len() > 0) {
@@ -16089,8 +16090,8 @@ function tick(tick_time) {
 	if ( (download.list.len() > 0) && checkmsec(download.timestep)){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
+			testpr(item.id+"|"+item.cat+"|"+item.status+"\n")
 			if (item.status == "start_download_ADB"){
-
 				// Initialize item in download folder and delete existing media
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
 				try {remove(item.ADBfile)} catch(err) {}
@@ -16133,7 +16134,8 @@ function tick(tick_time) {
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
 			else if (item.status == "ADB_downloading") {
 					// Check if wheel has been downloaded
-				if (!file_exist(item.dldpath + "dldsA.txt")){
+				local timecheck = fe.layout.time
+				if (!file_exist(item.dldpath + "dldsA.txt") || (timecheck - item.time0) >= 10000){ //TEST165 add timeout checking here
 					// File has been downlaoded, check wheel and snap to trigger SS scraping if needed, but IF SSurl is present in the data structure
 					if (
 							(
@@ -16145,6 +16147,7 @@ function tick(tick_time) {
 							(item.rawin("SSurl"))
 						){
 						try {remove(item.ADBfile)} catch(err) {}
+						testpr("SWITCH TO SS\n")
 						item.status = "start_download_SS"
 					}
 					else {
