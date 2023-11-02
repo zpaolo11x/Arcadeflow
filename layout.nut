@@ -234,7 +234,9 @@ function AFscrapeclear() {
 		report = {}
 
 		threads = 0
+		threads_dl = 0
 		threadsmax = 20
+		threadsmax_dl = 10
 	}
 
 }
@@ -3881,7 +3883,6 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		}
 	}
 
-
 	dispatcher[scrapeid].done = true
 
 	try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
@@ -4022,7 +4023,6 @@ function scrapegame(scrapeid, inputitem) {
 	else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
 		inputitem.z_scrapestatus = "NOGAME"
 	}
-	
 
 	if (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY") {
 		try {
@@ -16257,12 +16257,6 @@ function tick(tick_time) {
 		}
 	}
 
-	// Scrape json stack management for SS
-	if ((AF.scrape.SSjsonstack.len() > 0) && (AF.scrape.SSthreads < AF.scrape.SSthreadsMAX)){
-		local tempjson = AF.scrape.SSjsonstack.pop()
-		dispatcher[tempjson[0]].getromdata.wakeup()
-	}
-
 	if ((dispatchernum != 0) || (download.num != 0)){
 		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dl + " " + AF.scrape.threads + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
@@ -16275,19 +16269,14 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
-				testpr(i+" done: "+item.gamedata.scrapestatus+" "+item.jsonstatus+"\n") //TEST165 CHECK QUESTI DUE SONO DIVERSI!!!
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
-				testpr("ALL:" + AF.scrape.totalroms + " DONE:"+AF.scrape.doneroms+"\n")
 
-				testpr("                OLD:" + AF.scrape.doneroms + " " + item.gamedata.scrapestatus + " NEW:")
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
-				testpr(AF.scrape.doneroms+"\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
 				
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
-				//TEST165 questo non è uguale a dispatchernum col nuovo sistema???
 				AF.scrape.threads --
 				dispatchernum --
 				scraprt("ID" + i + " main WAKEUP scrapegame\n")
