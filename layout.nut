@@ -16138,7 +16138,7 @@ function tick(tick_time) {
 			else if (item.status == "ADB_downloading") {
 					// Check if wheel has been downloaded
 				local timecheck = fe.layout.time
-				if ((timecheck - item.time0) >= 10000) testpr ("ADB TIMEOUT\n")
+				if ((timecheck - item.time0) >= 10000) testpr ("\n                    ADB TIMEOUT\n\n")
 				if (!file_exist(item.dldpath + "dldsA.txt") || (timecheck - item.time0) >= 10000){ //TEST165 add timeout checking here
 					// File has been downlaoded, check wheel and snap to trigger SS scraping if needed, but IF SSurl is present in the data structure
 					if (
