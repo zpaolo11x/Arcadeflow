@@ -235,8 +235,10 @@ function AFscrapeclear() {
 
 		threads = 0
 		threads_dl = 0
+
 		threadsmax = 20
 		threadsmax_dl = 10
+		threadsmax_ss = 10
 	}
 
 }
@@ -3759,17 +3761,37 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
 function updatethreads(threads_in){
 	testpr("                                                     "+threads_in+"\n")
+	// Logic: each time a new scrape or a new download is initiated
+	// you check if threads_dl < threadsmax_dl (or threads_ss < threadsmax_ss) and
+	// that threads_dl + threads_ss < threadsmax
+
+
 	if (threads_in == 1){
 		AF.scrape.threadsmax = 1
+		AF.scrape.threadsmax_ss = 1
 		AF.scrape.threadsmax_dl = 1
 	}
 	else if (threads_in == 2){
-		AF.scrape.threadsmax = 1
+		// Scrapes 2 games at a time but only if threads_ss + threads_dl < threadsmax
+		// it downloads only 1 file at a time
+		AF.scrape.threadsmax = 2
+		AF.scrape.threadsmax_ss = 2
 		AF.scrape.threadsmax_dl = 1
 	}
 	else {
+		// Scrapes 14 games at a time plus 6 slots for downloads. Downloads slots are initiated
+		// only if threads_ss + threads_dl < threadsmax_dl
+		// Scrape threads are initiated only if threads_dl <= 6
+
+		// So if you are downloading 6 games, you can't initiate any scraping, if you are downloading
+		// only 5 games, you start pushing scrapes up to 14 slots.
+		// You don't initiate downloads unless dl + ss < max_dl so when ss gets beyond dl
+		// dl starts to fill its quota.
+		
+
 		AF.scrape.threadsmax = 20
-		AF.scrape.threadsmax_dl = threads_in - 2
+		AF.scrape.threadsmax_ss = 14
+		AF.scrape.threadsmax_dl = 6
 	}
 }
 
