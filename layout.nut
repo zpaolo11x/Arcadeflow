@@ -16023,6 +16023,16 @@ if (surfdebug) {
 	debugoverlay.align = Align.Left
 }
 
+function can_start_download(){
+	return ((AF.scrape.threads_scr <= AF.scrape.threadsmax_dld - 1) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld))
+	//return ((AF.scrape.threads_scr < AF.scrape.threadsmax_ss) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld))
+}
+
+function can_start_scrape(){
+	return ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr))
+	//return (( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) ))
+}
+
 /// On Tick ///
 function tick(tick_time) {
 	/*
@@ -16134,7 +16144,7 @@ testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && (AF.scrape.threads_scr < AF.scrape.threadsmax_ss) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)){
+			else if ((item.status == "start_download_SS") && can_start_download() ){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
@@ -16242,7 +16252,7 @@ testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && ( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) )) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && can_start_scrape() ){
 
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []

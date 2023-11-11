@@ -140,10 +140,11 @@ SCRAPE CHECK
 if (dld_t > 0) lancia min ( (max_SS - dld_t), (scrp_max - scrp_t) ) scrape
 else lancia (scrp_max - scrp_t) threads
 
-es: 
-max_SS = 6
-max_dld = 6
-max_scr = 20
+Così non funziona troppo lento e il download blocca tutto!
 
-dld_t = 0
-	min ( (max_SS - dld_t), (scrp_max - scrp_t) ) = min (6 , 20 - scrp_t)
+Alternativa: scrape a blocchi da 20
+
+Lancio 20 scrape, accumulo download ma il download non parte finché i 20 scrape non sono finiti.
+
+Aspetto la fine dei download per ricaricare gli scrape...
+
