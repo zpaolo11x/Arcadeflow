@@ -233,12 +233,12 @@ function AFscrapeclear() {
 		requests = ""
 		report = {}
 
-		threads = 0
-		threads_dl = 0
+		threads_scr = 0
+		threads_dld = 0
 
-		threadsmax = 20
-		threadsmax_dl = 10
-		threadsmax_ss = 10
+		threadsmax_ss = 6 // actual SS cap
+		threadsmax_scr = 20 // cap for scrape threads
+		threadsmax_dld = 6 // cap for download threads
 	}
 
 }
@@ -804,7 +804,7 @@ local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads + " " + instring)
+	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads_scr + " " + instring)
 }
 function testpr(instring) {
 	print(instring)
@@ -3767,16 +3767,16 @@ function updatethreads(threads_in){
 
 
 	if (threads_in == 1){
-		AF.scrape.threadsmax = 1
+		AF.scrape.threadsmax_scr = 1
 		AF.scrape.threadsmax_ss = 1
-		AF.scrape.threadsmax_dl = 1
+		AF.scrape.threadsmax_dld = 1
 	}
 	else if (threads_in == 2){
 		// Scrapes 2 games at a time but only if threads_ss + threads_dl < threadsmax
 		// it downloads only 1 file at a time
-		AF.scrape.threadsmax = 2
+		AF.scrape.threadsmax_scr = 2
 		AF.scrape.threadsmax_ss = 2
-		AF.scrape.threadsmax_dl = 1
+		AF.scrape.threadsmax_dld = 1
 	}
 	else {
 		// Scrapes 14 games at a time plus 6 slots for downloads. Downloads slots are initiated
@@ -3789,9 +3789,9 @@ function updatethreads(threads_in){
 		// dl starts to fill its quota.
 		
 
-		AF.scrape.threadsmax = 20
-		AF.scrape.threadsmax_ss = 14
-		AF.scrape.threadsmax_dl = 6
+		AF.scrape.threadsmax_scr = 20
+		AF.scrape.threadsmax_ss = threads_in
+		AF.scrape.threadsmax_dl = threads_in
 	}
 }
 
@@ -16137,7 +16137,7 @@ function tick(tick_time) {
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && (AF.scrape.threads_dl < AF.scrape.threadsmax_dl)){
+			else if ((item.status == "start_download_SS") && (AF.scrape.threads_scr = 0) && (AF.scrape.theads_dld < AF.scrape.threadsmax_dld)){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
@@ -16150,7 +16150,7 @@ function tick(tick_time) {
 					texeSS += "curl -s -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfile + "\" ; "
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
-				AF.scrape.threads_dl ++
+				AF.scrape.threads_dld ++
 				testpr(texeSS+"\n")
 				system(texeSS)
 
@@ -16186,7 +16186,7 @@ function tick(tick_time) {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
 					download.num --
-					AF.scrape.threads_dl --
+					AF.scrape.threads_dld --
 				}
 			}
 		}
@@ -16247,7 +16247,7 @@ function tick(tick_time) {
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < AF.scrape.threadsmax)) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && ( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrapemax_dld)) )) {
 
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
@@ -16255,7 +16255,7 @@ function tick(tick_time) {
 			}
 			else {
 				// Increase the number of threads counts
-				AF.scrape.threads ++
+				AF.scrape.threads_scr ++
 				// Add a new data structure to the scrape dispatcher
 				scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
 				dispatcher.push({
@@ -16287,7 +16287,7 @@ function tick(tick_time) {
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dl + " " + AF.scrape.threads + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dld + " " + AF.scrape.threads_scr + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
 		if (download.num != download.numpre) {
 			msgbox_newtitle(dispatch_header)
@@ -16306,7 +16306,7 @@ function tick(tick_time) {
 				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
-				AF.scrape.threads --
+				AF.scrape.threads_scr --
 				dispatchernum --
 				scraprt("ID" + i + " main WAKEUP scrapegame\n")
 				if ((!item.quit) && (!item.skip)) item.scrapegame.wakeup()
@@ -16347,7 +16347,7 @@ function tick(tick_time) {
 					try {remove(AF.folder + "json/" + i + "jsonA_out.nut")} catch(err) {}
 
 					item.pollstatusA = item.pollstatus = false
-					AF.scrape.threads -- //TEST165 RIMUOVERE?
+					AF.scrape.threads_scr -- //TEST165 RIMUOVERE?
 					dispatchernum --
 
 					item.gamedata = null
