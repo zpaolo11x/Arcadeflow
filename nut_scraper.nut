@@ -668,7 +668,7 @@ function get_zip_data(path){
 	local uncompressed_crc = (blb[startpos_crc+3] << 24) + (blb[startpos_crc+2] << 16) + (blb[startpos_crc+1] << 8) + blb[startpos_crc]
 	local startpos_size = 22
 	local uncompressed_size = (blb[startpos_size+3] << 24) + (blb[startpos_size+2] << 16) + (blb[startpos_size+1] << 8) + blb[startpos_size]
-	print ("zipdata: "+("0"+format("%X",uncompressed_crc)).slice(-8)+" "+uncompressed_size+"\n")
+	//print ("zipdata: "+("0"+format("%X",uncompressed_crc)).slice(-8)+" "+uncompressed_size+"\n")
 	return ({crc = uncompressed_crc, size = uncompressed_size})
 }
 

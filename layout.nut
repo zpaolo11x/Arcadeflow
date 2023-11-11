@@ -804,7 +804,8 @@ local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads_scr + " " + instring)
+	return
+	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads_scr + " - " + AF.scrape.threads_dld+ " " + instring)
 }
 function testpr(instring) {
 	print(instring)
@@ -3760,7 +3761,6 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 }
 
 function updatethreads(threads_in){
-	testpr("                                                     "+threads_in+"\n")
 	// Logic: each time a new scrape or a new download is initiated
 	// you check if threads_dl < threadsmax_dl (or threads_ss < threadsmax_ss) and
 	// that threads_dl + threads_ss < threadsmax
@@ -16041,7 +16041,7 @@ function tick(tick_time) {
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
 	*/
-
+testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
@@ -16113,7 +16113,6 @@ function tick(tick_time) {
 	if ( (download.list.len() > 0) && checkmsec(download.timestep)){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
-			testpr(item.id+"|"+item.cat+"|"+item.status+"\n")
 			if (item.status == "start_download_ADB"){
 				// Initialize item in download folder and delete existing media
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
@@ -16131,8 +16130,6 @@ function tick(tick_time) {
 					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
 				item.time0 = fe.layout.time
-
-				testpr(texeA+"\n")
 				system(texeA)
 
 				item.status = "ADB_downloading"
@@ -16151,7 +16148,6 @@ function tick(tick_time) {
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
 				AF.scrape.threads_dld ++
-				testpr(texeSS+"\n")
 				system(texeSS)
 
 				item.status = "SS_downloading"
@@ -16173,7 +16169,6 @@ function tick(tick_time) {
 							(item.rawin("SSurl"))
 						){
 						try {remove(item.ADBfile)} catch(err) {}
-						testpr("SWITCH TO SS\n")
 						item.status = "start_download_SS"
 					}
 					else {
@@ -16247,7 +16242,7 @@ function tick(tick_time) {
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && ( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrapemax_dld)) )) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && ( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrapemax_dld)) )) {
 
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
