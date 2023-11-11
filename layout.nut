@@ -16134,7 +16134,7 @@ testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && (AF.scrape.threads_scr = 0) && (AF.scrape.theads_dld < AF.scrape.threadsmax_dld)){
+			else if ((item.status == "start_download_SS") && (AF.scrape.threads_scr == 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
