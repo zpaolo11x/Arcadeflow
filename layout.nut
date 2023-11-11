@@ -3791,7 +3791,7 @@ function updatethreads(threads_in){
 
 		AF.scrape.threadsmax_scr = 20
 		AF.scrape.threadsmax_ss = threads_in
-		AF.scrape.threadsmax_dl = threads_in
+		AF.scrape.threadsmax_dld = threads_in
 	}
 }
 
@@ -16134,7 +16134,7 @@ testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && (AF.scrape.threads_scr == 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)){
+			else if ((item.status == "start_download_SS") && (AF.scrape.threads_scr < AF.scrape.threadsmax_ss) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
@@ -16242,7 +16242,7 @@ testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && ( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrapemax_dld)) )) {
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && ( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) )) {
 
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
