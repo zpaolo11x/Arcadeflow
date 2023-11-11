@@ -236,9 +236,9 @@ function AFscrapeclear() {
 		threads_scr = 0
 		threads_dld = 0
 
-		threadsmax_ss = 6 // actual SS cap
+		threadsmax_ss = 20 // actual SS cap
 		threadsmax_scr = 20 // cap for scrape threads
-		threadsmax_dld = 6 // cap for download threads
+		threadsmax_dld = 20 // cap for download threads
 	}
 
 }
