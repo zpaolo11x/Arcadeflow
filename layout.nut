@@ -16034,6 +16034,11 @@ function can_start_scrape(){
 	//return (( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) ))
 }
 
+function update_scrape_header(tick = false){
+	msgbox_newtitle(patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dld + " " + AF.scrape.threads_scr + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\"))
+	//if (!tick) fe.layout.redraw()
+}
+
 /// On Tick ///
 function tick(tick_time) {
 	/*
@@ -16159,6 +16164,7 @@ function tick(tick_time) {
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
 				AF.scrape.threads_dld ++
+				update_scrape_header()
 				system(texeSS)
 
 				item.status = "SS_downloading"
@@ -16193,6 +16199,7 @@ function tick(tick_time) {
 					item.status = "download_complete"
 					download.num --
 					AF.scrape.threads_dld --
+					update_scrape_header()
 				}
 			}
 		}
@@ -16281,7 +16288,7 @@ function tick(tick_time) {
 				})
 				// Increase number of dispatch count
 				dispatchernum ++
-
+				update_scrape_header()
 				// Run the scrapegame function in the currently dispatched scrape
 				// passing the last item on the purgedlist to the function		
 				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame\n")
@@ -16293,10 +16300,10 @@ function tick(tick_time) {
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dld + " " + AF.scrape.threads_scr + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+		//TEST165 REMOVED local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dld + " " + AF.scrape.threads_scr + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
 		if (download.num != download.numpre) {
-			msgbox_newtitle(dispatch_header)
+			//TEST165 REMOVEDmsgbox_newtitle(dispatch_header)
 			download.numpre = download.num
 		}
 		foreach (i, item in dispatcher) {
@@ -16309,11 +16316,12 @@ function tick(tick_time) {
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
 				
-				msgbox_newtitle(dispatch_header)
+				//TEST165 REMOVED msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
 				AF.scrape.threads_scr --
 				dispatchernum --
+				update_scrape_header()
 				scraprt("ID" + i + " main WAKEUP scrapegame\n")
 				if ((!item.quit) && (!item.skip)) item.scrapegame.wakeup()
 				//scraprt("ID" + i + " main continue second check\n")
@@ -16355,6 +16363,7 @@ function tick(tick_time) {
 					item.pollstatusA = item.pollstatus = false
 					AF.scrape.threads_scr -- //TEST165 RIMUOVERE?
 					dispatchernum --
+					update_scrape_header()
 
 					item.gamedata = null
 					item.done = false
