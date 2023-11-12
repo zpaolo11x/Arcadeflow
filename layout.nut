@@ -3771,37 +3771,21 @@ testpr(execss+"\n")
 }
 
 function updatethreads(threads_in){
-	// Logic: each time a new scrape or a new download is initiated
-	// you check if threads_dl < threadsmax_dl (or threads_ss < threadsmax_ss) and
-	// that threads_dl + threads_ss < threadsmax
-
-
+	return //TEST165
 	if (threads_in == 1){
 		AF.scrape.threadsmax_scr = 1
 		AF.scrape.threadsmax_ss = 1
 		AF.scrape.threadsmax_dld = 1
 	}
 	else if (threads_in == 2){
-		// Scrapes 2 games at a time but only if threads_ss + threads_dl < threadsmax
-		// it downloads only 1 file at a time
 		AF.scrape.threadsmax_scr = 2
 		AF.scrape.threadsmax_ss = 2
-		AF.scrape.threadsmax_dld = 1
+		AF.scrape.threadsmax_dld = 2
 	}
 	else {
-		// Scrapes 14 games at a time plus 6 slots for downloads. Downloads slots are initiated
-		// only if threads_ss + threads_dl < threadsmax_dl
-		// Scrape threads are initiated only if threads_dl <= 6
-
-		// So if you are downloading 6 games, you can't initiate any scraping, if you are downloading
-		// only 5 games, you start pushing scrapes up to 14 slots.
-		// You don't initiate downloads unless dl + ss < max_dl so when ss gets beyond dl
-		// dl starts to fill its quota.
-		
-
 		AF.scrape.threadsmax_scr = 20
-		AF.scrape.threadsmax_ss = threads_in
-		AF.scrape.threadsmax_dld = threads_in
+		AF.scrape.threadsmax_ss = 20
+		AF.scrape.threadsmax_dld = 20
 	}
 }
 
@@ -3877,7 +3861,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 			if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
 				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-				//TEST165 RIABILITARE updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
+				//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 			}
 			else {
 				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
@@ -3900,7 +3884,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				}
 				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-					//TEST165 RIABILITARE updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
+					//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
 				}
 			}
