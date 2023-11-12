@@ -3555,10 +3555,6 @@ function textright(string1, columns){
 	return out
 }
 
-testpr("PIPPO\n")
-testpr("12345678901234567890\n")
-testpr(textright("abcdefghijklmnopqrstuvwxyz",15)+"\n")
-
 function patchtext(string1, string2, width2, columns) {
 	// Packs together string1 and string2, string1 starts at position 0,
 	// string 2 starts at with2 from the right. Columns is the total width
@@ -3584,8 +3580,6 @@ function patchtext(string1, string2, width2, columns) {
 	}
 	return out
 }
-
-testpr(patchtext("","pippo",5,60)+"\n")
 
 function textrate(num, den, columns, ch1, ch0) {
 	// Creates a string of special characters ch0 (empty) columns long
@@ -3626,7 +3620,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 		if (romfilename != null) execss += romfilename
 		execss += "&use_parent=1\" -o \"" + AF.folder + "json/" + scrapeid + "jsonA.nut\"&& echo ok > \"" + AF.folder + "json/" + scrapeid + "jsonA.txt\" &"
 	}
-testpr(execss+"\n")
+
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
 	scraprt("ID" + scrapeid + "             createjsonA suspend\n")
@@ -3712,7 +3706,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (romfilename != null) execss += "&romnom=" + romfilename
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
-testpr(execss+"\n")
+
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
