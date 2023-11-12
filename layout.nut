@@ -3550,6 +3550,15 @@ function msgbox_pulse_title(title_string, reset = false){
 	}
 }
 
+function textright(string1, columns){
+	local out = (strepeat(" ", 80) + string1).slice(-columns)
+	return out
+}
+
+testpr("PIPPO\n")
+testpr("12345678901234567890\n")
+testpr(textright("abcdefghijklmnopqrstuvwxyz",15)+"\n")
+
 function patchtext(string1, string2, width2, columns) {
 	// Packs together string1 and string2, string1 starts at position 0,
 	// string 2 starts at with2 from the right. Columns is the total width
@@ -3575,6 +3584,8 @@ function patchtext(string1, string2, width2, columns) {
 	}
 	return out
 }
+
+testpr(patchtext("","pippo",5,60)+"\n")
 
 function textrate(num, den, columns, ch1, ch0) {
 	// Creates a string of special characters ch0 (empty) columns long
@@ -3825,7 +3836,6 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	// CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
-	testpr("                       isarcade:"+isarcade+"\n")
 	dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
 	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
@@ -3833,7 +3843,6 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	local stripmatch = true
 	local skipcrc = false
 	skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
-	testpr("                        skipcrc:"+skipcrc+"\n")
 	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
 	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
@@ -16035,7 +16044,10 @@ function can_start_scrape(){
 }
 
 function update_scrape_header(tick = false){
-	msgbox_newtitle(patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dld + " " + AF.scrape.threads_scr + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\"))
+	local titleblock = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.requests, AF.scrape.requests.len(), AF.msgbox.columns) 
+	local metacounter = "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\")
+	local dldcounter = "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+	msgbox_newtitle(titleblock + "\n" + metacounter + "\n" + dldcounter)
 	//if (!tick) fe.layout.redraw()
 }
 
