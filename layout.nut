@@ -4174,6 +4174,17 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 	AF.scrape.report = {}
 	AF.scrape.doneroms = 0
 
+	if (inprf.SS_USERNAME == "") {
+		AF.scrape.threadsmax_scr = 1
+		AF.scrape.threadsmax_ss = 1
+		AF.scrape.threadsmax_dld = 1
+	}
+	else {
+		AF.scrape.threadsmax_scr = 20
+		AF.scrape.threadsmax_ss = 20
+		AF.scrape.threadsmax_dld = 20
+	}
+
 	msgbox_open("Scraping...", "", function(){
 		// Scraping has finished and the end mesage is showing
 		if (AF.scrape.purgedromdirlist == null){
