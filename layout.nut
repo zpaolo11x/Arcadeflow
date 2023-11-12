@@ -804,7 +804,6 @@ local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	return
 	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads_scr + " - " + AF.scrape.threads_dld+ " " + instring)
 }
 function testpr(instring) {
@@ -3616,7 +3615,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 		if (romfilename != null) execss += romfilename
 		execss += "&use_parent=1\" -o \"" + AF.folder + "json/" + scrapeid + "jsonA.nut\"&& echo ok > \"" + AF.folder + "json/" + scrapeid + "jsonA.txt\" &"
 	}
-
+testpr(execss+"\n")
 	system (execss)
 	dispatcher[scrapeid].pollstatusA = true
 	scraprt("ID" + scrapeid + "             createjsonA suspend\n")
@@ -3702,7 +3701,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (romfilename != null) execss += "&romnom=" + romfilename
 		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
 	}
-
+testpr(execss+"\n")
 	system (execss)
 
 	dispatcher[scrapeid].pollstatus = true
@@ -3826,13 +3825,15 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	// CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
-	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
+	testpr("                       isarcade:"+isarcade+"\n")
+	dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
 	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
 	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
 	local stripmatch = true
 	local skipcrc = false
-	skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+	skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+	testpr("                        skipcrc:"+skipcrc+"\n")
 	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
 	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
@@ -3850,7 +3851,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 			stripmatch = false
 			dispatcher[scrapeid].jsonstatus = null
 			scraprt("ID" + scrapeid + "         getromdata CALL createjson ERR\n")
-			skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+			skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
 			dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, romname, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 			scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
 			suspend()
@@ -3864,7 +3865,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 			local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
 			// Scraped rom has correct CRC, no more scraping needed
-			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+			if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
 				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
 				//TEST165 RIABILITARE updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
@@ -16051,7 +16052,7 @@ function tick(tick_time) {
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
 	*/
-testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
+//testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
