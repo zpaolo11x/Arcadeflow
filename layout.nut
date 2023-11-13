@@ -16058,7 +16058,7 @@ function tick(tick_time) {
 	(zmenu_sh.surf_1.redraw ? "Y" : "N")+
 	(zmenu_sh.surf_2.redraw ? "Y" : "N")+"\n")
 	*/
-//testpr(AF.scrape.threads_scr+" "+AF.scrape.threads_dld+"\n")
+
 	// Freeze artwork counter
 	foreach (i, item in tilez) {
 		if (item.freezecount == 2) {
