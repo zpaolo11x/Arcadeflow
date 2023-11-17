@@ -1,0 +1,150 @@
+Nuovo approccio!
+
+Se ci sono slot liberi (poi vediamo cosa significa!) il main loop prende la prima rom della lista
+e la carica nel dispatcher. Non è il dispatcher ma createjson che aumenta il numero di threads
+utilizzati. E quando createjson fa il resume, il numero di thread si "libera" di uno.
+Serve un createjson stack popolato di volta in volta con l'ultimo createjson che poi viene fatto partire appena si libera uno slot. No questo è il vecchio metodo! Col nuovo metodo non metto in dispatch se non ci sono slot liberi. Ma per gli scrape multi-slot? Allora serve COMUNQUE il json stack che viene poi popolato, ma al primo step? Al primo step non popoli lo stack ma alzi il numero dei thread, ai createjson successivi nel processo di scraping devi caricare anche lo stack e quando c'è posto si sblocca.
+
+Vecchio metodo: blocca lo slot, fa due o tre json e quando ha finito tutto sblocca lo slot
+Nuovo metodo: blocca lo slot, quando torna il primo json libera lo slot, quando deve partire il secondo json lo mette nella lista, e il json dispatcher lo fa partire quando c'è posto.
+La sequenza dei json rimane la stessa.
+
+Il limite del dispatcher non esiste più, nel senso che è lo stesso dei json. Se c'è spazio per un json nuovo si lancia il dispatcher, sennò no.
+
+
+
+Lo scrape tick loop cosa fa?
+
+- Controlla la purgedromdirlist, se siamo in quit mode cancella la purgedromdirlist, e rimette .quit a false.
+- Se non siamo in quit mode il tick loop popola il dispatcher. Dispatcher contiene le variabili per un certo gioco, più le funzioni per gestirlo.
+
+ATTENZIONE: se qualcosa popola il dispatcher o la purgedromdirlist mentre siamo in quit mode cosa succede? Riparte solo con quella roba quindi probabilmente è ok
+
+- Dopo aver aggiunto il gioco al dispatcher, viene lanciata scrapegame passandogli il tracking (dispatchid) e l'ultimo elemento della scrapelist. Il loop poi si chiude aumentando il dispatchid mentre scrapegame lavora in parallelo!!!
+
+
+scrapegame cosa fa?
+
+- Popola romimputitem nel dispatcher con l'inputitem preso dalla lista e passato come parametro
+- Crea la struttura "gamedata" che contiene tutta la roba utile per lo scraping
+- Chiama getromdata con tutti i parametri regionali e di scraping del caso
+
+getromdata è la funzione che dovrebbe popolare la struttura di gamedata
+
+
+getromdata cosa fa? (caso NON ARCADE)
+
+- calcola il crc della rom
+- chiama createjson e si mette in attesa
+
+
+createjson cosa fa?
+
+- prepara la curl routine per SS, la esegue
+- imposta pollstatus a true e si mette in attesa
+
+
+A questo punto la palla passa al download tick loop che controlla i file scaricati ma soprattutto lo stato dei json
+
+Fa passare tutto il dispatcher, e se un'item non è "done" controlla tre casi:
+
+1. pollstatus è attivo, e c'è già il file json.txt
+2. pollstatusA per gli arcade, stessa cosa
+3. timeout check
+
+Caso 1
+
+- spegne pollstatus
+- risveglia createjson e aspetta, poi risveglia getromdata e aspetta
+
+ESEMPIO DI WORKFLOW:
+
+scrape tick
+controlla la lista delle rom per scraping
+aggiorna dispatcher
+lancia scrapegame
+			> scrapegame
+			crea gamedata
+			lancia getromdata
+						> getromdata
+						calcola crc
+						lancia createjson
+									> createjson
+									THREADS ++
+									curl routine per SS
+									pollstatus = true
+									suspend
+						suspend								
+			suspend
+dispatchid aumentata
+
+download tick loop
+per ogni rom nel dispatcher fa tutte queste operazioni:
+| il file json.txt è pronto
+| pollstatus false
+| riprende createjson
+|									resume
+|									THREADS --
+|									se non c'è json.nut jsonstatus = ERROR, ritorna 
+|									<
+|									legge il json.nut e costruisce jsarray
+|									se ci sono errori jsonstatus = ERROR, ritorna
+|									<
+|									Controlla se deve fare RETRY, se si:
+|									reinserisce l'item nella purgedromdirlist
+|									ritorna
+|									<
+|									se non ci sono errori procede a creare json_out.nut
+|									jsonstatus = SCRAPED, ritorna 
+|									<
+| riprende getromdata
+|						resume
+|						se jsonstatus è RETRY mette gamedata.scrapestatus a true
+|						altrimenti
+|						se è fallito lo scrape con la strippedrom
+||						lancia createjson
+||									> createjson
+||									THREADS ++
+||									curl routine per SS
+||									pollstatus = true
+||									suspend
+||						suspend
+||QUI FINISCE IL LOOP	e si torna a girare, aggiungere dispatch ecc
+|						se invece non è fallito con la strippedrom vediamo che succede
+
+
+
+"C:\Z\ATTRACT MODE\layouts\Flow\curldownload.vbs" "C:\Z\ATTRACT MODE\layouts\Flow\dlds\0videodldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaVideoJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=motaromk9&sspassword=12345678&systemeid=4&jeuid=2742&media=video-normalized" "C:\Z\MEDIAS\snes\video\3 Ninjas Kick Back (USA).mp4"
+
+Nuova politica di threads
+
+1) max_threads_SS > 2
+
+Il numero di slot di download deve essere gestito _prima_ degli slot in scraping.
+
+nota dld_t e scrp_t sono i thread aperti, dld_l e scrp_l sono le liste di rom o download
+dld_max = max_SS
+scrp_max = 20
+
+DLD CHECK
+if (scrp_t > 0) Non fare nulla!
+else {
+	if (dld_t == 0) && (dld_l > 0) lancia max_SS download
+	else {
+		if (dld_l > 0) riempie gli slot fino a max_SS
+		else non fare nulla (praticamente esaurisce gli slot prima di caricare altro dld)
+	}
+}
+
+SCRAPE CHECK
+if (dld_t > 0) lancia min ( (max_SS - dld_t), (scrp_max - scrp_t) ) scrape
+else lancia (scrp_max - scrp_t) threads
+
+Così non funziona troppo lento e il download blocca tutto!
+
+Alternativa: scrape a blocchi da 20
+
+Lancio 20 scrape, accumulo download ma il download non parte finché i 20 scrape non sono finiti.
+
+Aspetto la fine dei download per ricaricare gli scrape...
+

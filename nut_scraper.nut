@@ -319,6 +319,10 @@ function parsejson(scrapeid, gamedata){
    } catch(err) {}
 
    try {
+      gamedata.SSthreads = jstab.response.ssuser.maxthreads.tointeger()
+   } catch(err) {}
+
+   try {
       gamedata.notgame = jstab.response.jeu.notgame == "true"
    } catch(err) {
       gamedata.notgame = false
@@ -664,7 +668,7 @@ function get_zip_data(path){
 	local uncompressed_crc = (blb[startpos_crc+3] << 24) + (blb[startpos_crc+2] << 16) + (blb[startpos_crc+1] << 8) + blb[startpos_crc]
 	local startpos_size = 22
 	local uncompressed_size = (blb[startpos_size+3] << 24) + (blb[startpos_size+2] << 16) + (blb[startpos_size+1] << 8) + blb[startpos_size]
-	print ("zipdata: "+("0"+format("%X",uncompressed_crc)).slice(-8)+" "+uncompressed_size+"\n")
+	//print ("zipdata: "+("0"+format("%X",uncompressed_crc)).slice(-8)+" "+uncompressed_size+"\n")
 	return ({crc = uncompressed_crc, size = uncompressed_size})
 }
 
@@ -679,8 +683,9 @@ function getromcrc_lookup4(filepath){
 			//TEST162 add here code for zip crc extraction
 			local archext = split(filepath,".").top()
 			if (archext == "zip"){
+				local zerobit = "00000000"
 				local out = get_zip_data(filepath)
-   			return ([format("%X",out.crc).slice(-8),format("%x",out.crc).slice(-8),out.size])
+   			return ([(zerobit + format("%X",out.crc)).slice(-8),(zerobit + format("%x",out.crc)).slice(-8),out.size])
 			}
 			blb = zip_extract_file(filepath, zipcontent[0] )
 		}

@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.5
+// Arcadeflow - v 16.4
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.5" // AF version in string form
+	version = "16.4" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -162,9 +162,6 @@ local AF = {
 		visiblelines = 0
 		lock = false
 		inline = 0
-
-		pulsetime0 = 0
-		pulsecounter = 0
 	}
 
 	tsc = 60.0 / ScreenRefreshRate // Pre-scaling of timer for different parameters
@@ -207,10 +204,10 @@ local AF = {
 
 function AFscrapeclear() {
 	AF.scrape = {
+		stack = []
 		regiontable = ["wor", "us", "eu", "ss", "jp"]
 		regionprefs = [] //This will be populated by options table
 		checktable = {}
-		
 		purgedromdirlist = null
 		listoflists = null
 		emudata = null
@@ -221,24 +218,15 @@ function AFscrapeclear() {
 		scrapelist_lines = null
 		romlist_file = null
 		romlist_lines = null
-		
 		quit = false
-		
 		totalroms = 0
 		doneroms = 0
 		timeoutroms = []
-		
 		onegame = ""
 		dispatchid = 0
 		requests = ""
 		report = {}
-
-		threads_scr = 0
-		threads_dld = 0
-
-		threadsmax_ss = 20 // actual SS cap
-		threadsmax_scr = 20 // cap for scrape threads
-		threadsmax_dld = 20 // cap for download threads
+		threads = 0
 	}
 
 }
@@ -791,20 +779,11 @@ function debugpr(instring) {
 	if (DBGON) print(instring)
 }
 
-local download = {
-	list = [],
-	num = 0,
-	numpre = 0,
-	blanks = null
-	time0 = 0
-	time1 = 0
-	timestep = (OS == "Windows" ? 5000 : 500)
-}
 local dispatcher = []
 local dispatchernum = 0
 
 function scraprt(instring) {
-	print("DS:" + dispatchernum + " DL:" + download.num + " TR:" + AF.scrape.threads_scr + " - " + AF.scrape.threads_dld+ " " + instring)
+	print(dispatchernum + " " + instring)
 }
 function testpr(instring) {
 	print(instring)
@@ -912,7 +891,15 @@ function printblanks(){
 }
 //printblanks()
 
-download.blanks = loadvar("data_blanks.txt")
+local download = {
+	list = [],
+	num = 0,
+	numpre = 0,
+	blanks = loadvar("data_blanks.txt")
+	time0 = 0
+	time1 = 0
+	timestep = (OS == "Windows" ? 5000 : 500)
+}
 
 function checkmsec(delay){
 	download.time1 = fe.layout.time
@@ -3531,30 +3518,6 @@ function msgbox_close(){
 	AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
 }
 
-function msgbox_pulse_title(title_string, reset = false){
-	local speed = 20
-	local chars = floor((AF.msgbox.columns - title_string.len() - 2) * 0.5)
-
-	if (reset) { //Initialise pulse
-		AF.msgbox.pulsetime0 = fe.layout.time
-		AF.msgbox.pulsecounter = -speed
-		msgbox_newtitle(title_string)
-	} else {
-		if (fe.layout.time - AF.msgbox.pulsetime0 >= 1000 / ScreenRefreshRate){
-			AF.msgbox.pulsecounter ++
-			if (AF.msgbox.pulsecounter >= speed) AF.msgbox.pulsecounter = -speed
-			msgbox_newtitle(title_string + "  " + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "\\", "|") + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "|", "\\") )
-			fe.layout.redraw()
-			AF.msgbox.pulsetime0 = fe.layout.time
-		}
-	}
-}
-
-function textright(string1, columns){
-	local out = (strepeat(" ", 80) + string1).slice(-columns)
-	return out
-}
-
 function patchtext(string1, string2, width2, columns) {
 	// Packs together string1 and string2, string1 starts at position 0,
 	// string 2 starts at with2 from the right. Columns is the total width
@@ -3611,9 +3574,9 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = AF.subfolder + "curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = AF.subfolder + "\\curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
-		execss += "&use_parent=1\" \"" + AF.subfolder + "json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "json\\" + scrapeid + "jsonA.txt\""
+		execss += "&use_parent=1\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "jsonA.txt\""
 	}
 	else {
 		execss = "curl -s \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
@@ -3685,21 +3648,21 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = AF.subfolder + "curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
+		execss = AF.subfolder + "\\curlscrape.vbs \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
-		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
+		if (romcrc != null) execss += "&crc=" + romcrc
 		if (romsize != null) execss += "&romtaille=" + romsize
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
-		execss += "\" \"" + AF.subfolder + "json\\" + scrapeid + "json.nut\" \"" + AF.subfolder + "json\\" + scrapeid + "json.txt\""
+		execss += "\" \"" + AF.subfolder + "\\json\\" + scrapeid + "json.nut\" \"" + AF.subfolder + "\\json\\" + scrapeid + "json.txt\""
 	}
 	else {
 		execss = "curl -s \"https://www.screenscraper.fr/api2/jeuInfos.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&output=json"
 		if (ssuser != null) execss += "&ssid=" + ssuser
 		if (sspass != null) execss += "&sspassword=" + sspass
-		if ((romcrc != null) && (romcrc != "")) execss += "&crc=" + romcrc
+		if (romcrc != null) execss += "&crc=" + romcrc
 		if (romsize != null) execss += "&romtaille=" + romsize
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
@@ -3714,11 +3677,6 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
 
-	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
-		dispatcher[scrapeid].jsonstatus = "ERROR"
-		return
-	}
-
 	local jsarray = []
 	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "json.nut")
 	local linein = null
@@ -3732,17 +3690,21 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		}
 	}
 
+	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
+		dispatcher[scrapeid].jsonstatus = "ERROR"
+		return
+	}
 
   	if (jsarray[0].slice(0, 1) != "{") {
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
 		echoprint("*" + jsarray[0] + "*\n")
-		dispatcher[scrapeid].jsonstatus = "ERROR"		
-		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
+		dispatcher[scrapeid].jsonstatus = "ERROR"
+		if (jsarray[0] == "The maximum threads is already used  ") {
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
-		}	
+		}
 		return
 	}
 	jsarray.push(")")
@@ -3762,25 +3724,6 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	scraprt("ID" + scrapeid + "             createjson SCRAPED\n")
 	dispatcher[scrapeid].jsonstatus = "SCRAPED"
 	return
-}
-
-function updatethreads(threads_in){
-	return //TEST165
-	if (threads_in == 1){
-		AF.scrape.threadsmax_scr = 1
-		AF.scrape.threadsmax_ss = 1
-		AF.scrape.threadsmax_dld = 1
-	}
-	else if (threads_in == 2){
-		AF.scrape.threadsmax_scr = 2
-		AF.scrape.threadsmax_ss = 2
-		AF.scrape.threadsmax_dld = 2
-	}
-	else {
-		AF.scrape.threadsmax_scr = 20
-		AF.scrape.threadsmax_ss = 20
-		AF.scrape.threadsmax_dld = 20
-	}
 }
 
 function getromdata(scrapeid, ss_username, ss_password, romname, systemid, systemmedia, isarcade, regionprefs, rompath) {
@@ -3814,13 +3757,13 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	// CRC check is never enabled for arcade games, so it's run here
 	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
 	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
-	dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
+	dispatcher[scrapeid].gamedata.crc = (AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
 	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
 	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
 	local stripmatch = true
 	local skipcrc = false
-	skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+	skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
 	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
 	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
@@ -3828,34 +3771,27 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
 
 	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
-
-	if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-	}
-	else {
+	//TEST120 Should we add the retry check to the arcade scrape portion or not???
+	if ((dispatcher[scrapeid].jsonstatus != "RETRY")) {
 		// If stripped rom fails, try with non-stripped rom
 		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
 			stripmatch = false
 			dispatcher[scrapeid].jsonstatus = null
 			scraprt("ID" + scrapeid + "         getromdata CALL createjson ERR\n")
-			skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+			skipcrc = (AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
 			dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, romname, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 			scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
 			suspend()
 			scraprt("ID" + scrapeid + "         getromdata resumed\n")
-			if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-				dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-			}
 		}
-		
-		if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
+
+		if ((dispatcher[scrapeid].jsonstatus != "ERROR")) {
 
 			local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
 			// Scraped rom has correct CRC, no more scraping needed
-			if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+			if (!(AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
 				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-				//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 			}
 			else {
 				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
@@ -3873,12 +3809,8 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 				suspend()
 				scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
 
-				if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-					dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-				}
-				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
+				if (dispatcher[scrapeid].jsonstatus != "ERROR") {
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-					//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
 					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
 				}
 			}
@@ -3892,6 +3824,10 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
 		}
 	}
+	else if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+		echoprint("RETRY\n")
+		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+	}
 
 	dispatcher[scrapeid].done = true
 
@@ -3902,7 +3838,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	return //gamedata
 }
 
-function scrapegame(scrapeid, inputitem) {
+function scrapegame2(scrapeid, inputitem, forceskip) {
 	// Updates the dispatcher with the current scraping game
 	dispatcher[AF.scrape.dispatchid].rominputitem = inputitem
 
@@ -3952,7 +3888,6 @@ function scrapegame(scrapeid, inputitem) {
 		extradata = ""
 		scrapestatus = "NONE"
 		requests = ""
-		SSthreads = 0
 		regionprefs = AF.scrape.regionprefs
 
 		// SS Arcade scrape data
@@ -3985,53 +3920,67 @@ function scrapegame(scrapeid, inputitem) {
 		crc = null
 	}
 
-	// Scraping data structure has been created 
+	// Scraping data structure has been created and now we check if we have
+	// to actually scrape this game or not
 
-	scraprt("ID" + scrapeid + "     scrapegame CALL getromdata\n")
-	dispatcher[scrapeid].getromdata.call(scrapeid, AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname, gd[0], gd[1], garcade, AF.scrape.regionprefs, AF.emulatordata[inputitem.z_emulator].rompath + gnamewext)
-	scraprt("ID" + scrapeid + "     scrapegame suspend\n")
-	suspend()
-	scraprt("ID" + scrapeid + "     scrapegame resume\n")
+	if (scrapethis && !forceskip) {
+		scraprt("ID" + scrapeid + "     scrapegame2 CALL getromdata\n")
 
-	// Now the results from the scrape are back, let's analyse and put them in the
-	// scrapelist fields (in this case no need to use listline!)
-	// The data can be written to "inputitem" which is the link to the original data table
-	local isarcade = dispatcher[scrapeid].gamedata.isarcade
-	if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME") && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
-		if ((dispatcher[scrapeid].gamedata.scrapestatus != "ERROR")) {
+		dispatcher[scrapeid].getromdata.call(scrapeid, AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname, gd[0], gd[1], garcade, AF.scrape.regionprefs, AF.emulatordata[inputitem.z_emulator].rompath + gnamewext)
+		scraprt("ID" + scrapeid + "     scrapegame2 suspend\n")
+		suspend()
+		scraprt("ID" + scrapeid + "     scrapegame2 resume\n")
 
-			//listline = gname + ";" //Name
-			inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
-			inputitem.z_title = subst_replace(inputitem.z_title, "\"", "'")
+		// Now the results from the scrape are back, let's analyse and put them in the
+		// scrapelist fields (in this case no need to use listline!)
+		// The data can be written to "inputitem" which is the link to the original data table
+		local isarcade = dispatcher[scrapeid].gamedata.isarcade
+		if ((dispatcher[scrapeid].gamedata.scrapestatus != "NOGAME")  && (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY")) {
+			if ((dispatcher[scrapeid].gamedata.scrapestatus != "ERROR")) {
 
-			inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
-			inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
-			inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, "\"", "'")
+				//listline = gname + ";" //Name
+				inputitem.z_title = isarcade ? dispatcher[scrapeid].gamedata.adb_title : dispatcher[scrapeid].gamedata.title + (dispatcher[scrapeid].gamedata.extradata != "" ? "(" + dispatcher[scrapeid].gamedata.extradata + ")" : "") //Title with extradata
+				inputitem.z_title = subst_replace(inputitem.z_title, "\"", "'")
 
-			inputitem.z_category = isarcade ? dispatcher[scrapeid].gamedata.adb_genre : dispatcher[scrapeid].gamedata.genre //Category
-			inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
-			inputitem.z_rotation = isarcade ? dispatcher[scrapeid].gamedata.adb_screenorientation : dispatcher[scrapeid].gamedata.a_rotation //Rotation
-			inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
+				inputitem.z_year = isarcade ? dispatcher[scrapeid].gamedata.adb_year : dispatcher[scrapeid].gamedata.releasedate //Year
+				inputitem.z_manufacturer = isarcade ? dispatcher[scrapeid].gamedata.adb_manufacturer : dispatcher[scrapeid].gamedata.publisher //Manufacturer
+				inputitem.z_manufacturer = subst_replace (inputitem.z_manufacturer, "\"", "'")
 
-			inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
-			inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
-			inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
-			inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
-			inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
+				inputitem.z_category = isarcade ? dispatcher[scrapeid].gamedata.adb_genre : dispatcher[scrapeid].gamedata.genre //Category
+				inputitem.z_players = isarcade ? dispatcher[scrapeid].gamedata.adb_players.tostring() : dispatcher[scrapeid].gamedata.players.tostring() //Players
+				inputitem.z_rotation = isarcade ? dispatcher[scrapeid].gamedata.adb_screenorientation : dispatcher[scrapeid].gamedata.a_rotation //Rotation
+				inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
 
-			inputitem.z_buttons = isarcade ? dispatcher[scrapeid].gamedata.adb_inputbuttons.tostring() : dispatcher[scrapeid].gamedata.a_buttons.tostring()
-			inputitem.z_series = isarcade ? dispatcher[scrapeid].gamedata.adb_serie : dispatcher[scrapeid].gamedata.series //Series
+				inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
+				inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
+				inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
+				inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
+				inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
 
-			inputitem.z_region = isarcade ? "" : dispatcher[scrapeid].gamedata.regions //Region
-			inputitem.z_rating = dispatcher[scrapeid].gamedata.rating.tostring() //Rating
+				inputitem.z_buttons = isarcade ? dispatcher[scrapeid].gamedata.adb_inputbuttons.tostring() : dispatcher[scrapeid].gamedata.a_buttons.tostring()
+				inputitem.z_series = isarcade ? dispatcher[scrapeid].gamedata.adb_serie : dispatcher[scrapeid].gamedata.series //Series
+
+				inputitem.z_region = isarcade ? "" : dispatcher[scrapeid].gamedata.regions //Region
+				inputitem.z_rating = dispatcher[scrapeid].gamedata.rating.tostring() //Rating
+			}
+			else {
+				// dispatcher scrapestatus is an error. If no previous scraping was done this is transferred to the rom scrape status
+				if (inputitem.z_scrapestatus == "NONE") inputitem.z_scrapestatus = "ERROR"
+			}
 		}
-		else {
-			// dispatcher scrapestatus is an error. If no previous scraping was done this is transferred to the rom scrape status
-			if (inputitem.z_scrapestatus == "NONE") inputitem.z_scrapestatus = "ERROR"
+		else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
+			inputitem.z_scrapestatus = "NOGAME"
 		}
 	}
-	else if (dispatcher[scrapeid].gamedata.scrapestatus == "NOGAME") {
-		inputitem.z_scrapestatus = "NOGAME"
+	else {
+		local tempreason = ""
+		try {tempreason = " " + inputitem.z_scrapestatus} catch(err) {}
+
+		dispatcher[scrapeid].gamedata.scrapestatus = "SKIP " + strip(tempreason)
+		inputitem.z_scrapestatus = "ERROR"
+
+		dispatcher[scrapeid].skip = true
+		dispatcher[scrapeid].done = true
 	}
 
 	if (dispatcher[scrapeid].gamedata.scrapestatus != "RETRY") {
@@ -4050,7 +3999,7 @@ function scrapegame(scrapeid, inputitem) {
 	}
 
 	// MEDIA DOWNLOAD
-	if ((scrapethis) && (dispatcher[scrapeid].gamedata.scrapestatus!="ERROR")) {
+	if ((scrapethis && !forceskip) && (dispatcher[scrapeid].gamedata.scrapestatus!="ERROR")) {
 		debugpr("gamedata.scrapestatus:" + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
 		debugpr("gamedata.media table size:" + dispatcher[scrapeid].gamedata.media.len() + "\n")
 		foreach (emuartcat, emuartfolder in AF.emulatordata[inputitem.z_emulator].artworktable) {
@@ -4080,7 +4029,6 @@ function scrapegame(scrapeid, inputitem) {
 						ADBfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
-						time0 = 0
 					}
 
 					if (tempdata.len() > 0) {
@@ -4104,7 +4052,6 @@ function scrapegame(scrapeid, inputitem) {
 						name = dispatcher[scrapeid].gamedata.name
 						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_SS"
-						time0 = 0
 					}
 					download.list.push(tempdld)
 					download.num ++
@@ -4112,7 +4059,6 @@ function scrapegame(scrapeid, inputitem) {
 			}
 		}
 	}
-	scraprt("ID" + scrapeid + "     scrapegame END\n")
 }
 
 // Define the new list data
@@ -4151,17 +4097,6 @@ local prfmenu = null
 function scraperomlist2(inprf, forcemedia, onegame) {
 	AF.scrape.report = {}
 	AF.scrape.doneroms = 0
-
-	if (inprf.SS_USERNAME == "") {
-		AF.scrape.threadsmax_scr = 1
-		AF.scrape.threadsmax_ss = 1
-		AF.scrape.threadsmax_dld = 1
-	}
-	else {
-		AF.scrape.threadsmax_scr = 20
-		AF.scrape.threadsmax_ss = 20
-		AF.scrape.threadsmax_dld = 20
-	}
 
 	msgbox_open("Scraping...", "", function(){
 		// Scraping has finished and the end mesage is showing
@@ -4605,7 +4540,7 @@ function resetlastplayed() {
 // collections are updated and the layout is restarted (in update_allgames_collections or manually)
 //TEST151 DA AGGIORNARE PER MASTER ROMLIST? BOH
 function refreshselectedromlists(tempprf) {
-	msgbox_open("Refresh current Romlist", "", function(){
+	msgbox_open("Refresh current Romlist", "", function(){ //TEST162 CHANGE TITLE!
 		if (tempprf.ALLGAMES) {
 			updateallgamescollections(tempprf)
 			//msgbox_addlinebelow("Updating All Gams Collectins", 1)
@@ -6367,6 +6302,9 @@ function mfz_menu2(presel) {
 	//2nd level menu is never translated and is always sorted by value
 	local valcurrent = null
 
+	//TEST160 ERA USATO PER VALCURRENT???
+	//TEST160 RIMOSSO if (z_list.size > 0) multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu[mf.cat1].submenu, 2, false, true)
 	local namearray = mfzdat.names
 	local indexarray = mfzdat.index
@@ -6680,7 +6618,12 @@ function mfz_apply(startlist) {
 
 	z_updatefilternumbers(z_list.index)
 	data_freeze(false)
-
+	//frost.canfreeze = true
+	//TEST120 THIS WAS ADDED DON't REMEMBER WHY...
+	/*
+			z_listrefreshtiles()
+			updatebgsnap (focusindex.new)
+	*/
 	timestop("mfz_apply")
 }
 
@@ -11849,8 +11792,8 @@ local disp = {
 	dispzoom = []
 	zoomrate = 0.05
 
-	tilew = floor(disp0.w * 780.0/1600.0)
-	tileh = floor(disp0.w * 780.0/1600.0)
+	tilew = floor(disp0.w * 780.0/1600.0)//TEST160 ((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
+	tileh = floor(disp0.w * 780.0/1600.0)//TEST160((disp0.h > disp0.w * 0.485) ? disp0.w * 0.485 : disp0.h)
 
 	newpos = 0
 	bgtileh = 0
@@ -11891,8 +11834,6 @@ function update_allgames_collections(verbose, tempprf) {
 	fe.layout.redraw()
 	builddisplaystructure()
 	local allgamesromlist = ""
-	if(verbose) msgbox_pulse_title("Update All Games Collections", true)
-
 	// Scan the AF collections table to build the complete romlists
 	// AF collections have a "group" that indicates if they are for ARCADE, CONSOLE ecc
 	// and then they feature a name to show in grouped mode, and one to show in ungrouped mode
@@ -11901,7 +11842,6 @@ function update_allgames_collections(verbose, tempprf) {
 		foreach (item, val in z_af_collections.tab) {
 			// The all games collections are generated only if they are not in "OTHER"
 			// or "ALL GAMES" or "COLLECTIONS" category and if they have some displays in them
-			if (verbose) msgbox_pulse_title("Update All Games Collections")
 
 			if ((val.group != "OTHER") && (val.group != "ALL GAMES") && (val.group != "COLLECTIONS") && (disp.structure[val.group].size > 0)) {
 				if (verbose) msgbox_addlinetop("Collection:" + item + "\n" + AF.msgbox.separator1)
@@ -11913,12 +11853,11 @@ function update_allgames_collections(verbose, tempprf) {
 				local doneromlists_coll = {}
 
 				foreach (item2, val2 in disp.structure[val.group].disps) {
-
-					if (verbose) msgbox_pulse_title("Update All Games Collections")
-
 					if ((val2.inmenu) && (!doneromlists_coll.rawin(val2.romlist))) {
 						doneromlists_coll.rawset(val2.romlist, 0)
-						if (verbose) msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
+						if (verbose) {
+							msgbox_addlinebelow(patchtext(val2.romlist, "DONE", 5, AF.msgbox.columns), 2)
+						}
 						fe.layout.redraw()
 						strline += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
 						if (!doneromlists_all.rawin(val2.romlist)) allgamesromlist += " \"" + AF.romlistfolder + val2.romlist + ".txt\""
@@ -11926,29 +11865,20 @@ function update_allgames_collections(verbose, tempprf) {
 					}
 				}
 				system ((OS == "Windows" ? "type" : "cat") + strline + " > \"" + filename + "\"")
-				if (verbose) msgbox_addlinetop("")
+				msgbox_addlinetop("")
 			}
 		}
-		if (verbose) {
-			msgbox_newtitle("Update All Games Collections")
-			msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
-		}
+		msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
 	}
 	else { // READ THE WHOLE MASTERLIST TO CREATE THE CATEGORY ROMLISTS
-
 		local listfile = ReadTextFile(prf.MASTERPATH)
 		local listline = listfile.read_line()
 		local listfields = []
 		local outfiles = {}
 		local sysname = ""
 		local cursysname = ""
-
 		while (!listfile.eos()) {
-
 			listline = listfile.read_line()
-
-			if (verbose) msgbox_pulse_title("Update All Games Collections")
-
 			if ((listline == "") || (listline[0].tochar() == "#")) {
 				print("")
 				continue
@@ -11960,15 +11890,13 @@ function update_allgames_collections(verbose, tempprf) {
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname} catch(err) {sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
-			
-					if (verbose && (sysname != cursysname)) {
-						msgbox_addlinetop(patchtext(item +" - " + sysname, " DONE", 5, AF.msgbox.columns))
-						fe.layout.redraw()
-						cursysname = sysname
-					}
-
+						if (verbose && (sysname != cursysname)) {
+							splash_message (AF.item.pulse, "Collection:" + item + "\nSystem:" + sysname + "\n")
+							cursysname = sysname
+						}
 					if (!outfiles.rawin(item)) {
-						outfiles.rawset(item, WriteTextFile(fe.path_expand(AF.romlistfolder + item + ".txt")))
+
+						outfiles.rawset(item, WriteTextFile(AF.romlistfolder + item + ".txt"))
 						outfiles[item].write_line("#Name;Title;Emulator;CloneOf;Year;Manufacturer;Category;Players;Rotation;Control;Status;DisplayCount;DisplayType;AltRomname;AltTitle;Extra;Buttons;Series;Language;Region;Rating\n")
 					}
 					outfiles[item].write_line(listline + "\n")
@@ -11976,10 +11904,6 @@ function update_allgames_collections(verbose, tempprf) {
 			}
 		}
 		foreach (item in outfiles) item.close_file()
-		if (verbose) {
-			msgbox_newtitle("Update All Games Collections")
-			msgbox_addlinetop("Update complete - Press ESC to restart\n" + AF.msgbox.separator2)
-		}
 	}
 
 	// Now it's time to create the "AF All Games" collection. How is it done? I'd say it should be done by simply concatenating
@@ -15681,6 +15605,9 @@ function on_transition(ttype, var0, ttime) {
 			} catch(err) {}
 		mfz_apply(true)
 
+		//TEST160 moved here from mfz_apply... REMOVED
+		//z_listrefreshtiles()
+		//updatebgsnap (focusindex.new)
 	}
 
 	if ((ttype == Transition.ToNewSelection) && (z_var != 0)) {
@@ -16022,26 +15949,9 @@ if (surfdebug) {
 	debugoverlay.align = Align.Left
 }
 
-function can_start_download(){
-	return ((AF.scrape.threads_scr <= AF.scrape.threadsmax_dld - 1) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld))
-	//return ((AF.scrape.threads_scr < AF.scrape.threadsmax_ss) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld))
-}
-
-function can_start_scrape(){
-	return ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr))
-	//return (( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) ))
-}
-
-function update_scrape_header(tick = false){
-	local titleblock = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.requests, AF.scrape.requests.len(), AF.msgbox.columns) 
-	local metacounter = "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\")
-	local dldcounter = "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
-	msgbox_newtitle(titleblock + "\n" + metacounter + "\n" + dldcounter)
-	//if (!tick) fe.layout.redraw()
-}
-
 /// On Tick ///
 function tick(tick_time) {
+
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16127,10 +16037,11 @@ function tick(tick_time) {
 	}
 
 	// Media download cue for arcade games
-	if ( (download.list.len() > 0) && checkmsec(download.timestep)){ //TEST162 cambiare con download.num?
+	if ( (download.list.len() > 0) && checkmsec(download.timestep) ){ //TEST162 cambiare con download.num?
 		foreach (i, item in download.list){
 			// First case: download kick off
 			if (item.status == "start_download_ADB"){
+
 				// Initialize item in download folder and delete existing media
 				try {remove(dldpath + "dldsA.txt")} catch(err) {}
 				try {remove(item.ADBfile)} catch(err) {}
@@ -16139,33 +16050,31 @@ function tick(tick_time) {
 				if (OS == "Windows") {
 					// OUTPUT
 					//layouts\Arcadeflow_16.2_wip_91d2dbb\\curldownload.vbs "C:\Z\attractplus\layouts\Arcadeflow_16.2_wip_91d2dbb\dlds/0wheeldldsSS.txt" "https://neoclone.screenscraper.fr/api2/mediaJeu.php?devid=zpaolo11x&devpassword=BFrCcPgtSRc&softname=Arcadeflow&ssid=&sspassword=&systemeid=26&jeuid=37685&media=wheel(wor)" "C:\Z\ROMS\atari2600\media\wheel/Berenstain Bears (USA).png"
-					texeA = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
+					texeA = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsA.txt\" \"" + item.ADBurl + "\" \"" + item.ADBfile +"\""
 				}
 				else {
 					texeA = "(echo ok > \"" + item.dldpath + "dldsA.txt\" && "
 					texeA += "curl -s -f --create-dirs \"" + item.ADBurl + "\" -o \"" + item.ADBfile + "\" ; "
 					texeA += "rm \"" + item.dldpath + "dldsA.txt\"" + ") &"
 				}
-				item.time0 = fe.layout.time
 				system(texeA)
 
 				item.status = "ADB_downloading"
 			}
-			else if ((item.status == "start_download_SS") && can_start_download() ){
+			else if (item.status == "start_download_SS"){
 				try {remove(dldpath + "dldsSS.txt")} catch(err) {}
 				try {remove(item.SSfile)} catch(err) {}
 
 				local texeSS = ""
 				if (OS == "Windows") {
-					texeSS = AF.subfolder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
+					texeSS = AF.folder + "curldownload.vbs \"" + item.dldpath + "dldsSS.txt\" \"" + item.SSurl + "\" \"" + item.SSfile +"\""
 				}
 				else {
 					texeSS = "(echo ok > \"" + item.dldpath + "dldsSS.txt\" && "
 					texeSS += "curl -s -f --create-dirs \"" + item.SSurl + "\" -o \"" + item.SSfile + "\" ; "
 					texeSS += "rm \"" + item.dldpath + "dldsSS.txt\"" + ") &"
 				}
-				AF.scrape.threads_dld ++
-				update_scrape_header()
+
 				system(texeSS)
 
 				item.status = "SS_downloading"
@@ -16173,9 +16082,7 @@ function tick(tick_time) {
 			// Second case: item is downloading and dkdsA is not present, so it actually finished downloading
 			else if (item.status == "ADB_downloading") {
 					// Check if wheel has been downloaded
-				local timecheck = fe.layout.time
-				if ((timecheck - item.time0) >= 10000) testpr ("\n                    ADB TIMEOUT\n\n")
-				if (!file_exist(item.dldpath + "dldsA.txt") || (timecheck - item.time0) >= 10000){ //TEST165 add timeout checking here
+				if (!file_exist(item.dldpath + "dldsA.txt")){
 					// File has been downlaoded, check wheel and snap to trigger SS scraping if needed, but IF SSurl is present in the data structure
 					if (
 							(
@@ -16199,8 +16106,6 @@ function tick(tick_time) {
 				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
 					download.num --
-					AF.scrape.threads_dld --
-					update_scrape_header()
 				}
 			}
 		}
@@ -16209,8 +16114,7 @@ function tick(tick_time) {
 		}
 	}
 
-	/// Scraping tick loop ///
-
+	// Scraping
 	// When the scrapelist is populated, scraper starts running through it
 	if (AF.scrape.purgedromdirlist != null) {
 		// Case 1: scrapelist is empty and dispatched are finished, it's time
@@ -16238,7 +16142,7 @@ function tick(tick_time) {
 				endreport += ("- " + itemx.z_name + "\n")
 			}
 
-			foreach (item, content in AF.scrape.report) {
+					foreach (item, content in AF.scrape.report) {
 				endreport += (AF.msgbox.separator1 + "\n" + item + "\n")
 				foreach (i2, item2 in content.names) {
 					endreport += ("- " + item2 + "\n [" + content.matches[i2] + "]\n")
@@ -16261,50 +16165,53 @@ function tick(tick_time) {
 		}
 		// Case 2: scraperlist is not null, it's not empty, and threads are not too many
 		// we can "dispatch" a new scrape process
-		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && can_start_scrape() ){
+		if ((AF.scrape.purgedromdirlist != null) && (AF.scrape.purgedromdirlist.len() != 0) && (AF.scrape.threads < 20)) {
+			// Increase the number of thread counts
+			AF.scrape.threads ++
+			// Add a new data structure to the scrape dispatcher
+			dispatcher.push({
+				scrapegame2 = newthread(scrapegame2)
+				getromdata = newthread(getromdata)
+				createjsonA = newthread(createjsonA)
+				createjson = newthread(createjson)
+				pollstatus = false
+				pollstatusA = false
+				rominputitem = ""
+				gamedata = null
+				jsonstatus = null
+				done = false
+				quit = AF.scrape.quit
+				skip = false
+				time0 = fe.layout.time
+			})
 
+			local t0 = fe.layout.time
+
+			scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
+
+			// Run the scrapegame2 function in the currently dispatched scrape
+			// passing the last item on the purgedlist to the function
+			//dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop(), AF.scrape.quit)
 			if (AF.scrape.quit) {
 				AF.scrape.purgedromdirlist = []
 				AF.scrape.quit = false
 			}
 			else {
-				// Increase the number of threads counts
-				AF.scrape.threads_scr ++
-				// Add a new data structure to the scrape dispatcher
-				scraprt("ID" + AF.scrape.dispatchid + " DISPATCH " + AF.scrape.purgedromdirlist[AF.scrape.purgedromdirlist.len() - 1] + "\n")
-				dispatcher.push({
-					scrapegame = newthread(scrapegame)		// This is the main function that controls the scraping process
-					getromdata = newthread(getromdata)		// Manages the scrape iterations
-					createjsonA = newthread(createjsonA)	// Creates the json file for arcade database fames
-					createjson = newthread(createjson)		// Creates the json file for screenscraper games
-					pollstatus = false
-					pollstatusA = false
-					rominputitem = ""
-					gamedata = null
-					jsonstatus = null
-					done = false									// True if the scraping process has finished
-					quit = AF.scrape.quit						// True if the user quit the scraping
-					skip = false									// Skips the current rom
-					time0 = fe.layout.time
-				})
 				// Increase number of dispatch count
 				dispatchernum ++
-				update_scrape_header()
-				// Run the scrapegame function in the currently dispatched scrape
-				// passing the last item on the purgedlist to the function		
-				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame\n")
-				dispatcher[AF.scrape.dispatchid].scrapegame.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop())
-				// Increase the number of the id for the next scrape
-				AF.scrape.dispatchid ++
+				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame2\n")
+				dispatcher[AF.scrape.dispatchid].scrapegame2.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop(), AF.scrape.quit)
 			}
+			// Increase the number of the id for the next scrape
+			AF.scrape.dispatchid ++
 		}
 	}
 
 	if ((dispatchernum != 0) || (download.num != 0)){
-		//TEST165 REMOVED local dispatch_header = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.threads_dld + " " + AF.scrape.threads_scr + " " + AF.scrape.requests, 21, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
+		local dispatch_header = patchtext (AF.scrape.romlist + " " + (AF.scrape.totalroms - AF.scrape.purgedromdirlist.len()) + "/" + AF.scrape.totalroms, AF.scrape.requests, 11, AF.msgbox.columns) + "\n" + "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\") + "\n" + "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 
 		if (download.num != download.numpre) {
-			//TEST165 REMOVEDmsgbox_newtitle(dispatch_header)
+			msgbox_newtitle(dispatch_header)
 			download.numpre = download.num
 		}
 		foreach (i, item in dispatcher) {
@@ -16312,19 +16219,18 @@ function tick(tick_time) {
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
-				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
 
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
+				scraprt("ID" + i + " COMPLETED " + item.gamedata.filename + "\n")
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				
-				//TEST165 REMOVED msgbox_newtitle(dispatch_header)
+
+				msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
-				AF.scrape.threads_scr --
+				AF.scrape.threads --
 				dispatchernum --
-				update_scrape_header()
-				scraprt("ID" + i + " main WAKEUP scrapegame\n")
-				if ((!item.quit) && (!item.skip)) item.scrapegame.wakeup()
+				scraprt("ID" + i + " main WAKEUP scrapegame2\n")
+				if ((!item.quit) && (!item.skip)) item.scrapegame2.wakeup()
 				//scraprt("ID" + i + " main continue second check\n")
 
 				item.time0 = -1
@@ -16362,9 +16268,8 @@ function tick(tick_time) {
 					try {remove(AF.folder + "json/" + i + "jsonA_out.nut")} catch(err) {}
 
 					item.pollstatusA = item.pollstatus = false
-					AF.scrape.threads_scr -- //TEST165 RIMUOVERE?
+					AF.scrape.threads --
 					dispatchernum --
-					update_scrape_header()
 
 					item.gamedata = null
 					item.done = false
