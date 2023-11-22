@@ -822,6 +822,11 @@ genesis 2
 sega genesis,320,224,GEN,CRT,NONE,4,3,CONSOLE,Sega,1989,Genesis,1,rom,joystick (8-way),3
 genesis
 
+sega genesis cdx,320,224,CDX,CRT,NONE,4,3,CONSOLE,Sega,1994,Genesis CDX,20,iso,joystick (8-way),3
+genesis cdx
+cdx
+sega cdx
+
 sega hikaru,0,0,HIKARU,CRT,NONE,-4,3,ARCADE,Sega,1999,Hikaru,75,rom,null,null
 hikaru
 
@@ -898,6 +903,13 @@ model 3
 sega model3
 model3
 
+sega multi-mega,320,224,MMGA,CRT,NONE,4,3,CONSOLE,Sega,1994,Multi-Mega,20,iso,joystick (8-way),3
+multi-mega
+multi mega
+sega multi mega
+multimega
+sega multimega
+
 sega naomi 2 gd-rom,0,0,NAGD2,CRT,NONE,-4,3,ARCADE,Sega,2000,Naomi 2 GD-ROM System,227,rom,null,null
 sega naomi 2 gdrom
 sega naomi 2 gd-rom system
@@ -962,6 +974,10 @@ sega system sp,0,0,SSSP,CRT,NONE,-4,3,ARCADE,Sega,2004,Sega System SP,75,rom,nul
 sega aurora
 system sp
 aurora
+
+sega wondermega,320,224,WMGA,CRT,NONE,4,3,CONSOLE,Sega Victor,1992,Wondermega,20,iso,joystick (8-way),3
+victor wondermega
+wondermega
 
 sega,0,0,SEGA,CRT,NONE,-4,3,ARCADE,Sega,null,Sega,147,rom,null,null
 sega classics
