@@ -12,8 +12,8 @@ bbc micro
 acorn electron,0,0,ELECT,CRT,NONE,4,3,COMPUTER,Acorn,1983,Electron,85,rom,joystick (8-way),1
 electron
 
-action max
-actionmax,320,200,AMAX,CRT,NONE,4,3,CONSOLE,Worlds of Wonder,1987,Action Max,81,rom,lightgun,1
+action max,320,200,AMAX,CRT,NONE,4,3,CONSOLE,Worlds of Wonder,1987,Action Max,81,rom,lightgun,1
+actionmax
 
 amstrad cpc,0,0,CPC,CRT,NONE,4,3,COMPUTER,Amstrad,1984,Amstrad CPC,65,rom,joystick (8-way),1
 cpc
