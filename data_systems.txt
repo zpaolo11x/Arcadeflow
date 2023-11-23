@@ -12,6 +12,9 @@ bbc micro
 acorn electron,0,0,ELECT,CRT,NONE,4,3,COMPUTER,Acorn,1983,Electron,85,rom,joystick (8-way),1
 electron
 
+action max
+actionmax,320,200,AMAX,CRT,NONE,4,3,CONSOLE,Worlds of Wonder,1987,Action Max,81,rom,lightgun,1
+
 amstrad cpc,0,0,CPC,CRT,NONE,4,3,COMPUTER,Amstrad,1984,Amstrad CPC,65,rom,joystick (8-way),1
 cpc
 
@@ -1077,6 +1080,8 @@ trs80
 ultra 64,0,0,U64,CRT,NONE,4,3,ARCADE,Various,null,Ultra 64,75,rom,null,null
 ultra64
 
+uzebox,0,0,UZBX,CRT,NONE,4,3,CONSOLE,Belogic Software,2008,uZebox,216,rom,joystick (8-way),4
+
 vectrex,0,0,VECT,CRT,NONE,9,11,CONSOLE,GCE,1982,Vectrex,102,rom,joystick (8-way),4
 
 vg5000,320,250,VG5K,CRT,NONE,4,3,COMPUTER,Philips,1984,VG5000,261,rom,joystick (8-way),1
@@ -1093,8 +1098,15 @@ philips videopac
 visual pinball,0,0,VPIN,CRT,NONE,4,3,PINBALL,Various,null,Visual Pinball,198,fichier,null,null
 visualpinball
 
+vtech creativision,256,192,CRTV,CRT,NONE,4,3,CONSOLE,VTech,1982,CreatiVision,241,rom,joystick (8-way),4
+creativision
+
 vtech socrates,0,0,SOCR,CRT,NONE,4,3,CONSOLE,VTech,1988,Socrates,null,rom,null,null
 socrates
+
+vtech v smile,320,240,VSML,CRT,NONE,4,3,CONSOLE,VTech,2004,V Smile,120,rom,joystick (8-way),4
+vsmile
+v smile
 
 wasm-4,160,160,WASM,LCD,NONE,0,0,HANDHELD,Aduros,2021,WASM-4,262,rom,joystick (8-way),2
 wasm4
