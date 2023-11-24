@@ -335,7 +335,7 @@ futurepinball
 
 gaelco,0,0,GAE,CRT,NONE,-4,3,ARCADE,Gaelco,null,Gaelco,75,rom,null,null
 
-* gamate,160,152,GMT,LCD,LCDGBC,160,152,HANDHELD,Bit Corporation,1990,Gamate,266,rom,joystick (8-way),2
+gamate,160,152,GMT,LCD,LCDGBC,160,152,HANDHELD,Bit Corporation,1990,Gamate,266,rom,joystick (8-way),2
 
 game master,0,0,GMAS,LCD,LCDBW,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
 systema 2000
@@ -346,7 +346,7 @@ game park gp32,0,0,GP32,LCD,NONE,0,0,HANDHELD,Game Park,2001,GP32,101,rom,joysti
 gamepark gp32
 gp32
 
-* game pocket computer,75,64,GPC,LCD,LCDBW,75,64,HANDHELD,Epoch,1984,Game Pocket Computer,95,rom,joystick (8-way),4
+game pocket computer,75,64,GPC,LCD,LCDBW,75,64,HANDHELD,Epoch,1984,Game Pocket Computer,95,rom,joystick (8-way),4
 epoch game pocket computer
 
 hbmame,0,0,HBMM,CRT,NONE,-4,3,ARCADE,Various,null,HBMAME,75,rom,null,null
@@ -731,7 +731,7 @@ wiiu
 nintendo,0,0,NINT,CRT,NONE,-4,3,ARCADE,Nintendo,null,Nintendo,161,rom,null,null
 nintendo classics
 
-* nokia n-gage,176,208,LCD,NONE,176,208,HANDHELD,Nokia,2003,N-Gage,30,rom,joystick (8-way),2
+nokia n-gage,176,208,LCD,NONE,176,208,HANDHELD,Nokia,2003,N-Gage,30,rom,joystick (8-way),2
 ngage
 nokia ngage
 n-gage
@@ -793,7 +793,7 @@ sony playstation
 psx
 sony psx
 
-* pocket challenge v2,224,144,PCV2,LCD,LCDBW,224,144,HANDHELD,Benesse Corporation,2000,Pocket Challenge V2,237,iso,joystick (8-way),3
+pocket challenge v2,224,144,PCV2,LCD,LCDBW,224,144,HANDHELD,Benesse Corporation,2000,Pocket Challenge V2,237,iso,joystick (8-way),3
 pocket challenge
 
 psvita,960,544,PSV,LCD,NONE,960,544,HANDHELD,Sony,2011,PS Vita,62,rom,joystick (8-way),4
