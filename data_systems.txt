@@ -335,6 +335,8 @@ futurepinball
 
 gaelco,0,0,GAE,CRT,NONE,-4,3,ARCADE,Gaelco,null,Gaelco,75,rom,null,null
 
+* gamate,160,152,GMT,LCD,LCDGBC,160,152,HANDHELD,Bit Corporation,1990,Gamate,266,rom,joystick (8-way),2
+
 game master,0,0,GMAS,LCD,LCDBW,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
 systema 2000
 super game
@@ -343,6 +345,9 @@ game tronic
 game park gp32,0,0,GP32,LCD,NONE,0,0,HANDHELD,Game Park,2001,GP32,101,rom,joystick (8-way),2
 gamepark gp32
 gp32
+
+* game pocket computer,75,64,GPC,LCD,LCDBW,75,64,HANDHELD,Epoch,1984,Game Pocket Computer,95,rom,joystick (8-way),4
+epoch game pocket computer
 
 hbmame,0,0,HBMM,CRT,NONE,-4,3,ARCADE,Various,null,HBMAME,75,rom,null,null
 hbmame arcade
@@ -726,6 +731,11 @@ wiiu
 nintendo,0,0,NINT,CRT,NONE,-4,3,ARCADE,Nintendo,null,Nintendo,161,rom,null,null
 nintendo classics
 
+* nokia n-gage,176,208,LCD,NONE,176,208,HANDHELD,Nokia,2003,N-Gage,30,rom,joystick (8-way),2
+ngage
+nokia ngage
+n-gage
+
 openbor,0,0,OBOR,CRT,NONE,4,3,COMPUTER,Various,null,OpenBor,214,fichier,null,null
 open bor
 
@@ -782,6 +792,9 @@ playstation,0,0,PSX,CRT,NONE,4,3,CONSOLE,Sony,1994,PlayStation,57,iso,joystick (
 sony playstation
 psx
 sony psx
+
+* pocket challenge v2,224,144,PCV2,LCD,LCDBW,224,144,HANDHELD,Benesse Corporation,2000,Pocket Challenge V2,237,iso,joystick (8-way),3
+pocket challenge
 
 psvita,960,544,PSV,LCD,NONE,960,544,HANDHELD,Sony,2011,PS Vita,62,rom,joystick (8-way),4
 ps vita
@@ -1111,7 +1124,7 @@ v smile
 wasm-4,160,160,WASM,LCD,NONE,0,0,HANDHELD,Aduros,2021,WASM-4,262,rom,joystick (8-way),2
 wasm4
 
-watara supervision,160,160,WSVIS,LCD,LCDGB,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
+watara supervision,160,160,WSVIS,LCD,LCDGBC,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
 quickshot supervision
 supervision
 
