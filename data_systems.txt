@@ -731,7 +731,7 @@ wiiu
 nintendo,0,0,NINT,CRT,NONE,-4,3,ARCADE,Nintendo,null,Nintendo,161,rom,null,null
 nintendo classics
 
-nokia n-gage,176,208,LCD,NONE,176,208,HANDHELD,Nokia,2003,N-Gage,30,rom,joystick (8-way),2
+nokia n-gage,176,208,NGAGE,LCD,NONE,176,208,HANDHELD,Nokia,2003,N-Gage,30,rom,joystick (8-way),2
 ngage
 nokia ngage
 n-gage
