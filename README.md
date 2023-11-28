@@ -301,7 +301,7 @@ Video Effects
 #### SCRAPE AND METADATA
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
-SCRAPING
+Scraping
 - 'Scrape current romlist' : Arcadeflow will scrape your current romlist metadata and media, based on your options
 - 'Scrape selected game' : Arcadeflow will scrape only metadata and media for current game
 - 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
@@ -311,15 +311,15 @@ SCRAPING
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
 - 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete
-SCREENSCRAPER
+ScreenScraper
 - 'SS Username' : Enter your screenscraper.fr username
 - 'SS Password' : Enter your screenscraper.fr password
-MAME DATA FILES
+MAME Data Files
 - 'History.dat' : History.dat location.
 - 'Index clones' : Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger
 - 'Generate History index' : Generate the history.dat index now (this can take some time)
 - 'Bestgames.ini' : Bestgames.ini location for MAME.
-ES XML IMPORT
+ES XML Import
 - 'Import XML data for all romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
 - 'Import XML data for current romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
@@ -327,20 +327,20 @@ ES XML IMPORT
 #### ROMLIST MANAGEMENT
 Manage romlists and collections
 
-ROMLISTS
+Romlists
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
 - 'Erase romlist database' : Doesn't rescan the romlist, bur erases all game database information
 - 'Reset current romlist' : Rescan the romlist erasing and regenerating all romlist data
 - 'Reset last played' : Remove all last played data from the current romlist
-MASTER ROMLIST
+Master Romlist
 - 'Enable Master Romlist' : Turn this on and set master romlist path so AF can manage it
 - 'Master Romlist Path' : If you are using a master romlist, locate it here to enable AF master romlist optimisation
-ROMLIST EXPORT
+Romlist Export
 - 'Export to gamelist xml' : You can export your romlist in the XML format used by EmulationStation
-COLLECTIONS
+Collections
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
-DANGER ZONE
+Danger Zone
 - 'Cleanup database' : Rescans all the romlists adding/removing roms, then purges the database to remove unused entry
 - 'Enable game hiding' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
@@ -356,10 +356,10 @@ Assign retroarch cores to emulators
 #### SEARCH & FILTERS
 Configure the search page and multifilter options
 
-SEARCH
+Search
 - 'Immediate search' : Live update results while searching
 - 'Keyboard layout' : Select the keyboard layout for on-screen keyboard
-MULTIFILTER
+Multifilter
 - 'Save Multifilter sessions' : Save the Multifilter of each display when exiting Arcadeflow or changing list
 - 'Customize Multifilter Menu' : Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item
 - 'Reset Multifilter Menu' : Reset sorting and selection of Multifilter Menu entries

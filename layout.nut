@@ -1216,7 +1216,7 @@ menucounter ++
 sorter.rawset("scrape", menucounter)
 AF.prefs.l0.push({label = "SCRAPE AND METADATA", glyph = 0xea80, description = "You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format"})
 AF.prefs.l1.push([
-{v = 0.0, varname = "", glyph = -1, title = "SCRAPING", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Scraping", selection = AF.req.liner},
 {v = 10.0, varname = "SCRAPEROMLIST", glyph = 0xe9c2, title = "Scrape current romlist", help = "Arcadeflow will scrape your current romlist metadata and media, based on your options", options = "", values = function() {local tempprf = generateprefstable(); scraperomlist2(tempprf, tempprf.MEDIASCRAPE, false)}, selection = AF.req.executef},
 {v = 10.1, varname = "SCRAPEGAME", glyph = 0xe9c2, title = "Scrape selected game", help = "Arcadeflow will scrape only metadata and media for current game", options = "", values = function() {local tempprf = generateprefstable(); scraperomlist2(tempprf, tempprf.MEDIASCRAPE, true)}, selection = AF.req.executef},
 {v = 10.3, varname = "NOCRC", glyph = 0xea0c, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)", options = ["Yes", "No"], values = [false, true], selection = 0},
@@ -1226,15 +1226,15 @@ AF.prefs.l1.push([
 {v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference", options = function() {return (AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
 {v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
 {v = 16.2, varname = "SCRAPETIMEOUT", glyph = 0xe94e, title = "Scrape Timeout", help = "Set the number of seconds to wait for each scrape operation to complete", options = [5, 120, 10], values = 15, selection = AF.req.slideint},
-{v = 0.0, varname = "", glyph = -1, title = "SCREENSCRAPER", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "ScreenScraper", selection = AF.req.liner},
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
-{v = 0.0, varname = "", glyph = -1, title = "MAME DATA FILES", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "MAME Data Files", selection = AF.req.liner},
 {v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
 {v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
 {v = 12.0, varname = "INI_BESTGAMES_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
-{v = 0.0, varname = "", glyph = -1, title = "ES XML IMPORT", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "ES XML Import", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
 {v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true)}, selection = AF.req.executef},
 {v = 9.8, varname = "USEGENREID", glyph = 0xe937, title = "Prefer genreid categories", help = "If GenreID is specified in your games list, use that instead of usual categories", options = ["Yes", "No"], values= [true, false], selection = 0},
@@ -1244,20 +1244,20 @@ AF.prefs.l1.push([
 menucounter ++
 AF.prefs.l0.push({label = "ROMLIST MANAGEMENT", glyph = 0xea80, description = "Manage romlists and collections"})
 AF.prefs.l1.push([
-{v = 0.0, varname = "", glyph = -1, title = "ROMLISTS", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Romlists", selection = AF.req.liner},
 {v = 12.0, varname = "REFRESHROMLIST", glyph = 0xe982, title = "Refresh current romlist", help = "Refresh the romlist with added/removed roms, won't reset current data", options = "", values = function() {local tempprf = generateprefstable(); refreshselectedromlists(tempprf)}, selection = AF.req.executef},
 {v = 14.7, varname = "RESETDATABASE", glyph = 0xe97c, title = "Erase romlist database", help = "Doesn't rescan the romlist, bur erases all game database information", options = "", values = function() {local tempprf = generateprefstable(); eraseselecteddatabase(tempprf); fe.signal("back"); fe.signal("back"); fe.set_display(fe.list.display_index)}, selection = AF.req.executef},
 {v = 12.0, varname = "CLEANROMLIST", glyph = 0xe97c, title = "Reset current romlist", help = "Rescan the romlist erasing and regenerating all romlist data", options = "", values = function() {local tempprf = generateprefstable(); resetselectedromlists(tempprf)}, selection = AF.req.executef},
 {v = 12.3, varname = "RESETLASTPLAYED", glyph = 0xe97c, title = "Reset last played", help = "Remove all last played data from the current romlist", options = "", values = function() {local tempprf = resetlastplayed()}, selection = AF.req.executef},
-{v = 0.0, varname = "", glyph = -1, title = "MASTER ROMLIST", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Master Romlist", selection = AF.req.liner},
 {v = 13.9, varname = "MASTERLIST", glyph = 0xe95c, title = "Enable Master Romlist", help = "Turn this on and set master romlist path so AF can manage it", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 13.9, varname = "MASTERPATH", glyph = 0xe930, title = "Master Romlist Path", help = "If you are using a master romlist, locate it here to enable AF master romlist optimisation", options = "", values = "", selection = AF.req.filereqs},
-{v = 0.0, varname = "", glyph = -1, title = "ROMLIST EXPORT", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Romlist Export", selection = AF.req.liner},
 {v = 12.0, varname = "BUILDXML", glyph = 0xe961, title = "Export to gamelist xml", help = "You can export your romlist in the XML format used by EmulationStation", options = "", values = function() {buildgamelistxml()}, selection = AF.req.executef},
-{v = 0.0, varname = "", glyph = -1, title = "COLLECTIONS", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Collections", selection = AF.req.liner},
 {v = 12.1, varname = "ALLGAMES", glyph = 0xe95c, title = "Enable all games collections", help = "If enabled, Arcadeflow will create All Games compilations", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 12.0, varname = "UPDATEALLGAMES", glyph = 0xe95c, title = "Update all games collections", help = "Force the update of all games collections, use when you remove displays", options = "", values = function() {local tempprf = generateprefstable(); updateallgamescollections(tempprf)}, selection = AF.req.executef},
-{v = 0.0, varname = "", glyph = -1, title = "DANGER ZONE", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Danger Zone", selection = AF.req.liner},
 {v = 14.7, varname = "CLEANDATABASE", glyph = 0xe97c, title = "Cleanup database", help = "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry", options = "", values = function() {local tempprf = generateprefstable(); cleandatabase(tempprf)}, selection = AF.req.executef},
 {v = 14.1, varname = "ENABLEHIDDEN", glyph = 0xe997, title = "Enable game hiding", help = "Enable or disable the options to hide games using tags menu", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 10.9, varname = "ENABLEDELETE", glyph = 0xe9ac, title = "Enable rom delete", help = "Enable or disable the options to delete a rom", options = ["Yes", "No"], values = [true, false], selection = 1},
@@ -1276,10 +1276,10 @@ menucounter ++
 sorter.rawset("mf", menucounter)
 AF.prefs.l0.push({label = "SEARCH & FILTERS", glyph = 0xe986, description = "Configure the search page and multifilter options"})
 AF.prefs.l1.push([
-{v = 0.0, varname = "", glyph = -1, title = "SEARCH", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Search", selection = AF.req.liner},
 {v = 7.9, varname = "LIVESEARCH", glyph = 0xe985, title = "Immediate search", help = "Live update results while searching", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 8.0, varname = "KEYLAYOUT", glyph = 0xe955, title = "Keyboard layout", help = "Select the keyboard layout for on-screen keyboard", options = ["ABCDEF", "QWERTY", "AZERTY"], values = ["ABCDEF", "QWERTY", "AZERTY"], selection = 0},
-{v = 0.0, varname = "", glyph = -1, title = "MULTIFILTER", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "Multifilter", selection = AF.req.liner},
 {v = 7.9, varname = "SAVEMFZ", glyph = 0xeaed, title = "Save Multifilter sessions", help = "Save the Multifilter of each display when exiting Arcadeflow or changing list", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 12.8, varname = "MFZVECTOR", glyph = 0xeaed, title = "Customize Multifilter Menu", help = "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item", options = function() {return (mfztablenames(multifilterz.l0))}, values = sortstring(16), selection = AF.req.menusort},
 {v = 12.8, varname = "MFZVECTORRESET", glyph = 0xe965, title = "Reset Multifilter Menu", help = "Reset sorting and selection of Multifilter Menu entries", options = "", values = function() {AF.prefs.l1[sorter.mf][5].values = sortstring(16)}, selection = AF.req.executef},

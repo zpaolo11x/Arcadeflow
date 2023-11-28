@@ -493,10 +493,10 @@ IT = "Puoi usare Arcadeflow per fare lo scraping dei metadati e dei media dei gi
 ES = "Puedes usar Arcadeflow para hacer Scrape y obtener los metadatos y la media de tus juegos, o importar una lista en formato XML de EmulationStation"
 DE = "Der interne Arcadeflow Scraper kann verwendet werden um Metadaten und Medien für Spiele zu holen, oder XML Daten im EmulationStation Format importieren"
 }
-     "SCRAPING":{
-IT = "SCRAPING"
-ES = "SCRAPING"
-DE = "SCRAPING"
+     "Scraping":{
+IT = "Scraping"
+ES = "Scraping"
+DE = "Scraping"
 }
      "Scrape current romlist":{
 IT = "Scrape dell'attuale romlist"
@@ -613,10 +613,10 @@ IT = "Timout scraping"
      "Set the number of seconds to wait for each scrape operation to complete":{
 IT = "Imposta quanti secondi attendere per ogni operazione di scraping"
 }
-     "SCREENSCRAPER":{
-IT = "SCREENSCRAPER"
-ES = "SCREENSCRAPER"
-DE = "SCREENSCRAPER"
+     "ScreenScraper":{
+IT = "ScreenScraper"
+ES = "ScreenScraper"
+DE = "ScreenScraper"
 }
      "SS Username":{
 IT = "Username SS"
@@ -638,10 +638,10 @@ IT = "Immetti la tua password screenscraper.fr"
 ES = "Indica tu contraseña en screenscraper.fr"
 DE = "Screenscraper.fr Passwort angeben"
 }
-     "ES XML IMPORT":{
-IT = "IMPORTA XML DA ES"
-ES = "IMPORTAR XML DE ES"
-DE = "ES XML IMPORT"
+     "ES XML Import":{
+IT = "Importa XML da ES"
+ES = "Importar XML de ES"
+DE = "ES XML Import"
 }
      "Import XML data for all romlists":{
 IT = "Importa i dati XML per tutte le romlist"
@@ -691,9 +691,9 @@ DE = "ROMLISTEN VERWALTUNG"
 IT = "Gestisci le romlist e le collezioni"
 DE = "Verwalten von ROMLISTEN und Sammlungen"
 }
-     "ROMLISTS":{
-IT = "ROMLIST"
-DE = "ROMLISTEN"
+     "Romlists":{
+IT = "Romlist"
+DE = "Romlisten"
 }
      "Refresh current romlist":{
 IT = "Aggiorna questa romlist"
@@ -725,9 +725,9 @@ DE = "Resete zuletzt gespielt"
 IT = "Rimuovi tutti i dati dell'ultimo lancio da questa romlist"
 DE = "Entferne alle zuletzt gespielt Daten aus der aktuellen ROMLIST"
 }
-     "MASTER ROMLIST":{
-IT = "MASTER ROMLIST"
-DE = "MASTER ROMLIST"
+     "Master Romlist":{
+IT = "Master Romlist"
+DE = "Master Romlist"
 }
      "Enable Master Romlist":{
 IT = "Abilita la Master Romlist"
@@ -745,9 +745,9 @@ DE = "Master ROMLIST Pfad"
 IT = "Se usi una master romlist, indica il path in cui è salvata per abilitare l'ottimizzazione"
 DE = "Wenn du eine Master ROMLIST verwendest, gib sie hier an und aktiviere AF Master ROMLIST Optimierung"
 }
-     "ROMLIST EXPORT":{
-IT = "ESPORTA ROMLIST"
-DE = "ROMLIST EXPORT"
+     "Romlist Export":{
+IT = "Esporta romlist"
+DE = "Romlist Export"
 }
      "Export to gamelist xml":{
 IT = "Esporta a gamelist xml"
@@ -757,9 +757,9 @@ DE = "Exportiere in gamelist xml"
 IT = "Puoi esportare la romlist nel formato XML usato da EmulationStation"
 DE = "Du kannst deine ROMLIST im EmulationStation XML Format exportieren"
 }
-     "COLLECTIONS":{
-IT = "COLLEZIONI"
-DE = "SAMMLUNGEN"
+     "Collections":{
+IT = "Collezioni"
+DE = "Sammlungen"
 }
      "Enable all games collections":{
 IT = "Abilita le collezioni all games"
@@ -777,9 +777,9 @@ DE = "Aktualisiere alle Spiel Sammlungen"
 IT = "Forza l'aggiornamento delle collezioni all games, da usare quando si rimuove un display"
 DE = "Erzwinge die Aktualisierung aller Spiele Sammlungen, verwenden wenn Displays entfernt werden"
 }
-     "DANGER ZONE":{
-IT = "ZONA PERICOLOSA"
-DE = "GEFAHRENZONE"
+     "Danger Zone":{
+IT = "Zona Pericolosa"
+DE = "Gefahrenzone"
 }
      "Cleanup database":{
 IT = "Ripulisci database"
