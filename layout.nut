@@ -1276,10 +1276,10 @@ menucounter ++
 sorter.rawset("mf", menucounter)
 AF.prefs.l0.push({label = "SEARCH & FILTERS", glyph = 0xe986, description = "Configure the search page and multifilter options"})
 AF.prefs.l1.push([
-{v = 0.0, varname = "", glyph = -1, title = "Search", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "SEARCH", selection = AF.req.liner},
 {v = 7.9, varname = "LIVESEARCH", glyph = 0xe985, title = "Immediate search", help = "Live update results while searching", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 8.0, varname = "KEYLAYOUT", glyph = 0xe955, title = "Keyboard layout", help = "Select the keyboard layout for on-screen keyboard", options = ["ABCDEF", "QWERTY", "AZERTY"], values = ["ABCDEF", "QWERTY", "AZERTY"], selection = 0},
-{v = 0.0, varname = "", glyph = -1, title = "Multifilter", selection = AF.req.liner},
+{v = 0.0, varname = "", glyph = -1, title = "MULTIFILTER", selection = AF.req.liner},
 {v = 7.9, varname = "SAVEMFZ", glyph = 0xeaed, title = "Save Multifilter sessions", help = "Save the Multifilter of each display when exiting Arcadeflow or changing list", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 12.8, varname = "MFZVECTOR", glyph = 0xeaed, title = "Customize Multifilter Menu", help = "Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item", options = function() {return (mfztablenames(multifilterz.l0))}, values = sortstring(16), selection = AF.req.menusort},
 {v = 12.8, varname = "MFZVECTORRESET", glyph = 0xe965, title = "Reset Multifilter Menu", help = "Reset sorting and selection of Multifilter Menu entries", options = "", values = function() {AF.prefs.l1[sorter.mf][5].values = sortstring(16)}, selection = AF.req.executef},
@@ -1358,10 +1358,14 @@ function abouttext() {
 
 			about.push("\n")
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
-				try {
-					about.push("- '" + AF.prefs.l1[i][j].title + "'" + " : " + AF.prefs.l1[i][j].help + "\n")
-				} catch(err) {
-					about.push("- " + AF.prefs.l1[i][j].title + "\n")
+				if (AF.prefs.l1[i][j].glyph == -1)
+					about.push(AF.prefs.l1[i][j].title + "\n")
+				else {
+					try {
+						about.push("- '" + AF.prefs.l1[i][j].title + "'" + " : " + AF.prefs.l1[i][j].help + "\n")
+					} catch(err) {
+						about.push("- " + AF.prefs.l1[i][j].title + "\n")
+					}
 				}
 			}
 			about.push("\n")
