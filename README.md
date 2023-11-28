@@ -135,10 +135,12 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Optimize vertical arcade' : Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project
 - 'Zoom thumbnails' : Chose if you want the selected thumbnail to zoom to a larger size
 - 'Show only logos' : If enabled, only game title logos will be shown instead of the screenshot
-- *Snapshot Options*
+    
+*Snapshot Options*
 - 'Artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
 - 'Show game title' : Show the title of the game over the thumbnail
-- *Box Art Options*
+
+*Box Art Options*
 - 'Box Art mode' : Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)
 - 'Game title over box art' : Shows the game title artwork overlayed on the box art graphics
 - 'Artwork source' : Chose the artwork source for box art graphics
