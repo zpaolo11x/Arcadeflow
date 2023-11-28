@@ -1359,7 +1359,7 @@ function abouttext() {
 			about.push("\n")
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				if (AF.prefs.l1[i][j].glyph == -1)
-					about.push(AF.prefs.l1[i][j].title + "\n")
+					about.push("- *" + AF.prefs.l1[i][j].title + "*\n")
 				else {
 					try {
 						about.push("- '" + AF.prefs.l1[i][j].title + "'" + " : " + AF.prefs.l1[i][j].help + "\n")
