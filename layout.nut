@@ -1353,7 +1353,7 @@ function abouttext() {
 	local about = []
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
 		if (AF.prefs.l0[i].label != "") {
-			about.push("#### " + AF.prefs.l0[i].label + "\n")
+			about.push("---\n#### " + AF.prefs.l0[i].label + "\n")
 			about.push(AF.prefs.l0[i].description + "\n")
 
 			about.push("\n")
