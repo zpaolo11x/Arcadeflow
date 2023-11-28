@@ -1353,13 +1353,13 @@ function abouttext() {
 	local about = []
 	for (local i = 0; i < AF.prefs.l0.len(); i++) {
 		if (AF.prefs.l0[i].label != "") {
-			about.push("---\n#### " + AF.prefs.l0[i].label + "\n")
+			about.push("#### " + AF.prefs.l0[i].label + "\n")
 			about.push(AF.prefs.l0[i].description + "\n")
 
 			about.push("\n")
 			for (local j = 0; j < AF.prefs.l1[i].len(); j++) {
 				if (AF.prefs.l1[i][j].glyph == -1)
-					about.push("- *" + AF.prefs.l1[i][j].title + "*\n")
+					about.push("\n    *" + AF.prefs.l1[i][j].title + "*\n")
 				else {
 					try {
 						about.push("- '" + AF.prefs.l1[i][j].title + "'" + " : " + AF.prefs.l1[i][j].help + "\n")

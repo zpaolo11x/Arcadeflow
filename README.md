@@ -101,24 +101,26 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
----
 #### GENERAL
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
 - 'Power and Exit menu' : Customise exit menu with power options
-- *Layout*
+
+    *Layout*
 - 'Rows in horizontal' : Number of rows to use in 'horizontal' mode
 - 'Rows in vertical' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
 - 'Small screen' : Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout
 - 'Custom color' : Define a custom color for UI elements using sliders
-- *Game Data*
+
+    *Game Data*
 - 'Display Game Long Name' : Shows the part of the rom name with version and region data
 - 'Display System Name' : Shows the System name under the game title
 - 'Display Arcade System Name' : Shows the name of the Arcade system if available
 - 'System Name as artwork' : If enabled, the system name under the game title is rendered as a logo instead of plain text
-- *Scroll & Sort*
+
+    *Scroll & Sort*
 - 'Page jump size' : Page jumps are one screen by default, you can increase it if you want to jump faster
 - 'Scrollbar style' : Select how the scrollbar should look
 - 'Scroll updates' : Immediately updates the tiles while you scroll
@@ -126,7 +128,6 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Enable sorting' : Enable custom realtime sorting, diable to keep romlist sort order
 - 'Save sort order' : Custom sort order is saved through Arcadeflow sessions
 
----
 #### THUMBNAILS
 Chose the aspect ratio of thumbnails, video thumbnails and decorations
 
@@ -135,22 +136,24 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Optimize vertical arcade' : Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project
 - 'Zoom thumbnails' : Chose if you want the selected thumbnail to zoom to a larger size
 - 'Show only logos' : If enabled, only game title logos will be shown instead of the screenshot
-    
-*Snapshot Options*
+
+    *Snapshot Options*
 - 'Artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
 - 'Show game title' : Show the title of the game over the thumbnail
 
-*Box Art Options*
+    *Box Art Options*
 - 'Box Art mode' : Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)
 - 'Game title over box art' : Shows the game title artwork overlayed on the box art graphics
 - 'Artwork source' : Chose the artwork source for box art graphics
-- *Video Snaps*
+
+    *Video Snaps*
 - 'Video thumbs' : Enable video overlay on snapshot thumbnails
 - 'Fade title on video' : Fades game title and decoration when the video is playing
 - 'Video delay multiplier' : Increase video load delay
 - 'Generate missing title art' : If no game title is present, the layout can generate it
 - 'Vertical arcade videos' : Enable this option if you are using 9:16 videos from the Vertical Arcade project
-- *Decorations*
+
+    *Decorations*
 - 'Game not available indicator' : Games that are not available will be marked with a red cross overlay
 - 'New game indicator' : Games not played are marked with a glyph
 - 'Show tag indicator' : Shows a tag attached to thumbnails that contains any tag
@@ -158,7 +161,6 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Game Boy color correction' : Apply a colorized palette to Game Boy games based on the system name or forced to your preference
 - 'MSX crt color correction' : Apply a palette correction to MSX media that was captured with MSX2 palette
 
----
 #### BACKGROUND
 Chose the layout background theme in main page and in History page, or select custom backgrounds
 
@@ -166,36 +168,37 @@ Chose the layout background theme in main page and in History page, or select cu
 - 'Custom overlay' : Insert custom PNG to be overlayed over everything
 - 'Custom main BG image' : Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)
 - 'Format of main BG image' : Select if the custom background must be cropped to fill the screen or stretched
-- *History BG*
+
+    *History BG*
 - 'Custom history BG image' : Insert custom background art path for history page (leave blank if the same as main background)
 - 'Format of history BG image' : Select if the custom background must be cropped to fill the screen or stretched
-- *BG Snaps*
+
+    *BG Snaps*
 - 'Background snap' : Add a faded game snapshot to the background
 - 'Animate BG snap' : Animate video on background
 - 'Delay BG animation' : Don't load immediately the background video animation
-- *Per Display*
+
+    *Per Display*
 - 'Per Display background' : You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display
 
----
 #### LOGO
 Customize the splash logo at the start of Arcadeflow
 
 - 'Enable splash logo' : Enable or disable the AF start logo
 - 'Custom splash logo' : Insert the path to a custom AF splash logo (or keep blank for default logo)
 
----
 #### COLOR CYCLE
 Enable and edit color cycling animation of tile highlight border
 
 - 'Enable color cycle' : Enable/disable color cycling of the tile higlight border
-- *Cycle Options*
+
+    *Cycle Options*
 - 'Cycle speed' : Select the speed of color cycle
 - 'Cycle color' : Select a color intensity preset for the cycle
 - 'Ping Pong effect' : Enable this if you want the cycle to revert once finished instead of restarting
 - 'Start hue' : Define the start value of the hue cycle (0 - 359)
 - 'Stop hue' : Define the stop value of the hue cycle (0 - 359)
 
----
 #### AUDIO
 Configure layout sounds and audio options for videos
 
@@ -207,7 +210,6 @@ Configure layout sounds and audio options for videos
 - 'Per display background music' : If this is enabled, Arcadeflow will play the music file that has the same name as the current display
 - 'Stop bg music in attract mode' : Stops playing the layout background music during attract mode
 
----
 #### BUTTONS
 Define custom control buttons for different features of Arcadeflow
 
@@ -215,30 +217,32 @@ Define custom control buttons for different features of Arcadeflow
 - 'Utility menu button' : Chose the button to open the utility menu
 - 'History page button' : Chose the button to open the history or overview page
 - 'Thumbnail mode button' : Chose the button to use to switch from snapshot mode to box art mode
-- *Search and Filters*
+
+    *Search and Filters*
 - 'Search menu button' : Chose the button to use to directly open the search menu instead of using the utility menu
 - 'Category menu button' : Chose the button to use to open the list of game categories
 - 'Multifilter menu button' : Chose the button to use to open the menu for dynamic filtering of romlist
 - 'Show favorites button' : Chose the button to use to toggle favorite filtering
-- *Sound*
+
+    *Sound*
 - 'Volume button' : Chose the button to use to change system volume
-- *ROM Management*
+
+    *ROM Management*
 - 'Delete ROM button' : Chose the button to use to delete the current rom from the disk. Deleted roms are moved to a -deleted- folder
 
----
 #### UTILITY MENU
 Customize the utility menu entries that you want to see in the menu
 
 - 'Customize Utility Menu' : Sort and select Utility Menu entries: Left/Right to move items up and down, Select to enable/disable item
 - 'Reset Utility Menu' : Reset sorting and selection of Utility Menu entries
 
----
 #### DISPLAYS MENU PAGE
 Arcadeflow has its own Displays Menu page that can be configured here
 
 - 'Enable Arcadeflow Displays Menu page' : If you disable Arcadeflow menu page you can use other layouts as displays menu
 - 'Enable Fast Displays Change' : Disable fast display change if you want to use other layouts for different displays
-- *Look and Feel*
+
+    *Look and Feel*
 - 'Generate display logo' : Generate displays name related artwork for displays list
 - 'Sort displays menu' : Show displays in the menu in your favourite order
 - 'Show group separators' : When sorting by brand show separators in the menu for each brand
@@ -247,21 +251,23 @@ Arcadeflow has its own Displays Menu page that can be configured here
 - 'Enable category artwork' : You can separately enable/disable artwork for categories like console, computer, pinball etc.
 - 'Categorized Displays Menu' : Displays menu will be grouped by system categories: Arcades, Computer, Handhelds, Consoles, Pinballs and Others for collections
 - 'Add Exit Arcadeflow to menu' : Add an entry to exit Arcadeflow from the displays menu page
-- *Behavior*
+
+    *Behavior*
 - 'Open on current category' : With categorised displays menu, open in the current category instead of main menu
 - 'Open the Displays Menu at startup' : Show Displays Menu immediately after launching Arcadeflow, this works better than setting it in the general options of Attract Mode
 - 'Exit AF when leaving Menu' : The esc button from Displays Menu triggers the exit from Arcadeflow
 - 'Enter Menu when leaving display' : The esc button from Arcadeflow brings the displays menu instead of exiting Arcadeflow
 
----
 #### HISTORY PAGE
 Configure the History page where larger thumbnail and game history data are shown
 
-- *Video Effects*
+
+    *Video Effects*
 - 'CRT deformation' : Enable CRT deformation for CRT snaps
 - 'Scanline effect' : Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline
 - 'LCD effect' : Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect
-- *Layout*
+
+    *Layout*
 - 'Text panel size' : Select the size of the history panel at the expense of snapshot area
 - 'Text panel style' : Select the look of the history text panel
 - 'Game panel style' : Select the look of the history game panel
@@ -269,55 +275,57 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Detailed game data' : Show extra data after the game name before the history text
 - 'Control panel overlay' : Show controller and buttons overlay on history page
 
----
 #### ATTRACT MODE
 Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here
 
 - 'Enable attract mode' : Enable or disable attract mode at layout startup
-- *Look & Feel*
+
+    *Look & Feel*
 - 'Attract mode timer (s)' : Inactivity timer before attract mode is enabled
 - 'Game change time (s)' : Time interval between each game change
 - 'Attract logo' : Show Arcadeflow logo during attract mode
 - 'Attract message' : Text to show during attract mode
-- *Sound*
+
+    *Sound*
 - 'Background music' : Path to a music file to play in background
 - 'Enable game sound' : Enable game sounds during attract mode
 
----
 #### PERFORMANCE & FX
 Turn on or off special effects that might impact on Arcadeflow performance
 
 - 'Adjust performance' : Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
 - 'Resolution W x H' : Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution
 - 'Raspberry Pi fix' : This applies to systems that gives weird results when getting back from a game, reloading the layout as needed
-- *Overscan*
+
+    *Overscan*
 - 'Width %' : For screens with overscan, define which percentage of the screen will be filled with actual content
 - 'Height %' : For screens with overscan, define which percentage of the screen will be filled with actual content
 - 'Shift X %' : For screens with overscan, screen will be shifted by the percentage
 - 'Shift Y %' : For screens with overscan, screen will be shifted by the percentage
-- *Effects*
+
+    *Effects*
 - 'Low Spec mode' : Reduce most visual effects to boost speed on lower spec systems
 - 'Smooth shadow' : Enable smooth shadow under game title and data in the GUI
 - 'Glow effect' : Add a glowing halo around the selected game thumbnail
 - 'Snap border' : Add a white border around the selected game thumbnail
 - 'Thumb gradient' : Blurs the artwork behind the game logo so it's more readable
 
----
 #### MULTIPLE MONITOR
 Configure the appearence of a second monitor
 
-- *Video Effects*
+
+    *Video Effects*
 - 'Enable multiple monitor' : Enable Arcadeflow multiple monitor suport
 - 'Monitor identifier' : Select the identification number for the external monitor
 - 'Correct aspect ratio' : Select if the image on the second monitor should be stretched or not
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
----
 #### SCRAPE AND METADATA
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
-- *Scraping*
+
+    *Scraping*
 - 'Scrape current romlist' : Arcadeflow will scrape your current romlist metadata and media, based on your options
 - 'Scrape selected game' : Arcadeflow will scrape only metadata and media for current game
 - 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
@@ -327,42 +335,48 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
 - 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete
-- *ScreenScraper*
+
+    *ScreenScraper*
 - 'SS Username' : Enter your screenscraper.fr username
 - 'SS Password' : Enter your screenscraper.fr password
-- *MAME Data Files*
+
+    *MAME Data Files*
 - 'History.dat' : History.dat location.
 - 'Index clones' : Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger
 - 'Generate History index' : Generate the history.dat index now (this can take some time)
 - 'Bestgames.ini' : Bestgames.ini location for MAME.
-- *ES XML Import*
+
+    *ES XML Import*
 - 'Import XML data for all romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
 - 'Import XML data for current romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
 - 'Prefer genreid categories' : If GenreID is specified in your games list, use that instead of usual categories
 
----
 #### ROMLIST MANAGEMENT
 Manage romlists and collections
 
-- *Romlists*
+
+    *Romlists*
 - 'Refresh current romlist' : Refresh the romlist with added/removed roms, won't reset current data
 - 'Erase romlist database' : Doesn't rescan the romlist, bur erases all game database information
 - 'Reset current romlist' : Rescan the romlist erasing and regenerating all romlist data
 - 'Reset last played' : Remove all last played data from the current romlist
-- *Master Romlist*
+
+    *Master Romlist*
 - 'Enable Master Romlist' : Turn this on and set master romlist path so AF can manage it
 - 'Master Romlist Path' : If you are using a master romlist, locate it here to enable AF master romlist optimisation
-- *Romlist Export*
+
+    *Romlist Export*
 - 'Export to gamelist xml' : You can export your romlist in the XML format used by EmulationStation
-- *Collections*
+
+    *Collections*
 - 'Enable all games collections' : If enabled, Arcadeflow will create All Games compilations
 - 'Update all games collections' : Force the update of all games collections, use when you remove displays
-- *Danger Zone*
+
+    *Danger Zone*
 - 'Cleanup database' : Rescans all the romlists adding/removing roms, then purges the database to remove unused entry
 - 'Enable game hiding' : Enable or disable the options to hide games using tags menu
 - 'Enable rom delete' : Enable or disable the options to delete a rom
 
----
 #### RETROARCH INTEGRATION
 Assign retroarch cores to emulators
 
@@ -371,33 +385,31 @@ Assign retroarch cores to emulators
 - 'Custom Core folder' : Enter a custom folder for RA cores if not using standard locations
 - 'Custom Info folder' : Enter a custom folder for RA info files if not using standard locations
 
----
 #### SEARCH & FILTERS
 Configure the search page and multifilter options
 
-- *Search*
+
+    *Search*
 - 'Immediate search' : Live update results while searching
 - 'Keyboard layout' : Select the keyboard layout for on-screen keyboard
-- *Multifilter*
+
+    *Multifilter*
 - 'Save Multifilter sessions' : Save the Multifilter of each display when exiting Arcadeflow or changing list
 - 'Customize Multifilter Menu' : Sort and select Multifilter Menu entries: Left/Right to move items up and down, Select to enable/disable item
 - 'Reset Multifilter Menu' : Reset sorting and selection of Multifilter Menu entries
 
----
 #### UPDATES
 Configure update notifications
 
 - 'Automatically check for updates' : Will check for updates at each AF launch, if you dismiss one update you won't be notified until the next one
 - 'Install update after download' : Arcadeflow allows you to chose if you just want to download updates, or if you want to install them directly
 
----
 #### SAVE & LOAD
 Save or reload options configurations
 
 - 'Save current options' : Save the current options configuration in a custom named file
 - 'Load options from external file' : Restore AF options from a previously saved file
 
----
 #### DEBUG
 This section is for debug purposes only
 
