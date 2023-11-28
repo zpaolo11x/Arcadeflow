@@ -106,17 +106,20 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 
 - 'Layout language' : Chose the language of the layout
 - 'Power and Exit menu' : Customise exit menu with power options
+---
 - *Layout*
 - 'Rows in horizontal' : Number of rows to use in 'horizontal' mode
 - 'Rows in vertical' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
 - 'Small screen' : Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout
 - 'Custom color' : Define a custom color for UI elements using sliders
+---
 - *Game Data*
 - 'Display Game Long Name' : Shows the part of the rom name with version and region data
 - 'Display System Name' : Shows the System name under the game title
 - 'Display Arcade System Name' : Shows the name of the Arcade system if available
 - 'System Name as artwork' : If enabled, the system name under the game title is rendered as a logo instead of plain text
+---
 - *Scroll & Sort*
 - 'Page jump size' : Page jumps are one screen by default, you can increase it if you want to jump faster
 - 'Scrollbar style' : Select how the scrollbar should look
@@ -133,13 +136,16 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Optimize vertical arcade' : Enable this option if you have 9:16 vertical artwork from the Vertical Arcade project
 - 'Zoom thumbnails' : Chose if you want the selected thumbnail to zoom to a larger size
 - 'Show only logos' : If enabled, only game title logos will be shown instead of the screenshot
+---
 - *Snapshot Options*
 - 'Artwork source' : Chose if you want the snapshot artwork from gameplay or title screen
 - 'Show game title' : Show the title of the game over the thumbnail
+---
 - *Box Art Options*
 - 'Box Art mode' : Show box art or flyers instead of screen captures by default (can be configured with menu or hotkey)
 - 'Game title over box art' : Shows the game title artwork overlayed on the box art graphics
 - 'Artwork source' : Chose the artwork source for box art graphics
+---
 - *Video Snaps*
 - 'Video thumbs' : Enable video overlay on snapshot thumbnails
 - 'Fade title on video' : Fades game title and decoration when the video is playing
@@ -161,6 +167,7 @@ Chose the layout background theme in main page and in History page, or select cu
 - 'Custom overlay' : Insert custom PNG to be overlayed over everything
 - 'Custom main BG image' : Insert custom background art path (use grey.png for blank background, vignette.png for vignette overlay)
 - 'Format of main BG image' : Select if the custom background must be cropped to fill the screen or stretched
+---
 - *History BG*
 - 'Custom history BG image' : Insert custom background art path for history page (leave blank if the same as main background)
 - 'Format of history BG image' : Select if the custom background must be cropped to fill the screen or stretched
