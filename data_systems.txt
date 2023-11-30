@@ -424,6 +424,11 @@ msx 2,0,0,MSX2,CRT,NONE,4,3,COMPUTER,Ascii Microsoft,1985,MSX 2,116,rom,joystick
 msx2
 msx-2
 
+msx 2+,0,0,MSX2+,CRT,NONE,4,3,COMPUTER,Ascii Microsoft,1988,MSX 2plus,117,rom,joystick (8-way),1
+msx2+
+msx2plus
+msx 2plus
+
 msx turbo r,0,0,MSX-TR,CRT,NONE,4,3,COMPUTER,Ascii Microsoft,1990,MSX turbo R,118,rom,joystick (8-way),1
 msx turbor
 msx turbo-r
