@@ -1,6 +1,6 @@
 null,0,0,NULL,CRT,NONE,4,3,OTHER,null,null,null,null,null,null,null
 
-* abc 80,0,0,ABC,CRT,NONE,4,3,COMPUTER,Luxor,1978,ABC80,null,rom,joystick (8-way),1
+abc 80,0,0,ABC,CRT,NONE,4,3,COMPUTER,Luxor,1978,ABC80,null,rom,joystick (8-way),1
 luxor abc 80
 abc80
 luxor abc80
@@ -20,7 +20,7 @@ electron
 action max,320,200,AMAX,CRT,NONE,4,3,CONSOLE,Worlds of Wonder,1987,Action Max,81,rom,lightgun,1
 actionmax
 
-* alice,0,0,ALC,CRT,NONE,4,3,COMPUTER,Matra,1983,Alice,null,rom,joystick (8-way),1
+alice,0,0,ALC,CRT,NONE,4,3,COMPUTER,Matra,1983,Alice,null,rom,joystick (8-way),1
 matra alice
 
 amstrad cpc,0,0,CPC,CRT,NONE,4,3,COMPUTER,Amstrad,1984,Amstrad CPC,65,rom,joystick (8-way),1
@@ -51,7 +51,7 @@ apple macintosh,0,0,MAC,CRT,NONE,4,3,COMPUTER,Apple,1984,Macintosh,146,rom,joyst
 macintosh
 mac
 
-* apple pippin,640,480,PPN,CRT,NONE,4,3,CONSOLE,Apple,1996,Pippin,null,joystick (8-way),4
+apple pippin,640,480,PPN,CRT,NONE,4,3,CONSOLE,Apple,1996,Pippin,null,joystick (8-way),4
 
 aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,Aquarius,null,null,joystick (8-way),1
 mattel aquarius
@@ -228,7 +228,7 @@ c 64
 c=64
 c64
 
-* commodore 65,0,0,C65,CRT,NONE,4,3,COMPUTER,Commodore,1990,C 65,null,rom,joystick (8-way),1
+commodore 65,0,0,C65,CRT,NONE,4,3,COMPUTER,Commodore,1990,C 65,null,rom,joystick (8-way),1
 c 65
 c=65
 c65
@@ -352,15 +352,15 @@ gaelco,0,0,GAE,CRT,NONE,-4,3,ARCADE,Gaelco,null,Gaelco,75,rom,null,null
 
 gamate,160,152,GMT,LCD,LCDGBC,160,152,HANDHELD,Bit Corporation,1990,Gamate,266,rom,joystick (8-way),2
 
-* game king,48,32,GK,LCD,LCDGBC,48,32,HANDHELD,Timetop,2004,GameKing,null,rom,joystick (8-way),2
+game king,48,32,GK,LCD,LCDGBC,48,32,HANDHELD,Timetop,2004,GameKing,null,rom,joystick (8-way),2
 gameking
 
-* game king 2,48,32,GK2,LCD,LCDGBC,48,32,HANDHELD,Timetop,2005,GameKing 2,null,rom,joystick (8-way),2
+game king 2,48,32,GK2,LCD,LCDGBC,48,32,HANDHELD,Timetop,2005,GameKing 2,null,rom,joystick (8-way),2
 game king ii
 gameking 2
 gameking ii
 
-* game king 3,48,32,GK2,LCD,NONE,48,32,HANDHELD,Timetop,2005,GameKing 3,null,rom,joystick (8-way),2
+game king 3,48,32,GK2,LCD,NONE,48,32,HANDHELD,Timetop,2005,GameKing 3,null,rom,joystick (8-way),2
 game king iii
 gameking 3
 gameking iii
@@ -417,14 +417,14 @@ mb microvision,16,16,MVIS,LCD,LCDBW,0,0,HANDHELD,Milton Bradley,1979,Microvision
 microvision
 milton bradley microvision
 
-* mega 65,0,0,M65,CRT,NONE,4,3,COMPUTER,MEGA,2021,MEGA 65,null,rom,joystick (8-way),2
+mega 65,0,0,M65,CRT,NONE,4,3,COMPUTER,MEGA,2021,MEGA 65,null,rom,joystick (8-way),2
 mega65
 
 mega duck,160,144,DUCK,LCD,LCDGBC,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
 mega duck wg-108
 cougar boy
 
-* microbee,0,0,MBEE,CRT,NONE,4,3,COMPUTER,Applied Technology,1982,MicroBee,rom,joystick (8-way),1
+microbee,0,0,MBEE,CRT,NONE,4,3,COMPUTER,Applied Technology,1982,MicroBee,rom,joystick (8-way),1
 micro bee
 
 microsoft windows,0,0,WIN,CRT,NONE,4,3,COMPUTER,Microsoft,1993,Windows,138,iso,joystick (8-way),1
@@ -1059,7 +1059,7 @@ zx spectrum 3
 spectrum 3
 spectrum +3
 
-* sinclair zx80,0,0,ZX80,CRT,NONE,4,3,COMPUTER,Sinclair,1980,ZX 80,null,rom,joystick (8-way),1
+sinclair zx80,0,0,ZX80,CRT,NONE,4,3,COMPUTER,Sinclair,1980,ZX 80,null,rom,joystick (8-way),1
 zx 80
 sinclair zx 80
 zx80
@@ -1152,7 +1152,7 @@ philips videopac plus
 videopac,160,200,VPAC,CRT,NONE,4,3,CONSOLE,Philips,1978,Videopac,104,rom,joystick (8-way),1
 philips videopac
 
-* videoton tvc,0,0,TVC,CRT,NONE,4,3,COMPUTER,Videoton,1986,Videoton TVC,null,rom,joystick (8-way),1
+videoton tvc,0,0,TVC,CRT,NONE,4,3,COMPUTER,Videoton,1986,Videoton TVC,null,rom,joystick (8-way),1
 videoton tv-computer
 tvc
 tv-computer
