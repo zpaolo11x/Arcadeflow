@@ -51,7 +51,8 @@ apple macintosh,0,0,MAC,CRT,NONE,4,3,COMPUTER,Apple,1984,Macintosh,146,rom,joyst
 macintosh
 mac
 
-apple pippin,640,480,PPN,CRT,NONE,4,3,CONSOLE,Apple,1996,Pippin,null,joystick (8-way),4
+apple pippin,640,480,PPN,CRT,NONE,4,3,CONSOLE,Apple,1996,Pippin,null,rom,joystick (8-way),4
+pippin
 
 aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,Aquarius,null,null,joystick (8-way),1
 mattel aquarius
@@ -424,7 +425,7 @@ mega duck,160,144,DUCK,LCD,LCDGBC,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joy
 mega duck wg-108
 cougar boy
 
-microbee,0,0,MBEE,CRT,NONE,4,3,COMPUTER,Applied Technology,1982,MicroBee,rom,joystick (8-way),1
+microbee,0,0,MBEE,CRT,NONE,4,3,COMPUTER,Applied Technology,1982,MicroBee,null,rom,joystick (8-way),1
 micro bee
 
 microsoft windows,0,0,WIN,CRT,NONE,4,3,COMPUTER,Microsoft,1993,Windows,138,iso,joystick (8-way),1
