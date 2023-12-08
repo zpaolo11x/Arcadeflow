@@ -1064,6 +1064,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "LAYERVIDELAY", glyph = 0xe913, title = "Delay BG animation", help = "Don't load immediately the background video animation", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Per Display", selection = AF.req.liner},
 {v = 7.5, varname = "BGPERDISPLAY", glyph = 0xe912, title = "Per Display background", help = "You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 16.6, varname = "OVERPERDISPLAY", glyph = 0xe912, title = "Per Display overlay", help = "You can have a different overlay for each display, just put your pictures in menu-art/overmain folder named as the display", options = ["Yes", "No"], values = [true, false], selection = 1},
 ])
 
 menucounter ++
@@ -1775,6 +1776,7 @@ catch(err) {}
 
 if (prf.BGCUSTOM == "pics/") prf.BGCUSTOM = ""
 if (prf.BGCUSTOMHISTORY == "pics/") prf.BGCUSTOMHISTORY = ""
+if (prf.OVERCUSTOM == "pics/") prf.OVERCUSTOM = ""
 
 if (prf.LOWSPECMODE) {
 	prf.DATASHADOWSMOOTH = false
@@ -8178,9 +8180,20 @@ picture.bg.alpha = 255
 
 prf.BGCUSTOM0 <- prf.BGCUSTOM
 prf.BGCUSTOMHISTORY0 <- prf.BGCUSTOMHISTORY
+prf.OVERCUSTOM0 <- prf.OVERCUSTOM
 
 bglay.surf_rt.zorder = -6
 picture.bg.zorder = -5
+
+/// Custom Foreground ///
+
+local user_fg = null
+if ( (prf.OVERCUSTOM != "") || (prf.OVERPERDISPLAY) ){
+	user_fg = fl.surf.add_image(AF.folder + "pics/transparent.png", 0, 0, fl.w_os, fl.h_os)
+	user_fg.zorder = 8
+	user_fg.alpha = 0
+	user_fg.visible = false
+}
 
 /// Display Table Creation ///
 
@@ -10726,6 +10739,7 @@ function groupalpha(alphain) {
 		item.alphafade = alphain
 		item.obj.alpha = item.alphazero * item.alphafade / 255.0
 	}
+	if (user_fg != null) user_fg.alpha = alphain
 }
 
 function groupvisible(visibility) {
@@ -10735,6 +10749,7 @@ function groupvisible(visibility) {
 function updatecustombg() {
 	prf.BGCUSTOM = prf.BGCUSTOM0
 	prf.BGCUSTOMHISTORY = prf.BGCUSTOMHISTORY0
+	prf.OVERCUSTOM = prf.OVERCUSTOM0
 
 	if (prf.BGPERDISPLAY) {
 		local artname = AF.amfolder + "menu-art/bgmain/" + fe.displays[fe.list.display_index].name
@@ -10744,13 +10759,29 @@ function updatecustombg() {
 		local artname = AF.amfolder + "menu-art/bghistory/" + fe.displays[fe.list.display_index].name
 		if (file_exist(artname + ".jpg")) prf.BGCUSTOMHISTORY = artname + ".jpg"
 		if (file_exist(artname + ".png")) prf.BGCUSTOMHISTORY = artname + ".png"
-
 	}
+
+	if (prf.OVERPERDISPLAY) {
+		local artname = AF.amfolder + "menu-art/overmain/" + fe.displays[fe.list.display_index].name
+		if (file_exist(artname + ".jpg")) prf.OVERCUSTOM = artname + ".jpg"
+		if (file_exist(artname + ".png")) prf.OVERCUSTOM = artname + ".png"
+	}
+
 	picture.bg.visible = false
 	picture.bg_hist.visible = false
 
-	if (prf.BGCUSTOM != "") {
+	if (user_fg != null) {
+		testpr("X\n")
+		user_fg.visible = false
+		testpr(prf.OVERCUSTOM+"\n")
+		if (prf.OVERCUSTOM != ""){
+			user_fg.file_name = prf.OVERCUSTOM
+			user_fg.visible = true
+		}
+		else user_fg.file_name = AF.folder + "pics/transparent.png"
+	}
 
+	if (prf.BGCUSTOM != "") {
 		picture.bg.file_name = prf.BGCUSTOM
 
 		bgpicT.ar = (picture.bg.texture_width * 1.0) / picture.bg.texture_height
@@ -11654,7 +11685,7 @@ function history_updatetext() {
 function history_show(h_startup)
 {
 	startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
-
+	
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	if (prf.THUMBVIDEO) videosnap_hide()
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
@@ -14020,13 +14051,7 @@ function similarmenu() {
 	)
 }
 
-/// Custom Foreground ///
-
-local user_fg = null
-if (prf.OVERCUSTOM != "pics/") {
-	user_fg = fe.add_image(prf.OVERCUSTOM, 0, 0, fl.w_os, fl.h_os)
-	user_fg.zorder = 100000
-}
+/// TEXTBOARD ///
 
 // Character size: 1.7 * (width/columns) or 0.78 * (height/rows)
 AF.msgbox.obj = fe.add_textboard("", fl.x, fl.y, fl.w, fl.h)
@@ -16046,6 +16071,8 @@ function update_scrape_header(tick = false){
 
 /// On Tick ///
 function tick(tick_time) {
+
+	testpr(user_fg.alpha+"\n")
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -17146,7 +17173,7 @@ function tick(tick_time) {
 		}
 
 		fl.surf.alpha = 255 * flowT.blacker[1]
-		if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
+		//if (user_fg != null) user_fg.alpha = 255 * flowT.blacker[1]
 
 		//layoutblacker.alpha = 255 * flowT.blacker[1]
 		if (prf.SPLASHON)
