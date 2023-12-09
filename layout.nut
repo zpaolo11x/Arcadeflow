@@ -10771,9 +10771,7 @@ function updatecustombg() {
 	picture.bg_hist.visible = false
 
 	if (user_fg != null) {
-		testpr("X\n")
 		user_fg.visible = false
-		testpr(prf.OVERCUSTOM+"\n")
 		if (prf.OVERCUSTOM != ""){
 			user_fg.file_name = prf.OVERCUSTOM
 			user_fg.visible = true
@@ -16072,7 +16070,6 @@ function update_scrape_header(tick = false){
 /// On Tick ///
 function tick(tick_time) {
 
-	testpr(user_fg.alpha+"\n")
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
