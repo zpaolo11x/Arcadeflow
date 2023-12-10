@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'manx';
+  src:
+    url('fonts/manx.ttf?6o6gb7') format('truetype'),
+    url('fonts/manx.woff?6o6gb7') format('woff'),
+    url('fonts/manx.svg?6o6gb7#manx') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'manx' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-neo-geo-cdz:before {
+  content: "\e900";
+}
+.icon-psone:before {
+  content: "\e901";
+}

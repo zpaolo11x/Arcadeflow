@@ -570,6 +570,10 @@ neo geo cd,320,224,NGCD,CRT,NONE,4,3,CONSOLE,SNK,1994,Neo Geo CD,70,iso,joystick
 snk neo geo cd
 neogeocd
 
+neo geo cdz,320,224,NGCDZ,CRT,NONE,4,3,CONSOLE,SNK,1995,Neo Geo CDZ,70,iso,joystick (8-way),4
+snk neo geo cdz
+neogeocdz
+
 neo geo mvs,320,224,MVS,CRT,NONE,-4,3,ARCADE,SNK,1990,Neo Geo MVS,68,rom,joystick (8-way),4
 snk neo geo mvs
 snk mvs
@@ -836,6 +840,11 @@ sony psx
 pocket challenge v2,224,144,PCV2,LCD,LCDBW,224,144,HANDHELD,Benesse Corporation,2000,Pocket Challenge V2,237,iso,joystick (8-way),3
 pocket challenge
 
+psone,0,0,PSX,CRT,NONE,4,3,CONSOLE,Sony,2000,PSOne,57,iso,joystick (8-way),4
+sony psone
+ps one
+sony ps one
+
 psvita,960,544,PSV,LCD,NONE,960,544,HANDHELD,Sony,2011,PS Vita,62,rom,joystick (8-way),4
 ps vita
 sony ps vita
@@ -859,6 +868,12 @@ sega-cd
 
 sega dreamcast,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast,23,iso,joystick (8-way),4
 dreamcast
+
+sega dreamcast eu,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast EU,23,iso,joystick (8-way),4
+dreamcast eu
+
+sega dreamcast jp,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast JP,23,iso,joystick (8-way),4
+dreamcast jp
 
 sega game gear,160,144,GG,LCD,NONE,4,3,HANDHELD,Sega,1991,Game Gear,21,rom,joystick (8-way),2
 game gear
