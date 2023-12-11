@@ -482,6 +482,13 @@ nabu pc
 namco,0,0,NMCO,CRT,NONE,-4,3,ARCADE,Namco,null,Namco,75,rom,null,null
 namco classics
 
+namco system 2x6,0,0,N2X6,CRT,NONE,-4,3,ARCADE,Namco,2000,Namco System 2x6,75,rom,null,null
+system 2x6
+system 246
+system 256
+namco system 246
+namco system 256
+
 nec coregrafx ii,256,224,CGFX,CRT,NONE,4,3,CONSOLE,NEC,1991,CoreGrafx II,31,rom,joystick (8-way),2
 coregrafx ii
 core grafx ii
@@ -796,6 +803,15 @@ pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64
 pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
 aamber pegasus
 
+pgm,0,0,PGM,CRT,NONE,-4,3,ARCADE,IGS,1997,PGM,75,rom,null,null
+polygame master
+igs pgm
+
+pgm2,0,0,PGM2,CRT,NONE,-4,3,ARCADE,IGS,2007,PGM2,75,rom,null,null
+polygame master 2
+pgm 2
+igs pgm2
+
 pico-8,128,128,PIC8,LCD,NONE,0,0,CONSOLE,Lexaloffle Games,2015,PICO-8,234,rom,joystick (8-way),2
 pico8
 
@@ -963,6 +979,11 @@ sega mega tech,0,0,SM-T,CRT,NONE,4,3,ARCADE,Sega,1989,Mega Tech,75,rom,joystick 
 mega tech
 mega-tech
 sega mega-tech
+
+sega model 1,0,0,SM1,CRT,NONE,-4,3,ARCADE,Sega,1992,Sega Model 1,75,rom,null,null
+model 1
+sega model1
+model1
 
 sega model 2,0,0,SM2,CRT,NONE,-4,3,ARCADE,Sega,1993,Sega Model 2,54,rom,null,null
 model 2
