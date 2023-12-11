@@ -1,4 +1,5 @@
 16.6
+Added Sega Model 1, PGM, PGM2 and NAMCO System 2x6
 Added Pippin, Wondermega, Genesis CDX, Multi-Mega, V Smile, CreatiVision, Action Max and uZebox
 Added N-Gage, Game Pocket Computer, Pocket Challenge V2, Gamate, GameKing
 Added MSX 2+, C 65, ZX80, Alice, ABC80, MicroBee, Videoton TVC
