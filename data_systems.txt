@@ -1,5 +1,10 @@
 null,0,0,NULL,CRT,NONE,4,3,OTHER,null,null,null,null,null,null,null
 
+abc 80,0,0,ABC,CRT,NONE,4,3,COMPUTER,Luxor,1978,ABC80,null,rom,joystick (8-way),1
+luxor abc 80
+abc80
+luxor abc80
+
 acorn archimedes,0,0,ARC,CRT,NONE,4,3,COMPUTER,Acorn,1987,Archimedes,84,rom,joystick (8-way),1
 archimedes
 
@@ -11,6 +16,12 @@ bbc micro
 
 acorn electron,0,0,ELECT,CRT,NONE,4,3,COMPUTER,Acorn,1983,Electron,85,rom,joystick (8-way),1
 electron
+
+action max,320,200,AMAX,CRT,NONE,4,3,CONSOLE,Worlds of Wonder,1987,Action Max,81,rom,lightgun,1
+actionmax
+
+alice,0,0,ALC,CRT,NONE,4,3,COMPUTER,Matra,1983,Alice,null,rom,joystick (8-way),1
+matra alice
 
 amstrad cpc,0,0,CPC,CRT,NONE,4,3,COMPUTER,Amstrad,1984,Amstrad CPC,65,rom,joystick (8-way),1
 cpc
@@ -39,6 +50,9 @@ mac os
 apple macintosh,0,0,MAC,CRT,NONE,4,3,COMPUTER,Apple,1984,Macintosh,146,rom,joystick (8-way),1
 macintosh
 mac
+
+apple pippin,640,480,PPN,CRT,NONE,4,3,CONSOLE,Apple,1996,Pippin,null,rom,joystick (8-way),4
+pippin
 
 aquarius,0,0,AQ,CRT,NONE,4,3,COMPUTER,Mattel,1983,Aquarius,null,null,joystick (8-way),1
 mattel aquarius
@@ -215,6 +229,11 @@ c 64
 c=64
 c64
 
+commodore 65,0,0,C65,CRT,NONE,4,3,COMPUTER,Commodore,1990,C 65,null,rom,joystick (8-way),1
+c 65
+c=65
+c65
+
 commodore amiga 1200,320,200,A12,CRT,NONE,4,3,COMPUTER,Commodore,1992,Amiga 1200,111,rom,joystick (8-way),1
 amiga 1200
 commodore amiga1200
@@ -332,6 +351,21 @@ futurepinball
 
 gaelco,0,0,GAE,CRT,NONE,-4,3,ARCADE,Gaelco,null,Gaelco,75,rom,null,null
 
+gamate,160,152,GMT,LCD,LCDGBC,160,152,HANDHELD,Bit Corporation,1990,Gamate,266,rom,joystick (8-way),2
+
+game king,48,32,GK,LCD,LCDGBC,48,32,HANDHELD,Timetop,2004,GameKing,null,rom,joystick (8-way),2
+gameking
+
+game king 2,48,32,GK2,LCD,LCDGBC,48,32,HANDHELD,Timetop,2005,GameKing 2,null,rom,joystick (8-way),2
+game king ii
+gameking 2
+gameking ii
+
+game king 3,48,32,GK2,LCD,NONE,48,32,HANDHELD,Timetop,2005,GameKing 3,null,rom,joystick (8-way),2
+game king iii
+gameking 3
+gameking iii
+
 game master,0,0,GMAS,LCD,LCDBW,0,0,HANDHELD,Hartung,1990,Game Master,103,rom,joystick (8-way),2
 systema 2000
 super game
@@ -340,6 +374,9 @@ game tronic
 game park gp32,0,0,GP32,LCD,NONE,0,0,HANDHELD,Game Park,2001,GP32,101,rom,joystick (8-way),2
 gamepark gp32
 gp32
+
+game pocket computer,75,64,GPC,LCD,LCDBW,75,64,HANDHELD,Epoch,1984,Game Pocket Computer,95,rom,joystick (8-way),4
+epoch game pocket computer
 
 hbmame,0,0,HBMM,CRT,NONE,-4,3,ARCADE,Various,null,HBMAME,75,rom,null,null
 hbmame arcade
@@ -381,9 +418,15 @@ mb microvision,16,16,MVIS,LCD,LCDBW,0,0,HANDHELD,Milton Bradley,1979,Microvision
 microvision
 milton bradley microvision
 
+mega 65,0,0,M65,CRT,NONE,4,3,COMPUTER,MEGA,2021,MEGA 65,null,rom,joystick (8-way),2
+mega65
+
 mega duck,160,144,DUCK,LCD,LCDGBC,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
 mega duck wg-108
 cougar boy
+
+microbee,0,0,MBEE,CRT,NONE,4,3,COMPUTER,Applied Technology,1982,MicroBee,null,rom,joystick (8-way),1
+micro bee
 
 microsoft windows,0,0,WIN,CRT,NONE,4,3,COMPUTER,Microsoft,1993,Windows,138,iso,joystick (8-way),1
 ms windows
@@ -416,6 +459,11 @@ msx 2,0,0,MSX2,CRT,NONE,4,3,COMPUTER,Ascii Microsoft,1985,MSX 2,116,rom,joystick
 msx2
 msx-2
 
+msx 2+,0,0,MSX2+,CRT,NONE,4,3,COMPUTER,Ascii Microsoft,1988,MSX 2plus,117,rom,joystick (8-way),1
+msx2+
+msx2plus
+msx 2plus
+
 msx turbo r,0,0,MSX-TR,CRT,NONE,4,3,COMPUTER,Ascii Microsoft,1990,MSX turbo R,118,rom,joystick (8-way),1
 msx turbor
 msx turbo-r
@@ -433,6 +481,13 @@ nabu pc
 
 namco,0,0,NMCO,CRT,NONE,-4,3,ARCADE,Namco,null,Namco,75,rom,null,null
 namco classics
+
+namco system 2x6,0,0,N2X6,CRT,NONE,-4,3,ARCADE,Namco,2000,Namco System 2x6,75,rom,null,null
+system 2x6
+system 246
+system 256
+namco system 246
+namco system 256
 
 nec coregrafx ii,256,224,CGFX,CRT,NONE,4,3,CONSOLE,NEC,1991,CoreGrafx II,31,rom,joystick (8-way),2
 coregrafx ii
@@ -521,6 +576,10 @@ turbografx cd
 neo geo cd,320,224,NGCD,CRT,NONE,4,3,CONSOLE,SNK,1994,Neo Geo CD,70,iso,joystick (8-way),4
 snk neo geo cd
 neogeocd
+
+neo geo cdz,320,224,NGCDZ,CRT,NONE,4,3,CONSOLE,SNK,1995,Neo Geo CDZ,70,iso,joystick (8-way),4
+snk neo geo cdz
+neogeocdz
 
 neo geo mvs,320,224,MVS,CRT,NONE,-4,3,ARCADE,SNK,1990,Neo Geo MVS,68,rom,joystick (8-way),4
 snk neo geo mvs
@@ -723,6 +782,11 @@ wiiu
 nintendo,0,0,NINT,CRT,NONE,-4,3,ARCADE,Nintendo,null,Nintendo,161,rom,null,null
 nintendo classics
 
+nokia n-gage,176,208,NGAGE,LCD,NONE,176,208,HANDHELD,Nokia,2003,N-Gage,30,rom,joystick (8-way),2
+ngage
+nokia ngage
+n-gage
+
 openbor,0,0,OBOR,CRT,NONE,4,3,COMPUTER,Various,null,OpenBor,214,fichier,null,null
 open bor
 
@@ -738,6 +802,15 @@ pecom 64,240,216,PE64,CRT,NONE,4,3,COMPUTER,Elektronska Industrija,1985,Pecom 64
 
 pegasus,256,256,PEGS,CRT,NONE,4,3,COMPUTER,Technosys,1981,Pegasus,83,rom,joystick (8-way),1
 aamber pegasus
+
+pgm,0,0,PGM,CRT,NONE,-4,3,ARCADE,IGS,1997,PGM,75,rom,null,null
+polygame master
+igs pgm
+
+pgm2,0,0,PGM2,CRT,NONE,-4,3,ARCADE,IGS,2007,PGM2,75,rom,null,null
+polygame master 2
+pgm 2
+igs pgm2
 
 pico-8,128,128,PIC8,LCD,NONE,0,0,CONSOLE,Lexaloffle Games,2015,PICO-8,234,rom,joystick (8-way),2
 pico8
@@ -780,6 +853,14 @@ sony playstation
 psx
 sony psx
 
+pocket challenge v2,224,144,PCV2,LCD,LCDBW,224,144,HANDHELD,Benesse Corporation,2000,Pocket Challenge V2,237,iso,joystick (8-way),3
+pocket challenge
+
+psone,0,0,PSX,CRT,NONE,4,3,CONSOLE,Sony,2000,PSOne,57,iso,joystick (8-way),4
+sony psone
+ps one
+sony ps one
+
 psvita,960,544,PSV,LCD,NONE,960,544,HANDHELD,Sony,2011,PS Vita,62,rom,joystick (8-way),4
 ps vita
 sony ps vita
@@ -804,6 +885,12 @@ sega-cd
 sega dreamcast,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast,23,iso,joystick (8-way),4
 dreamcast
 
+sega dreamcast eu,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast EU,23,iso,joystick (8-way),4
+dreamcast eu
+
+sega dreamcast jp,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast JP,23,iso,joystick (8-way),4
+dreamcast jp
+
 sega game gear,160,144,GG,LCD,NONE,4,3,HANDHELD,Sega,1991,Game Gear,21,rom,joystick (8-way),2
 game gear
 gamegear
@@ -821,6 +908,11 @@ genesis 2
 
 sega genesis,320,224,GEN,CRT,NONE,4,3,CONSOLE,Sega,1989,Genesis,1,rom,joystick (8-way),3
 genesis
+
+sega genesis cdx,320,224,CDX,CRT,NONE,4,3,CONSOLE,Sega,1994,Genesis CDX,20,iso,joystick (8-way),3
+genesis cdx
+cdx
+sega cdx
 
 sega hikaru,0,0,HIKARU,CRT,NONE,-4,3,ARCADE,Sega,1999,Hikaru,75,rom,null,null
 hikaru
@@ -888,6 +980,11 @@ mega tech
 mega-tech
 sega mega-tech
 
+sega model 1,0,0,SM1,CRT,NONE,-4,3,ARCADE,Sega,1992,Sega Model 1,75,rom,null,null
+model 1
+sega model1
+model1
+
 sega model 2,0,0,SM2,CRT,NONE,-4,3,ARCADE,Sega,1993,Sega Model 2,54,rom,null,null
 model 2
 sega model2
@@ -897,6 +994,13 @@ sega model 3,0,0,SM3,CRT,NONE,-4,3,ARCADE,Sega,1996,Sega Model 3,55,rom,null,nul
 model 3
 sega model3
 model3
+
+sega multi-mega,320,224,MMGA,CRT,NONE,4,3,CONSOLE,Sega,1994,Multi-Mega,20,iso,joystick (8-way),3
+multi-mega
+multi mega
+sega multi mega
+multimega
+sega multimega
 
 sega naomi 2 gd-rom,0,0,NAGD2,CRT,NONE,-4,3,ARCADE,Sega,2000,Naomi 2 GD-ROM System,227,rom,null,null
 sega naomi 2 gdrom
@@ -963,6 +1067,10 @@ sega aurora
 system sp
 aurora
 
+sega wondermega,320,224,WMGA,CRT,NONE,4,3,CONSOLE,Sega Victor,1992,Wondermega,20,iso,joystick (8-way),3
+victor wondermega
+wondermega
+
 sega,0,0,SEGA,CRT,NONE,-4,3,ARCADE,Sega,null,Sega,147,rom,null,null
 sega classics
 
@@ -987,6 +1095,11 @@ zx spectrum +3
 zx spectrum 3
 spectrum 3
 spectrum +3
+
+sinclair zx80,0,0,ZX80,CRT,NONE,4,3,COMPUTER,Sinclair,1980,ZX 80,null,rom,joystick (8-way),1
+zx 80
+sinclair zx 80
+zx80
 
 sinclair zx81,0,0,ZX81,CRT,NONE,4,3,COMPUTER,Sinclair,1981,ZX 81,77,rom,joystick (8-way),1
 zx 81
@@ -1061,6 +1174,8 @@ trs80
 ultra 64,0,0,U64,CRT,NONE,4,3,ARCADE,Various,null,Ultra 64,75,rom,null,null
 ultra64
 
+uzebox,0,0,UZBX,CRT,NONE,4,3,CONSOLE,Belogic Software,2008,uZebox,216,rom,joystick (8-way),4
+
 vectrex,0,0,VECT,CRT,NONE,9,11,CONSOLE,GCE,1982,Vectrex,102,rom,joystick (8-way),4
 
 vg5000,320,250,VG5K,CRT,NONE,4,3,COMPUTER,Philips,1984,VG5000,261,rom,joystick (8-way),1
@@ -1074,16 +1189,28 @@ philips videopac plus
 videopac,160,200,VPAC,CRT,NONE,4,3,CONSOLE,Philips,1978,Videopac,104,rom,joystick (8-way),1
 philips videopac
 
+videoton tvc,0,0,TVC,CRT,NONE,4,3,COMPUTER,Videoton,1986,Videoton TVC,null,rom,joystick (8-way),1
+videoton tv-computer
+tvc
+tv-computer
+
 visual pinball,0,0,VPIN,CRT,NONE,4,3,PINBALL,Various,null,Visual Pinball,198,fichier,null,null
 visualpinball
+
+vtech creativision,256,192,CRTV,CRT,NONE,4,3,CONSOLE,VTech,1982,CreatiVision,241,rom,joystick (8-way),4
+creativision
 
 vtech socrates,0,0,SOCR,CRT,NONE,4,3,CONSOLE,VTech,1988,Socrates,null,rom,null,null
 socrates
 
+vtech v smile,320,240,VSML,CRT,NONE,4,3,CONSOLE,VTech,2004,V Smile,120,rom,joystick (8-way),4
+vsmile
+v smile
+
 wasm-4,160,160,WASM,LCD,NONE,0,0,HANDHELD,Aduros,2021,WASM-4,262,rom,joystick (8-way),2
 wasm4
 
-watara supervision,160,160,WSVIS,LCD,LCDGB,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
+watara supervision,160,160,WSVIS,LCD,LCDGBC,0,0,HANDHELD,Watara,1992,Supervision,207,rom,joystick (8-way),2
 quickshot supervision
 supervision
 
