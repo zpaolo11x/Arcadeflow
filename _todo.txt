@@ -1,4 +1,5 @@
 
+
 Approccio aggiuntivo alla creazione del database.
 
 Problema: alcuni utenti hanno dei .cfg senza romlist che vengono "attaccati" ad altre romlist. Come fare?
