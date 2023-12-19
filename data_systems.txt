@@ -482,6 +482,12 @@ nabu pc
 namco,0,0,NMCO,CRT,NONE,-4,3,ARCADE,Namco,null,Namco,75,rom,null,null
 namco classics
 
+namco system 11,0,0,N11,CRT,NONE,-4,3,ARCADE,Namco,1994,Namco System 11,75,rom,null,null
+system 21
+
+namco system 12,0,0,N12,CRT,NONE,-4,3,ARCADE,Namco,1996,Namco System 12,75,rom,null,null
+system 21
+
 namco system 21,0,0,N21,CRT,NONE,-4,3,ARCADE,Namco,1988,Namco System 21,75,rom,null,null
 system 21
 
