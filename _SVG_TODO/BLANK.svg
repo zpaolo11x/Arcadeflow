@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="30px" viewBox="0 0 200 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>BLANK</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="BLANK" stroke="#979797" transform="translate(-0.028856, -1.351394)">
+            <line x1="100.028856" y1="31.3513942" x2="100.028856" y2="1.35139425" id="Path" fill="#000000" fill-rule="nonzero"></line>
+            <rect id="Rectangle" fill="#D8D8D8" x="0.5" y="0.5" width="19.0288562" height="30.3513942"></rect>
+            <rect id="Rectangle-Copy" fill="#D8D8D8" x="180.5" y="0.5" width="19.0288562" height="30.3513942"></rect>
+        </g>
+    </g>
+</svg>
