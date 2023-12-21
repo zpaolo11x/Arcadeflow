@@ -1,0 +1,3 @@
+16.7
+Added Namco arcade systems logos
+Fixed issue with letter fading when AA is enabled
