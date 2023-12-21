@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.6 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.7 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,14 +10,10 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.6 #
+## What's new in v 16.7 #
 
-- Added Sega Model 1, PGM, PGM2 and Namco System 2x6
-- Added Pippin, Wondermega, Genesis CDX, Multi-Mega, V Smile, CreatiVision, Action Max and uZebox
-- Added N-Gage, Game Pocket Computer, Pocket Challenge V2, Gamate, GameKing
-- Added MSX 2+, C 65, ZX80, Alice, ABC80, MicroBee, Videoton TVC
-- Added per-display overlay
-- Fixed issues with overlay z-order
+- Added Namco arcade systems logos
+- Fixed issue with letter fading when AA is enabled
 
 ## Emulator system identifier #
 
@@ -164,7 +160,7 @@ Chose the aspect ratio of thumbnails, video thumbnails and decorations
 - 'Game Boy color correction' : Apply a colorized palette to Game Boy games based on the system name or forced to your preference
 - 'MSX crt color correction' : Apply a palette correction to MSX media that was captured with MSX2 palette
 
-#### ! BACKGROUND !
+#### BACKGROUND
 Chose the layout background theme in main page and in History page, or select custom backgrounds
 
 - 'Color theme' : Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered
@@ -183,7 +179,7 @@ Chose the layout background theme in main page and in History page, or select cu
 
 *Per Display*
 - 'Per Display background' : You can have a different background for each display, just put your pictures in menu-art/bgmain and menu-art/bghistory folders named as the display
-- '! Per Display overlay !' : You can have a different overlay for each display, just put your pictures in menu-art/overmain folder named as the display
+- 'Per Display overlay' : You can have a different overlay for each display, just put your pictures in menu-art/overmain folder named as the display
 
 #### LOGO
 Customize the splash logo at the start of Arcadeflow
@@ -425,6 +421,15 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.6*
+
+- Added Sega Model 1, PGM, PGM2 and Namco System 2x6
+- Added Pippin, Wondermega, Genesis CDX, Multi-Mega, V Smile, CreatiVision, Action Max and uZebox
+- Added N-Gage, Game Pocket Computer, Pocket Challenge V2, Gamate, GameKing
+- Added MSX 2+, C 65, ZX80, Alice, ABC80, MicroBee, Videoton TVC
+- Added per-display overlay
+- Fixed issues with overlay z-order
 
 *v16.5*
 
