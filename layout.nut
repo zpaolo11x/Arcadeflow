@@ -8895,6 +8895,7 @@ local displaynamesurf = {
 	surf = null
 	w = fl.w * 2.0
 	h = 0
+	freezeme = false
 }
 displaynamesurf.h = displaynamesurf.w * 30.0 / 200.0
 displaynamesurf.surf = data_surface.add_surface (displaynamesurf.w, displaynamesurf.h)
@@ -8916,6 +8917,7 @@ local letterobjsurf = {
 	w3 = fl.w_os * 3.0
 	h = carrierT.h
 	y0 = carrierT.y - data_surface.y
+	freezeme = false
 }
 letterobjsurf.surf = data_surface.add_surface(letterobjsurf.w, letterobjsurf.h)
 letterobjsurf.surf.set_pos (fl.x + 0.5 * (fl.w - letterobjsurf.w), letterobjsurf.y0)
@@ -16070,6 +16072,15 @@ function update_scrape_header(tick = false){
 /// On Tick ///
 function tick(tick_time) {
 
+	if (letterobjsurf.freezeme) {
+		letterobjsurf.surf.redraw = false
+		letterobjsurf.freezeme = false
+	}
+
+	if (displaynamesurf.freezeme) {
+		displaynamesurf.surf.redraw = false
+		displaynamesurf.freezeme = false
+	}
 	/*
 	local alphasum = 1.0
 	foreach (i, item in bgs.bgpic_array){
@@ -16582,7 +16593,7 @@ function tick(tick_time) {
 			startfade(flowT.alphaletter, -0.06, 2.0)
 		}
 		if (endfade(flowT.alphaletter) == 0.0) {
-			letterobjsurf.surf.redraw = false
+			letterobjsurf.freezeme = true
 		}
 		letterobj.alpha = 255 * flowT.alphaletter[1]
 	}
@@ -16600,7 +16611,7 @@ function tick(tick_time) {
 			startfade(flowT.alphadisplay, -0.04, 2.0)
 		}
 		if ((endfade(flowT.alphadisplay) == 0.0)) {
-			displaynamesurf.surf.redraw = false
+			displaynamesurf.freezeme = true
 		}
 		displayname.alpha  = 255 * flowT.alphadisplay[1]
 	}
