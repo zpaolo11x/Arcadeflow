@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.7
+// Arcadeflow - v 16.6
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.7" // AF version in string form
+	version = "16.6" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -8928,7 +8928,7 @@ letterobj.font = uifonts.gui
 letterobj.set_rgb(themeT.lettercolor, themeT.lettercolor, themeT.lettercolor)
 letterobj.margin = 0
 letterobj.align = Align.MiddleCentre
-letterobjsurf.surf.redraw = true
+letterobjsurf.surf.redraw = true //CHK2
 
 local blsize = {
 	mini = floor(45 * UI.scalerate + 0.5),
@@ -16073,7 +16073,6 @@ function update_scrape_header(tick = false){
 
 /// On Tick ///
 function tick(tick_time) {
-
 	if (letterobjsurf.freezeme) {
 		letterobjsurf.surf.redraw = false
 		letterobjsurf.freezeme = false
