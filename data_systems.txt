@@ -1226,6 +1226,9 @@ ultra64
 
 uzebox,0,0,UZBX,CRT,NONE,4,3,CONSOLE,Belogic Software,2008,uZebox,216,rom,joystick (8-way),4
 
+vector-06c,256,256,V06C,CRT,NONE,4,3,COMPUTER,Temirazov Sokolov,1987,Vector-06C,null,null,joystick (8-way),1
+vector 06c
+
 vectrex,0,0,VECT,CRT,NONE,9,11,CONSOLE,GCE,1982,Vectrex,102,rom,joystick (8-way),4
 
 vg5000,320,250,VG5K,CRT,NONE,4,3,COMPUTER,Philips,1984,VG5000,261,rom,joystick (8-way),1
