@@ -29,8 +29,11 @@ cpc
 amstrad gx4000,0,0,GX4K,CRT,NONE,4,3,CONSOLE,Amstrad,1990,Amstrad GX4000,87,rom,joystick (8-way),2
 gx4000
 
-apf mp1000, 256,192,APF,CRT,NONE,4,3,CONSOLE,APF Electronics,1978,APF MP1000,null,rom,joystick (8-way),2
+apf mp1000,256,192,APF,CRT,NONE,4,3,CONSOLE,APF Electronics,1978,APF MP1000,null,rom,joystick (8-way),2
 apf-mp1000
+
+apogee bk-01,0,0,BK01,CRT,NONE,4,3,COMPUTER,ARB Plant,1988,Apogee BK-01,null,null,joystick (8-way),1
+apogej bk-01
 
 apple ii,0,0,APLII,CRT,NONE,4,3,COMPUTER,Apple,1977,Apple II,86,rom,joystick (8-way),1
 apple 2
@@ -819,6 +822,16 @@ n-gage
 
 nuon,0,0,NUON,CRT,NONE,4,3,CONSOLE,VM Labs,2000,Nuon,null,null,joystick (8-way),6
 vm labs nuon
+
+olivetti pc1,320,200,PC1,CRT,NONE,4,3,COMPUTER,Olivetti Prodest,1987,Olivetti PC1,135,dossier,joystick (8-way),1
+olivetti prodest pc1
+olivetti pc 1
+olivetti prodest pc 1
+
+olivetti pc128,320,200,PC128,CRT,NONE,4,3,COMPUTER,Olivetti Prodest,1986,Olivetti PC128,141,rom,joystick (8-way),1
+olivetti pc 128
+olivetti prodest pc128
+olivetti prodest pc 128
 
 openbor,0,0,OBOR,CRT,NONE,4,3,COMPUTER,Various,null,OpenBor,214,fichier,null,null
 open bor

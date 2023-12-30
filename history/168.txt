@@ -1,5 +1,5 @@
 16.8
 Fixed glitch when AA is enabled on macOS
-Added MTX, Tomy Tutor, Exidy Sorcerer, Sharp MZ-2500, Sord M5, Vector-06C
+Added MTX, Tomy Tutor, Exidy Sorcerer, Sharp MZ-2500, Sord M5, Vector-06C, Apogee BK-01, Olivetti PC1 and PC128
 Added RCA Studio II, Othello Multivision, Nuon, VC 4000, Hector HRX
 Added Hyper Neo Geo 64
