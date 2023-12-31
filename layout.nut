@@ -12034,6 +12034,7 @@ zmenu = {
 
 	defdata = {				// Default menu data structure
 		text = ""			// Menu item label
+		textraw = ""		// Raw text used for displays menu
 		glyph = 0			// menu item glyph
 		note = ""			// side note for options etc
 		liner = false		// turns the menu into a strikeline
@@ -12578,6 +12579,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				else if (prf.DMPIMAGES == "WALLS") {
 					if (file_exist (AF.folder + "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
 					else if (file_exist (AF.folder + "system_bgs/" + menudata[i].text + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].text + ".jpg"
+					else if (file_exist (AF.folder + "system_bgs/" + menudata[i].textraw + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].textraw + ".jpg"
 				}
 
 				if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
@@ -13325,7 +13327,7 @@ function displaygrouped2() {
 	local dmenu1 = []
 	local groupnotes = []
 	foreach (i, item in menuarray) {
-		dmenu1.push({text = item.cleanname, note = item.notes})
+		dmenu1.push({text = item.cleanname, textraw = item.dispname, note = item.notes})
 		groupnotes.push(item.groupnotes)
 	}
 	for (local i = 1; i < dmenu1.len(); i++) {
