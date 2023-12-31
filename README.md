@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.7 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.8 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,14 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.7 #
+## What's new in v 16.8 #
 
-- Added Namco arcade systems logos
-- Fixed issue with letter fading when AA is enabled
+- Fixed glitch when AA is enabled on macOS
+- Added MTX, Tomy Tutor, Exidy Sorcerer, Sharp MZ-2500, Sord M5
+- Added Vector-06C, Apogee BK-01, Olivetti PC1 and PC128
+- Added RCA Studio II, Othello Multivision, Nuon, VC 4000, Hector HRX
+- Added Hyper Neo Geo
+- Added Light Gun#ARCADE and Light Gun#CONSOLE wallpaper
 
 ## Emulator system identifier #
 
@@ -421,6 +425,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.7*
+
+- Added Namco arcade systems logos
+- Fixed issue with letter fading when AA is enabled
 
 *v16.6*
 
