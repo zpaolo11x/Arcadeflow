@@ -13219,6 +13219,7 @@ function displayungrouped() {
 		ungroupmenu.push({
 			text = item.cleanname
 			note = item.notes
+			textraw = item.dispname
 		})
 	}
 
