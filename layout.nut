@@ -1230,6 +1230,7 @@ AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "ScreenScraper", selection = AF.req.liner},
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
+{v = 16.8, varname = "ARCADEMIX", glyph = 0xe9c4, title = "Arcade scraper", help = "Arcade games can be scraped using ADB only, or a mix of ADB and ScreenScraper", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "MAME Data Files", selection = AF.req.liner},
 {v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
 {v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -3803,9 +3804,11 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 		// IF no errors are raised gamedata is populated with fields from the arcade json
 		if (dispatcher[scrapeid].jsonstatus != "ERROR") {
-			dispatcher[scrapeid].gamedata.scrapestatus = "ARCADE"
+			dispatcher[scrapeid].gamedata.scrapestatus = prf.ARCADEMIX ? "ARCADE" : "NAME"
 			dispatcher[scrapeid].gamedata = parsejsonA (scrapeid, dispatcher[scrapeid].gamedata)
 		}
+
+		if (!prf.ARCADEMIX) dispatcher[scrapeid].done = true
 
 		// cleanup
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
@@ -3813,97 +3816,100 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA_out.nut")} catch(err) {}
 	}
 
-	//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
+	if (!isarcade || prf.ARCADEMIX){
 
-	// Finished DBA scraping, go on with SS scraping to complete missing fields
-	// or to generate a full scraping for non-arcade games
-	// CRC check is never enabled for arcade games, so it's run here
-	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
-	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
-	dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
+		//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
+		
+		// Finished DBA scraping, go on with SS scraping to complete missing fields
+		// or to generate a full scraping for non-arcade games
+		// CRC check is never enabled for arcade games, so it's run here
+		local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
+		//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
+		dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
+		scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
-	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
-	local stripmatch = true
-	local skipcrc = false
-	skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
-	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
+		local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
+		local stripmatch = true
+		local skipcrc = false
+		skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+		dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
-	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
-	suspend() // Wait for the json to be read
-	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
+		scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
+		suspend() // Wait for the json to be read
+		scraprt("ID" + scrapeid + "         getromdata resumed\n")
 
-	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
+		// As with arcade scraping, let's check what happened and if the scan is actually a rescan
 
-	if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-	}
-	else {
-		// If stripped rom fails, try with non-stripped rom
-		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
-			stripmatch = false
-			dispatcher[scrapeid].jsonstatus = null
-			scraprt("ID" + scrapeid + "         getromdata CALL createjson ERR\n")
-			skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
-			dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, romname, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
-			scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
-			suspend()
-			scraprt("ID" + scrapeid + "         getromdata resumed\n")
-			if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-				dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-			}
+		if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+			dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
 		}
-
-		if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
-
-			local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
-			// Scraped rom has correct CRC, no more scraping needed
-			if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
-				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
-				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-				//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
-			}
-			else {
-				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
-				// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
-				if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
-				else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
-
-				echoprint("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
-				// Once the name is perfectly matched, a new scrape is done to get proper rom status
+		else {
+			// If stripped rom fails, try with non-stripped rom
+			if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
+				stripmatch = false
 				dispatcher[scrapeid].jsonstatus = null
-				scraprt("ID" + scrapeid + "         getromdata CALL createjson 2\n")
-
-				dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, stripmatch ? strippedrom : romname, getcrc.name_crc, getcrc.name_size, systemid, systemmedia)
-				scraprt("ID" + scrapeid + "         getromdata suspend 2\n")
+				scraprt("ID" + scrapeid + "         getromdata CALL createjson ERR\n")
+				skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+				dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, romname, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
+				scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
 				suspend()
-				scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
-
+				scraprt("ID" + scrapeid + "         getromdata resumed\n")
 				if (dispatcher[scrapeid].jsonstatus == "RETRY") {
 					dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
 				}
-				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
+			}
+
+			if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
+
+				local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
+				// Scraped rom has correct CRC, no more scraping needed
+				if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+					dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
 					//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
-					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
+				}
+				else {
+					// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
+					// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
+					if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
+					else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
+
+					echoprint("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
+					// Once the name is perfectly matched, a new scrape is done to get proper rom status
+					dispatcher[scrapeid].jsonstatus = null
+					scraprt("ID" + scrapeid + "         getromdata CALL createjson 2\n")
+
+					dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, stripmatch ? strippedrom : romname, getcrc.name_crc, getcrc.name_size, systemid, systemmedia)
+					scraprt("ID" + scrapeid + "         getromdata suspend 2\n")
+					suspend()
+					scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
+
+					if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+						dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+					}
+					if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
+						dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+						//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
+						echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
+					}
+				}
+
+				if (dispatcher[scrapeid].gamedata.notgame) {
+					dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
 				}
 			}
-
-			if (dispatcher[scrapeid].gamedata.notgame) {
-				dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+			else {
+				echoprint("ERROR\n")
+				dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
 			}
 		}
-		else {
-			echoprint("ERROR\n")
-			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
-		}
+
+		dispatcher[scrapeid].done = true
+
+		try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
+		try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
+		try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
 	}
-
-	dispatcher[scrapeid].done = true
-
-	try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
 	scraprt("ID" + scrapeid + "         getromdata RETURN\n")
 	return //gamedata
 }
@@ -4020,7 +4026,7 @@ function scrapegame(scrapeid, inputitem) {
 			inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
 
 			inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
-			inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
+			inputitem.z_description = (isarcade && !prf.ARCADEMIX) ? split_complete(subst_replace(dispatcher[scrapeid].gamedata.adb_history,"\"","'"), "^") : split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
 			inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
 			inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
 			inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
@@ -4075,7 +4081,10 @@ function scrapegame(scrapeid, inputitem) {
 
 			local tempdld = null
 			if (tempdataA != null) {
+				testpr("Z1\n")
+				testpr(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext+"\n")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
+					testpr("X1\n")
 					tempdld = {
 						id = scrapeid
 						cat = emuartcat
@@ -4090,6 +4099,7 @@ function scrapegame(scrapeid, inputitem) {
 					}
 
 					if (tempdata.len() > 0) {
+						testpr("X2\n")
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
 						tempdld.rawset("SSfile", fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension))
@@ -4098,7 +4108,8 @@ function scrapegame(scrapeid, inputitem) {
 					download.num ++
 				}
 			}
-			else if (tempdata.len() > 0) {
+			else if (tempdata.len() > 0){
+				testpr("Z2\n")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
 					tempdld = {
 						id = scrapeid
@@ -11653,9 +11664,9 @@ function history_updatetext() {
 	}
 	else
 	{
-		if (lookup == -2)
+		if (lookup == -2){
 			tempdesc = "\n\n\nIndex file not found. Try generating an index from the history.dat plug-in configuration menu."
-		else{
+		}else{
 			tempdesc = ""
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc = tempdesc + item + "\n"
@@ -11670,7 +11681,7 @@ function history_updatetext() {
 	local tempdesc2 = "" //This comes from the romlist
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc2 = tempdesc2 + item + "\n"
-	if ((tempdesc2 != "?") && (tempdesc2 != "")) {
+	if ((tempdesc2 != "?") && (tempdesc2 != "") && (tempdesc2 != "\n")) {
 		tempdesc = tempdesc2// + "\n\n"
 	}
 
@@ -16062,6 +16073,8 @@ function can_start_download(){
 }
 
 function can_start_scrape(){
+	local isarcade = systemSSarcade (AF.emulatordata[AF.scrape.purgedromdirlist[0].z_emulator].mainsysname)
+	if ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < 20) && !prf.ARCADEMIX) return true
 	return ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr))
 	//return (( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) ))
 }
@@ -16353,6 +16366,7 @@ function tick(tick_time) {
 		}
 		foreach (i, item in dispatcher) {
 			if (item.done) {
+				testpr("X\n")
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
@@ -16377,6 +16391,7 @@ function tick(tick_time) {
 			}
 			else {
 				if (item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")) {
+					testpr("A\n")
 					try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 					item.pollstatus = false
 					scraprt("ID" + i + " main WAKEUP createjson\n")
@@ -16386,6 +16401,7 @@ function tick(tick_time) {
 					scraprt("ID" + i + " main end first check\n")
 				}
 			 	else if (item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")) {
+					testpr("B\n")
 					try {remove(AF.folder + "json/" + i + "jsonA.txt")} catch(err) {}
 					item.pollstatusA = false
 					scraprt("ID" + i + " main WAKEUP createjsonA\n")
