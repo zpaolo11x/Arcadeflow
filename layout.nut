@@ -3176,6 +3176,12 @@ function clean_synopsis(inputstring) {
 	return char_replace(char_replace (subst_replace(subst_replace(inputstring, "\\n", "^"), "&#039;", "'"), ";", "§"), "’", "'")
 }
 
+function clean_adb_history(inputstring){
+	inputstring = subst_replace(inputstring,"\"","'")
+	inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
+	return inputstring
+}
+
 function parseXML(inputpath) {
 	local XMLT = {}
 	local line = ""
@@ -3914,6 +3920,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 	return //gamedata
 }
 
+
 function scrapegame(scrapeid, inputitem) {
 	// Updates the dispatcher with the current scraping game
 	dispatcher[AF.scrape.dispatchid].rominputitem = inputitem
@@ -4026,7 +4033,7 @@ function scrapegame(scrapeid, inputitem) {
 			inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
 
 			inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
-			inputitem.z_description = (isarcade && !prf.ARCADEMIX) ? split_complete(subst_replace(dispatcher[scrapeid].gamedata.adb_history,"\"","'"), "^") : split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
+			inputitem.z_description = (isarcade && !prf.ARCADEMIX) ? split_complete(clean_adb_history(dispatcher[scrapeid].gamedata.adb_history), "^") : split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
 			inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
 			inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
 			inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
