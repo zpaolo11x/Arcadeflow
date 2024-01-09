@@ -4076,14 +4076,21 @@ function scrapegame(scrapeid, inputitem) {
 	if ((scrapethis) && (dispatcher[scrapeid].gamedata.scrapestatus!="ERROR")) {
 		debugpr("gamedata.scrapestatus:" + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
 		debugpr("gamedata.media table size:" + dispatcher[scrapeid].gamedata.media.len() + "\n")
+
+		// Go through media categories
 		foreach (emuartcat, emuartfolder in AF.emulatordata[inputitem.z_emulator].artworktable) {
 
 			debugpr("emuartcat:" + emuartcat + " " + emuartfolder + "\n")
 			local tempdata = []
 			local tempdataA = null
 			try {tempdata = dispatcher[scrapeid].gamedata.media[emuartcat]} catch(err) {}
-			if (dispatcher[scrapeid].gamedata.isarcade) try {tempdataA = dispatcher[scrapeid].gamedata.adb_media[emuartcat]} catch(err) {}
-
+			
+			// If the game is an arcade game try to read tempdataA and if no hybrid media scraper is selected remove tempdata
+			if (dispatcher[scrapeid].gamedata.isarcade) {
+				try {tempdataA = dispatcher[scrapeid].gamedata.adb_media[emuartcat]} catch(err) {}
+				if (!prf.ARCADESSMEDIA) tempdata = null
+			}
+			
 			debugpr("gamedata.media[emuartcat] size:" + tempdata.len() + "\n")
 
 			if (tempdataA != null) {
@@ -4119,7 +4126,7 @@ function scrapegame(scrapeid, inputitem) {
 					download.num ++
 				}
 			}
-			else if (tempdata.len() > 0){
+			else if ((tempdata != null) && (tempdata.len() > 0)){
 				testpr("Z2\n")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
 					tempdld = {
