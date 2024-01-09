@@ -1226,7 +1226,7 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "ERRORSCRAPE", glyph = 0xe9c4, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 10.3, varname = "NOCRC", glyph = 0xea0c, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)", options = ["Yes", "No"], values = [false, true], selection = 0},
 {v = 16.8, varname = "ARCADESSMEDIA", glyph = 0xe9c4, title = "Arcade media scraper", help = "Arcade games madia can be scraped from SS when no ADB data is present", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
-{v = 16.8, varname = "ARCADESSHISTORY", glyph = 0xe9c4, title = "Arcade history scraper", help = "Arcade games history data can be scraped using ADB only, or a mix of ADB and ScreenScraper", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
+{v = 16.8, varname = "ARCADESSHISTORY", glyph = 0xe9c4, title = "Arcade history scraper", help = "Arcade games history data can be scraped using ADB or ScreenScraper", options = ["SS Only", "ADB Only"], values= [true, false], selection = 0},
 {v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference", options = function() {return (AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
 {v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][9].values = sortstring(5)}, selection = AF.req.executef},
 {v = 16.2, varname = "SCRAPETIMEOUT", glyph = 0xe94e, title = "Scrape Timeout", help = "Set the number of seconds to wait for each scrape operation to complete", options = [5, 120, 10], values = 15, selection = AF.req.slideint},
@@ -4091,7 +4091,7 @@ function scrapegame(scrapeid, inputitem) {
 				if (!prf.ARCADESSMEDIA) tempdata = null
 			}
 			
-			debugpr("gamedata.media[emuartcat] size:" + tempdata.len() + "\n")
+			debugpr("gamedata.media[emuartcat] size:" + (tempdata == null) ? "null" : tempdata.len() + "\n")
 
 			if (tempdataA != null) {
 				if (tempdataA.url == "") tempdataA = null
@@ -4116,7 +4116,7 @@ function scrapegame(scrapeid, inputitem) {
 						time0 = 0
 					}
 
-					if (tempdata.len() > 0) {
+					if ((tempdata != null) && (tempdata.len() > 0)) {
 						testpr("X2\n")
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
