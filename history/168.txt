@@ -1,4 +1,5 @@
 16.8
+Added options to select a scraper engine for arcade media and history data
 Fixed glitch when AA is enabled on macOS
 Added MTX, Tomy Tutor, Exidy Sorcerer, Sharp MZ-2500, Sord M5
 Added Vector-06C, Apogee BK-01, Olivetti PC1 and PC128

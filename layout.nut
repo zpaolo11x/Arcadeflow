@@ -1225,7 +1225,8 @@ AF.prefs.l1.push([
 {v = 10.0, varname = "MEDIASCRAPE", glyph = 0xe90d, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping", options = ["Overwrite media", "Only missing", "No media scrape"], values= ["ALL_MEDIA", "MISSING_MEDIA", "NO_MEDIA"], selection = 1},
 {v = 12.0, varname = "ERRORSCRAPE", glyph = 0xe9c4, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 10.3, varname = "NOCRC", glyph = 0xea0c, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)", options = ["Yes", "No"], values = [false, true], selection = 0},
-{v = 16.8, varname = "ARCADEMIX", glyph = 0xe9c4, title = "Arcade scraper", help = "Arcade games can be scraped using ADB only, or a mix of ADB and ScreenScraper", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
+{v = 16.8, varname = "ARCADESSMEDIA", glyph = 0xe9c4, title = "Arcade media scraper", help = "Arcade games madia can be scraped from SS when no ADB data is present", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
+{v = 16.8, varname = "ARCADESSHISTORY", glyph = 0xe9c4, title = "Arcade history scraper", help = "Arcade games history data can be scraped using ADB only, or a mix of ADB and ScreenScraper", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
 {v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference", options = function() {return (AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
 {v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][9].values = sortstring(5)}, selection = AF.req.executef},
 {v = 16.2, varname = "SCRAPETIMEOUT", glyph = 0xe94e, title = "Scrape Timeout", help = "Set the number of seconds to wait for each scrape operation to complete", options = [5, 120, 10], values = 15, selection = AF.req.slideint},
@@ -3811,11 +3812,13 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 		// IF no errors are raised gamedata is populated with fields from the arcade json
 		if (dispatcher[scrapeid].jsonstatus != "ERROR") {
-			dispatcher[scrapeid].gamedata.scrapestatus = prf.ARCADEMIX ? "ARCADE" : "NAME"
+			// If a hybrid arcade scraper has been selected for media or for history, then enable an SS scape.
+			dispatcher[scrapeid].gamedata.scrapestatus = (prf.ARCADESSHISTORY || prf.ARCADESSMEDIA) ? "ARCADE" : "NAME"
 			dispatcher[scrapeid].gamedata = parsejsonA (scrapeid, dispatcher[scrapeid].gamedata)
 		}
 
-		if (!prf.ARCADEMIX) dispatcher[scrapeid].done = true
+		// If no hybrid scraper is enabled, then scraping is finished
+		if (!(prf.ARCADESSHISTORY || prf.ARCADESSMEDIA)) dispatcher[scrapeid].done = true
 
 		// cleanup
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
@@ -3823,7 +3826,7 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA_out.nut")} catch(err) {}
 	}
 
-	if (!isarcade || prf.ARCADEMIX){
+	if (!isarcade || (prf.ARCADESSHISTORY || prf.ARCADESSMEDIA)){
 
 		//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
 		
@@ -4034,7 +4037,7 @@ function scrapegame(scrapeid, inputitem) {
 			inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
 
 			inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
-			inputitem.z_description = (isarcade && !prf.ARCADEMIX) ? split_complete(clean_adb_history(dispatcher[scrapeid].gamedata.adb_history), "^") : split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
+			inputitem.z_description = (isarcade && !prf.ARCADESSHISTORY) ? split_complete(clean_adb_history(dispatcher[scrapeid].gamedata.adb_history), "^") : split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
 			inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
 			inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
 			inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
@@ -16082,7 +16085,7 @@ function can_start_download(){
 
 function can_start_scrape(){
 	local isarcade = systemSSarcade (AF.emulatordata[AF.scrape.purgedromdirlist[0].z_emulator].mainsysname)
-	if ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < 20) && !prf.ARCADEMIX) return true
+	if ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < 20) && !(prf.ARCADESSHISTORY && prf.ARCADESSMEDIA)) return true
 	return ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr))
 	//return (( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) ))
 }
