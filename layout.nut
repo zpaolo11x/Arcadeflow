@@ -10893,8 +10893,8 @@ histgr.black.set_rgb (0, 0, 0)
 histgr.g1.set_rgb (0, 0, 0)
 histgr.g2.set_rgb (0, 0, 0)
 
-histgr.g1.alpha = histgr.g2.alpha = (prf.DARKPANEL == null ? 0 : 150)
-histgr.black.alpha = (prf.DARKPANEL == null ? 0 : (prf.DARKPANEL == true ? 180 : 50))
+histgr.g1.alpha = histgr.g2.alpha = (((prf.DARKPANEL == null) || (prf.HISTORYSIZE == 1.0)) ? 0 : 150)
+histgr.black.alpha = (((prf.DARKPANEL == null) || (prf.HISTORYSIZE == 1.0)) ? 0 : (prf.DARKPANEL == true ? 180 : 50))
 
 local hist_white = null
 
@@ -11521,6 +11521,8 @@ function history_updateoverlay() {
 }
 
 function history_updatesnap() {
+	if (prf.HISTORYSIZE == 1.0) return //TEST168
+
 	hist_screen.file_name = fe.get_art ("snap")
 
 	if (prf.AUDIOVIDHISTORY && (prf.BACKGROUNDTUNE != "")) snd.bgtuneplay = false
