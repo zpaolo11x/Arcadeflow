@@ -2029,6 +2029,9 @@ IT = "Grande"
 ES = "Grande"
 DE = "Groß"
 }
+     "Full":{
+IT = "Completo"
+}
      "Max snap":{
 IT = "Massimo snapshot"
 ES = "Imagen máxima"
