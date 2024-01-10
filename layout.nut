@@ -10697,6 +10697,7 @@ local hist_textT = {
 if (UI.vertical) {
 
 	if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.h - fl.w) * 1.0 / fl.w
+	if (prf.HISTORYSIZE == 1.0) hist.panel_ar = fl.w * 1.0 / fl.h
 
 	hist.split_h = (fl.h - (fl.w * hist.panel_ar)) * 1.0 / fl.h
 
