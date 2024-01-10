@@ -12,6 +12,7 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 
 ## What's new in v 16.8 #
 
+- Added options to select a scraper engine for arcade media and history data
 - Fixed glitch when AA is enabled on macOS
 - Added MTX, Tomy Tutor, Exidy Sorcerer, Sharp MZ-2500, Sord M5
 - Added Vector-06C, Apogee BK-01, Olivetti PC1 and PC128
@@ -325,17 +326,21 @@ Configure the appearence of a second monitor
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
-#### SCRAPE AND METADATA
+#### ! SCRAPE AND METADATA !
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
 
 *Scraping*
 - 'Scrape current romlist' : Arcadeflow will scrape your current romlist metadata and media, based on your options
 - 'Scrape selected game' : Arcadeflow will scrape only metadata and media for current game
-- 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
+
+*Options*
 - 'Rom Scrape Options' : You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match
-- 'Scrape error roms' : When scraping you can include or exclude roms that gave an error in the previous scraping
 - 'Media Scrape Options' : You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
+- 'Scrape error roms' : When scraping you can include or exclude roms that gave an error in the previous scraping
+- 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
+- '! Arcade media scraper !' : Arcade games madia can be scraped from SS when no ADB data is present
+- '! Arcade history scraper !' : Arcade games history data can be scraped using ADB or ScreenScraper
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
 - 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete

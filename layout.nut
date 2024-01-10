@@ -4100,10 +4100,7 @@ function scrapegame(scrapeid, inputitem) {
 
 			local tempdld = null
 			if (tempdataA != null) {
-				testpr("Z1\n")
-				testpr(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext+"\n")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)))) {
-					testpr("X1\n")
 					tempdld = {
 						id = scrapeid
 						cat = emuartcat
@@ -4118,7 +4115,6 @@ function scrapegame(scrapeid, inputitem) {
 					}
 
 					if ((tempdata != null) && (tempdata.len() > 0)) {
-						testpr("X2\n")
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
 						tempdld.rawset("SSfile", fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension))
@@ -4128,7 +4124,6 @@ function scrapegame(scrapeid, inputitem) {
 				}
 			}
 			else if ((tempdata != null) && (tempdata.len() > 0)){
-				testpr("Z2\n")
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
 					tempdld = {
 						id = scrapeid
@@ -16385,7 +16380,6 @@ function tick(tick_time) {
 		}
 		foreach (i, item in dispatcher) {
 			if (item.done) {
-				testpr("X\n")
 				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
 				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
@@ -16410,7 +16404,6 @@ function tick(tick_time) {
 			}
 			else {
 				if (item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")) {
-					testpr("A\n")
 					try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
 					item.pollstatus = false
 					scraprt("ID" + i + " main WAKEUP createjson\n")
@@ -16420,7 +16413,6 @@ function tick(tick_time) {
 					scraprt("ID" + i + " main end first check\n")
 				}
 			 	else if (item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")) {
-					testpr("B\n")
 					try {remove(AF.folder + "json/" + i + "jsonA.txt")} catch(err) {}
 					item.pollstatusA = false
 					scraprt("ID" + i + " main WAKEUP createjsonA\n")
