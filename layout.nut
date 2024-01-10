@@ -1157,7 +1157,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "SCANLINEMODE", glyph = 0xe95b, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline", options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2},
 {v = 7.2, varname = "LCDMODE", glyph = 0xe959, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45, 0.65, 0.75, -1.0], selection = 1},
+{v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["None", "Max snap", "Small", "Default", "Large", "Full"], values = [0.0, -1.0, 0.45, 0.65, 0.75, 1.0], selection = 3},
 {v = 7.2, varname = "HISTORYPANEL", glyph = 0xe923, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true, false], selection = 0},
 {v = 7.2, varname = "DARKPANEL", glyph = 0xe923, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true, false, null], selection = 1},
 {v = 16.2, varname = "TEXTSCROLL", glyph = 0xe923, title = "Text scroll", help = "Select if you want to manually scroll history text, or automatically scroll", options = ["Manual", "Auto"], values = ["manual", "auto"], selection = 0},
@@ -10648,6 +10648,7 @@ local hist = {
 }
 
 if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.w - fl.h) * 1.0 / fl.h
+if (prf.HISTORYSIZE == 1.0) hist.panel_ar = fl.w * 1.0 / fl.h
 
 hist.split_h = (fl.w - (fl.h * hist.panel_ar)) * 1.0 / fl.w
 
