@@ -10697,7 +10697,7 @@ local hist_textT = {
 if (UI.vertical) {
 
 	if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.h - fl.w) * 1.0 / fl.w
-	if (prf.HISTORYSIZE == 1.0) hist.panel_ar = fl.w * 1.0 / fl.h
+	if (prf.HISTORYSIZE == 1.0) hist.panel_ar = fl.h * 1.0 / fl.w
 
 	hist.split_h = (fl.h - (fl.w * hist.panel_ar)) * 1.0 / fl.h
 
@@ -11471,7 +11471,7 @@ if (prf.CONTROLOVERLAY != "never") {
 	}
 }
 
-if (prf.HISTORYSIZE == 1.0) hist_screensurf.visible = shadowsurf_rt.visible = hist_over.surface.visible = false //TEST168
+if (prf.HISTORYSIZE == 1.0) hist_screensurf.visible = shadowsurf_rt.visible = false //TEST168
 
 function history_updateoverlay() {
 	if (prf.HISTORYSIZE == 1.0 || ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE"))) {
