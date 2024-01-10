@@ -339,8 +339,8 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'Media Scrape Options' : You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
 - 'Scrape error roms' : When scraping you can include or exclude roms that gave an error in the previous scraping
 - 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
-- '! Arcade media scraper !' : Arcade games madia can be scraped from SS when no ADB data is present
-- '! Arcade history scraper !' : Arcade games history data can be scraped using ADB or ScreenScraper
+- '! Arcade media scraper !' : Arcade games madia can be scraped from ScreenScraper when no ArcadeDataBase data is present
+- '! Arcade history scraper !' : Arcade games history data can be scraped using ArcadeDataBase or ScreenScraper
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
 - 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete
