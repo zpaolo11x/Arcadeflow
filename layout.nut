@@ -11395,6 +11395,7 @@ hist_screen.preserve_aspect_ratio = false
 if (!prf.AUDIOVIDHISTORY) hist_screen.video_flags = Vid.NoAudio
 hist_screen.shader = noshader
 
+
 local hist_over = {
 	overlaybuttonsdata = {}
 	surface = null
@@ -11469,8 +11470,10 @@ if (prf.CONTROLOVERLAY != "never") {
 	}
 }
 
+if (prf.HISTORYSIZE == 1.0) hist_screensurf.visible = shadowsurf_rt.visible = hist_over.surface.visible = false //TEST168
+
 function history_updateoverlay() {
-	if ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE")) {
+	if (prf.HISTORYSIZE == 1.0 || ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE"))) {
 		hist_over.surface.visible = false
 	} else {
 		hist_over.surface.visible = true
