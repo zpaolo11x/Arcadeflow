@@ -1084,7 +1084,7 @@ naomi gd-rom
 sega naomi,0,0,NAOM,CRT,NONE,-4,3,ARCADE,Sega,1998,Naomi,56,rom,null,null
 naomi
 
-sega nomad,320,224,NMD,LCD,NONE,4,3,HANDHELD,Sega,1990,Nomad,1,rom,joystick (8-way),6
+sega nomad,320,224,NMD,LCD,NONE,4,3,HANDHELD,Sega,1995,Nomad,1,rom,joystick (8-way),6
 genesis nomad
 nomad
 
