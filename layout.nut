@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.7
+// Arcadeflow - v 16.8
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,12 +94,12 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.7" // AF version in string form
+	version = "16.8" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
 	WARN = ""
-	
+
 	dat_freeze = true
 	dat_freezecount = 0
 	bgs_freezecount = 0
@@ -210,7 +210,7 @@ function AFscrapeclear() {
 		regiontable = ["wor", "us", "eu", "ss", "jp"]
 		regionprefs = [] //This will be populated by options table
 		checktable = {}
-		
+
 		purgedromdirlist = null
 		listoflists = null
 		emudata = null
@@ -221,13 +221,13 @@ function AFscrapeclear() {
 		scrapelist_lines = null
 		romlist_file = null
 		romlist_lines = null
-		
+
 		quit = false
-		
+
 		totalroms = 0
 		doneroms = 0
 		timeoutroms = []
-		
+
 		onegame = ""
 		dispatchid = 0
 		requests = ""
@@ -618,12 +618,12 @@ function parseconfig() {
 			if (item.find(checkstring) == 0){
 				tempval = split(item, " ")
 				if (tempval.len() > 1){
-					if (checktable.checktest) 
+					if (checktable.checktest)
 						warnstatus = (tempval[1].find(checktable.checkval) == 0)
 					else
 						warnstatus = (tempval[1] != checktable.checkval)
 					if (warnstatus) {
-						AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"					
+						AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"
 						warning = true
 					}
 				}
@@ -1157,7 +1157,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "SCANLINEMODE", glyph = 0xe95b, title = "Scanline effect", help = "Select scanline effect: Scanlines = default scanlines, Aperture = aperture mask, Half Resolution = reduced scanline resolution to avoid moiree, None = no scanline", options = ["Scanlines", "Half Resolution", "Aperture", "None"], values =["scanlines", "halfres", "aperture", "none"], selection = 2},
 {v = 7.2, varname = "LCDMODE", glyph = 0xe959, title = "LCD effect", help = "Select LCD effect for handheld games: Matrix = see dot matrix, Half Resolution = see matrix at half resolution, None = no effect", options = ["Matrix", "Half Resolution", "None"], values = ["matrix", "halfres", "none"], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Layout", selection = AF.req.liner},
-{v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["Small", "Default", "Large", "Max snap"], values = [0.45, 0.65, 0.75, -1.0], selection = 1},
+{v = 8.3, varname = "HISTORYSIZE", glyph = 0xe923, title = "Text panel size", help = "Select the size of the history panel at the expense of snapshot area", options = ["None", "Max snap", "Small", "Default", "Large", "Full"], values = [0.0, -1.0, 0.45, 0.65, 0.75, 1.0], selection = 3},
 {v = 7.2, varname = "HISTORYPANEL", glyph = 0xe923, title = "Text panel style", help = "Select the look of the history text panel", options = ["White panel", "Background"], values = [true, false], selection = 0},
 {v = 7.2, varname = "DARKPANEL", glyph = 0xe923, title = "Game panel style", help = "Select the look of the history game panel", options = ["Dark", "Standard", "None"], values = [true, false, null], selection = 1},
 {v = 16.2, varname = "TEXTSCROLL", glyph = 0xe923, title = "Text scroll", help = "Select if you want to manually scroll history text, or automatically scroll", options = ["Manual", "Auto"], values = ["manual", "auto"], selection = 0},
@@ -1220,12 +1220,15 @@ AF.prefs.l1.push([
 {v = 0.0, varname = "", glyph = -1, title = "Scraping", selection = AF.req.liner},
 {v = 10.0, varname = "SCRAPEROMLIST", glyph = 0xe9c2, title = "Scrape current romlist", help = "Arcadeflow will scrape your current romlist metadata and media, based on your options", options = "", values = function() {local tempprf = generateprefstable(); scraperomlist2(tempprf, tempprf.MEDIASCRAPE, false)}, selection = AF.req.executef},
 {v = 10.1, varname = "SCRAPEGAME", glyph = 0xe9c2, title = "Scrape selected game", help = "Arcadeflow will scrape only metadata and media for current game", options = "", values = function() {local tempprf = generateprefstable(); scraperomlist2(tempprf, tempprf.MEDIASCRAPE, true)}, selection = AF.req.executef},
-{v = 10.3, varname = "NOCRC", glyph = 0xea0c, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)", options = ["Yes", "No"], values = [false, true], selection = 0},
+{v = 0.0, varname = "", glyph = -1, title = "Options", selection = AF.req.liner},
 {v = 10.1, varname = "ROMSCRAPE", glyph = 0xe9c4, title = "Rom Scrape Options", help = "You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match", options = ["All roms", "Skip CRC matched", "Skip name matched", "Missing only"], values= ["ALL_ROMS", "SKIP_CRC", "SKIP_NAME", "MISSING_ROMS"], selection = 1},
-{v = 12.0, varname = "ERRORSCRAPE", glyph = 0xe9c4, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping", options = ["Yes", "No"], values= [true, false], selection = 1},
 {v = 10.0, varname = "MEDIASCRAPE", glyph = 0xe90d, title = "Media Scrape Options", help = "You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping", options = ["Overwrite media", "Only missing", "No media scrape"], values= ["ALL_MEDIA", "MISSING_MEDIA", "NO_MEDIA"], selection = 1},
+{v = 12.0, varname = "ERRORSCRAPE", glyph = 0xe9c4, title = "Scrape error roms", help = "When scraping you can include or exclude roms that gave an error in the previous scraping", options = ["Yes", "No"], values= [true, false], selection = 1},
+{v = 10.3, varname = "NOCRC", glyph = 0xea0c, title = "Enable CRC check", help = "You can enable rom CRC matching (slower) or just name matching (faster)", options = ["Yes", "No"], values = [false, true], selection = 0},
+{v = 16.8, varname = "ARCADESSMEDIA", glyph = 0xe9c4, title = "Arcade media scraper", help = "Arcade games madia can be scraped from ScreenScraper when no ArcadeDataBase data is present", options = ["ADB and SS", "ADB Only"], values= [true, false], selection = 0},
+{v = 16.8, varname = "ARCADESSHISTORY", glyph = 0xe9c4, title = "Arcade history scraper", help = "Arcade games history data can be scraped using ArcadeDataBase or ScreenScraper", options = ["SS Only", "ADB Only"], values= [true, false], selection = 0},
 {v = 10.0, varname = "REGIONPREFS", glyph = 0xe9ca, title = "Region Priority", help = "Sort the regions used to scrape multi-region media and metadata in order of preference", options = function() {return (AF.scrape.regiontable)}, values = sortstring(5), selection = AF.req.menusort},
-{v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][7].values = sortstring(5)}, selection = AF.req.executef},
+{v = 10.0, varname = "RESETREGIONS", glyph = 0xe965, title = "Reset Region Table", help = "Reset sorting and selection of Region entries", options = "", values = function() {AF.prefs.l1[sorter.scrape][9].values = sortstring(5)}, selection = AF.req.executef},
 {v = 16.2, varname = "SCRAPETIMEOUT", glyph = 0xe94e, title = "Scrape Timeout", help = "Set the number of seconds to wait for each scrape operation to complete", options = [5, 120, 10], values = 15, selection = AF.req.slideint},
 {v = 0.0, varname = "", glyph = -1, title = "ScreenScraper", selection = AF.req.liner},
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
@@ -3175,6 +3178,13 @@ function clean_synopsis(inputstring) {
 	return char_replace(char_replace (subst_replace(subst_replace(inputstring, "\\n", "^"), "&#039;", "'"), ";", "§"), "’", "'")
 }
 
+function clean_adb_history(inputstring){
+	inputstring = subst_replace(inputstring,"\"","'")
+	inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
+	inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	return inputstring
+}
+
 function parseXML(inputpath) {
 	local XMLT = {}
 	local line = ""
@@ -3742,13 +3752,13 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
   	if (jsarray[0].slice(0, 1) != "{") {
 		echoprint("Error on file *" + subst_replace(romfilename, "%20", " ") + "*\n")
 		echoprint("*" + jsarray[0] + "*\n")
-		dispatcher[scrapeid].jsonstatus = "ERROR"		
+		dispatcher[scrapeid].jsonstatus = "ERROR"
 		if ((jsarray[0] == "The maximum threads is already used  ") || (jsarray[0] == "The maximum threads allowed to leecher users is already used  ")){
 			echoprint("RETRY\n")
 			AF.scrape.purgedromdirlist.insert(0, dispatcher[scrapeid].rominputitem)
 			//dispatchernum ++
 			dispatcher[scrapeid].jsonstatus = "RETRY"
-		}	
+		}
 		return
 	}
 	jsarray.push(")")
@@ -3803,9 +3813,13 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 		// IF no errors are raised gamedata is populated with fields from the arcade json
 		if (dispatcher[scrapeid].jsonstatus != "ERROR") {
-			dispatcher[scrapeid].gamedata.scrapestatus = "ARCADE"
+			// If a hybrid arcade scraper has been selected for media or for history, then enable an SS scape.
+			dispatcher[scrapeid].gamedata.scrapestatus = (prf.ARCADESSHISTORY || prf.ARCADESSMEDIA) ? "ARCADE" : "NAME"
 			dispatcher[scrapeid].gamedata = parsejsonA (scrapeid, dispatcher[scrapeid].gamedata)
 		}
+
+		// If no hybrid scraper is enabled, then scraping is finished
+		if (!(prf.ARCADESSHISTORY || prf.ARCADESSMEDIA)) dispatcher[scrapeid].done = true
 
 		// cleanup
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
@@ -3813,100 +3827,104 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		try {remove(AF.folder + "json/" + scrapeid + "jsonA_out.nut")} catch(err) {}
 	}
 
-	//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
+	if (!isarcade || (prf.ARCADESSHISTORY || prf.ARCADESSMEDIA)){
 
-	// Finished DBA scraping, go on with SS scraping to complete missing fields
-	// or to generate a full scraping for non-arcade games
-	// CRC check is never enabled for arcade games, so it's run here
-	local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
-	//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
-	dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
-	scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
-
-	local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
-	local stripmatch = true
-	local skipcrc = false
-	skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
-	dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
-
-	 scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
-	suspend() // Wait for the json to be read
-	 scraprt("ID" + scrapeid + "         getromdata resumed\n")
-
-	// As with arcade scraping, let's check what happened and if the scan is actually a rescan
-
-	if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-		dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-	}
-	else {
-		// If stripped rom fails, try with non-stripped rom
-		if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
-			stripmatch = false
-			dispatcher[scrapeid].jsonstatus = null
-			scraprt("ID" + scrapeid + "         getromdata CALL createjson ERR\n")
-			skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
-			dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, romname, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
-			scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
-			suspend()
-			scraprt("ID" + scrapeid + "         getromdata resumed\n")
-			if (dispatcher[scrapeid].jsonstatus == "RETRY") {
-				dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
-			}
-		}
+		//Notice that createjsonA can change arcade status to false to allow re-scrape as standard game
 		
-		if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
+		// Finished DBA scraping, go on with SS scraping to complete missing fields
+		// or to generate a full scraping for non-arcade games
+		// CRC check is never enabled for arcade games, so it's run here
+		local filemissing = (dispatcher[scrapeid].gamedata.name == dispatcher[scrapeid].gamedata.filename)
+		//gamedata.crc will be populated with crc data if needed. CRC data is crc number in uppercase, crc number in lowercase and file size in bytes
+		dispatcher[scrapeid].gamedata.crc = (isarcade || AF.scrape.inprf.NOCRC || filemissing) ? null : getromcrc_lookup4(rompath)
+		scraprt("ID" + scrapeid + "         getromdata CALL createjson 1\n")
 
-			local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
-			// Scraped rom has correct CRC, no more scraping needed
-			if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
-				dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
-				dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
-				//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
-			}
-			else {
-				// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
-				// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
-				if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
-				else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
+		local strippedrom = strip(split(strip(split(romname, "(")[0]), "_")[0])
+		local stripmatch = true
+		local skipcrc = false
+		skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+		dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, strippedrom, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
 
-				echoprint("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
-				// Once the name is perfectly matched, a new scrape is done to get proper rom status
+		scraprt("ID" + scrapeid + "         getromdata suspend 1\n")
+		suspend() // Wait for the json to be read
+		scraprt("ID" + scrapeid + "         getromdata resumed\n")
+
+		// As with arcade scraping, let's check what happened and if the scan is actually a rescan
+
+		if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+			dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+		}
+		else {
+			// If stripped rom fails, try with non-stripped rom
+			if ((dispatcher[scrapeid].jsonstatus == "ERROR") && (strippedrom != romname)) {
+				stripmatch = false
 				dispatcher[scrapeid].jsonstatus = null
-				scraprt("ID" + scrapeid + "         getromdata CALL createjson 2\n")
-
-				dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, stripmatch ? strippedrom : romname, getcrc.name_crc, getcrc.name_size, systemid, systemmedia)
-				scraprt("ID" + scrapeid + "         getromdata suspend 2\n")
+				scraprt("ID" + scrapeid + "         getromdata CALL createjson ERR\n")
+				skipcrc = (isarcade || AF.scrape.inprf.NOCRC || filemissing || dispatcher[scrapeid].gamedata.crc[0] == null)
+				dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, romname, skipcrc?"":dispatcher[scrapeid].gamedata.crc[0], skipcrc?"":dispatcher[scrapeid].gamedata.crc[2], systemid, systemmedia)
+				scraprt("ID" + scrapeid + "         getromdata suspend ERR\n")
 				suspend()
-				scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
-
+				scraprt("ID" + scrapeid + "         getromdata resumed\n")
 				if (dispatcher[scrapeid].jsonstatus == "RETRY") {
 					dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
 				}
-				if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
+			}
+
+			if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")) {
+
+				local getcrc = matchrom(scrapeid, romname) //This is the CRC of a rom with matched name
+				// Scraped rom has correct CRC, no more scraping needed
+				if (!(isarcade || AF.scrape.inprf.NOCRC || filemissing) && (getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[0] || getcrc.rom_crc == dispatcher[scrapeid].gamedata.crc[1])) {
+					dispatcher[scrapeid].gamedata.scrapestatus = "CRC"
 					dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
 					//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
-					echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
+				}
+				else {
+					// If name_crc is null it means no name matched the current rom name, so the scraping is "GUESS"
+					// but if name_crc is not null it means one of the roms in the scraped list matched with the current rom "NAME"
+					if (getcrc.name_crc == "") dispatcher[scrapeid].gamedata.scrapestatus = "GUESS"
+					else dispatcher[scrapeid].gamedata.scrapestatus = "NAME"
+
+					echoprint("Second check: " + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
+					// Once the name is perfectly matched, a new scrape is done to get proper rom status
+					dispatcher[scrapeid].jsonstatus = null
+					scraprt("ID" + scrapeid + "         getromdata CALL createjson 2\n")
+
+					dispatcher[scrapeid].createjson.call(scrapeid, ss_username, ss_password, stripmatch ? strippedrom : romname, getcrc.name_crc, getcrc.name_size, systemid, systemmedia)
+					scraprt("ID" + scrapeid + "         getromdata suspend 2\n")
+					suspend()
+					scraprt("ID" + scrapeid + "         getromdata resumed 2\n")
+
+					if (dispatcher[scrapeid].jsonstatus == "RETRY") {
+						dispatcher[scrapeid].gamedata.scrapestatus = "RETRY"
+					}
+					if ((dispatcher[scrapeid].jsonstatus != "ERROR") && (dispatcher[scrapeid].jsonstatus != "RETRY")){
+						dispatcher[scrapeid].gamedata = parsejson (scrapeid, dispatcher[scrapeid].gamedata)
+						//TEST165 updatethreads(dispatcher[scrapeid].gamedata.SSthreads)
+						echoprint("Matched NAME " + dispatcher[scrapeid].gamedata.filename + " with " + dispatcher[scrapeid].gamedata.matchedrom + "\n")
+					}
+				}
+
+				if (dispatcher[scrapeid].gamedata.notgame) {
+					dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
 				}
 			}
-
-			if (dispatcher[scrapeid].gamedata.notgame) {
-				dispatcher[scrapeid].gamedata.scrapestatus = "NOGAME"
+			else {
+				echoprint("ERROR\n")
+				dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
 			}
 		}
-		else {
-			echoprint("ERROR\n")
-			dispatcher[scrapeid].gamedata.scrapestatus = "ERROR"
-		}
+
+		dispatcher[scrapeid].done = true
+
+		try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
+		try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
+		try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
 	}
-
-	dispatcher[scrapeid].done = true
-
-	try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
 	scraprt("ID" + scrapeid + "         getromdata RETURN\n")
 	return //gamedata
 }
+
 
 function scrapegame(scrapeid, inputitem) {
 	// Updates the dispatcher with the current scraping game
@@ -3991,7 +4009,7 @@ function scrapegame(scrapeid, inputitem) {
 		crc = null
 	}
 
-	// Scraping data structure has been created 
+	// Scraping data structure has been created
 
 	scraprt("ID" + scrapeid + "     scrapegame CALL getromdata\n")
 	dispatcher[scrapeid].getromdata.call(scrapeid, AF.scrape.inprf.SS_USERNAME, AF.scrape.inprf.SS_PASSWORD, gname, gd[0], gd[1], garcade, AF.scrape.regionprefs, AF.emulatordata[inputitem.z_emulator].rompath + gnamewext)
@@ -4020,7 +4038,7 @@ function scrapegame(scrapeid, inputitem) {
 			inputitem.z_control = isarcade ? dispatcher[scrapeid].gamedata.adb_inputcontrols : dispatcher[scrapeid].gamedata.a_controls //Control
 
 			inputitem.z_scrapestatus = dispatcher[scrapeid].gamedata.scrapestatus
-			inputitem.z_description = split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
+			inputitem.z_description = (isarcade && !prf.ARCADESSHISTORY) ? split_complete(clean_adb_history(dispatcher[scrapeid].gamedata.adb_history), "^") : split_complete(dispatcher[scrapeid].gamedata.synopsis, "^")
 			inputitem.z_resolution = isarcade ? (dispatcher[scrapeid].gamedata.adb_screenresolution == "" ? "" : split(dispatcher[scrapeid].gamedata.adb_screenresolution, "p")[0]) : dispatcher[scrapeid].gamedata.a_resolution
 			inputitem.z_arcadesystem = dispatcher[scrapeid].gamedata.a_system
 			inputitem.z_commands = isarcade ? parsecommands(dispatcher[scrapeid].gamedata.adb_buttonscolors) : ""
@@ -4059,15 +4077,22 @@ function scrapegame(scrapeid, inputitem) {
 	if ((scrapethis) && (dispatcher[scrapeid].gamedata.scrapestatus!="ERROR")) {
 		debugpr("gamedata.scrapestatus:" + dispatcher[scrapeid].gamedata.scrapestatus + "\n")
 		debugpr("gamedata.media table size:" + dispatcher[scrapeid].gamedata.media.len() + "\n")
+
+		// Go through media categories
 		foreach (emuartcat, emuartfolder in AF.emulatordata[inputitem.z_emulator].artworktable) {
 
 			debugpr("emuartcat:" + emuartcat + " " + emuartfolder + "\n")
 			local tempdata = []
 			local tempdataA = null
 			try {tempdata = dispatcher[scrapeid].gamedata.media[emuartcat]} catch(err) {}
-			if (dispatcher[scrapeid].gamedata.isarcade) try {tempdataA = dispatcher[scrapeid].gamedata.adb_media[emuartcat]} catch(err) {}
-
-			debugpr("gamedata.media[emuartcat] size:" + tempdata.len() + "\n")
+			
+			// If the game is an arcade game try to read tempdataA and if no hybrid media scraper is selected remove tempdata
+			if (dispatcher[scrapeid].gamedata.isarcade) {
+				try {tempdataA = dispatcher[scrapeid].gamedata.adb_media[emuartcat]} catch(err) {}
+				if (!prf.ARCADESSMEDIA) tempdata = null
+			}
+			
+			debugpr("gamedata.media[emuartcat] size:" + (tempdata == null) ? "null" : tempdata.len() + "\n")
 
 			if (tempdataA != null) {
 				if (tempdataA.url == "") tempdataA = null
@@ -4089,7 +4114,7 @@ function scrapegame(scrapeid, inputitem) {
 						time0 = 0
 					}
 
-					if (tempdata.len() > 0) {
+					if ((tempdata != null) && (tempdata.len() > 0)) {
 						tempdld.rawset("SSurl", char_replace(char_replace(tempdata[0].path,"[","\\["),"]","\\]"))
 						tempdld.rawset("SSext", tempdata[0].extension)
 						tempdld.rawset("SSfile", fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension))
@@ -4098,7 +4123,7 @@ function scrapegame(scrapeid, inputitem) {
 					download.num ++
 				}
 			}
-			else if (tempdata.len() > 0) {
+			else if ((tempdata != null) && (tempdata.len() > 0)){
 				if (!(AF.scrape.forcemedia == "NO_MEDIA") && ((AF.scrape.forcemedia == "ALL_MEDIA") || !(file_exist(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)))) {
 					tempdld = {
 						id = scrapeid
@@ -10623,6 +10648,7 @@ local hist = {
 }
 
 if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.w - fl.h) * 1.0 / fl.h
+if (prf.HISTORYSIZE == 1.0) hist.panel_ar = fl.w * 1.0 / fl.h
 
 hist.split_h = (fl.w - (fl.h * hist.panel_ar)) * 1.0 / fl.w
 
@@ -10671,6 +10697,7 @@ local hist_textT = {
 if (UI.vertical) {
 
 	if (prf.HISTORYSIZE == -1) hist.panel_ar = (fl.h - fl.w) * 1.0 / fl.w
+	if (prf.HISTORYSIZE == 1.0) hist.panel_ar = fl.h * 1.0 / fl.w
 
 	hist.split_h = (fl.h - (fl.w * hist.panel_ar)) * 1.0 / fl.h
 
@@ -10866,8 +10893,8 @@ histgr.black.set_rgb (0, 0, 0)
 histgr.g1.set_rgb (0, 0, 0)
 histgr.g2.set_rgb (0, 0, 0)
 
-histgr.g1.alpha = histgr.g2.alpha = (prf.DARKPANEL == null ? 0 : 150)
-histgr.black.alpha = (prf.DARKPANEL == null ? 0 : (prf.DARKPANEL == true ? 180 : 50))
+histgr.g1.alpha = histgr.g2.alpha = (((prf.DARKPANEL == null) || (prf.HISTORYSIZE == 1.0)) ? 0 : 150)
+histgr.black.alpha = (((prf.DARKPANEL == null) || (prf.HISTORYSIZE == 1.0)) ? 0 : (prf.DARKPANEL == true ? 180 : 50))
 
 local hist_white = null
 
@@ -11369,6 +11396,7 @@ hist_screen.preserve_aspect_ratio = false
 if (!prf.AUDIOVIDHISTORY) hist_screen.video_flags = Vid.NoAudio
 hist_screen.shader = noshader
 
+
 local hist_over = {
 	overlaybuttonsdata = {}
 	surface = null
@@ -11443,8 +11471,10 @@ if (prf.CONTROLOVERLAY != "never") {
 	}
 }
 
+if (prf.HISTORYSIZE == 1.0) hist_screensurf.visible = shadowsurf_rt.visible = false //TEST168
+
 function history_updateoverlay() {
-	if ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE")) {
+	if (prf.HISTORYSIZE == 1.0 || ((prf.CONTROLOVERLAY == "arcade") && (system_data[z_list.gametable[z_list.index].z_system.tolower()].group != "ARCADE"))) {
 		hist_over.surface.visible = false
 	} else {
 		hist_over.surface.visible = true
@@ -11491,6 +11521,8 @@ function history_updateoverlay() {
 }
 
 function history_updatesnap() {
+	if (prf.HISTORYSIZE == 1.0) return //TEST168
+
 	hist_screen.file_name = fe.get_art ("snap")
 
 	if (prf.AUDIOVIDHISTORY && (prf.BACKGROUNDTUNE != "")) snd.bgtuneplay = false
@@ -11503,14 +11535,14 @@ function history_updatesnap() {
 		hist_screen.shader.set_param ("remap", remapdata.remap)
 		hist_screen.shader.set_param ("lcdcolor", remapdata.lcdcolor)
 		hist_screen.shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
-		hist_screen.shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)		
+		hist_screen.shader.set_param ("color2", remapdata.b.R, remapdata.b.G, remapdata.b.B)
 		hist_screen.shader.set_param ("plusminus", (recolorise(0, 0) == "NONE" || recolorise (0, 0) == "LCDGBA") ? -1.0 : 1.0)
 	}
 
 	if (tempshader == "shader_lottes") {
 		hist_screen.shader.set_param ("hsv", remapdata.hsv[0], remapdata.hsv[1], remapdata.hsv[2])
 	}
-	
+
 	hist_glow_shader.set_param ("remap", remapdata.remap)
 	hist_glow_shader.set_param ("lcdcolor", remapdata.lcdcolor)
 	hist_glow_shader.set_param ("color1", remapdata.a.R, remapdata.a.G, remapdata.a.B)
@@ -11653,9 +11685,9 @@ function history_updatetext() {
 	}
 	else
 	{
-		if (lookup == -2)
+		if (lookup == -2){
 			tempdesc = "\n\n\nIndex file not found. Try generating an index from the history.dat plug-in configuration menu."
-		else{
+		}else{
 			tempdesc = ""
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc = tempdesc + item + "\n"
@@ -11670,7 +11702,7 @@ function history_updatetext() {
 	local tempdesc2 = "" //This comes from the romlist
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc2 = tempdesc2 + item + "\n"
-	if ((tempdesc2 != "?") && (tempdesc2 != "")) {
+	if ((tempdesc2 != "?") && (tempdesc2 != "") && (tempdesc2 != "\n")) {
 		tempdesc = tempdesc2// + "\n\n"
 	}
 
@@ -11685,7 +11717,7 @@ function history_updatetext() {
 function history_show(h_startup)
 {
 	startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
-	
+
 	if ((prf.AUDIOVIDSNAPS) && (prf.THUMBVIDEO)) tilez[focusindex.new].gr_vidsz.video_flags = Vid.NoAudio
 	if (prf.THUMBVIDEO) videosnap_hide()
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
@@ -11995,7 +12027,7 @@ function update_allgames_collections(verbose, tempprf) {
 				try {sysname = AF.emulatordata[listfields[2]].mainsysname} catch(err) {sysname = ""}
 				if ((system_data.rawin(sysname.tolower())) && (system_data[sysname.tolower()].group == val.group)) {
 					// Create output file handler
-			
+
 					if (verbose && (sysname != cursysname)) {
 						msgbox_addlinetop(patchtext(item +" - " + sysname, " DONE", 5, AF.msgbox.columns))
 						fe.layout.redraw()
@@ -12034,6 +12066,7 @@ zmenu = {
 
 	defdata = {				// Default menu data structure
 		text = ""			// Menu item label
+		textraw = ""		// Raw text used for displays menu
 		glyph = 0			// menu item glyph
 		note = ""			// side note for options etc
 		liner = false		// turns the menu into a strikeline
@@ -12578,6 +12611,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				else if (prf.DMPIMAGES == "WALLS") {
 					if (file_exist (AF.folder + "system_bgs/" + system_art + ".jpg")) af_art = AF.folder + "system_bgs/" + system_art + ".jpg"
 					else if (file_exist (AF.folder + "system_bgs/" + menudata[i].text + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].text + ".jpg"
+					else if (file_exist (AF.folder + "system_bgs/" + menudata[i].textraw + ".jpg")) af_art = AF.folder + "system_bgs/" + menudata[i].textraw + ".jpg"
 				}
 
 				if (file_exist (artname + ".jpg")) ma_art = artname + ".jpg"
@@ -13184,7 +13218,7 @@ function powermenu(parsefunction){
 	] : [
 		{text = ltxt("Shutdown", AF.LNG), glyph = 0xe9b6},
 		{text = ltxt("Restart", AF.LNG), glyph = 0xe984},
-		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},		
+		{text = ltxt("Sleep", AF.LNG), glyph = 0xeaf6},
 	],
 	ltxt("EXIT ARCADEFLOW?", AF.LNG), 0xe9b6, (prf.POWERMENU == null) ? 0 : 1, {center = true},
 	function(result) {
@@ -13217,6 +13251,7 @@ function displayungrouped() {
 		ungroupmenu.push({
 			text = item.cleanname
 			note = item.notes
+			textraw = item.dispname
 		})
 	}
 
@@ -13325,7 +13360,7 @@ function displaygrouped2() {
 	local dmenu1 = []
 	local groupnotes = []
 	foreach (i, item in menuarray) {
-		dmenu1.push({text = item.cleanname, note = item.notes})
+		dmenu1.push({text = item.cleanname, textraw = item.dispname, note = item.notes})
 		groupnotes.push(item.groupnotes)
 	}
 	for (local i = 1; i < dmenu1.len(); i++) {
@@ -15059,7 +15094,7 @@ function buildutilitymenu() {
 				aboutmenu.push({ text = aboutfile.read_line(),glyph = 0xea08 })
 			}
 			aboutmenu[0] = {text = ltxt("What's New", AF.LNG), liner = true}
-			
+
 			if (AF.WARN != ""){
 				local warnarray = split(AF.WARN, "\n")
 				warnarray.reverse()
@@ -15068,7 +15103,7 @@ function buildutilitymenu() {
 				}
 					aboutmenu.insert(0, {text = "Options Warnings", liner = true})
 			}
-			
+
 			aboutmenu.insert(0,{text = ltxt("Open Readme", AF.LNG), glyph = 0xe926})
 
 			zmenudraw3(aboutmenu, "Arcadeflow " + AF.version, 0xea09, 0, {},
@@ -16059,12 +16094,14 @@ function can_start_download(){
 }
 
 function can_start_scrape(){
+	local isarcade = systemSSarcade (AF.emulatordata[AF.scrape.purgedromdirlist[0].z_emulator].mainsysname)
+	if ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < 20) && !(prf.ARCADESSHISTORY && prf.ARCADESSMEDIA)) return true
 	return ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr))
 	//return (( ((AF.scrape.threads_dld == 0) && (AF.scrape.threads_scr < AF.scrape.threadsmax_scr)) || ((AF.scrape.threads_dld > 0) && (AF.scrape.threads_dld < AF.scrape.threadsmax_dld)) ))
 }
 
 function update_scrape_header(tick = false){
-	local titleblock = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.requests, AF.scrape.requests.len(), AF.msgbox.columns) 
+	local titleblock = patchtext (AF.scrape.romlist + " " + AF.scrape.doneroms + "/" + AF.scrape.totalroms, AF.scrape.requests, AF.scrape.requests.len(), AF.msgbox.columns)
 	local metacounter = "META:"+textrate(AF.scrape.doneroms, AF.scrape.totalroms, AF.msgbox.columns - 5, "|", "\\")
 	local dldcounter = "FILE:"+textrate(download.list.len() + 1 - download.num, download.list.len() + 1, AF.msgbox.columns-5, "|", "\\")
 	msgbox_newtitle(titleblock + "\n" + metacounter + "\n" + dldcounter)
@@ -16332,7 +16369,7 @@ function tick(tick_time) {
 				dispatchernum ++
 				update_scrape_header()
 				// Run the scrapegame function in the currently dispatched scrape
-				// passing the last item on the purgedlist to the function		
+				// passing the last item on the purgedlist to the function
 				scraprt("ID" + AF.scrape.dispatchid + " main CALL scrapegame\n")
 				dispatcher[AF.scrape.dispatchid].scrapegame.call(AF.scrape.dispatchid, AF.scrape.purgedromdirlist.pop())
 				// Increase the number of the id for the next scrape
@@ -16357,7 +16394,7 @@ function tick(tick_time) {
 
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
 				if (item.gamedata.requests != "") AF.scrape.requests = item.gamedata.requests
-				
+
 				//TEST165 REMOVED msgbox_newtitle(dispatch_header)
 				msgbox_addlinetop(patchtext(item.gamedata.filename, item.gamedata.scrapestatus, 11, AF.msgbox.columns))
 
@@ -16490,7 +16527,7 @@ function tick(tick_time) {
 		disp.bgshadowt.y = disp.images[flowT.dispshadow1[3] >= 0 ? zmenu.selected : zmenu.oldselected].y - disp.bgshadowt.height
 
 	}
-	
+
 	if (i2_moving(zmenu.i2)){
 		i2_updatepos(zmenu.i2)
 
@@ -16509,7 +16546,7 @@ function tick(tick_time) {
 		zmenu.selectedbar.y = zmenu.sidelabel.y = zmenu.items[zmenu.selected].y
 
 	}
-	
+
 	// Attract mode management
 	if (prf.AMENABLE) {
 		if (attract.start) {

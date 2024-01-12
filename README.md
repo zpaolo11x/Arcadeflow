@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.7 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.8 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,16 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.7 #
+## What's new in v 16.8 #
 
-- Added Namco arcade systems logos
-- Fixed issue with letter fading when AA is enabled
+- Added options to select a scraper engine for arcade media and history data
+- Added options to maximise or remove history text panel
+- Fixed glitch when AA is enabled on macOS
+- Added MTX, Tomy Tutor, Exidy Sorcerer, Sharp MZ-2500, Sord M5
+- Added Vector-06C, Apogee BK-01, Olivetti PC1 and PC128
+- Added RCA Studio II, Othello Multivision, Nuon, VC 4000, Hector HRX
+- Added Hyper Neo Geo, Sega Nomad
+- Added Light Gun#ARCADE and Light Gun#CONSOLE wallpaper
 
 ## Emulator system identifier #
 
@@ -321,17 +327,21 @@ Configure the appearence of a second monitor
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
-#### SCRAPE AND METADATA
+#### ! SCRAPE AND METADATA !
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
 
 *Scraping*
 - 'Scrape current romlist' : Arcadeflow will scrape your current romlist metadata and media, based on your options
 - 'Scrape selected game' : Arcadeflow will scrape only metadata and media for current game
-- 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
+
+*Options*
 - 'Rom Scrape Options' : You can decide if you want to scrape all roms, only roms with no scrape data or roms with data that don't pefectly match
-- 'Scrape error roms' : When scraping you can include or exclude roms that gave an error in the previous scraping
 - 'Media Scrape Options' : You can decide if you want to scrape all media, overwriting existing one, or only missing media. You can also disable media scraping
+- 'Scrape error roms' : When scraping you can include or exclude roms that gave an error in the previous scraping
+- 'Enable CRC check' : You can enable rom CRC matching (slower) or just name matching (faster)
+- '! Arcade media scraper !' : Arcade games madia can be scraped from ScreenScraper when no ArcadeDataBase data is present
+- '! Arcade history scraper !' : Arcade games history data can be scraped using ArcadeDataBase or ScreenScraper
 - 'Region Priority' : Sort the regions used to scrape multi-region media and metadata in order of preference
 - 'Reset Region Table' : Reset sorting and selection of Region entries
 - 'Scrape Timeout' : Set the number of seconds to wait for each scrape operation to complete
@@ -421,6 +431,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.7*
+
+- Added Namco arcade systems logos
+- Fixed issue with letter fading when AA is enabled
 
 *v16.6*
 

@@ -29,8 +29,11 @@ cpc
 amstrad gx4000,0,0,GX4K,CRT,NONE,4,3,CONSOLE,Amstrad,1990,Amstrad GX4000,87,rom,joystick (8-way),2
 gx4000
 
-apf mp1000, 256,192,APF,CRT,NONE,4,3,CONSOLE,APF Electronics,1978,APF MP1000,null,rom,joystick (8-way),2
+apf mp1000,256,192,APF,CRT,NONE,4,3,CONSOLE,APF Electronics,1978,APF MP1000,null,rom,joystick (8-way),2
 apf-mp1000
+
+apogee bk-01,0,0,BK01,CRT,NONE,4,3,COMPUTER,ARB Plant,1988,Apogee BK-01,null,null,joystick (8-way),1
+apogej bk-01
 
 apple ii,0,0,APLII,CRT,NONE,4,3,COMPUTER,Apple,1977,Apple II,86,rom,joystick (8-way),1
 apple 2
@@ -320,6 +323,9 @@ exl 100
 exelvision exl100
 exl100
 
+exidy sorcerer,0,0,SORC,CRT,NONE,4,3,COMPUTER,Exidy,1978,Exidy Sorcerer,null,null,joystick (8-way),1
+sorcerer
+
 fairchild channel f,128,64,CHF,CRT,NONE,4,3,CONSOLE,Fairchild,1976,Channel F,80,rom,joystick (8-way),2
 channel f
 
@@ -382,12 +388,22 @@ hbmame,0,0,HBMM,CRT,NONE,-4,3,ARCADE,Various,null,HBMAME,75,rom,null,null
 hbmame arcade
 arcade hbmame
 
+hector hrx,0,0,HECT,CRT,NONE,4,3,COMPUTER,Hector,1983,Hector HRX,null,null,joystick (8-way),1
+hector
+
+hyper neo geo 64,0,0,HNG64,CRT,NONE,4,3,ARCADE,SNK,1994,Hyper Neo Geo 64,null,null,joystick (8-way),4
+neo geo 64
+
 ibm pc,0,0,IBMPC,CRT,NONE,4,3,COMPUTER,IBM,1981,IBM Personal Computer,135,dossier,joystick (8-way),1
 ibm personal computer
 pc ibm
 
 intellivision,0,0,INTL,CRT,NONE,4,3,CONSOLE,Mattel,1979,IntelliVision,115,rom,joystick (8-way),9
 mattel intellivision
+
+interton vc 4000,0,0,VC4K,CRT,NONE,4,3,CONSOLE,Interton,1983,Interton VC 4000,null,null,joystick (8-way),2
+vc 4000
+video computer 4000
 
 irem,0,0,IREM,CRT,NONE,-4,3,ARCADE,Irem,null,Irem,148,rom,null,null
 irem classics
@@ -424,6 +440,11 @@ mega65
 mega duck,160,144,DUCK,LCD,LCDGBC,0,0,HANDHELD,Welback,1993,Mega Duck,90,rom,joystick (8-way),2
 mega duck wg-108
 cougar boy
+
+memotech mtx,256,192,MTX,CRT,NONE,4,3,COMPUTER,Memotech,1983,Memotech MTX,null,null,joystick (8-way),2
+mtx
+mtx512
+memotech mtx512
 
 microbee,0,0,MBEE,CRT,NONE,4,3,COMPUTER,Applied Technology,1982,MicroBee,null,rom,joystick (8-way),1
 micro bee
@@ -799,10 +820,26 @@ ngage
 nokia ngage
 n-gage
 
+nuon,0,0,NUON,CRT,NONE,4,3,CONSOLE,VM Labs,2000,Nuon,null,null,joystick (8-way),6
+vm labs nuon
+
+olivetti pc1,320,200,PC1,CRT,NONE,4,3,COMPUTER,Olivetti Prodest,1987,Olivetti PC1,135,dossier,joystick (8-way),1
+olivetti prodest pc1
+olivetti pc 1
+olivetti prodest pc 1
+
+olivetti pc128,320,200,PC128,CRT,NONE,4,3,COMPUTER,Olivetti Prodest,1986,Olivetti PC128,141,rom,joystick (8-way),1
+olivetti pc 128
+olivetti prodest pc128
+olivetti prodest pc 128
+
 openbor,0,0,OBOR,CRT,NONE,4,3,COMPUTER,Various,null,OpenBor,214,fichier,null,null
 open bor
 
 oric,240,220,ORC,CRT,NONE,4,3,COMPUTER,Tangerine,1984,Oric,131,rom,joystick (8-way),1
+
+othello multivision,256,192,OTHL,CRT,NONE,4,3,CONSOLE,Tsukuda Original,1983,Othello Multivision,109,rom,joystick (8-way),2
+multivision
 
 panasonic 3do,0,0,3DO,CRT,NONE,4,3,CONSOLE,3DO Company,1993,3DO,29,iso,joystick (8-way),3
 3do
@@ -879,6 +916,11 @@ sony ps vita
 sony playstation vita
 vita
 playstation vita
+
+rca studio ii,0,0,RCAS2,CRT,NONE,4,3,CONSOLE,RCA,1977,RCA Studio II,null,null,joystick (8-way),2
+studio ii
+rca studio 2
+studio 2
 
 sam coupe,256,192,SCPE,CRT,NONE,4,3,COMPUTER,MGT,1989,SAM coupe,213,rom,joystick (8-way),1
 sam coupé
@@ -1042,6 +1084,10 @@ naomi gd-rom
 sega naomi,0,0,NAOM,CRT,NONE,-4,3,ARCADE,Sega,1998,Naomi,56,rom,null,null
 naomi
 
+sega nomad,320,224,NMD,LCD,NONE,4,3,HANDHELD,Sega,1995,Nomad,1,rom,joystick (8-way),6
+genesis nomad
+nomad
+
 sega pico,0,0,PICO,LCD,NONE,0,0,HANDHELD,Sega,1993,Pico,null,rom,null,null
 pico
 
@@ -1086,6 +1132,11 @@ wondermega
 sega,0,0,SEGA,CRT,NONE,-4,3,ARCADE,Sega,null,Sega,147,rom,null,null
 sega classics
 
+sharp mz-2500,320,200,MZ25K,CRT,NONE,4,3,COMPUTER,Sharp,1985,MZ-2500,null,null,joystick (8-way),2
+mz2500
+sharp mz2500
+mz-2500
+
 sharp x1,320,200,X1,CRT,NONE,4,3,COMPUTER,Sharp,1982,X1,220,rom,joystick (8-way),1
 x1
 
@@ -1126,6 +1177,8 @@ sol terminal computer
 sol-20 terminal computer
 sol20 terminal computer
 sol20
+
+sord m5,256,192,SORD,CRT,NONE,4,3,COMPUTER,Sord,1982,Sord M5,null,null,joystick (8-way),2
 
 spectravideo,256,192,SVI,CRT,8BIT,4,3,COMPUTER,Spectravideo,1983,Spectravideo,218,rom,joystick (8-way),1
 svi
@@ -1170,6 +1223,8 @@ tiger,0,0,TGR,LCD,NONE,0,0,HANDHELD,Tiger,null,Tiger,null,null,null,null
 tiger handhelds
 tiger electronics
 
+tomy tutor,256,192,TOMYT,CRT,NONE,4,3,COMPUTER,Tomy,1982,Tomy Tutor,null,null,joystick (8-way),2
+
 triforce,0,0,TRIF,CRT,NONE,4,3,ARCADE,Various,null,Triforce,75,rom,null,null
 
 trs-80 color computer,320,200,COCO,CRT,NONE,4,3,COMPUTER,Tandy,1980,TRS-80 Color Computer,144,rom,joystick (8-way),1
@@ -1187,6 +1242,9 @@ ultra 64,0,0,U64,CRT,NONE,4,3,ARCADE,Various,null,Ultra 64,75,rom,null,null
 ultra64
 
 uzebox,0,0,UZBX,CRT,NONE,4,3,CONSOLE,Belogic Software,2008,uZebox,216,rom,joystick (8-way),4
+
+vector-06c,256,256,V06C,CRT,NONE,4,3,COMPUTER,Temirazov Sokolov,1987,Vector-06C,null,null,joystick (8-way),1
+vector 06c
 
 vectrex,0,0,VECT,CRT,NONE,9,11,CONSOLE,GCE,1982,Vectrex,102,rom,joystick (8-way),4
 

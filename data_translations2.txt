@@ -4,7 +4,6 @@
 # - for each line in ""EN" add your translation with your language token. If there's no translation ""EN" will be used"
 # - keep one or more spaces between each translation block"
 # - if there's a special character in the original string (like "_" etc) use the same charactar in the translation"
-}
 
 # Thanks to Jate from Attract Mode forum for the translation in Spanish!"
 # Thanks to ReBirFh from Attract Mode forum for the translation in Português (BR)!"
@@ -523,6 +522,27 @@ DE = "Aktiviere CRC Prüfung"
      "You can enable rom CRC matching (slower) or just name matching (faster)":{
 IT = "Abilita il calcolo del CRC per trovare le rom (più lento del semplice controllo nomi)"
 DE = "Du kannst CRC Matching für ROMS aktivieren (langsamer) oder nur Namens Matching (schneller)"
+}
+     "Arcade media scraper":{
+IT = "Scraper media arcade"
+}
+     "Arcade games madia can be scraped from ScreenScraper when no ArcadeDataBase data is present":{
+IT = "I media per i giochi arcade posson essere ottenuti da ScreenScraper quando non sono su ArcadeDataBase"
+}
+     "Arcade history scraper":{
+IT = "Scraper history arcade"
+}
+     "Arcade games history data can be scraped using ArcadeDataBase or ScreenScraper":{
+IT = "La history dei giochi arcade può essere ottenuta daScreenScraper oppure da ArcadeDataBase"
+}
+     "SS Only":{
+IT = "Solo SS"
+}
+     "ADB Only":{
+IT = "Solo ADB"
+}
+     "ADB and SS":{
+IT = "ADB e SS"
 }
      "Rom Scrape Options":{
 IT = "Opzioni scrape rom"
@@ -2008,6 +2028,9 @@ DE = "Standard"
 IT = "Grande"
 ES = "Grande"
 DE = "Groß"
+}
+     "Full":{
+IT = "Completo"
 }
      "Max snap":{
 IT = "Massimo snapshot"
