@@ -3180,8 +3180,8 @@ function clean_synopsis(inputstring) {
 
 function clean_adb_history(inputstring){
 	inputstring = subst_replace(inputstring,"\"","'")
-	inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
-	inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	if ((inputstring.find(":^^") != null) &&  (inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
+	if (inputstring.find("^^") != null) inputstring = inputstring.slice (inputstring.find("^^") + 2)
 	return inputstring
 }
 
