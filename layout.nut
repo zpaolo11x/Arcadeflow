@@ -2475,6 +2475,7 @@ local UI = {
 	vertical = false
 	rows = prf.HORIZONTALROWS
 	cols = 0
+	viscols = 0
 
 	scalerate = 0
 
@@ -2700,6 +2701,8 @@ Nominal (for calculation purposes) sizes:
 
 //calculate number of columns
 UI.cols = (1 + 2 * (floor((fl.w / 2 + UI.widthmix / 2 - UI.padding) / (UI.widthmix + UI.padding))))
+UI.viscols = (floor((fl.w - UI.padding) / (UI.widthmix + UI.padding)))
+testpr(UI.viscols+"\n")
 // add safeguard tiles
 UI.cols += 2
 
@@ -15260,6 +15263,17 @@ function updatetiles() {
 	if (column.offset == 0) {
 		centercorr.shift = 0
 	}
+	//TEST169 NEW CENTERING FOR LOW NUMBER
+
+	local listcols = floor(z_list.size / UI.rows)
+	testpr("LISTCOLS" + listcols + "\n")
+
+	if (listcols <= UI.viscols) {
+		centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
+		local centertempzero = -0.5 * (listcols * UI.widthmix + (listcols + 1) * UI.padding) + 0.5 * UI.widthmix + UI.padding
+		centercorr.val = centertempzero + (floor((z_list.index + var) / UI.rows))* (UI.widthmix + UI.padding)
+	}
+	//TEST169 END NEW CENTERING
 }
 
 function changetiledata(i, index, update) {
