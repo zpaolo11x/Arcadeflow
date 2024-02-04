@@ -15237,43 +15237,60 @@ function updatetiles() {
 	column.used = ceil((z_list.size) * 1.0 / UI.rows)
 
 	column.offset = (column.stop - column.start)
-
+testpr("columnoffset:"+column.offset+"\n")
 	// This value is used to calculate the offset of the romlist indexes
 	// to derermine focusindex.new, .old, indextemp etc
 	tilesTablePos.Offset += column.offset * UI.rows
 
-	// Determine center position correction when reaching beginning of list
-	centercorr.shift = 0 // correction of jump dimension
-	centercorr.val = 0 // correction of target position (it is 0 for centered tiles)
 
-	if ((column.stop < deltacol) && (column.start > deltacol - 1)) {
-		centercorr.shift = centercorr.zero + (column.stop) * (UI.widthmix + UI.padding)
-	}
-	else if ((column.stop < deltacol) && (column.start <= deltacol - 1)) {
-		centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
-	}
-	else if ((column.stop >= deltacol) && (column.start <= deltacol - 1)) {
-		centercorr.shift = - centercorr.zero - (column.start) * (UI.widthmix + UI.padding)
-	}
-
-	if ((column.stop < deltacol)) {
-		centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.widthmix + UI.padding)
-	}
-
-	if (column.offset == 0) {
-		centercorr.shift = 0
-	}
 	//TEST169 NEW CENTERING FOR LOW NUMBER
 
-	local listcols = floor(z_list.size / UI.rows)
-	testpr("LISTCOLS" + listcols + "\n")
+	testpr("LISTCOLS" + column.used + "\n")
 
-	if (listcols <= UI.viscols) {
-		centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
-		local centertempzero = -0.5 * (listcols * UI.widthmix + (listcols + 1) * UI.padding) + 0.5 * UI.widthmix + UI.padding
-		centercorr.val = centertempzero + (floor((z_list.index + var) / UI.rows))* (UI.widthmix + UI.padding)
+	if (column.used <= UI.viscols) {
+		local centertempzero = -0.5 * (column.used * UI.widthmix + (column.used + 1) * UI.padding) + 0.5 * UI.widthmix + UI.padding
+
+		centercorr.shift = (column.offset < 0 ? -1 : (column.offset == 0 ? 0 : 1)) * (UI.widthmix + UI.padding)
+		
+		if ((column.stop == 0) && (column.start == column.used - 1)) {
+			testpr("A\n")
+			centercorr.shift = -(column.used - 1)*(UI.widthmix + UI.padding)
+		}
+		if ((column.stop == column.used - 1) && (column.start == 0)) {
+			testpr("B\n")
+			centercorr.shift = (column.used - 1)*(UI.widthmix + UI.padding)
+		}
+
+		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.widthmix + UI.padding)
+		testpr("centertempzero"+centertempzero+"\n")
+		testpr("centercorr.shift"+centercorr.shift+"\n")
+		testpr("centercorr.val"+centercorr.val+"\n")
+		testpr("\n")
 	}
 	//TEST169 END NEW CENTERING
+	else {
+		// Determine center position correction when reaching beginning of list
+		centercorr.shift = 0 // correction of jump dimension
+		centercorr.val = 0 // correction of target position (it is 0 for centered tiles)
+
+		if ((column.stop < deltacol) && (column.start > deltacol - 1)) {
+			centercorr.shift = centercorr.zero + (column.stop) * (UI.widthmix + UI.padding)
+		}
+		else if ((column.stop < deltacol) && (column.start <= deltacol - 1)) {
+			centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
+		}
+		else if ((column.stop >= deltacol) && (column.start <= deltacol - 1)) {
+			centercorr.shift = - centercorr.zero - (column.start) * (UI.widthmix + UI.padding)
+		}
+
+		if ((column.stop < deltacol)) {
+			centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.widthmix + UI.padding)
+		}
+
+		if (column.offset == 0) {
+			centercorr.shift = 0
+		}
+	}
 }
 
 function changetiledata(i, index, update) {
