@@ -2479,6 +2479,7 @@ local UI = {
 
 	scalerate = 0
 
+	// Size of the area of the tile where the image is shown
 	corewidth = 0
 	coreheight = 0
 	padding_scaler = 1.0 / 6.0 //multiplier of padding space (normally 1 / 6 of thumb area)
@@ -2487,12 +2488,16 @@ local UI = {
 	blocksize = 0
 	blocksspace = 0
 
+	// padding around the core area, it is superposed from one tile to the other
 	padding = 0
+	// Dimensions of the tile including padding
 	tilewidth = 0
 	tileheight = 0
+	// Core and tile width modification for vertical arcade 9:16 snaps
+	corewidth169 = 0
 	tilewidth169 = 0
-	tilewidth169padded = 0
-	widthmix = 0
+	// Actual core and tile width to use after choosing 9:16 or standard snaps
+	corewidthmix = 0
 	tilewidthmix = 0
 
 	verticalshift = 0
@@ -2680,10 +2685,10 @@ UI.padding = UI.blocksize
 UI.tilewidth = UI.corewidth + 2 * UI.padding
 UI.tileheight = UI.coreheight + 2 * UI.padding
 
-UI.tilewidth169 = UI.coreheight * 10 / 16
-UI.tilewidth169padded = UI.tilewidth169 + 2 * UI.padding
-UI.widthmix = (prf.FIX169 ? UI.tilewidth169 : UI.corewidth)
-UI.tilewidthmix = (prf.FIX169 ? UI.tilewidth169padded : UI.tilewidth)
+UI.corewidth169 = UI.coreheight * 10 / 16
+UI.tilewidth169 = UI.corewidth169 + 2 * UI.padding
+UI.corewidthmix = (prf.FIX169 ? UI.corewidth169 : UI.corewidth)
+UI.tilewidthmix = (prf.FIX169 ? UI.tilewidth169 : UI.tilewidth)
 
 UI.blocksspace = UI.blocksize * UI.blocks
 
@@ -2700,7 +2705,7 @@ Nominal (for calculation purposes) sizes:
 */
 
 //calculate number of columns
-UI.cols = (1 + 2 * (floor((fl.w / 2 + UI.widthmix / 2 - UI.padding) / (UI.widthmix + UI.padding))))
+UI.cols = (1 + 2 * (floor((fl.w / 2 + UI.corewidthmix / 2 - UI.padding) / (UI.corewidthmix + UI.padding))))
 
 // add safeguard tiles
 UI.cols += 2
@@ -2709,9 +2714,9 @@ local pagejump = prf.SCROLLAMOUNT * UI.rows * (UI.cols - 2)
 
 // carrier sizing in general layout
 local carrierT = {
-	x = fl.x -(UI.cols * (UI.widthmix + UI.padding) + UI.padding - fl.w) * 0.5,
+	x = fl.x -(UI.cols * (UI.corewidthmix + UI.padding) + UI.padding - fl.w) * 0.5,
 	y = fl.y + UI.header.h2 + (prf.SLIMLINE ? UI.coreheight * 0.5 : 0),
-	w = UI.cols * (UI.widthmix + UI.padding) + UI.padding,
+	w = UI.cols * (UI.corewidthmix + UI.padding) + UI.padding,
 	h = UI.rows * UI.coreheight + UI.rows * UI.padding + UI.padding
 }
 
@@ -2760,8 +2765,8 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 // deltacol are the marginal columns with respect to center one
 local deltacol = prf.MAXLINE ? 0 : (UI.cols - 3) / 2
 
-UI.colsvisible = (floor((fl.w - UI.zoomedcorewidth + UI.widthmix - UI.padding) / (UI.widthmix + UI.padding)))
-testpr("fl.w:"+fl.w+" UI.zoomedwidth:"+UI.zoomedwidth+" UI.padding:"+UI.padding+" UI.widthmix:"+UI.widthmix+" UI.zoomscale:"+UI.zoomscale+"\n")
+UI.colsvisible = (floor((fl.w - UI.zoomedcorewidth + UI.corewidthmix - UI.padding) / (UI.corewidthmix + UI.padding)))
+testpr("fl.w:"+fl.w+" UI.zoomedwidth:"+UI.zoomedwidth+" UI.padding:"+UI.padding+" UI.corewidthmix:"+UI.corewidthmix+" UI.zoomscale:"+UI.zoomscale+"\n")
 testpr("UI.colsvisible:"+UI.colsvisible+"\n")
 
 local centercorr = {
@@ -2770,7 +2775,7 @@ local centercorr = {
 	shift = null // Is the shift factor added to the usual tile jump
 }
 
-centercorr.zero = - deltacol * (UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2 * (UI.widthmix + UI.padding))) / 2 - UI.padding * (1 + UI.zoomscale * 0.5) - UI.widthmix / 2 + UI.zoomedwidth / 2
+centercorr.zero = - deltacol * (UI.corewidthmix + UI.padding) - (fl.w - (carrierT.w - 2 * (UI.corewidthmix + UI.padding))) / 2 - UI.padding * (1 + UI.zoomscale * 0.5) - UI.corewidthmix / 2 + UI.zoomedwidth / 2
 centercorr.zero = floor(centercorr.zero + 0.5) // Added to align centercorr.zero to pixels
 
 centercorr.val = 0
@@ -8335,12 +8340,12 @@ local tiles = {
 }
 tiles.total = tiles.count + 2 * tiles.offscreen
 
-local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding)
+local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.corewidthmix + UI.padding)
 
 tiles.i2.pulse_speed_1 = spdT.scroll_1
 tiles.i2.pulse_speed_p = spdT.scroll_p
 
-tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
+tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.corewidthmix + UI.padding)
 
 local snap_glow = []
 local snap_grad = []
@@ -15251,20 +15256,20 @@ testpr("columnoffset:"+column.offset+"\n")
 	testpr("LISTCOLS" + column.used + "\n")
 
 	if (column.used <= UI.colsvisible) {
-		local centertempzero = -0.5 * (column.used * UI.widthmix + (column.used + 1) * UI.padding) + 0.5 * UI.widthmix + UI.padding
+		local centertempzero = -0.5 * (column.used * UI.corewidthmix + (column.used + 1) * UI.padding) + 0.5 * UI.corewidthmix + UI.padding
 
-		centercorr.shift = column.offset * (UI.widthmix + UI.padding)
+		centercorr.shift = column.offset * (UI.corewidthmix + UI.padding)
 		/* USELESS?
 		if ((column.stop == 0) && (column.start == column.used - 1)) {
 			testpr("A\n")
-			centercorr.shift = -(column.used - 1)*(UI.widthmix + UI.padding)
+			centercorr.shift = -(column.used - 1)*(UI.corewidthmix + UI.padding)
 		}
 		if ((column.stop == column.used - 1) && (column.start == 0)) {
 			testpr("B\n")
-			centercorr.shift = (column.used - 1)*(UI.widthmix + UI.padding)
+			centercorr.shift = (column.used - 1)*(UI.corewidthmix + UI.padding)
 		}
 		*/
-		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.widthmix + UI.padding)
+		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.corewidthmix + UI.padding)
 		testpr("centertempzero"+centertempzero+"\n")
 		testpr("centercorr.shift"+centercorr.shift+"\n")
 		testpr("centercorr.val"+centercorr.val+"\n")
@@ -15277,17 +15282,17 @@ testpr("columnoffset:"+column.offset+"\n")
 		centercorr.val = 0 // correction of target position (it is 0 for centered tiles)
 
 		if ((column.stop < deltacol) && (column.start > deltacol - 1)) {
-			centercorr.shift = centercorr.zero + (column.stop) * (UI.widthmix + UI.padding)
+			centercorr.shift = centercorr.zero + (column.stop) * (UI.corewidthmix + UI.padding)
 		}
 		else if ((column.stop < deltacol) && (column.start <= deltacol - 1)) {
-			centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
+			centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.corewidthmix + UI.padding)
 		}
 		else if ((column.stop >= deltacol) && (column.start <= deltacol - 1)) {
-			centercorr.shift = - centercorr.zero - (column.start) * (UI.widthmix + UI.padding)
+			centercorr.shift = - centercorr.zero - (column.start) * (UI.corewidthmix + UI.padding)
 		}
 
 		if ((column.stop < deltacol)) {
-			centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.widthmix + UI.padding)
+			centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.corewidthmix + UI.padding)
 		}
 
 		if (column.offset == 0) {
@@ -15351,7 +15356,7 @@ function changetiledata(i, index, update) {
 	}
 	tilez[indexTemp].obj.zorder = -2
 
-	tilesTablePos.X[indexTemp] = (i / UI.rows) * (UI.widthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix * 0.5
+	tilesTablePos.X[indexTemp] = (i / UI.rows) * (UI.corewidthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix * 0.5
 	tilesTablePos.Y[indexTemp] = (i%UI.rows) * (UI.coreheight + UI.padding) + carrierT.y + UI.tileheight * 0.5
 
 	//TEST101 THIS INTERACTS WITH OFF SCREEN VISIBILITY
@@ -16033,7 +16038,7 @@ function on_transition(ttype, var0, ttime) {
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
 
-			i2_pulse(tiles.i2, (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift)
+			i2_pulse(tiles.i2, (column.offset * (UI.corewidthmix + UI.padding)) - centercorr.shift)
 		}
 	}
 
