@@ -15251,7 +15251,7 @@ testpr("columnoffset:"+column.offset+"\n")
 		local centertempzero = -0.5 * (column.used * UI.widthmix + (column.used + 1) * UI.padding) + 0.5 * UI.widthmix + UI.padding
 
 		centercorr.shift = column.offset * (UI.widthmix + UI.padding)
-		
+		/* USELESS?
 		if ((column.stop == 0) && (column.start == column.used - 1)) {
 			testpr("A\n")
 			centercorr.shift = -(column.used - 1)*(UI.widthmix + UI.padding)
@@ -15260,7 +15260,7 @@ testpr("columnoffset:"+column.offset+"\n")
 			testpr("B\n")
 			centercorr.shift = (column.used - 1)*(UI.widthmix + UI.padding)
 		}
-
+		*/
 		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.widthmix + UI.padding)
 		testpr("centertempzero"+centertempzero+"\n")
 		testpr("centercorr.shift"+centercorr.shift+"\n")
