@@ -15250,7 +15250,7 @@ testpr("columnoffset:"+column.offset+"\n")
 	if (column.used <= UI.viscols) {
 		local centertempzero = -0.5 * (column.used * UI.widthmix + (column.used + 1) * UI.padding) + 0.5 * UI.widthmix + UI.padding
 
-		centercorr.shift = (column.offset < 0 ? column.offset : (column.offset == 0 ? 0 : column.offset)) * (UI.widthmix + UI.padding)
+		centercorr.shift = column.offset * (UI.widthmix + UI.padding)
 		
 		if ((column.stop == 0) && (column.start == column.used - 1)) {
 			testpr("A\n")
