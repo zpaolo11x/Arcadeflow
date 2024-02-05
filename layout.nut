@@ -2701,8 +2701,7 @@ Nominal (for calculation purposes) sizes:
 
 //calculate number of columns
 UI.cols = (1 + 2 * (floor((fl.w / 2 + UI.widthmix / 2 - UI.padding) / (UI.widthmix + UI.padding))))
-UI.viscols = (floor((fl.w - UI.padding) / (UI.widthmix + UI.padding)))
-testpr(UI.viscols+"\n")
+
 // add safeguard tiles
 UI.cols += 2
 
@@ -2760,6 +2759,10 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 // correction data for non-centered first tiles
 // deltacol are the marginal columns with respect to center one
 local deltacol = prf.MAXLINE ? 0 : (UI.cols - 3) / 2
+
+UI.viscols = (floor((fl.w - UI.zoomedcorewidth + UI.widthmix - UI.padding) / (UI.widthmix + UI.padding)))
+testpr("fl.w:"+fl.w+" UI.zoomedwidth:"+UI.zoomedwidth+" UI.padding:"+UI.padding+" UI.widthmix:"+UI.widthmix+" UI.zoomscale:"+UI.zoomscale+"\n")
+testpr("UI.viscols:"+UI.viscols+"\n")
 
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
