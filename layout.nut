@@ -11819,13 +11819,18 @@ function history_updatetext() {
 
 	if (tempdesc3 != "") tempdesc = tempdesc3// + "\n\n"
 
+	local tempdesc4 = "" //this comes from history.xml
+	if (historytable != "") tempdesc4 = subst_replace(historytable[z_list.gametable[z_list.index].z_name],"^","\n")
+	if (tempdesc4 != "") tempdesc = tempdesc4
+testpr(tempdesc4+"\n")
 	local tempdesc2 = "" //This comes from the romlist
 			foreach (i, item in z_list.gametable[z_list.index].z_description)
 				tempdesc2 = tempdesc2 + item + "\n"
 	if ((tempdesc2 != "?") && (tempdesc2 != "") && (tempdesc2 != "\n")) {
 		tempdesc = tempdesc2// + "\n\n"
 	}
-
+//TEST169 TEMPORARY
+tempdesc = tempdesc4
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
 	tempdesc = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
