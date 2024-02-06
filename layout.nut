@@ -877,7 +877,7 @@ function vartotext(variablein, lev){
 fe.do_nut("nut_picfunctions.nut")
 fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
-dofile(AF.folder + "nut_fileutil.nut")
+//dofile(AF.folder + "nut_fileutil.nut")
 
 
 function savevar(variablein, outfile){
