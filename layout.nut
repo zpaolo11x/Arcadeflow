@@ -1234,9 +1234,7 @@ AF.prefs.l1.push([
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
 {v = 0.0, varname = "", glyph = -1, title = "MAME Data Files", selection = AF.req.liner},
-{v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
-{v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger", options = ["Yes", "No"], values = [true, false], selection = 0},
-{v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
+{v = 16.9, varname = "HISTORY_DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "HISTORY_XML_PATH", glyph = 0xe930, title = "History.xml", help = "History.xml location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "COMMAND_DAT_PATH", glyph = 0xe930, title = "Command.dat", help = "Command.dat location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 12.0, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
@@ -1898,9 +1896,10 @@ local historytable = ""
 commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
 if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) commandtable = dofile (AF.folder + "nut_user_command.nut")
 if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) historytable = dofile (AF.folder + "nut_user_history_xml.nut")
+if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) historytable = dofile (AF.folder + "nut_user_history_dat.nut")
 
 // Background and data crossfade stack
-print_variable(historytable,"","")
+
 local bgvidsurf = null
 
 local bgs = {
@@ -3286,7 +3285,80 @@ function parsemame_historyxml(input_path) {
 	//print_variable(historydb,"","")
 }
 
+function parsemame_historydat(input_path) {
+	local inputfile = ReadTextFile (fe.path_expand(input_path))
+	local limline = 5000
+	local line = ""
+	local unicorrect = unicorrect()
+	local tag1 = ""
+	local indesc = false
+	local insystems = false
+	local checktext = false
+	local desctext = ""
+	local systemstable = {}
+	local historydb = {}
+	local systemarray = 0
+
+	while (!inputfile.eos() && !(limline == 0)) {
+		//limline --
+		line = inputfile.read_line()
+
+		if (!insystems) {
+			insystems = (line.find("$info") == 0)
+		}
+		
+		if ((insystems) && (systemarray == 0)) {
+			systemarray = split(line.slice(6),",")
+		}
+
+		if (indesc){
+			if (line.find("$end") == 0) {
+				//print ("A******\n"+desctext+"******\n")
+				indesc = false
+				insystems = false
+				desctext = uniclean(desctext) //clean unicode characters
+				foreach (uid, uval in unicorrect) {
+					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
+				}
+				//print ("B******\n"+desctext+"******\n")
+				desctext = clean_adb_history(desctext)	//parse and fix \n for description
+				//print ("C******\n"+desctext+"******\n")
+				
+				foreach (i, value in systemarray){
+					historydb.rawset (value, desctext)
+				}
+				if (systemarray != 0) print_variable(systemarray,"","")
+				systemarray = 0	
+				print(desctext+"\n\n")
+				desctext = ""
+			} else {
+				desctext = desctext + line + "^"
+			}
+		}
+		if (!indesc) indesc = (insystems && (line.find("$bio") == 0))
+	}
+	local outpath = AF.folder + "nut_user_history_dat.nut"
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	foreach (item, value in historydb) {
+		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+	print_variable(historydb,"","")
+
+	//print_variable(historydb,"","")
+}
+
+//TEST169
+//parsemame_historydat("/users/paolozago/history.dat")
+//print_variable(paperino,"","")
+//pluto = 0
+
 function build_mame_nut(tempprf){
+	if (tempprf.HISTORY_DAT_PATH != "") {
+		parsemame_historydat(tempprf.HISTORY_DAT_PATH)
+	}
 	if (tempprf.HISTORY_XML_PATH != "") {
 		parsemame_historyxml(tempprf.HISTORY_XML_PATH)
 	}
@@ -11829,8 +11901,7 @@ testpr(tempdesc4+"\n")
 	if ((tempdesc2 != "?") && (tempdesc2 != "") && (tempdesc2 != "\n")) {
 		tempdesc = tempdesc2// + "\n\n"
 	}
-//TEST169 TEMPORARY
-tempdesc = tempdesc4
+
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
 	tempdesc = tempdesc + "\nROM:" + z_list.gametable[z_list.index].z_name + "\nScrape:" + z_list.gametable[z_list.index].z_scrapestatus// + "\n"
