@@ -36,7 +36,7 @@ function unicorrect(){
    unicorrect.push ({old = "&amp;", new = "&"})
    unicorrect.push ({old = "&apos;", new = "'"})
 	unicorrect.push ({old = "&gt;", new = ">"})
-	unicorrect.push ({old = "&lt;", new = "<"})
+	unicorrect.push ({old = "&lt;", new = ""})
 	unicorrect.push ({old = "\\/", new = "/"})
 
    return unicorrect

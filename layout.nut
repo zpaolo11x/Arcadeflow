@@ -3191,8 +3191,16 @@ function clean_synopsis(inputstring) {
 
 function clean_adb_history(inputstring){
 	inputstring = subst_replace(inputstring,"\"","'")
+	if ((inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (0, inputstring.find("^^- TECHNICAL -^^"))
+	if (inputstring.find("^^") == null) return ""
+	
+	if ((inputstring.find("^^-") != null)) inputstring = inputstring.slice (0, inputstring.find("^^-"))
+	if ((inputstring.find(":^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3)
+	if (inputstring.find("^^") != null) inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	/*PREVIOUS GOOD
 	if ((inputstring.find(":^^") != null) &&  (inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
 	if (inputstring.find("^^") != null) inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	*/
 	return inputstring
 }
 
@@ -3212,22 +3220,25 @@ function parsehistoryxml() {
 		
 		local a1 = split(line, "<>") // Split by tag before going forward with corrections
 		tag1 = a1.len() > 0 ? a1[0] : ""
-		if (tag1 == "text") indesc = true
 
 		if (indesc){
 			if (tag1 == "/text") {
+				print ("A******\n"+desctext+"******\n")
 				indesc = false
 				desctext = uniclean(desctext) //clean unicode characters
 				foreach (uid, uval in unicorrect) {
 					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
 				}
-				desctext = clean_desc(desctext)	//parse and fix \n for description
-				print ("******\n"+desctext+"******\n")
+				print ("B******\n"+desctext+"******\n")
+				desctext = clean_adb_history(desctext)	//parse and fix \n for description
+				print ("C******\n"+desctext+"******\n")
 				desctext = ""
 			} else {
-				desctext = desctext + line
+				desctext = desctext + line + "^"
 			}
 		}
+
+		if (tag1 == "text") indesc = true
 
 
 	}
