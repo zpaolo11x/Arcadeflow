@@ -3191,11 +3191,11 @@ function clean_synopsis(inputstring) {
 
 function clean_adb_history(inputstring){
 	inputstring = subst_replace(inputstring,"\"","'")
-	if ((inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (0, inputstring.find("^^- TECHNICAL -^^"))
-	if (inputstring.find("^^") == null) return ""
-	
-	if ((inputstring.find("^^-") != null)) inputstring = inputstring.slice (0, inputstring.find("^^-"))
 	if ((inputstring.find(":^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3)
+	if ((inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (0, inputstring.find("^^- TECHNICAL -^^"))
+	if ((inputstring.find("^^-") != null)) inputstring = inputstring.slice (0, inputstring.find("^^-"))
+	if (inputstring.find("^^") == null) return ""
+
 	if (inputstring.find("^^") != null) inputstring = inputstring.slice (inputstring.find("^^") + 2)
 	/*PREVIOUS GOOD
 	if ((inputstring.find(":^^") != null) &&  (inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
@@ -3207,12 +3207,16 @@ function clean_adb_history(inputstring){
 //TEST169
 function parsehistoryxml() {
 	local inputfile = ReadTextFile ("/home/plex/history.xml")
-	local limline = 300
+	local limline = 5000
 	local line = ""
 	local unicorrect = unicorrect()
 	local tag1 = ""
 	local indesc = false
+	local insystems = false
+	local checktext = false
 	local desctext = ""
+	local systemstable = {}
+	local historydb = {}
 
 	while (!inputfile.eos() && !(limline == 0)) {
 		limline --
@@ -3220,6 +3224,20 @@ function parsehistoryxml() {
 		
 		local a1 = split(line, "<>") // Split by tag before going forward with corrections
 		tag1 = a1.len() > 0 ? a1[0] : ""
+		
+		if (insystems){
+			if (tag1 == "/systems") {
+				insystems = false
+				checktext = true
+				continue
+			}
+			else {
+				print (split(line,"\"")[1]+"\n")
+				systemstable.rawset(split(line,"\"")[1],"")
+				continue
+			}
+
+		}
 
 		if (indesc){
 			if (tag1 == "/text") {
@@ -3232,16 +3250,27 @@ function parsehistoryxml() {
 				print ("B******\n"+desctext+"******\n")
 				desctext = clean_adb_history(desctext)	//parse and fix \n for description
 				print ("C******\n"+desctext+"******\n")
+				
+				foreach (item, value in systemstable){
+					historydb.rawset (item, desctext)
+				}
+				systemstable = {}				
 				desctext = ""
 			} else {
 				desctext = desctext + line + "^"
 			}
 		}
 
-		if (tag1 == "text") indesc = true
+		if ((tag1 == "text") && (checktext)){
+			checktext = false
+			indesc = true
+		}
 
+		if (tag1 != "systems") continue
+		else insystems = true
 
 	}
+	print_variable(historydb,"","")
 }
 parsehistoryxml()
 pluto = 1
