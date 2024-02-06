@@ -1892,11 +1892,12 @@ function readsystemdata() {
 local system_data = readsystemdata()
 
 local commandtable = ""
-local historytable = ""
+local historyxmltable = ""
+local historydattable = ""
 commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
 if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) commandtable = dofile (AF.folder + "nut_user_command.nut")
-if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) historytable = dofile (AF.folder + "nut_user_history_xml.nut")
-if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) historytable = dofile (AF.folder + "nut_user_history_dat.nut")
+if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) historyxmltable = dofile (AF.folder + "nut_user_history_xml.nut")
+if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) historydattable = dofile (AF.folder + "nut_user_history_dat.nut")
 
 // Background and data crossfade stack
 
@@ -3327,9 +3328,7 @@ function parsemame_historydat(input_path) {
 				foreach (i, value in systemarray){
 					historydb.rawset (value, desctext)
 				}
-				if (systemarray != 0) print_variable(systemarray,"","")
 				systemarray = 0	
-				print(desctext+"\n\n")
 				desctext = ""
 			} else {
 				desctext = desctext + line + "^"
@@ -3345,15 +3344,7 @@ function parsemame_historydat(input_path) {
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
-	print_variable(historydb,"","")
-
-	//print_variable(historydb,"","")
 }
-
-//TEST169
-//parsemame_historydat("/users/paolozago/history.dat")
-//print_variable(paperino,"","")
-//pluto = 0
 
 function build_mame_nut(tempprf){
 	if (tempprf.HISTORY_DAT_PATH != "") {
@@ -3366,16 +3357,6 @@ function build_mame_nut(tempprf){
 		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
 	}
 }
-
-timestart("parser")
-//parsehistoryxml()
-timestop("parser")
-timestart("parser2")
-//local historydatdb = dofile (AF.folder + "nut_history_dat.nut")//af_create_command_table()
-timestop("parser2")
-	//print_variable(historydatdb,"","")
-
-//TEST169pluto = 1
 
 function parseXML(inputpath) {
 	local XMLT = {}
@@ -11861,46 +11842,27 @@ function history_updatetext() {
 	}
 
 	hist_curr_rom = rom
-	local alt = fe.game_info(Info.AltRomname)
-	local cloneof = fe.game_info(Info.CloneOf)
-
-	local lookup = af_get_history_offset(sys, rom, alt, cloneof)
-
+	
 	local tempdesc = "" //this description comes from history.dat
 
-	if (lookup >= 0) {
-		try {
-			tempdesc = af_get_history_entry(lookup, prf)
-		} catch(err) {
-			tempdesc = "\n\n\nThere was an error loading game data, please check history.dat preferences in the layout options"
-		}
-	}
-	else
-	{
-		if (lookup == -2){
-			tempdesc = "\n\n\nIndex file not found. Try generating an index from the history.dat plug-in configuration menu."
-		}else{
-			tempdesc = ""
-			foreach (i, item in z_list.gametable[z_list.index].z_description)
-				tempdesc = tempdesc + item + "\n"
-		}
-	}
+	// History.dat description
+	local tempdesc_dat = ""
+	if (historydattable != "") tempdesc_dat = subst_replace(historydattable[rom],"^","\n")
+	// History.xml description
+	local tempdesc_xml = ""
+	if (historyxmltable != "") tempdesc_xml = subst_replace(historyxmltable[rom],"^","\n")
+	// Overview description
+	local tempdesc_overview = fe.game_info(Info.Overview)
+	// AF Database description
+	local tempdesc_zdb = ""
+	foreach (i, item in z_list.gametable[z_list.index].z_description)
+		tempdesc_zdb = tempdesc_zdb + item + "\n"
+	if ((tempdesc_zdb == "?") && (tempdesc_zdb == "\n")) tempdesc_zdb = ""
 
-	local tempdesc3 = "" //this comes from the overview
-	tempdesc3 = fe.game_info(Info.Overview)
-
-	if (tempdesc3 != "") tempdesc = tempdesc3// + "\n\n"
-
-	local tempdesc4 = "" //this comes from history.xml
-	if (historytable != "") tempdesc4 = subst_replace(historytable[z_list.gametable[z_list.index].z_name],"^","\n")
-	if (tempdesc4 != "") tempdesc = tempdesc4
-testpr(tempdesc4+"\n")
-	local tempdesc2 = "" //This comes from the romlist
-			foreach (i, item in z_list.gametable[z_list.index].z_description)
-				tempdesc2 = tempdesc2 + item + "\n"
-	if ((tempdesc2 != "?") && (tempdesc2 != "") && (tempdesc2 != "\n")) {
-		tempdesc = tempdesc2// + "\n\n"
-	}
+	if (tempdesc_zdb != "") tempdesc = tempdesc_zdb
+	else if (tempdesc_overview != "") tempdesc = tempdesc_overview
+	else if (tempdesc_xml != "") tempdesc = tempdesc_xml
+	else if (tempdesc_dat != "") tempdesc = tempdesc_dat
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
