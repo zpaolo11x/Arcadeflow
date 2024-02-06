@@ -1237,7 +1237,10 @@ AF.prefs.l1.push([
 {v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
 {v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
-{v = 12.0, varname = "INI_BESTGAMES_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "HISTORY_XML_PATH", glyph = 0xe930, title = "History.xml", help = "History.xml location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "COMMAND_DAT_PATH", glyph = 0xe930, title = "Command.dat", help = "Command.dat location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 12.0, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML Import", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
 {v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true)}, selection = AF.req.executef},
@@ -3282,14 +3285,14 @@ function parsehistoryxml() {
 	//print_variable(historydb,"","")
 }
 timestart("parser")
-parsehistoryxml()
+//parsehistoryxml()
 timestop("parser")
 timestart("parser2")
-local historydatdb = dofile (AF.folder + "nut_history_dat.nut")//af_create_command_table()
+//local historydatdb = dofile (AF.folder + "nut_history_dat.nut")//af_create_command_table()
 timestop("parser2")
 	//print_variable(historydatdb,"","")
 
-pluto = 1
+//TEST169pluto = 1
 
 function parseXML(inputpath) {
 	local XMLT = {}
@@ -5630,7 +5633,7 @@ function z_initfavsfromfiles() {
 
 z_updatetagstable()
 
-z_list.ratingtable = prf.INI_BESTGAMES_PATH == "" ? {} : extradatatable(prf.INI_BESTGAMES_PATH)
+z_list.ratingtable = prf.BESTGAMES_INI_PATH == "" ? {} : extradatatable(prf.BESTGAMES_INI_PATH)
 
 function z_getmamerating(gamename) {
 	local out = ""
