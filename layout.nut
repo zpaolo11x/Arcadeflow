@@ -65,7 +65,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = false
+	timer = true
 	name = ""
 	t1 = 0
 	t2 = 0
@@ -3219,7 +3219,7 @@ function parsehistoryxml() {
 	local historydb = {}
 
 	while (!inputfile.eos() && !(limline == 0)) {
-		limline --
+		//limline --
 		line = inputfile.read_line()
 		
 		local a1 = split(line, "<>") // Split by tag before going forward with corrections
@@ -3232,7 +3232,7 @@ function parsehistoryxml() {
 				continue
 			}
 			else {
-				print (split(line,"\"")[1]+"\n")
+				//print (split(line,"\"")[1]+"\n")
 				systemstable.rawset(split(line,"\"")[1],"")
 				continue
 			}
@@ -3241,15 +3241,15 @@ function parsehistoryxml() {
 
 		if (indesc){
 			if (tag1 == "/text") {
-				print ("A******\n"+desctext+"******\n")
+				//print ("A******\n"+desctext+"******\n")
 				indesc = false
 				desctext = uniclean(desctext) //clean unicode characters
 				foreach (uid, uval in unicorrect) {
 					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
 				}
-				print ("B******\n"+desctext+"******\n")
+				//print ("B******\n"+desctext+"******\n")
 				desctext = clean_adb_history(desctext)	//parse and fix \n for description
-				print ("C******\n"+desctext+"******\n")
+				//print ("C******\n"+desctext+"******\n")
 				
 				foreach (item, value in systemstable){
 					historydb.rawset (item, desctext)
@@ -3272,7 +3272,9 @@ function parsehistoryxml() {
 	}
 	print_variable(historydb,"","")
 }
+timestart("parser")
 parsehistoryxml()
+timestop("parser")
 pluto = 1
 
 function parseXML(inputpath) {
