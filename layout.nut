@@ -2774,8 +2774,6 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 local deltacol = prf.MAXLINE ? 0 : (UI.cols - 3) / 2
 
 UI.colsvisible = (floor((fl.w - UI.zoomedcorewidth + UI.corewidthmix - UI.padding) / (UI.corewidthmix + UI.padding)))
-testpr("fl.w:"+fl.w+" UI.zoomedwidth:"+UI.zoomedwidth+" UI.padding:"+UI.padding+" UI.corewidthmix:"+UI.corewidthmix+" UI.zoomscale:"+UI.zoomscale+"\n")
-testpr("UI.colsvisible:"+UI.colsvisible+"\n")
 
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
@@ -15392,15 +15390,13 @@ function updatetiles() {
 	column.used = ceil((z_list.size) * 1.0 / UI.rows)
 
 	column.offset = (column.stop - column.start)
-testpr("columnoffset:"+column.offset+"\n")
+
 	// This value is used to calculate the offset of the romlist indexes
 	// to derermine focusindex.new, .old, indextemp etc
 	tilesTablePos.Offset += column.offset * UI.rows
 
 
 	//TEST169 NEW CENTERING FOR LOW NUMBER
-
-	testpr("LISTCOLS" + column.used + "\n")
 
 	if (column.used <= UI.colsvisible) {
 		local centertempzero = -0.5 * (column.used * UI.corewidthmix + (column.used + 1) * UI.padding) + 0.5 * UI.corewidthmix + UI.padding
@@ -15417,10 +15413,7 @@ testpr("columnoffset:"+column.offset+"\n")
 		}
 		*/
 		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.corewidthmix + UI.padding)
-		testpr("centertempzero"+centertempzero+"\n")
-		testpr("centercorr.shift"+centercorr.shift+"\n")
-		testpr("centercorr.val"+centercorr.val+"\n")
-		testpr("\n")
+
 	}
 	//TEST169 END NEW CENTERING
 	else {
