@@ -1334,6 +1334,7 @@ function reset_layout() {
 	local dir = DirectoryListing(AF.folder)
 	foreach (item in dir.results) {
 		if (item.find("_mf_")) try {remove(item)} catch(err) {}
+		if (item.find("nut_user_")) try {remove(item)} catch(err) {}
 	}
 
 	fe.signal("exit_to_desktop")
