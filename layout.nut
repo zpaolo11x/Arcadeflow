@@ -65,7 +65,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = true
+	timer = false
 	name = ""
 	t1 = 0
 	t2 = 0
@@ -1240,7 +1240,7 @@ AF.prefs.l1.push([
 {v = 16.9, varname = "HISTORY_XML_PATH", glyph = 0xe930, title = "History.xml", help = "History.xml location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "COMMAND_DAT_PATH", glyph = 0xe930, title = "Command.dat", help = "Command.dat location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 12.0, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
-{v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
+{v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); build_mame_nut(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML Import", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
 {v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true)}, selection = AF.req.executef},
@@ -1892,10 +1892,14 @@ function readsystemdata() {
 
 local system_data = readsystemdata()
 
-local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
+local commandtable = ""
+local historytable = ""
+commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
+if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) commandtable = dofile (AF.folder + "nut_user_command.nut")
+if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) historytable = dofile (AF.folder + "nut_user_history_xml.nut")
 
 // Background and data crossfade stack
-
+print_variable(historytable,"","")
 local bgvidsurf = null
 
 local bgs = {
@@ -2888,50 +2892,6 @@ local keyboard_entrytext = ""
 
 /// RELOCATED FUNCTIONS ///
 
-function parsecommanddat() {
-	local datpath = AF.folder + "command.dat"
-	local datfile = ReadTextFile(datpath)
-	local outarray = []
-	local newline = ""
-	local romsarray = []
-	local commandsarray = []
-	local commandstring = ""
-	local i = 0
-	local outpath = AF.folder + "nut_command.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
-	while (!datfile.eos()) {
-		newline = datfile.read_line()
-		if (newline.find("$info=")!= null) {
-			i ++
-			romsarray = split(split(newline, "=")[1], comma)
-			newline = ""
-			while ((newline != "- CONTROLS -") && (newline !="«Buttons»")) {
-				newline = datfile.read_line()
-			}
-			newline = datfile.read_line() //skip separator
-			newline = datfile.read_line() //first button
-			while (newline != "") {
-				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
-				newline = datfile.read_line()
-			}
-			commandstring = "[\"" + commandsarray[0] + "\""
-			for (local ii = 1; ii < commandsarray.len(); ii++) {
-				commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
-			}
-			commandstring += "]"
-			foreach (id, item in romsarray) {
-				outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
-			}
-			commandsarray = []
-			commandstring = ""
-		}
-	}
-	outfile.write_line("})\n")
-	outfile.close_file()
-}
-//parsecommanddat()
-
 function powerman(action) {
 	if (action == "SHUTDOWN") {
 		if (OS == "OSX") system ("osascript -e 'tell app \"System Events\" to shut down'")
@@ -3207,9 +3167,51 @@ function clean_adb_history(inputstring){
 	return inputstring
 }
 
+function parsemame_commanddat(input_path) {
+	local datfile = ReadTextFile(fe.path_expand(input_path))
+	local outarray = []
+	local newline = ""
+	local romsarray = []
+	local commandsarray = []
+	local commandstring = ""
+	local i = 0
+	local outpath = AF.folder + "nut_user_command.nut"
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	while (!datfile.eos()) {
+		newline = datfile.read_line()
+		if (newline.find("$info=")!= null) {
+			i ++
+			romsarray = split(split(newline, "=")[1], comma)
+			newline = ""
+			while ((newline != "- CONTROLS -") && (newline !="«Buttons»")) {
+				newline = datfile.read_line()
+			}
+			newline = datfile.read_line() //skip separator
+			newline = datfile.read_line() //first button
+			while (newline != "") {
+				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
+				newline = datfile.read_line()
+			}
+			commandstring = "[\"" + commandsarray[0] + "\""
+			for (local ii = 1; ii < commandsarray.len(); ii++) {
+				commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
+			}
+			commandstring += "]"
+			foreach (id, item in romsarray) {
+				outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
+			}
+			commandsarray = []
+			commandstring = ""
+		}
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+}
+
 //TEST169
-function parsehistoryxml() {
-	local inputfile = ReadTextFile ("/users/paolozago/history.xml")
+function parsemame_historyxml(input_path) {
+	local inputfile = ReadTextFile (fe.path_expand(input_path))
 	local limline = 500
 	local line = ""
 	local unicorrect = unicorrect()
@@ -3239,7 +3241,6 @@ function parsehistoryxml() {
 				systemstable.rawset(split(line,"\"")[1],"")
 				continue
 			}
-
 		}
 
 		if (indesc){
@@ -3273,7 +3274,7 @@ function parsehistoryxml() {
 		else insystems = true
 
 	}
-	local outpath = AF.folder + "nut_history_dat.nut"
+	local outpath = AF.folder + "nut_user_history_xml.nut"
 	local outfile = WriteTextFile(outpath)
 	outfile.write_line("return ({\n")
 	foreach (item, value in historydb) {
@@ -3281,9 +3282,18 @@ function parsehistoryxml() {
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
-
 	//print_variable(historydb,"","")
 }
+
+function build_mame_nut(tempprf){
+	if (tempprf.HISTORY_XML_PATH != "") {
+		parsemame_historyxml(tempprf.HISTORY_XML_PATH)
+	}
+	if (tempprf.COMMAND_DAT_PATH != "") {
+		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
+	}
+}
+
 timestart("parser")
 //parsehistoryxml()
 timestop("parser")
