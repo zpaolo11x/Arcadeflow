@@ -3206,8 +3206,8 @@ function clean_adb_history(inputstring){
 
 //TEST169
 function parsehistoryxml() {
-	local inputfile = ReadTextFile ("/home/plex/history.xml")
-	local limline = 5000
+	local inputfile = ReadTextFile ("/users/paolozago/history.xml")
+	local limline = 500
 	local line = ""
 	local unicorrect = unicorrect()
 	local tag1 = ""
@@ -3221,7 +3221,7 @@ function parsehistoryxml() {
 	while (!inputfile.eos() && !(limline == 0)) {
 		//limline --
 		line = inputfile.read_line()
-		
+
 		local a1 = split(line, "<>") // Split by tag before going forward with corrections
 		tag1 = a1.len() > 0 ? a1[0] : ""
 		
@@ -3270,11 +3270,25 @@ function parsehistoryxml() {
 		else insystems = true
 
 	}
-	print_variable(historydb,"","")
+	local outpath = AF.folder + "nut_history_dat.nut"
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	foreach (item, value in historydb) {
+		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+
+	//print_variable(historydb,"","")
 }
 timestart("parser")
 parsehistoryxml()
 timestop("parser")
+timestart("parser2")
+local historydatdb = dofile (AF.folder + "nut_history_dat.nut")//af_create_command_table()
+timestop("parser2")
+	//print_variable(historydatdb,"","")
+
 pluto = 1
 
 function parseXML(inputpath) {
