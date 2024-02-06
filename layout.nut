@@ -3196,6 +3196,45 @@ function clean_adb_history(inputstring){
 	return inputstring
 }
 
+//TEST169
+function parsehistoryxml() {
+	local inputfile = ReadTextFile ("/home/plex/history.xml")
+	local limline = 300
+	local line = ""
+	local unicorrect = unicorrect()
+	local tag1 = ""
+	local indesc = false
+	local desctext = ""
+
+	while (!inputfile.eos() && !(limline == 0)) {
+		limline --
+		line = inputfile.read_line()
+		
+		local a1 = split(line, "<>") // Split by tag before going forward with corrections
+		tag1 = a1.len() > 0 ? a1[0] : ""
+		if (tag1 == "text") indesc = true
+
+		if (indesc){
+			if (tag1 == "/text") {
+				indesc = false
+				desctext = uniclean(desctext) //clean unicode characters
+				foreach (uid, uval in unicorrect) {
+					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
+				}
+				desctext = clean_desc(desctext)	//parse and fix \n for description
+				print ("******\n"+desctext+"******\n")
+				desctext = ""
+			} else {
+				desctext = desctext + line
+			}
+		}
+
+
+	}
+}
+parsehistoryxml()
+pluto = 1
+
 function parseXML(inputpath) {
 	local XMLT = {}
 	local line = ""
