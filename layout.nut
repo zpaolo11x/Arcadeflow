@@ -3185,8 +3185,14 @@ function parsemame_commanddat(input_path) {
 	outfile.write_line("return ({\n")
 	while (!inputfile.eos()) {
 		line = inputfile.read_line()
-		
-		if (line.find("$info=")!= null) {
+		filepos = inputfile.pos() * filesteps / filesize
+		if (filepos != filepos0) {
+			msgbox_replacelinetop(patchtext("COMMAND.DAT processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
+			fe.layout.redraw()
+			filepos0 = filepos
+		}
+
+		if ((line.find("$info=")!= null) && (line != "$info=")) {
 			i ++
 			romsarray = split(split(line, "=")[1], comma)
 			line = ""
@@ -3214,6 +3220,7 @@ function parsemame_commanddat(input_path) {
 	outfile.write_line("})\n")
 	outfile.close_file()
 }
+
 
 //TEST169
 function parsemame_historyxml(input_path) {
