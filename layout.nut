@@ -3211,7 +3211,12 @@ function parsemame_commanddat(input_path) {
 //TEST169
 function parsemame_historyxml(input_path) {
 	local inputfile = ReadTextFile (fe.path_expand(input_path))
-	local limline = 500
+
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
 	local line = ""
 	local unicorrect = unicorrect()
 	local tag1 = ""
@@ -3221,17 +3226,24 @@ function parsemame_historyxml(input_path) {
 	local desctext = ""
 	local systemstable = {}
 	local historydb = {}
-
-	while (!inputfile.eos() && !(limline == 0)) {
+	//msgbox_pulse_title("MAME file process",true)
+	while (!inputfile.eos()) {
 		//limline --
 		line = inputfile.read_line()
+		filepos = inputfile.pos() * filesteps / filesize
+		if (filepos != filepos0) {
+			msgbox_replacelinetop(patchtext("HISTORY.XML processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
+			fe.layout.redraw()
+			filepos0 = filepos
+		}
+
 
 		local a1 = split(line, "<>") // Split by tag before going forward with corrections
 		tag1 = a1.len() > 0 ? a1[0] : ""
-		
 		if (insystems){
-			msgbox_pulse_title("MAME file process")
-			fe.layout.redraw()
+			
+			//msgbox_pulse_title("MAME file process")
+			//fe.layout.redraw()
 			if (tag1 == "/systems") {
 				insystems = false
 				checktext = true
@@ -3286,9 +3298,16 @@ function parsemame_historyxml(input_path) {
 	//print_variable(historydb,"","")
 }
 
+//parsemame_historyxml("/home/plex/history.xml")
+
 function parsemame_historydat(input_path) {
 	local inputfile = ReadTextFile (fe.path_expand(input_path))
-	local limline = 5000
+
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
 	local line = ""
 	local unicorrect = unicorrect()
 	local tag1 = ""
@@ -3300,17 +3319,21 @@ function parsemame_historydat(input_path) {
 	local historydb = {}
 	local systemarray = 0
 
-	while (!inputfile.eos() && !(limline == 0)) {
+	while (!inputfile.eos()) {
 		//limline --
 		line = inputfile.read_line()
+		filepos = inputfile.pos() * filesteps / filesize
+		if (filepos != filepos0) {
+			msgbox_replacelinetop(patchtext("HISTORY.DAT processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
+			fe.layout.redraw()
+			filepos0 = filepos
+		}
 
 		if (!insystems) {
 			insystems = (line.find("$info") == 0)
 		}
 		
 		if ((insystems) && (systemarray == 0)) {
-			msgbox_pulse_title("MAME file process")
-			fe.layout.redraw()
 			systemarray = split(line.slice(6),",")
 		}
 
@@ -3349,26 +3372,29 @@ function parsemame_historydat(input_path) {
 }
 
 function build_mame_nut(tempprf){
-	msgbox_open("MAME file process", "", function(){
+	msgbox_open("PROCESS MAME FILES\n"+AF.msgbox.separator2, "", function(){
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
 	})
 	fe.layout.redraw()
 
-	msgbox_addlinetop("HISTORY.DAT processing...")
-	fe.layout.redraw()
+
 	if (tempprf.HISTORY_DAT_PATH != "") {
+		msgbox_addlinetop("HISTORY.DAT processing...")
+		fe.layout.redraw()
 		parsemame_historydat(tempprf.HISTORY_DAT_PATH)
 	}
-	msgbox_addlinetop("HISTORY.XML processing...")
-	fe.layout.redraw()
+
 	if (tempprf.HISTORY_XML_PATH != "") {
+		msgbox_addlinetop("HISTORY.XML processing...")
+		fe.layout.redraw()
 		parsemame_historyxml(tempprf.HISTORY_XML_PATH)
 	}
-	msgbox_addlinetop("COMMAND.DAT processing...")
-	fe.layout.redraw()
+	
 	if (tempprf.COMMAND_DAT_PATH != "") {
+		msgbox_addlinetop("COMMAND.DAT processing...")
+		fe.layout.redraw()
 		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
 	}
 }
