@@ -3167,9 +3167,15 @@ function clean_adb_history(inputstring){
 }
 
 function parsemame_commanddat(input_path) {
-	local datfile = ReadTextFile(fe.path_expand(input_path))
+	local inputfile = ReadTextFile(fe.path_expand(input_path))
+
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
 	local outarray = []
-	local newline = ""
+	local line = ""
 	local romsarray = []
 	local commandsarray = []
 	local commandstring = ""
@@ -3177,20 +3183,21 @@ function parsemame_commanddat(input_path) {
 	local outpath = AF.folder + "nut_user_command.nut"
 	local outfile = WriteTextFile(outpath)
 	outfile.write_line("return ({\n")
-	while (!datfile.eos()) {
-		newline = datfile.read_line()
-		if (newline.find("$info=")!= null) {
+	while (!inputfile.eos()) {
+		line = inputfile.read_line()
+		
+		if (line.find("$info=")!= null) {
 			i ++
-			romsarray = split(split(newline, "=")[1], comma)
-			newline = ""
-			while ((newline != "- CONTROLS -") && (newline !="«Buttons»")) {
-				newline = datfile.read_line()
+			romsarray = split(split(line, "=")[1], comma)
+			line = ""
+			while ((line != "- CONTROLS -") && (line !="«Buttons»")) {
+				line = inputfile.read_line()
 			}
-			newline = datfile.read_line() //skip separator
-			newline = datfile.read_line() //first button
-			while (newline != "") {
-				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
-				newline = datfile.read_line()
+			line = inputfile.read_line() //skip separator
+			line = inputfile.read_line() //first button
+			while (line != "") {
+				if ((line.find("@left") == null) && (line.find("@right") == null)) try {commandsarray.push(strip(split(line, ":(")[1]))} catch(err) {}
+				line = inputfile.read_line()
 			}
 			commandstring = "[\"" + commandsarray[0] + "\""
 			for (local ii = 1; ii < commandsarray.len(); ii++) {
@@ -3267,9 +3274,10 @@ function parsemame_historyxml(input_path) {
 				//print ("B******\n"+desctext+"******\n")
 				desctext = clean_adb_history(desctext)	//parse and fix \n for description
 				//print ("C******\n"+desctext+"******\n")
-				
-				foreach (item, value in systemstable){
-					historydb.rawset (item, desctext)
+				if (desctext != ""){
+					foreach (item, value in systemstable){
+						historydb.rawset (item, desctext)
+					}
 				}
 				systemstable = {}				
 				desctext = ""
@@ -3349,9 +3357,10 @@ function parsemame_historydat(input_path) {
 				//print ("B******\n"+desctext+"******\n")
 				desctext = clean_adb_history(desctext)	//parse and fix \n for description
 				//print ("C******\n"+desctext+"******\n")
-				
-				foreach (i, value in systemarray){
-					historydb.rawset (value, desctext)
+				if (desctext != ""){
+					foreach (i, value in systemarray){
+						historydb.rawset (value, desctext)
+					}
 				}
 				systemarray = 0	
 				desctext = ""
@@ -11888,10 +11897,10 @@ function history_updatetext() {
 
 	// History.dat description
 	local tempdesc_dat = ""
-	if (historydattable != "") tempdesc_dat = subst_replace(historydattable[rom],"^","\n")
+	if ((historydattable != "") && (historydattable.rawin(rom))) tempdesc_dat = subst_replace(historydattable[rom],"^","\n")
 	// History.xml description
 	local tempdesc_xml = ""
-	if (historyxmltable != "") tempdesc_xml = subst_replace(historyxmltable[rom],"^","\n")
+	if ((historyxmltable != "") && (historyxmltable.rawin(rom))) tempdesc_xml = subst_replace(historyxmltable[rom],"^","\n")
 	// Overview description
 	local tempdesc_overview = fe.game_info(Info.Overview)
 	// AF Database description
