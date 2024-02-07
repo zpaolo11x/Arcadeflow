@@ -3345,12 +3345,25 @@ function parsemame_historydat(input_path) {
 }
 
 function build_mame_nut(tempprf){
+	msgbox_open("MAME file process", "", function(){
+		fe.signal("back")
+		fe.signal("back")
+		fe.set_display(fe.list.display_index)
+	})
+	fe.layout.redraw()
+
+	msgbox_addlinetop("HISTORY.DAT processing...")
+	fe.layout.redraw()
 	if (tempprf.HISTORY_DAT_PATH != "") {
 		parsemame_historydat(tempprf.HISTORY_DAT_PATH)
 	}
+	msgbox_addlinetop("HISTORY.XML processing...")
+	fe.layout.redraw()
 	if (tempprf.HISTORY_XML_PATH != "") {
 		parsemame_historyxml(tempprf.HISTORY_XML_PATH)
 	}
+	msgbox_addlinetop("COMMAND.DAT processing...")
+	fe.layout.redraw()
 	if (tempprf.COMMAND_DAT_PATH != "") {
 		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
 	}
