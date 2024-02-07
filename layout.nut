@@ -3230,6 +3230,8 @@ function parsemame_historyxml(input_path) {
 		tag1 = a1.len() > 0 ? a1[0] : ""
 		
 		if (insystems){
+			msgbox_pulse_title("MAME file process")
+			fe.layout.redraw()
 			if (tag1 == "/systems") {
 				insystems = false
 				checktext = true
@@ -3307,6 +3309,8 @@ function parsemame_historydat(input_path) {
 		}
 		
 		if ((insystems) && (systemarray == 0)) {
+			msgbox_pulse_title("MAME file process")
+			fe.layout.redraw()
 			systemarray = split(line.slice(6),",")
 		}
 
