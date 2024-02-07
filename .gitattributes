@@ -16,3 +16,4 @@ test_*.* export-ignore
 nut_*_test.* export-ignore
 notes_*.* export-ignore
 16*.png export-ignore
+nut_user_* export-ignore
