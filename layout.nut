@@ -3423,7 +3423,8 @@ function build_mame_nut(tempprf){
 		fe.set_display(fe.list.display_index)
 	})
 	fe.layout.redraw()
-
+	
+	msgbox_lock(true)
 
 	if (tempprf.HISTORY_DAT_PATH != "") {
 		msgbox_addlinetop("HISTORY.DAT processing...")
@@ -3452,9 +3453,8 @@ function build_mame_nut(tempprf){
 		parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
 		msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
 	}
-
 	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
-
+	msgbox_lock(false)
 }
 
 function parseXML(inputpath) {
