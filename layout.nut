@@ -3125,6 +3125,12 @@ function clean_adb_history(inputstring){
 }
 
 function parsemame_commanddat(input_path) {
+	msgbox_addlinetop("COMMAND.DAT processing...")
+	fe.layout.redraw()
+	if (!file_exist(fe.path_expand(input_path))) {
+		msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","ERR.",4,AF.msgbox.columns))
+		return
+	}
 	local inputfile = ReadTextFile(fe.path_expand(input_path))
 
 	local filepos = 0
@@ -3177,6 +3183,7 @@ function parsemame_commanddat(input_path) {
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
+	msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","100%",4,AF.msgbox.columns))
 }
 
 function parsemame_bestgamesini(input_path) {
@@ -3192,7 +3199,12 @@ function parsemame_bestgamesini(input_path) {
 		"[80 to 90 (Very Good)]" : "9.0"
 		"[90 to 100 (Best Games)]" : "10.0"
 	}
-
+	msgbox_addlinetop("BESTGAMES.INI processing...")
+	fe.layout.redraw()
+	if (!file_exist(fe.path_expand(input_path))) {
+		msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","ERR.",4,AF.msgbox.columns))
+		return
+	}
 	local inputfile = ReadTextFile (fe.path_expand(input_path))
 
 	local filepos = 0
@@ -3248,11 +3260,103 @@ function parsemame_bestgamesini(input_path) {
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
+	msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
+
 }
+
+
+//parsemame_historyxml("/home/plex/history.xml")
+
+function parsemame_historydat(input_path) {
+	msgbox_addlinetop("HISTORY.DAT processing...")
+	fe.layout.redraw()
+	if (!file_exist(fe.path_expand(input_path))) {
+		msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","ERR.",4,AF.msgbox.columns))
+		return
+	}
+	local inputfile = ReadTextFile (fe.path_expand(input_path))
+
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
+	local line = ""
+	local unicorrect = unicorrect()
+	local tag1 = ""
+	local indesc = false
+	local insystems = false
+	local checktext = false
+	local desctext = ""
+	local systemstable = {}
+	local historydb = {}
+	local systemarray = 0
+
+	while (!inputfile.eos()) {
+		//limline --
+		line = inputfile.read_line()
+		filepos = inputfile.pos() * filesteps / filesize
+		if (filepos != filepos0) {
+			msgbox_replacelinetop(patchtext("HISTORY.DAT processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
+			fe.layout.redraw()
+			filepos0 = filepos
+		}
+
+		if (!insystems) {
+			insystems = (line.find("$info") == 0)
+		}
+		
+		if ((insystems) && (systemarray == 0)) {
+			systemarray = split(line.slice(6),",")
+		}
+
+		if (indesc){
+			if (line.find("$end") == 0) {
+
+				indesc = false
+				insystems = false
+				desctext = uniclean(desctext) //clean unicode characters
+				foreach (uid, uval in unicorrect) {
+					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
+				}
+
+				desctext = clean_adb_history(desctext)	//parse and fix \n for description
+
+				if (desctext != ""){
+					foreach (i, value in systemarray){
+						historydb.rawset (value, desctext)
+					}
+				}
+				systemarray = 0	
+				desctext = ""
+			} else {
+				desctext = desctext + line + "^"
+			}
+		}
+		if (!indesc) indesc = (insystems && (line.find("$bio") == 0))
+	}
+	local outpath = AF.folder + "nut_user_history_dat.nut"
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	foreach (item, value in historydb) {
+		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+				
+	msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","100%",4,AF.msgbox.columns))
+}
+
 
 
 //TEST169
 function parsemame_historyxml(input_path) {
+	msgbox_addlinetop("HISTORY.XML processing...")
+	fe.layout.redraw()
+	if (!file_exist(fe.path_expand(input_path))) {
+		msgbox_replacelinetop(patchtext("HISTORY.XML Processed","ERR.",4,AF.msgbox.columns))
+		return
+	}
 	local inputfile = ReadTextFile (fe.path_expand(input_path))
 
 	local filepos = 0
@@ -3301,15 +3405,15 @@ function parsemame_historyxml(input_path) {
 
 		if (indesc){
 			if (tag1 == "/text") {
-				//print ("A******\n"+desctext+"******\n")
+
 				indesc = false
 				desctext = uniclean(desctext) //clean unicode characters
 				foreach (uid, uval in unicorrect) {
 					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
 				}
-				//print ("B******\n"+desctext+"******\n")
+
 				desctext = clean_adb_history(desctext)	//parse and fix \n for description
-				//print ("C******\n"+desctext+"******\n")
+
 				if (desctext != ""){
 					foreach (item, value in systemstable){
 						historydb.rawset (item, desctext)
@@ -3339,81 +3443,8 @@ function parsemame_historyxml(input_path) {
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
-	//print_variable(historydb,"","")
-}
 
-//parsemame_historyxml("/home/plex/history.xml")
-
-function parsemame_historydat(input_path) {
-	local inputfile = ReadTextFile (fe.path_expand(input_path))
-
-	local filepos = 0
-	local filepos0 = 1
-	local filesteps = 20
-	local filesize = inputfile.size()
-
-	local line = ""
-	local unicorrect = unicorrect()
-	local tag1 = ""
-	local indesc = false
-	local insystems = false
-	local checktext = false
-	local desctext = ""
-	local systemstable = {}
-	local historydb = {}
-	local systemarray = 0
-
-	while (!inputfile.eos()) {
-		//limline --
-		line = inputfile.read_line()
-		filepos = inputfile.pos() * filesteps / filesize
-		if (filepos != filepos0) {
-			msgbox_replacelinetop(patchtext("HISTORY.DAT processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
-			fe.layout.redraw()
-			filepos0 = filepos
-		}
-
-		if (!insystems) {
-			insystems = (line.find("$info") == 0)
-		}
-		
-		if ((insystems) && (systemarray == 0)) {
-			systemarray = split(line.slice(6),",")
-		}
-
-		if (indesc){
-			if (line.find("$end") == 0) {
-				//print ("A******\n"+desctext+"******\n")
-				indesc = false
-				insystems = false
-				desctext = uniclean(desctext) //clean unicode characters
-				foreach (uid, uval in unicorrect) {
-					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
-				}
-				//print ("B******\n"+desctext+"******\n")
-				desctext = clean_adb_history(desctext)	//parse and fix \n for description
-				//print ("C******\n"+desctext+"******\n")
-				if (desctext != ""){
-					foreach (i, value in systemarray){
-						historydb.rawset (value, desctext)
-					}
-				}
-				systemarray = 0	
-				desctext = ""
-			} else {
-				desctext = desctext + line + "^"
-			}
-		}
-		if (!indesc) indesc = (insystems && (line.find("$bio") == 0))
-	}
-	local outpath = AF.folder + "nut_user_history_dat.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
-	foreach (item, value in historydb) {
-		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
-	}
-	outfile.write_line("})\n")
-	outfile.close_file()
+	msgbox_replacelinetop(patchtext("HISTORY.XML Processed","100%",4,AF.msgbox.columns))
 }
 
 function build_mame_nut(tempprf){
@@ -3427,49 +3458,14 @@ function build_mame_nut(tempprf){
 	
 	msgbox_lock(true)
 
-	if (tempprf.HISTORY_DAT_PATH != "") {
-		msgbox_addlinetop("HISTORY.DAT processing...")
-		fe.layout.redraw()
-		if (!file_exist(fe.path_expand(tempprf.HISTORY_DAT_PATH)))
-			msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","ERR.",4,AF.msgbox.columns))
-		else {
-			parsemame_historydat(tempprf.HISTORY_DAT_PATH)
-			msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","100%",4,AF.msgbox.columns))
-		}
-	}
+	if (tempprf.HISTORY_DAT_PATH != "") parsemame_historydat(tempprf.HISTORY_DAT_PATH)
 
-	if (tempprf.HISTORY_XML_PATH != "") {
-		msgbox_addlinetop("HISTORY.XML processing...")
-		fe.layout.redraw()
-		if (!file_exist(fe.path_expand(tempprf.HISTORY_XML_PATH)))
-			msgbox_replacelinetop(patchtext("HISTORY.XML Processed","ERR.",4,AF.msgbox.columns))
-		else {
-			parsemame_historyxml(tempprf.HISTORY_XML_PATH)
-			msgbox_replacelinetop(patchtext("HISTORY.XML Processed","100%",4,AF.msgbox.columns))
-		}
-	}
+	if (tempprf.HISTORY_XML_PATH != "") parsemame_historyxml(tempprf.HISTORY_XML_PATH)
 	
-	if (tempprf.COMMAND_DAT_PATH != "") {
-		msgbox_addlinetop("COMMAND.DAT processing...")
-		fe.layout.redraw()
-		if (!file_exist(fe.path_expand(tempprf.COMMAND_DAT_PATH)))
-			msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","ERR.",4,AF.msgbox.columns))
-		else {
-			parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
-			msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","100%",4,AF.msgbox.columns))
-		}
-	}
+	if (tempprf.COMMAND_DAT_PATH != "") parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
 
-	if (tempprf.BESTGAMES_INI_PATH != "") {
-		msgbox_addlinetop("BESTGAMES.INI processing...")
-		fe.layout.redraw()
-		if (!file_exist(fe.path_expand(tempprf.BESTGAMES_INI_PATH)))
-			msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","ERR.",4,AF.msgbox.columns))
-		else {
-			parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
-			msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
-		}
-	}
+	if (tempprf.BESTGAMES_INI_PATH != "") parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
+
 	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
 	msgbox_lock(false)
 }
