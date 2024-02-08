@@ -3430,29 +3430,45 @@ function build_mame_nut(tempprf){
 	if (tempprf.HISTORY_DAT_PATH != "") {
 		msgbox_addlinetop("HISTORY.DAT processing...")
 		fe.layout.redraw()
-		parsemame_historydat(tempprf.HISTORY_DAT_PATH)
-		msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","100%",4,AF.msgbox.columns))
+		if (!file_exist(fe.path_expand(tempprf.HISTORY_DAT_PATH)))
+			msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","ERR.",4,AF.msgbox.columns))
+		else {
+			parsemame_historydat(tempprf.HISTORY_DAT_PATH)
+			msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","100%",4,AF.msgbox.columns))
+		}
 	}
 
 	if (tempprf.HISTORY_XML_PATH != "") {
 		msgbox_addlinetop("HISTORY.XML processing...")
 		fe.layout.redraw()
-		parsemame_historyxml(tempprf.HISTORY_XML_PATH)
-		msgbox_replacelinetop(patchtext("HISTORY.XML Processed","100%",4,AF.msgbox.columns))
+		if (!file_exist(fe.path_expand(tempprf.HISTORY_XML_PATH)))
+			msgbox_replacelinetop(patchtext("HISTORY.XML Processed","ERR.",4,AF.msgbox.columns))
+		else {
+			parsemame_historyxml(tempprf.HISTORY_XML_PATH)
+			msgbox_replacelinetop(patchtext("HISTORY.XML Processed","100%",4,AF.msgbox.columns))
+		}
 	}
 	
 	if (tempprf.COMMAND_DAT_PATH != "") {
 		msgbox_addlinetop("COMMAND.DAT processing...")
 		fe.layout.redraw()
-		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
-		msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","100%",4,AF.msgbox.columns))
+		if (!file_exist(fe.path_expand(tempprf.COMMAND_DAT_PATH)))
+			msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","ERR.",4,AF.msgbox.columns))
+		else {
+			parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
+			msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","100%",4,AF.msgbox.columns))
+		}
 	}
 
 	if (tempprf.BESTGAMES_INI_PATH != "") {
 		msgbox_addlinetop("BESTGAMES.INI processing...")
 		fe.layout.redraw()
-		parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
-		msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
+		if (!file_exist(fe.path_expand(tempprf.BESTGAMES_INI_PATH)))
+			msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","ERR.",4,AF.msgbox.columns))
+		else {
+			parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
+			msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
+		}
 	}
 	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
 	msgbox_lock(false)
