@@ -1897,10 +1897,10 @@ local mameT = {
 	bestgamesini = ""
 }
 mameT.commanddat = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
-if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) mameT.commanddat = dofile (AF.folder + "nut_user_command.nut")
-if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) mameT.historyxml = dofile (AF.folder + "nut_user_history_xml.nut")
-if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) mameT.historydat = dofile (AF.folder + "nut_user_history_dat.nut")
-if ((prf.BESTGAMES_INI_PATH != "") && (file_exist(AF.folder + "nut_user_bestgames_ini.nut"))) mameT.bestgamesini = dofile (AF.folder + "nut_user_bestgames_ini.nut")
+if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) try{mameT.commanddat = dofile (AF.folder + "nut_user_command.nut")} catch(err){}
+if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) try{mameT.historyxml = dofile (AF.folder + "nut_user_history_xml.nut")} catch(err){}
+if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) try{mameT.historydat = dofile (AF.folder + "nut_user_history_dat.nut")} catch(err){}
+if ((prf.BESTGAMES_INI_PATH != "") && (file_exist(AF.folder + "nut_user_bestgames_ini.nut"))) try{mameT.bestgamesini = dofile (AF.folder + "nut_user_bestgames_ini.nut")} catch(err){}
 
 // Background and data crossfade stack
 
@@ -3138,7 +3138,6 @@ function parsemame_commanddat(input_path) {
 	local filesteps = 20
 	local filesize = inputfile.size()
 
-	local outarray = []
 	local line = ""
 	local romsarray = []
 	local commandsarray = []
@@ -3160,22 +3159,25 @@ function parsemame_commanddat(input_path) {
 			i ++
 			romsarray = split(split(line, "=")[1], comma)
 			line = ""
-			while ((line != "- CONTROLS -") && (line !="«Buttons»")) {
+			while ((line != "- CONTROLS -") && (line !="«Buttons»") && (!inputfile.eos())) {
 				line = inputfile.read_line()
 			}
-			line = inputfile.read_line() //skip separator
-			line = inputfile.read_line() //first button
-			while (line != "") {
-				if ((line.find("@left") == null) && (line.find("@right") == null)) try {commandsarray.push(strip(split(line, ":(")[1]))} catch(err) {}
-				line = inputfile.read_line()
-			}
-			commandstring = "[\"" + commandsarray[0] + "\""
-			for (local ii = 1; ii < commandsarray.len(); ii++) {
-				commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
-			}
-			commandstring += "]"
-			foreach (id, item in romsarray) {
-				outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
+			if (!inputfile.eos()){
+				line = inputfile.read_line() //skip separator
+				line = inputfile.read_line() //first button
+				while (line != "") {
+					if ((line.find("@left") == null) && (line.find("@right") == null)) 
+						try {commandsarray.push(strip(split(line, ":(=")[1]))} catch(err) {}
+					line = inputfile.read_line()
+				}
+				commandstring = "[\"" + commandsarray[0] + "\""
+				for (local ii = 1; ii < commandsarray.len(); ii++) {
+					commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
+				}
+				commandstring += "]"
+				foreach (id, item in romsarray) {
+					outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
+				}
 			}
 			commandsarray = []
 			commandstring = ""
@@ -3282,13 +3284,13 @@ function parsemame_historydat(input_path) {
 	local filesize = inputfile.size()
 
 	local line = ""
+	local romsarray = []
 	local unicorrect = unicorrect()
 	local tag1 = ""
 	local indesc = false
 	local insystems = false
 	local checktext = false
 	local desctext = ""
-	local systemstable = {}
 	local historydb = {}
 	local systemarray = 0
 
@@ -3365,13 +3367,13 @@ function parsemame_historyxml(input_path) {
 	local filesize = inputfile.size()
 
 	local line = ""
+	local romsarray = []
 	local unicorrect = unicorrect()
 	local tag1 = ""
 	local indesc = false
 	local insystems = false
 	local checktext = false
 	local desctext = ""
-	local systemstable = {}
 	local historydb = {}
 	//msgbox_pulse_title("MAME file process",true)
 	while (!inputfile.eos()) {
@@ -3397,8 +3399,7 @@ function parsemame_historyxml(input_path) {
 				continue
 			}
 			else {
-				//print (split(line,"\"")[1]+"\n")
-				systemstable.rawset(split(line,"\"")[1],"")
+				romsarray.push(split(line,"\"")[1])
 				continue
 			}
 		}
@@ -3415,11 +3416,11 @@ function parsemame_historyxml(input_path) {
 				desctext = clean_adb_history(desctext)	//parse and fix \n for description
 
 				if (desctext != ""){
-					foreach (item, value in systemstable){
+					foreach (i, item in romsarray){
 						historydb.rawset (item, desctext)
 					}
 				}
-				systemstable = {}				
+				romsarray = []				
 				desctext = ""
 			} else {
 				desctext = desctext + line + "^"
