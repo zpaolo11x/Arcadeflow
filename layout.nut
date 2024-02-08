@@ -1889,19 +1889,58 @@ function readsystemdata() {
 	return sysdata
 }
 
-local system_data = readsystemdata()
-local mameT = {
-	commanddat = ""
-	historyxml = ""
-	historydat = ""
-	bestgamesini = ""
+
+local mamefile = {
+	pos = 0
+	pos0 = 1
+	steps = 20
+	size = 0
+
+	dat = {
+		commanddat = {
+			name = "COMMAND.DAT"
+			prefname = "COMMAND_DAT_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_command_dat.nut")
+			processor = function(inparam){parsemame_commanddat(inparam)}
+		},
+		historydat = {
+			name = "HISTORY.DAT"
+			prefname = "COMMAND_DAT_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_history_dat.nut")
+			processor = function(inparam){parsemame_historydat(inparam)}
+		},
+		historyxml = {
+			name = "HISTORY.XML"
+			prefname = "HISTORY_XML_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_history_xml.nut")
+			processor = function(inparam){parsemame_historyxml(inparam)}
+		},
+		bestgamesini = {
+			name = "BESTGAMES.INI"
+			prefname = "BESTGAMES_INI_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_bestgames_ini.nut")
+			processor = function(inparam){parsemame_bestgamesini(inparam)}
+		}
+	}
 }
-mameT.commanddat = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
-if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) try{mameT.commanddat = dofile (AF.folder + "nut_user_command.nut")} catch(err){}
+
+local system_data = readsystemdata()
+local mameT = {}
+mameT.rawset("commanddat", dofile (AF.folder + "nut_command.nut"))//af_create_command_table()
+foreach (item, val in mamefile.dat){
+	if ((prf[val.prefname] != "") && (file_exist(val.out_path))) try{mameT.rawset(item, dofile (val.out_path))} catch(err){}
+}
+
+/*
+if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command_dat.nut"))) try{mameT.commanddat = dofile (AF.folder + "nut_user_command_dat.nut")} catch(err){}
 if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) try{mameT.historyxml = dofile (AF.folder + "nut_user_history_xml.nut")} catch(err){}
 if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) try{mameT.historydat = dofile (AF.folder + "nut_user_history_dat.nut")} catch(err){}
 if ((prf.BESTGAMES_INI_PATH != "") && (file_exist(AF.folder + "nut_user_bestgames_ini.nut"))) try{mameT.bestgamesini = dofile (AF.folder + "nut_user_bestgames_ini.nut")} catch(err){}
-
+*/
 // Background and data crossfade stack
 
 local bgvidsurf = null
@@ -3124,36 +3163,71 @@ function clean_adb_history(inputstring){
 	return inputstring
 }
 
-function parsemame_commanddat(input_path) {
-	msgbox_addlinetop("COMMAND.DAT processing...")
-	fe.layout.redraw()
-	if (!file_exist(fe.path_expand(input_path))) {
-		msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","ERR.",4,AF.msgbox.columns))
-		return
-	}
-	local inputfile = ReadTextFile(fe.path_expand(input_path))
+/*
+dat_data è un array con dentro tabelle che vengono passate:
+{
+	name = "COMMAND.DAT"
+	in_path = path del file da cui leggere
+	out_path = path dove salvare il file
+}
 
-	local filepos = 0
-	local filepos0 = 1
-	local filesteps = 20
-	local filesize = inputfile.size()
+parsedat è una tabella con dentro le global:
+{
+	filepos = 0
+	filepos0 = 1
+	filesteps = 20
+	filesize = 0//inputfile.size()
+}
+*/
+
+
+function parse_boot(dat){
+	msgbox_addlinetop(dat.name + " processing...")
+	fe.layout.redraw()
+	if (!file_exist(fe.path_expand(dat.in_path))) {
+		msgbox_replacelinetop(patchtext(dat.name + " Processed","ERR.",4,AF.msgbox.columns))
+		return null
+	}
+	local inputfile = ReadTextFile(fe.path_expand(dat.in_path))
+	mamefile.size = inputfile.size()
+	return (inputfile)
+}
+
+function parse_timer(pos, dat){
+	mamefile.pos = pos * mamefile.steps / mamefile.size
+	if (mamefile.pos != mamefile.pos0) {
+		msgbox_replacelinetop(patchtext(dat.name + " Processing...",mamefile.pos*100/mamefile.steps+"%",4,AF.msgbox.columns))
+		fe.layout.redraw()
+		mamefile.pos0 = mamefile.pos
+	}
+}
+
+function parse_close(dat, datadb){
+	local outpath = dat.out_path
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	foreach (item, value in datadb) {
+		outfile.write_line("\"" + item + "\" : " + value + "\n")
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+	msgbox_replacelinetop(patchtext(dat.name + " Processed","100%",4,AF.msgbox.columns))
+}
+
+function parsemame_commanddat(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
 
 	local line = ""
 	local romsarray = []
 	local commandsarray = []
 	local commandstring = ""
 	local i = 0
-	local outpath = AF.folder + "nut_user_command.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
+	local commandsdb = {}
+
 	while (!inputfile.eos()) {
 		line = inputfile.read_line()
-		filepos = inputfile.pos() * filesteps / filesize
-		if (filepos != filepos0) {
-			msgbox_replacelinetop(patchtext("COMMAND.DAT processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
-			fe.layout.redraw()
-			filepos0 = filepos
-		}
+		parse_timer(inputfile.pos(), dat)
 
 		if ((line.find("$info=")!= null) && (line != "$info=")) {
 			i ++
@@ -3176,19 +3250,20 @@ function parsemame_commanddat(input_path) {
 				}
 				commandstring += "]"
 				foreach (id, item in romsarray) {
-					outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
+					commandsdb.rawset(item, commandstring)
 				}
 			}
 			commandsarray = []
 			commandstring = ""
 		}
 	}
-	outfile.write_line("})\n")
-	outfile.close_file()
-	msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","100%",4,AF.msgbox.columns))
+	parse_close(dat, commandsdb)
 }
 
-function parsemame_bestgamesini(input_path) {
+function parsemame_bestgamesini(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
+
 	local ratetonumber = {
 		"[0 to 10 (Worst)]" : "1.0"
 		"[10 to 20 (Horrible)]" : "2.0"
@@ -3201,14 +3276,6 @@ function parsemame_bestgamesini(input_path) {
 		"[80 to 90 (Very Good)]" : "9.0"
 		"[90 to 100 (Best Games)]" : "10.0"
 	}
-	msgbox_addlinetop("BESTGAMES.INI processing...")
-	fe.layout.redraw()
-	if (!file_exist(fe.path_expand(input_path))) {
-		msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","ERR.",4,AF.msgbox.columns))
-		return
-	}
-	local inputfile = ReadTextFile (fe.path_expand(input_path))
-
 	local filepos = 0
 	local filepos0 = 1
 	local filesteps = 20
@@ -3221,12 +3288,7 @@ function parsemame_bestgamesini(input_path) {
 	
 	while (!inputfile.eos()) {
 		line = inputfile.read_line()
-		filepos = inputfile.pos() * filesteps / filesize
-		if (filepos != filepos0) {
-			msgbox_replacelinetop(patchtext("BESTGAMES.INI processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
-			fe.layout.redraw()
-			filepos0 = filepos
-		}
+		parse_timer(inputfile.pos(), dat)
 
 		if (!inarea && (line != "[ROOT_FOLDER]")){
 			continue
@@ -3249,39 +3311,21 @@ function parsemame_bestgamesini(input_path) {
 				continue
 			}
 			else {
-				ratingdb.rawset(line, ratetonumber[currentrate])
+				ratingdb.rawset(line, "\"" + ratetonumber[currentrate] + "\"")
 			}
 		}
 	}
 
-	local outpath = AF.folder + "nut_user_bestgames_ini.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
-	foreach (item, value in ratingdb) {
-		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
-	}
-	outfile.write_line("})\n")
-	outfile.close_file()
-	msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
+	parse_close(dat, ratingdb)
 
 }
 
 
 //parsemame_historyxml("/home/plex/history.xml")
 
-function parsemame_historydat(input_path) {
-	msgbox_addlinetop("HISTORY.DAT processing...")
-	fe.layout.redraw()
-	if (!file_exist(fe.path_expand(input_path))) {
-		msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","ERR.",4,AF.msgbox.columns))
-		return
-	}
-	local inputfile = ReadTextFile (fe.path_expand(input_path))
-
-	local filepos = 0
-	local filepos0 = 1
-	local filesteps = 20
-	local filesize = inputfile.size()
+function parsemame_historydat(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
 
 	local line = ""
 	local romsarray = []
@@ -3295,14 +3339,8 @@ function parsemame_historydat(input_path) {
 	local systemarray = 0
 
 	while (!inputfile.eos()) {
-		//limline --
 		line = inputfile.read_line()
-		filepos = inputfile.pos() * filesteps / filesize
-		if (filepos != filepos0) {
-			msgbox_replacelinetop(patchtext("HISTORY.DAT processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
-			fe.layout.redraw()
-			filepos0 = filepos
-		}
+		parse_timer(inputfile.pos(), dat)
 
 		if (!insystems) {
 			insystems = (line.find("$info") == 0)
@@ -3326,7 +3364,7 @@ function parsemame_historydat(input_path) {
 
 				if (desctext != ""){
 					foreach (i, value in systemarray){
-						historydb.rawset (value, desctext)
+						historydb.rawset (value, "\"" + desctext + "\"")
 					}
 				}
 				systemarray = 0	
@@ -3337,29 +3375,13 @@ function parsemame_historydat(input_path) {
 		}
 		if (!indesc) indesc = (insystems && (line.find("$bio") == 0))
 	}
-	local outpath = AF.folder + "nut_user_history_dat.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
-	foreach (item, value in historydb) {
-		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
-	}
-	outfile.write_line("})\n")
-	outfile.close_file()
-				
-	msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","100%",4,AF.msgbox.columns))
+
+	parse_close(dat, historydb)
 }
 
-
-
-//TEST169
-function parsemame_historyxml(input_path) {
-	msgbox_addlinetop("HISTORY.XML processing...")
-	fe.layout.redraw()
-	if (!file_exist(fe.path_expand(input_path))) {
-		msgbox_replacelinetop(patchtext("HISTORY.XML Processed","ERR.",4,AF.msgbox.columns))
-		return
-	}
-	local inputfile = ReadTextFile (fe.path_expand(input_path))
+function parsemame_historyxml(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
 
 	local filepos = 0
 	local filepos0 = 1
@@ -3375,17 +3397,11 @@ function parsemame_historyxml(input_path) {
 	local checktext = false
 	local desctext = ""
 	local historydb = {}
-	//msgbox_pulse_title("MAME file process",true)
+
 	while (!inputfile.eos()) {
 		//limline --
 		line = inputfile.read_line()
-		filepos = inputfile.pos() * filesteps / filesize
-		if (filepos != filepos0) {
-			msgbox_replacelinetop(patchtext("HISTORY.XML processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
-			fe.layout.redraw()
-			filepos0 = filepos
-		}
-
+		parse_timer(inputfile.pos(), dat)
 
 		local a1 = split(line, "<>") // Split by tag before going forward with corrections
 		tag1 = a1.len() > 0 ? a1[0] : ""
@@ -3417,7 +3433,7 @@ function parsemame_historyxml(input_path) {
 
 				if (desctext != ""){
 					foreach (i, item in romsarray){
-						historydb.rawset (item, desctext)
+						historydb.rawset (item, "\"" + desctext + "\"")
 					}
 				}
 				romsarray = []				
@@ -3436,19 +3452,14 @@ function parsemame_historyxml(input_path) {
 		else insystems = true
 
 	}
-	local outpath = AF.folder + "nut_user_history_xml.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
-	foreach (item, value in historydb) {
-		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
-	}
-	outfile.write_line("})\n")
-	outfile.close_file()
-
-	msgbox_replacelinetop(patchtext("HISTORY.XML Processed","100%",4,AF.msgbox.columns))
+	parse_close(dat, historydb)
 }
 
 function build_mame_nut(tempprf){
+	foreach (item, val in mamefile.dat){
+		mamefile.dat[item].in_path = tempprf[val.prefname]
+	}
+	
 	msgbox_open("PROCESS MAME FILES\n"+AF.msgbox.separator2, "", function(){
 		msgbox_close()
 		fe.signal("back")
@@ -3459,13 +3470,9 @@ function build_mame_nut(tempprf){
 	
 	msgbox_lock(true)
 
-	if (tempprf.HISTORY_DAT_PATH != "") parsemame_historydat(tempprf.HISTORY_DAT_PATH)
-
-	if (tempprf.HISTORY_XML_PATH != "") parsemame_historyxml(tempprf.HISTORY_XML_PATH)
-	
-	if (tempprf.COMMAND_DAT_PATH != "") parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
-
-	if (tempprf.BESTGAMES_INI_PATH != "") parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
+	foreach (id, item in mamefile.dat){
+		if (item.in_path != "") item.processor(item)
+	}
 
 	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
 	msgbox_lock(false)
