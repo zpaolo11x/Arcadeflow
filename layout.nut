@@ -3418,6 +3418,7 @@ function parsemame_historydat(input_path) {
 
 function build_mame_nut(tempprf){
 	msgbox_open("PROCESS MAME FILES\n"+AF.msgbox.separator2, "", function(){
+		msgbox_close()
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -4850,6 +4851,7 @@ function updateallgamescollections(tempprf) {
 	if (tempprf.ALLGAMES) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
 		msgbox_open("Update All Games Collections", "", function(){
+			msgbox_close() //TEST169 ADDED. ADD IT TO ALL BACK BACK SITUATIONS
 			fe.signal("back")
 			fe.signal("back")
 			fe.set_display(fe.list.display_index)
