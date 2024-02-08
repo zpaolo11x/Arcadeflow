@@ -1237,7 +1237,7 @@ AF.prefs.l1.push([
 {v = 16.9, varname = "HISTORY_DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "HISTORY_XML_PATH", glyph = 0xe930, title = "History.xml", help = "History.xml location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "COMMAND_DAT_PATH", glyph = 0xe930, title = "Command.dat", help = "Command.dat location for MAME.", options = "", values = "", selection = AF.req.filereqs},
-{v = 12.0, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); build_mame_nut(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML Import", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
