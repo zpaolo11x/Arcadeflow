@@ -65,7 +65,7 @@ local easeprint = {
 }
 
 local elapse = {
-	timer = false
+	timer = true
 	name = ""
 	t1 = 0
 	t2 = 0
@@ -1890,14 +1890,17 @@ function readsystemdata() {
 }
 
 local system_data = readsystemdata()
-
-local commandtable = ""
-local historyxmltable = ""
-local historydattable = ""
-commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
-if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) commandtable = dofile (AF.folder + "nut_user_command.nut")
-if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) historyxmltable = dofile (AF.folder + "nut_user_history_xml.nut")
-if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) historydattable = dofile (AF.folder + "nut_user_history_dat.nut")
+local mameT = {
+	commanddat = ""
+	historyxml = ""
+	historydat = ""
+	bestgamesini = ""
+}
+mameT.commanddat = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
+if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command.nut"))) mameT.commanddat = dofile (AF.folder + "nut_user_command.nut")
+if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) mameT.historyxml = dofile (AF.folder + "nut_user_history_xml.nut")
+if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) mameT.historydat = dofile (AF.folder + "nut_user_history_dat.nut")
+if ((prf.BESTGAMES_INI_PATH != "") && (file_exist(AF.folder + "nut_user_bestgames_ini.nut"))) mameT.bestgamesini = dofile (AF.folder + "nut_user_bestgames_ini.nut")
 
 // Background and data crossfade stack
 
@@ -2909,51 +2912,6 @@ function powerman(action) {
 	}
 }
 
-function extradatatable(inputfile) {
-	local filepath = fe.path_expand(inputfile)
-
-	if (!file_exist(filepath)) return {}
-
-	local inputfile = ReadTextFile (filepath)
-	local out = ""
-	local datatable = {}
-	local value = ""
-
-	//skip to root folder
-	while (out != "[ROOT_FOLDER]") {
-		out = inputfile.read_line()
-	}
-
-	local out = "_"
-	while (!inputfile.eos()) {
-		while ((out[0].tochar() != "[")) {
-			out = inputfile.read_line()
-			if (out == "") out = "_"
-		}
-		value = out.slice(1, -1)
-		out = "_"
-		while ((out[0].tochar() != "[") && (!inputfile.eos())) {
-			out = inputfile.read_line()
-			if ((out != "") && (out[0].tochar() != "[")) datatable[out] <- value
-			if (out == "") out = "_"
-		}
-	}
-
-	return datatable
-}
-
-local ratetonumber = {}
-ratetonumber["0 to 10 (Worst)"] <- "1.0"
-ratetonumber["10 to 20 (Horrible)"] <- "2.0"
-ratetonumber["20 to 30 (Bad)"] <- "3.0"
-ratetonumber["30 to 40 (Amendable)"] <- "4.0"
-ratetonumber["40 to 50 (Decent)"] <- "5.0"
-ratetonumber["50 to 60 (Not Good Enough)"] <- "6.0"
-ratetonumber["60 to 70 (Passable)"] <- "7.0"
-ratetonumber["70 to 80 (Good)"] <- "8.0"
-ratetonumber["80 to 90 (Very Good)"] <- "9.0"
-ratetonumber["90 to 100 (Best Games)"] <- "10.0"
-
 function afsort(arr_in, arr_mixval) {
 	foreach (i, item in arr_in) {
 		arr_mixval[i] = arr_mixval[i] + IDX[i]
@@ -3221,6 +3179,77 @@ function parsemame_commanddat(input_path) {
 	outfile.close_file()
 }
 
+function parsemame_bestgamesini(input_path) {
+	local ratetonumber = {
+		"[0 to 10 (Worst)]" : "1.0"
+		"[10 to 20 (Horrible)]" : "2.0"
+		"[20 to 30 (Bad)]" : "3.0"
+		"[30 to 40 (Amendable)]" : "4.0"
+		"[40 to 50 (Decent)]" : "5.0"
+		"[50 to 60 (Not Good Enough)]" : "6.0"
+		"[60 to 70 (Passable)]" : "7.0"
+		"[70 to 80 (Good)]" : "8.0"
+		"[80 to 90 (Very Good)]" : "9.0"
+		"[90 to 100 (Best Games)]" : "10.0"
+	}
+
+	local inputfile = ReadTextFile (fe.path_expand(input_path))
+
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
+	local line = ""
+	local inarea = false
+	local currentrate = ""
+	local ratingdb = {}
+	
+	while (!inputfile.eos()) {
+		line = inputfile.read_line()
+		filepos = inputfile.pos() * filesteps / filesize
+		if (filepos != filepos0) {
+			msgbox_replacelinetop(patchtext("BESTGAMES.INI processing...",filepos*100/filesteps+"%",4,AF.msgbox.columns))
+			fe.layout.redraw()
+			filepos0 = filepos
+		}
+
+		if (!inarea && (line != "[ROOT_FOLDER]")){
+			continue
+		}
+		else if (!inarea && (line == "[ROOT_FOLDER]")){
+			inarea = true
+			continue
+		}
+
+		if (inarea && (currentrate == "")) {
+			if (ratetonumber.rawin(line)){
+				currentrate = line
+				continue
+			}
+		}
+
+		if (currentrate != ""){
+			if (line == "") {
+				currentrate = ""
+				continue
+			}
+			else {
+				ratingdb.rawset(line, ratetonumber[currentrate])
+			}
+		}
+	}
+
+	local outpath = AF.folder + "nut_user_bestgames_ini.nut"
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	foreach (item, value in ratingdb) {
+		outfile.write_line("\"" + item + "\" : \"" + value + "\"\n")
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+}
+
 
 //TEST169
 function parsemame_historyxml(input_path) {
@@ -3412,6 +3441,12 @@ function build_mame_nut(tempprf){
 		msgbox_addlinetop("COMMAND.DAT processing...")
 		fe.layout.redraw()
 		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
+	}
+
+	if (tempprf.BESTGAMES_INI_PATH != "") {
+		msgbox_addlinetop("BESTGAMES.INI processing...")
+		fe.layout.redraw()
+		parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
 	}
 }
 
@@ -4401,7 +4436,6 @@ local z_list = {
 
 	rundatetable = {}
 	favdatetable = {}
-	ratingtable = {}
 
 	romlistemulators = {}
 	allemudata = {}
@@ -5754,8 +5788,18 @@ function z_initfavsfromfiles() {
 
 z_updatetagstable()
 
-z_list.ratingtable = prf.BESTGAMES_INI_PATH == "" ? {} : extradatatable(prf.BESTGAMES_INI_PATH)
+function hybridrating(listitem){
+	if (listitem.z_rating != "") {
+		return (listitem.z_rating)
+	}
+	if ((mameT.bestgamesini != "") && (mameT.bestgamesini.rawin(listitem.z_name))) {
+		return (mameT.bestgamesini[listitem.z_name])
+	}
+	return ("")
+}
 
+//TEST169 REMOVE THIS
+/*
 function z_getmamerating(gamename) {
 	local out = ""
 	if (z_list.ratingtable.rawin(gamename)) {
@@ -5764,6 +5808,7 @@ function z_getmamerating(gamename) {
 	}
 	return out
 }
+*/
 
 function parsecommands(instring) {
 	local str_array = split(instring, ";")
@@ -6157,7 +6202,7 @@ multifilterz.l0["Rating"] <- {
 		translate = false
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_rating
+			local v = hybridrating(z_list.boot[index]) //TEST169
 			local v2 = "??"
 			if (v == "") {
 				v = "??"
@@ -7023,6 +7068,7 @@ function z_mots2filter(index) {
 	}
 
 	if (search.mots[0] == "z_tags") return (currentval.find(search.mots[1]) != null)
+	else if (search.mots[0] == "z_rating") return (hybridrating(z_list.boot[index + fe.list.index]) == search.mots[1])
 	else return (currentval.tolower().find(search.mots[1].tolower()) == 0)
 
 	return false
@@ -7179,12 +7225,13 @@ function z_listboot() {
 			currentsystem = z_list.boot[i].z_system.tolower()
 
 			//insert here system overrides, for example change controller and numbuttons using system data fields
+			//TEST169 if the db is saved, these default data are backed in the db, it is ok because this data is only scraped, not from mame files
 			if (system_data.rawin(currentsystem)) {
 				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
 				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
 			}
 
-			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
+			//TEST169 removed if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 		} else {
 			// This is a redirection entry to a different display
 			z_list.boot.push(clone (z_fields1))
@@ -7391,7 +7438,7 @@ function z_listsort(orderby, reverse) {
 		break
 		case z_info.z_rating.id:
 			foreach(i, a in z_list.gametable) {
-				tval1.push((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))
+				tval1.push((hybridrating(a) == "") ? "0000000000" : format("%010u", hybridrating(a).tofloat() * 10))
 				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
 			}
 		break
@@ -7481,7 +7528,7 @@ function z_liststops() {
 
 		else if (z_list.orderby == z_info.z_series.id) temp.push(z_list.gametable[i].z_series.tolower())
 
-		else if (z_list.orderby == z_info.z_rating.id) temp.push(z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
+		else if (z_list.orderby == z_info.z_rating.id) temp.push(hybridrating(z_list.gametable[i]) == "" ? "??" : hybridrating(z_list.gametable[i])) //TEST169
 	}
 
 	// Scans the list and for every valye of "i" it does:
@@ -11728,9 +11775,9 @@ function history_updateoverlay() {
 
 	local commands_dat = []
 	local commands_scrape = []
-	try {commands_dat = commandtable[rom]} catch(err) {}
+	try {commands_dat = mameT.commanddat[rom]} catch(err) {}
 	commands = z_list.gametable[z_list.index].z_commands
-	if (commandtable.rawin(rom)) commands = commandtable[rom]
+	if (mameT.commanddat.rawin(rom)) commands = mameT.commanddat[rom]
 
 	local commandnull = true
 	foreach(i, item in commands) {
@@ -11875,7 +11922,7 @@ function history_updatetext() {
 			if (i < z_list.gametable2[z_list.index].z_tags.len() - 1)
 				temptext = temptext + ", "
 		}
-		temptext = temptext + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
+		temptext = temptext + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + hybridrating(z_list.gametable[z_list.index]) + "\n"
 		hist_text.descr.msg = temptext
 	}
 	else {
@@ -11895,7 +11942,7 @@ function history_updatetext() {
 		hist_text.copy.msg = "©" + z_list.gametable[z_list.index].z_year
 		hist_text.playr.msg = gly(0xe900) + " " + z_list.gametable[z_list.index].z_players
 		hist_text.buttn.msg = gly(0xe901) + " " + z_list.gametable[z_list.index].z_buttons
-		hist_text.ratng.msg = gly(0xe904) + " " + z_list.gametable[z_list.index].z_rating
+		hist_text.ratng.msg = gly(0xe904) + " " + hybridrating(z_list.gametable[z_list.index])
 	}
 
 	hist_curr_rom = rom
@@ -11904,10 +11951,10 @@ function history_updatetext() {
 
 	// History.dat description
 	local tempdesc_dat = ""
-	if ((historydattable != "") && (historydattable.rawin(rom))) tempdesc_dat = subst_replace(historydattable[rom],"^","\n")
+	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")
 	// History.xml description
 	local tempdesc_xml = ""
-	if ((historyxmltable != "") && (historyxmltable.rawin(rom))) tempdesc_xml = subst_replace(historyxmltable[rom],"^","\n")
+	if ((mameT.historyxml != "") && (mameT.historyxml.rawin(rom))) tempdesc_xml = subst_replace(mameT.historyxml[rom],"^","\n")
 	// Overview description
 	local tempdesc_overview = fe.game_info(Info.Overview)
 	// AF Database description
@@ -17772,7 +17819,7 @@ function buildgamelistxml() {
 		outputfile.write_line("    <thumbnail>" + "./" + AF.emulatordata[romlist].artworktable.flyer.slice(AF.emulatordata[romlist].artworktable.flyer.find(rompath) + rompath.len()) + z_list.gametable[index].z_name + ".png" + "</thumbnail>\n")
 		outputfile.write_line("    <video>" + "./" + AF.emulatordata[romlist].artworktable.video.slice(AF.emulatordata[romlist].artworktable.video.find(rompath) + rompath.len()) + z_list.gametable[index].z_name + ".mp4" + "</video>\n")
 		outputfile.write_line("    <releasedate>" + z_list.gametable[index].z_year + "0101T000000" + "</releasedate>\n")
-		outputfile.write_line("    <rating>" + ("0" + z_list.gametable[index].z_rating).tofloat()/10.0 + "</rating>\n")
+		outputfile.write_line("    <rating>" + ("0" + hybridrating(z_list.gametable[index])).tofloat()/10.0 + "</rating>\n")
 		outputfile.write_line("    <developer>" + z_list.gametable[index].z_manufacturer + "</developer>\n")
 		outputfile.write_line("    <publisher>" + z_list.gametable[index].z_manufacturer + "</publisher>\n")
 		outputfile.write_line("    <genre>" + z_list.gametable[index].z_category + "</genre>\n")
@@ -18589,9 +18636,9 @@ function on_signal(sig) {
 						skip = (z_list.gametable[z_list.index].z_series == "")
 					},{
 						text = ltxt("Rating", AF.LNG),
-						note = z_list.gametable[z_list.index].z_rating
-						fade = (z_list.gametable[z_list.index].z_rating == "")
-						skip = (z_list.gametable[z_list.index].z_rating == "")
+						note = hybridrating(z_list.gametable[z_list.index])
+						fade = (hybridrating(z_list.gametable[z_list.index]) == "")
+						skip = (hybridrating(z_list.gametable[z_list.index]) == "")
 					},{
 						text = ltxt("Arcade System", AF.LNG),
 						note = z_list.gametable[z_list.index].z_arcadesystem
@@ -18677,8 +18724,8 @@ function on_signal(sig) {
 							search.mots2string = ltxt("Series", AF.LNG) + ":" + search.mots[1]
 							hidemenu = true
 						}
-						if ((result == 8) && (z_list.gametable[z_list.index].z_rating != "")) {
-							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
+						if ((result == 8) && (hybridrating(z_list.gametable[z_list.index]) != "")) {
+							search.mots = ["z_rating", hybridrating(z_list.gametable[z_list.index])]
 							search.mots2string = ltxt("Rating", AF.LNG) + ":" + search.mots[1]
 							hidemenu = true
 						}
