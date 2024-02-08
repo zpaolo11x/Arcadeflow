@@ -1238,7 +1238,7 @@ AF.prefs.l1.push([
 {v = 16.9, varname = "HISTORY_XML_PATH", glyph = 0xe930, title = "History.xml", help = "History.xml location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "COMMAND_DAT_PATH", glyph = 0xe930, title = "Command.dat", help = "Command.dat location for MAME.", options = "", values = "", selection = AF.req.filereqs},
 {v = 16.9, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
-{v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); build_mame_nut(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
+{v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); build_mame_nut(tempprf)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML Import", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
 {v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true)}, selection = AF.req.executef},
@@ -3429,25 +3429,32 @@ function build_mame_nut(tempprf){
 		msgbox_addlinetop("HISTORY.DAT processing...")
 		fe.layout.redraw()
 		parsemame_historydat(tempprf.HISTORY_DAT_PATH)
+		msgbox_replacelinetop(patchtext("HISTORY.DAT Processed","100%",4,AF.msgbox.columns))
 	}
 
 	if (tempprf.HISTORY_XML_PATH != "") {
 		msgbox_addlinetop("HISTORY.XML processing...")
 		fe.layout.redraw()
 		parsemame_historyxml(tempprf.HISTORY_XML_PATH)
+		msgbox_replacelinetop(patchtext("HISTORY.XML Processed","100%",4,AF.msgbox.columns))
 	}
 	
 	if (tempprf.COMMAND_DAT_PATH != "") {
 		msgbox_addlinetop("COMMAND.DAT processing...")
 		fe.layout.redraw()
 		parsemame_commanddat(tempprf.COMMAND_DAT_PATH)
+		msgbox_replacelinetop(patchtext("COMMAND.DAT Processed","100%",4,AF.msgbox.columns))
 	}
 
 	if (tempprf.BESTGAMES_INI_PATH != "") {
 		msgbox_addlinetop("BESTGAMES.INI processing...")
 		fe.layout.redraw()
 		parsemame_bestgamesini(tempprf.BESTGAMES_INI_PATH)
+		msgbox_replacelinetop(patchtext("BESTGAMES.INI Processed","100%",4,AF.msgbox.columns))
 	}
+
+	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
+
 }
 
 function parseXML(inputpath) {
