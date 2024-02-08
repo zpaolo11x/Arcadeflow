@@ -4470,7 +4470,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 		// Scraping has finished and the end mesage is showing
 		if (AF.scrape.purgedromdirlist == null){
 			AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
-
+			msgbox_close()
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
 
@@ -4561,6 +4561,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 function XMLtoAM2(prefst, current) {
 
 	msgbox_open("XML metadata import", "", function(){
+		msgbox_close()
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -4917,6 +4918,7 @@ function refreshselectedromlists(tempprf) {
 			//update_allgames_collections(true, tempprf)
 		}
 		else {
+			msgbox_close()
 			fe.signal("back")
 			fe.signal("back")
 			fe.set_display(fe.list.display_index)
@@ -5305,6 +5307,7 @@ function cleandatabase(temppref) {
 	}
 
 	msgbox_open("Romlist and Database cleanup","",function(){
+		msgbox_close()
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
