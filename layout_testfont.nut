@@ -1,5 +1,17 @@
+/*
+local test = fe.add_text("There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",0,0,350,200)
+test.char_size = 20
+test.word_wrap = true
+test.set_bg_rgb(100,0,0)
 
+local test2 = fe.add_text("There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",400,0,350,200)
+test2.char_size = 20
+test2.word_wrap = true
+test2.set_bg_rgb(100,0,0)
+test2.char_spacing = 2.0
 
+pappo = 0
+*/
 
 local uifonts = {
 	gui = "fonts/font_Roboto-Allcaps-EXT4X.ttf"
@@ -34,8 +46,8 @@ pluto = 0
 local defmessage = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n123456789012345678901234567890123456789012345678901234567890\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 local columns = 60
 
-function add_box(x, y, w, h, rgb){
-	local textbox_0 = fe.add_text(defmessage, x, y, w, h)
+function add_box(x, y, w, h, rgb, csize){
+	local textbox_0 = fe.add_text("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", x, y, w, h)
 	local scalerate = h * 1.0 / 1200
 	textbox_0.margin = 50 * scalerate
 	textbox_0.word_wrap = true
@@ -45,7 +57,26 @@ function add_box(x, y, w, h, rgb){
 	textbox_0.font = uifonts.mono
 	textbox_0.zorder = 100
 	textbox_0.char_spacing = 1.0
+	textbox_0.char_size = csize
 
+	print(textbox_0.char_size + " " + textbox_0.msg_width + " ")
+	/*
+		textbox_0.msg = "XX"
+	print (textbox_0.msg_width + " ")
+		textbox_0.msg = "XXX"
+	print (textbox_0.msg_width + " ")
+		textbox_0.msg = "XXXX"
+	print (textbox_0.msg_width + " ")
+		textbox_0.msg = "XXXXX"
+	print (textbox_0.msg_width + " ")
+		textbox_0.msg = "XXXXXX"
+	print (textbox_0.msg_width + " ")
+		textbox_0.msg = "XXXXXXX"
+	print (textbox_0.msg_width + " ")
+		textbox_0.msg = "XXXXXXXX"
+	print (textbox_0.msg_width + " ")*/
+	print ("\n")
+/*
 	// First size definition
 	local span_area = (w - 2.0 * 50 * scalerate)
 	local char_width = span_area * 1.0 / columns
@@ -59,13 +90,15 @@ function add_box(x, y, w, h, rgb){
 	//local delta_pixel = blank_area * 1.0 / (columns - 1)
 
 	local spacing = ( 0.25 + (span_area - columns * char_real_size)*1.0/((columns - 1) * char_real_size) ) * 1.0 / 0.375
-	textbox_0.char_spacing = spacing
+	//textbox_0.char_spacing = spacing
 
 	print (" span_area:" + span_area + " msg_width:" + textbox_0.msg_width + " char_real_size:" + char_real_size + "\n")
-
-
+print (textbox_0.char_size+"\n")
+*/
 }
 
-for (local i = 0; i <= 300; i = i + 20){
-	add_box(0, 1.5*i, 320 + i, 240, [100, i * 100 / 300, 0])
+for (local i = 1; i <= 300; i = i + 1){
+//	add_box(0, 1.5*i, 320 + i, 240, [100, i * 100 / 300, 0],i)
+	add_box(0, 0, 20000, 2000, [100, i * 100 / 300, 0],i)
+
 }
