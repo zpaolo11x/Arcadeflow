@@ -1906,7 +1906,7 @@ local mamefile = {
 		},
 		historydat = {
 			name = "HISTORY.DAT"
-			prefname = "COMMAND_DAT_PATH"
+			prefname = "HISTORY_DAT_PATH"
 			in_path = ""
 			out_path = fe.path_expand(AF.folder + "nut_user_history_dat.nut")
 			processor = function(inparam){parsemame_historydat(inparam)}
@@ -3185,7 +3185,7 @@ function parse_boot(dat){
 	msgbox_addlinetop(dat.name + " processing...")
 	fe.layout.redraw()
 	if (!file_exist(fe.path_expand(dat.in_path))) {
-		msgbox_replacelinetop(patchtext(dat.name + " Processed","ERR.",4,AF.msgbox.columns))
+		msgbox_replacelinetop(patchtext(dat.name, "ERROR", 6, AF.msgbox.columns))
 		return null
 	}
 	local inputfile = ReadTextFile(fe.path_expand(dat.in_path))
@@ -3196,7 +3196,7 @@ function parse_boot(dat){
 function parse_timer(pos, dat){
 	mamefile.pos = pos * mamefile.steps / mamefile.size
 	if (mamefile.pos != mamefile.pos0) {
-		msgbox_replacelinetop(patchtext(dat.name + " Processing...",mamefile.pos*100/mamefile.steps+"%",4,AF.msgbox.columns))
+		msgbox_replacelinetop((textleft(dat.name, 14) + textrate(mamefile.pos, mamefile.steps, AF.msgbox.columns - 14 - 6, "|", "\\") + textright(mamefile.pos*100/mamefile.steps+"%",6)))
 		fe.layout.redraw()
 		mamefile.pos0 = mamefile.pos
 	}
@@ -3211,7 +3211,7 @@ function parse_close(dat, datadb){
 	}
 	outfile.write_line("})\n")
 	outfile.close_file()
-	msgbox_replacelinetop(patchtext(dat.name + " Processed","100%",4,AF.msgbox.columns))
+	msgbox_replacelinetop((textleft(dat.name, 14) + textrate(mamefile.pos, mamefile.steps, AF.msgbox.columns - 14 - 6, "|", "\\") + textright("DONE",6)))
 }
 
 function parsemame_commanddat(dat) {
@@ -3456,6 +3456,7 @@ function parsemame_historyxml(dat) {
 }
 
 function build_mame_nut(tempprf){
+	// Update paths with pref data
 	foreach (item, val in mamefile.dat){
 		mamefile.dat[item].in_path = tempprf[val.prefname]
 	}
@@ -3470,8 +3471,8 @@ function build_mame_nut(tempprf){
 	
 	msgbox_lock(true)
 
-	foreach (id, item in mamefile.dat){
-		if (item.in_path != "") item.processor(item)
+	foreach (item, val in mamefile.dat){
+		if (val.in_path != "") val.processor(val)
 	}
 
 	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
@@ -3861,6 +3862,11 @@ function msgbox_pulse_title(title_string, reset = false){
 
 function textright(string1, columns){
 	local out = (strepeat(" ", 80) + string1).slice(-columns)
+	return out
+}
+
+function textleft(string1, columns){
+	local out = (string1 + strepeat(" ", 80)).slice(0, columns)
 	return out
 }
 
