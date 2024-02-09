@@ -163,6 +163,9 @@ local AF = {
 		lock = false
 		inline = 0
 
+		char_real_width = 0
+		span_area = 0
+
 		pulsetime0 = 0
 		pulsecounter = 0
 	}
@@ -1932,7 +1935,10 @@ local system_data = readsystemdata()
 local mameT = {}
 mameT.rawset("commanddat", dofile (AF.folder + "nut_command.nut"))//af_create_command_table()
 foreach (item, val in mamefile.dat){
-	if ((prf[val.prefname] != "") && (file_exist(val.out_path))) try{mameT.rawset(item, dofile (val.out_path))} catch(err){}
+	if ((prf[val.prefname] != "") && (file_exist(val.out_path))) 
+		try{mameT.rawset(item, dofile (val.out_path))} catch(err){}
+	else
+		mameT.rawset(item, "")
 }
 
 /*
@@ -14396,10 +14402,16 @@ AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.enable_signals = false
 AF.msgbox.obj.enable_transition = false
-AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
+AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.645 / AF.msgbox.columns)
 AF.msgbox.obj.time_constant = 39
 
-AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+AF.msgbox.obj.msg = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n123456789012345678901234567890123456789012345678901234567890\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+
+/* THIS CODE IS USED TO FIX SPACING BUT CAUSES BLURRYNESS AND WRONG WRAPPING
+AF.msgbox.span_area = (fl.w - 2.0 * 50 * UI.scalerate)
+AF.msgbox.char_real_width = (AF.msgbox.obj.msg_width * 1.0 / (AF.msgbox.columns + (AF.msgbox.columns - 1) * 0.125) )
+AF.msgbox.obj.char_spacing = ( 0.25 + (AF.msgbox.span_area - AF.msgbox.columns * AF.msgbox.char_real_width)*1.0/((AF.msgbox.columns - 1) * AF.msgbox.char_real_width) ) * 1.0 / 0.375
+*/
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
@@ -14410,8 +14422,10 @@ AF.msgbox.scroller.alpha = 200
 AF.msgbox.visiblelines = AF.msgbox.obj.lines
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
+	testpr("PIXELMONO\n")
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.obj.char_size = 16
+	AF.msgbox.obj.char_spacing = 1 //TEST169 no fractional spacing
 	AF.msgbox.visiblelines = AF.msgbox.obj.lines
 }
 
