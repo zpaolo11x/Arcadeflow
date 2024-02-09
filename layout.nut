@@ -154,8 +154,8 @@ local AF = {
 		scroller = null
 		back = null
 		columns = 60
-		separator1 = strepeat("-", 60)
-		separator2 = strepeat("=", 60)
+		separator1 = strepeat("-", 80)
+		separator2 = strepeat("=", 80)
 		title = ""
 		body = ""
 		numlines = 0
@@ -165,6 +165,7 @@ local AF = {
 
 		char_real_width = 0
 		span_area = 0
+		char_real_spacing = 0
 
 		pulsetime0 = 0
 		pulsecounter = 0
@@ -14405,13 +14406,21 @@ AF.msgbox.obj.enable_transition = false
 AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.5 / AF.msgbox.columns) //Rough text sizing
 AF.msgbox.obj.time_constant = 39
 
-// Refine text size to max fill
+// Refine text size to max fill with 60 columns
 AF.msgbox.obj.msg = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 while (AF.msgbox.obj.lines_total == 1){
 	AF.msgbox.obj.char_size ++
 }
-AF.msgbox.obj.char_size-- 
+AF.msgbox.obj.char_size -- 
 
+// Refine column number to fill the screen
+while (AF.msgbox.obj.lines_total == 1){
+	AF.msgbox.columns ++
+	AF.msgbox.obj.msg = AF.msgbox.obj.msg + "X"
+}
+AF.msgbox.columns --
+AF.msgbox.separator1 = AF.msgbox.separator1.slice(0,AF.msgbox.columns)
+AF.msgbox.separator2 = AF.msgbox.separator2.slice(0,AF.msgbox.columns)
 //AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n123456789012345678901234567890123456789012345678901234567890\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
 
 /* THIS CODE IS USED TO FIX SPACING BUT CAUSES BLURRYNESS AND WRONG WRAPPING
