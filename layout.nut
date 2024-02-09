@@ -3185,7 +3185,7 @@ function parse_boot(dat){
 	msgbox_addlinetop(dat.name + " processing...")
 	fe.layout.redraw()
 	if (!file_exist(fe.path_expand(dat.in_path))) {
-		msgbox_replacelinetop(patchtext(dat.name, "ERROR", 6, AF.msgbox.columns))
+	msgbox_replacelinetop((textleft(dat.name, 14) + textrate(mamefile.pos, mamefile.steps, AF.msgbox.columns - 14 - 6, "|", "\\") + textright("ERROR",6)))
 		return null
 	}
 	local inputfile = ReadTextFile(fe.path_expand(dat.in_path))
@@ -3319,9 +3319,6 @@ function parsemame_bestgamesini(dat) {
 	parse_close(dat, ratingdb)
 
 }
-
-
-//parsemame_historyxml("/home/plex/history.xml")
 
 function parsemame_historydat(dat) {
 	local inputfile = parse_boot(dat)
@@ -15548,11 +15545,9 @@ function updatetiles() {
 		centercorr.shift = column.offset * (UI.corewidthmix + UI.padding)
 		/* USELESS?
 		if ((column.stop == 0) && (column.start == column.used - 1)) {
-			testpr("A\n")
 			centercorr.shift = -(column.used - 1)*(UI.corewidthmix + UI.padding)
 		}
 		if ((column.stop == column.used - 1) && (column.start == 0)) {
-			testpr("B\n")
 			centercorr.shift = (column.used - 1)*(UI.corewidthmix + UI.padding)
 		}
 		*/
