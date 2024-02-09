@@ -12,6 +12,92 @@ test2.char_spacing = 2.0
 
 pappo = 0
 */
+local limits = [
+[60,1],
+[120,3],
+[180,5],
+[240,7],
+[300,9],
+[301,9],
+[360,10],
+[420,12],
+[480,14],
+[540,15],
+[600,17],
+[660,19],
+[720,20],
+[780,22],
+[840,23],
+[899,25],
+[958,26],
+[1018,28],
+[1079,30],
+[1138,31],
+[1198,33],
+[1258,35],
+[1318,36],
+[1378,38],
+[1438,40],
+[1498,42],
+[1558,43],
+[1618,45],
+[1678,46],
+[1737,48],
+[1797,50],
+[1857,52],
+[1917,54],
+[1977,55],
+[2036,56],
+[2097,58],
+[2157,60],
+[2216,61],
+[2276,63],
+[2396,66],
+[2456,68],
+[2516,70],
+[2576,72],
+[2636,74],
+[2695,75],
+[2755,77],
+[2816,79],
+[2875,80],
+[2935,82],
+[2995,84],
+[3055,85],
+[3114,86],
+[3175,89],
+[3294,91],
+[3354,94],
+[3414,95],
+[3474,97],
+[3534,99],
+[3593,100],
+[3654,102],
+[3714,104],
+[3773,105],
+[3833,107],
+[3894,109],
+[3953,110],
+[4013,112],
+[4073,114],
+[4133,115],
+[4193,117],
+[4252,119],
+[4312,120],
+[4372,122],
+[4432,124],
+[4492,125],
+[4552,127],
+[4612,129],
+[4672,130],
+[4732,132],
+[4792,134],
+[4851,135],
+[4912,137],
+[4972,139],
+[5031,140],
+[5090,142]
+]
 
 local uifonts = {
 	gui = "fonts/font_Roboto-Allcaps-EXT4X.ttf"
@@ -43,40 +129,53 @@ print ("char space 2:" + (pippo3.msg_width - 2.0 * pippo1.msg_width) + "\n")
 pluto = 0
 */
 
-local defmessage = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n123456789012345678901234567890123456789012345678901234567890\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+local defmessage = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 local columns = 60
 
 function add_box(x, y, w, h, rgb, csize){
-	local textbox_0 = fe.add_text("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", x, y, w, h)
-	local scalerate = h * 1.0 / 1200
-	textbox_0.margin = 50 * scalerate
+	local textbox_0 = fe.add_text(defmessage, x, y, w, h)
+	textbox_0.margin = 0
 	textbox_0.word_wrap = true
 	textbox_0.set_bg_rgb (rgb[0], rgb[1], rgb[2])
-	textbox_0.bg_alpha = 255
-	textbox_0.align = Align.TopLeft
+	textbox_0.bg_alpha = 200
+	textbox_0.align = Align.TopRight
 	textbox_0.font = uifonts.mono
 	textbox_0.zorder = 100
 	textbox_0.char_spacing = 1.0
+	textbox_0.char_size = 1
+
+	while (textbox_0.lines_total == 1){
+		textbox_0.char_size ++
+	}
+	textbox_0.char_size-- 
+	print (w+" "+textbox_0.char_size+"\n")
+	/*
+	textbox_0.char_size = floor((w * 1.0 / columns) * 1.645)
+	print (w+" "+" "+textbox_0.char_size+"\n")
+	return
+	*/
+	/*
+	foreach (i, item in limits){
+		if ((w >= item[0]) && (w < limits[i+1][0])) {
+			textbox_0.char_size = item[1]
+			print (w+" "+item[0]+" "+item[1]+" "+textbox_0.lines_total+"\n")
+			break
+		}
+	}
+	*/
+	/*
 	textbox_0.char_size = csize
 
-	print(textbox_0.char_size + " " + textbox_0.msg_width + " ")
+	local height_1 = textbox_0.char_size
+	local width_1 = textbox_0.msg_width
+	textbox_0.msg = "XX"
+   local width_2 = textbox_0.msg_width
+	textbox_0.msg = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+	local width_60 = textbox_0.msg_width
+	print (height_1 + " " + width_1 + " " + (width_2 - 2 * width_1) + " " + width_60 + " " + (width_1 * 1.0 / height_1) + "\n")
+	*/
+
 	/*
-		textbox_0.msg = "XX"
-	print (textbox_0.msg_width + " ")
-		textbox_0.msg = "XXX"
-	print (textbox_0.msg_width + " ")
-		textbox_0.msg = "XXXX"
-	print (textbox_0.msg_width + " ")
-		textbox_0.msg = "XXXXX"
-	print (textbox_0.msg_width + " ")
-		textbox_0.msg = "XXXXXX"
-	print (textbox_0.msg_width + " ")
-		textbox_0.msg = "XXXXXXX"
-	print (textbox_0.msg_width + " ")
-		textbox_0.msg = "XXXXXXXX"
-	print (textbox_0.msg_width + " ")*/
-	print ("\n")
-/*
 	// First size definition
 	local span_area = (w - 2.0 * 50 * scalerate)
 	local char_width = span_area * 1.0 / columns
@@ -96,9 +195,16 @@ function add_box(x, y, w, h, rgb, csize){
 print (textbox_0.char_size+"\n")
 */
 }
+local zip = 0
+for (local i = 300; i <= 1000; i = i + 10){
+//	add_box(0, 1.5*i, 320 + i, 240, [100, i * 100 / 300, 0],i)
+	add_box(0, zip, i, 240, [100, 0, 0],i)
+	zip = zip + 10
+}
 
+/*
 for (local i = 1; i <= 300; i = i + 1){
 //	add_box(0, 1.5*i, 320 + i, 240, [100, i * 100 / 300, 0],i)
 	add_box(0, 0, 20000, 2000, [100, i * 100 / 300, 0],i)
-
 }
+*/
