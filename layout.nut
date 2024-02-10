@@ -3911,11 +3911,17 @@ function textrate(num, den, columns, ch1, ch0) {
 
 function msgbox_test(){
 	local bodytext = ""
-	for (local i = 3; i < 50; i++){
-		bodytext = bodytext + i + "\n"
+	local colcount = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+	local message =  " -- ROWS:" + AF.msgbox.visiblelines + " COLS:" +AF.msgbox.columns + " -- "
+	local midrow = floor(AF.msgbox.visiblelines * 0.5) + 1
+	local startcol = strepeat(" ", floor((AF.msgbox.columns - message.len())*0.5) - (midrow >= 10 ? 2 : 1))
+
+	colcount = colcount.slice(0,AF.msgbox.columns)
+	for (local i = 2; i < 50; i++){
+		bodytext = bodytext + i + (i == midrow ? startcol + message : "") + "\n"
 	}
 	bodytext = bodytext + "50"
-	msgbox_open("TOTAL:" + AF.msgbox.visiblelines, bodytext)
+	msgbox_open(colcount + "\n" + bodytext + "\n" , "")
 }
 
 dispatcher = []
