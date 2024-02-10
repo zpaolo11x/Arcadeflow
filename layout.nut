@@ -1934,13 +1934,14 @@ local mamefile = {
 
 local system_data = readsystemdata()
 local mameT = {}
-mameT.rawset("commanddat", dofile (AF.folder + "nut_command.nut"))//af_create_command_table()
 foreach (item, val in mamefile.dat){
 	if ((prf[val.prefname] != "") && (file_exist(val.out_path))) 
 		try{mameT.rawset(item, dofile (val.out_path))} catch(err){}
 	else
 		mameT.rawset(item, "")
 }
+if (mameT.commanddat == "") 
+	mameT.rawset("commanddat", dofile (AF.folder + "nut_command.nut"))//af_create_command_table()
 
 /*
 if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command_dat.nut"))) try{mameT.commanddat = dofile (AF.folder + "nut_user_command_dat.nut")} catch(err){}
