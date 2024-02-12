@@ -11987,12 +11987,12 @@ function history_updatetext() {
 
 	// History.dat description
 	local tempdesc_dat = ""
-	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")
+	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")+"\n"
 	// History.xml description
 	local tempdesc_xml = ""
-	if ((mameT.historyxml != "") && (mameT.historyxml.rawin(rom))) tempdesc_xml = subst_replace(mameT.historyxml[rom],"^","\n")
+	if ((mameT.historyxml != "") && (mameT.historyxml.rawin(rom))) tempdesc_xml = subst_replace(mameT.historyxml[rom],"^","\n")+"\n"
 	// Overview description
-	local tempdesc_overview = fe.game_info(Info.Overview)
+	local tempdesc_overview = fe.game_info(Info.Overview)+"\n"
 	// AF Database description
 	local tempdesc_zdb = ""
 	foreach (i, item in z_list.gametable[z_list.index].z_description)
