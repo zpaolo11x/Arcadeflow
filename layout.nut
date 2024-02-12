@@ -11987,22 +11987,23 @@ function history_updatetext() {
 
 	// History.dat description
 	local tempdesc_dat = ""
-	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")+"\n"
+	foreach(item, value in mameT) print (item+" "+value+"\n")
+	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")
 	// History.xml description
 	local tempdesc_xml = ""
-	if ((mameT.historyxml != "") && (mameT.historyxml.rawin(rom))) tempdesc_xml = subst_replace(mameT.historyxml[rom],"^","\n")+"\n"
+	if ((mameT.historyxml != "") && (mameT.historyxml.rawin(rom))) tempdesc_xml = subst_replace(mameT.historyxml[rom],"^","\n")
 	// Overview description
-	local tempdesc_overview = fe.game_info(Info.Overview)+"\n"
+	local tempdesc_overview = fe.game_info(Info.Overview)
 	// AF Database description
 	local tempdesc_zdb = ""
 	foreach (i, item in z_list.gametable[z_list.index].z_description)
 		tempdesc_zdb = tempdesc_zdb + item + "\n"
-	if ((tempdesc_zdb == "?") && (tempdesc_zdb == "\n")) tempdesc_zdb = ""
+	if ((tempdesc_zdb == "?") || (tempdesc_zdb == "\n")) tempdesc_zdb = ""
 
 	if (tempdesc_zdb != "") tempdesc = tempdesc_zdb
-	else if (tempdesc_overview != "") tempdesc = tempdesc_overview
-	else if (tempdesc_xml != "") tempdesc = tempdesc_xml
-	else if (tempdesc_dat != "") tempdesc = tempdesc_dat
+	else if (tempdesc_overview != "") tempdesc = tempdesc_overview + "\n"
+	else if (tempdesc_xml != "") tempdesc = tempdesc_xml + "\n"
+	else if (tempdesc_dat != "") tempdesc = tempdesc_dat + "\n"
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
