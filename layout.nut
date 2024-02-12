@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.8
+// Arcadeflow - v 16.9
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.8" // AF version in string form
+	version = "16.9" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -154,14 +154,18 @@ local AF = {
 		scroller = null
 		back = null
 		columns = 60
-		separator1 = strepeat("-", 60)
-		separator2 = strepeat("=", 60)
+		separator1 = strepeat("-", 80)
+		separator2 = strepeat("=", 80)
 		title = ""
 		body = ""
 		numlines = 0
 		visiblelines = 0
 		lock = false
 		inline = 0
+
+		char_real_width = 0
+		span_area = 0
+		char_real_spacing = 0
 
 		pulsetime0 = 0
 		pulsecounter = 0
@@ -877,7 +881,7 @@ function vartotext(variablein, lev){
 fe.do_nut("nut_picfunctions.nut")
 fe.do_nut("nut_gauss.nut")
 fe.do_nut("nut_scraper.nut")
-dofile(AF.folder + "nut_fileutil.nut")
+//dofile(AF.folder + "nut_fileutil.nut")
 
 
 function savevar(variablein, outfile){
@@ -1234,10 +1238,11 @@ AF.prefs.l1.push([
 {v = 10.0, varname = "SS_USERNAME", glyph = 0xe971, title = "SS Username", help = "Enter your screenscraper.fr username", options = "", values = "", selection = AF.req.textentr},
 {v = 10.0, varname = "SS_PASSWORD", glyph = 0xe98d, title = "SS Password", help = "Enter your screenscraper.fr password", options = "", values = "", selection = AF.req.textentr},
 {v = 0.0, varname = "", glyph = -1, title = "MAME Data Files", selection = AF.req.liner},
-{v = 12.0, varname = "DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
-{v = 12.0, varname = "INDEX_CLONES", glyph = 0xe922, title = "Index clones", help = "Set whether entries for clones should be included in the index. Enabling this will make the index significantly larger", options = ["Yes", "No"], values = [true, false], selection = 0},
-{v = 12.0, varname = "GENERATE1", glyph = 0xea1c, title = "Generate History index", help = "Generate the history.dat index now (this can take some time)", options = "", values = function() {local tempprf = generateprefstable(); af_generate_index(tempprf); fe.signal("back"); fe.signal("back")}, selection = AF.req.executef},
-{v = 12.0, varname = "INI_BESTGAMES_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "HISTORY_DAT_PATH", glyph = 0xe930, title = "History.dat", help = "History.dat location.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "HISTORY_XML_PATH", glyph = 0xe930, title = "History.xml", help = "History.xml location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "COMMAND_DAT_PATH", glyph = 0xe930, title = "Command.dat", help = "Command.dat location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "BESTGAMES_INI_PATH", glyph = 0xe930, title = "Bestgames.ini", help = "Bestgames.ini location for MAME.", options = "", values = "", selection = AF.req.filereqs},
+{v = 16.9, varname = "GENERATE_MAME", glyph = 0xea1c, title = "Process MAME files", help = "Process and convert all the MAME files", options = "", values = function() {local tempprf = generateprefstable(); build_mame_nut(tempprf)}, selection = AF.req.executef},
 {v = 0.0, varname = "", glyph = -1, title = "ES XML Import", selection = AF.req.liner},
 {v = 9.7, varname = "IMPORTXML", glyph = 0xe92e, title = "Import XML data for all romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, false)}, selection = AF.req.executef},
 {v = 9.8, varname = "IMPORT1XML", glyph = 0xeaf4, title = "Import XML data for current romlists", help = "If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data", options = "", values = function() {local tempprf = generateprefstable(); XMLtoAM2(tempprf, true)}, selection = AF.req.executef},
@@ -1331,6 +1336,7 @@ function reset_layout() {
 	local dir = DirectoryListing(AF.folder)
 	foreach (item in dir.results) {
 		if (item.find("_mf_")) try {remove(item)} catch(err) {}
+		if (item.find("nut_user_")) try {remove(item)} catch(err) {}
 	}
 
 	fe.signal("exit_to_desktop")
@@ -1887,10 +1893,62 @@ function readsystemdata() {
 	return sysdata
 }
 
+
+local mamefile = {
+	pos = 0
+	pos0 = 1
+	steps = 20
+	size = 0
+
+	dat = {
+		commanddat = {
+			name = "COMMAND.DAT"
+			prefname = "COMMAND_DAT_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_command_dat.nut")
+			processor = function(inparam){parsemame_commanddat(inparam)}
+		},
+		historydat = {
+			name = "HISTORY.DAT"
+			prefname = "HISTORY_DAT_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_history_dat.nut")
+			processor = function(inparam){parsemame_historydat(inparam)}
+		},
+		historyxml = {
+			name = "HISTORY.XML"
+			prefname = "HISTORY_XML_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_history_xml.nut")
+			processor = function(inparam){parsemame_historyxml(inparam)}
+		},
+		bestgamesini = {
+			name = "BESTGAMES.INI"
+			prefname = "BESTGAMES_INI_PATH"
+			in_path = ""
+			out_path = fe.path_expand(AF.folder + "nut_user_bestgames_ini.nut")
+			processor = function(inparam){parsemame_bestgamesini(inparam)}
+		}
+	}
+}
+
 local system_data = readsystemdata()
+local mameT = {}
+foreach (item, val in mamefile.dat){
+	if ((prf[val.prefname] != "") && (file_exist(val.out_path))) 
+		try{mameT.rawset(item, dofile (val.out_path))} catch(err){}
+	else
+		mameT.rawset(item, "")
+}
+if (mameT.commanddat == "") 
+	mameT.rawset("commanddat", dofile (AF.folder + "nut_command.nut"))//af_create_command_table()
 
-local commandtable = dofile (AF.folder + "nut_command.nut")//af_create_command_table()
-
+/*
+if ((prf.COMMAND_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_command_dat.nut"))) try{mameT.commanddat = dofile (AF.folder + "nut_user_command_dat.nut")} catch(err){}
+if ((prf.HISTORY_XML_PATH != "") && (file_exist(AF.folder + "nut_user_history_xml.nut"))) try{mameT.historyxml = dofile (AF.folder + "nut_user_history_xml.nut")} catch(err){}
+if ((prf.HISTORY_DAT_PATH != "") && (file_exist(AF.folder + "nut_user_history_dat.nut"))) try{mameT.historydat = dofile (AF.folder + "nut_user_history_dat.nut")} catch(err){}
+if ((prf.BESTGAMES_INI_PATH != "") && (file_exist(AF.folder + "nut_user_bestgames_ini.nut"))) try{mameT.bestgamesini = dofile (AF.folder + "nut_user_bestgames_ini.nut")} catch(err){}
+*/
 // Background and data crossfade stack
 
 local bgvidsurf = null
@@ -2475,9 +2533,11 @@ local UI = {
 	vertical = false
 	rows = prf.HORIZONTALROWS
 	cols = 0
+	colsvisible = 0
 
 	scalerate = 0
 
+	// Size of the area of the tile where the image is shown
 	corewidth = 0
 	coreheight = 0
 	padding_scaler = 1.0 / 6.0 //multiplier of padding space (normally 1 / 6 of thumb area)
@@ -2486,12 +2546,16 @@ local UI = {
 	blocksize = 0
 	blocksspace = 0
 
+	// padding around the core area, it is superposed from one tile to the other
 	padding = 0
+	// Dimensions of the tile including padding
 	tilewidth = 0
 	tileheight = 0
+	// Core and tile width modification for vertical arcade 9:16 snaps
+	corewidth169 = 0
 	tilewidth169 = 0
-	tilewidth169padded = 0
-	widthmix = 0
+	// Actual core and tile width to use after choosing 9:16 or standard snaps
+	corewidthmix = 0
 	tilewidthmix = 0
 
 	verticalshift = 0
@@ -2679,10 +2743,10 @@ UI.padding = UI.blocksize
 UI.tilewidth = UI.corewidth + 2 * UI.padding
 UI.tileheight = UI.coreheight + 2 * UI.padding
 
-UI.tilewidth169 = UI.coreheight * 10 / 16
-UI.tilewidth169padded = UI.tilewidth169 + 2 * UI.padding
-UI.widthmix = (prf.FIX169 ? UI.tilewidth169 : UI.corewidth)
-UI.tilewidthmix = (prf.FIX169 ? UI.tilewidth169padded : UI.tilewidth)
+UI.corewidth169 = UI.coreheight * 10 / 16
+UI.tilewidth169 = UI.corewidth169 + 2 * UI.padding
+UI.corewidthmix = (prf.FIX169 ? UI.corewidth169 : UI.corewidth)
+UI.tilewidthmix = (prf.FIX169 ? UI.tilewidth169 : UI.tilewidth)
 
 UI.blocksspace = UI.blocksize * UI.blocks
 
@@ -2699,7 +2763,8 @@ Nominal (for calculation purposes) sizes:
 */
 
 //calculate number of columns
-UI.cols = (1 + 2 * (floor((fl.w / 2 + UI.widthmix / 2 - UI.padding) / (UI.widthmix + UI.padding))))
+UI.cols = (1 + 2 * (floor((fl.w / 2 + UI.corewidthmix / 2 - UI.padding) / (UI.corewidthmix + UI.padding))))
+
 // add safeguard tiles
 UI.cols += 2
 
@@ -2707,9 +2772,9 @@ local pagejump = prf.SCROLLAMOUNT * UI.rows * (UI.cols - 2)
 
 // carrier sizing in general layout
 local carrierT = {
-	x = fl.x -(UI.cols * (UI.widthmix + UI.padding) + UI.padding - fl.w) * 0.5,
+	x = fl.x -(UI.cols * (UI.corewidthmix + UI.padding) + UI.padding - fl.w) * 0.5,
 	y = fl.y + UI.header.h2 + (prf.SLIMLINE ? UI.coreheight * 0.5 : 0),
-	w = UI.cols * (UI.widthmix + UI.padding) + UI.padding,
+	w = UI.cols * (UI.corewidthmix + UI.padding) + UI.padding,
 	h = UI.rows * UI.coreheight + UI.rows * UI.padding + UI.padding
 }
 
@@ -2758,13 +2823,15 @@ UI.zoomedpadding = (UI.zoomedwidth - UI.zoomedcorewidth) * 0.5
 // deltacol are the marginal columns with respect to center one
 local deltacol = prf.MAXLINE ? 0 : (UI.cols - 3) / 2
 
+UI.colsvisible = (floor((fl.w - UI.zoomedcorewidth + UI.corewidthmix - UI.padding) / (UI.corewidthmix + UI.padding)))
+
 local centercorr = {
 	zero = null // is the value of corrections that centers the list
 	val = null // Is the target value of the position of tiles
 	shift = null // Is the shift factor added to the usual tile jump
 }
 
-centercorr.zero = - deltacol * (UI.widthmix + UI.padding) - (fl.w - (carrierT.w - 2 * (UI.widthmix + UI.padding))) / 2 - UI.padding * (1 + UI.zoomscale * 0.5) - UI.widthmix / 2 + UI.zoomedwidth / 2
+centercorr.zero = - deltacol * (UI.corewidthmix + UI.padding) - (fl.w - (carrierT.w - 2 * (UI.corewidthmix + UI.padding))) / 2 - UI.padding * (1 + UI.zoomscale * 0.5) - UI.corewidthmix / 2 + UI.zoomedwidth / 2
 centercorr.zero = floor(centercorr.zero + 0.5) // Added to align centercorr.zero to pixels
 
 centercorr.val = 0
@@ -2874,50 +2941,6 @@ local keyboard_entrytext = ""
 
 /// RELOCATED FUNCTIONS ///
 
-function parsecommanddat() {
-	local datpath = AF.folder + "command.dat"
-	local datfile = ReadTextFile(datpath)
-	local outarray = []
-	local newline = ""
-	local romsarray = []
-	local commandsarray = []
-	local commandstring = ""
-	local i = 0
-	local outpath = AF.folder + "nut_command.nut"
-	local outfile = WriteTextFile(outpath)
-	outfile.write_line("return ({\n")
-	while (!datfile.eos()) {
-		newline = datfile.read_line()
-		if (newline.find("$info=")!= null) {
-			i ++
-			romsarray = split(split(newline, "=")[1], comma)
-			newline = ""
-			while ((newline != "- CONTROLS -") && (newline !="«Buttons»")) {
-				newline = datfile.read_line()
-			}
-			newline = datfile.read_line() //skip separator
-			newline = datfile.read_line() //first button
-			while (newline != "") {
-				if ((newline.find("@left") == null) && (newline.find("@right") == null)) try {commandsarray.push(strip(split(newline, ":(")[1]))} catch(err) {}
-				newline = datfile.read_line()
-			}
-			commandstring = "[\"" + commandsarray[0] + "\""
-			for (local ii = 1; ii < commandsarray.len(); ii++) {
-				commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
-			}
-			commandstring += "]"
-			foreach (id, item in romsarray) {
-				outfile.write_line("\"" + item + "\" : " + commandstring + "\n")
-			}
-			commandsarray = []
-			commandstring = ""
-		}
-	}
-	outfile.write_line("})\n")
-	outfile.close_file()
-}
-//parsecommanddat()
-
 function powerman(action) {
 	if (action == "SHUTDOWN") {
 		if (OS == "OSX") system ("osascript -e 'tell app \"System Events\" to shut down'")
@@ -2935,51 +2958,6 @@ function powerman(action) {
 		else system ("sudo pm-hibernate")
 	}
 }
-
-function extradatatable(inputfile) {
-	local filepath = fe.path_expand(inputfile)
-
-	if (!file_exist(filepath)) return {}
-
-	local inputfile = ReadTextFile (filepath)
-	local out = ""
-	local datatable = {}
-	local value = ""
-
-	//skip to root folder
-	while (out != "[ROOT_FOLDER]") {
-		out = inputfile.read_line()
-	}
-
-	local out = "_"
-	while (!inputfile.eos()) {
-		while ((out[0].tochar() != "[")) {
-			out = inputfile.read_line()
-			if (out == "") out = "_"
-		}
-		value = out.slice(1, -1)
-		out = "_"
-		while ((out[0].tochar() != "[") && (!inputfile.eos())) {
-			out = inputfile.read_line()
-			if ((out != "") && (out[0].tochar() != "[")) datatable[out] <- value
-			if (out == "") out = "_"
-		}
-	}
-
-	return datatable
-}
-
-local ratetonumber = {}
-ratetonumber["0 to 10 (Worst)"] <- "1.0"
-ratetonumber["10 to 20 (Horrible)"] <- "2.0"
-ratetonumber["20 to 30 (Bad)"] <- "3.0"
-ratetonumber["30 to 40 (Amendable)"] <- "4.0"
-ratetonumber["40 to 50 (Decent)"] <- "5.0"
-ratetonumber["50 to 60 (Not Good Enough)"] <- "6.0"
-ratetonumber["60 to 70 (Passable)"] <- "7.0"
-ratetonumber["70 to 80 (Good)"] <- "8.0"
-ratetonumber["80 to 90 (Very Good)"] <- "9.0"
-ratetonumber["90 to 100 (Best Games)"] <- "10.0"
 
 function afsort(arr_in, arr_mixval) {
 	foreach (i, item in arr_in) {
@@ -3180,9 +3158,330 @@ function clean_synopsis(inputstring) {
 
 function clean_adb_history(inputstring){
 	inputstring = subst_replace(inputstring,"\"","'")
-	inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
-	inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	if ((inputstring.find(":^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3)
+	if ((inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (0, inputstring.find("^^- TECHNICAL -^^"))
+	if ((inputstring.find("^^-") != null)) inputstring = inputstring.slice (0, inputstring.find("^^-"))
+	if (inputstring.find("^^") == null) return ""
+
+	if (inputstring.find("^^") != null) inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	/*PREVIOUS GOOD
+	if ((inputstring.find(":^^") != null) &&  (inputstring.find("^^- TECHNICAL -^^") != null)) inputstring = inputstring.slice (inputstring.find(":^^") + 3, inputstring.find("^^- TECHNICAL -^^"))
+	if (inputstring.find("^^") != null) inputstring = inputstring.slice (inputstring.find("^^") + 2)
+	*/
 	return inputstring
+}
+
+/*
+dat_data è un array con dentro tabelle che vengono passate:
+{
+	name = "COMMAND.DAT"
+	in_path = path del file da cui leggere
+	out_path = path dove salvare il file
+}
+
+parsedat è una tabella con dentro le global:
+{
+	filepos = 0
+	filepos0 = 1
+	filesteps = 20
+	filesize = 0//inputfile.size()
+}
+*/
+
+
+function parse_boot(dat){
+	msgbox_addlinetop(dat.name + " processing...")
+	fe.layout.redraw()
+	if (!file_exist(fe.path_expand(dat.in_path))) {
+	msgbox_replacelinetop((textleft(dat.name, 14) + textrate(mamefile.pos, mamefile.steps, AF.msgbox.columns - 14 - 6, "|", "\\") + textright("ERROR",6)))
+		return null
+	}
+	local inputfile = ReadTextFile(fe.path_expand(dat.in_path))
+	mamefile.size = inputfile.size()
+	return (inputfile)
+}
+
+function parse_timer(pos, dat){
+	mamefile.pos = pos * mamefile.steps / mamefile.size
+	if (mamefile.pos != mamefile.pos0) {
+		msgbox_replacelinetop((textleft(dat.name, 14) + textrate(mamefile.pos, mamefile.steps, AF.msgbox.columns - 14 - 6, "|", "\\") + textright(mamefile.pos*100/mamefile.steps+"%",6)))
+		fe.layout.redraw()
+		mamefile.pos0 = mamefile.pos
+	}
+}
+
+function parse_close(dat, datadb){
+	local outpath = dat.out_path
+	local outfile = WriteTextFile(outpath)
+	outfile.write_line("return ({\n")
+	foreach (item, value in datadb) {
+		outfile.write_line("\"" + item + "\" : " + value + "\n")
+	}
+	outfile.write_line("})\n")
+	outfile.close_file()
+	msgbox_replacelinetop((textleft(dat.name, 14) + textrate(mamefile.pos, mamefile.steps, AF.msgbox.columns - 14 - 6, "|", "\\") + textright("DONE",6)))
+}
+
+function parsemame_commanddat(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
+
+	local line = ""
+	local romsarray = []
+	local commandsarray = []
+	local commandstring = ""
+	local i = 0
+	local commandsdb = {}
+
+	while (!inputfile.eos()) {
+		line = inputfile.read_line()
+		parse_timer(inputfile.pos(), dat)
+
+		if ((line.find("$info=")!= null) && (line != "$info=")) {
+			i ++
+			romsarray = split(split(line, "=")[1], comma)
+			line = ""
+			while ((line != "- CONTROLS -") && (line !="«Buttons»") && (!inputfile.eos())) {
+				line = inputfile.read_line()
+			}
+			if (!inputfile.eos()){
+				line = inputfile.read_line() //skip separator
+				line = inputfile.read_line() //first button
+				while (line != "") {
+					if ((line.find("@left") == null) && (line.find("@right") == null)) 
+						try {commandsarray.push(strip(split(line, ":(=")[1]))} catch(err) {}
+					line = inputfile.read_line()
+				}
+				commandstring = "[\"" + commandsarray[0] + "\""
+				for (local ii = 1; ii < commandsarray.len(); ii++) {
+					commandstring = commandstring + comma + "\"" + commandsarray[ii] + "\""
+				}
+				commandstring += "]"
+				foreach (id, item in romsarray) {
+					commandsdb.rawset(item, commandstring)
+				}
+			}
+			commandsarray = []
+			commandstring = ""
+		}
+	}
+	parse_close(dat, commandsdb)
+}
+
+function parsemame_bestgamesini(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
+
+	local ratetonumber = {
+		"[0 to 10 (Worst)]" : "1.0"
+		"[10 to 20 (Horrible)]" : "2.0"
+		"[20 to 30 (Bad)]" : "3.0"
+		"[30 to 40 (Amendable)]" : "4.0"
+		"[40 to 50 (Decent)]" : "5.0"
+		"[50 to 60 (Not Good Enough)]" : "6.0"
+		"[60 to 70 (Passable)]" : "7.0"
+		"[70 to 80 (Good)]" : "8.0"
+		"[80 to 90 (Very Good)]" : "9.0"
+		"[90 to 100 (Best Games)]" : "10.0"
+	}
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
+	local line = ""
+	local inarea = false
+	local currentrate = ""
+	local ratingdb = {}
+	
+	while (!inputfile.eos()) {
+		line = inputfile.read_line()
+		parse_timer(inputfile.pos(), dat)
+
+		if (!inarea && (line != "[ROOT_FOLDER]")){
+			continue
+		}
+		else if (!inarea && (line == "[ROOT_FOLDER]")){
+			inarea = true
+			continue
+		}
+
+		if (inarea && (currentrate == "")) {
+			if (ratetonumber.rawin(line)){
+				currentrate = line
+				continue
+			}
+		}
+
+		if (currentrate != ""){
+			if (line == "") {
+				currentrate = ""
+				continue
+			}
+			else {
+				ratingdb.rawset(line, "\"" + ratetonumber[currentrate] + "\"")
+			}
+		}
+	}
+
+	parse_close(dat, ratingdb)
+
+}
+
+function parsemame_historydat(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
+
+	local line = ""
+	local romsarray = []
+	local unicorrect = unicorrect()
+	local tag1 = ""
+	local indesc = false
+	local insystems = false
+	local checktext = false
+	local desctext = ""
+	local historydb = {}
+	local systemarray = 0
+
+	while (!inputfile.eos()) {
+		line = inputfile.read_line()
+		parse_timer(inputfile.pos(), dat)
+
+		if (!insystems) {
+			insystems = (line.find("$info") == 0)
+		}
+		
+		if ((insystems) && (systemarray == 0)) {
+			systemarray = split(line.slice(6),",")
+		}
+
+		if (indesc){
+			if (line.find("$end") == 0) {
+
+				indesc = false
+				insystems = false
+				desctext = uniclean(desctext) //clean unicode characters
+				foreach (uid, uval in unicorrect) {
+					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
+				}
+
+				desctext = clean_adb_history(desctext)	//parse and fix \n for description
+
+				if (desctext != ""){
+					foreach (i, value in systemarray){
+						historydb.rawset (value, "\"" + desctext + "\"")
+					}
+				}
+				systemarray = 0	
+				desctext = ""
+			} else {
+				desctext = desctext + line + "^"
+			}
+		}
+		if (!indesc) indesc = (insystems && (line.find("$bio") == 0))
+	}
+
+	parse_close(dat, historydb)
+}
+
+function parsemame_historyxml(dat) {
+	local inputfile = parse_boot(dat)
+	if (inputfile == null) return
+
+	local filepos = 0
+	local filepos0 = 1
+	local filesteps = 20
+	local filesize = inputfile.size()
+
+	local line = ""
+	local romsarray = []
+	local unicorrect = unicorrect()
+	local tag1 = ""
+	local indesc = false
+	local insystems = false
+	local checktext = false
+	local desctext = ""
+	local historydb = {}
+
+	while (!inputfile.eos()) {
+		//limline --
+		line = inputfile.read_line()
+		parse_timer(inputfile.pos(), dat)
+
+		local a1 = split(line, "<>") // Split by tag before going forward with corrections
+		tag1 = a1.len() > 0 ? a1[0] : ""
+		if (insystems){
+			
+			//msgbox_pulse_title("MAME file process")
+			//fe.layout.redraw()
+			if (tag1 == "/systems") {
+				insystems = false
+				checktext = true
+				continue
+			}
+			else {
+				romsarray.push(split(line,"\"")[1])
+				continue
+			}
+		}
+
+		if (indesc){
+			if (tag1 == "/text") {
+
+				indesc = false
+				desctext = uniclean(desctext) //clean unicode characters
+				foreach (uid, uval in unicorrect) {
+					desctext = subst_replace(desctext, uval.old, uval.new) //clean html and other unicode characters
+				}
+
+				desctext = clean_adb_history(desctext)	//parse and fix \n for description
+
+				if (desctext != ""){
+					foreach (i, item in romsarray){
+						historydb.rawset (item, "\"" + desctext + "\"")
+					}
+				}
+				romsarray = []				
+				desctext = ""
+			} else {
+				desctext = desctext + line + "^"
+			}
+		}
+
+		if ((tag1 == "text") && (checktext)){
+			checktext = false
+			indesc = true
+		}
+
+		if (tag1 != "systems") continue
+		else insystems = true
+
+	}
+	parse_close(dat, historydb)
+}
+
+function build_mame_nut(tempprf){
+	// Update paths with pref data
+	foreach (item, val in mamefile.dat){
+		mamefile.dat[item].in_path = tempprf[val.prefname]
+	}
+	
+	msgbox_open("PROCESS MAME FILES\n"+AF.msgbox.separator2, "", function(){
+		msgbox_close()
+		fe.signal("back")
+		fe.signal("back")
+		fe.set_display(fe.list.display_index)
+	})
+	fe.layout.redraw()
+	
+	msgbox_lock(true)
+
+	foreach (item, val in mamefile.dat){
+		if (val.in_path != "") val.processor(val)
+	}
+
+	msgbox_addlinetop("Processing complete\nPress ESC to reload Layout\n"+strepeat("-", AF.msgbox.columns))
+	msgbox_lock(false)
 }
 
 function parseXML(inputpath) {
@@ -3571,6 +3870,11 @@ function textright(string1, columns){
 	return out
 }
 
+function textleft(string1, columns){
+	local out = (string1 + strepeat(" ", 80)).slice(0, columns)
+	return out
+}
+
 function patchtext(string1, string2, width2, columns) {
 	// Packs together string1 and string2, string1 starts at position 0,
 	// string 2 starts at with2 from the right. Columns is the total width
@@ -3608,11 +3912,17 @@ function textrate(num, den, columns, ch1, ch0) {
 
 function msgbox_test(){
 	local bodytext = ""
-	for (local i = 3; i < 50; i++){
-		bodytext = bodytext + i + "\n"
+	local colcount = "1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+	local message =  " -- ROWS:" + AF.msgbox.visiblelines + " COLS:" +AF.msgbox.columns + " -- "
+	local midrow = floor(AF.msgbox.visiblelines * 0.5) + 1
+	local startcol = strepeat(" ", floor((AF.msgbox.columns - message.len())*0.5) - (midrow >= 10 ? 2 : 1))
+
+	colcount = colcount.slice(0,AF.msgbox.columns)
+	for (local i = 2; i < 50; i++){
+		bodytext = bodytext + i + (i == midrow ? startcol + message : "") + "\n"
 	}
 	bodytext = bodytext + "50"
-	msgbox_open("TOTAL:" + AF.msgbox.visiblelines, bodytext)
+	msgbox_open(colcount + "\n" + bodytext + "\n" , "")
 }
 
 dispatcher = []
@@ -4171,7 +4481,6 @@ local z_list = {
 
 	rundatetable = {}
 	favdatetable = {}
-	ratingtable = {}
 
 	romlistemulators = {}
 	allemudata = {}
@@ -4198,7 +4507,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 		// Scraping has finished and the end mesage is showing
 		if (AF.scrape.purgedromdirlist == null){
 			AF.msgbox.obj.visible = AF.msgbox.scroller.visible = false
-
+			msgbox_close()
 			if (prfmenu.showing) fe.signal("back")
 			fe.signal("back")
 
@@ -4289,6 +4598,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 function XMLtoAM2(prefst, current) {
 
 	msgbox_open("XML metadata import", "", function(){
+		msgbox_close()
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -4579,6 +4889,7 @@ function updateallgamescollections(tempprf) {
 	if (tempprf.ALLGAMES) {
 		buildconfig(tempprf.ALLGAMES, tempprf)
 		msgbox_open("Update All Games Collections", "", function(){
+			msgbox_close() //TEST169 ADDED. ADD IT TO ALL BACK BACK SITUATIONS
 			fe.signal("back")
 			fe.signal("back")
 			fe.set_display(fe.list.display_index)
@@ -4644,6 +4955,7 @@ function refreshselectedromlists(tempprf) {
 			//update_allgames_collections(true, tempprf)
 		}
 		else {
+			msgbox_close()
 			fe.signal("back")
 			fe.signal("back")
 			fe.set_display(fe.list.display_index)
@@ -5032,6 +5344,7 @@ function cleandatabase(temppref) {
 	}
 
 	msgbox_open("Romlist and Database cleanup","",function(){
+		msgbox_close()
 		fe.signal("back")
 		fe.signal("back")
 		fe.set_display(fe.list.display_index)
@@ -5524,15 +5837,14 @@ function z_initfavsfromfiles() {
 
 z_updatetagstable()
 
-z_list.ratingtable = prf.INI_BESTGAMES_PATH == "" ? {} : extradatatable(prf.INI_BESTGAMES_PATH)
-
-function z_getmamerating(gamename) {
-	local out = ""
-	if (z_list.ratingtable.rawin(gamename)) {
-		out = ratetonumber[z_list.ratingtable[gamename]]
-		if ((out.find(".") == null) && (out.len() > 0)) out = out + ".0"
+function hybridrating(listitem){
+	if (listitem.z_rating != "") {
+		return (listitem.z_rating)
 	}
-	return out
+	if ((mameT.bestgamesini != "") && (mameT.bestgamesini.rawin(listitem.z_name))) {
+		return (mameT.bestgamesini[listitem.z_name])
+	}
+	return ("")
 }
 
 function parsecommands(instring) {
@@ -5927,7 +6239,7 @@ multifilterz.l0["Rating"] <- {
 		translate = false
 		sort = false
 		levcheck = function(index) {
-			local v = z_list.boot[index].z_rating
+			local v = hybridrating(z_list.boot[index]) //TEST169
 			local v2 = "??"
 			if (v == "") {
 				v = "??"
@@ -6793,6 +7105,7 @@ function z_mots2filter(index) {
 	}
 
 	if (search.mots[0] == "z_tags") return (currentval.find(search.mots[1]) != null)
+	else if (search.mots[0] == "z_rating") return (hybridrating(z_list.boot[index + fe.list.index]) == search.mots[1])
 	else return (currentval.tolower().find(search.mots[1].tolower()) == 0)
 
 	return false
@@ -6949,12 +7262,12 @@ function z_listboot() {
 			currentsystem = z_list.boot[i].z_system.tolower()
 
 			//insert here system overrides, for example change controller and numbuttons using system data fields
+
 			if (system_data.rawin(currentsystem)) {
 				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
 				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
 			}
 
-			if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 		} else {
 			// This is a redirection entry to a different display
 			z_list.boot.push(clone (z_fields1))
@@ -7161,7 +7474,7 @@ function z_listsort(orderby, reverse) {
 		break
 		case z_info.z_rating.id:
 			foreach(i, a in z_list.gametable) {
-				tval1.push((a.z_rating == "") ? "0000000000" : format("%010u", a.z_rating.tofloat() * 10))
+				tval1.push((hybridrating(a) == "") ? "0000000000" : format("%010u", hybridrating(a).tofloat() * 10))
 				tval2.push("|" + nameclean(a.z_title).tolower() + blanker + "|" + a.z_system.tolower() + blanker)
 			}
 		break
@@ -7251,7 +7564,7 @@ function z_liststops() {
 
 		else if (z_list.orderby == z_info.z_series.id) temp.push(z_list.gametable[i].z_series.tolower())
 
-		else if (z_list.orderby == z_info.z_rating.id) temp.push(z_list.gametable[i].z_rating == "" ? "??" : z_list.gametable[i].z_rating)
+		else if (z_list.orderby == z_info.z_rating.id) temp.push(hybridrating(z_list.gametable[i]) == "" ? "??" : hybridrating(z_list.gametable[i])) //TEST169
 	}
 
 	// Scans the list and for every valye of "i" it does:
@@ -8329,12 +8642,12 @@ local tiles = {
 }
 tiles.total = tiles.count + 2 * tiles.offscreen
 
-local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.widthmix + UI.padding)
+local surfacePosOffset = (tiles.offscreen / UI.rows) * (UI.corewidthmix + UI.padding)
 
 tiles.i2.pulse_speed_1 = spdT.scroll_1
 tiles.i2.pulse_speed_p = spdT.scroll_p
 
-tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.widthmix + UI.padding)
+tiles.i2.maxdelta = (tiles.offscreen / UI.rows + 1.0) * (UI.corewidthmix + UI.padding)
 
 local snap_glow = []
 local snap_grad = []
@@ -11498,9 +11811,9 @@ function history_updateoverlay() {
 
 	local commands_dat = []
 	local commands_scrape = []
-	try {commands_dat = commandtable[rom]} catch(err) {}
+	try {commands_dat = mameT.commanddat[rom]} catch(err) {}
 	commands = z_list.gametable[z_list.index].z_commands
-	if (commandtable.rawin(rom)) commands = commandtable[rom]
+	if (mameT.commanddat.rawin(rom)) commands = mameT.commanddat[rom]
 
 	local commandnull = true
 	foreach(i, item in commands) {
@@ -11645,7 +11958,7 @@ function history_updatetext() {
 			if (i < z_list.gametable2[z_list.index].z_tags.len() - 1)
 				temptext = temptext + ", "
 		}
-		temptext = temptext + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + z_list.gametable[z_list.index].z_rating + "\n"
+		temptext = temptext + gly(0xe900) + z_list.gametable[z_list.index].z_players + " " + gly(0xe901) + z_list.gametable[z_list.index].z_buttons + " " + gly(0xe904) + hybridrating(z_list.gametable[z_list.index]) + "\n"
 		hist_text.descr.msg = temptext
 	}
 	else {
@@ -11665,46 +11978,31 @@ function history_updatetext() {
 		hist_text.copy.msg = "©" + z_list.gametable[z_list.index].z_year
 		hist_text.playr.msg = gly(0xe900) + " " + z_list.gametable[z_list.index].z_players
 		hist_text.buttn.msg = gly(0xe901) + " " + z_list.gametable[z_list.index].z_buttons
-		hist_text.ratng.msg = gly(0xe904) + " " + z_list.gametable[z_list.index].z_rating
+		hist_text.ratng.msg = gly(0xe904) + " " + hybridrating(z_list.gametable[z_list.index])
 	}
 
 	hist_curr_rom = rom
-	local alt = fe.game_info(Info.AltRomname)
-	local cloneof = fe.game_info(Info.CloneOf)
-
-	local lookup = af_get_history_offset(sys, rom, alt, cloneof)
-
+	
 	local tempdesc = "" //this description comes from history.dat
 
-	if (lookup >= 0) {
-		try {
-			tempdesc = af_get_history_entry(lookup, prf)
-		} catch(err) {
-			tempdesc = "\n\n\nThere was an error loading game data, please check history.dat preferences in the layout options"
-		}
-	}
-	else
-	{
-		if (lookup == -2){
-			tempdesc = "\n\n\nIndex file not found. Try generating an index from the history.dat plug-in configuration menu."
-		}else{
-			tempdesc = ""
-			foreach (i, item in z_list.gametable[z_list.index].z_description)
-				tempdesc = tempdesc + item + "\n"
-		}
-	}
+	// History.dat description
+	local tempdesc_dat = ""
+	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")
+	// History.xml description
+	local tempdesc_xml = ""
+	if ((mameT.historyxml != "") && (mameT.historyxml.rawin(rom))) tempdesc_xml = subst_replace(mameT.historyxml[rom],"^","\n")
+	// Overview description
+	local tempdesc_overview = fe.game_info(Info.Overview)
+	// AF Database description
+	local tempdesc_zdb = ""
+	foreach (i, item in z_list.gametable[z_list.index].z_description)
+		tempdesc_zdb = tempdesc_zdb + item + "\n"
+	if ((tempdesc_zdb == "?") && (tempdesc_zdb == "\n")) tempdesc_zdb = ""
 
-	local tempdesc3 = "" //this comes from the overview
-	tempdesc3 = fe.game_info(Info.Overview)
-
-	if (tempdesc3 != "") tempdesc = tempdesc3// + "\n\n"
-
-	local tempdesc2 = "" //This comes from the romlist
-			foreach (i, item in z_list.gametable[z_list.index].z_description)
-				tempdesc2 = tempdesc2 + item + "\n"
-	if ((tempdesc2 != "?") && (tempdesc2 != "") && (tempdesc2 != "\n")) {
-		tempdesc = tempdesc2// + "\n\n"
-	}
+	if (tempdesc_zdb != "") tempdesc = tempdesc_zdb
+	else if (tempdesc_overview != "") tempdesc = tempdesc_overview
+	else if (tempdesc_xml != "") tempdesc = tempdesc_xml
+	else if (tempdesc_dat != "") tempdesc = tempdesc_dat
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
@@ -14099,10 +14397,31 @@ AF.msgbox.obj.font = uifonts.mono
 AF.msgbox.obj.zorder = 100
 AF.msgbox.obj.enable_signals = false
 AF.msgbox.obj.enable_transition = false
-AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) //40 columns text
+AF.msgbox.obj.char_size = floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.5 / AF.msgbox.columns) //Rough text sizing
 AF.msgbox.obj.time_constant = 39
 
-AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+// Refine text size to max fill with 60 columns
+AF.msgbox.obj.msg = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+while (AF.msgbox.obj.lines_total == 1){
+	AF.msgbox.obj.char_size ++
+}
+AF.msgbox.obj.char_size -- 
+
+// Refine column number to fill the screen
+while (AF.msgbox.obj.lines_total == 1){
+	AF.msgbox.columns ++
+	AF.msgbox.obj.msg = AF.msgbox.obj.msg + "X"
+}
+AF.msgbox.columns --
+AF.msgbox.separator1 = AF.msgbox.separator1.slice(0,AF.msgbox.columns)
+AF.msgbox.separator2 = AF.msgbox.separator2.slice(0,AF.msgbox.columns)
+//AF.msgbox.obj.msg = "123456789012345678901234567890123456789012345678901234567890\n123456789012345678901234567890123456789012345678901234567890\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9"
+
+/* THIS CODE IS USED TO FIX SPACING BUT CAUSES BLURRYNESS AND WRONG WRAPPING
+AF.msgbox.span_area = (fl.w - 2.0 * 50 * UI.scalerate)
+AF.msgbox.char_real_width = (AF.msgbox.obj.msg_width * 1.0 / (AF.msgbox.columns + (AF.msgbox.columns - 1) * 0.125) )
+AF.msgbox.obj.char_spacing = ( 0.25 + (AF.msgbox.span_area - AF.msgbox.columns * AF.msgbox.char_real_width)*1.0/((AF.msgbox.columns - 1) * AF.msgbox.char_real_width) ) * 1.0 / 0.375
+*/
 
 AF.msgbox.scroller = fe.add_rectangle(fl.x + fl.w - 25 * UI.scalerate, fl.y + 50 * UI.scalerate, 5 * UI.scalerate, fl.h - 2 * 50 * UI.scalerate)
 AF.msgbox.scroller.set_rgb(255,255,255)
@@ -14113,6 +14432,7 @@ AF.msgbox.scroller.alpha = 200
 AF.msgbox.visiblelines = AF.msgbox.obj.lines
 
 if (floor(floor((fl.w - 2.0 * 50 * UI.scalerate) * 1.65 / AF.msgbox.columns) + 0.5) == 8) {
+	testpr("PIXELMONO\n")
 	AF.msgbox.obj.font = "fonts/font_7x5pixelmono.ttf"
 	AF.msgbox.obj.char_size = 16
 	AF.msgbox.visiblelines = AF.msgbox.obj.lines
@@ -15239,26 +15559,44 @@ function updatetiles() {
 	// to derermine focusindex.new, .old, indextemp etc
 	tilesTablePos.Offset += column.offset * UI.rows
 
-	// Determine center position correction when reaching beginning of list
-	centercorr.shift = 0 // correction of jump dimension
-	centercorr.val = 0 // correction of target position (it is 0 for centered tiles)
 
-	if ((column.stop < deltacol) && (column.start > deltacol - 1)) {
-		centercorr.shift = centercorr.zero + (column.stop) * (UI.widthmix + UI.padding)
-	}
-	else if ((column.stop < deltacol) && (column.start <= deltacol - 1)) {
-		centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.widthmix + UI.padding)
-	}
-	else if ((column.stop >= deltacol) && (column.start <= deltacol - 1)) {
-		centercorr.shift = - centercorr.zero - (column.start) * (UI.widthmix + UI.padding)
-	}
+	if (column.used <= UI.colsvisible) {
+		local centertempzero = -0.5 * (column.used * UI.corewidthmix + (column.used + 1) * UI.padding) + 0.5 * UI.corewidthmix + UI.padding
 
-	if ((column.stop < deltacol)) {
-		centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.widthmix + UI.padding)
-	}
+		centercorr.shift = column.offset * (UI.corewidthmix + UI.padding)
+		/* USELESS?
+		if ((column.stop == 0) && (column.start == column.used - 1)) {
+			centercorr.shift = -(column.used - 1)*(UI.corewidthmix + UI.padding)
+		}
+		if ((column.stop == column.used - 1) && (column.start == 0)) {
+			centercorr.shift = (column.used - 1)*(UI.corewidthmix + UI.padding)
+		}
+		*/
+		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.corewidthmix + UI.padding)
 
-	if (column.offset == 0) {
-		centercorr.shift = 0
+	}
+	else {
+		// Determine center position correction when reaching beginning of list
+		centercorr.shift = 0 // correction of jump dimension
+		centercorr.val = 0 // correction of target position (it is 0 for centered tiles)
+
+		if ((column.stop < deltacol) && (column.start > deltacol - 1)) {
+			centercorr.shift = centercorr.zero + (column.stop) * (UI.corewidthmix + UI.padding)
+		}
+		else if ((column.stop < deltacol) && (column.start <= deltacol - 1)) {
+			centercorr.shift = (column.offset < 0 ? -1 : 1) * (UI.corewidthmix + UI.padding)
+		}
+		else if ((column.stop >= deltacol) && (column.start <= deltacol - 1)) {
+			centercorr.shift = - centercorr.zero - (column.start) * (UI.corewidthmix + UI.padding)
+		}
+
+		if ((column.stop < deltacol)) {
+			centercorr.val = centercorr.zero + floor((z_list.index + var) / UI.rows) * (UI.corewidthmix + UI.padding)
+		}
+
+		if (column.offset == 0) {
+			centercorr.shift = 0
+		}
 	}
 }
 
@@ -15317,7 +15655,7 @@ function changetiledata(i, index, update) {
 	}
 	tilez[indexTemp].obj.zorder = -2
 
-	tilesTablePos.X[indexTemp] = (i / UI.rows) * (UI.widthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix * 0.5
+	tilesTablePos.X[indexTemp] = (i / UI.rows) * (UI.corewidthmix + UI.padding) + carrierT.x + centercorr.val + UI.tilewidthmix * 0.5
 	tilesTablePos.Y[indexTemp] = (i%UI.rows) * (UI.coreheight + UI.padding) + carrierT.y + UI.tileheight * 0.5
 
 	//TEST101 THIS INTERACTS WITH OFF SCREEN VISIBILITY
@@ -15999,7 +16337,7 @@ function on_transition(ttype, var0, ttime) {
 			// surfacePos is the counter that is used to trigger scroll, when it's not zero, scroll happens
 			// normally it's large as a tile, but close to the border centercorr.shift is non zero so it scrolls less or not at all
 
-			i2_pulse(tiles.i2, (column.offset * (UI.widthmix + UI.padding)) - centercorr.shift)
+			i2_pulse(tiles.i2, (column.offset * (UI.corewidthmix + UI.padding)) - centercorr.shift)
 		}
 	}
 
@@ -17534,7 +17872,7 @@ function buildgamelistxml() {
 		outputfile.write_line("    <thumbnail>" + "./" + AF.emulatordata[romlist].artworktable.flyer.slice(AF.emulatordata[romlist].artworktable.flyer.find(rompath) + rompath.len()) + z_list.gametable[index].z_name + ".png" + "</thumbnail>\n")
 		outputfile.write_line("    <video>" + "./" + AF.emulatordata[romlist].artworktable.video.slice(AF.emulatordata[romlist].artworktable.video.find(rompath) + rompath.len()) + z_list.gametable[index].z_name + ".mp4" + "</video>\n")
 		outputfile.write_line("    <releasedate>" + z_list.gametable[index].z_year + "0101T000000" + "</releasedate>\n")
-		outputfile.write_line("    <rating>" + ("0" + z_list.gametable[index].z_rating).tofloat()/10.0 + "</rating>\n")
+		outputfile.write_line("    <rating>" + ("0" + hybridrating(z_list.gametable[index])).tofloat()/10.0 + "</rating>\n")
 		outputfile.write_line("    <developer>" + z_list.gametable[index].z_manufacturer + "</developer>\n")
 		outputfile.write_line("    <publisher>" + z_list.gametable[index].z_manufacturer + "</publisher>\n")
 		outputfile.write_line("    <genre>" + z_list.gametable[index].z_category + "</genre>\n")
@@ -18351,9 +18689,9 @@ function on_signal(sig) {
 						skip = (z_list.gametable[z_list.index].z_series == "")
 					},{
 						text = ltxt("Rating", AF.LNG),
-						note = z_list.gametable[z_list.index].z_rating
-						fade = (z_list.gametable[z_list.index].z_rating == "")
-						skip = (z_list.gametable[z_list.index].z_rating == "")
+						note = hybridrating(z_list.gametable[z_list.index])
+						fade = (hybridrating(z_list.gametable[z_list.index]) == "")
+						skip = (hybridrating(z_list.gametable[z_list.index]) == "")
 					},{
 						text = ltxt("Arcade System", AF.LNG),
 						note = z_list.gametable[z_list.index].z_arcadesystem
@@ -18439,8 +18777,8 @@ function on_signal(sig) {
 							search.mots2string = ltxt("Series", AF.LNG) + ":" + search.mots[1]
 							hidemenu = true
 						}
-						if ((result == 8) && (z_list.gametable[z_list.index].z_rating != "")) {
-							search.mots = ["z_rating", z_list.gametable[z_list.index].z_rating]
+						if ((result == 8) && (hybridrating(z_list.gametable[z_list.index]) != "")) {
+							search.mots = ["z_rating", hybridrating(z_list.gametable[z_list.index])]
 							search.mots2string = ltxt("Rating", AF.LNG) + ":" + search.mots[1]
 							hidemenu = true
 						}

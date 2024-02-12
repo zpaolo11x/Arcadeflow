@@ -529,7 +529,7 @@ coregrafx 2
 core grafx 2
 nec coregrafx 2
 
-nec coregrafx,,256,224,CGII,CRT,NONE,4,3,CONSOLE,NEC,1989,CoreGrafx,31,rom,joystick (8-way),2
+nec coregrafx,256,224,CGII,CRT,NONE,4,3,CONSOLE,NEC,1989,CoreGrafx,31,rom,joystick (8-way),2
 coregrafx
 core grafx
 

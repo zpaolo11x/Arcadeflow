@@ -1,0 +1,6 @@
+16.9
+Added support for history.xml file
+Revamped MAME xml, dat and ini file management
+Message box text now always fills the screen
+Fixed bug in the systems data file
+Fixed bug with history metadata parsing

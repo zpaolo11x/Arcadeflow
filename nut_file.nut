@@ -109,6 +109,7 @@ class ReadTextFile
 			{
 				_f = file( path + filename, "r" );
 				_blb = _f.readblob( _readsize );
+				_pos = 0;
 			}
 			catch ( e )
 			{
@@ -133,6 +134,7 @@ class ReadTextFile
 			while ( !_blb.eos() )
 			{
 				char = _blb.readn( 'b' );
+				_pos = _pos + 1
 				if ( char == '\n' )
 					return strip( line );
 				line += char.tochar();
@@ -174,6 +176,16 @@ class ReadTextFile
 		return ( _blb.eos() && _f.eos() );
 	}
 
+	function size()
+	{
+		return(_blb.len());
+	}
+
+	function pos()
+	{
+		return(_pos);
+	}
+
 	function close_file() 
 	{
 		_f.close();
@@ -181,8 +193,9 @@ class ReadTextFile
 	
 	_f=null;
 	_blb=null;
+	_pos=0;
 	_next_ln="";
-	_readsize=1024*4;
+	_readsize=1024*1024*100;
 };
 
 ///////////////////////////////////////////////////
