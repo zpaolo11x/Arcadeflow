@@ -5847,18 +5847,6 @@ function hybridrating(listitem){
 	return ("")
 }
 
-//TEST169 REMOVE THIS
-/*
-function z_getmamerating(gamename) {
-	local out = ""
-	if (z_list.ratingtable.rawin(gamename)) {
-		out = ratetonumber[z_list.ratingtable[gamename]]
-		if ((out.find(".") == null) && (out.len() > 0)) out = out + ".0"
-	}
-	return out
-}
-*/
-
 function parsecommands(instring) {
 	local str_array = split(instring, ";")
 	local btn_array = []
@@ -7274,13 +7262,12 @@ function z_listboot() {
 			currentsystem = z_list.boot[i].z_system.tolower()
 
 			//insert here system overrides, for example change controller and numbuttons using system data fields
-			//TEST169 if the db is saved, these default data are backed in the db, it is ok because this data is only scraped, not from mame files
+
 			if (system_data.rawin(currentsystem)) {
 				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
 				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
 			}
 
-			//TEST169 removed if (z_list.boot[i].z_rating == "") z_list.boot[i].z_rating = z_getmamerating(z_list.boot[i].z_name)
 		} else {
 			// This is a redirection entry to a different display
 			z_list.boot.push(clone (z_fields1))
@@ -15573,8 +15560,6 @@ function updatetiles() {
 	tilesTablePos.Offset += column.offset * UI.rows
 
 
-	//TEST169 NEW CENTERING FOR LOW NUMBER
-
 	if (column.used <= UI.colsvisible) {
 		local centertempzero = -0.5 * (column.used * UI.corewidthmix + (column.used + 1) * UI.padding) + 0.5 * UI.corewidthmix + UI.padding
 
@@ -15590,7 +15575,6 @@ function updatetiles() {
 		centercorr.val = centertempzero + (floor((z_list.index + var) * 1.0 / UI.rows)) * (UI.corewidthmix + UI.padding)
 
 	}
-	//TEST169 END NEW CENTERING
 	else {
 		// Determine center position correction when reaching beginning of list
 		centercorr.shift = 0 // correction of jump dimension
