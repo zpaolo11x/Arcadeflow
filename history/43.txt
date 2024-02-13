@@ -1,3 +1,0 @@
-4.3
-Fixed some bugs in the label scrollbar, taking into account "Vs. " game sorting, cleaned up the code
-Lighter frosted background in "Light" theme to improve menu readability

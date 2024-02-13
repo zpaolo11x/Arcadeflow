@@ -1,3 +1,0 @@
-2.7
-Fixed some bugs in screen rotation
-Added the possibility to define a layout resolution independent from screen resolution

@@ -1,8 +1,0 @@
-8.4
-Bug fixes in the command.dat parser
-Added new option to reduce the video delay load
-Added option to hide the game title over the snapshot
-Slightly darker "Dark" theme
-Fixed vertical centering of thumbnails
-Added options to stretch custom background instead of crop
-Changed starting directory when browsing for background

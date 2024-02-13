@@ -1,4 +1,0 @@
-16.4
-Added option to show only power menu
-Added report message for romlist refresh
-Fixed volume menu jumping

@@ -1,5 +1,0 @@
-15.9
-Added new manufacturer logos
-Updated German translation (thanks ScherzKeks)
-Fixed progress bar with overscan
-Code cleanup

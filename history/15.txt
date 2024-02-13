@@ -1,6 +1,0 @@
-1.5
-New shadows graphics, smoother and more modern-looking 
-New and improved search features:
-- use "Custom 2" to filter games with the same year, manufacturer, main category and sub-category of the current game (e.g. shooters, or horizontal shooters)
-- use "Custom 3" to open a menu and search in games titles, years, manufacturers or categories
-When toggling screen rotation using AttractMode hotkeys the screen updates to the vertical layout if needed.

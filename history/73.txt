@@ -1,6 +1,0 @@
-7.3
-Added "grouped" displays menu, with Arcade, Computer, Console and Handheld categories
-New version control for preference file that is not completely wiped when new preferences are added
-Added visual cue for options introduced in latest release
-Fixed a bug in the systems list
-Fixed bugs in the name artwork generation

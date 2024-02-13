@@ -1,5 +1,0 @@
-10.6
-Added options to specify overscan screen width and height
-Added Nintendo VS System and generic arcade Nintendo logo
-Fixed power menu not showing in some cases
-Fixed scraper support for $PROGDIR variable

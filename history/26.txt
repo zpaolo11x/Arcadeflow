@@ -1,3 +1,0 @@
-2.6
-New "frosted glass" effect when you enter overlay menus
-Updated Readme.md with current options

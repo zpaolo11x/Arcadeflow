@@ -1,7 +1,0 @@
-9.7
-Added option to generate romlists based on RetroPie XML files
-Improved category recognition and management
-Fixed some system logos not showing correctly
-Fixed bug when list contains no entry
-Prevent input when checking for updates
-Fixed bug in tags management

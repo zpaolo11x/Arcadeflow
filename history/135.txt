@@ -1,2 +1,0 @@
-13.5
-Fixed issues with the update routine on Windows

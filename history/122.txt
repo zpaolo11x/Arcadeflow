@@ -1,6 +1,0 @@
-12.2
-Fixed bug in update of all games collections
-Fixed issue where collections wouldn't show in menu
-Fixed issue with last played collection filter
-Fixed issue with last line of attract.cfg being stripped
-Fixed bug crashing the database when game title has apices

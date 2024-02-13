@@ -1,2 +1,0 @@
-2.5
-Added a new option to toggle screen rotation permanently

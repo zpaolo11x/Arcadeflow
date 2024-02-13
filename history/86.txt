@@ -1,2 +1,0 @@
-8.6
-Fixed bugs in the automatic update routine

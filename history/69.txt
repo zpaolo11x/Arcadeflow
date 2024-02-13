@@ -1,4 +1,0 @@
-6.9
-Added new manufacturer icons (1000 unique icons total)
-Added tick sound whne jumping letter
-Silenced game audio when entering menus

@@ -1,3 +1,0 @@
-2.8
-Implemented a new, smoother system for background image crossfade
-Added a "look for the same..." + "Decade" search menu entry

@@ -1,9 +1,0 @@
-10.1
-Added rom scraping with CRC check
-Added support for arcade games scraping
-Added option to scrape a single game
-Added options to filter by arcade system if available
-Removed options for mame series.ini, unnecessary since AM 2.6.1
-Fixed character correction bug in scraper
-Fixed bug with multifilter update
-Fixed issues with curl and scraping on Windows

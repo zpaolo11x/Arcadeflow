@@ -1,6 +1,0 @@
-2.3
-Improved the overall speed by optimizing shaders and textures
-Added a new effect on the background where you can get a pixellated version of the snap or video
-Added a new glow effect around selected thumbs with the average thumb color
-Added the possibility to hear audio of the videos in the thumb and/or in the history page
-Revamped the options to make it more clear

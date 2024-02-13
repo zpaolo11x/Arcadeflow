@@ -1,6 +1,0 @@
-6.8
-Fixed issues with file browser when navigating folders
-Added new systems logo for game consoles (Odissey, Sega MKIII etc) and arcade systems (CPS1,2,3, Naomi etc)
-Added an option for a custom button to open the history/overview page
-Fixed a bug with name artwork generation
-Fixed a bug interfereing with Rocketlauncher plugin

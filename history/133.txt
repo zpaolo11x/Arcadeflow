@@ -1,4 +1,0 @@
-13.3
-Added new GitHub based update routine
-Reorganised code and folder structure
-Code cleanup

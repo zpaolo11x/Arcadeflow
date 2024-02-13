@@ -1,3 +1,0 @@
-10.7
-Added options te enable tile border color cycling
-Added option to show only game titles instead of thumbnails

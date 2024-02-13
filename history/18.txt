@@ -1,2 +1,0 @@
-1.8
-Introduced a new layout style where game snaps are not horizontal or vertical depending on game orientation, but cropped square. You can chose it in the options menu.

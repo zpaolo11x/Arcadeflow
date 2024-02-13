@@ -1,4 +1,0 @@
-16.5
-Fixed bugs in the scraper that caused hanging
-Fixed collections update with master romlist
-Fixed CRC extraction from zip files

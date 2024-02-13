@@ -1,5 +1,0 @@
-6.3
-Added warning: Arcadeflow will work with Attract Mode 2.6.1 but scrolling will not work as espected 
-Added more manufacturer logos in vector format (803 unique logos)
-Changed the way manufacturers logos are managed under the hood
-Fixed naming of Wonderswan console

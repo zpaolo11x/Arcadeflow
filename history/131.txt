@@ -1,4 +1,0 @@
-13.1
-Fixed crc scraping not working when $HOME in rompath
-Fixed "/" breaking game name
-Added warnings for attract.cfg options

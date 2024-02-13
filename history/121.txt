@@ -1,5 +1,0 @@
-12.1
-Fixed issue with romlist generation at start
-Fixed paths in commands to delete roms
-Add icons for more than 4 players
-Added new collections for last played and favourite games

@@ -1,5 +1,0 @@
-14.5
-Added option to show controls overlay only on arcade games
-Added two new systems: Sega Pico and Acan
-In multifilter menu you can skip void entries with "right"
-Fixed issue with controls overlay

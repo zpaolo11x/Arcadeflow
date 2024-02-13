@@ -1,8 +1,0 @@
-4.5
-The layout is not restricted to arcade games anymore, it works and adapts to console games (TV) and handheld games. Just add "Console" and/or "Handheld" to your emulator category in Attract Mode settings
-Added a "Box Art Mode" for console games: Arcadeflow won't show screenshots but box artwork for console games. You can enable it from the menu and it will be applied to emulators that have "Console" added as a category.
-Optimized layout and CRT filters for handheld games, this is enabled when an emulator have "Handheld" as a category.
-Rearrenged the Displays Menu functionality so that now you can use the same Arcadeflow layout for both Displays Menu and normal layout, no need for duplicate folders anymore
-Removed "Displays Menu mode" option, now the theme autodetects if it's in Displays Menu mode or not
-Added options to change the number of rows when Arcadeflow is used as Displays Menu
-Changed parts of the layout so it better copes with console game lists, now it works fine with screenshots for TV consoles (4:3 screen aspect ratio)

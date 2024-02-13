@@ -1,2 +1,0 @@
-15.3
-Fixed bug with metadata that crashed AF

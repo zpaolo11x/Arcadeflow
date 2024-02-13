@@ -1,4 +1,0 @@
-4.8
-Fixed a bug that kept videos (and their audio) playing even when not visible
-Fixed some issues with labels and mame romlists
-New players icons for mame romlists using "2P sim" and "2P alt" players definition

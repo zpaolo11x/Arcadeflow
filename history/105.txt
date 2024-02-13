@@ -1,9 +1,0 @@
-10.5
-Fixed excessive tile jump when changing list
-Fixed rating when using external bestgames.ini
-Added scraper support for relative artowrk and games paths
-Added a utility menu entry to quick show only favourites
-Added system logos for Naomi GD-ROM and Sega Hikaru
-Added a power menu option in the exit menu
-Updated the sound of tiles scrolling
-Updated italian translation

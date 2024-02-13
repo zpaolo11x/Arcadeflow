@@ -1,4 +1,0 @@
-16.1
-Fixed similar games vidoes not playing
-Fixed crash when exiting to desktop
-Fixed scrape hanging on macOS

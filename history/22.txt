@@ -1,4 +1,0 @@
-2.2
-The thumbnail art fades to the average thumbnail color in the area behind the title logo, to improve readability
-Added an option "Smooth Gradient Snap" to enable/disable the fade effect
-In "Square" thumbs mode changed the position and aspect ratio of the logo so it's more on the top of the thumb

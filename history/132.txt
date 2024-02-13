@@ -1,3 +1,0 @@
-13.2
-Scraping matches roms regardless of WHDLoad version
-Fixed bug with customised utility menu

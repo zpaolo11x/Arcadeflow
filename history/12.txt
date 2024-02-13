@@ -1,6 +1,0 @@
-1.2
-Scrolling game title when the title size is too big to fit the screen 
-If you go "up" from the first row you enter the "Filters" menu
-If you go "down" from the second row the scrollbar highlights and you can jump screens faster
-Improved scrolling speed on some systems
-Added a splash screen at startup
