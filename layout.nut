@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.9
+// Arcadeflow - v 17.0
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.9" // AF version in string form
+	version = "17.0" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -1320,6 +1320,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
 {v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
+{v = 17.0, varname = "GENERATEHTML", glyph = 0xe998, title = "Generate html file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; buildhtmlhistory()}, selection = AF.req.executef},
 {v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options", options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
 ])
 
@@ -1390,8 +1391,8 @@ function historytext() {
 	local verfile = null
 	local history = []
 	while (scanver >= 10) {
-		if (file_exist(AF.folder + "history2/" + scanver + ".txt")) {
-			verfile = ReadTextFile (AF.folder + "history2/" + scanver + ".txt")
+		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
+			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
 			history.push("*v" + verfile.read_line() + "*" + "\n\n")
 			while (!verfile.eos()) {
 				history.push("- " + verfile.read_line() + "\n")
@@ -1423,7 +1424,7 @@ function buildhtmlhistory() {
 
 	local verfile = null
 	local infile = ReadTextFile (AF.folder + "docs/history_canvas.html")
-	local outfile = WriteTextFile (AF.folder + "docs/history_TEST.html")
+	local outfile = WriteTextFile (AF.folder + "docs/history.html")
 
 	while (!infile.eos()) {
 		in_line = infile.read_line_wtab()
@@ -1453,9 +1454,20 @@ function buildhtmlhistory() {
 						if (out_line.find("$LISTITEM") != null) {
 							while (!verfile.eos()){
 								line = verfile.read_line()
-								out_line = subst_replace(out_line, "$LISTITEM", line)
-								outfile.write_line (out_line+"\n")
-								out_line = codeblock[i]
+								if (line.find ("- ") != 0){
+									out_line = subst_replace(out_line, "$LISTITEM", line)
+									outfile.write_line (out_line+"\n")
+									out_line = codeblock[i]
+								} else {
+									outfile.write_line ("						<ul>"+"\n")
+									while (line.find ("- ") == 0){
+										out_line = subst_replace(out_line, "$LISTITEM", line.slice(2))
+										outfile.write_line ("	"+out_line+"\n")
+										out_line = codeblock[i]
+										line = verfile.read_line()
+									}
+									outfile.write_line ("						</ul>"+"\n")
+								}
 							}
 						} 
 						else if (out_line.find("$PICTURE") != null) {
@@ -1483,36 +1495,7 @@ function buildhtmlhistory() {
 		}
 	}
 
-	return
-
-	while (scanver >= 10) {
-		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
-			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
-
-
-			line = verfile.read_line()
-			line2 = metafile.read_line()
-			line2array = split(line2, "-")
-			foreach (i, item in line2array) line2array[i] = strip(line2array[i])
-			outfile.write_line(line2)
-			while (!verfile.eos()) {
-				outfile.write_line("\n")
-				line = verfile.read_line()
-				outfile.write_line(line)
-				//history.push("- " + verfile.read_line() + "\n")
-			}
-			outfile.close_file()
-			//history.push("\n")
-		}
-		scanver --
-	}
-	return history
 }
-//TEST170
-//historytext2()
-buildhtmlhistory()
-pappo = 0
-
 
 function buildreadme(separator = false, include_history = true) {
 	local infile = null
@@ -1533,7 +1516,7 @@ function buildreadme(separator = false, include_history = true) {
 	readme.push("## What's new in v " + AF.version + " #" + "\n")
 	readme.push("\n")
 
-	infile = ReadTextFile (AF.folder + "history2/" + AF.vernum + ".txt")
+	infile = ReadTextFile (AF.folder + "history/" + AF.vernum + ".txt")
 	infile.read_line()
 	while (!infile.eos()) readme.push("- " + infile.read_line() + "\n")
 	readme.push("\n")
@@ -15513,7 +15496,7 @@ function buildutilitymenu() {
 			return "☰"
 		}
 		command = function() {
-			local aboutpath = AF.folder + "history2/" + (AF.version.tofloat() * 10).tostring() + ".txt"
+			local aboutpath = AF.folder + "history/" + (AF.version.tofloat() * 10).tostring() + ".txt"
 			local aboutfile = ReadTextFile (aboutpath)
 
 			local aboutmenu = []

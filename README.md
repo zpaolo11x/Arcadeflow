@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 16.9 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.0 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,13 +10,9 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 16.9 #
+## What's new in v 17.0 #
 
-- Added support for history.xml file
-- Revamped MAME xml, dat and ini file management
-- Message box text now always fills the screen
-- Fixed bug in the systems data file
-- Fixed bug with history metadata parsing
+- Fixed bugs in history page
 
 ## Emulator system identifier #
 
@@ -324,7 +320,7 @@ Configure the appearence of a second monitor
 - 'Main media source' : Select the artwork source to be used on secondary monitor
 - 'Alternate media source' : Select the artwork source to be used on secondary monitor in case first one is not present
 
-#### ! SCRAPE AND METADATA !
+#### SCRAPE AND METADATA
 You can use Arcadeflow internal scraper to get metadata and media for your games, or you can import XML data in EmulationStation format
 
 
@@ -348,11 +344,11 @@ You can use Arcadeflow internal scraper to get metadata and media for your games
 - 'SS Password' : Enter your screenscraper.fr password
 
 *MAME Data Files*
-- '! History.dat !' : History.dat location.
-- '! History.xml !' : History.xml location for MAME.
-- '! Command.dat !' : Command.dat location for MAME.
-- '! Bestgames.ini !' : Bestgames.ini location for MAME.
-- '! Process MAME files !' : Process and convert all the MAME files
+- 'History.dat' : History.dat location.
+- 'History.xml' : History.xml location for MAME.
+- 'Command.dat' : Command.dat location for MAME.
+- 'Bestgames.ini' : Bestgames.ini location for MAME.
+- 'Process MAME files' : Process and convert all the MAME files
 
 *ES XML Import*
 - 'Import XML data for all romlists' : If you specify a RetroPie xml path into emulator import_extras field you can build the romlist based on those data
@@ -418,7 +414,7 @@ Save or reload options configurations
 - 'Save current options' : Save the current options configuration in a custom named file
 - 'Load options from external file' : Restore AF options from a previously saved file
 
-#### DEBUG
+#### ! DEBUG !
 This section is for debug purposes only
 
 - 'FPS counter' : DBGON FPS COUNTER
@@ -426,9 +422,18 @@ This section is for debug purposes only
 - 'AM options page' : Shows the default Attract-Mode options page
 - 'Test message box' : For developer use only...
 - 'Generate readme file' : For developer use only...
+- '! Generate html file !' : For developer use only...
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v16.9 - 12 February 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.9*
+
+- Added support for history.xml file
+- Revamped MAME xml, dat and ini file management
+- Message box text now always fills the screen
+- Fixed bug in the systems data file
+- Fixed bug with history metadata parsing
 
 *v16.8 - 12 January 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.8*
 
