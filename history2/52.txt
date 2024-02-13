@@ -1,0 +1,5 @@
+5.2 - 16 August 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_52.zip
+You can now use hotkeys like prev/next page, letter, random game etc from history page
+Added overlay when changing display
+Utility menu can be disabled or tied to an hotkey
+Added 70 new manufacturer images, mostly console related

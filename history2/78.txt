@@ -1,0 +1,7 @@
+7.8 - 19 May 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_78.zip
+Arcadeflow now execute your "exit command" on exit if it's set up in Attract Mode preferences
+Tweaked the data shown in the History page with category, buttons, players and other details
+Fixed bugs in multifilter list switching
+Multifilter menu now preselects the current game's data
+Fixed a bug when removing items from multifiltered list (e.g. remove favourite or tag)
+Code cleanup

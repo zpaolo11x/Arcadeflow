@@ -1,0 +1,2 @@
+13.5 - 30 May 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.5
+Fixed issues with the update routine on Windows

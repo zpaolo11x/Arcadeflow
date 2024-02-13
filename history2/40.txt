@@ -1,0 +1,8 @@
+4.0 - 01 April 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_40.zip
+Frosted glass menu overlay now fades in instead of just appearing
+Text in history page has a minimum size so it's readable even on low res screens
+When changing games in history page the text and logo fades, and the game screens slides/fade into view
+Changed the glow effect under the history screenshot
+Fixed some bugs in the CRT shader
+Fixed two manufacturer images
+Changed the thumbnails update code so now it reponds correctly to all signals like "next_letter", "random_game", "next favourite" ecc both in thumbnail view and in history page view

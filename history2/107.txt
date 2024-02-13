@@ -1,0 +1,3 @@
+10.7 - 28 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_107.zip
+Added options te enable tile border color cycling
+Added option to show only game titles instead of thumbnails

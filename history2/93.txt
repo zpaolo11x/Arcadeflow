@@ -1,0 +1,5 @@
+9.3 - 09 November 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_93.tar.gz
+Added "Neo Geo CD", "Odissey 2", "Atari 5200", "PC Engine Duo", "Nintendo DSi", "Acorn Aquarius", "Game Boy Micro"
+Added "Genesis 2", "Super Nintendo Entertainment System EU", "Master System 2", "Turbo Duo" variants
+Fixed bug in the multifilter customizing menu
+Fixed bugs with aspect ratio detection

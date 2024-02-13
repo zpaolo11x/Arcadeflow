@@ -1,0 +1,8 @@
+7.0 - 21 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_70.zip
+Added a new menu system with smooth scrolling and visual glyphs
+Added an option to enable/disable the new menu system
+When showing the display name upon changing display, system artwork is used instead of plain text
+Changed the "completed" badge with a new one
+Rearranged sound response so no double sounds will be played
+Fixed a bug when the romlist has no content
+Removed Displays Menu Page options

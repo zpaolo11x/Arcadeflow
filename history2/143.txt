@@ -1,0 +1,6 @@
+14.3 - 14 August 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.3
+Added 4 new systems
+Fixed font path for scraper
+Fixed issue with options menu images
+Fixed menu line spacing
+Fixed similar games text color

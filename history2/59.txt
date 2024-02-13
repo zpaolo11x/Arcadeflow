@@ -1,0 +1,4 @@
+5.9 - 05 November 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_59.zip
+Fixed a bug causing crash when using AF as displays menu layout
+Added new systems logos
+Added an option to hide the second part of the game name after the system name.

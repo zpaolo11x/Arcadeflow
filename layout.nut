@@ -1390,8 +1390,8 @@ function historytext() {
 	local verfile = null
 	local history = []
 	while (scanver >= 10) {
-		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
-			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
+		if (file_exist(AF.folder + "history2/" + scanver + ".txt")) {
+			verfile = ReadTextFile (AF.folder + "history2/" + scanver + ".txt")
 			history.push("*v" + verfile.read_line() + "*" + "\n\n")
 			while (!verfile.eos()) {
 				history.push("- " + verfile.read_line() + "\n")
@@ -1402,6 +1402,45 @@ function historytext() {
 	}
 	return history
 }
+
+function historytext2() {
+	local scanver = 169
+	local verfile = null
+	local outfile = null
+	local history = []
+	local line = ""
+	local line2 = ""
+	local line2array = []
+
+	local metafile = ReadTextFile (AF.folder + "docs/timeline.txt")
+
+	while (scanver >= 10) {
+		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
+			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
+			outfile = WriteTextFile (AF.folder + "history2/" + scanver + ".txt")
+
+			line = verfile.read_line()
+			line2 = metafile.read_line()
+			line2array = split(line2, "-")
+			foreach (i, item in line2array) line2array[i] = strip(line2array[i])
+			outfile.write_line(line2)
+			while (!verfile.eos()) {
+				outfile.write_line("\n")
+				line = verfile.read_line()
+				outfile.write_line(line)
+				//history.push("- " + verfile.read_line() + "\n")
+			}
+			outfile.close_file()
+			//history.push("\n")
+		}
+		scanver --
+	}
+	return history
+}
+//TEST170
+//historytext2()
+
+
 
 function buildreadme(separator = false, include_history = true) {
 	local infile = null
@@ -1422,7 +1461,7 @@ function buildreadme(separator = false, include_history = true) {
 	readme.push("## What's new in v " + AF.version + " #" + "\n")
 	readme.push("\n")
 
-	infile = ReadTextFile (AF.folder + "history/" + AF.vernum + ".txt")
+	infile = ReadTextFile (AF.folder + "history2/" + AF.vernum + ".txt")
 	infile.read_line()
 	while (!infile.eos()) readme.push("- " + infile.read_line() + "\n")
 	readme.push("\n")
@@ -15402,7 +15441,7 @@ function buildutilitymenu() {
 			return "☰"
 		}
 		command = function() {
-			local aboutpath = AF.folder + "history/" + (AF.version.tofloat() * 10).tostring() + ".txt"
+			local aboutpath = AF.folder + "history2/" + (AF.version.tofloat() * 10).tostring() + ".txt"
 			local aboutfile = ReadTextFile (aboutpath)
 
 			local aboutmenu = []

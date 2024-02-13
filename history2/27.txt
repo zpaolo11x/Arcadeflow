@@ -1,0 +1,3 @@
+2.7 - 11 October 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_27.zip
+Fixed some bugs in screen rotation
+Added the possibility to define a layout resolution independent from screen resolution

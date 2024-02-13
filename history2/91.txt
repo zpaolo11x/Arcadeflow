@@ -1,0 +1,5 @@
+9.1 - 21 October 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_91.tar.gz
+Added an option to hide logo during screensaver
+Fixed auto-update installation routine
+Fixed bugs with system AR
+Added visual cue for non avilable games

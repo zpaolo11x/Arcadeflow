@@ -1,0 +1,3 @@
+14.0 - 19 July 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.0
+Improved performance by optimizing surface redraw
+Fixed issue with date display

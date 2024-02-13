@@ -1,0 +1,11 @@
+10.9 - 28 September 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_109.zip
+Added AttractMode+ compatibility
+Added new metadata editor for games
+Added new extension to contextual menu
+Added option to disable AF custom sorting
+Added option to optimise layout for Vertical Arcade artwork
+Improved surface stack for AM+
+Improved label rendering engine
+Fixed timing of history scroll to avoid jumps
+Fixed issue when fading background snaps
+Fixed issue with command.dat file

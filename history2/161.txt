@@ -1,0 +1,4 @@
+16.1 - 20 June 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.1
+Fixed similar games vidoes not playing
+Fixed crash when exiting to desktop
+Fixed scrape hanging on macOS

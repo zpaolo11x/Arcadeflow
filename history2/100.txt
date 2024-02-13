@@ -1,0 +1,6 @@
+10.0 - 15 March 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_100.zip
+DON'T AUTO-INSTALL!
+Changed archive format to zip, use manual installation
+Added screenscraper.fr support for scraping media and metadata
+Added options to use images for Displays Menu categories
+Fixed description bug in options menu

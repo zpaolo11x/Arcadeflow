@@ -1,0 +1,6 @@
+7.3 - 01 April 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_73.zip
+Added "grouped" displays menu, with Arcade, Computer, Console and Handheld categories
+New version control for preference file that is not completely wiped when new preferences are added
+Added visual cue for options introduced in latest release
+Fixed a bug in the systems list
+Fixed bugs in the name artwork generation

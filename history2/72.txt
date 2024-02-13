@@ -1,0 +1,9 @@
+7.2 - 30 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_72.zip
+All interface except background is hidden when game is launched
+Added "Game & Watch" and "Tiger" to systems list
+Changed the way systems are managed internally
+Added an option to apply game boy colorization based on system name
+Added new glyph system for overall homogeneous look
+Added glyphs to options menu
+Fixed attract mode engaging when new menu is on
+Fixed options menu not stopping attract mode

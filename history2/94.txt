@@ -1,0 +1,10 @@
+9.4 - 27 November 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_94.tar.gz
+Fixed a bug with "Next/Prev Letter" hotkey response
+New "Jump To" menu entry to jump to letters or sort targets
+New memu system with highlight of selected options
+Fixed bugs in category menu and multifilter menu
+Fixed bugs in game launch routines
+New menu headers for sections
+Fixed an issue when entries in a list are linking to displays
+Added ScummVM ans Nintendo Switch system
+Added new manufacturer logos

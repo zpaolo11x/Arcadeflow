@@ -1,0 +1,4 @@
+15.4 - 27 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.4
+Added transparent background to boxart mode
+Added option to enable/disable white border around thumbnails
+Ambient volume set in AM option affects AF background music volume

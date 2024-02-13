@@ -1,0 +1,5 @@
+16.3 - 08 October 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.3
+Fixed crash when disabling gradient
+Updated translation file
+Completed Italian translation
+Moved warning messages to About Arcadeflow

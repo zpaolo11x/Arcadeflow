@@ -1,0 +1,4 @@
+6.1 - 24 December 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_61.zip
+Increased the number of manufacturer vector logos, almost parity with the old bitmap logos
+Changed the way sorting is done at startup to avoid delays when extremely large romlists are used
+Minor improvements and bug fixes

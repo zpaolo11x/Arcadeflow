@@ -1,0 +1,12 @@
+10.3 - 03 May 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_103.zip
+Added fix for thread limits on screenscraper
+Added option to cutomise page jump
+Added fading and zooming of Filter name
+Added an option to color correct MSX games
+Updated thumbnail gradient shader and effect
+Updated spanish translation thanks to Jate from the forum
+Fixed orientation of Atari Lynx games
+Fixed letters rendering in labels list
+Fixed bugs in tags and favourites in Windows
+Fixed bug in overview description
+Fixed issues with parallel scraping on Windows

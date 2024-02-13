@@ -1,0 +1,8 @@
+8.9 - 25 September 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_89.tar.gz
+New color palette for Game Boy screenshots
+Added new option to sort displays by system brand or sistem release year
+Fixed issues with changing displays when some display is not "in cycle"
+Fixed auto update routine for windows systems
+Highlighted snap zooms out when you enter scrollbar
+Displays names starting with "!" will always be at the top of the list
+New option to add an overlay on top of the layout

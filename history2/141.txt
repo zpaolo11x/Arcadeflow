@@ -1,0 +1,5 @@
+14.1 - 27 July 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.1
+Reorganised fonts files
+Fixed issue when rom name contains ;
+Tags menu show tags from all romlists
+Added an option to enable-disable game hiding

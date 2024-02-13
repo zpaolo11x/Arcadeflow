@@ -430,7 +430,7 @@ This section is for debug purposes only
 
 ## Previous versions history #
 
-*v16.8*
+*v16.8 - 12 January 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.8*
 
 - Added options to select a scraper engine for arcade media and history data
 - Added options to maximise or remove history text panel
@@ -441,12 +441,12 @@ This section is for debug purposes only
 - Added Hyper Neo Geo, Sega Nomad
 - Added Light Gun#ARCADE and Light Gun#CONSOLE wallpaper
 
-*v16.7*
+*v16.7 - 21 December 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.7*
 
 - Added Namco arcade systems logos
 - Fixed issue with letter fading when AA is enabled
 
-*v16.6*
+*v16.6 - 13 December 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.6*
 
 - Added Sega Model 1, PGM, PGM2 and Namco System 2x6
 - Added Pippin, Wondermega, Genesis CDX, Multi-Mega, V Smile, CreatiVision, Action Max and uZebox
@@ -455,26 +455,26 @@ This section is for debug purposes only
 - Added per-display overlay
 - Fixed issues with overlay z-order
 
-*v16.5*
+*v16.5 - 17 November 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.5*
 
 - Fixed bugs in the scraper that caused hanging
 - Fixed collections update with master romlist
 - Fixed CRC extraction from zip files
 
-*v16.4*
+*v16.4 - 16 October 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.4*
 
 - Added option to show only power menu
 - Added report message for romlist refresh
 - Fixed volume menu jumping
 
-*v16.3*
+*v16.3 - 08 October 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.3*
 
 - Fixed crash when disabling gradient
 - Updated translation file
 - Completed Italian translation
 - Moved warning messages to About Arcadeflow
 
-*v16.2*
+*v16.2 - 18 September 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.2*
 
 - AF requires AM+ 3.0.6
 - Added new "slate" color theme
@@ -487,13 +487,13 @@ This section is for debug purposes only
 - Fixed scraping credential saving
 - Fixed gameslist.xml import
 
-*v16.1*
+*v16.1 - 20 June 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.1*
 
 - Fixed similar games vidoes not playing
 - Fixed crash when exiting to desktop
 - Fixed scrape hanging on macOS
 
-*v16.0*
+*v16.0 - 05 June 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.0*
 
 - Added option for fullscreen tiles
 - Added option for scrape timeout
@@ -505,30 +505,30 @@ This section is for debug purposes only
 - Fixed zoom ratio for slimline layout
 - Fixed support of redirect romlists
 
-*v15.9*
+*v15.9 - 23 March 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.9*
 
 - Added new manufacturer logos
 - Updated German translation (thanks ScherzKeks)
 - Fixed progress bar with overscan
 - Code cleanup
 
-*v15.8*
+*v15.8 - 08 March 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.8*
 
 - Added 12 new retro computer systems
 - Fixed issue with CRC scraping
 
-*v15.7*
+*v15.7 - 03 February 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.7*
 
 - Background music stops in history page
 - Fixed Sega CD and Sega 32X logos crashing in 4K
 
-*v15.6*
+*v15.6 - 20 January 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.6*
 
 - Added Virtual Console logo
 - Fixed wheel animation
 - Fixed issue with auto update
 
-*v15.5*
+*v15.5 - 05 January 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.5*
 
 - Changed spacing of menu entries
 - Added option for 1 line small thumbs in vertical
@@ -537,17 +537,17 @@ This section is for debug purposes only
 - Fixed bug related to menu sizing
 - Minor bug fixes
 
-*v15.4*
+*v15.4 - 27 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.4*
 
 - Added transparent background to boxart mode
 - Added option to enable/disable white border around thumbnails
 - Ambient volume set in AM option affects AF background music volume
 
-*v15.3*
+*v15.3 - 19 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.3*
 
 - Fixed bug with metadata that crashed AF
 
-*v15.2*
+*v15.2 - 14 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.2*
 
 - Added per display background music
 - Show specific manufacturer year logo by adding _number to the name
@@ -555,13 +555,13 @@ This section is for debug purposes only
 - Fixed issue with metadata saved to game database
 - Fixed memory leak when playing random bgm
 
-*v15.1*
+*v15.1 - 01 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.1*
 
 - Added new manufacturers logos
 - Added animation for download and install
 - Fixed issue when a romlist entry is not in the db
 
-*v15.0*
+*v15.0 - 17 November 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.0*
 
 - Added menu entry to install specific versions or branches
 - Added new manufacturers logos
@@ -570,14 +570,14 @@ This section is for debug purposes only
 - Improved smoothness of video transition for background
 - Video background can be enabled even without background snaps
 
-*v14.9*
+*v14.9 - 03 November 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.9*
 
 - Added progress bar for long filtering operations
 - Added timeout check to avoid hanging scraping operations
 - Fixed vertical arcade videos
 - Increased buttons and players number in metadta editor
 
-*v14.8*
+*v14.8 - 05 October 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.8*
 
 - Added new systems: PC Engine LT, SNES and NES new designs
 - Added option for Vertical Arcade video snaps
@@ -587,7 +587,7 @@ This section is for debug purposes only
 - Fixed manufacturer multifilter to be case-insensitive
 - Fixed SS issue when scraping games with dot in the name
 
-*v14.7*
+*v14.7 - 23 September 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.7*
 
 - Added option to reset database without affecting romlist
 - Added new option to remove unused entries in games db
@@ -595,27 +595,27 @@ This section is for debug purposes only
 - Added new options for RetroArch custom folders
 - Fixed deleted tags showing in list
 
-*v14.6*
+*v14.6 - 19 September 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.6*
 
 - It is now possible to change RA cores from AF UI
 - Added option to enable RetroArch integration
 - Fixed issue with multifilter jumps
 
-*v14.5*
+*v14.5 - 08 September 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.5*
 
 - Added option to show controls overlay only on arcade games
 - Added two new systems: Sega Pico and Acan
 - In multifilter menu you can skip void entries with "right"
 - Fixed issue with controls overlay
 
-*v14.4*
+*v14.4 - 18 August 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.4*
 
 - Fixed GBA logo issues
 - Fixed labels update when sorting
 - Fixed number of columns in scraper messages
 - Added pixel font on scrape screen
 
-*v14.3*
+*v14.3 - 14 August 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.3*
 
 - Added 4 new systems
 - Fixed font path for scraper
@@ -623,25 +623,25 @@ This section is for debug purposes only
 - Fixed menu line spacing
 - Fixed similar games text color
 
-*v14.2*
+*v14.2 - 04 August 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.2*
 
 - Improved performance optimising tile redraw
 - Fixed Cave background image
 - Added new button for favourites filter
 
-*v14.1*
+*v14.1 - 27 July 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.1*
 
 - Reorganised fonts files
 - Fixed issue when rom name contains ;
 - Tags menu show tags from all romlists
 - Added an option to enable-disable game hiding
 
-*v14.0*
+*v14.0 - 19 July 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.0*
 
 - Improved performance by optimizing surface redraw
 - Fixed issue with date display
 
-*v13.9*
+*v13.9 - 11 July 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.9*
 
 - Added support for new AM+ display loading
 - Category collection not shown if there's only one display
@@ -649,70 +649,70 @@ This section is for debug purposes only
 - Reorganised options menu main page
 - Fixed issue when snaps are not defined
 
-*v13.8*
+*v13.8 - 28 June 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.8*
 
 - Added support for pixel perfect fonts
 - Correct UI elements alignment with pixels
 - Fixed issue with number of rows in menus
 - Fixed issue when converting romlist to db
 
-*v13.7*
+*v13.7 - 14 June 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.7*
 
 - Added support for multi-monitor setups
 - Fixed issue with CRC check of large files on Windows
 
-*v13.6*
+*v13.6 - 06 June 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.6*
 
 - Added new systems: GP32, Game Master
 - Reorganised project files
 
-*v13.5*
+*v13.5 - 30 May 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.5*
 
 - Fixed issues with the update routine on Windows
 
-*v13.4*
+*v13.4 - 19 May 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.4*
 
 - Fixed issues with scraper
 
-*v13.3*
+*v13.3 - 19 May 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_133.zip*
 
 - Added new GitHub based update routine
 - Reorganised code and folder structure
 - Code cleanup
 
-*v13.2*
+*v13.2 - 11 May 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_132.zip*
 
 - Scraping matches roms regardless of WHDLoad version
 - Fixed bug with customised utility menu
 
-*v13.1*
+*v13.1 - 02 May 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_131.zip*
 
 - Fixed crc scraping not working when $HOME in rompath
 - Fixed "/" breaking game name
 - Added warnings for attract.cfg options
 
-*v13.0*
+*v13.0 - 19 April 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_130.zip*
 
 - Added 11 new systems images and logos
 - Fixed bugs in display change routine
 - Fixed naming of XBox backgrounds
 - Fixed bug with non categorised display menu
 
-*v12.9*
+*v12.9 - 08 April 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_129.zip*
 
 - Fixed bug in scraped media folders
 - Fixed slow display changing with collections
 - Fixed bugs in Region multifilter
 - Made multifilter routines more robust
 
-*v12.8*
+*v12.8 - 31 March 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_128.zip*
 
 - Added sliders and graphical feedback for options
 - Added option to multifilter by region
 - Fixed bug in rating multifilter
 - Fixed bug in sorting by rating
 
-*v12.7*
+*v12.7 - 23 March 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_127.zip*
 
 - Added new Naomi related systems and arcade systems
 - Added key repeat in keyboard
@@ -721,7 +721,7 @@ This section is for debug purposes only
 - Centered game title in "clean" layout
 - Fixed issue with "clean" layout mode
 
-*v12.6*
+*v12.6 - 12 March 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_126.zip*
 
 - Redesigned history panel with metadata
 - Redesigned volume control menu
@@ -729,7 +729,7 @@ This section is for debug purposes only
 - Fixed scraping issue from ScreenScraper
 - Fixed issue with arcade commands
 
-*v12.5*
+*v12.5 - 23 February 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_125.zip*
 
 - Changed the layout boot logo
 - Added option and hotkey for volume control
@@ -740,13 +740,13 @@ This section is for debug purposes only
 - Fixed bugs with overscan centering
 - Fixed font rendering for letter boxes
 
-*v12.4*
+*v12.4 - 10 February 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_124.zip*
 
 - Redesigned some system walls
 - Added new systems with logos and images
 - Fixed bugs in the database generation
 
-*v12.3*
+*v12.3 - 28 January 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_123.zip*
 
 - Added a new context menu to find similar games
 - Added an option to reset "last played" data from romlist
@@ -756,7 +756,7 @@ This section is for debug purposes only
 - Fixed month numbers starting from "0" instead of "1"
 - Fixed AF not deleting roms in Windows 10
 
-*v12.2*
+*v12.2 - 07 January 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_122.zip*
 
 - Fixed bug in update of all games collections
 - Fixed issue where collections wouldn't show in menu
@@ -764,14 +764,14 @@ This section is for debug purposes only
 - Fixed issue with last line of attract.cfg being stripped
 - Fixed bug crashing the database when game title has apices
 
-*v12.1*
+*v12.1 - 20 December 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_121.zip*
 
 - Fixed issue with romlist generation at start
 - Fixed paths in commands to delete roms
 - Add icons for more than 4 players
 - Added new collections for last played and favourite games
 
-*v12.0*
+*v12.0 - 29 November 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_120.zip*
 
 - Introduced a new romlist management system
 - - Collections syncronised with source romlists
@@ -784,7 +784,7 @@ This section is for debug purposes only
 - Fixed scrolling bugs when reaching begin of list
 - Added 40 new manufacturer logos
 
-*v11.0*
+*v11.0 - 07 October 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_110.zip*
 
 - Added multiple selection menus for editing metadata
 - Metadata edits are tranferred to "collection" romlists
@@ -792,7 +792,7 @@ This section is for debug purposes only
 - Fixed bug that saved metadata only on the boot display
 - Fixed "Delete Rom File" menu that now actually works
 
-*v10.9*
+*v10.9 - 28 September 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_109.zip*
 
 - Added AttractMode+ compatibility
 - Added new metadata editor for games
@@ -805,24 +805,24 @@ This section is for debug purposes only
 - Fixed issue when fading background snaps
 - Fixed issue with command.dat file
 
-*v10.8*
+*v10.8 - 12 August 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_108.zip*
 
 - Fixed Hesware supplier logo
 - Added Bandai Namco and 80 more supplier logos
 
-*v10.7*
+*v10.7 - 28 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_107.zip*
 
 - Added options te enable tile border color cycling
 - Added option to show only game titles instead of thumbnails
 
-*v10.6*
+*v10.6 - 14 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_106.zip*
 
 - Added options to specify overscan screen width and height
 - Added Nintendo VS System and generic arcade Nintendo logo
 - Fixed power menu not showing in some cases
 - Fixed scraper support for $PROGDIR variable
 
-*v10.5*
+*v10.5 - 09 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_105.zip*
 
 - Fixed excessive tile jump when changing list
 - Fixed rating when using external bestgames.ini
@@ -833,7 +833,7 @@ This section is for debug purposes only
 - Updated the sound of tiles scrolling
 - Updated italian translation
 
-*v10.4*
+*v10.4 - 01 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_104.zip*
 
 - Introduced smoother tile scrolling with ease in
 - Added ADB scraping for arcade games
@@ -843,7 +843,7 @@ This section is for debug purposes only
 - Commands data can be obtained by scraped data
 - Changed frost transparency in multifilter menu
 
-*v10.3*
+*v10.3 - 03 May 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_103.zip*
 
 - Added fix for thread limits on screenscraper
 - Added option to cutomise page jump
@@ -857,7 +857,7 @@ This section is for debug purposes only
 - Fixed bug in overview description
 - Fixed issues with parallel scraping on Windows
 
-*v10.2*
+*v10.2 - 08 April 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_102.zip*
 
 - Changed CRC algorithm to improve speed
 - Parallel metadata scraping to improve speed
@@ -868,7 +868,7 @@ This section is for debug purposes only
 - Fixed bug that crashed AM with background music
 - Cleaner font for options description
 
-*v10.1*
+*v10.1 - 25 March 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_101.zip*
 
 - Added rom scraping with CRC check
 - Added support for arcade games scraping
@@ -879,7 +879,7 @@ This section is for debug purposes only
 - Fixed bug with multifilter update
 - Fixed issues with curl and scraping on Windows
 
-*v10.0*
+*v10.0 - 15 March 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_100.zip*
 
 - DON'T AUTO-INSTALL!
 - Changed archive format to zip, use manual installation
@@ -887,7 +887,7 @@ This section is for debug purposes only
 - Added options to use images for Displays Menu categories
 - Fixed description bug in options menu
 
-*v9.9*
+*v9.9 - 22 February 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_99.tar.gz*
 
 - Improved shaders and layering to reduce load time
 - Added new system logos and images (IBM PC, Coleco Adam, Sega SC-3000, Philips Videopac, SAM coupe etc)
@@ -898,7 +898,7 @@ This section is for debug purposes only
 - Fixed performance issue with off-screen fonts
 - Fixed XML import for game names with "."
 
-*v9.8*
+*v9.8 - 29 January 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_98.tar.gz*
 
 - Added an option for importing the XML list only from current romlist
 - XML data import works also for collections
@@ -911,7 +911,7 @@ This section is for debug purposes only
 - Fixed issue with buttons overlay
 - Fixed issue with sorting menu
 
-*v9.7*
+*v9.7 - 10 January 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_97.tar.gz*
 
 - Added option to generate romlists based on RetroPie XML files
 - Improved category recognition and management
@@ -920,7 +920,7 @@ This section is for debug purposes only
 - Prevent input when checking for updates
 - Fixed bug in tags management
 
-*v9.6*
+*v9.6 - 24 December 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_96.tar.gz*
 
 - Fixed bugs in displays menu
 - Fixed window popping up during check for updates
@@ -931,7 +931,7 @@ This section is for debug purposes only
 - Added Famicom Disk System and Daphne logos
 - Auto update will only check once a day
 
-*v9.5*
+*v9.5 - 06 December 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_95.tar.gz*
 
 - In options menu you can use left and right to change options
 - Fixed "Exit from Arcadeflow" menu not centered
@@ -942,7 +942,7 @@ This section is for debug purposes only
 - Revamped the displays management backedn
 - Displays categories can be user defined
 
-*v9.4*
+*v9.4 - 27 November 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_94.tar.gz*
 
 - Fixed a bug with "Next/Prev Letter" hotkey response
 - New "Jump To" menu entry to jump to letters or sort targets
@@ -954,14 +954,14 @@ This section is for debug purposes only
 - Added ScummVM ans Nintendo Switch system
 - Added new manufacturer logos
 
-*v9.3*
+*v9.3 - 09 November 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_93.tar.gz*
 
 - Added "Neo Geo CD", "Odissey 2", "Atari 5200", "PC Engine Duo", "Nintendo DSi", "Acorn Aquarius", "Game Boy Micro"
 - Added "Genesis 2", "Super Nintendo Entertainment System EU", "Master System 2", "Turbo Duo" variants
 - Fixed bug in the multifilter customizing menu
 - Fixed bugs with aspect ratio detection
 
-*v9.2*
+*v9.2 - 30 October 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_92.tar.gz*
 
 - Added options to import series.ini and bestgames.ini for MAME games
 - Added series and rating data in history page
@@ -972,14 +972,14 @@ This section is for debug purposes only
 - Fixed bug in controls multifilter entry
 - Improved filtering speed with large romlists
 
-*v9.1*
+*v9.1 - 21 October 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_91.tar.gz*
 
 - Added an option to hide logo during screensaver
 - Fixed auto-update installation routine
 - Fixed bugs with system AR
 - Added visual cue for non avilable games
 
-*v9.0*
+*v9.0 - 07 October 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_90.tar.gz*
 
 - Fixed bug in the background crop routine
 - Added an option to disable Arcadeflow "fast" display switching
@@ -988,7 +988,7 @@ This section is for debug purposes only
 - Changed positioning of tiles to get better balance and avoid overlap with title
 - Fixed overlapping labels in timeline scroll bar
 
-*v8.9*
+*v8.9 - 25 September 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_89.tar.gz*
 
 - New color palette for Game Boy screenshots
 - Added new option to sort displays by system brand or sistem release year
@@ -998,7 +998,7 @@ This section is for debug purposes only
 - Displays names starting with "!" will always be at the top of the list
 - New option to add an overlay on top of the layout
 
-*v8.8*
+*v8.8 - 10 September 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_88.tar.gz*
 
 - New sorting routine improves speed in sorting large lists
 - Increased delay to avoid fade-in of video snaps
@@ -1012,7 +1012,7 @@ This section is for debug purposes only
 - You can assign an HIDDEN tag to hide games from the list
 - General bug fixes
 
-*v8.7*
+*v8.7 - 18 August 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_87.tar.gz*
 
 - Introduced free aspect ratio for game snaps and box art
 - Added an option to morph box art into game video
@@ -1021,11 +1021,11 @@ This section is for debug purposes only
 - Added mipmap to glow effect to simplify shaders
 - Added an option to disable displays menu page completely
 
-*v8.6*
+*v8.6 - 21 July 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_86.tar.gz*
 
 - Fixed bugs in the automatic update routine
 
-*v8.5*
+*v8.5 - 20 July 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_85.tar.gz*
 
 - Added system logos for Atomiswave, Sega Model 2 and 3
 - Added an option to fade out game decoration when video is played
@@ -1034,7 +1034,7 @@ This section is for debug purposes only
 - If no video is present, the thumbnail gradient is not faded out
 - Reorganized some code to improve stability
 
-*v8.4*
+*v8.4 - 13 July 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_84.tar.gz*
 
 - Bug fixes in the command.dat parser
 - Added new option to reduce the video delay load
@@ -1044,7 +1044,7 @@ This section is for debug purposes only
 - Added options to stretch custom background instead of crop
 - Changed starting directory when browsing for background
 
-*v8.3*
+*v8.3 - 30 June 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_83.tar.gz*
 
 - Added an option to chose the size of the text panel in history
 - Changed the way the history panel size is calculated
@@ -1057,7 +1057,7 @@ This section is for debug purposes only
 - Revised translations and completed spanish translation by Jate
 - Better rendition of Atari 2600 in attract mode
 
-*v8.2*
+*v8.2 - 16 June 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_82.tar.gz*
 
 - Added an option to enable/disable adaptive performance
 - Added new display category: Pinball
@@ -1070,7 +1070,7 @@ This section is for debug purposes only
 - Thumb video stops playing when entering history page
 - New "Utility Menu" options to enable/disable menu entries
 
-*v8.1*
+*v8.1 - 09 June 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_81.tar.gz*
 
 - Added new manufacturers logos
 - Added system logos for Cave and general board manufacturers like Sega, Taito, Capcom
@@ -1079,7 +1079,7 @@ This section is for debug purposes only
 - Fixed bug in multifilter glyph display routine
 - Tweaked check for updates to avoid shell popup in Windows
 
-*v8.0*
+*v8.0 - 06 June 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_80.tar.gz*
 
 - Changed the QWERTY keyboard layout for better jump between key rows
 - Added AZERTY keyboard layout in options
@@ -1089,7 +1089,7 @@ This section is for debug purposes only
 - It is now possible to download and install new versions automatically
 - Added "About Arcadeflow" with the latest news
 
-*v7.9*
+*v7.9 - 29 May 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_79.zip*
 
 - Fixed issues when selecting submenus in multifilter
 - When using on-screen keyboard search you can type directly with a physical keyboard
@@ -1103,7 +1103,7 @@ This section is for debug purposes only
 - Fixed next_favourite and prev_favourite signal response
 - Added new QWERTY layout option for on-screen keyboard
 
-*v7.8*
+*v7.8 - 19 May 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_78.zip*
 
 - Arcadeflow now execute your "exit command" on exit if it's set up in Attract Mode preferences
 - Tweaked the data shown in the History page with category, buttons, players and other details
@@ -1112,7 +1112,7 @@ This section is for debug purposes only
 - Fixed a bug when removing items from multifiltered list (e.g. remove favourite or tag)
 - Code cleanup
 
-*v7.7*
+*v7.7 - 11 May 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_77.zip*
 
 - New backend for the multifilter menu
 - Multifilter background is now a faded version of the background
@@ -1122,7 +1122,7 @@ This section is for debug purposes only
 - Multifilter status is saved for each display and each filter
 - Updated Italian translation with new menus and options
 
-*v7.6*
+*v7.6 - 04 May 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_76.zip*
 
 - Fixed bugs with multi-level Displays menu and "#" category forcing
 - Added a new "Multifilter" menu system, allowing you to dynamically filter a romlist without using a search string.
@@ -1130,7 +1130,7 @@ This section is for debug purposes only
 - Added new custom buttons options for Category menu and Multifilter menu
 - Sorted displays list in alphabetical order
 
-*v7.5*
+*v7.5 - 23 April 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_75.zip*
 
 - Added custom button option for search menu
 - You can call the options menu from everywhere in the layout
@@ -1142,7 +1142,7 @@ This section is for debug purposes only
 - Better menu shading when "No frosted glass" is selected
 - In menus, use "left" to jump to the top of the list
 
-*v7.4*
+*v7.4 - 16 April 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_74.zip*
 
 - Whole new (again) menu system
 - Added an option to show the displays menu at startup
@@ -1153,7 +1153,7 @@ This section is for debug purposes only
 - Stopped video playing when menu is visible
 - Faster engage of fast speed scrolling
 
-*v7.3*
+*v7.3 - 01 April 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_73.zip*
 
 - Added "grouped" displays menu, with Arcade, Computer, Console and Handheld categories
 - New version control for preference file that is not completely wiped when new preferences are added
@@ -1161,7 +1161,7 @@ This section is for debug purposes only
 - Fixed a bug in the systems list
 - Fixed bugs in the name artwork generation
 
-*v7.2*
+*v7.2 - 30 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_72.zip*
 
 - All interface except background is hidden when game is launched
 - Added "Game & Watch" and "Tiger" to systems list
@@ -1172,7 +1172,7 @@ This section is for debug purposes only
 - Fixed attract mode engaging when new menu is on
 - Fixed options menu not stopping attract mode
 
-*v7.1*
+*v7.1 - 24 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_71.zip*
 
 - Added back the option to show images from menu-art folder in displays menu list
 - Fixed fade issue with new menu system
@@ -1182,7 +1182,7 @@ This section is for debug purposes only
 - Improved cleaning of letter labels when search string is visible
 - Fixed displays selection when a display is not shown in menu
 
-*v7.0*
+*v7.0 - 21 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_70.zip*
 
 - Added a new menu system with smooth scrolling and visual glyphs
 - Added an option to enable/disable the new menu system
@@ -1192,13 +1192,13 @@ This section is for debug purposes only
 - Fixed a bug when the romlist has no content
 - Removed Displays Menu Page options
 
-*v6.9*
+*v6.9 - 12 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_69.zip*
 
 - Added new manufacturer icons (1000 unique icons total)
 - Added tick sound whne jumping letter
 - Silenced game audio when entering menus
 
-*v6.8*
+*v6.8 - 02 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_68.zip*
 
 - Fixed issues with file browser when navigating folders
 - Added new systems logo for game consoles (Odissey, Sega MKIII etc) and arcade systems (CPS1,2,3, Naomi etc)
@@ -1206,7 +1206,7 @@ This section is for debug purposes only
 - Fixed a bug with name artwork generation
 - Fixed a bug interfereing with Rocketlauncher plugin
 
-*v6.7*
+*v6.7 - 27 February 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_67.zip*
 
 - Added French translation thanks to katarak from the forum
 - Added an option to completely reset the layout to its default settings
@@ -1216,7 +1216,7 @@ This section is for debug purposes only
 - Fixed bugs with displays menu
 - File browser now goes up to volumes letters in Windows
 
-*v6.6*
+*v6.6 - 23 February 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_66.zip*
 
 - Added a new options system using Arcadeflow menu system instead of Attract Mode options page.
 - Fixed bugs with glyphs on menus
@@ -1229,7 +1229,7 @@ This section is for debug purposes only
 - Fixed displays menu list to take into account hidden displays and "exit" option
 - Fixed and translated the search string at the bottom of the layout
 
-*v6.5*
+*v6.5 - 07 February 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_65.zip*
 
 - Added an option to chose the language of the layout. Currently only English and Italian are supported
 - Improved the way glyphs are rendered on menus
@@ -1239,20 +1239,20 @@ This section is for debug purposes only
 - Changed the way preferences are saved without using fe.nv
 - Added manufacturer logos (900 total)
 
-*v6.4*
+*v6.4 - 24 January 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_64.zip*
 
 - Fixed scroll routines and signal response so it works in Attract Mode 2.6.1
 - Added progressive acceleration to horizontal scrolling
 - Added manufacturer logos (830 total)
 
-*v6.3*
+*v6.3 - 22 January 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_63.zip*
 
 - Added warning: Arcadeflow will work with Attract Mode 2.6.1 but scrolling will not work as espected
 - Added more manufacturer logos in vector format (803 unique logos)
 - Changed the way manufacturers logos are managed under the hood
 - Fixed naming of Wonderswan console
 
-*v6.2*
+*v6.2 - 13 January 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_62.zip*
 
 - Completed the conversion from png manufacturer logos to vector logos
 - Fixed a bug in video snaps cropping when video aspect is different from boxart aspect
@@ -1262,13 +1262,13 @@ This section is for debug purposes only
 - Fixed scrolling issue with page skipping
 - Fixed video fade bug when skipping pages
 
-*v6.1*
+*v6.1 - 24 December 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_61.zip*
 
 - Increased the number of manufacturer vector logos, almost parity with the old bitmap logos
 - Changed the way sorting is done at startup to avoid delays when extremely large romlists are used
 - Minor improvements and bug fixes
 
-*v6.0*
+*v6.0 - 02 December 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_60.zip*
 
 - Manufacturer images are now in vector format
 - Added new options for boxart mode:
@@ -1276,13 +1276,13 @@ This section is for debug purposes only
 - - you can chose the source of the box art between flyers and fanart
 - Added new option to delay background video loading so it's faster and in sync with thumbnail videos
 
-*v5.9*
+*v5.9 - 05 November 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_59.zip*
 
 - Fixed a bug causing crash when using AF as displays menu layout
 - Added new systems logos
 - Added an option to hide the second part of the game name after the system name.
 
-*v5.8*
+*v5.8 - 31 October 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_58.zip*
 
 - Introduced new options for the displays menu list:
 - - List can be a simple displays name list, or it can show artwork from the menu-art folder
@@ -1292,7 +1292,7 @@ This section is for debug purposes only
 - Fixed video cropping to account for changes in Attract Mode 2.6
 - Added new manufacturer images
 
-*v5.7*
+*v5.7 - 11 October 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_57.zip*
 
 - Fixed bugs when Arcadeflow is used as Displays Menu layout
 - Fixed a bug when switching from snapshots to box-art
@@ -1300,7 +1300,7 @@ This section is for debug purposes only
 - Changed the way history background is used, so it won't interfere with main background
 - Added new manufacturer images for computer games (MSX, BBC Micro, NEC PC88, Apple II, PC, Amstrad etc) and japanese computer games (FM Towns, PC-8800, PC-9800, X68000)
 
-*v5.6*
+*v5.6 - 20 September 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_56.zip*
 
 - Fixed bugs in the sorting feature and tile update
 - Changed the "Sort by..." menu and reverse sort order
@@ -1312,7 +1312,7 @@ This section is for debug purposes only
 - Added option to remove dark gradient under history screenshot
 - If no artwork for displays is available in menu-art, displays menu will span the whole screen
 
-*v5.5*
+*v5.5 - 13 September 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_55.zip*
 
 - Added support for custom sort of game lists, from within Arcadeflow utility menu
 - New "prev_letter" "next_letter" management allowing to jump to prev/next year, manufacturer etc according to sort order
@@ -1320,7 +1320,7 @@ This section is for debug purposes only
 - Option to save sort order state each time it is changed
 - When resetting search results there's an option to keep the current game selected
 
-*v5.4*
+*v5.4 - 05 September 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_54.zip*
 
 - Fixed update of tags and completed overlays
 - "More of the same..." menu now shows tags of the current game so you can use them to filter
@@ -1329,7 +1329,7 @@ This section is for debug purposes only
 - Each time a romlist is loaded Arcadeflow detects if articles should be stripped or not from the sorting
 - Added manufacturer images from the golden era of videogames
 
-*v5.3*
+*v5.3 - 29 August 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_53.zip*
 
 - Game letter or display name zoom while fading
 - An optional game title artwork will be generated when no artwork is available
@@ -1342,18 +1342,18 @@ This section is for debug purposes only
 - Fixed bugs and improved the display list scrolling
 - Cleanup and reordering code
 
-*v5.2*
+*v5.2 - 16 August 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_52.zip*
 
 - You can now use hotkeys like prev/next page, letter, random game etc from history page
 - Added overlay when changing display
 - Utility menu can be disabled or tied to an hotkey
 - Added 70 new manufacturer images, mostly console related
 
-*v5.1*
+*v5.1 - 07 August 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_51.zip*
 
 - Fixed the routine that updates thumbnails when scrolling or going to next/prev game
 
-*v5.0*
+*v5.0 - 18 July 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_50.zip*
 
 - Added a color filter for Game Boy games with black and white snaps to make them look green-ish
 - New "low spec mode" option to reduce visual effect and improve performance on lower spec systems
@@ -1365,7 +1365,7 @@ This section is for debug purposes only
 - Fixed the thumbnails overlapping the label list when zooming.
 - Reorganized options to include a new "PERFORMANCE & FX" section.
 
-*v4.9*
+*v4.9 - 27 June 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_49.zip*
 
 - Game videos will show even in boxart mode, cropped to the shape of the box art
 - Added an option to customize the delay of the overlya videos
@@ -1375,13 +1375,13 @@ This section is for debug purposes only
 - Fixed some bugs in the displays artwork scrolling routine
 - Rewrote the image loading routine so now dynamic update during search works better
 
-*v4.8*
+*v4.8 - 17 June 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_48.zip*
 
 - Fixed a bug that kept videos (and their audio) playing even when not visible
 - Fixed some issues with labels and mame romlists
 - New players icons for mame romlists using "2P sim" and "2P alt" players definition
 
-*v4.7*
+*v4.7 - 12 June 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_47.zip*
 
 - Fixed a nasty bug that caused random crashes when using AF 4.6
 - More robust routines when dealing with multi-system romlists
@@ -1390,7 +1390,7 @@ This section is for debug purposes only
 - Introduced an optional "Cleaner" look with only game title and some data
 - Introduced a "Small Thumbnail" option for 1-row themes (thumbs are same size as 2-rows)
 
-*v4.6*
+*v4.6 - 03 June 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_46.zip*
 
 - Box art mode for consoles is now "Box Art - Flyer Mode" and can be enabled for all displays and emulators by default
 - Each display can be switched from Box Art to Flyer on the fly using a menu or a hot button, this is persistent
@@ -1404,7 +1404,7 @@ This section is for debug purposes only
 - Overlayed videos now fade out instead of just disappearing when changing tile
 - If you have a System Identifier defined it will be shown after the ROM main name, before the ROM name details. 
 
-*v4.5*
+*v4.5 - 24 May 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_45.zip*
 
 - The layout is not restricted to arcade games anymore, it works and adapts to console games (TV) and handheld games. Just add "Console" and/or "Handheld" to your emulator category in Attract Mode settings
 - Added a "Box Art Mode" for console games: Arcadeflow won't show screenshots but box artwork for console games. You can enable it from the menu and it will be applied to emulators that have "Console" added as a category.
@@ -1414,19 +1414,19 @@ This section is for debug purposes only
 - Added options to change the number of rows when Arcadeflow is used as Displays Menu
 - Changed parts of the layout so it better copes with console game lists, now it works fine with screenshots for TV consoles (4:3 screen aspect ratio)
 
-*v4.4*
+*v4.4 - 09 May 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_44.zip*
 
 - Added a new "Displays Menu" option. With this option enabled you can use Arcadeflow as a Displays Menu layout without glitches
 - Added a voice on the main menu to enter "Displays Menu"
 - Added frosted glass effect under "Displays Menu" overlay
 - More robust code for filters and labels
 
-*v4.3*
+*v4.3 - 06 May 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_43.zip*
 
 - Fixed some bugs in the label scrollbar, taking into account "Vs. " game sorting, cleaned up the code
 - Lighter frosted background in "Light" theme to improve menu readability
 
-*v4.2*
+*v4.2 - 02 May 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_42.zip*
 
 - Introduced different styles for the scrollbar:
 - - Scrollbar is a simple scrollbar as before
@@ -1437,7 +1437,7 @@ This section is for debug purposes only
 - - In "Label List" mode you jump to the next or previous label (letter or year depending on the sorting)
 - - In "Timeline" mode you jump pages when the scrollbar is highlighted but if you go down again you can jump labels 
 
-*v4.1*
+*v4.1 - 11 April 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_41.zip*
 
 - New "Low Resolution" mode with increased font size and optimized layout for lower resolution screens
 - New option to enable Low Resolution mode
@@ -1445,7 +1445,7 @@ This section is for debug purposes only
 - Fixed the update routine when tags are changed
 - Changed the way horizontal and vertical games are recognized and the way horizontal and vertical artwork (borders, glows etc) are generated, to reduce layering
 
-*v4.0*
+*v4.0 - 01 April 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_40.zip*
 
 - Frosted glass menu overlay now fades in instead of just appearing
 - Text in history page has a minimum size so it's readable even on low res screens
@@ -1455,7 +1455,7 @@ This section is for debug purposes only
 - Fixed two manufacturer images
 - Changed the thumbnails update code so now it reponds correctly to all signals like "next_letter", "random_game", "next favourite" ecc both in thumbnail view and in history page view
 
-*v3.9*
+*v3.9 - 07 March 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_39.zip*
 
 - Fixed some bugs in the signal response code and sound management
 - Added a "fade from black" effect when launching the layout
@@ -1469,7 +1469,7 @@ This section is for debug purposes only
 - - You can now add a sound file to play during attract mode
 - - Added an option in the general menu to manually start attract mode without waiting
 
-*v3.8*
+*v3.8 - 01 March 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_38.zip*
 
 - Added an "attract mode" that shows random game videos when AF is not active (see options)
 - In options if you use "vignette.pmg" as custom background you get a corner vignette effect
@@ -1480,25 +1480,25 @@ This section is for debug purposes only
 - Changed the routine used for fade in - fade out, code is cleaner and effect is smoother
 - Added a "DEBUG" option to enable a FPS counter (for debug purposes only)
 
-*v3.7*
+*v3.7 - 18 February 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_37.zip*
 
 - Customized CRT shader with vigneting effects.
 - Added an option for history page game video: you can have "Aperture" instead of scanlines, half res scanlines or plain video.
 - Changed the look of the history text with a white background, you can select it in the options.
 
-*v3.6*
+*v3.6 - 15 February 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_36.zip*
 
 - Arcadeflow 3.6 requires Attract Mode 2.5.
 - Fixed some issues with AM 2.5 when adding or deleting favorites and tags.
 - Changed the CRT filter in history page from cgwg shader to lotte shader, now scanlines are vertical for vertical games and aligned to the game actual pixels.
 - Added options for history page that halves or removes scanlines so the moiree effect is less prominent.
 
-*v3.5*
+*v3.5 - 07 February 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_35.zip*
 
 - In layout options you can now choose if you want to use "select" or a "custom" control button to open the context menu.
 - Revised the thumbnail glow bitmap and shader (again) so it's subtler and smoother.
 
-*v3.4*
+*v3.4 - 31 January 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_34.zip*
 
 - Custom control button not needed anymore, now when you hit "select" on a game you'll see the context menu, if you hit "select" again the game will play, otherwise you can use arrows as before for different functions
 - Revised the context menu graphics
@@ -1506,23 +1506,23 @@ This section is for debug purposes only
 - Changed the way "glow color" is calculated, takes its color from actual thumbnail (static or video) isntead of the average as before
 - Added glowing effect in history page around the game display video
 
-*v3.3*
+*v3.3 - 06 January 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_33.zip*
 
 - ug fixes for 1-row mode and for response to signals like next_game, next_page etc
 
-*v3.2*
+*v3.2 - 05 January 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_32.zip*
 
 - Revised the smooth shadow under texts, now it's resolution-independent and more optimized
 - Added an option to have 1-row layouts for both horizontal and vertical
 - Enlarged some elements of the UI for lower resolution screens
 
-*v3.1*
+*v3.1 - 26 December 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_31.zip*
 
 - Added indicators of number of players, game controls and game buttons
 - Fixed some bugs in the category picture function
 - Fixed bugs in the pop up letter routine
 
-*v3.0*
+*v3.0 - 12 December 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_30.zip*
 
 - Changed the way blurred fading backgrounds are layered
 - Tweaked some graphics aspects
@@ -1531,7 +1531,7 @@ This section is for debug purposes only
 - Added an option to mute the theme "click" and "woosh" sounds
 - Improved transparent PNGs for shadows and glows
 
-*v2.9*
+*v2.9 - 02 December 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_29.zip*
 
 - Redesigned the game data ribbon on top of the thumbnail grid
 - Added category icons for game category
@@ -1541,33 +1541,33 @@ This section is for debug purposes only
 - The technique used for background crossfade is used for game data crossfade too
 - Frosted glass effect applied to the screen behind the logo
 
-*v2.8*
+*v2.8 - 19 October 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_28.zip*
 
 - Implemented a new, smoother system for background image crossfade
 - Added a "look for the same..." + "Decade" search menu entry
 
-*v2.7*
+*v2.7 - 11 October 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_27.zip*
 
 - Fixed some bugs in screen rotation
 - Added the possibility to define a layout resolution independent from screen resolution
 
-*v2.6*
+*v2.6 - 02 October 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_26.zip*
 
 - New "frosted glass" effect when you enter overlay menus
 - Updated Readme.md with current options
 
-*v2.5*
+*v2.5 - 28 September 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_25.zip*
 
 - Added a new option to toggle screen rotation permanently
 
-*v2.4*
+*v2.4 - 27 September 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_24.zip*
 
 - Snapshots aspect ratio is now adapted to 4:3 or 3:4 automatically
 - Some improvements to shaders, cleaned up the code
 - Revamped the History page adding a CRT-like shader to the game preview
 - Tweaked the appearance of themes (dark is now darker) and fixed some bugs in snapshots scaling
 
-*v2.3*
+*v2.3 - 29 August 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_23.zip*
 
 - Improved the overall speed by optimizing shaders and textures
 - Added a new effect on the background where you can get a pixellated version of the snap or video
@@ -1575,26 +1575,26 @@ This section is for debug purposes only
 - Added the possibility to hear audio of the videos in the thumb and/or in the history page
 - Revamped the options to make it more clear
 
-*v2.2*
+*v2.2 - 23 August 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_22.zip*
 
 - The thumbnail art fades to the average thumbnail color in the area behind the title logo, to improve readability
 - Added an option "Smooth Gradient Snap" to enable/disable the fade effect
 - In "Square" thumbs mode changed the position and aspect ratio of the logo so it's more on the top of the thumb
 
-*v2.1*
+*v2.1 - 21 August 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_21.zip*
 
 - Added some tweaks to make scrolling more fluid and correct slowdowns
 - Fixed a bug in the background scaling blurred snap routine
 - Changed the blur shader, now there are three layouts to chose from: layout, layout_noshader, layout_oldshader (with a lighter shader that is faster on some machines)
 
-*v2.0*
+*v2.0 - 17 August 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_20.zip*
 
 - New feature: you can now change the splash logo
 - New feature: background artwork can be a semi-transparent PNG and will show the blurred background behind it
 - Under the hood changes: version 2.0 is a huge rewrite of AF, no need to generate blurred backgrounds or blurred logo shadows with xnview, the theme can generate on the fly shadows and backgrounds from your snapshots and wheel artwork. The theme may be a bit slower on your system depending on the size of artworks which is generally larger than xnview generated blurred pictures.
 - If you have issues with the new way "blur" is generated you can use the layout_noshader.nut file instead, just chose it from the layout options menu (AM 2.4) or rename it to layout.nut (AM 2.3). This layout file has all the features of the new one, but in a standard framework using xnview generated artwork
 
-*v1.9*
+*v1.9 - 25 July 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_19.zip*
 
 - AM 2.4 was released while coding AF 1.9, adapted the code so it works both in 2.3 and 2.4:
 - - Fixed the zorder management
@@ -1607,11 +1607,11 @@ This section is for debug purposes only
 - "Square" thumbnails layout now responds to the "Blurred Logo Shadow" option, if you enable it you'll get game name overlay with drop shadow, otherwise plain game name with gradient background.
 - When a game has a multi-language title separated by "/" (e.g. Fatal Fury / Garou Densetsu) the theme will crossfade the titles so that title scrolling is needed less often.
 
-*v1.8*
+*v1.8 - 06 July 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_18.zip*
 
 - Introduced a new layout style where game snaps are not horizontal or vertical depending on game orientation, but cropped square. You can chose it in the options menu.
 
-*v1.7*
+*v1.7 - 05 July 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_17.zip*
 
 - Overhauled the menu and functions system, now it works like this:
 - - When going "UP" from the tiles list you get to a "main menu" where you can select Filters Menu or Global Search
@@ -1624,13 +1624,12 @@ This section is for debug purposes only
 - Rolled back the way horizontal and vertical games are detected, the "new" one had some issues in many circumstances
 - Tweaked and updated search with on-screen keys
 - Added a workaround when invoking filters through the filters menu button to fix some tiles update
-- 
 - New theme options included:
 - - "History.dat" is the location of the History.dat file (no need to enable or configure the )
 - - "Index Clones" works like the same option in the History.dat plugin.
 - - "Generate Index" a one-time function to generate the history index
 
-*v1.6*
+*v1.6 - 08 June 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_16.zip*
 
 - Changed the way horizontal and vertical games are detected, this time it should work for all users and all games lists
 - Changed the way the "vertical" mode is scaled and layed out, clearer and with larger thumbs
@@ -1641,7 +1640,7 @@ This section is for debug purposes only
 - - "Enable AF splash logo" enables/disables the fading splash Arcadeflow logo
 - - "Vertical rows" allows to use 2 or 3 rows of icons in vertical mode
 
-*v1.5*
+*v1.5 - 28 May 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_15.zip*
 
 - New shadows graphics, smoother and more modern-looking
 - New and improved search features:
@@ -1649,7 +1648,7 @@ This section is for debug purposes only
 - - use "Custom 3" to open a menu and search in games titles, years, manufacturers or categories
 - When toggling screen rotation using AttractMode hotkeys the screen updates to the vertical layout if needed.
 
-*v1.4*
+*v1.4 - 22 April 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_14.zip*
 
 - Changed (again) splash screen graphics at startup (new AF logo)
 - Introducing theme options:
@@ -1659,13 +1658,13 @@ This section is for debug purposes only
 - - You can place a background image, this will be affected by the theme choice and will override the blurred background
 - Minor tweaks and speedups, now each sections retaines the latest selected game
 
-*v1.3*
+*v1.3 - 26 March 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_13.zip*
 
 - Key repeat rate limited to allow more fluid scrolling of tiles
 - Added selection sound
 - Changed splash screen graphics at startup
 
-*v1.2*
+*v1.2 - 19 February 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_12.zip*
 
 - Scrolling game title when the title size is too big to fit the screen
 - If you go "up" from the first row you enter the "Filters" menu
@@ -1673,7 +1672,7 @@ This section is for debug purposes only
 - Improved scrolling speed on some systems
 - Added a splash screen at startup
 
-*v1.1*
+*v1.1 - 11 February 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_11.zip*
 
 - The games list is not repeating
 - Tweaked scrolling at the beginning of the list so the first game column is not centered
@@ -1681,7 +1680,7 @@ This section is for debug purposes only
 - Number of columns automatically calculated
 - Better support for vertical displays
 
-*v1.0*
+*v1.0 - 02 February 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_10.zip*
 
 - First release
 

@@ -1,0 +1,3 @@
+13.2 - 11 May 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_132.zip
+Scraping matches roms regardless of WHDLoad version
+Fixed bug with customised utility menu

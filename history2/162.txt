@@ -1,0 +1,11 @@
+16.2 - 18 September 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.2
+AF requires AM+ 3.0.6
+Added new "slate" color theme
+Added smooth scrolling to game history
+Added option to automatically scroll history
+Added Dirksimple and Gaelco systems
+Added option to open displays menu on current category
+Revamped media downloader for scraper
+Fixed scraped media download hanging
+Fixed scraping credential saving
+Fixed gameslist.xml import

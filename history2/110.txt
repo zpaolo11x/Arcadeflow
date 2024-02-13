@@ -1,0 +1,6 @@
+11.0 - 07 October 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_110.zip
+Added multiple selection menus for editing metadata
+Metadata edits are tranferred to "collection" romlists
+Improved keyboard design and layout
+Fixed bug that saved metadata only on the boot display
+Fixed "Delete Rom File" menu that now actually works

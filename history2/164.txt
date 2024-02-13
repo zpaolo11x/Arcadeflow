@@ -1,0 +1,4 @@
+16.4 - 16 October 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.4
+Added option to show only power menu
+Added report message for romlist refresh
+Fixed volume menu jumping

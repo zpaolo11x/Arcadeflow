@@ -1,0 +1,11 @@
+12.0 - 29 November 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_120.zip
+Introduced a new romlist management system
+- Collections syncronised with source romlists
+- Romlist data is transferred to a "database" holding all games data
+Added an option to add "all games" collections automatically
+Added an embedded command.dat database for arcade games
+Multifilter now shows correct number of games for each selection
+Added scrape status to Multifilter entries
+Improved and faster single game scraping
+Fixed scrolling bugs when reaching begin of list
+Added 40 new manufacturer logos

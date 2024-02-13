@@ -1,0 +1,2 @@
+5.1 - 07 August 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_51.zip
+Fixed the routine that updates thumbnails when scrolling or going to next/prev game

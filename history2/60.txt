@@ -1,0 +1,6 @@
+6.0 - 02 December 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_60.zip
+Manufacturer images are now in vector format
+Added new options for boxart mode:
+- you can chose if you still want to show the game title artwork on top of the tiles
+- you can chose the source of the box art between flyers and fanart
+Added new option to delay background video loading so it's faster and in sync with thumbnail videos

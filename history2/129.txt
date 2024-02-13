@@ -1,0 +1,5 @@
+12.9 - 08 April 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_129.zip
+Fixed bug in scraped media folders
+Fixed slow display changing with collections
+Fixed bugs in Region multifilter
+Made multifilter routines more robust

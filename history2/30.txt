@@ -1,0 +1,7 @@
+3.0 - 12 December 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_30.zip
+Changed the way blurred fading backgrounds are layered
+Tweaked some graphics aspects
+Pop up letter now responds to the sort order of the game list
+Cleaned up some code
+Added an option to mute the theme "click" and "woosh" sounds
+Improved transparent PNGs for shadows and glows

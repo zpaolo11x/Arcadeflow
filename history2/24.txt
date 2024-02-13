@@ -1,0 +1,5 @@
+2.4 - 27 September 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_24.zip
+Snapshots aspect ratio is now adapted to 4:3 or 3:4 automatically
+Some improvements to shaders, cleaned up the code
+Revamped the History page adding a CRT-like shader to the game preview
+Tweaked the appearance of themes (dark is now darker) and fixed some bugs in snapshots scaling

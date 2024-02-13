@@ -1,0 +1,6 @@
+5.7 - 11 October 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_57.zip
+Fixed bugs when Arcadeflow is used as Displays Menu layout
+Fixed a bug when switching from snapshots to box-art
+Fixed bugs in the game counter and display of system name
+Changed the way history background is used, so it won't interfere with main background
+Added new manufacturer images for computer games (MSX, BBC Micro, NEC PC88, Apple II, PC, Amstrad etc) and japanese computer games (FM Towns, PC-8800, PC-9800, X68000)

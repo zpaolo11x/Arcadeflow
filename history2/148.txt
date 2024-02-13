@@ -1,0 +1,8 @@
+14.8 - 05 October 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.8
+Added new systems: PC Engine LT, SNES and NES new designs
+Added option for Vertical Arcade video snaps
+Increased line spacing in history page description
+Manufacturer logos are now differentiated by year
+Moved ScreenScraper login data to ss_login.txt file
+Fixed manufacturer multifilter to be case-insensitive
+Fixed SS issue when scraping games with dot in the name

@@ -1,0 +1,5 @@
+15.9 - 23 March 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.9
+Added new manufacturer logos
+Updated German translation (thanks ScherzKeks)
+Fixed progress bar with overscan
+Code cleanup

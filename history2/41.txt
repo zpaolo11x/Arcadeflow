@@ -1,0 +1,6 @@
+4.1 - 11 April 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_41.zip
+New "Low Resolution" mode with increased font size and optimized layout for lower resolution screens
+New option to enable Low Resolution mode
+Changed the zooming code of the tiles to avoid jumps and make it smoother, now all tiles zoom out and not just the last one
+Fixed the update routine when tags are changed
+Changed the way horizontal and vertical games are recognized and the way horizontal and vertical artwork (borders, glows etc) are generated, to reduce layering

@@ -1,0 +1,4 @@
+6.4 - 24 January 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_64.zip
+Fixed scroll routines and signal response so it works in Attract Mode 2.6.1
+Added progressive acceleration to horizontal scrolling
+Added manufacturer logos (830 total)

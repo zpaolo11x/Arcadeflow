@@ -1,0 +1,6 @@
+14.7 - 23 September 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.7
+Added option to reset database without affecting romlist
+Added new option to remove unused entries in games db
+Added support for RA 32 Bit in Windows
+Added new options for RetroArch custom folders
+Fixed deleted tags showing in list

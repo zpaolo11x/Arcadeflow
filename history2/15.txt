@@ -1,0 +1,6 @@
+1.5 - 28 May 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_15.zip
+New shadows graphics, smoother and more modern-looking
+New and improved search features:
+- use "Custom 2" to filter games with the same year, manufacturer, main category and sub-category of the current game (e.g. shooters, or horizontal shooters)
+- use "Custom 3" to open a menu and search in games titles, years, manufacturers or categories
+When toggling screen rotation using AttractMode hotkeys the screen updates to the vertical layout if needed.
