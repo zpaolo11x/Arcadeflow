@@ -1403,21 +1403,92 @@ function historytext() {
 	return history
 }
 
-function historytext2() {
-	local scanver = 169
-	local verfile = null
-	local outfile = null
+function buildhtmlhistory() {
+	local scanver = AF.vernum
+	local extjpg = ["","b","c","d","e","f","g"]
 	local history = []
-	local line = ""
-	local line2 = ""
-	local line2array = []
+	local in_line = ""
+	local out_line = ""
+	local codeblock = []
+	local outblock = []
 
-	local metafile = ReadTextFile (AF.folder + "docs/timeline.txt")
+	local line = ""
+	local linearray = []
+
+	local ver_snum = ""
+	local ver_lnum = ""
+	local ver_date = ""
+	local ver_link = ""
+	local ver_data = []
+
+	local verfile = null
+	local infile = ReadTextFile (AF.folder + "docs/history_canvas.html")
+	local outfile = WriteTextFile (AF.folder + "docs/history_TEST.html")
+
+	while (!infile.eos()) {
+		in_line = infile.read_line_wtab()
+		if (in_line == "*****") { // Enter the code block
+			// Build an array of all the code block lines to loop
+			in_line = infile.read_line_wtab()
+			while (in_line != "*****") {
+				codeblock.push(in_line)
+				in_line = infile.read_line_wtab()
+			}
+			
+			// HISTORY DATA BUILD LOOP
+			while (scanver >= 10) {
+				if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
+					verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
+					line = verfile.read_line()
+					linearray = split(line, "-")
+					ver_lnum = strip(linearray[0])
+					ver_date = strip(linearray[1])
+					ver_link = strip(linearray[2])
+					ver_snum = scanver.tostring()
+				
+				
+					foreach(i, item in codeblock){
+						out_line = codeblock[i]
+
+						if (out_line.find("$LISTITEM") != null) {
+							while (!verfile.eos()){
+								line = verfile.read_line()
+								out_line = subst_replace(out_line, "$LISTITEM", line)
+								outfile.write_line (out_line+"\n")
+								out_line = codeblock[i]
+							}
+						} 
+						else if (out_line.find("$PICTURE") != null) {
+							foreach (i2, item2 in extjpg){
+								if (file_exist(AF.folder + "docs/historyjpg/"+"AF" + ver_snum + item2+".jpg")) {
+									out_line = subst_replace(out_line, "$PICTURE", "AF" + ver_snum + item2)
+									outfile.write_line (out_line+"\n")
+									out_line = codeblock[i]
+								}
+							}
+						} else {
+							out_line = subst_replace(out_line, "$INTVER", ver_snum)
+							out_line = subst_replace(out_line, "$PATH", ver_link)
+							out_line = subst_replace(out_line, "$DATE", ver_date)
+							out_line = subst_replace(out_line, "$LONGVER", ver_lnum)
+							outfile.write_line(out_line+"\n")
+						}
+					}
+					outfile.write_line("\n")
+				}
+				scanver --
+			}
+		} else {
+			outfile.write_line(in_line + "\n")
+		}
+	}
+
+	return
 
 	while (scanver >= 10) {
 		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
 			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
-			outfile = WriteTextFile (AF.folder + "history2/" + scanver + ".txt")
+
 
 			line = verfile.read_line()
 			line2 = metafile.read_line()
@@ -1439,7 +1510,8 @@ function historytext2() {
 }
 //TEST170
 //historytext2()
-
+buildhtmlhistory()
+pappo = 0
 
 
 function buildreadme(separator = false, include_history = true) {

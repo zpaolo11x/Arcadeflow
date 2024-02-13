@@ -25,31 +25,41 @@
 
 	<body class="m_history">
 		<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/js/lightgallery.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lg-pager.js/master/dist/lg-pager.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lg-autoplay.js/master/dist/lg-autoplay.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lg-fullscreen.js/master/dist/lg-fullscreen.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lg-zoom.js/master/dist/lg-zoom.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lg-hash.js/master/dist/lg-hash.js"></script>
-    <script src="https://cdn.rawgit.com/sachinchoolur/lg-share.js/master/dist/lg-share.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lightgallery.js/master/dist/js/lightgallery.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lg-pager.js/master/dist/lg-pager.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lg-autoplay.js/master/dist/lg-autoplay.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lg-fullscreen.js/master/dist/lg-fullscreen.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lg-zoom.js/master/dist/lg-zoom.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lg-hash.js/master/dist/lg-hash.js"></script>
+		<script src="https://cdn.rawgit.com/sachinchoolur/lg-share.js/master/dist/lg-share.js"></script>
 
-
-    <div class="container">
-
-
-
-		<div class="header">
-			<div class="logo"><img src="aflogox.png"></div>
-			<div class="menu">
-				 <div><a class="m_about" href="index.html">ABOUT</a></div>
-				 <div><a class="m_features" href="features.html">FEATURES</a></div>
-				 <div><a class="m_history" href="history.html">HISTORY</a></div>
-				 <div><a class="m_links" href="links.html">LINKS</a></div>
+		<div class="container">
+			<div class="header">
+				<div class="logo"><img src="aflogox.png"></div>
+				<div class="menu">
+					<div><a class="m_about" href="index.html">ABOUT</a></div>
+					<div><a class="m_features" href="features.html">FEATURES</a></div>
+					<div><a class="m_history" href="history.html">HISTORY</a></div>
+					<div><a class="m_links" href="links.html">LINKS</a></div>
+				</div>
 			</div>
-		</div>
 
-**********
-
+*****
+			<div class="blockleft" id="$INTVER">
+				<div id = "lightgallery$INTVER" class="picgallery">
+					<div class="imgdiv" data-src="historyjpg/$PICTURE.jpg"><a href=""><img class="histpic" src="historyjpg/$PICTURE.jpg"></a></div>
+				</div>
+				<script>
+					lightGallery(document.getElementById('lightgallery$INTVER'));
+        		</script>
+				<div class="data">
+					<H1><a href="$PATH">Arcadeflow $LONGVER</a><span class="date">$DATE</span></H1>
+					<ul>
+						<li>$LISTITEM</li>
+					</ul>
+				</div>
+			</div>
+*****
 		</div>
 	</body>
 </html>
