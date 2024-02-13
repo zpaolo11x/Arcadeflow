@@ -1400,7 +1400,6 @@ function historytext() {
 		}
 		scanver --
 	}
-	
 	return history
 }
 

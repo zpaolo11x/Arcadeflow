@@ -10,7 +10,6 @@ Implemented a version of the History.dat plugin so you can see history without t
 Rolled back the way horizontal and vertical games are detected, the "new" one had some issues in many circumstances
 Tweaked and updated search with on-screen keys
 Added a workaround when invoking filters through the filters menu button to fix some tiles update
-
 New theme options included: 
 - "History.dat" is the location of the History.dat file (no need to enable or configure the )
 - "Index Clones" works like the same option in the History.dat plugin.
