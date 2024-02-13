@@ -1,0 +1,5 @@
+5.2
+You can now use hotkeys like prev/next page, letter, random game etc from history page
+Added overlay when changing display
+Utility menu can be disabled or tied to an hotkey
+Added 70 new manufacturer images, mostly console related

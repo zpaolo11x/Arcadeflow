@@ -1,0 +1,10 @@
+5.6
+Fixed bugs in the sorting feature and tile update
+Changed the "Sort by..." menu and reverse sort order
+Fixed an issue with history.dat index generation
+Changed the scrollbar layout so there's more room for filter and sort name
+Added a new glyph to show sort direction
+Added glyphs to "Utility menu" entries and to menu headers
+Added custom background image for history page
+Added option to remove dark gradient under history screenshot
+If no artwork for displays is available in menu-art, displays menu will span the whole screen

@@ -1,0 +1,8 @@
+1.4
+Changed (again) splash screen graphics at startup (new AF logo) 
+Introducing theme options:
+- You can chose the theme's... theme :D There are 4 choices: "Default" (greyed blurred background), "Dark", "Light" (dark and light blurred background), "Pop" (blurred background colors unaltered)
+- You can chose whether you want "hard edged" game title shadows or "smooth" game title shadows, the latter requires new artwork (see below)
+- You can chose whether you want to place a marker on unplayed games
+- You can place a background image, this will be affected by the theme choice and will override the blurred background
+Minor tweaks and speedups, now each sections retaines the latest selected game

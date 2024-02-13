@@ -1143,6 +1143,7 @@ This section is for debug purposes only
 - In menus, use "left" to jump to the top of the list
 
 *v7.4*
+
 - Whole new (again) menu system
 - Added an option to show the displays menu at startup
 - Added am option to add "Esit Arcadeflow" in the displays menu (use this instead of the one in Attract Mode options)
@@ -1153,6 +1154,7 @@ This section is for debug purposes only
 - Faster engage of fast speed scrolling
 
 *v7.3*
+
 - Added "grouped" displays menu, with Arcade, Computer, Console and Handheld categories
 - New version control for preference file that is not completely wiped when new preferences are added
 - Added visual cue for options introduced in latest release
@@ -1160,6 +1162,7 @@ This section is for debug purposes only
 - Fixed bugs in the name artwork generation
 
 *v7.2*
+
 - All interface except background is hidden when game is launched
 - Added "Game & Watch" and "Tiger" to systems list
 - Changed the way systems are managed internally
@@ -1170,6 +1173,7 @@ This section is for debug purposes only
 - Fixed options menu not stopping attract mode
 
 *v7.1*
+
 - Added back the option to show images from menu-art folder in displays menu list
 - Fixed fade issue with new menu system
 - Fixed size of system logos in displays menu on vertical layout
@@ -1179,6 +1183,7 @@ This section is for debug purposes only
 - Fixed displays selection when a display is not shown in menu
 
 *v7.0*
+
 - Added a new menu system with smooth scrolling and visual glyphs
 - Added an option to enable/disable the new menu system
 - When showing the display name upon changing display, system artwork is used instead of plain text
@@ -1397,7 +1402,7 @@ This section is for debug purposes only
 - Boxart mode can be configured in theme option, but also changed on the fly with a general menu entry or with a custom control button (no layout reload required)
 - When using the "Default" Displays Menu the layout doesn't need to reload at display changes. This is still needed when using Arcadeflow as Displays Menu Layout
 - Overlayed videos now fade out instead of just disappearing when changing tile
-- If you have a System Identifier defined it will be shown after the ROM main name, before the ROM name details.
+- If you have a System Identifier defined it will be shown after the ROM main name, before the ROM name details. 
 
 *v4.5*
 
@@ -1430,9 +1435,9 @@ This section is for debug purposes only
 - Changed what happens when you go "down" from the tiles list:
 - - In "Scrollbar" mode "page jump" is enabled, as usual, skipping entire screens instead of one game
 - - In "Label List" mode you jump to the next or previous label (letter or year depending on the sorting)
-- - In "Timeline" mode you jump pages when the scrollbar is highlighted but if you go down again you can jump labels
+- - In "Timeline" mode you jump pages when the scrollbar is highlighted but if you go down again you can jump labels 
 
-*v 4.1*
+*v4.1*
 
 - New "Low Resolution" mode with increased font size and optimized layout for lower resolution screens
 - New option to enable Low Resolution mode
@@ -1440,7 +1445,7 @@ This section is for debug purposes only
 - Fixed the update routine when tags are changed
 - Changed the way horizontal and vertical games are recognized and the way horizontal and vertical artwork (borders, glows etc) are generated, to reduce layering
 
-*v 4.0*
+*v4.0*
 
 - Frosted glass menu overlay now fades in instead of just appearing
 - Text in history page has a minimum size so it's readable even on low res screens
@@ -1450,7 +1455,7 @@ This section is for debug purposes only
 - Fixed two manufacturer images
 - Changed the thumbnails update code so now it reponds correctly to all signals like "next_letter", "random_game", "next favourite" ecc both in thumbnail view and in history page view
 
-*v 3.9*
+*v3.9*
 
 - Fixed some bugs in the signal response code and sound management
 - Added a "fade from black" effect when launching the layout
@@ -1464,7 +1469,7 @@ This section is for debug purposes only
 - - You can now add a sound file to play during attract mode
 - - Added an option in the general menu to manually start attract mode without waiting
 
-*v 3.8*
+*v3.8*
 
 - Added an "attract mode" that shows random game videos when AF is not active (see options)
 - In options if you use "vignette.pmg" as custom background you get a corner vignette effect
@@ -1475,25 +1480,25 @@ This section is for debug purposes only
 - Changed the routine used for fade in - fade out, code is cleaner and effect is smoother
 - Added a "DEBUG" option to enable a FPS counter (for debug purposes only)
 
-*v 3.7*
+*v3.7*
 
 - Customized CRT shader with vigneting effects.
 - Added an option for history page game video: you can have "Aperture" instead of scanlines, half res scanlines or plain video.
 - Changed the look of the history text with a white background, you can select it in the options.
 
-*v 3.6*
+*v3.6*
 
 - Arcadeflow 3.6 requires Attract Mode 2.5.
 - Fixed some issues with AM 2.5 when adding or deleting favorites and tags.
 - Changed the CRT filter in history page from cgwg shader to lotte shader, now scanlines are vertical for vertical games and aligned to the game actual pixels.
 - Added options for history page that halves or removes scanlines so the moiree effect is less prominent.
 
-*v 3.5*
+*v3.5*
 
 - In layout options you can now choose if you want to use "select" or a "custom" control button to open the context menu.
 - Revised the thumbnail glow bitmap and shader (again) so it's subtler and smoother.
 
-*v 3.4*
+*v3.4*
 
 - Custom control button not needed anymore, now when you hit "select" on a game you'll see the context menu, if you hit "select" again the game will play, otherwise you can use arrows as before for different functions
 - Revised the context menu graphics
@@ -1501,23 +1506,23 @@ This section is for debug purposes only
 - Changed the way "glow color" is calculated, takes its color from actual thumbnail (static or video) isntead of the average as before
 - Added glowing effect in history page around the game display video
 
-*v 3.3*
+*v3.3*
 
-- Bug fixes for 1-row mode and for response to signals like next_game, next_page etc
+- ug fixes for 1-row mode and for response to signals like next_game, next_page etc
 
-*v 3.2*
+*v3.2*
 
 - Revised the smooth shadow under texts, now it's resolution-independent and more optimized
 - Added an option to have 1-row layouts for both horizontal and vertical
 - Enlarged some elements of the UI for lower resolution screens
 
-*v 3.1*
+*v3.1*
 
 - Added indicators of number of players, game controls and game buttons
 - Fixed some bugs in the category picture function
 - Fixed bugs in the pop up letter routine
 
-*v 3.0*
+*v3.0*
 
 - Changed the way blurred fading backgrounds are layered
 - Tweaked some graphics aspects
@@ -1526,7 +1531,7 @@ This section is for debug purposes only
 - Added an option to mute the theme "click" and "woosh" sounds
 - Improved transparent PNGs for shadows and glows
 
-*v 2.9*
+*v2.9*
 
 - Redesigned the game data ribbon on top of the thumbnail grid
 - Added category icons for game category
@@ -1536,33 +1541,33 @@ This section is for debug purposes only
 - The technique used for background crossfade is used for game data crossfade too
 - Frosted glass effect applied to the screen behind the logo
 
-*v 2.8*
+*v2.8*
 
 - Implemented a new, smoother system for background image crossfade
 - Added a "look for the same..." + "Decade" search menu entry
 
-*v 2.7*
+*v2.7*
 
 - Fixed some bugs in screen rotation
 - Added the possibility to define a layout resolution independent from screen resolution
 
-*v 2.6*
+*v2.6*
 
 - New "frosted glass" effect when you enter overlay menus
 - Updated Readme.md with current options
 
-*v 2.5*
+*v2.5*
 
 - Added a new option to toggle screen rotation permanently
 
-*v 2.4*
+*v2.4*
 
 - Snapshots aspect ratio is now adapted to 4:3 or 3:4 automatically
 - Some improvements to shaders, cleaned up the code
 - Revamped the History page adding a CRT-like shader to the game preview
 - Tweaked the appearance of themes (dark is now darker) and fixed some bugs in snapshots scaling
 
-*v 2.3*
+*v2.3*
 
 - Improved the overall speed by optimizing shaders and textures
 - Added a new effect on the background where you can get a pixellated version of the snap or video
@@ -1570,26 +1575,26 @@ This section is for debug purposes only
 - Added the possibility to hear audio of the videos in the thumb and/or in the history page
 - Revamped the options to make it more clear
 
-*v 2.2*
+*v2.2*
 
 - The thumbnail art fades to the average thumbnail color in the area behind the title logo, to improve readability
 - Added an option "Smooth Gradient Snap" to enable/disable the fade effect
 - In "Square" thumbs mode changed the position and aspect ratio of the logo so it's more on the top of the thumb
 
-*v 2.1*
+*v2.1*
 
 - Added some tweaks to make scrolling more fluid and correct slowdowns
 - Fixed a bug in the background scaling blurred snap routine
 - Changed the blur shader, now there are three layouts to chose from: layout, layout_noshader, layout_oldshader (with a lighter shader that is faster on some machines)
 
-*v 2.0*
+*v2.0*
 
 - New feature: you can now change the splash logo
 - New feature: background artwork can be a semi-transparent PNG and will show the blurred background behind it
 - Under the hood changes: version 2.0 is a huge rewrite of AF, no need to generate blurred backgrounds or blurred logo shadows with xnview, the theme can generate on the fly shadows and backgrounds from your snapshots and wheel artwork. The theme may be a bit slower on your system depending on the size of artworks which is generally larger than xnview generated blurred pictures.
 - If you have issues with the new way "blur" is generated you can use the layout_noshader.nut file instead, just chose it from the layout options menu (AM 2.4) or rename it to layout.nut (AM 2.3). This layout file has all the features of the new one, but in a standard framework using xnview generated artwork
 
-*v 1.9*
+*v1.9*
 
 - AM 2.4 was released while coding AF 1.9, adapted the code so it works both in 2.3 and 2.4:
 - - Fixed the zorder management
@@ -1602,30 +1607,30 @@ This section is for debug purposes only
 - "Square" thumbnails layout now responds to the "Blurred Logo Shadow" option, if you enable it you'll get game name overlay with drop shadow, otherwise plain game name with gradient background.
 - When a game has a multi-language title separated by "/" (e.g. Fatal Fury / Garou Densetsu) the theme will crossfade the titles so that title scrolling is needed less often.
 
-*v 1.8*
+*v1.8*
 
 - Introduced a new layout style where game snaps are not horizontal or vertical depending on game orientation, but cropped square. You can chose it in the options menu.
 
-*v 1.7*
+*v1.7*
 
 - Overhauled the menu and functions system, now it works like this:
 - - When going "UP" from the tiles list you get to a "main menu" where you can select Filters Menu or Global Search
 - - When on a game using the configurable control button you get a "context menu" overlay with 4 game-specific functions you chose by using your joystick/keys:
--   - "UP" enters the "More of the same..." search menu
--   - "DOWN" enters the "History" page where you can see and scroll the game history and see a larger game preview
--   - "LEFT" to enter the Tags menu
--   - "RIGHT" to add/remove favorites
+- - "UP" enters the "More of the same..." search menu
+- - "DOWN" enters the "History" page where you can see and scroll the game history and see a larger game preview
+- - "LEFT" to enter the Tags menu
+- - "RIGHT" to add/remove favorites
 - Implemented a version of the History.dat plugin so you can see history without the need to enable the plugin (see options)
 - Rolled back the way horizontal and vertical games are detected, the "new" one had some issues in many circumstances
 - Tweaked and updated search with on-screen keys
 - Added a workaround when invoking filters through the filters menu button to fix some tiles update
-
+- 
 - New theme options included:
 - - "History.dat" is the location of the History.dat file (no need to enable or configure the )
 - - "Index Clones" works like the same option in the History.dat plugin.
 - - "Generate Index" a one-time function to generate the history index
 
-*v 1.6*
+*v1.6*
 
 - Changed the way horizontal and vertical games are detected, this time it should work for all users and all games lists
 - Changed the way the "vertical" mode is scaled and layed out, clearer and with larger thumbs
@@ -1636,7 +1641,7 @@ This section is for debug purposes only
 - - "Enable AF splash logo" enables/disables the fading splash Arcadeflow logo
 - - "Vertical rows" allows to use 2 or 3 rows of icons in vertical mode
 
-*v 1.5*
+*v1.5*
 
 - New shadows graphics, smoother and more modern-looking
 - New and improved search features:
@@ -1644,7 +1649,7 @@ This section is for debug purposes only
 - - use "Custom 3" to open a menu and search in games titles, years, manufacturers or categories
 - When toggling screen rotation using AttractMode hotkeys the screen updates to the vertical layout if needed.
 
-*v 1.4*
+*v1.4*
 
 - Changed (again) splash screen graphics at startup (new AF logo)
 - Introducing theme options:
@@ -1654,13 +1659,13 @@ This section is for debug purposes only
 - - You can place a background image, this will be affected by the theme choice and will override the blurred background
 - Minor tweaks and speedups, now each sections retaines the latest selected game
 
-*v 1.3*
+*v1.3*
 
 - Key repeat rate limited to allow more fluid scrolling of tiles
 - Added selection sound
 - Changed splash screen graphics at startup
 
-*v 1.2*
+*v1.2*
 
 - Scrolling game title when the title size is too big to fit the screen
 - If you go "up" from the first row you enter the "Filters" menu
@@ -1668,7 +1673,7 @@ This section is for debug purposes only
 - Improved scrolling speed on some systems
 - Added a splash screen at startup
 
-*v 1.1*
+*v1.1*
 
 - The games list is not repeating
 - Tweaked scrolling at the beginning of the list so the first game column is not centered
@@ -1676,6 +1681,7 @@ This section is for debug purposes only
 - Number of columns automatically calculated
 - Better support for vertical displays
 
-*v 1.0*
+*v1.0*
 
 - First release
+

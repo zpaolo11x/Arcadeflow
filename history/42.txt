@@ -1,0 +1,9 @@
+4.2
+Introduced different styles for the scrollbar: 
+- Scrollbar is a simple scrollbar as before
+- Timeline adds ticks and labels depending on the sorting order
+- Labels List is a simple list of labels without the actual scrollbar
+Changed what happens when you go "down" from the tiles list:
+- In "Scrollbar" mode "page jump" is enabled, as usual, skipping entire screens instead of one game
+- In "Label List" mode you jump to the next or previous label (letter or year depending on the sorting)
+- In "Timeline" mode you jump pages when the scrollbar is highlighted but if you go down again you can jump labels 

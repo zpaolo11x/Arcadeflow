@@ -1,0 +1,2 @@
+5.1
+Fixed the routine that updates thumbnails when scrolling or going to next/prev game

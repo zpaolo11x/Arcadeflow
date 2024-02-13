@@ -1,0 +1,4 @@
+6.1
+Increased the number of manufacturer vector logos, almost parity with the old bitmap logos
+Changed the way sorting is done at startup to avoid delays when extremely large romlists are used
+Minor improvements and bug fixes

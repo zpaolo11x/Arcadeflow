@@ -1,0 +1,4 @@
+1.3
+Key repeat rate limited to allow more fluid scrolling of tiles 
+Added selection sound
+Changed splash screen graphics at startup

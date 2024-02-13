@@ -1,0 +1,9 @@
+1.6
+Changed the way horizontal and vertical games are detected, this time it should work for all users and all games lists
+Changed the way the "vertical" mode is scaled and layed out, clearer and with larger thumbs 
+Search features that require tex input now also work with on-screen keys (embedded the KeyboardSearch plugin)
+New theme options included: 
+- "Search string entry method" to chose if you want to use a keyboard or a joystick and on screen keys to enter text
+- "Immediate search" will live update results while you enter search text using the on screen keys
+- "Enable AF splash logo" enables/disables the fading splash Arcadeflow logo
+- "Vertical rows" allows to use 2 or 3 rows of icons in vertical mode

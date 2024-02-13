@@ -1,0 +1,6 @@
+7.6
+Fixed bugs with multi-level Displays menu and "#" category forcing
+Added a new "Multifilter" menu system, allowing you to dynamically filter a romlist without using a search string.
+Added a new Category menu that allows direct filtering of categories using a search string
+Added new custom buttons options for Category menu and Multifilter menu
+Sorted displays list in alphabetical order

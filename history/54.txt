@@ -1,0 +1,7 @@
+5.4
+Fixed update of tags and completed overlays
+"More of the same..." menu now shows tags of the current game so you can use them to filter
+The current game is selected when showing the "More of the same..." results list
+Added "Orientation" and "Favourite" to the "More of the same..." current game filter menu
+Each time a romlist is loaded Arcadeflow detects if articles should be stripped or not from the sorting
+Added manufacturer images from the golden era of videogames

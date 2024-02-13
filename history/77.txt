@@ -1,0 +1,8 @@
+7.7
+New backend for the multifilter menu
+Multifilter background is now a faded version of the background
+Multifilter menu now mixes "simple" entries and entries leading to a submenu (recognizable by the "...")
+When applying a multifilter, if the currently selected game is present in the filtered list it will be selected
+After applying a multifilter, entries that have 0 games are dimmed and can't be selected
+Multifilter status is saved for each display and each filter
+Updated Italian translation with new menus and options

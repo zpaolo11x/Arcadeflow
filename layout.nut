@@ -1389,7 +1389,7 @@ function historytext() {
 	local scanver = AF.vernum - 1
 	local verfile = null
 	local history = []
-	while (scanver > 10) {
+	while (scanver >= 10) {
 		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
 			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
 			history.push("*v" + verfile.read_line() + "*" + "\n\n")
@@ -1400,10 +1400,7 @@ function historytext() {
 		}
 		scanver --
 	}
-	verfile = ReadTextFile (AF.folder + "history/10.txt")
-	while (!verfile.eos()) {
-		history.push(verfile.read_line() + "\n")
-	}
+	
 	return history
 }
 

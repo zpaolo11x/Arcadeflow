@@ -1,0 +1,8 @@
+6.2
+Completed the conversion from png manufacturer logos to vector logos
+Fixed a bug in video snaps cropping when video aspect is different from boxart aspect
+In box-art mode, when no box artwork is present, the missing image is substituted with an image of the category logo with the game title overlayed
+Added a placeholder image for missing snapshots
+Fixed many small issues with cropping, glow and aspect ratios
+Fixed scrolling issue with page skipping
+Fixed video fade bug when skipping pages

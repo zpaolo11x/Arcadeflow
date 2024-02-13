@@ -1,0 +1,3 @@
+3.5
+In layout options you can now choose if you want to use "select" or a "custom" control button to open the context menu.
+Revised the thumbnail glow bitmap and shader (again) so it's subtler and smoother.

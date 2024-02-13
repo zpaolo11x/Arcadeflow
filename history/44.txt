@@ -1,0 +1,5 @@
+4.4
+Added a new "Displays Menu" option. With this option enabled you can use Arcadeflow as a Displays Menu layout without glitches
+Added a voice on the main menu to enter "Displays Menu"
+Added frosted glass effect under "Displays Menu" overlay
+More robust code for filters and labels

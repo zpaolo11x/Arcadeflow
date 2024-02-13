@@ -1,0 +1,9 @@
+3.8
+Added an "attract mode" that shows random game videos when AF is not active (see options)
+In options if you use "vignette.pmg" as custom background you get a corner vignette effect
+Added a grey shadow under the game title in history page
+Added the option to have a darker background for game preview in history page
+First and last lines of text in history page are now vanishing in the background color
+Text in history page slides up into place
+Changed the routine used for fade in - fade out, code is cleaner and effect is smoother
+Added a "DEBUG" option to enable a FPS counter (for debug purposes only)

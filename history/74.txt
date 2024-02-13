@@ -1,0 +1,9 @@
+7.4
+Whole new (again) menu system
+Added an option to show the displays menu at startup
+Added am option to add "Esit Arcadeflow" in the displays menu (use this instead of the one in Attract Mode options)
+Added an option to enter Displays Menu when leaving a Display (esc button)
+Added an option to exit Arcadeflow when leaving Displays Menu
+Removed options for using Arcadeflow as Displays Menu layout, this is not supported anymore
+Stopped video playing when menu is visible
+Faster engage of fast speed scrolling

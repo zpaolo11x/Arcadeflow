@@ -1,0 +1,4 @@
+3.7
+Customized CRT shader with vigneting effects.
+Added an option for history page game video: you can have "Aperture" instead of scanlines, half res scanlines or plain video.
+Changed the look of the history text with a white background, you can select it in the options.

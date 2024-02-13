@@ -1,0 +1,8 @@
+4.9
+Game videos will show even in boxart mode, cropped to the shape of the box art
+Added an option to customize the delay of the overlya videos
+Fixed name display for roms with multiple parenthesis like "(Japan) (Translated)"
+Changed the aspect ratio detector for box art, fixed some issues with cropping
+Fixed an issue in label list when no filters or global filter are present
+Fixed some bugs in the displays artwork scrolling routine
+Rewrote the image loading routine so now dynamic update during search works better

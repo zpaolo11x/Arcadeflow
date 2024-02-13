@@ -1,0 +1,10 @@
+7.5
+Added custom button option for search menu
+You can call the options menu from everywhere in the layout
+Displays images shown also when categorized menu is selected
+Add #console #arcade #handheld #computer or #other to force your display in a category 
+Very preliminary support for videos in the displays list with images
+New menu fade routine
+Arcadeflow adapts effects speed to your system framerate, so lower systems won't run slower, just less smooth
+Better menu shading when "No frosted glass" is selected
+In menus, use "left" to jump to the top of the list

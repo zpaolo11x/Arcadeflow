@@ -1,0 +1,6 @@
+3.4
+Custom control button not needed anymore, now when you hit "select" on a game you'll see the context menu, if you hit "select" again the game will play, otherwise you can use arrows as before for different functions
+Revised the context menu graphics
+Changed the way "color gradient" is calculated: instead of sampling some points on the image it uses an actual smoothed version of the image
+Changed the way "glow color" is calculated, takes its color from actual thumbnail (static or video) isntead of the average as before
+Added glowing effect in history page around the game display video

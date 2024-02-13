@@ -1,0 +1,17 @@
+1.7
+Overhauled the menu and functions system, now it works like this:
+- When going "UP" from the tiles list you get to a "main menu" where you can select Filters Menu or Global Search
+- When on a game using the configurable control button you get a "context menu" overlay with 4 game-specific functions you chose by using your joystick/keys:
+  - "UP" enters the "More of the same..." search menu
+  - "DOWN" enters the "History" page where you can see and scroll the game history and see a larger game preview
+  - "LEFT" to enter the Tags menu
+  - "RIGHT" to add/remove favorites
+Implemented a version of the History.dat plugin so you can see history without the need to enable the plugin (see options)
+Rolled back the way horizontal and vertical games are detected, the "new" one had some issues in many circumstances
+Tweaked and updated search with on-screen keys
+Added a workaround when invoking filters through the filters menu button to fix some tiles update
+
+New theme options included: 
+- "History.dat" is the location of the History.dat file (no need to enable or configure the )
+- "Index Clones" works like the same option in the History.dat plugin.
+- "Generate Index" a one-time function to generate the history index

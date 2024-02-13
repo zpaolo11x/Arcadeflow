@@ -1,0 +1,7 @@
+4.7
+Fixed a nasty bug that caused random crashes when using AF 4.6
+More robust routines when dealing with multi-system romlists
+Fixed issues with video fade routine
+Added a visual Displays Menu even when using "Default" displays menu
+Introduced an optional "Cleaner" look with only game title and some data
+Introduced a "Small Thumbnail" option for 1-row themes (thumbs are same size as 2-rows)

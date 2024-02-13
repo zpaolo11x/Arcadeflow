@@ -1,0 +1,12 @@
+3.9
+Fixed some bugs in the signal response code and sound management
+Added a "fade from black" effect when launching the layout
+Revised attract mode:
+- Attract mode is now on by default but not at startup, just after the delay
+- Streamlined the code, improved performance when it's enabled but not running
+- Added black crossfade when changing games
+- New options: chose wether attract mode satrts with the layout, only after delay time, or is disabled
+- Game rendering is done with a fixed number of scanlines (180) for every game
+- For lower resolution screens the number of pixels per scanline is optimized to avoid moiree
+- You can now add a sound file to play during attract mode
+- Added an option in the general menu to manually start attract mode without waiting

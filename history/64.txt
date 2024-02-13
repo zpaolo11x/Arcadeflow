@@ -1,0 +1,4 @@
+6.4
+Fixed scroll routines and signal response so it works in Attract Mode 2.6.1
+Added progressive acceleration to horizontal scrolling
+Added manufacturer logos (830 total)

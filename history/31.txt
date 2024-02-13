@@ -1,0 +1,4 @@
+3.1
+Added indicators of number of players, game controls and game buttons
+Fixed some bugs in the category picture function
+Fixed bugs in the pop up letter routine

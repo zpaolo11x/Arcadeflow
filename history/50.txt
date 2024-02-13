@@ -1,0 +1,10 @@
+5.0
+Added a color filter for Game Boy games with black and white snaps to make them look green-ish
+New "low spec mode" option to reduce visual effect and improve performance on lower spec systems
+Game list now wraps around:
+- When you reach the end (or the beginning) just press right (or left) again to jump. 
+- When reacting to next_game/prev_game signals.
+- In history page when going left/right, fixing a bug in 4.9.
+Fixed an issue with cropping of blurred background snaps 
+Fixed the thumbnails overlapping the label list when zooming.
+Reorganized options to include a new "PERFORMANCE & FX" section.

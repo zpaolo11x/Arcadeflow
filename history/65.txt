@@ -1,0 +1,8 @@
+6.5
+Added an option to chose the language of the layout. Currently only English and Italian are supported
+Improved the way glyphs are rendered on menus
+Fixed a bug in the signal response routine when showing "attract mode"
+Fixed a bug in the signal response routine when history page is showing
+List is not re-sorted when favorites are added but the list size is not changed
+Changed the way preferences are saved without using fe.nv
+Added manufacturer logos (900 total)
