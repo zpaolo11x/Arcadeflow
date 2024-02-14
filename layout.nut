@@ -1320,7 +1320,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
 {v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
-{v = 17.0, varname = "GENERATEHTML", glyph = 0xe998, title = "Generate html file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; buildhtmlhistory()}, selection = AF.req.executef},
+{v = 17.0, varname = "GENERATEHTML", glyph = 0xe998, title = "Generate html file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savehtmlhistory()}, selection = AF.req.executef},
 {v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options", options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
 ])
 
@@ -1404,7 +1404,7 @@ function historytext() {
 	return history
 }
 
-function buildhtmlhistory() {
+function savehtmlhistory() {
 	local scanver = AF.vernum
 	local extjpg = ["","b","c","d","e","f","g"]
 	local history = []
@@ -1416,22 +1416,22 @@ function buildhtmlhistory() {
 	local line = ""
 	local linearray = []
 
-	local ver_snum = ""
+	local ver_inum = ""
 	local ver_lnum = ""
 	local ver_date = ""
 	local ver_link = ""
 	local ver_data = []
 
 	local verfile = null
-	local infile = ReadTextFile (AF.folder + "docs/history_canvas.html")
+	local infile = ReadTextFile (AF.folder + "docs/history_template.html")
 	local outfile = WriteTextFile (AF.folder + "docs/history.html")
 
 	while (!infile.eos()) {
 		in_line = infile.read_line_wtab()
-		if (in_line == "*****") { // Enter the code block
+		if (in_line == "<!-- LOOP START -->") { // Enter the code block
 			// Build an array of all the code block lines to loop
 			in_line = infile.read_line_wtab()
-			while (in_line != "*****") {
+			while (in_line != "<!-- LOOP END -->") {
 				codeblock.push(in_line)
 				in_line = infile.read_line_wtab()
 			}
@@ -1445,7 +1445,7 @@ function buildhtmlhistory() {
 					ver_lnum = strip(linearray[0])
 					ver_date = strip(linearray[1])
 					ver_link = strip(linearray[2])
-					ver_snum = scanver.tostring()
+					ver_inum = scanver.tostring()
 				
 				
 					foreach(i, item in codeblock){
@@ -1472,17 +1472,17 @@ function buildhtmlhistory() {
 						} 
 						else if (out_line.find("$PICTURE") != null) {
 							foreach (i2, item2 in extjpg){
-								if (file_exist(AF.folder + "docs/historyjpg/"+"AF" + ver_snum + item2+".jpg")) {
-									out_line = subst_replace(out_line, "$PICTURE", "AF" + ver_snum + item2)
+								if (file_exist(AF.folder + "docs/historyjpg/"+"AF" + ver_inum + item2+".jpg")) {
+									out_line = subst_replace(out_line, "$PICTURE", "AF" + ver_inum + item2)
 									outfile.write_line (out_line+"\n")
 									out_line = codeblock[i]
 								}
 							}
 						} else {
-							out_line = subst_replace(out_line, "$INTVER", ver_snum)
+							out_line = subst_replace(out_line, "$IVER", ver_inum)
 							out_line = subst_replace(out_line, "$PATH", ver_link)
 							out_line = subst_replace(out_line, "$DATE", ver_date)
-							out_line = subst_replace(out_line, "$LONGVER", ver_lnum)
+							out_line = subst_replace(out_line, "$LVER", ver_lnum)
 							outfile.write_line(out_line+"\n")
 						}
 					}
