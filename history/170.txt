@@ -1,2 +1,2 @@
 17.0 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.0
-Fixed bugs in history page
+Fixed bugs in game history page
