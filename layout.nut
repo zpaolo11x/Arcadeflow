@@ -483,7 +483,7 @@ function splash_progress(i, init, max) {
 }
 
 if (FeVersionNum < 306) {
-	print ("Arcadeflow requires AM+ 3.0.6+\n")
+	print("Arcadeflow requires AM+ 3.0.6+\n")
 	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
 }
 
@@ -12077,7 +12077,6 @@ function history_updatetext() {
 
 	// History.dat description
 	local tempdesc_dat = ""
-	foreach(item, value in mameT) print (item+" "+value+"\n")
 	if ((mameT.historydat != "") && (mameT.historydat.rawin(rom))) tempdesc_dat = subst_replace(mameT.historydat[rom],"^","\n")
 	// History.xml description
 	local tempdesc_xml = ""
