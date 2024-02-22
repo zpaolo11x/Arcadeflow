@@ -7341,6 +7341,7 @@ function z_listboot() {
 		ifeindex = i - fe.list.index
 		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
 			// This is a proper game from a real romlist
+			//TEST170 AGGIUNGERE DEI CHECK QUI NEL CASO IN CUI STAI CARICANDO UNA LISTA CHE NON C'E', O UN EMULATORE CHE NON C'E', MA CI SONO I DB FILE
 			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
 				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
 				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
