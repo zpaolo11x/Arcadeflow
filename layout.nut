@@ -4552,6 +4552,8 @@ local z_list = {
 
 	boot = []
 	boot2 = []
+	bootsize = 0
+
 	db1 = {}
 	db2 = {}
 	dbmeta = {}
@@ -6433,7 +6435,7 @@ function mfz_build(reset) {
 
 	// Scan the whole romlist
 	z_list.levchecks = []
-	for (local i = 0; i < fe.list.size; i++) {
+	for (local i = 0; i < z_list.bootsize; i++) {
 		z_list.levchecks.push({})
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter
 		foreach (id0, table0 in multifilterz.l0) {
@@ -7339,44 +7341,50 @@ function z_listboot() {
 	local currentsystem = ""
 	for (local i = 0; i < fe.list.size; i++) {
 		ifeindex = i - fe.list.index
-		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
-			// This is a proper game from a real romlist
-			//TEST170 AGGIUNGERE DEI CHECK QUI NEL CASO IN CUI STAI CARICANDO UNA LISTA CHE NON C'E', O UN EMULATORE CHE NON C'E', MA CI SONO I DB FILE
-			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
-				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
-				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
-			}
-			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-			z_list.boot[i].z_felistindex = i
-			z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
-			currentsystem = z_list.boot[i].z_system.tolower()
+		//TEST170 process the entries only if the emulator actually exist in the db
+		//TEST170 It can happen if you remove an emulator .cfg but the emulator entry is still in the romlist, in this case the romlist
+		//TEST170 should be empty or throw an error
+		if (z_list.db1.rawin(fe.game_info(Info.Emulator, ifeindex))){ 
+			if (fe.game_info(Info.Emulator, ifeindex) != "@"){
+				// This is a proper game from a real romlist
+				if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
+					refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
+					portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
+				}
+				z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+				z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+				z_list.boot[i].z_felistindex = i
+				z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
+				currentsystem = z_list.boot[i].z_system.tolower()
 
-			//insert here system overrides, for example change controller and numbuttons using system data fields
+				//insert here system overrides, for example change controller and numbuttons using system data fields
 
-			if (system_data.rawin(currentsystem)) {
-				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
-				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
-			}
+				if (system_data.rawin(currentsystem)) {
+					if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
+					if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
+				}
 
-		} else {
-			// This is a redirection entry to a different display
-			z_list.boot.push(clone (z_fields1))
-			z_list.boot2.push(clone (z_fields2))
-			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
+			} else {
+				// This is a redirection entry to a different display
+				z_list.boot.push(clone (z_fields1))
+				z_list.boot2.push(clone (z_fields2))
+				z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
 
-			currentsystem = z_list.boot[i].z_name.tolower()
-			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
-			z_list.boot[i].z_felistindex = i
-			z_list.boot[i].z_category = "display"
-			z_list.boot[i].z_fileisavailable = true
-			if (system_data.rawin(currentsystem)){
-				z_list.boot[i].z_category = system_data[currentsystem].group + " sys"
-				z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
-				z_list.boot[i].z_year = system_data[currentsystem].year
+				currentsystem = z_list.boot[i].z_name.tolower()
+				z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
+				z_list.boot[i].z_felistindex = i
+				z_list.boot[i].z_category = "display"
+				z_list.boot[i].z_fileisavailable = true
+				if (system_data.rawin(currentsystem)){
+					z_list.boot[i].z_category = system_data[currentsystem].group + " sys"
+					z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
+					z_list.boot[i].z_year = system_data[currentsystem].year
+				}
 			}
 		}
 	}
+
+	z_list.bootsize = z_list.boot.len()
 
 	timestop("boot")
 
@@ -17708,7 +17716,7 @@ function buildcategorytable() {
 	local cat1 = ""
 	local cat2 = ""
 
-	for (local i = 0; i < fe.list.size; i++) {
+	for (local i = 0; i < z_list.bootsize; i++) {
 		cat0 = processcategory(z_list.boot[i].z_category)
 
 		foreach (vindex, vtable in cat0){
