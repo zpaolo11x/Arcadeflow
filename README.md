@@ -13,6 +13,7 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 ## What's new in v 17.0 #
 
 - Fixed bugs in game history page
+- Fixed issue when emulator is not correct
 - Cleaned up documentation
 - Minor bug fixes
 
