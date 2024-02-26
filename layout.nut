@@ -11353,6 +11353,7 @@ hist_titletxt_bot.set_rgb(0, 0, 0)
 hist_titletxt_bot.alpha = 255
 
 hist_title_shadow.alpha = hist_titleT.transparency
+hist_title_shadow.visible = prf.HISTORYPANEL
 
 //TEST170
 /*
@@ -12048,18 +12049,16 @@ function history_updatetext() {
 
 	local hist_logotitle = wrapme(gamename2 (z_list.gametable[z_list.index].z_felistindex), char_cols, char_rows)
 
-	hist_titletxt_bd.msg = hist_titletxt.msg = hist_logotitle.text
-	if (prf.HISTORYPANEL) hist_titletxt_bot.msg = hist_logotitle.text
+	hist_titletxt_bd.msg = hist_titletxt.msg = hist_titletxt_bot.msg = hist_logotitle.text
 
 	hist_titletxt_bd.char_size = hist_titletxt.char_size = min(((charfontsize * 0.95) * char_cols) / hist_logotitle.cols, ((charfontsize * 0.95) * char_rows) / hist_logotitle.rows)
 
-	if (prf.HISTORYPANEL) hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
+	hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
 
 	hist_titletxt_bd.x = hist_titletxt.x + 0.015 * hist_titletxt.char_size
 	hist_titletxt_bd.y = hist_titletxt.y - 0.025 * hist_titletxt.char_size
 
-	hist_titletxt_bd.visible = hist_titletxt.visible = (hist_title.subimg_height == 0)
-	if (prf.HISTORYPANEL) hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
+	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
@@ -17559,14 +17558,14 @@ function tick(tick_time) {
 		hist_text_alpha (255 * (1.0 - flowT.historydata[1]))
 		if (prf.CONTROLOVERLAY != "never") hist_over.surface.alpha = 255 * (1.0 - flowT.historydata[1]) * (1.0 - flowT.historydata[1]) * (1.0 - flowT.historydata[1])
 
-		if (prf.HISTORYPANEL) {
+		//if (prf.HISTORYPANEL) {
 			hist_title_shadow.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1]) //hist_titletxt_bot.alpha = hist_title_bot.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1])
 			//TEST170 riaggiungere l'equivalente di hist_title_top.alpha  se serve!
 			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
-		}
-		else {
-			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
-		}
+		//}
+		//else {
+		//	hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
+		//}
 	}
 
 	if (checkfade(flowT.overmenu)) {
