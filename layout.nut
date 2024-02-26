@@ -11322,12 +11322,40 @@ if (prf.HISTORYPANEL) {
 	hist_white.alpha = 200
 }
 
-local hist_title = history_surface.add_image(AF.folder + "pics/transparent.png", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
+// Place the shadow surface, larger than the title surface
+local hist_title_shadow = history_surface.add_surface( hist_titleT.w * (1 + shadowscale * 2), hist_titleT.h * (1 + shadowscale * 2))
+hist_title_shadow.set_pos(hist_titleT.x - hist_titleT.w * shadowscale, hist_titleT.y + 2 * shadowscale * hist_titleT.h)
+
+// Add the image for the shadow
+local hist_title_bot = hist_title_shadow.add_image(AF.folder + "pics/transparent.png", 0, 0, hist_title_shadow.width, hist_title_shadow.height)
+hist_title_bot.preserve_aspect_ratio = true
+
+local hist_title = history_surface.add_clone (hist_title_bot)
 hist_title.preserve_aspect_ratio = true
+hist_title.set_pos (hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 
-local hist_title_top = null
-local hist_titletxt_bot = null
+hist_title_bot.set_rgb(0, 0, 0)
+hist_title_bot.alpha = 255
 
+
+local hist_titletxt_bot = hist_title_shadow.add_text("...", hist_title_bot.x, hist_title_bot.y, hist_title_bot.width, hist_title_bot.height)
+
+hist_titletxt_bot.char_size = 150 * UI.scalerate
+hist_titletxt_bot.word_wrap = true
+hist_titletxt_bot.margin = 0
+hist_titletxt_bot.align = Align.MiddleCentre
+hist_titletxt_bot.char_spacing = 0.7
+
+hist_titletxt_bot.font = uifonts.arcadeborder
+hist_titletxt_bot.line_spacing = 0.6
+
+hist_titletxt_bot.set_rgb(0, 0, 0)
+hist_titletxt_bot.alpha = 255
+
+hist_title_shadow.alpha = hist_titleT.transparency
+
+//TEST170
+/*
 if (prf.HISTORYPANEL) {
 	hist_title_top = history_surface.add_clone (hist_title)
 
@@ -11350,7 +11378,7 @@ if (prf.HISTORYPANEL) {
 	hist_titletxt_bot.set_rgb(0, 0, 0)
 	hist_titletxt_bot.alpha = hist_titleT.transparency
 }
-
+*/
 local hist_titletxt_bd = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 local hist_titletxt = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 
@@ -17532,8 +17560,9 @@ function tick(tick_time) {
 		if (prf.CONTROLOVERLAY != "never") hist_over.surface.alpha = 255 * (1.0 - flowT.historydata[1]) * (1.0 - flowT.historydata[1]) * (1.0 - flowT.historydata[1])
 
 		if (prf.HISTORYPANEL) {
-			hist_titletxt_bot.alpha = hist_title.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1])
-			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title_top.alpha = 255 * (1.0 - flowT.historydata[1])
+			hist_title_shadow.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1]) //hist_titletxt_bot.alpha = hist_title_bot.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1])
+			//TEST170 riaggiungere l'equivalente di hist_title_top.alpha  se serve!
+			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
 		}
 		else {
 			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
