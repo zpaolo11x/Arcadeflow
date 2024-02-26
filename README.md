@@ -12,6 +12,8 @@ Arcadeflow is heavily configurable, please take some time to go through the opti
 
 ## What's new in v 17.0 #
 
+- Added option to disable scanlines in screensaver
+- Improved rendering of shadow of history title
 - Fixed bugs in game history page
 - Fixed issue when emulator is not correct
 - Cleaned up documentation
@@ -277,7 +279,7 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Detailed game data' : Show extra data after the game name before the history text
 - 'Control panel overlay' : Show controller and buttons overlay on history page
 
-#### ATTRACT MODE
+#### ! ATTRACT MODE !
 Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here
 
 - 'Enable attract mode' : Enable or disable attract mode at layout startup
@@ -286,6 +288,7 @@ Arcadeflow has its own attract mode screensaver that kicks in after some inactiv
 - 'Attract mode timer (s)' : Inactivity timer before attract mode is enabled
 - 'Game change time (s)' : Time interval between each game change
 - 'Attract logo' : Show Arcadeflow logo during attract mode
+- '! Scanline effect !' : Enable scanline and CRT effect for gameplay
 - 'Attract message' : Text to show during attract mode
 
 *Sound*
