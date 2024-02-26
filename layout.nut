@@ -1177,6 +1177,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "AMTIMER", glyph = 0xe94e, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = ["Timer"], values ="120", selection = AF.req.keyboard},
 {v = 7.2, varname = "AMCHANGETIMER", glyph = 0xe94e, title = "Game change time (s)", help = "Time interval between each game change", options = ["Interval"], values = "10", selection = AF.req.keyboard},
 {v = 9.1, varname = "AMSHOWLOGO", glyph = 0xea6d, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes", "No"], values = [true, false], selection = 0},
+{v = 17.0, varname = "AMSCANLINES", glyph = 0xea6d, title = "Scanline effect", help = "Enable scanline and CRT effect for gameplay", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "AMMESSAGE", glyph = 0xea6d, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = "PRESS ANY KEY", selection = AF.req.keyboard},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
 {v = 7.2, varname = "AMTUNE", glyph = 0xe911, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
@@ -14097,7 +14098,7 @@ function attractkick() {
 	attract.starttimer = false
 	attractitem.surface.visible = attractitem.surface.redraw = true
 	attractitem.text1.visible = attractitem.text2.visible = true
-	attractitem.snap.shader = attractitem.shader_2_lottes
+	attractitem.snap.shader = prf.AMSCANLINES ? attractitem.shader_2_lottes : noshader
 
 	startfade(flowT.attract, 0.1, 0.0)
 	if (prf.AMSHOWLOGO) startfade(flowT.logo, 0.1, 0.0)
@@ -14152,10 +14153,11 @@ function attractupdatesnap() {
 		attractitem.snap.subimg_y = attractitem.snap.texture_height * 0.5 - attract.scanrows * 0.5 * scalexy[1] * ((attractitem.snap.texture_height * 3.0 / 4.0) / attractitem.snap.texture_width)
 		attractitem.snap.subimg_height = attract.scanrows  * scalexy[1] * ((attractitem.snap.texture_height * 3.0 / 4.0) / attractitem.snap.texture_width)
 	}
-
-	attractitem.shader_2_lottes.set_param ("vert", (attractitem.snap.texture_width >= attractitem.snap.texture_height ? 0.0 : 1.0))
-	attractitem.shader_2_lottes.set_param ("color_texture_sz", nativeres[0], nativeres[1])
-	attractitem.shader_2_lottes.set_param ("color_texture_pow2_sz", nativeres[0], nativeres[1])
+	if (prf.AMSCANLINES)	{
+		attractitem.shader_2_lottes.set_param ("vert", (attractitem.snap.texture_width >= attractitem.snap.texture_height ? 0.0 : 1.0))
+		attractitem.shader_2_lottes.set_param ("color_texture_sz", nativeres[0], nativeres[1])
+		attractitem.shader_2_lottes.set_param ("color_texture_pow2_sz", nativeres[0], nativeres[1])
+	}
 }
 
 if (prf.AMENABLE) {
@@ -14165,6 +14167,7 @@ if (prf.AMENABLE) {
 	attractitem.surface = fe.add_surface (attract.nw, attract.nw)
 	attractitem.surface.set_pos(attract.x, attract.y, attract.w, attract.w)
 	attractitem.snap = attractitem.surface.add_image(AF.folder + "pics/attractbg.jpg", 0, 0, attract.nw, attract.nw)
+	attractitem.snap.smooth = prf.AMSCANLINES
 	attractitem.snap.preserve_aspect_ratio = false
 	attractitem.refs = attractitem.surface.add_image(AF.folder + "pics/transparent.png", 0, 0, 1, 1)
 	attractitem.refs.preserve_aspect_ratio = false
@@ -14205,19 +14208,21 @@ if (prf.AMENABLE) {
 	//attractitem.snap.shader = attractitem.shader_2_lottes
 	attractitem.snap.shader = noshader
 
-	attractitem.shader_2_lottes.set_param ("aperature_type", 0.0) 	// 0.0 = none, 1.0 = TV style, 2.0 = Aperture grille, 3.0 = VGA
-	attractitem.shader_2_lottes.set_param ("hardScan", -16.0)		// Hardness of Scanline 0.0 = none -8.0 = soft -16.0 = medium
-	attractitem.shader_2_lottes.set_param ("hardPix", -2.0)			// Hardness of pixels in scanline -2.0 = soft, -4.0 = hard
-	attractitem.shader_2_lottes.set_param ("maskDark", 0.65)			// Sets how dark a "dark subpixel" is in the aperture pattern.
-	attractitem.shader_2_lottes.set_param ("maskLight", 1.35)		// Sets how dark a "bright subpixel" is in the aperture pattern
-	attractitem.shader_2_lottes.set_param ("saturation", 1.0)		// 1.0 is normal saturation. Increase as needed.
-	attractitem.shader_2_lottes.set_param ("tint", 0.0)				// 0.0 is 0.0 degrees of Tint. Adjust as needed.
-	attractitem.shader_2_lottes.set_param ("blackClip", 0.3)			// Drops the final color value by this amount if GAMMA_CONTRAST_BOOST is defined
-	attractitem.shader_2_lottes.set_param ("brightMult", 2.0)		// Multiplies the color values by this amount if GAMMA_CONTRAST_BOOST is defined
-	attractitem.shader_2_lottes.set_param ("distortion", 0.2)		// 0.0 to 0.2 seems right
-	attractitem.shader_2_lottes.set_param ("cornersize", 0.05)		// 0.0 to 0.1
-	attractitem.shader_2_lottes.set_param ("cornersmooth", 60)		// Reduce jagginess of corners
-	attractitem.shader_2_lottes.set_param ("vignettebase", 0.0, 1.0, 3.0)
+	if (prf.AMSCANLINES){
+		attractitem.shader_2_lottes.set_param ("aperature_type", 0.0) 	// 0.0 = none, 1.0 = TV style, 2.0 = Aperture grille, 3.0 = VGA
+		attractitem.shader_2_lottes.set_param ("hardScan", -16.0)		// Hardness of Scanline 0.0 = none -8.0 = soft -16.0 = medium
+		attractitem.shader_2_lottes.set_param ("hardPix", -2.0)			// Hardness of pixels in scanline -2.0 = soft, -4.0 = hard
+		attractitem.shader_2_lottes.set_param ("maskDark", 0.65)			// Sets how dark a "dark subpixel" is in the aperture pattern.
+		attractitem.shader_2_lottes.set_param ("maskLight", 1.35)		// Sets how dark a "bright subpixel" is in the aperture pattern
+		attractitem.shader_2_lottes.set_param ("saturation", 1.0)		// 1.0 is normal saturation. Increase as needed.
+		attractitem.shader_2_lottes.set_param ("tint", 0.0)				// 0.0 is 0.0 degrees of Tint. Adjust as needed.
+		attractitem.shader_2_lottes.set_param ("blackClip", 0.3)			// Drops the final color value by this amount if GAMMA_CONTRAST_BOOST is defined
+		attractitem.shader_2_lottes.set_param ("brightMult", 2.0)		// Multiplies the color values by this amount if GAMMA_CONTRAST_BOOST is defined
+		attractitem.shader_2_lottes.set_param ("distortion", 0.2)		// 0.0 to 0.2 seems right
+		attractitem.shader_2_lottes.set_param ("cornersize", 0.05)		// 0.0 to 0.1
+		attractitem.shader_2_lottes.set_param ("cornersmooth", 60)		// Reduce jagginess of corners
+		attractitem.shader_2_lottes.set_param ("vignettebase", 0.0, 1.0, 3.0)
+	}
 }
 
 if (prf.AMENABLE) {
@@ -14226,7 +14231,7 @@ if (prf.AMENABLE) {
 		attractitem.text1.alpha = attract.textshadow
 		attractitem.text2.alpha = 255
 		attract.start = true
-		attractitem.snap.shader = attractitem.shader_2_lottes
+		attractitem.snap.shader = prf.AMSCANLINES ? attractitem.shader_2_lottes : noshader
 	}
 	else {
 
