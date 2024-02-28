@@ -11363,10 +11363,11 @@ hist_titletxt_bot.margin = 0
 hist_titletxt_bot.align = Align.MiddleCentre
 hist_titletxt_bot.char_spacing = 0.7
 
-hist_titletxt_bot.font = uifonts.arcadeborder
+hist_titletxt_bot.font = uifonts.arcade
 hist_titletxt_bot.line_spacing = 0.6
-
+hist_titletxt_bot.outline = 1.0
 hist_titletxt_bot.set_rgb(0, 0, 0)
+hist_titletxt_bot.set_outline_rgb(0, 0, 0)
 hist_titletxt_bot.alpha = 255
 
 hist_title_shadow.alpha = hist_titleT.transparency
@@ -12050,10 +12051,12 @@ function history_updatetext() {
 	hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
 	
 	outline_temp = get_border(hist_titletxt_bd.char_size, 3.2, 0.3, 0.5)
-print_variable(outline_temp,"","")
+
 	hist_titletxt_bd.outline = outline_temp.w
 	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
 	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y //- 0.025 * hist_titletxt.char_size
+
+	hist_titletxt_bot.outline = get_border(hist_titletxt_bd.char_size, 5.0, 0.0, 0.0).w
 
 	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
