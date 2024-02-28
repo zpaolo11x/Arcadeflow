@@ -16,47 +16,97 @@ local uifonts = {
 local flw = fe.layout.width
 local flh = fe.layout.height
 
-local message = "HFXJIKLO"
-local font_size = 125
-local border_size = (4.5 / 100.0) * font_size
-local border_offset_x = border_size * 0.3
-local border_offset_y = border_size * 0.7
+function get_border(font_size){
+	local font_bd = {
+		w = ceil((4.5 / 100.0) * font_size)
+		x = 0
+		y = 0
+	}
+	font_bd.x = ceil(font_bd.w * 0.3)
+	font_bd.y = ceil(font_bd.w * 0.7)
+	return(font_bd)	
+}
+function get_border2(font_size){
+	local font_bd = {
+		w = ceil((4.5 / 100.0) * font_size)
+		x = 0
+		y = 0
+	}
+	font_bd.x = (font_bd.w * 0.3)
+	font_bd.y = (font_bd.w * 0.7)
+	font_bd.y = font_bd.y < 1 ? 1 : font_bd.y
+	return(font_bd)	
+}
+function createtext(message, size, y){
+	local span = ceil (flw * 0.33)
+	local font_size = size
+	local border = 0
 
-print ("border_size:"+border_size+"\n")
+	local text0 = fe.add_text(message,0,y,span,flh)
+	text0.char_size = font_size
+	text0.font = uifonts.arcadeborder
+	text0.align = Align.TopLeft
+	text0.set_rgb(200,100,100)
+	text0.word_wrap = true
+	text0.char_spacing = 0.6
+	text0.margin = 0
 
-local text0 = fe.add_text(message,0,0,flw*0.5,flh)
-text0.char_size = font_size
-text0.font = uifonts.arcadeborder
-text0.align = Align.MiddleCentre
-text0.set_rgb(200,100,100)
-text0.word_wrap = true
-text0.char_spacing = 0.6
+	local text1 = fe.add_text(message,0,y,span,flh)
+	text1.char_size = font_size
+	text1.font = uifonts.arcade
+	text1.align = Align.TopLeft
+	text1.set_rgb(255,255,255)
+	text1.word_wrap = true
+	text1.char_spacing = 0.6
+	text1.margin = 0
 
-local text1 = fe.add_text(message,0,0,flw*0.5,flh)
-text1.char_size = font_size
-text1.font = uifonts.arcade
-text1.align = Align.MiddleCentre
-text1.set_rgb(255,255,255)
-text1.word_wrap = true
-text1.char_spacing = 0.6
+	border = get_border(font_size)
 
-local text2 = fe.add_text(message,flw*0.5 + border_offset_x,border_offset_y,flw*0.5,flh)
-text2.char_size = font_size
-text2.font = uifonts.arcade
-text2.outline = border_size
-text2.align = Align.MiddleCentre
-text2.set_rgb(200,100,100)
-text2.set_outline_rgb(200,200,100)
-text2.word_wrap = true
-text2.char_spacing = 0.6
+	local text2 = fe.add_text(message,span + border.x,y + border.y,span,flh)
+	text2.char_size = font_size
+	text2.font = uifonts.arcade
+	text2.outline = border.w
+	text2.align = Align.TopLeft
+	text2.set_rgb(200,100,100)
+	text2.set_outline_rgb(200,100,100)
+	text2.word_wrap = true
+	text2.char_spacing = 0.6
+	text2.margin = 0
 
-local text3 = fe.add_text(message,flw*0.5,0,flw*0.5,flh)
-text3.char_size = font_size
-text3.font = uifonts.arcade
-text3.align = Align.MiddleCentre
-text3.set_rgb(255,255,255)
-text3.word_wrap = true
-text3.char_spacing = 0.6
+	local text3 = fe.add_text(message,span,y,span,flh)
+	text3.char_size = font_size
+	text3.font = uifonts.arcade
+	text3.align = Align.TopLeft
+	text3.set_rgb(255,255,255)
+	text3.word_wrap = true
+	text3.char_spacing = 0.6
+	text3.margin = 0
 
-text0.alpha = text2.alpha = 150
-text1.visible = text3.visible = false
+	border = get_border2(font_size)
+
+	local text4 = fe.add_text(message,2*span + border.x,y + border.y,span,flh)
+	text4.char_size = font_size
+	text4.font = uifonts.arcade
+	text4.outline = border.w
+	text4.align = Align.TopLeft
+	text4.set_rgb(200,100,100)
+	text4.set_outline_rgb(200,100,100)
+	text4.word_wrap = true
+	text4.char_spacing = 0.6
+	text4.margin = 0
+
+	local text5 = fe.add_text(message,2*span,y,span,flh)
+	text5.char_size = font_size
+	text5.font = uifonts.arcade
+	text5.align = Align.TopLeft
+	text5.set_rgb(255,255,255)
+	text5.word_wrap = true
+	text5.char_spacing = 0.6
+	text5.margin = 0
+}
+
+local ypos = 0
+for (local i = 10; i <= 200; i = i + 1){
+	createtext ("ABC", i, ypos)
+	ypos = ypos + i	
+}
