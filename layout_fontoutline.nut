@@ -37,6 +37,11 @@ function get_border2(font_size){
 	font_bd.y = font_bd.y < 1 ? 1 : font_bd.y
 	return(font_bd)	
 }
+
+local minsize = 5
+local maxsize = 200
+local stepsize = 10
+
 function createtext(message, size, y){
 	local span = ceil (flw * 0.33)
 	local font_size = size
@@ -106,7 +111,7 @@ function createtext(message, size, y){
 }
 
 local ypos = 0
-for (local i = 10; i <= 200; i = i + 1){
+for (local i = minsize; i <= maxsize; i = i + stepsize){
 	createtext ("ABC", i, ypos)
 	ypos = ypos + i	
 }
