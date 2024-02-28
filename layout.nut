@@ -7835,9 +7835,9 @@ function islcd(offset, var) {
 
 // font border functions
 
-function get_border(font_size){
+function get_border(font_size, w_size, x_offset, y_offset){
 	local font_bd = {
-		w = ceil((3.2 / 100.0) * font_size)
+		w = ceil((w_size / 100.0) * font_size) //4.5
 		x = 0
 		y = 0
 	}
@@ -7846,8 +7846,8 @@ function get_border(font_size){
 	//font_bd.y = ceil(font_bd.w * 0.7)
 
 	// new option
-	font_bd.x = (font_bd.w * 0.3)
-	font_bd.y = (font_bd.w * 0.7)
+	font_bd.x = (font_bd.w * x_offset) //0.3
+	font_bd.y = (font_bd.w * y_offset) //0.7
 	font_bd.y = font_bd.y < 1 ? 1 : font_bd.y
 	
 	return(font_bd)		
@@ -15757,12 +15757,12 @@ function changetiledata(i, index, update) {
 		tilez[indexTemp].txshz.char_size = min(((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 9) / logotitle.cols, ((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 3) / logotitle.rows)
 		tilez[indexTemp].txt2z.char_size = tilez[indexTemp].txt1z.char_size = tilez[indexTemp].txshz.char_size * tilez[indexTemp].txt1z.width / tilez[indexTemp].txshz.width
 		
-		outline_temp = get_border(tilez[indexTemp].txt2z.char_size)
+		outline_temp = get_border(tilez[indexTemp].txt2z.char_size, 3.5, 0.3, 0.7)
 
 		tilez[indexTemp].txt2z.outline = outline_temp.w
 
-		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //+ 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //- 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //TEST170 + 0.015 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //TEST170 - 0.025 * tilez[indexTemp].txt1z.char_size
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
