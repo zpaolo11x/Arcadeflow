@@ -12049,7 +12049,7 @@ function history_updatetext() {
 
 	hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
 	
-	outline_temp = get_border(hist_titletxt_bd.char_size, 4.5, 0.3, 0.7)
+	outline_temp = get_border(hist_titletxt_bd.char_size, 3.2, 0.3, 0.5)
 print_variable(outline_temp,"","")
 	hist_titletxt_bd.outline = outline_temp.w
 	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
