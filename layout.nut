@@ -15757,7 +15757,7 @@ function changetiledata(i, index, update) {
 		tilez[indexTemp].txshz.char_size = min(((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 9) / logotitle.cols, ((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 3) / logotitle.rows)
 		tilez[indexTemp].txt2z.char_size = tilez[indexTemp].txt1z.char_size = tilez[indexTemp].txshz.char_size * tilez[indexTemp].txt1z.width / tilez[indexTemp].txshz.width
 		
-		outline_temp = get_border(tilez[indexTemp].txt2z.char_size, 3.5, 0.3, 0.7)
+		outline_temp = get_border(tilez[indexTemp].txt2z.char_size, 3.2, 0.3, 0.7)
 
 		tilez[indexTemp].txt2z.outline = outline_temp.w
 
