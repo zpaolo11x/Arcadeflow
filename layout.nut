@@ -7833,6 +7833,26 @@ function islcd(offset, var) {
 
 /// Misc functions ///
 
+// font border functions
+
+function get_border(font_size){
+	local font_bd = {
+		w = ceil((4.5 / 100.0) * font_size)
+		x = 0
+		y = 0
+	}
+	// old option
+	//font_bd.x = ceil(font_bd.w * 0.3)
+	//font_bd.y = ceil(font_bd.w * 0.7)
+
+	// new option
+	font_bd.x = (font_bd.w * 0.3)
+	font_bd.y = (font_bd.w * 0.7)
+	font_bd.y = font_bd.y < 1 ? 1 : font_bd.y
+	
+	return(font_bd)		
+}
+
 // strips hidden files from folder
 function striphidden(file_list){
 	local out = []
@@ -9039,16 +9059,11 @@ for (local i = 0; i < tiles.total; i++) {
 	txt2z.margin = logo.txtmargin
 	txt2z.line_spacing = logo.txtlinespacing * 0.6 / 0.6
 	txt2z.char_spacing = logo.txtcharspacing
-	txt2z.set_rgb (80, 80, 80)
-	txt2z.alpha = 120
 	txt2z.outline = ceil((4.5 / 100) * txt2z.char_size)
-	txt2z.set_outline_rgb (80, 80, 80)
-
-	txt2z.set_rgb (150, 150, 150)
-	txt2z.alpha = 255
 
 	txt2z.set_rgb (135, 135, 135)
 	txt2z.alpha = 255
+	txt2z.set_outline_rgb (135, 135, 135)
 
 	//txshz = obj.add_text("[Title]", UI.zoomscale * (UI.padding + height * (1.0 / 8.0)), UI.zoomscale * (UI.padding + height * (1.0 / 8.0)), UI.zoomscale * width * 3.0 / 4.0, UI.zoomscale * height * 3.0 / 4.0)
 	txt1z = obj.add_text("...", logoz.x, logoz.y, logoz.width, logoz.height)
@@ -15709,6 +15724,7 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
+	local outline_temp = null
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15740,10 +15756,13 @@ function changetiledata(i, index, update) {
 
 		tilez[indexTemp].txshz.char_size = min(((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 9) / logotitle.cols, ((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 3) / logotitle.rows)
 		tilez[indexTemp].txt2z.char_size = tilez[indexTemp].txt1z.char_size = tilez[indexTemp].txshz.char_size * tilez[indexTemp].txt1z.width / tilez[indexTemp].txshz.width
-		tilez[indexTemp].txt2z.outline = ceil((4.5 / 100) * tilez[indexTemp].txt2z.char_size)
+		
+		outline_temp = get_border(tilez[indexTemp].txt2z.char_size)
 
-		tilez[indexTemp].txt2z.x = (tilez[indexTemp].txt2z.outline * 0.3) + tilez[indexTemp].txt1z.x + 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = (tilez[indexTemp].txt2z.outline * 0.7) + tilez[indexTemp].txt1z.y - 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.outline = outline_temp.w
+
+		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //TEST170 HAD + 0.015 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //TEST170 HAD - 0.025 * tilez[indexTemp].txt1z.char_size
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
