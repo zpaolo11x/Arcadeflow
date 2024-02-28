@@ -9035,12 +9035,14 @@ for (local i = 0; i < tiles.total; i++) {
 	txt2z.char_size = logo.shcharsize * (88.0 / 40.0) * UI.scalerate
 	txt2z.word_wrap = true
 	txt2z.align = logo.txtalign
-	txt2z.font = uifonts.arcadeborder
+	txt2z.font = uifonts.arcade //TEST170
 	txt2z.margin = logo.txtmargin
 	txt2z.line_spacing = logo.txtlinespacing * 0.6 / 0.6
 	txt2z.char_spacing = logo.txtcharspacing
 	txt2z.set_rgb (80, 80, 80)
 	txt2z.alpha = 120
+	txt2z.outline = ceil((4.5 / 100) * txt2z.char_size)
+	txt2z.set_outline_rgb (80, 80, 80)
 
 	txt2z.set_rgb (150, 150, 150)
 	txt2z.alpha = 255
@@ -11355,31 +11357,6 @@ hist_titletxt_bot.alpha = 255
 hist_title_shadow.alpha = hist_titleT.transparency
 hist_title_shadow.visible = prf.HISTORYPANEL
 
-//TEST170
-/*
-if (prf.HISTORYPANEL) {
-	hist_title_top = history_surface.add_clone (hist_title)
-
-	hist_title_top.preserve_aspect_ratio = true
-
-	hist_title.set_pos (hist_titleT.x - hist_titleT.w * shadowscale, hist_titleT.y + 2 * shadowscale * hist_titleT.h, hist_titleT.w * (1 + shadowscale * 2), hist_titleT.h * (1 + shadowscale * 2))
-	hist_title.set_rgb(0, 0, 0)
-	hist_title.alpha = hist_titleT.transparency
-
-	hist_titletxt_bot = history_surface.add_text("...", hist_title.x, hist_title.y, hist_title.width, hist_title.height)
-
-	hist_titletxt_bot.char_size = 150 * UI.scalerate
-	hist_titletxt_bot.word_wrap = true
-	hist_titletxt_bot.margin = 0
-	hist_titletxt_bot.align = Align.MiddleCentre
-	hist_titletxt_bot.char_spacing = 0.7
-
-	hist_titletxt_bot.font = uifonts.arcadeborder
-	hist_titletxt_bot.line_spacing = 0.6
-	hist_titletxt_bot.set_rgb(0, 0, 0)
-	hist_titletxt_bot.alpha = hist_titleT.transparency
-}
-*/
 local hist_titletxt_bd = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 local hist_titletxt = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 
@@ -15763,9 +15740,10 @@ function changetiledata(i, index, update) {
 
 		tilez[indexTemp].txshz.char_size = min(((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 9) / logotitle.cols, ((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 3) / logotitle.rows)
 		tilez[indexTemp].txt2z.char_size = tilez[indexTemp].txt1z.char_size = tilez[indexTemp].txshz.char_size * tilez[indexTemp].txt1z.width / tilez[indexTemp].txshz.width
+		tilez[indexTemp].txt2z.outline = ceil((4.5 / 100) * tilez[indexTemp].txt2z.char_size)
 
-		tilez[indexTemp].txt2z.x = tilez[indexTemp].txt1z.x + 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = tilez[indexTemp].txt1z.y - 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.x = (tilez[indexTemp].txt2z.outline * 0.3) + tilez[indexTemp].txt1z.x + 0.015 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.y = (tilez[indexTemp].txt2z.outline * 0.7) + tilez[indexTemp].txt1z.y - 0.025 * tilez[indexTemp].txt1z.char_size
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
