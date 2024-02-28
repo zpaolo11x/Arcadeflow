@@ -11381,11 +11381,11 @@ hist_titletxt_bd.margin = hist_titletxt.margin = 0
 hist_titletxt_bd.align = hist_titletxt.align = Align.MiddleCentre
 hist_titletxt_bd.char_spacing = hist_titletxt.char_spacing = 0.7
 
-hist_titletxt_bd.font = uifonts.arcadeborder
+hist_titletxt_bd.font = uifonts.arcade
 hist_titletxt_bd.line_spacing = 0.6
-hist_titletxt_bd.set_rgb (80, 80, 80)
-hist_titletxt_bd.alpha = 200
+hist_titletxt_bd.outline = 1.0
 hist_titletxt_bd.set_rgb (135, 135, 135)
+hist_titletxt_bd.set_outline_rgb (135, 135, 135)
 hist_titletxt_bd.alpha = 255
 
 hist_titletxt.font = uifonts.arcade
@@ -12033,6 +12033,8 @@ function history_updatesnap() {
 }
 
 function history_updatetext() {
+	local outline_temp = null
+
 	hist_title.file_name = fe.get_art ("wheel")
 
 	local char_rows = (((hist_titleT.w / hist_titleT.h) > 3.0) ? 2 : 3)
@@ -12046,9 +12048,12 @@ function history_updatetext() {
 	hist_titletxt_bd.char_size = hist_titletxt.char_size = min(((charfontsize * 0.95) * char_cols) / hist_logotitle.cols, ((charfontsize * 0.95) * char_rows) / hist_logotitle.rows)
 
 	hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
-
-	hist_titletxt_bd.x = hist_titletxt.x + 0.015 * hist_titletxt.char_size
-	hist_titletxt_bd.y = hist_titletxt.y - 0.025 * hist_titletxt.char_size
+	
+	outline_temp = get_border(hist_titletxt_bd.char_size, 4.5, 0.3, 0.7)
+print_variable(outline_temp,"","")
+	hist_titletxt_bd.outline = outline_temp.w
+	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
+	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y //- 0.025 * hist_titletxt.char_size
 
 	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
