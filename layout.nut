@@ -7837,7 +7837,7 @@ function islcd(offset, var) {
 
 function get_border(font_size){
 	local font_bd = {
-		w = ceil((4.5 / 100.0) * font_size)
+		w = ceil((3.2 / 100.0) * font_size)
 		x = 0
 		y = 0
 	}
@@ -15761,8 +15761,8 @@ function changetiledata(i, index, update) {
 
 		tilez[indexTemp].txt2z.outline = outline_temp.w
 
-		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //TEST170 HAD + 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //TEST170 HAD - 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //+ 0.015 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //- 0.025 * tilez[indexTemp].txt1z.char_size
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
