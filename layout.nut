@@ -12056,7 +12056,8 @@ function history_updatetext() {
 	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
 	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y //- 0.025 * hist_titletxt.char_size
 
-	hist_titletxt_bot.outline = get_border(hist_titletxt_bd.char_size, 5.0, 0.0, 0.0).w
+	hist_titletxt_bot.outline = get_border(hist_titletxt_bot.char_size, 3.0, 0.0, 0.0).w
+	testpr(hist_titletxt_bot.outline+"\n")
 
 	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
