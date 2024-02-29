@@ -12049,14 +12049,14 @@ function history_updatetext() {
 
 	hist_titletxt_bd.char_size = hist_titletxt.char_size = min(((charfontsize * 0.95) * char_cols) / hist_logotitle.cols, ((charfontsize * 0.95) * char_rows) / hist_logotitle.rows)
 
-	hist_titletxt_bot.char_size = hist_titletxt_bd.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
+	hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
 	
 	outline_temp = get_border(hist_titletxt_bd.char_size, 3.2, 0.3, 0.5)
 	hist_titletxt_bd.outline = outline_temp.w
 	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
 	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y //- 0.025 * hist_titletxt.char_size
 
-	outline_temp_bot = get_border(hist_titletxt_bot.char_size, 3.2, 0.3, 0.5)
+	outline_temp_bot = get_border(hist_titletxt_bot.char_size, 3.5, 0.3, 0.5)
 	hist_titletxt_bot.x = outline_temp_bot.x //+ hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
 	hist_titletxt_bot.y = outline_temp_bot.y //+ hist_titletxt.y //- 0.025 * hist_titletxt.char_size
 	hist_titletxt_bot.outline = outline_temp_bot.w //* (hist_titletxt_bot.width / hist_titletxt.width)
