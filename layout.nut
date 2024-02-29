@@ -9055,7 +9055,7 @@ for (local i = 0; i < tiles.total; i++) {
 	txt2z.char_size = logo.shcharsize * (88.0 / 40.0) * UI.scalerate
 	txt2z.word_wrap = true
 	txt2z.align = logo.txtalign
-	txt2z.font = uifonts.arcade //TEST170
+	txt2z.font = uifonts.arcade
 	txt2z.margin = logo.txtmargin
 	txt2z.line_spacing = logo.txtlinespacing * 0.6 / 0.6
 	txt2z.char_spacing = logo.txtcharspacing
@@ -11356,7 +11356,6 @@ hist_title_bot.alpha = 255
 
 
 local hist_titletxt_bot = hist_title_shadow.add_text("...", hist_title_bot.x, hist_title_bot.y, hist_title_bot.width, hist_title_bot.height)
-hist_titletxt_bot.set_bg_rgb(0,200,0)
 hist_titletxt_bot.char_size = 150 * UI.scalerate
 hist_titletxt_bot.word_wrap = true
 hist_titletxt_bot.margin = 0
@@ -15773,8 +15772,8 @@ function changetiledata(i, index, update) {
 
 		tilez[indexTemp].txt2z.outline = outline_temp.w
 
-		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //TEST170 + 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //TEST170 - 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x
+		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
