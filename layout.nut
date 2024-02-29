@@ -12052,19 +12052,16 @@ function history_updatetext() {
 	
 	outline_temp = get_border(hist_titletxt_bd.char_size, 3.2, 0.3, 0.5)
 	hist_titletxt_bd.outline = outline_temp.w
-	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
-	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y //- 0.025 * hist_titletxt.char_size
+	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x
+	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y
 
 	outline_temp_bot = get_border(hist_titletxt_bot.char_size, 3.2, 0.3, 0.5)
-	hist_titletxt_bot.x = ceil(outline_temp_bot.x) //+ hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
-	hist_titletxt_bot.y = ceil(outline_temp_bot.y) //+ hist_titletxt.y //- 0.025 * hist_titletxt.char_size
-	hist_titletxt_bot.outline = outline_temp_bot.w //* (hist_titletxt_bot.width / hist_titletxt.width)
-
+	hist_titletxt_bot.x = ceil(outline_temp_bot.x)
+	hist_titletxt_bot.y = ceil(outline_temp_bot.y)
+	hist_titletxt_bot.outline = outline_temp_bot.w
 
 	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
-//hist_titletxt_bd.visible=false
-//hist_titletxt_bd.set_rgb(255,255,255)
-//hist_titletxt_bd.set_outline_rgb(255,255,255)
+
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
 	local hist_text_tempmessage = ""
