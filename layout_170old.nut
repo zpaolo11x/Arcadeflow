@@ -290,7 +290,7 @@ local uifonts = {
 	condensed = "fonts/font_Roboto-Condensed-Bold.ttf"
 	lite = "fonts/font_Roboto-Regular.ttf"
 	arcade = "fonts/font_CPMono_Black.otf"
-	//arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
+	arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
 	glyphs = "fonts/font_glyphs.ttf"
 	mono = "fonts/font_RobotoMono-VariableFont_wght.ttf"
 	monodata = "fonts/font_CQMono.otf"
@@ -7833,26 +7833,6 @@ function islcd(offset, var) {
 
 /// Misc functions ///
 
-// font border functions
-
-function get_border(font_size, w_size, x_offset, y_offset){
-	local font_bd = {
-		w = ceil((w_size / 100.0) * font_size) //4.5
-		x = 0
-		y = 0
-	}
-	// old option
-	//font_bd.x = ceil(font_bd.w * 0.3)
-	//font_bd.y = ceil(font_bd.w * 0.7)
-
-	// new option
-	font_bd.x = (font_bd.w * x_offset) //0.3
-	font_bd.y = (font_bd.w * y_offset) //0.7
-	font_bd.y = font_bd.y < 1 ? 1 : font_bd.y
-	
-	return(font_bd)		
-}
-
 // strips hidden files from folder
 function striphidden(file_list){
 	local out = []
@@ -9055,15 +9035,18 @@ for (local i = 0; i < tiles.total; i++) {
 	txt2z.char_size = logo.shcharsize * (88.0 / 40.0) * UI.scalerate
 	txt2z.word_wrap = true
 	txt2z.align = logo.txtalign
-	txt2z.font = uifonts.arcade //TEST170
+	txt2z.font = uifonts.arcadeborder
 	txt2z.margin = logo.txtmargin
 	txt2z.line_spacing = logo.txtlinespacing * 0.6 / 0.6
 	txt2z.char_spacing = logo.txtcharspacing
-	txt2z.outline = ceil((4.5 / 100) * txt2z.char_size)
+	txt2z.set_rgb (80, 80, 80)
+	txt2z.alpha = 120
+
+	txt2z.set_rgb (150, 150, 150)
+	txt2z.alpha = 255
 
 	txt2z.set_rgb (135, 135, 135)
 	txt2z.alpha = 255
-	txt2z.set_outline_rgb (135, 135, 135)
 
 	//txshz = obj.add_text("[Title]", UI.zoomscale * (UI.padding + height * (1.0 / 8.0)), UI.zoomscale * (UI.padding + height * (1.0 / 8.0)), UI.zoomscale * width * 3.0 / 4.0, UI.zoomscale * height * 3.0 / 4.0)
 	txt1z = obj.add_text("...", logoz.x, logoz.y, logoz.width, logoz.height)
@@ -11356,23 +11339,47 @@ hist_title_bot.alpha = 255
 
 
 local hist_titletxt_bot = hist_title_shadow.add_text("...", hist_title_bot.x, hist_title_bot.y, hist_title_bot.width, hist_title_bot.height)
-hist_titletxt_bot.set_bg_rgb(0,200,0)
+
 hist_titletxt_bot.char_size = 150 * UI.scalerate
 hist_titletxt_bot.word_wrap = true
 hist_titletxt_bot.margin = 0
 hist_titletxt_bot.align = Align.MiddleCentre
 hist_titletxt_bot.char_spacing = 0.7
 
-hist_titletxt_bot.font = uifonts.arcade
+hist_titletxt_bot.font = uifonts.arcadeborder
 hist_titletxt_bot.line_spacing = 0.6
-hist_titletxt_bot.outline = 100.0
+
 hist_titletxt_bot.set_rgb(0, 0, 0)
-hist_titletxt_bot.set_outline_rgb(0, 0, 0)
 hist_titletxt_bot.alpha = 255
 
 hist_title_shadow.alpha = hist_titleT.transparency
 hist_title_shadow.visible = prf.HISTORYPANEL
 
+//TEST170
+/*
+if (prf.HISTORYPANEL) {
+	hist_title_top = history_surface.add_clone (hist_title)
+
+	hist_title_top.preserve_aspect_ratio = true
+
+	hist_title.set_pos (hist_titleT.x - hist_titleT.w * shadowscale, hist_titleT.y + 2 * shadowscale * hist_titleT.h, hist_titleT.w * (1 + shadowscale * 2), hist_titleT.h * (1 + shadowscale * 2))
+	hist_title.set_rgb(0, 0, 0)
+	hist_title.alpha = hist_titleT.transparency
+
+	hist_titletxt_bot = history_surface.add_text("...", hist_title.x, hist_title.y, hist_title.width, hist_title.height)
+
+	hist_titletxt_bot.char_size = 150 * UI.scalerate
+	hist_titletxt_bot.word_wrap = true
+	hist_titletxt_bot.margin = 0
+	hist_titletxt_bot.align = Align.MiddleCentre
+	hist_titletxt_bot.char_spacing = 0.7
+
+	hist_titletxt_bot.font = uifonts.arcadeborder
+	hist_titletxt_bot.line_spacing = 0.6
+	hist_titletxt_bot.set_rgb(0, 0, 0)
+	hist_titletxt_bot.alpha = hist_titleT.transparency
+}
+*/
 local hist_titletxt_bd = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 local hist_titletxt = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 
@@ -11382,11 +11389,11 @@ hist_titletxt_bd.margin = hist_titletxt.margin = 0
 hist_titletxt_bd.align = hist_titletxt.align = Align.MiddleCentre
 hist_titletxt_bd.char_spacing = hist_titletxt.char_spacing = 0.7
 
-hist_titletxt_bd.font = uifonts.arcade
+hist_titletxt_bd.font = uifonts.arcadeborder
 hist_titletxt_bd.line_spacing = 0.6
-hist_titletxt_bd.outline = 1.0
+hist_titletxt_bd.set_rgb (80, 80, 80)
+hist_titletxt_bd.alpha = 200
 hist_titletxt_bd.set_rgb (135, 135, 135)
-hist_titletxt_bd.set_outline_rgb (135, 135, 135)
 hist_titletxt_bd.alpha = 255
 
 hist_titletxt.font = uifonts.arcade
@@ -12034,9 +12041,6 @@ function history_updatesnap() {
 }
 
 function history_updatetext() {
-	local outline_temp = null
-	local outline_temp_bot = null
-
 	hist_title.file_name = fe.get_art ("wheel")
 
 	local char_rows = (((hist_titleT.w / hist_titleT.h) > 3.0) ? 2 : 3)
@@ -12050,17 +12054,9 @@ function history_updatetext() {
 	hist_titletxt_bd.char_size = hist_titletxt.char_size = min(((charfontsize * 0.95) * char_cols) / hist_logotitle.cols, ((charfontsize * 0.95) * char_rows) / hist_logotitle.rows)
 
 	hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
-	
-	outline_temp = get_border(hist_titletxt_bd.char_size, 3.2, 0.3, 0.5)
-	hist_titletxt_bd.outline = outline_temp.w
-	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
-	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y //- 0.025 * hist_titletxt.char_size
 
-	outline_temp_bot = get_border(hist_titletxt_bot.char_size, 3.2, 0.3, 0.5)
-	hist_titletxt_bot.x = outline_temp_bot.x //+ hist_titletxt.x //+ 0.015 * hist_titletxt.char_size
-	hist_titletxt_bot.y = outline_temp_bot.y //+ hist_titletxt.y //- 0.025 * hist_titletxt.char_size
-	hist_titletxt_bot.outline = outline_temp_bot.w //* (hist_titletxt_bot.width / hist_titletxt.width)
-
+	hist_titletxt_bd.x = hist_titletxt.x + 0.015 * hist_titletxt.char_size
+	hist_titletxt_bd.y = hist_titletxt.y - 0.025 * hist_titletxt.char_size
 
 	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
@@ -15736,7 +15732,6 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
-	local outline_temp = null
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15768,13 +15763,9 @@ function changetiledata(i, index, update) {
 
 		tilez[indexTemp].txshz.char_size = min(((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 9) / logotitle.cols, ((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 3) / logotitle.rows)
 		tilez[indexTemp].txt2z.char_size = tilez[indexTemp].txt1z.char_size = tilez[indexTemp].txshz.char_size * tilez[indexTemp].txt1z.width / tilez[indexTemp].txshz.width
-		
-		outline_temp = get_border(tilez[indexTemp].txt2z.char_size, 3.2, 0.3, 0.5)
 
-		tilez[indexTemp].txt2z.outline = outline_temp.w
-
-		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x //TEST170 + 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y //TEST170 - 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.x = tilez[indexTemp].txt1z.x + 0.015 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.y = tilez[indexTemp].txt1z.y - 0.025 * tilez[indexTemp].txt1z.char_size
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
