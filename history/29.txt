@@ -1,0 +1,8 @@
+2.9 - 02 December 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_29.zip
+Redesigned the game data ribbon on top of the thumbnail grid
+Added category icons for game category
+Added manufacturer icons for game manufacturer
+Added a smooth drop shadow under game title, data and icons
+Streamlined the AF logo so it's just white
+The technique used for background crossfade is used for game data crossfade too
+Frosted glass effect applied to the screen behind the logo

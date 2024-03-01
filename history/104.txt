@@ -1,4 +1,4 @@
-10.4
+10.4 - 01 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_104.zip
 Introduced smoother tile scrolling with ease in
 Added ADB scraping for arcade games
 Added option to reduce or disable tile zoom

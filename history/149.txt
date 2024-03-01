@@ -1,4 +1,4 @@
-14.9
+14.9 - 03 November 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.9
 Added progress bar for long filtering operations
 Added timeout check to avoid hanging scraping operations
 Fixed vertical arcade videos

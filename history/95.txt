@@ -1,4 +1,4 @@
-9.5
+9.5 - 06 December 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_95.tar.gz
 In options menu you can use left and right to change options
 Fixed "Exit from Arcadeflow" menu not centered
 Fixed bug with text size in vertical mode

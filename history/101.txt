@@ -1,4 +1,4 @@
-10.1
+10.1 - 25 March 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_101.zip
 Added rom scraping with CRC check
 Added support for arcade games scraping
 Added option to scrape a single game

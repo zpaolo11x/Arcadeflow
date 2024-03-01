@@ -1,4 +1,4 @@
-
+TEST
 
 Approccio aggiuntivo alla creazione del database.
 

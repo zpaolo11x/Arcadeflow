@@ -1,4 +1,4 @@
-9.4
+9.4 - 27 November 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_94.tar.gz
 Fixed a bug with "Next/Prev Letter" hotkey response
 New "Jump To" menu entry to jump to letters or sort targets
 New memu system with highlight of selected options

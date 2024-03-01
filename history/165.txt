@@ -1,4 +1,4 @@
-16.5
+16.5 - 17 November 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.5
 Fixed bugs in the scraper that caused hanging
 Fixed collections update with master romlist
 Fixed CRC extraction from zip files

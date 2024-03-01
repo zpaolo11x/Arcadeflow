@@ -1,4 +1,4 @@
-8.3
+8.3 - 30 June 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_83.tar.gz
 Added an option to chose the size of the text panel in history
 Changed the way the history panel size is calculated
 Fixed a bug in utility menu options page

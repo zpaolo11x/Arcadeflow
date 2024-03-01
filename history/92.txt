@@ -1,4 +1,4 @@
-9.2
+9.2 - 30 October 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_92.tar.gz
 Added options to import series.ini and bestgames.ini for MAME games
 Added series and rating data in history page
 You can now sort by rating or by series

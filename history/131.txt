@@ -1,4 +1,4 @@
-13.1
+13.1 - 02 May 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_131.zip
 Fixed crc scraping not working when $HOME in rompath
 Fixed "/" breaking game name
 Added warnings for attract.cfg options

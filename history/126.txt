@@ -1,4 +1,4 @@
-12.6
+12.6 - 12 March 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_126.zip
 Redesigned history panel with metadata
 Redesigned volume control menu
 Fixed famicom logo that crashed AM

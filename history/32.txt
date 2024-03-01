@@ -1,0 +1,4 @@
+3.2 - 05 January 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_32.zip
+Revised the smooth shadow under texts, now it's resolution-independent and more optimized
+Added an option to have 1-row layouts for both horizontal and vertical
+Enlarged some elements of the UI for lower resolution screens

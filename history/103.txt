@@ -1,4 +1,4 @@
-10.3
+10.3 - 03 May 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_103.zip
 Added fix for thread limits on screenscraper
 Added option to cutomise page jump
 Added fading and zooming of Filter name

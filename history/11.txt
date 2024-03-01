@@ -1,0 +1,6 @@
+1.1 - 11 February 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_11.zip
+The games list is not repeating
+Tweaked scrolling at the beginning of the list so the first game column is not centered
+Changed the timing so that when the video snapshot is loaded the scrolling doesn't stutter
+Number of columns automatically calculated
+Better support for vertical displays

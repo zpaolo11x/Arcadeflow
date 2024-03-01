@@ -1,4 +1,4 @@
-12.8
+12.8 - 31 March 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_128.zip
 Added sliders and graphical feedback for options
 Added option to multifilter by region
 Fixed bug in rating multifilter

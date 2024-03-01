@@ -1,3 +1,3 @@
-16.7
+16.7 - 21 December 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.7
 Added Namco arcade systems logos
 Fixed issue with letter fading when AA is enabled

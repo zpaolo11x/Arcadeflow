@@ -1,4 +1,4 @@
-13.8
+13.8 - 28 June 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.8
 Added support for pixel perfect fonts
 Correct UI elements alignment with pixels
 Fixed issue with number of rows in menus

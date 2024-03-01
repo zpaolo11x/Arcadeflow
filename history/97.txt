@@ -1,4 +1,4 @@
-9.7
+9.7 - 10 January 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_97.tar.gz
 Added option to generate romlists based on RetroPie XML files
 Improved category recognition and management
 Fixed some system logos not showing correctly

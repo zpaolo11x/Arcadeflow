@@ -1,0 +1,5 @@
+3.6 - 15 February 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_36.zip
+Arcadeflow 3.6 requires Attract Mode 2.5.
+Fixed some issues with AM 2.5 when adding or deleting favorites and tags.
+Changed the CRT filter in history page from cgwg shader to lotte shader, now scanlines are vertical for vertical games and aligned to the game actual pixels.
+Added options for history page that halves or removes scanlines so the moiree effect is less prominent.

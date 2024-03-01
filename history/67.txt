@@ -1,0 +1,8 @@
+6.7 - 27 February 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_67.zip
+Added French translation thanks to katarak from the forum
+Added an option to completely reset the layout to its default settings
+Added an option to enable video thumbnails in Displays Menu mode if that option is enabled for normal pages
+Fixed a bug that caused saving of preference files in plugins folder
+Added an option to play a background music when using Arcadeflow
+Fixed bugs with displays menu
+File browser now goes up to volumes letters in Windows

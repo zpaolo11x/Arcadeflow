@@ -1,4 +1,4 @@
-15.6
+15.6 - 20 January 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.6
 Added Virtual Console logo
 Fixed wheel animation
 Fixed issue with auto update

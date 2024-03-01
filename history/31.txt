@@ -1,0 +1,4 @@
+3.1 - 26 December 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_31.zip
+Added indicators of number of players, game controls and game buttons
+Fixed some bugs in the category picture function
+Fixed bugs in the pop up letter routine

@@ -1,4 +1,4 @@
-14.2
+14.2 - 04 August 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.2
 Improved performance optimising tile redraw
 Fixed Cave background image
 Added new button for favourites filter

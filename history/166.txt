@@ -1,4 +1,4 @@
-16.6
+16.6 - 13 December 2023 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.6
 Added Sega Model 1, PGM, PGM2 and Namco System 2x6
 Added Pippin, Wondermega, Genesis CDX, Multi-Mega, V Smile, CreatiVision, Action Max and uZebox
 Added N-Gage, Game Pocket Computer, Pocket Challenge V2, Gamate, GameKing

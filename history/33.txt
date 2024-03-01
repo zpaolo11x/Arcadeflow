@@ -1,0 +1,2 @@
+3.3 - 06 January 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_33.zip
+ug fixes for 1-row mode and for response to signals like next_game, next_page etc

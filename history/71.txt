@@ -1,0 +1,8 @@
+7.1 - 24 March 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_71.zip
+Added back the option to show images from menu-art folder in displays menu list
+Fixed fade issue with new menu system
+Fixed size of system logos in displays menu on vertical layout
+Fixed bug when using AF as displays menu layout
+Glyphs are visible even when no enhanced menu is on
+Improved cleaning of letter labels when search string is visible
+Fixed displays selection when a display is not shown in menu

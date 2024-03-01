@@ -1,4 +1,4 @@
-// Arcadeflow - v 16.9
+// Arcadeflow - v 17.0
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "16.9" // AF version in string form
+	version = "17.0" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -290,7 +290,7 @@ local uifonts = {
 	condensed = "fonts/font_Roboto-Condensed-Bold.ttf"
 	lite = "fonts/font_Roboto-Regular.ttf"
 	arcade = "fonts/font_CPMono_Black.otf"
-	arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
+	//arcadeborder = "fonts/font_CPMono_BlackBorder2.otf"
 	glyphs = "fonts/font_glyphs.ttf"
 	mono = "fonts/font_RobotoMono-VariableFont_wght.ttf"
 	monodata = "fonts/font_CQMono.otf"
@@ -483,7 +483,7 @@ function splash_progress(i, init, max) {
 }
 
 if (FeVersionNum < 306) {
-	print ("Arcadeflow requires AM+ 3.0.6+\n")
+	print("Arcadeflow requires AM+ 3.0.6+\n")
 	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
 }
 
@@ -1177,6 +1177,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "AMTIMER", glyph = 0xe94e, title = "Attract mode timer (s)", help = "Inactivity timer before attract mode is enabled", options = ["Timer"], values ="120", selection = AF.req.keyboard},
 {v = 7.2, varname = "AMCHANGETIMER", glyph = 0xe94e, title = "Game change time (s)", help = "Time interval between each game change", options = ["Interval"], values = "10", selection = AF.req.keyboard},
 {v = 9.1, varname = "AMSHOWLOGO", glyph = 0xea6d, title = "Attract logo", help = "Show Arcadeflow logo during attract mode", options = ["Yes", "No"], values = [true, false], selection = 0},
+{v = 17.0, varname = "AMSCANLINES", glyph = 0xea6d, title = "Scanline effect", help = "Enable scanline and CRT effect for gameplay", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "AMMESSAGE", glyph = 0xea6d, title = "Attract message", help = "Text to show during attract mode", options = ["Text"], values = "PRESS ANY KEY", selection = AF.req.keyboard},
 {v = 0.0, varname = "", glyph = -1, title = "Sound", selection = AF.req.liner},
 {v = 7.2, varname = "AMTUNE", glyph = 0xe911, title = "Background music", help = "Path to a music file to play in background", options = "", values ="", selection = AF.req.filereqs},
@@ -1320,6 +1321,7 @@ AF.prefs.l1.push([
 {v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
 {v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
+{v = 17.0, varname = "GENERATEHTML", glyph = 0xe998, title = "Generate html file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savehtmlhistory()}, selection = AF.req.executef},
 {v = 7.2, varname = "RESETLAYOUT", glyph = 0xe998, title = "Reset all options", help = "Restore default settings for all layout options, erase sorting options, language options and thumbnail options", options = "", values = function() {AF.prefs.getout = true; reset_layout()}, selection = AF.req.executef},
 ])
 
@@ -1389,7 +1391,7 @@ function historytext() {
 	local scanver = AF.vernum - 1
 	local verfile = null
 	local history = []
-	while (scanver > 10) {
+	while (scanver >= 10) {
 		if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
 			verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
 			history.push("*v" + verfile.read_line() + "*" + "\n\n")
@@ -1400,11 +1402,100 @@ function historytext() {
 		}
 		scanver --
 	}
-	verfile = ReadTextFile (AF.folder + "history/10.txt")
-	while (!verfile.eos()) {
-		history.push(verfile.read_line() + "\n")
-	}
 	return history
+}
+
+function savehtmlhistory() {
+	local scanver = AF.vernum
+	local extjpg = ["","b","c","d","e","f","g"]
+	local history = []
+	local in_line = ""
+	local out_line = ""
+	local codeblock = []
+	local outblock = []
+
+	local line = ""
+	local linearray = []
+
+	local ver_inum = ""
+	local ver_lnum = ""
+	local ver_date = ""
+	local ver_link = ""
+	local ver_data = []
+
+	local verfile = null
+	local infile = ReadTextFile (AF.folder + "docs/history_template.html")
+	local outfile = WriteTextFile (AF.folder + "docs/history.html")
+
+	while (!infile.eos()) {
+		in_line = infile.read_line_wtab()
+		if (in_line == "<!-- LOOP START -->") { // Enter the code block
+			// Build an array of all the code block lines to loop
+			in_line = infile.read_line_wtab()
+			while (in_line != "<!-- LOOP END -->") {
+				codeblock.push(in_line)
+				in_line = infile.read_line_wtab()
+			}
+			
+			// HISTORY DATA BUILD LOOP
+			while (scanver >= 10) {
+				if (file_exist(AF.folder + "history/" + scanver + ".txt")) {
+					verfile = ReadTextFile (AF.folder + "history/" + scanver + ".txt")
+					line = verfile.read_line()
+					linearray = split(line, "-")
+					ver_lnum = strip(linearray[0])
+					ver_date = strip(linearray[1])
+					ver_link = strip(linearray[2])
+					ver_inum = scanver.tostring()
+				
+				
+					foreach(i, item in codeblock){
+						out_line = codeblock[i]
+
+						if (out_line.find("$LISTITEM") != null) {
+							while (!verfile.eos()){
+								line = verfile.read_line()
+								if (line.find ("- ") != 0){
+									out_line = subst_replace(out_line, "$LISTITEM", line)
+									outfile.write_line (out_line+"\n")
+									out_line = codeblock[i]
+								} else {
+									outfile.write_line ("						<ul>"+"\n")
+									while (line.find ("- ") == 0){
+										out_line = subst_replace(out_line, "$LISTITEM", line.slice(2))
+										outfile.write_line ("	"+out_line+"\n")
+										out_line = codeblock[i]
+										line = verfile.read_line()
+									}
+									outfile.write_line ("						</ul>"+"\n")
+								}
+							}
+						} 
+						else if (out_line.find("$PICTURE") != null) {
+							foreach (i2, item2 in extjpg){
+								if (file_exist(AF.folder + "docs/historyjpg/"+"AF" + ver_inum + item2+".jpg")) {
+									out_line = subst_replace(out_line, "$PICTURE", "AF" + ver_inum + item2)
+									outfile.write_line (out_line+"\n")
+									out_line = codeblock[i]
+								}
+							}
+						} else {
+							out_line = subst_replace(out_line, "$IVER", ver_inum)
+							out_line = subst_replace(out_line, "$PATH", ver_link)
+							out_line = subst_replace(out_line, "$DATE", ver_date)
+							out_line = subst_replace(out_line, "$LVER", ver_lnum)
+							outfile.write_line(out_line+"\n")
+						}
+					}
+					outfile.write_line("\n")
+				}
+				scanver --
+			}
+		} else {
+			outfile.write_line(in_line + "\n")
+		}
+	}
+
 }
 
 function buildreadme(separator = false, include_history = true) {
@@ -4462,6 +4553,8 @@ local z_list = {
 
 	boot = []
 	boot2 = []
+	bootsize = 0
+
 	db1 = {}
 	db2 = {}
 	dbmeta = {}
@@ -6343,7 +6436,7 @@ function mfz_build(reset) {
 
 	// Scan the whole romlist
 	z_list.levchecks = []
-	for (local i = 0; i < fe.list.size; i++) {
+	for (local i = 0; i < z_list.bootsize; i++) {
 		z_list.levchecks.push({})
 		// Scan throught the "items" ("Year", "Category" etc) in the multifilter
 		foreach (id0, table0 in multifilterz.l0) {
@@ -7249,43 +7342,50 @@ function z_listboot() {
 	local currentsystem = ""
 	for (local i = 0; i < fe.list.size; i++) {
 		ifeindex = i - fe.list.index
-		if (fe.game_info(Info.Emulator, ifeindex) != "@"){
-			// This is a proper game from a real romlist
-			if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
-				refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
-				portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
-			}
-			z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-			z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
-			z_list.boot[i].z_felistindex = i
-			z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
-			currentsystem = z_list.boot[i].z_system.tolower()
+		//TEST170 process the entries only if the emulator actually exist in the db
+		//TEST170 It can happen if you remove an emulator .cfg but the emulator entry is still in the romlist, in this case the romlist
+		//TEST170 should be empty or throw an error
+		if (z_list.db1.rawin(fe.game_info(Info.Emulator, ifeindex))){ 
+			if (fe.game_info(Info.Emulator, ifeindex) != "@"){
+				// This is a proper game from a real romlist
+				if (!z_list.db1[fe.game_info(Info.Emulator, ifeindex)].rawin(fe.game_info(Info.Name, ifeindex))){
+					refreshromlist(fe.game_info(Info.Emulator, ifeindex), false, false)
+					portgame(romlistboot, fe.game_info(Info.Emulator, ifeindex),fe.game_info(Info.Name, ifeindex))
+				}
+				z_list.boot.push(z_list.db1[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+				z_list.boot2.push(z_list.db2[fe.game_info(Info.Emulator, ifeindex)][fe.game_info(Info.Name, ifeindex)])
+				z_list.boot[i].z_felistindex = i
+				z_list.boot[i].z_fileisavailable = (fe.game_info(Info.FileIsAvailable, ifeindex) == "1")
+				currentsystem = z_list.boot[i].z_system.tolower()
 
-			//insert here system overrides, for example change controller and numbuttons using system data fields
+				//insert here system overrides, for example change controller and numbuttons using system data fields
 
-			if (system_data.rawin(currentsystem)) {
-				if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
-				if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
-			}
+				if (system_data.rawin(currentsystem)) {
+					if (z_list.boot[i].z_control == "") z_list.boot[i].z_control = system_data[currentsystem].sys_control
+					if (z_list.boot[i].z_buttons == "") z_list.boot[i].z_buttons = system_data[currentsystem].sys_buttons
+				}
 
-		} else {
-			// This is a redirection entry to a different display
-			z_list.boot.push(clone (z_fields1))
-			z_list.boot2.push(clone (z_fields2))
-			z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
+			} else {
+				// This is a redirection entry to a different display
+				z_list.boot.push(clone (z_fields1))
+				z_list.boot2.push(clone (z_fields2))
+				z_list.boot[i].z_name = fe.game_info(Info.Name, ifeindex)
 
-			currentsystem = z_list.boot[i].z_name.tolower()
-			z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
-			z_list.boot[i].z_felistindex = i
-			z_list.boot[i].z_category = "display"
-			z_list.boot[i].z_fileisavailable = true
-			if (system_data.rawin(currentsystem)){
-				z_list.boot[i].z_category = system_data[currentsystem].group + " sys"
-				z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
-				z_list.boot[i].z_year = system_data[currentsystem].year
+				currentsystem = z_list.boot[i].z_name.tolower()
+				z_list.boot[i].z_title = fe.game_info(Info.Title, ifeindex)
+				z_list.boot[i].z_felistindex = i
+				z_list.boot[i].z_category = "display"
+				z_list.boot[i].z_fileisavailable = true
+				if (system_data.rawin(currentsystem)){
+					z_list.boot[i].z_category = system_data[currentsystem].group + " sys"
+					z_list.boot[i].z_manufacturer = system_data[currentsystem].brand
+					z_list.boot[i].z_year = system_data[currentsystem].year
+				}
 			}
 		}
 	}
+
+	z_list.bootsize = z_list.boot.len()
 
 	timestop("boot")
 
@@ -7732,6 +7832,26 @@ function islcd(offset, var) {
 }
 
 /// Misc functions ///
+
+// font border functions
+
+function get_border(font_size, w_size, x_offset, y_offset){
+	local font_bd = {
+		w = ceil((w_size / 100.0) * font_size) //4.5
+		x = 0
+		y = 0
+	}
+	// old option
+	//font_bd.x = ceil(font_bd.w * 0.3)
+	//font_bd.y = ceil(font_bd.w * 0.7)
+
+	// new option
+	font_bd.x = (font_bd.w * x_offset) //0.3
+	font_bd.y = (font_bd.w * y_offset) //0.7
+	font_bd.y = font_bd.y < 1 ? 1 : font_bd.y
+	
+	return(font_bd)		
+}
 
 // strips hidden files from folder
 function striphidden(file_list){
@@ -8935,18 +9055,15 @@ for (local i = 0; i < tiles.total; i++) {
 	txt2z.char_size = logo.shcharsize * (88.0 / 40.0) * UI.scalerate
 	txt2z.word_wrap = true
 	txt2z.align = logo.txtalign
-	txt2z.font = uifonts.arcadeborder
+	txt2z.font = uifonts.arcade
 	txt2z.margin = logo.txtmargin
 	txt2z.line_spacing = logo.txtlinespacing * 0.6 / 0.6
 	txt2z.char_spacing = logo.txtcharspacing
-	txt2z.set_rgb (80, 80, 80)
-	txt2z.alpha = 120
-
-	txt2z.set_rgb (150, 150, 150)
-	txt2z.alpha = 255
+	txt2z.outline = ceil((4.5 / 100) * txt2z.char_size)
 
 	txt2z.set_rgb (135, 135, 135)
 	txt2z.alpha = 255
+	txt2z.set_outline_rgb (135, 135, 135)
 
 	//txshz = obj.add_text("[Title]", UI.zoomscale * (UI.padding + height * (1.0 / 8.0)), UI.zoomscale * (UI.padding + height * (1.0 / 8.0)), UI.zoomscale * width * 3.0 / 4.0, UI.zoomscale * height * 3.0 / 4.0)
 	txt1z = obj.add_text("...", logoz.x, logoz.y, logoz.width, logoz.height)
@@ -11222,34 +11339,38 @@ if (prf.HISTORYPANEL) {
 	hist_white.alpha = 200
 }
 
-local hist_title = history_surface.add_image(AF.folder + "pics/transparent.png", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
+// Place the shadow surface, larger than the title surface
+local hist_title_shadow = history_surface.add_surface( hist_titleT.w * (1 + shadowscale * 2), hist_titleT.h * (1 + shadowscale * 2))
+hist_title_shadow.set_pos(hist_titleT.x - hist_titleT.w * shadowscale, hist_titleT.y + 2 * shadowscale * hist_titleT.h)
+
+// Add the image for the shadow
+local hist_title_bot = hist_title_shadow.add_image(AF.folder + "pics/transparent.png", 0, 0, hist_title_shadow.width, hist_title_shadow.height)
+hist_title_bot.preserve_aspect_ratio = true
+
+local hist_title = history_surface.add_clone (hist_title_bot)
 hist_title.preserve_aspect_ratio = true
+hist_title.set_pos (hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 
-local hist_title_top = null
-local hist_titletxt_bot = null
+hist_title_bot.set_rgb(0, 0, 0)
+hist_title_bot.alpha = 255
 
-if (prf.HISTORYPANEL) {
-	hist_title_top = history_surface.add_clone (hist_title)
 
-	hist_title_top.preserve_aspect_ratio = true
+local hist_titletxt_bot = hist_title_shadow.add_text("...", hist_title_bot.x, hist_title_bot.y, hist_title_bot.width, hist_title_bot.height)
+hist_titletxt_bot.char_size = 150 * UI.scalerate
+hist_titletxt_bot.word_wrap = true
+hist_titletxt_bot.margin = 0
+hist_titletxt_bot.align = Align.MiddleCentre
+hist_titletxt_bot.char_spacing = 0.7
 
-	hist_title.set_pos (hist_titleT.x - hist_titleT.w * shadowscale, hist_titleT.y + 2 * shadowscale * hist_titleT.h, hist_titleT.w * (1 + shadowscale * 2), hist_titleT.h * (1 + shadowscale * 2))
-	hist_title.set_rgb(0, 0, 0)
-	hist_title.alpha = hist_titleT.transparency
+hist_titletxt_bot.font = uifonts.arcade
+hist_titletxt_bot.line_spacing = 0.6
+hist_titletxt_bot.outline = 1.0
+hist_titletxt_bot.set_rgb(0, 0, 0)
+hist_titletxt_bot.set_outline_rgb(0, 0, 0)
+hist_titletxt_bot.alpha = 255
 
-	hist_titletxt_bot = history_surface.add_text("...", hist_title.x, hist_title.y, hist_title.width, hist_title.height)
-
-	hist_titletxt_bot.char_size = 150 * UI.scalerate
-	hist_titletxt_bot.word_wrap = true
-	hist_titletxt_bot.margin = 0
-	hist_titletxt_bot.align = Align.MiddleCentre
-	hist_titletxt_bot.char_spacing = 0.7
-
-	hist_titletxt_bot.font = uifonts.arcadeborder
-	hist_titletxt_bot.line_spacing = 0.6
-	hist_titletxt_bot.set_rgb(0, 0, 0)
-	hist_titletxt_bot.alpha = hist_titleT.transparency
-}
+hist_title_shadow.alpha = hist_titleT.transparency
+hist_title_shadow.visible = prf.HISTORYPANEL
 
 local hist_titletxt_bd = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
 local hist_titletxt = history_surface.add_text("...", hist_titleT.x, hist_titleT.y, hist_titleT.w, hist_titleT.h)
@@ -11260,11 +11381,11 @@ hist_titletxt_bd.margin = hist_titletxt.margin = 0
 hist_titletxt_bd.align = hist_titletxt.align = Align.MiddleCentre
 hist_titletxt_bd.char_spacing = hist_titletxt.char_spacing = 0.7
 
-hist_titletxt_bd.font = uifonts.arcadeborder
+hist_titletxt_bd.font = uifonts.arcade
 hist_titletxt_bd.line_spacing = 0.6
-hist_titletxt_bd.set_rgb (80, 80, 80)
-hist_titletxt_bd.alpha = 200
+hist_titletxt_bd.outline = 1.0
 hist_titletxt_bd.set_rgb (135, 135, 135)
+hist_titletxt_bd.set_outline_rgb (135, 135, 135)
 hist_titletxt_bd.alpha = 255
 
 hist_titletxt.font = uifonts.arcade
@@ -11912,6 +12033,9 @@ function history_updatesnap() {
 }
 
 function history_updatetext() {
+	local outline_temp = null
+	local outline_temp_bot = null
+
 	hist_title.file_name = fe.get_art ("wheel")
 
 	local char_rows = (((hist_titleT.w / hist_titleT.h) > 3.0) ? 2 : 3)
@@ -11920,18 +12044,23 @@ function history_updatetext() {
 
 	local hist_logotitle = wrapme(gamename2 (z_list.gametable[z_list.index].z_felistindex), char_cols, char_rows)
 
-	hist_titletxt_bd.msg = hist_titletxt.msg = hist_logotitle.text
-	if (prf.HISTORYPANEL) hist_titletxt_bot.msg = hist_logotitle.text
+	hist_titletxt_bd.msg = hist_titletxt.msg = hist_titletxt_bot.msg = hist_logotitle.text
 
 	hist_titletxt_bd.char_size = hist_titletxt.char_size = min(((charfontsize * 0.95) * char_cols) / hist_logotitle.cols, ((charfontsize * 0.95) * char_rows) / hist_logotitle.rows)
 
-	if (prf.HISTORYPANEL) hist_titletxt_bot.char_size = hist_titletxt.char_size * (hist_titletxt_bot.width / hist_titletxt.width)
+	hist_titletxt_bot.char_size = min(((charfontsize * 0.95) * char_cols) / hist_logotitle.cols, ((charfontsize * 0.95) * char_rows) / hist_logotitle.rows) * (hist_titletxt_bot.width / hist_titletxt.width)
+	
+	outline_temp = get_border(hist_titletxt_bd.char_size, 3.2, 0.3, 0.5)
+	hist_titletxt_bd.outline = outline_temp.w
+	hist_titletxt_bd.x = outline_temp.x + hist_titletxt.x
+	hist_titletxt_bd.y = outline_temp.y + hist_titletxt.y
 
-	hist_titletxt_bd.x = hist_titletxt.x + 0.015 * hist_titletxt.char_size
-	hist_titletxt_bd.y = hist_titletxt.y - 0.025 * hist_titletxt.char_size
+	outline_temp_bot = get_border(hist_titletxt_bot.char_size, 3.2, 0.3, 0.5)
+	hist_titletxt_bot.x = ceil(outline_temp_bot.x)
+	hist_titletxt_bot.y = ceil(outline_temp_bot.y)
+	hist_titletxt_bot.outline = outline_temp_bot.w
 
-	hist_titletxt_bd.visible = hist_titletxt.visible = (hist_title.subimg_height == 0)
-	if (prf.HISTORYPANEL) hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
+	hist_titletxt_bd.visible = hist_titletxt.visible = hist_titletxt_bot.visible = (hist_title.subimg_height == 0)
 
 	local sys = split(fe.game_info(Info.System), ";")
 	local rom = fe.game_info(Info.Name)
@@ -11997,12 +12126,12 @@ function history_updatetext() {
 	local tempdesc_zdb = ""
 	foreach (i, item in z_list.gametable[z_list.index].z_description)
 		tempdesc_zdb = tempdesc_zdb + item + "\n"
-	if ((tempdesc_zdb == "?") && (tempdesc_zdb == "\n")) tempdesc_zdb = ""
+	if ((tempdesc_zdb == "?") || (tempdesc_zdb == "\n")) tempdesc_zdb = ""
 
 	if (tempdesc_zdb != "") tempdesc = tempdesc_zdb
-	else if (tempdesc_overview != "") tempdesc = tempdesc_overview
-	else if (tempdesc_xml != "") tempdesc = tempdesc_xml
-	else if (tempdesc_dat != "") tempdesc = tempdesc_dat
+	else if (tempdesc_overview != "") tempdesc = tempdesc_overview + "\n"
+	else if (tempdesc_xml != "") tempdesc = tempdesc_xml + "\n"
+	else if (tempdesc_dat != "") tempdesc = tempdesc_dat + "\n"
 
 	if ((prf.SMALLSCREEN) || (prf.HISTMININAME)) tempdesc = hist_text.descr.msg + "\n" + tempdesc
 
@@ -13998,7 +14127,7 @@ function attractkick() {
 	attract.starttimer = false
 	attractitem.surface.visible = attractitem.surface.redraw = true
 	attractitem.text1.visible = attractitem.text2.visible = true
-	attractitem.snap.shader = attractitem.shader_2_lottes
+	attractitem.snap.shader = prf.AMSCANLINES ? attractitem.shader_2_lottes : noshader
 
 	startfade(flowT.attract, 0.1, 0.0)
 	if (prf.AMSHOWLOGO) startfade(flowT.logo, 0.1, 0.0)
@@ -14053,10 +14182,11 @@ function attractupdatesnap() {
 		attractitem.snap.subimg_y = attractitem.snap.texture_height * 0.5 - attract.scanrows * 0.5 * scalexy[1] * ((attractitem.snap.texture_height * 3.0 / 4.0) / attractitem.snap.texture_width)
 		attractitem.snap.subimg_height = attract.scanrows  * scalexy[1] * ((attractitem.snap.texture_height * 3.0 / 4.0) / attractitem.snap.texture_width)
 	}
-
-	attractitem.shader_2_lottes.set_param ("vert", (attractitem.snap.texture_width >= attractitem.snap.texture_height ? 0.0 : 1.0))
-	attractitem.shader_2_lottes.set_param ("color_texture_sz", nativeres[0], nativeres[1])
-	attractitem.shader_2_lottes.set_param ("color_texture_pow2_sz", nativeres[0], nativeres[1])
+	if (prf.AMSCANLINES)	{
+		attractitem.shader_2_lottes.set_param ("vert", (attractitem.snap.texture_width >= attractitem.snap.texture_height ? 0.0 : 1.0))
+		attractitem.shader_2_lottes.set_param ("color_texture_sz", nativeres[0], nativeres[1])
+		attractitem.shader_2_lottes.set_param ("color_texture_pow2_sz", nativeres[0], nativeres[1])
+	}
 }
 
 if (prf.AMENABLE) {
@@ -14066,6 +14196,7 @@ if (prf.AMENABLE) {
 	attractitem.surface = fe.add_surface (attract.nw, attract.nw)
 	attractitem.surface.set_pos(attract.x, attract.y, attract.w, attract.w)
 	attractitem.snap = attractitem.surface.add_image(AF.folder + "pics/attractbg.jpg", 0, 0, attract.nw, attract.nw)
+	attractitem.snap.smooth = prf.AMSCANLINES
 	attractitem.snap.preserve_aspect_ratio = false
 	attractitem.refs = attractitem.surface.add_image(AF.folder + "pics/transparent.png", 0, 0, 1, 1)
 	attractitem.refs.preserve_aspect_ratio = false
@@ -14106,19 +14237,21 @@ if (prf.AMENABLE) {
 	//attractitem.snap.shader = attractitem.shader_2_lottes
 	attractitem.snap.shader = noshader
 
-	attractitem.shader_2_lottes.set_param ("aperature_type", 0.0) 	// 0.0 = none, 1.0 = TV style, 2.0 = Aperture grille, 3.0 = VGA
-	attractitem.shader_2_lottes.set_param ("hardScan", -16.0)		// Hardness of Scanline 0.0 = none -8.0 = soft -16.0 = medium
-	attractitem.shader_2_lottes.set_param ("hardPix", -2.0)			// Hardness of pixels in scanline -2.0 = soft, -4.0 = hard
-	attractitem.shader_2_lottes.set_param ("maskDark", 0.65)			// Sets how dark a "dark subpixel" is in the aperture pattern.
-	attractitem.shader_2_lottes.set_param ("maskLight", 1.35)		// Sets how dark a "bright subpixel" is in the aperture pattern
-	attractitem.shader_2_lottes.set_param ("saturation", 1.0)		// 1.0 is normal saturation. Increase as needed.
-	attractitem.shader_2_lottes.set_param ("tint", 0.0)				// 0.0 is 0.0 degrees of Tint. Adjust as needed.
-	attractitem.shader_2_lottes.set_param ("blackClip", 0.3)			// Drops the final color value by this amount if GAMMA_CONTRAST_BOOST is defined
-	attractitem.shader_2_lottes.set_param ("brightMult", 2.0)		// Multiplies the color values by this amount if GAMMA_CONTRAST_BOOST is defined
-	attractitem.shader_2_lottes.set_param ("distortion", 0.2)		// 0.0 to 0.2 seems right
-	attractitem.shader_2_lottes.set_param ("cornersize", 0.05)		// 0.0 to 0.1
-	attractitem.shader_2_lottes.set_param ("cornersmooth", 60)		// Reduce jagginess of corners
-	attractitem.shader_2_lottes.set_param ("vignettebase", 0.0, 1.0, 3.0)
+	if (prf.AMSCANLINES){
+		attractitem.shader_2_lottes.set_param ("aperature_type", 0.0) 	// 0.0 = none, 1.0 = TV style, 2.0 = Aperture grille, 3.0 = VGA
+		attractitem.shader_2_lottes.set_param ("hardScan", -16.0)		// Hardness of Scanline 0.0 = none -8.0 = soft -16.0 = medium
+		attractitem.shader_2_lottes.set_param ("hardPix", -2.0)			// Hardness of pixels in scanline -2.0 = soft, -4.0 = hard
+		attractitem.shader_2_lottes.set_param ("maskDark", 0.65)			// Sets how dark a "dark subpixel" is in the aperture pattern.
+		attractitem.shader_2_lottes.set_param ("maskLight", 1.35)		// Sets how dark a "bright subpixel" is in the aperture pattern
+		attractitem.shader_2_lottes.set_param ("saturation", 1.0)		// 1.0 is normal saturation. Increase as needed.
+		attractitem.shader_2_lottes.set_param ("tint", 0.0)				// 0.0 is 0.0 degrees of Tint. Adjust as needed.
+		attractitem.shader_2_lottes.set_param ("blackClip", 0.3)			// Drops the final color value by this amount if GAMMA_CONTRAST_BOOST is defined
+		attractitem.shader_2_lottes.set_param ("brightMult", 2.0)		// Multiplies the color values by this amount if GAMMA_CONTRAST_BOOST is defined
+		attractitem.shader_2_lottes.set_param ("distortion", 0.2)		// 0.0 to 0.2 seems right
+		attractitem.shader_2_lottes.set_param ("cornersize", 0.05)		// 0.0 to 0.1
+		attractitem.shader_2_lottes.set_param ("cornersmooth", 60)		// Reduce jagginess of corners
+		attractitem.shader_2_lottes.set_param ("vignettebase", 0.0, 1.0, 3.0)
+	}
 }
 
 if (prf.AMENABLE) {
@@ -14127,7 +14260,7 @@ if (prf.AMENABLE) {
 		attractitem.text1.alpha = attract.textshadow
 		attractitem.text2.alpha = 255
 		attract.start = true
-		attractitem.snap.shader = attractitem.shader_2_lottes
+		attractitem.snap.shader = prf.AMSCANLINES ? attractitem.shader_2_lottes : noshader
 	}
 	else {
 
@@ -15601,6 +15734,7 @@ function updatetiles() {
 }
 
 function changetiledata(i, index, update) {
+	local outline_temp = null
 	// i is 0 - number of tiles
 	// index is i centered on current tile + correction
 
@@ -15632,9 +15766,13 @@ function changetiledata(i, index, update) {
 
 		tilez[indexTemp].txshz.char_size = min(((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 9) / logotitle.cols, ((tilez[indexTemp].txshz.width * 100.0 / 600.0) * 3) / logotitle.rows)
 		tilez[indexTemp].txt2z.char_size = tilez[indexTemp].txt1z.char_size = tilez[indexTemp].txshz.char_size * tilez[indexTemp].txt1z.width / tilez[indexTemp].txshz.width
+		
+		outline_temp = get_border(tilez[indexTemp].txt2z.char_size, 3.2, 0.3, 0.5)
 
-		tilez[indexTemp].txt2z.x = tilez[indexTemp].txt1z.x + 0.015 * tilez[indexTemp].txt1z.char_size
-		tilez[indexTemp].txt2z.y = tilez[indexTemp].txt1z.y - 0.025 * tilez[indexTemp].txt1z.char_size
+		tilez[indexTemp].txt2z.outline = outline_temp.w
+
+		tilez[indexTemp].txt2z.x = outline_temp.x + tilez[indexTemp].txt1z.x
+		tilez[indexTemp].txt2z.y = outline_temp.y + tilez[indexTemp].txt1z.y
 
 		boxtitle = wrapme(gamename2(z_list.gametable[indexvar].z_felistindex), 6, 4)
 		tilez[indexTemp].txbox.msg = boxtitle.text
@@ -17427,13 +17565,14 @@ function tick(tick_time) {
 		hist_text_alpha (255 * (1.0 - flowT.historydata[1]))
 		if (prf.CONTROLOVERLAY != "never") hist_over.surface.alpha = 255 * (1.0 - flowT.historydata[1]) * (1.0 - flowT.historydata[1]) * (1.0 - flowT.historydata[1])
 
-		if (prf.HISTORYPANEL) {
-			hist_titletxt_bot.alpha = hist_title.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1])
-			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title_top.alpha = 255 * (1.0 - flowT.historydata[1])
-		}
-		else {
+		//if (prf.HISTORYPANEL) {
+			hist_title_shadow.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1]) //hist_titletxt_bot.alpha = hist_title_bot.alpha = hist_titleT.transparency * (1.0 - flowT.historydata[1])
+			//TEST170 riaggiungere l'equivalente di hist_title_top.alpha  se serve!
 			hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
-		}
+		//}
+		//else {
+		//	hist_titletxt_bd.alpha = hist_titletxt.alpha = hist_title.alpha = 255 * (1.0 - flowT.historydata[1])
+		//}
 	}
 
 	if (checkfade(flowT.overmenu)) {
@@ -17617,7 +17756,7 @@ function buildcategorytable() {
 	local cat1 = ""
 	local cat2 = ""
 
-	for (local i = 0; i < fe.list.size; i++) {
+	for (local i = 0; i < z_list.bootsize; i++) {
 		cat0 = processcategory(z_list.boot[i].z_category)
 
 		foreach (vindex, vtable in cat0){

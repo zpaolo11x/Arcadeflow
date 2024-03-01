@@ -1,4 +1,4 @@
-9.9
+9.9 - 22 February 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_99.tar.gz
 Improved shaders and layering to reduce load time
 Added new system logos and images (IBM PC, Coleco Adam, Sega SC-3000, Philips Videopac, SAM coupe etc)
 Added 8 new manufacturer logos

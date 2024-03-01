@@ -1,4 +1,4 @@
-8.7
+8.7 - 18 August 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_87.tar.gz
 Introduced free aspect ratio for game snaps and box art
 Added an option to morph box art into game video
 Cleaned up code to make it more streamlined

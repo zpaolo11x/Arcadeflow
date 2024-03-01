@@ -1,4 +1,4 @@
-8.8
+8.8 - 10 September 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_88.tar.gz
 New sorting routine improves speed in sorting large lists
 Increased delay to avoid fade-in of video snaps
 Added tweak to fix Game Gear games aspect ratio

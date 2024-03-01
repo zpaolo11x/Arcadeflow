@@ -1,0 +1,7 @@
+17.0 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.0
+Added option to disable scanlines in screensaver
+Improved rendering of shadow of history title
+Fixed bugs in game history page
+Fixed issue when emulator is not correct
+Cleaned up documentation
+Minor bug fixes

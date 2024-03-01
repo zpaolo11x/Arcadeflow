@@ -1,0 +1,12 @@
+7.9 - 29 May 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_79.zip
+Fixed issues when selecting submenus in multifilter
+When using on-screen keyboard search you can type directly with a physical keyboard
+All options with entry text can be used with on-screen keyboard
+New search method: no need to select search field, results for multiple fields will be shown directly
+New category menu backend, integrated with new search method and multifilter
+Added an option to disable saving multifilter when leaving Arcadeflow
+Added tags list to the history page description text
+New tags management backend, now you can add/remove tags from a menu and using on screen keyboard
+New favourites management backend, no more confirmation menu
+Fixed next_favourite and prev_favourite signal response
+Added new QWERTY layout option for on-screen keyboard

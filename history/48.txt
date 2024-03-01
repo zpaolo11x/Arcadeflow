@@ -1,0 +1,4 @@
+4.8 - 17 June 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_48.zip
+Fixed a bug that kept videos (and their audio) playing even when not visible
+Fixed some issues with labels and mame romlists
+New players icons for mame romlists using "2P sim" and "2P alt" players definition

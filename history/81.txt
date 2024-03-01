@@ -1,4 +1,4 @@
-8.1
+8.1 - 09 June 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_81.tar.gz
 Added new manufacturers logos
 Added system logos for Cave and general board manufacturers like Sega, Taito, Capcom
 When entering Displays submenu the current display is preselected

@@ -1,4 +1,4 @@
-12.3
+12.3 - 28 January 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_123.zip
 Added a new context menu to find similar games
 Added an option to reset "last played" data from romlist
 Added new artwork for systems in the displays menu

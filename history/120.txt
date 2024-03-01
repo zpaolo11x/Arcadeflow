@@ -1,4 +1,4 @@
-12.0
+12.0 - 29 November 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_120.zip
 Introduced a new romlist management system
 - Collections syncronised with source romlists
 - Romlist data is transferred to a "database" holding all games data

@@ -1,4 +1,4 @@
-8.5
+8.5 - 20 July 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_85.tar.gz
 Added system logos for Atomiswave, Sega Model 2 and 3
 Added an option to fade out game decoration when video is played
 Fixed a bug that showed black box on some videos

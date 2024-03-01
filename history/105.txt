@@ -1,4 +1,4 @@
-10.5
+10.5 - 09 June 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_105.zip
 Fixed excessive tile jump when changing list
 Fixed rating when using external bestgames.ini
 Added scraper support for relative artowrk and games paths

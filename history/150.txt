@@ -1,4 +1,4 @@
-15.0
+15.0 - 17 November 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.0
 Added menu entry to install specific versions or branches
 Added new manufacturers logos
 Removed option to rotate screen, it's in AM options

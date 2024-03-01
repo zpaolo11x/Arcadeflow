@@ -1,0 +1,6 @@
+5.5 - 13 September 2019 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_55.zip
+Added support for custom sort of game lists, from within Arcadeflow utility menu
+New "prev_letter" "next_letter" management allowing to jump to prev/next year, manufacturer etc according to sort order
+When sorting by title a layout options allow stripping of articles "The", "Vs." etc
+Option to save sort order state each time it is changed
+When resetting search results there's an option to keep the current game selected

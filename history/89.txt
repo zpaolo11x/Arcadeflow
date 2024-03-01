@@ -1,4 +1,4 @@
-8.9
+8.9 - 25 September 2020 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_89.tar.gz
 New color palette for Game Boy screenshots
 Added new option to sort displays by system brand or sistem release year
 Fixed issues with changing displays when some display is not "in cycle"

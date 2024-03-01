@@ -1,0 +1,4 @@
+2.1 - 21 August 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_21.zip
+Added some tweaks to make scrolling more fluid and correct slowdowns
+Fixed a bug in the background scaling blurred snap routine
+Changed the blur shader, now there are three layouts to chose from: layout, layout_noshader, layout_oldshader (with a lighter shader that is faster on some machines)

@@ -1,0 +1,2 @@
+2.5 - 28 September 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_25.zip
+Added a new option to toggle screen rotation permanently

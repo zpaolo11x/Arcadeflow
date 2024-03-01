@@ -1,2 +1,2 @@
-13.4
+13.4 - 19 May 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/13.4
 Fixed issues with scraper

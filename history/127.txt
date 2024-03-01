@@ -1,4 +1,4 @@
-12.7
+12.7 - 23 March 2022 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_127.zip
 Added new Naomi related systems and arcade systems
 Added key repeat in keyboard
 Added workdir support in scraper

@@ -1,4 +1,4 @@
-15.2
+15.2 - 14 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.2
 Added per display background music
 Show specific manufacturer year logo by adding _number to the name
 Fixed case sensitive manufacturer name match

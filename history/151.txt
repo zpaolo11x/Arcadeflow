@@ -1,4 +1,4 @@
-15.1
+15.1 - 01 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.1
 Added new manufacturers logos
 Added animation for download and install
 Fixed issue when a romlist entry is not in the db

@@ -1,2 +1,2 @@
-15.3
+15.3 - 19 December 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/15.3
 Fixed bug with metadata that crashed AF

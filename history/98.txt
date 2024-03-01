@@ -1,4 +1,4 @@
-9.8
+9.8 - 29 January 2021 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_98.tar.gz
 Added an option for importing the XML list only from current romlist
 XML data import works also for collections
 Collection romlists now share tags, favourite and run data with original romlists

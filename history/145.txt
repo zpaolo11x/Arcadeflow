@@ -1,4 +1,4 @@
-14.5
+14.5 - 08 September 2022 - https://github.com/zpaolo11x/Arcadeflow/zipball/14.5
 Added option to show controls overlay only on arcade games
 Added two new systems: Sega Pico and Acan
 In multifilter menu you can skip void entries with "right"

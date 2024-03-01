@@ -1,0 +1,3 @@
+2.6 - 02 October 2018 - http://www.mixandmatch.it/AF/layouts/Arcadeflow_26.zip
+New "frosted glass" effect when you enter overlay menus
+Updated Readme.md with current options
