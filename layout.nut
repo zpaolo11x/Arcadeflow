@@ -6,6 +6,9 @@
 
 // Load file nut
 
+//TEST171
+local fontscale = 0.7
+
 fe.do_nut("nut_file.nut")
 fe.do_nut("nut_textboard.nut")
 
@@ -8301,11 +8304,11 @@ local overlay = {
 }
 
 // Define overlay charsize (in integer multiple of 2???)
-overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(50 * UI.scalerate))
-overlay.labelcharsize = floor(overlay.charsize * 1.1)
+overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(fontscale * 50 * UI.scalerate))
+overlay.labelcharsize = floor(fontscale * overlay.charsize * 1.1)
 
-overlay.rowheight = floor(130 * UI.scalerate)
-overlay.labelheight = floor(160 * UI.scalerate)
+overlay.rowheight = floor(fontscale * 130 * UI.scalerate)
+overlay.labelheight = floor(fontscale * 160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
 overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
