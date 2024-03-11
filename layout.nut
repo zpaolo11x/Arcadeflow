@@ -9873,7 +9873,7 @@ prfmenu.picratew = prfmenu.picrateh = floor(overlay.rowheight * 2.0 - overlay.pa
 //prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 //prfmenu.picrateh = prfmenu.picratew
 
-prfmenu.description.char_size = 48 * UI.scalerate
+prfmenu.description.char_size = prf.LARGESCREEN * 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
 prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
