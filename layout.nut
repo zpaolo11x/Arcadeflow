@@ -1,13 +1,10 @@
-// Arcadeflow - v 17.0
+// Arcadeflow - v 17.1
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
 // Including code from the KeyboardSearch plugin by Andrew Mickelson (mickelson)
 
 // Load file nut
-
-//TEST171
-local fontscale = 0.7
 
 fe.do_nut("nut_file.nut")
 fe.do_nut("nut_textboard.nut")
@@ -97,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "17.0" // AF version in string form
+	version = "17.1" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -1010,6 +1007,7 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 17.1, varname = "LARGESCREEN", glyph = 0xe997, title = "Large screen", help = "Reduce menu font size for large screens", options = ["Yes", "No"], values = [0.8, 1.0], selection = 1},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -8304,11 +8302,11 @@ local overlay = {
 }
 
 // Define overlay charsize (in integer multiple of 2???)
-overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(fontscale * 50 * UI.scalerate))
-overlay.labelcharsize = floor(fontscale * overlay.charsize * 1.1)
+overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(prf.LARGESCREEN * 50 * UI.scalerate))
+overlay.labelcharsize = floor(prf.LARGESCREEN * overlay.charsize * 1.1)
 
-overlay.rowheight = floor(fontscale * 130 * UI.scalerate)
-overlay.labelheight = floor(fontscale * 160 * UI.scalerate)
+overlay.rowheight = floor(prf.LARGESCREEN * 130 * UI.scalerate)
+overlay.labelheight = floor(prf.LARGESCREEN * 160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
 overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
@@ -12886,7 +12884,6 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 	local obj_dispimage = null
 	local obj_strikeline = null
 	local pad = zmenu.pad * 2.0
-	local fontscaler = 0.7
 	local iindex = 0
 
 	// shrink compresses the menu on the left to let, used for dmp or for similar games
