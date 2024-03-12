@@ -1,1 +1,3 @@
 17.1 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.1
+Added option to decrease menu font size for larger screens
+Added Apple III system
