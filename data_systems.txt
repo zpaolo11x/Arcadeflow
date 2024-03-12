@@ -46,6 +46,9 @@ apple 2gs
 apple ii gs
 apple 2 gs
 
+apple iii,0,0,APLIII,CRT,NONE,4,3,COMPUTER,Apple,1980,Apple III,null,rom,joystick (8-way),1
+apple 3
+
 apple mac os,0,0,MOS,CRT,NONE,4,3,COMPUTER,Apple,1984,Mac OS,146,rom,joystick (8-way),1
 macos
 mac os
