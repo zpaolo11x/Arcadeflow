@@ -1007,7 +1007,7 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 17.1, varname = "LARGESCREEN", glyph = 0xe997, title = "Large screen", help = "Reduce menu font size for large screens", options = ["Yes", "No"], values = [0.8, 1.0], selection = 1},
+{v = 17.1, varname = "MENUFONT", glyph = 0xe997, title = "Menu font size", help = "Reduce menu font size for large screens", options = ["Regular", "Small", "Smaller"], values = [1.0, 0.8, 0.6], selection = 0},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -8302,11 +8302,11 @@ local overlay = {
 }
 
 // Define overlay charsize (in integer multiple of 2???)
-overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(prf.LARGESCREEN * 50 * UI.scalerate))
-overlay.labelcharsize = floor(prf.LARGESCREEN * overlay.charsize * 1.1)
+overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(prf.MENUFONT * 50 * UI.scalerate))
+overlay.labelcharsize = floor(prf.MENUFONT * overlay.charsize * 1.1)
 
-overlay.rowheight = floor(prf.LARGESCREEN * 130 * UI.scalerate)
-overlay.labelheight = floor(prf.LARGESCREEN * 160 * UI.scalerate)
+overlay.rowheight = floor(prf.MENUFONT * 130 * UI.scalerate)
+overlay.labelheight = floor(prf.MENUFONT * 160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
 overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
@@ -9873,7 +9873,7 @@ prfmenu.picratew = prfmenu.picrateh = floor(overlay.rowheight * 2.0 - overlay.pa
 //prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 //prfmenu.picrateh = prfmenu.picratew
 
-prfmenu.description.char_size = prf.LARGESCREEN * 48 * UI.scalerate
+prfmenu.description.char_size = prf.MENUFONT * 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
 prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
