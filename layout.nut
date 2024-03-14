@@ -9822,16 +9822,21 @@ function getsubmenunotes(index, i) {
 			return("☰")
 	}
 	if (selection < 0) return("")
+	
 	return(AF.prefs.l1[index][i].options[AF.prefs.l1[index][i].selection])
 }
 
 function getsubmenudata(index) {
 	local out = []
+	local changed = ""
 	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
+		testpr(AF.prefs.l1[index][i].varname+"\n")
+		changed = "" 
+		if ( (AF.prefs.l1[index][i].varname != "") && (AF.prefs.l1[index][i].selection >= 0) ) changed = (selection_pre[AF.prefs.l1[index][i].varname] != AF.prefs.l1[index][i].selection ? "*" : "")
 		out.push({
 			text = AF.prefs.l1[index][i].title,
 			glyph = AF.prefs.l1[index][i].glyph,
-			note = getsubmenunotes(index, i),
+			note = changed + " " + getsubmenunotes(index, i) + " " + changed,
 			fade = false,
 			liner = (AF.prefs.l1[index][i].glyph == -1),
 			skip = false
@@ -10222,7 +10227,7 @@ function optionsmenu_boot() {
 	prfitemsvisible(true)
 
 	selection_pre = generateselectiontable()
-
+print_variable(selection_pre,"","")
 	optionsmenu_lev1()
 }
 
