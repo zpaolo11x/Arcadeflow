@@ -9839,7 +9839,7 @@ function getsubmenudata(index) {
 		out.push({
 			text = AF.prefs.l1[index][i].title,
 			glyph = AF.prefs.l1[index][i].glyph,
-			note = changed + " " + getsubmenunotes(index, i) + " " + changed,
+			note = changed + getsubmenunotes(index, i) + changed,
 			fade = false,
 			liner = (AF.prefs.l1[index][i].glyph == -1),
 			skip = false
