@@ -9829,10 +9829,13 @@ function getsubmenunotes(index, i) {
 function getsubmenudata(index) {
 	local out = []
 	local changed = ""
+
+	local selection_post = generateselectiontable()
+
 	for (local i = 0; i < AF.prefs.l1[index].len(); i++) {
-		testpr(AF.prefs.l1[index][i].varname+"\n")
 		changed = "" 
-		if ( (AF.prefs.l1[index][i].varname != "") && (AF.prefs.l1[index][i].selection >= 0) ) changed = (selection_pre[AF.prefs.l1[index][i].varname] != AF.prefs.l1[index][i].selection ? "*" : "")
+		if (selection_post.rawin(AF.prefs.l1[index][i].varname) )
+			changed = (selection_pre[AF.prefs.l1[index][i].varname] != selection_post[AF.prefs.l1[index][i].varname] ? "*" : "")
 		out.push({
 			text = AF.prefs.l1[index][i].title,
 			glyph = AF.prefs.l1[index][i].glyph,
