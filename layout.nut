@@ -10230,7 +10230,7 @@ function optionsmenu_boot() {
 	prfitemsvisible(true)
 
 	selection_pre = generateselectiontable()
-print_variable(selection_pre,"","")
+
 	optionsmenu_lev1()
 }
 
@@ -14146,7 +14146,6 @@ function attractupdatesnap() {
 	local randload = (z_list.size * rand() / RAND_MAX)
 	attractitem.snap.file_name = fe.get_art("snap", z_list.gametable[randload].z_felistindex - fe.list.index)
 	if (attractitem.snap.texture_width * attractitem.snap.texture_height == 0) {
-		testpr("XXXXX\n")
 		attractitem.snap.file_name = AF.folder + "pics/attractbg.jpg"
 		attractkick()
 		return
