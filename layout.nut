@@ -9482,6 +9482,8 @@ bwtoalpha.set_texture_param("texture")
 local txtoalpha = fe.add_shader(Shader.Fragment, "glsl/txtoalpha.glsl")
 txtoalpha.set_texture_param("texture")
 
+local metascale = 1.0
+
 for (local i = 0; i < dat.stacksize; i++) {
 
 	local game_catpic = data_surface.add_image(AF.folder + "pics/white.png", fl.x + gamed.catpicT.x, fl.y + gamed.catpicT.y, gamed.catpicT.w, gamed.catpicT.h)
@@ -9504,15 +9506,15 @@ for (local i = 0; i < dat.stacksize; i++) {
 	//game_ctlpic.set_bg_rgb(120,0,0)
 	game_metapic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_metapic.font = uifonts.metapics
-	game_metapic.align = Align.MiddleCentre
+	game_metapic.align = Align.MiddleLeft
 	game_metapic.margin = 0
-	game_metapic.char_size = gamed.metapicT.h
+	game_metapic.char_size = metascale * gamed.metapicT.h
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
 	game_maincat.word_wrap = true
 	game_maincat.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-	game_maincat.char_size = (gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel
+	game_maincat.char_size = metascale * (gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel
 	game_maincat.font = uifonts.condensed
 	game_maincat.alpha = 255
 	game_maincat.margin = 0
@@ -9523,7 +9525,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
 	game_mainname.word_wrap = true
 	game_mainname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-	game_mainname.char_size = (gamed.mainnameT.h - 10 * UI.scalerate) * 0.5 / uifonts.pixel
+	game_mainname.char_size = metascale * (gamed.mainnameT.h - 10 * UI.scalerate) * 0.5 / uifonts.pixel
 	game_mainname.line_spacing = 0.670000068
 	game_mainname.margin = 0
 	game_mainname.font = uifonts.title//uifonts.gui
@@ -9534,7 +9536,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_subname.align = prf.CLEANLAYOUT ? Align.TopCentre : Align.TopLeft
 	game_subname.word_wrap = false
 	game_subname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-	game_subname.char_size = gamed.subnameT.h / uifonts.pixel
+	game_subname.char_size = metascale * gamed.subnameT.h / uifonts.pixel
 	game_subname.font = uifonts.gui
 	game_subname.alpha = 255
 	game_subname.margin = 0
@@ -9546,7 +9548,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	//	game_manufacturerpic.preserve_aspect_ratio = false
 	game_manufacturerpic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	//	game_manufacturerpic.shader = bwtoalpha
-	game_manufacturerpic.char_size = gamed.manufacturerpicT.h - 5 * UI.scalerate
+	game_manufacturerpic.char_size = metascale * gamed.manufacturerpicT.h - 5 * UI.scalerate
 	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "fonts/font_manufacturers_2.ttf"
@@ -9556,7 +9558,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_manufacturername.align = Align.MiddleCentre
 	game_manufacturername.set_rgb(255, 255, 255)
 	game_manufacturername.word_wrap = true
-	game_manufacturername.char_size = 0.2 * gamed.manufacturerpicT.h / uifonts.pixel
+	game_manufacturername.char_size = metascale * 0.2 * gamed.manufacturerpicT.h / uifonts.pixel
 	game_manufacturername.visible = false
 	game_manufacturername.font = uifonts.gui
 	game_manufacturername.margin = 0
@@ -9566,12 +9568,20 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_year.align = Align.TopCentre
 	game_year.set_rgb(255, 255, 255)
 	game_year.word_wrap = false
-	game_year.char_size = gamed.yearT.h / uifonts.pixel
+	game_year.char_size = metascale * gamed.yearT.h / uifonts.pixel
 	game_year.visible = true
 	game_year.font = uifonts.gui
 	game_year.margin = 0
 	game_year.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
+
+	game_maincat.set_bg_rgb(200,0,0)
+	game_mainname.set_bg_rgb(0,200,0)
+	game_metapic.set_bg_rgb(0,0,200)
+	game_subname.set_bg_rgb(200,200,0)
+	game_manufacturerpic.set_bg_rgb(0,100,100)
+	game_year.set_bg_rgb(100,0,100)
+
 
 	if (prf.CLEANLAYOUT) {
 		game_manufacturerpic.visible = game_maincat.visible = game_year.visible = game_manufacturername.visible = game_catpic.visible = game_metapic.visible = false
