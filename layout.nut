@@ -13242,7 +13242,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				if (!menudata[i].liner) {
 
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = min(floor(100 * UI.scalerate), floor(zmenu.items[i].width * 30.0 / 215.0)) //((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
+					zmenu.items[i].char_size = prf.MENUFONT * min(floor(100 * UI.scalerate), floor(zmenu.items[i].width * 30.0 / 215.0)) //((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
 					zmenu.items[i].align = Align.MiddleCentre
 
 					// Check if the logo is larger than the available space
@@ -13260,7 +13260,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 						zmenu.items[i].line_spacing = 0.6
 						zmenu.items[i].word_wrap = true
 						zmenu.items[i].msg = bobwrapped.text
-						zmenu.items[i].char_size = zmenu.items[i].height * ((UI.vertical && (prf.DMPIMAGES != null)) ? 1.25 / 3.0 : 1.8 / 3.0)
+						zmenu.items[i].char_size = prf.MENUFONT * zmenu.items[i].height * ((UI.vertical && (prf.DMPIMAGES != null)) ? 1.25 / 3.0 : 1.8 / 3.0)
 					}
 					else zmenu.items[i].msg = renamer
 				}
