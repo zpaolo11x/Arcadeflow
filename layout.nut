@@ -2632,6 +2632,7 @@ local UI = {
 
 	// Define font scaling factors and other UI spacing features
 	fontscales = [1.0, 0.85, 0.7]
+	metarepeat = [2, 6, 7]
 	metaspacer = [0.2, 0.35, 0.5]
 	menufont = 0
 	metafont = 0
@@ -7967,12 +7968,12 @@ function gamename2(offset) {
 }
 
 function metastring(index){
-	//local separator = strepeat(">", UI.metaspacer[prf.METAFONT])
+	local separator = strepeat(">", UI.metarepeat[prf.METAFONT])
 	//testpr(separator+"\n")
 	local out = players_vec (z_list.boot[index].z_players)
-	//out += separator
+	out += separator
 	out += controller_vec (z_list.boot[index].z_control)
-	//out += separator
+	out += separator
 	out += buttons_vec (z_list.boot[index].z_buttons)
 
 	return (out)
@@ -9284,7 +9285,6 @@ filternumbers.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel :
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-filternumbers.set_bg_rgb(200,0,0)
 filternumbers.line_spacing = 1 + prf.MENUFONT * 0.3
 pixelizefont(filternumbers, (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
@@ -9521,7 +9521,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_metapic.align = Align.MiddleLeft
 	game_metapic.margin = 0
 	game_metapic.char_size = UI.metafont * gamed.metapicT.h 
-	game_metapic.char_spacing = 0.1 * gamed.metapicT.h //0.2, 0.35, 0.5
+	//game_metapic.char_spacing = 0.1 * gamed.metapicT.h //0.2, 0.35, 0.5
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
@@ -9546,7 +9546,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_mainname.visible = true
 
 	local game_subname = data_surface.add_text("", fl.x + (prf.CLEANLAYOUT ? gamed.mainnameT.x : gamed.subnameT.x), fl.y + gamed.subnameT.y, gamed.subnameT.w, gamed.subnameT.h)
-	game_subname.align = prf.CLEANLAYOUT ? Align.TopCentre : Align.TopLeft
+	game_subname.align = prf.CLEANLAYOUT ? Align.TopCentre : Align.MiddleLeft
 	game_subname.word_wrap = false
 	game_subname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	game_subname.char_size = UI.metafont * gamed.subnameT.h / uifonts.pixel
@@ -9588,14 +9588,14 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_year.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
 
-
+/*
 	game_maincat.set_bg_rgb(200,0,0)
 	game_mainname.set_bg_rgb(0,200,0)
 	game_metapic.set_bg_rgb(0,0,200)
 	game_subname.set_bg_rgb(200,200,0)
 	game_manufacturerpic.set_bg_rgb(0,100,100)
 	game_year.set_bg_rgb(100,0,100)
-
+*/
 
 	if (prf.CLEANLAYOUT) {
 		game_manufacturerpic.visible = game_maincat.visible = game_year.visible = game_manufacturername.visible = game_catpic.visible = game_metapic.visible = false
