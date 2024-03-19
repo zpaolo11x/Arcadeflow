@@ -2,3 +2,4 @@
 Added option to decrease menu font size for larger screens
 Added Apple III system
 Added visual hint for edited options entries
+Added Build And Management category icon

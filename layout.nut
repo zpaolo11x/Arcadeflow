@@ -8175,6 +8175,7 @@ categorytable["FLYING"] <- ["FLY", "FLYIN", [0, 120, 250]]//
 categorytable["SHOOT'EM UP"] <- ["SHOOT", "SHOOT", [0, 120, 250]]//
 
 categorytable["SIMULATION"] <- ["SIM", "SIMUL", [150, 180, 200]]//
+categorytable["BUILD AND MANAGEMENT"] <- ["BLD", "BUILD", [150, 180, 200]]//
 
 //yellow
 categorytable["ADVENTURE"] <- ["ADVN", "ADVNT", [255, 180, 0]]//
@@ -9560,7 +9561,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_manufacturerpic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	//	game_manufacturerpic.shader = bwtoalpha
 	game_manufacturerpic.char_size = UI.metafont * gamed.manufacturerpicT.h - 5 * UI.scalerate
-	game_manufacturerpic.margin = 5 * UI.scalerate
+	game_manufacturerpic.margin = (5 + 10 * prf.METAFONT) * UI.scalerate //5,15,25
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "fonts/font_manufacturers_2.ttf"
 
