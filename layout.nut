@@ -9521,7 +9521,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_metapic.align = Align.MiddleLeft
 	game_metapic.margin = 0
 	game_metapic.char_size = UI.metafont * gamed.metapicT.h 
-	game_metapic.char_spacing = UI.metaspacer[prf.METAFONT] * gamed.metapicT.h //0.2, 0.35, 0.5
+	game_metapic.char_spacing = 0.1 * gamed.metapicT.h //0.2, 0.35, 0.5
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
