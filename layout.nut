@@ -9442,7 +9442,7 @@ gamed.catpicT = {
 gamed.metapicT = {
 	x = blsize.catp + 2.0 * gamed.catpicT.x,
 	y = blsize.posy,
-	w = blsize.mini * 3.8,
+	w = blsize.mini * 3.9,
 	h = blsize.mini
 }
 
@@ -9520,7 +9520,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_metapic.font = uifonts.metapics
 	game_metapic.align = Align.MiddleLeft
 	game_metapic.margin = 0
-	game_metapic.char_size = UI.metafont * gamed.metapicT.h
+	game_metapic.char_size = UI.metafont * gamed.metapicT.h 
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
