@@ -2632,7 +2632,7 @@ local UI = {
 
 	// Define font scaling factors and other UI spacing features
 	fontscales = [1.0, 0.85, 0.7]
-	metaspacer = [2, 7, 11] 
+	metaspacer = [0.2, 0.35, 0.5]
 	menufont = 0
 	metafont = 0
 
@@ -7970,9 +7970,9 @@ function metastring(index){
 	local separator = strepeat(">", UI.metaspacer[prf.METAFONT])
 	testpr(separator+"\n")
 	local out = players_vec (z_list.boot[index].z_players)
-	out += separator
+	//out += separator
 	out += controller_vec (z_list.boot[index].z_control)
-	out += separator
+	//out += separator
 	out += buttons_vec (z_list.boot[index].z_buttons)
 
 	return (out)
@@ -9521,6 +9521,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_metapic.align = Align.MiddleLeft
 	game_metapic.margin = 0
 	game_metapic.char_size = UI.metafont * gamed.metapicT.h 
+	game_metapic.char_spacing = UI.metaspacer[prf.METAFONT] * gamed.metapicT.h //0.2, 0.35, 0.5
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
