@@ -1007,7 +1007,8 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 17.1, varname = "MENUFONT", glyph = 0xea6d, title = "Menu font size", help = "Reduce menu font size for large screens", options = ["Regular", "Small", "Smaller"], values = [1.0, 0.85, 0.7], selection = 0},
+{v = 17.1, varname = "METAFONT", glyph = 0xea6d, title = "General font size", help = "Set the font size for parts of the user interface to make it more compact or more spacious", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
+{v = 17.1, varname = "MENUFONT", glyph = 0xea6d, title = "Menu font size", help = "Set menu font size to better adapt to different screen sizes", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -2629,6 +2630,12 @@ local UI = {
 
 	scalerate = 0
 
+	// Define font scaling factors and other UI spacing features
+	fontscales = [1.0, 0.85, 0.7]
+	metaspacer = [2, 7, 11] 
+	menufont = 0
+	metafont = 0
+
 	// Size of the area of the tile where the image is shown
 	corewidth = 0
 	coreheight = 0
@@ -2679,6 +2686,8 @@ local UI = {
 
 	space = 0
 }
+UI.menufont = UI.fontscales[prf.MENUFONT]
+UI.metafont = UI.fontscales[prf.METAFONT] 
 
 //screen layout definition
 local scr = {
@@ -7958,10 +7967,12 @@ function gamename2(offset) {
 }
 
 function metastring(index){
+	local separator = strepeat(">", UI.metaspacer[prf.METAFONT])
+	testpr(separator+"\n")
 	local out = players_vec (z_list.boot[index].z_players)
-	out += ">>"
+	out += separator
 	out += controller_vec (z_list.boot[index].z_control)
-	out += ">>"
+	out += separator
 	out += buttons_vec (z_list.boot[index].z_buttons)
 
 	return (out)
@@ -8302,11 +8313,11 @@ local overlay = {
 }
 
 // Define overlay charsize (in integer multiple of 2???)
-overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(prf.MENUFONT * 50 * UI.scalerate))
+overlay.charsize = (prf.SMALLSCREEN ? floor(65 * UI.scalerate) : floor(UI.menufont * 50 * UI.scalerate))
 overlay.labelcharsize = floor(overlay.charsize * 1.1)
 
-overlay.rowheight = floor(prf.MENUFONT * 130 * UI.scalerate)
-overlay.labelheight = floor(prf.MENUFONT * 160 * UI.scalerate)
+overlay.rowheight = floor(UI.menufont * 130 * UI.scalerate)
+overlay.labelheight = floor(UI.menufont * 160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
 overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
@@ -9257,7 +9268,7 @@ filterdata.align = Align.MiddleCentre
 filterdata.margin = 0
 filterdata.set_rgb(255, 255, 255)
 filterdata.word_wrap = true
-filterdata.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
+filterdata.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : UI.metafont * 25 * UI.scalerate / uifonts.pixel)
 filterdata.visible = true
 filterdata.font = uifonts.gui
 filterdata.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
@@ -9268,10 +9279,12 @@ filternumbers.align = Align.MiddleCentre
 filternumbers.margin = 0
 filternumbers.set_rgb(255, 255, 255)
 filternumbers.word_wrap = true
-filternumbers.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel)
+filternumbers.char_size = (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : UI.metafont * 25 * UI.scalerate / uifonts.pixel)
 filternumbers.visible = true
 filternumbers.font = uifonts.gui
 filternumbers.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
+filternumbers.set_bg_rgb(200,0,0)
+filternumbers.line_spacing = 1 + prf.MENUFONT * 0.3
 pixelizefont(filternumbers, (prf.SMALLSCREEN ? 35 * UI.scalerate / uifonts.pixel : 25 * UI.scalerate / uifonts.pixel))
 
 local separatorline = data_surface.add_rectangle(fl.x + fl.w - UI.footermargin + UI.footermargin * 0.3, fl.y + fl.h - UI.footer.h + UI.footer.h * 0.5, UI.footermargin * 0.4, 1)
@@ -9280,7 +9293,7 @@ separatorline.visible = !((prf.CLEANLAYOUT))
 
 multifilterglyph = data_surface.add_text("X", fl.x + fl.w - UI.footermargin, fl.y + fl.h - UI.footer.h, UI.footermargin * 0.3, UI.footer.h)
 multifilterglyph.margin = 0
-multifilterglyph.char_size = UI.scalerate * 45
+multifilterglyph.char_size = UI.metafont * UI.scalerate * 45
 multifilterglyph.align = Align.MiddleCentre
 multifilterglyph.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 multifilterglyph.word_wrap = true
@@ -9318,7 +9331,7 @@ searchdata = data_surface.add_text(fe.list.search_rule, fl.x, fl.y + fl.h - UI.f
 searchdata.align = Align.MiddleCentre
 searchdata.set_rgb(255, 255, 255)
 searchdata.word_wrap = true
-searchdata.char_size = 25 * UI.scalerate
+searchdata.char_size = UI.metafont * 25 * UI.scalerate
 searchdata.visible = true
 searchdata.font = uifonts.gui
 searchdata.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
@@ -9482,8 +9495,6 @@ bwtoalpha.set_texture_param("texture")
 local txtoalpha = fe.add_shader(Shader.Fragment, "glsl/txtoalpha.glsl")
 txtoalpha.set_texture_param("texture")
 
-local metascale = 1.0
-
 for (local i = 0; i < dat.stacksize; i++) {
 
 	local game_catpic = data_surface.add_image(AF.folder + "pics/white.png", fl.x + gamed.catpicT.x, fl.y + gamed.catpicT.y, gamed.catpicT.w, gamed.catpicT.h)
@@ -9508,13 +9519,13 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_metapic.font = uifonts.metapics
 	game_metapic.align = Align.MiddleLeft
 	game_metapic.margin = 0
-	game_metapic.char_size = metascale * gamed.metapicT.h
+	game_metapic.char_size = UI.metafont * gamed.metapicT.h
 
 	local game_maincat = data_surface.add_text("", fl.x + gamed.maincatT.x, fl.y + gamed.maincatT.y, gamed.maincatT.w, gamed.maincatT.h)
 	game_maincat.align = Align.MiddleCentre
 	game_maincat.word_wrap = true
 	game_maincat.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-	game_maincat.char_size = metascale * (gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel
+	game_maincat.char_size = UI.metafont * (gamed.maincatT.h - 10 * UI.scalerate) / uifonts.pixel
 	game_maincat.font = uifonts.condensed
 	game_maincat.alpha = 255
 	game_maincat.margin = 0
@@ -9525,7 +9536,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_mainname.align = prf.CLEANLAYOUT ? Align.MiddleCentre : Align.MiddleLeft
 	game_mainname.word_wrap = true
 	game_mainname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-	game_mainname.char_size = metascale * (gamed.mainnameT.h - 10 * UI.scalerate) * 0.5 / uifonts.pixel
+	game_mainname.char_size = UI.metafont * (gamed.mainnameT.h - 10 * UI.scalerate) * 0.5 / uifonts.pixel
 	game_mainname.line_spacing = 0.670000068
 	game_mainname.margin = 0
 	game_mainname.font = uifonts.title//uifonts.gui
@@ -9536,7 +9547,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_subname.align = prf.CLEANLAYOUT ? Align.TopCentre : Align.TopLeft
 	game_subname.word_wrap = false
 	game_subname.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
-	game_subname.char_size = metascale * gamed.subnameT.h / uifonts.pixel
+	game_subname.char_size = UI.metafont * gamed.subnameT.h / uifonts.pixel
 	game_subname.font = uifonts.gui
 	game_subname.alpha = 255
 	game_subname.margin = 0
@@ -9548,7 +9559,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	//	game_manufacturerpic.preserve_aspect_ratio = false
 	game_manufacturerpic.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	//	game_manufacturerpic.shader = bwtoalpha
-	game_manufacturerpic.char_size = metascale * gamed.manufacturerpicT.h - 5 * UI.scalerate
+	game_manufacturerpic.char_size = UI.metafont * gamed.manufacturerpicT.h - 5 * UI.scalerate
 	game_manufacturerpic.margin = 5 * UI.scalerate
 	game_manufacturerpic.align = Align.BottomCentre
 	game_manufacturerpic.font = "fonts/font_manufacturers_2.ttf"
@@ -9558,7 +9569,7 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_manufacturername.align = Align.MiddleCentre
 	game_manufacturername.set_rgb(255, 255, 255)
 	game_manufacturername.word_wrap = true
-	game_manufacturername.char_size = metascale * 0.2 * gamed.manufacturerpicT.h / uifonts.pixel
+	game_manufacturername.char_size = UI.metafont * 0.2 * gamed.manufacturerpicT.h / uifonts.pixel
 	game_manufacturername.visible = false
 	game_manufacturername.font = uifonts.gui
 	game_manufacturername.margin = 0
@@ -9568,12 +9579,13 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_year.align = Align.TopCentre
 	game_year.set_rgb(255, 255, 255)
 	game_year.word_wrap = false
-	game_year.char_size = metascale * gamed.yearT.h / uifonts.pixel
+	game_year.char_size = UI.metafont * gamed.yearT.h / uifonts.pixel
 	game_year.visible = true
 	game_year.font = uifonts.gui
 	game_year.margin = 0
 	game_year.set_rgb(themeT.textcolor.r, themeT.textcolor.g, themeT.textcolor.b)
 	pixelizefont(game_year, floor((gamed.yearT.h / uifonts.pixel) - 1), null, null, true)
+
 
 	game_maincat.set_bg_rgb(200,0,0)
 	game_mainname.set_bg_rgb(0,200,0)
@@ -9891,7 +9903,7 @@ prfmenu.picratew = prfmenu.picrateh = floor(overlay.rowheight * 2.0 - overlay.pa
 //prfmenu.picratew = overlay.menuheight - overlay.rows * floor(((overlay.menuheight - prfmenu.picratew) * 1.0 / overlay.rows))
 //prfmenu.picrateh = prfmenu.picratew
 
-prfmenu.description.char_size = prf.MENUFONT * 48 * UI.scalerate
+prfmenu.description.char_size = UI.menufont * 48 * UI.scalerate
 prfmenu.description.font = uifonts.lite
 prfmenu.description.align = Align.MiddleCentre
 prfmenu.description.word_wrap = true
@@ -10876,7 +10888,7 @@ function keyboard_draw() {
 	keyboard_text.font = uifonts.gui
 	keyboard_text.set_rgb(255, 255, 255)
 	keyboard_text.alpha = 255
-	keyboard_text.char_size = 80 * UI.scalerate
+	keyboard_text.char_size = UI.metafont * 80 * UI.scalerate
 
 	//draw the search key objects
 	foreach (key, val in key_names) {
@@ -10886,7 +10898,7 @@ function keyboard_draw() {
 		local textkey = keyboard_surface.add_text(key_name, -1, -1, 1, 1)
 
 		textkey.font = uifonts.gui
-		textkey.char_size = (80 * 0 + 75) * UI.scalerate
+		textkey.char_size = UI.metafont * (80 * 0 + 75) * UI.scalerate
 
 		textkey.set_rgb(kb.keylow, kb.keylow, kb.keylow)
 		textkey.alpha = 255
@@ -13252,7 +13264,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 				if (!menudata[i].liner) {
 
 					zmenu.items[i].font = uifonts.gui
-					zmenu.items[i].char_size = prf.MENUFONT * min(floor(100 * UI.scalerate), floor(zmenu.items[i].width * 30.0 / 215.0)) //((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
+					zmenu.items[i].char_size = UI.menufont * min(floor(100 * UI.scalerate), floor(zmenu.items[i].width * 30.0 / 215.0)) //((UI.vertical && (prf.DMPIMAGES!= null)) ? zmenu.tileh * 0.5 : zmenu.tileh * (prf.SMALLSCREEN ? 0.65 : 0.7))
 					zmenu.items[i].align = Align.MiddleCentre
 
 					// Check if the logo is larger than the available space
@@ -13270,7 +13282,7 @@ function zmenudraw3(menudata, title, titleglyph, presel, opts, response, left = 
 						zmenu.items[i].line_spacing = 0.6
 						zmenu.items[i].word_wrap = true
 						zmenu.items[i].msg = bobwrapped.text
-						zmenu.items[i].char_size = prf.MENUFONT * zmenu.items[i].height * ((UI.vertical && (prf.DMPIMAGES != null)) ? 1.25 / 3.0 : 1.8 / 3.0)
+						zmenu.items[i].char_size = UI.menufont * zmenu.items[i].height * ((UI.vertical && (prf.DMPIMAGES != null)) ? 1.25 / 3.0 : 1.8 / 3.0)
 					}
 					else zmenu.items[i].msg = renamer
 				}
@@ -15989,7 +16001,7 @@ function z_listrefreshtiles() {
 				sortlabelsarray[labelarrayindex] = labelsurf.add_text(((z_list.orderby == Info.Category ? categorylabel(key, 0) : (z_list.orderby == Info.System ? systemlabel(key) : key))).toupper(), round(x00, 1), 0, w0 / labelorder.len(), label.h)
 			}
 
-			sortlabelsarray[labelarrayindex].char_size = label.font
+			sortlabelsarray[labelarrayindex].char_size = UI.metafont * label.font
 			sortlabelsarray[labelarrayindex].font = uifonts.gui
 			sortlabelsarray[labelarrayindex].margin = 0
 			sortlabelsarray[labelarrayindex].align = Align.MiddleCentre
@@ -16031,7 +16043,7 @@ function z_listrefreshtiles() {
 			catch(err) {
 				sortlabelsarray.push(null)
 				sortlabelsarray[labelarrayindex] = data_surface.add_text("", round(fl.x + x0 + labelspacer * 0.5 - label.w * 0.5, 1), round(fl.y + fl.h - UI.footer.h * 0.5, 1), label.w, label.h)
-				sortlabelsarray[labelarrayindex].char_size = label.font
+				sortlabelsarray[labelarrayindex].char_size = UI.metafont * label.font
 				sortlabelsarray[labelarrayindex].font = uifonts.lite
 				sortlabelsarray[labelarrayindex].margin = 0
 				sortlabelsarray[labelarrayindex].align = Align.MiddleCentre
