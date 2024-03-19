@@ -7967,8 +7967,8 @@ function gamename2(offset) {
 }
 
 function metastring(index){
-	local separator = strepeat(">", UI.metaspacer[prf.METAFONT])
-	testpr(separator+"\n")
+	//local separator = strepeat(">", UI.metaspacer[prf.METAFONT])
+	//testpr(separator+"\n")
 	local out = players_vec (z_list.boot[index].z_players)
 	//out += separator
 	out += controller_vec (z_list.boot[index].z_control)
