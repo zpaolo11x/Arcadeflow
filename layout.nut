@@ -296,7 +296,7 @@ local uifonts = {
 	monodata = "fonts/font_CQMono.otf"
 	pixel = 0.711
 	title = "fonts/Figtree-Bold.ttf"
-	metapics = "fonts/font_metapics.ttf"
+	metapics = "fonts/font_metapics_2.ttf"
 }
 
 function get_png_crc(path){
