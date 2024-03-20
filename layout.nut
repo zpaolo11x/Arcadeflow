@@ -16013,7 +16013,7 @@ function z_listrefreshtiles() {
 			sortlabelsarray[labelarrayindex].alpha = 255
 			sortlabelsarray[labelarrayindex].visible = true
 
-			pixelizefont (sortlabelsarray[labelarrayindex], label.font)
+			pixelizefont (sortlabelsarray[labelarrayindex], UI.metafont * label.font)
 
 			x00 = x00 + w0 / labelorder.len()
 			sortlabels[key] <- sortlabelsarray[labelarrayindex]
@@ -16049,7 +16049,7 @@ function z_listrefreshtiles() {
 				sortlabelsarray[labelarrayindex].font = uifonts.lite
 				sortlabelsarray[labelarrayindex].margin = 0
 				sortlabelsarray[labelarrayindex].align = Align.MiddleCentre
-				pixelizefont (sortlabelsarray[labelarrayindex], label.font)
+				pixelizefont (sortlabelsarray[labelarrayindex], UI.metafont * label.font)
 			}
 
 			sortlabelsarray[labelarrayindex].msg = ((z_list.orderby == Info.Category ? categorylabel (key, 0) : (z_list.orderby == Info.System ? systemlabel(key) : key))).toupper()
