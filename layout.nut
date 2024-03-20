@@ -11712,7 +11712,7 @@ else { //LOW RES MODE
 foreach (item in hist_text) {
 	if ((item != null) && (item != "descr")){
 		item.word_wrap = false
-		item.char_size = hist_textT.charsize
+		item.char_size = UI.metafont * hist_textT.charsize
 		item.visible = true
 		item.align = Align.MiddleLeft
 		item.margin = -1
@@ -11720,7 +11720,7 @@ foreach (item in hist_text) {
 	}
 }
 
-hist_text.descr.char_size = hist_textT.charsize
+hist_text.descr.char_size = UI.metafont * hist_textT.charsize
 hist_text.descr.line_spacing = 1.15
 hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
@@ -11928,7 +11928,7 @@ if (prf.CONTROLOVERLAY != "never") {
 		hist_over.btsh.push(hist_over.surface.add_text(i, 0, 0, ceil(120 * hist_over.picscale), ceil(65 * hist_over.picscale)))
 		hist_over.bt.push(hist_over.surface.add_text(i, 0, 0, ceil(120 * hist_over.picscale), ceil(65 * hist_over.picscale)))
 		hist_over.btsh[i].align = hist_over.bt[i].align = Align.MiddleLeft
-		hist_over.btsh[i].char_size = hist_over.bt[i].char_size = 22 * hist_over.picscale
+		hist_over.btsh[i].char_size = hist_over.bt[i].char_size = 22 * UI.metafont * hist_over.picscale
 		hist_over.btsh[i].word_wrap = hist_over.bt[i].word_wrap = true
 		hist_over.btsh[i].margin = hist_over.bt[i].margin = 0
 		hist_over.btsh[i].line_spacing = hist_over.bt[i].line_spacing = 0.75
