@@ -9506,6 +9506,8 @@ for (local i = 0; i < dat.stacksize; i++) {
 	game_catpic.mipmap = 1
 	//game_catpic.fix_masked_image()
 
+	game_catpic.set_pos(fl.x + gamed.catpicT.x + (1.0 - UI.metafont) * 0.5 * gamed.catpicT.w, fl.y + gamed.catpicT.y + (1.0 - UI.metafont) * 0.5 * gamed.catpicT.h, UI.metafont * gamed.catpicT.w, UI.metafont * gamed.catpicT.h)
+
 	// pixel perfect cat pic
 	if (game_catpic.width <= 30) {
 		game_catpic.width = floor(gamed.catpicT.w / 16) * 16
