@@ -11557,7 +11557,7 @@ shader_lcd.set_param ("lcdcolor", 0.0)
 local hist_text_surf = history_surface.add_surface(hist_textT.w, hist_textT.h)
 hist_text_surf.set_pos (hist_textT.x, hist_textT.y)
 
-hist_textT.charsize = (prf.SMALLSCREEN ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
+hist_textT.charsize = UI.metafont * (prf.SMALLSCREEN ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
 hist_textT.linesize = hist_textT.charsize * 1.5
 hist_textT.col2 = hist_textT.charsize * 5 * 0.88
 
@@ -11712,7 +11712,7 @@ else { //LOW RES MODE
 foreach (item in hist_text) {
 	if ((item != null) && (item != "descr")){
 		item.word_wrap = false
-		item.char_size = UI.metafont * hist_textT.charsize
+		item.char_size = hist_textT.charsize
 		item.visible = true
 		item.align = Align.MiddleLeft
 		item.margin = -1
@@ -11720,7 +11720,7 @@ foreach (item in hist_text) {
 	}
 }
 
-hist_text.descr.char_size = UI.metafont * hist_textT.charsize
+hist_text.descr.char_size = hist_textT.charsize
 hist_text.descr.line_spacing = 1.15
 hist_text.descr.align = Align.TopCentre
 hist_text.descr.word_wrap = true
