@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.0 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.1 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,14 +10,12 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 17.0 #
+## What's new in v 17.1 #
 
-- Added option to disable scanlines in screensaver
-- Improved rendering of shadow of history title
-- Fixed bugs in game history page
-- Fixed issue when emulator is not correct
-- Cleaned up documentation
-- Minor bug fixes
+- Added option to change menu and UI font size for larger screens
+- Added Apple III system
+- Added visual hint for edited options entries
+- Added Build And Management category icon
 
 ## Emulator system identifier #
 
@@ -104,7 +102,7 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
-#### GENERAL
+#### ! GENERAL !
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
@@ -115,6 +113,8 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Rows in vertical' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
 - 'Small screen' : Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout
+- '! General font size !' : Set the font size for parts of the user interface to make it more compact or more spacious
+- '! Menu font size !' : Set menu font size to better adapt to different screen sizes
 - 'Custom color' : Define a custom color for UI elements using sliders
 
 *Game Data*
@@ -279,7 +279,7 @@ Configure the History page where larger thumbnail and game history data are show
 - 'Detailed game data' : Show extra data after the game name before the history text
 - 'Control panel overlay' : Show controller and buttons overlay on history page
 
-#### ! ATTRACT MODE !
+#### ATTRACT MODE
 Arcadeflow has its own attract mode screensaver that kicks in after some inactivity. Configure all the options here
 
 - 'Enable attract mode' : Enable or disable attract mode at layout startup
@@ -288,7 +288,7 @@ Arcadeflow has its own attract mode screensaver that kicks in after some inactiv
 - 'Attract mode timer (s)' : Inactivity timer before attract mode is enabled
 - 'Game change time (s)' : Time interval between each game change
 - 'Attract logo' : Show Arcadeflow logo during attract mode
-- '! Scanline effect !' : Enable scanline and CRT effect for gameplay
+- 'Scanline effect' : Enable scanline and CRT effect for gameplay
 - 'Attract message' : Text to show during attract mode
 
 *Sound*
@@ -420,7 +420,7 @@ Save or reload options configurations
 - 'Save current options' : Save the current options configuration in a custom named file
 - 'Load options from external file' : Restore AF options from a previously saved file
 
-#### ! DEBUG !
+#### DEBUG
 This section is for debug purposes only
 
 - 'FPS counter' : DBGON FPS COUNTER
@@ -428,10 +428,19 @@ This section is for debug purposes only
 - 'AM options page' : Shows the default Attract-Mode options page
 - 'Test message box' : For developer use only...
 - 'Generate readme file' : For developer use only...
-- '! Generate html file !' : For developer use only...
+- 'Generate html file' : For developer use only...
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v17.0 - 01 March 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.0*
+
+- Added option to disable scanlines in screensaver
+- Improved rendering of shadow of history title
+- Fixed bugs in game history page
+- Fixed issue when emulator is not correct
+- Cleaned up documentation
+- Minor bug fixes
 
 *v16.9 - 12 February 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/16.9*
 
