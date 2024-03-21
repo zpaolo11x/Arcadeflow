@@ -1007,14 +1007,16 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 17.1, varname = "METAFONT", glyph = 0xea6d, title = "General font size", help = "Set the font size for parts of the user interface to make it more compact or more spacious", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
-{v = 17.1, varname = "MENUFONT", glyph = 0xea6d, title = "Menu font size", help = "Set menu font size to better adapt to different screen sizes", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "SHOWSYSNAME", glyph = 0xea6d, title = "Display System Name", help = "Shows the System name under the game title", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 10.1, varname = "SHOWARCADENAME", glyph = 0xea6d, title = "Display Arcade System Name", help = "Shows the name of the Arcade system if available", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 7.2, varname = "SHOWSYSART", glyph = 0xea6d, title = "System Name as artwork", help = "If enabled, the system name under the game title is rendered as a logo instead of plain text", options = ["Yes", "No"], values = [true, false], selection = 0},
+{v = 0.0, varname = "", glyph = -1, title = "Fonts", selection = AF.req.liner},
+{v = 17.1, varname = "METAFONT", glyph = 0xea6d, title = "General font size", help = "Set the font size for parts of the user interface to make it more compact or more spacious", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
+{v = 17.1, varname = "MENUFONT", glyph = 0xea6d, title = "Menu font size", help = "Set menu font size to better adapt to different screen sizes", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
+{v = 17.1, varname = "HISTFONT", glyph = 0xea6d, title = "History font size", help = "Set the font size for history page", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Scroll & Sort", selection = AF.req.liner},
 {v = 10.3, varname = "SCROLLAMOUNT", glyph = 0xea45, title = "Page jump size", help = "Page jumps are one screen by default, you can increase it if you want to jump faster", options = ["1 Screen", "2 Screens", "3 Screens"], values = [1, 2, 3], selection = 0},
 {v = 7.2, varname = "SCROLLERTYPE", glyph = 0xea45, title = "Scrollbar style", help = "Select how the scrollbar should look", options = ["Timeline", "Scrollbar", "Label List"], values = ["timeline", "scrollbar", "labellist"], selection = 0},
@@ -2636,6 +2638,7 @@ local UI = {
 	metaspacer = [0.2, 0.35, 0.5]
 	menufont = 0
 	metafont = 0
+	histfont = 0
 
 	// Size of the area of the tile where the image is shown
 	corewidth = 0
@@ -2689,6 +2692,7 @@ local UI = {
 }
 UI.menufont = UI.fontscales[prf.MENUFONT]
 UI.metafont = UI.fontscales[prf.METAFONT] 
+UI.histfont = UI.fontscales[prf.HISTFONT] 
 
 //screen layout definition
 local scr = {
@@ -11557,7 +11561,7 @@ shader_lcd.set_param ("lcdcolor", 0.0)
 local hist_text_surf = history_surface.add_surface(hist_textT.w, hist_textT.h)
 hist_text_surf.set_pos (hist_textT.x, hist_textT.y)
 
-hist_textT.charsize = UI.metafont * (prf.SMALLSCREEN ? 55 * UI.scalerate : (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
+hist_textT.charsize = (prf.SMALLSCREEN ? 55 * UI.scalerate : UI.histfont * (40 * UI.scalerate > 8 ? 40 * UI.scalerate : 8))
 hist_textT.linesize = hist_textT.charsize * 1.5
 hist_textT.col2 = hist_textT.charsize * 5 * 0.88
 
@@ -11928,7 +11932,7 @@ if (prf.CONTROLOVERLAY != "never") {
 		hist_over.btsh.push(hist_over.surface.add_text(i, 0, 0, ceil(120 * hist_over.picscale), ceil(65 * hist_over.picscale)))
 		hist_over.bt.push(hist_over.surface.add_text(i, 0, 0, ceil(120 * hist_over.picscale), ceil(65 * hist_over.picscale)))
 		hist_over.btsh[i].align = hist_over.bt[i].align = Align.MiddleLeft
-		hist_over.btsh[i].char_size = hist_over.bt[i].char_size = 22 * UI.metafont * hist_over.picscale
+		hist_over.btsh[i].char_size = hist_over.bt[i].char_size = 22 * hist_over.picscale
 		hist_over.btsh[i].word_wrap = hist_over.bt[i].word_wrap = true
 		hist_over.btsh[i].margin = hist_over.bt[i].margin = 0
 		hist_over.btsh[i].line_spacing = hist_over.bt[i].line_spacing = 0.75
