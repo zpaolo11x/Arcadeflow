@@ -113,8 +113,6 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Rows in vertical' : Number of rows to use in 'vertical' mode
 - 'Clean layout' : Reduce game data shown on screen
 - 'Small screen' : Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout
-- '! General font size !' : Set the font size for parts of the user interface to make it more compact or more spacious
-- '! Menu font size !' : Set menu font size to better adapt to different screen sizes
 - 'Custom color' : Define a custom color for UI elements using sliders
 
 *Game Data*
@@ -122,6 +120,11 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'Display System Name' : Shows the System name under the game title
 - 'Display Arcade System Name' : Shows the name of the Arcade system if available
 - 'System Name as artwork' : If enabled, the system name under the game title is rendered as a logo instead of plain text
+
+*Fonts*
+- '! General font size !' : Set the font size for parts of the user interface to make it more compact or more spacious
+- '! Menu font size !' : Set menu font size to better adapt to different screen sizes
+- '! History font size !' : Set the font size for history page
 
 *Scroll & Sort*
 - 'Page jump size' : Page jumps are one screen by default, you can increase it if you want to jump faster
