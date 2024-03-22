@@ -1,0 +1,5 @@
+17.1 - 22 March 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.1
+Added option to change menu and UI font size for larger screens
+Added Apple III system
+Added visual hint for edited options entries
+Added Build And Management category icon
