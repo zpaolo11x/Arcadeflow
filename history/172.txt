@@ -1,2 +1,2 @@
 17.2 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.2
-WIP
+Added option to enable or disable scroll control
