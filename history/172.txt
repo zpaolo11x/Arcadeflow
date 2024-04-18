@@ -1,2 +1,3 @@
 17.2 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.2
+Added RetroArch and Arcade64 systems
 Added option to enable or disable scroll control
