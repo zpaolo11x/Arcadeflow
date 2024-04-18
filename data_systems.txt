@@ -66,6 +66,9 @@ mattel aquarius
 arcade,0,0,ARC,CRT,NONE,-4,3,ARCADE,Various,null,Arcade,75,rom,null,null
 coin op
 
+arcade64,0,0,AR64,CRT,NONE,-4,3,ARCADE,Various,null,Arcade64,75,rom,null,null
+arcade 64
+
 arduboy,128,64,ABOY,LCD,NONE,0,0,HANDHELD,Kevin Bates,2015,Arduboy,263,rom,joystick (8-way),2
 arduboy fx
 
@@ -924,6 +927,8 @@ rca studio ii,0,0,RCAS2,CRT,NONE,4,3,CONSOLE,RCA,1977,RCA Studio II,null,null,jo
 studio ii
 rca studio 2
 studio 2
+
+retroarch,0,0,RARCH,CRT,NONE,-4,3,ARCADE,Various,null,RetroArch,75,rom,null,null
 
 sam coupe,256,192,SCPE,CRT,NONE,4,3,COMPUTER,MGT,1989,SAM coupe,213,rom,joystick (8-way),1
 sam coupé
