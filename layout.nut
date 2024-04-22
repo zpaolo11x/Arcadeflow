@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.1
+// Arcadeflow - v 17.2
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "17.1" // AF version in string form
+	version = "17.2" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -1018,6 +1018,7 @@ AF.prefs.l1.push([
 {v = 17.1, varname = "MENUFONTSIZE", glyph = 0xea6d, title = "Menu font size", help = "Set menu font size to better adapt to different screen sizes", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
 {v = 17.1, varname = "HISTFONTSIZE", glyph = 0xea6d, title = "History font size", help = "Set the font size for history page", options = ["Regular", "Small", "Tiny"], values = [0, 1, 2], selection = 0},
 {v = 0.0, varname = "", glyph = -1, title = "Scroll & Sort", selection = AF.req.liner},
+{v = 17.2, varname = "ENABLESCROLL", glyph = 0xea45, title = "Enable jump scroll", help = "Enable activating jump scroll when going down from the game list", options = ["Yes", "No"], values = [true, false], selection = 0},
 {v = 10.3, varname = "SCROLLAMOUNT", glyph = 0xea45, title = "Page jump size", help = "Page jumps are one screen by default, you can increase it if you want to jump faster", options = ["1 Screen", "2 Screens", "3 Screens"], values = [1, 2, 3], selection = 0},
 {v = 7.2, varname = "SCROLLERTYPE", glyph = 0xea45, title = "Scrollbar style", help = "Select how the scrollbar should look", options = ["Timeline", "Scrollbar", "Label List"], values = ["timeline", "scrollbar", "labellist"], selection = 0},
 {v = 16.0, varname = "LIVEJUMP", glyph = 0xea45, title = "Scroll updates", help = "Immediately updates the tiles while you scroll", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -19391,7 +19392,7 @@ function on_signal(sig) {
 						if (prf.THEMEAUDIO) snd.plingsound.playing = true
 					}
 					// if you go down and label list is not active, activate scroll.jump
-					else if ((scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")) {
+					else if (prf.ENABLESCROLL && (scroll.jump == false) && (scroll.sortjump == false) && (prf.SCROLLERTYPE != "labellist")) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 						startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
@@ -19401,7 +19402,7 @@ function on_signal(sig) {
 						scroll.sortjump = false
 					}
 					// if scroll.jump is enabled and we are not in scrollbar mode, or if we are in labellist mode, activate scroll.sortjump
-					else if (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false))) {
+					else if (prf.ENABLESCROLL && (((scroll.jump == true) && (scroll.sortjump == false) && (z_list.size > 0) && (prf.SCROLLERTYPE != "scrollbar")) || ((prf.SCROLLERTYPE == "labellist") && (z_list.size > 0) && (scroll.sortjump == false)))) {
 						if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 						startfade(tilesTableZoom[focusindex.new], -0.035, -5.0)
 
