@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.1 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.2 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,12 +10,10 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 17.1 #
+## What's new in v 17.2 #
 
-- Added option to change menu and UI font size for larger screens
-- Added Apple III system
-- Added visual hint for edited options entries
-- Added Build And Management category icon
+- Added RetroArch and Arcade64 systems
+- Added option to enable or disable scroll control
 
 ## Emulator system identifier #
 
@@ -122,11 +120,12 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'System Name as artwork' : If enabled, the system name under the game title is rendered as a logo instead of plain text
 
 *Fonts*
-- '! General font size !' : Set the font size for parts of the user interface to make it more compact or more spacious
-- '! Menu font size !' : Set menu font size to better adapt to different screen sizes
-- '! History font size !' : Set the font size for history page
+- 'General font size' : Set the font size for parts of the user interface to make it more compact or more spacious
+- 'Menu font size' : Set menu font size to better adapt to different screen sizes
+- 'History font size' : Set the font size for history page
 
 *Scroll & Sort*
+- '! Enable jump scroll !' : Enable activating jump scroll when going down from the game list
 - 'Page jump size' : Page jumps are one screen by default, you can increase it if you want to jump faster
 - 'Scrollbar style' : Select how the scrollbar should look
 - 'Scroll updates' : Immediately updates the tiles while you scroll
@@ -435,6 +434,13 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v17.1 - 22 March 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.1*
+
+- Added option to change menu and UI font size for larger screens
+- Added Apple III system
+- Added visual hint for edited options entries
+- Added Build And Management category icon
 
 *v17.0 - 01 March 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.0*
 
