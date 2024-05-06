@@ -1208,6 +1208,8 @@ type-x
 taito,0,0,TAI,CRT,NONE,-4,3,ARCADE,Taito,null,Taito,157,rom,null,null
 taito classics
 
+teknoparrot,0,0,TKPR,LCD,NONE,0,0,ARCADE,Various,null,TeknoParrot,75,rom,null,null
+
 thomson,320,200,THM,CRT,NONE,4,3,COMPUTER,Thomson,1984,Thomson,141,rom,joystick (8-way),1
 thomson moto
 thomson mo6
