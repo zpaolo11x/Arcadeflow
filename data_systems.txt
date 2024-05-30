@@ -1316,6 +1316,17 @@ microsoft xbox
 
 zaccaria pinball,0,0,ZAC,CRT,NONE,4,3,PINBALL,Various,null,Zaccaria Pinball,null,fichier,null,null
 
+zemmix,256,192,ZMX,CRT,8BIT,4,3,CONSOLE,Daewoo,1985,Zemmix,113,rom,joystick (8-way),1
+daewoo zemmix
+
+zemmix v,256,192,ZMXV,CRT,8BIT,4,3,CONSOLE,Daewoo,1988,Zemmix V,113,rom,joystick (8-way),1
+daewoo zemmix V
+
+zemmix super v,0,0,ZMSV,CRT,NONE,4,3,CONSOLE,Daewoo,1990,Zemmix Super V,116,rom,joystick (8-way),2
+daewoo zemix super v
+
+zemmix neo,0,0,ZMXN,CRT,NONE,4,3,CONSOLE,Various,2013,Zemmix Neo,117,rom,joystick (8-way),2
+
 zmenuarcade,0,0,ARC,ARC,NONE,0,0,ARCADE,null,null,_arcade,null,null,null,null
 
 zmenucomputer,0,0,CMP,CMP,NONE,0,0,COMPUTER,null,null,_computer,null,null,null,null
