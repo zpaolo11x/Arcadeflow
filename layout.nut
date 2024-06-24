@@ -300,6 +300,7 @@ local uifonts = {
 }
 
 function get_png_crc(path){
+	if (!file_exist(path)) return
 	local f_in = file(path, "rb" )
 	local blb = f_in.readblob(20*1000*1000)
 	local IDATcrc = 33
