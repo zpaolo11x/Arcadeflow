@@ -16785,6 +16785,8 @@ function tick(tick_time) {
 							)
 							&&
 							(item.rawin("SSurl"))
+							&&
+							(prf.ARCADESSMEDIA)
 						){
 						try {remove(item.ADBfile)} catch(err) {}
 						item.status = "start_download_SS"
