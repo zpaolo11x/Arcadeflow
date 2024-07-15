@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.2 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.3 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,10 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 17.2 #
+## What's new in v 17.3 #
 
-- Added RetroArch and Arcade64 systems
-- Added option to enable or disable scroll control
+- Added TeknoParrot system
+- Added variations of Zemmix MSX console
+- Fixed bugs with arcade media scraping
 
 ## Emulator system identifier #
 
@@ -100,7 +101,7 @@ Multifilter is a powerful feature that allows you to create custom filters on th
 
 ## Layout options #
 
-#### ! GENERAL !
+#### GENERAL
 Define the main options of Arcadeflow like number of rows, general layout, control buttons, language, thumbnail source etc
 
 - 'Layout language' : Chose the language of the layout
@@ -125,7 +126,7 @@ Define the main options of Arcadeflow like number of rows, general layout, contr
 - 'History font size' : Set the font size for history page
 
 *Scroll & Sort*
-- '! Enable jump scroll !' : Enable activating jump scroll when going down from the game list
+- 'Enable jump scroll' : Enable activating jump scroll when going down from the game list
 - 'Page jump size' : Page jumps are one screen by default, you can increase it if you want to jump faster
 - 'Scrollbar style' : Select how the scrollbar should look
 - 'Scroll updates' : Immediately updates the tiles while you scroll
@@ -434,6 +435,11 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v17.2 - 22 April 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.2*
+
+- Added RetroArch and Arcade64 systems
+- Added option to enable or disable scroll control
 
 *v17.1 - 22 March 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.1*
 

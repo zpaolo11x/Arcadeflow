@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.2
+// Arcadeflow - v 17.3
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "17.2" // AF version in string form
+	version = "17.3" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	LNG = ""
@@ -300,19 +300,25 @@ local uifonts = {
 }
 
 function get_png_crc(path){
-	local f_in = file(path, "rb" )
-	local blb = f_in.readblob(20*1000*1000)
-	local IDATcrc = 33
+	if (!file_exist(path)) return
+	try{
+		local f_in = file(path, "rb" )
+		local blb = f_in.readblob(20*1000*1000)
+		local IDATcrc = 33
 
-	if ((blb[37] == 112) && (blb[38] == 72) && (blb[39] == 89) && (blb[40] == 115)) {
-		IDATcrc = 33 + blb[36] + 12
+		if ((blb[37] == 112) && (blb[38] == 72) && (blb[39] == 89) && (blb[40] == 115)) {
+			IDATcrc = 33 + blb[36] + 12
+		}
+
+		local bytesize = (blb[IDATcrc] << 24) + (blb[IDATcrc+1] << 16) + (blb[IDATcrc+2] << 8) + blb[IDATcrc+3]
+
+		local startpos = IDATcrc + 8 + bytesize
+		local crcpng = (blb[startpos] << 24) + (blb[startpos+1] << 16) + (blb[startpos+2] << 8) + blb[startpos+3]
+		return (("0"+format("%X",crcpng)).slice(-8))
+	} catch(err){
+		testpr("WARNING: CRC Error\n")
+		return
 	}
-
-	local bytesize = (blb[IDATcrc] << 24) + (blb[IDATcrc+1] << 16) + (blb[IDATcrc+2] << 8) + blb[IDATcrc+3]
-
-	local startpos = IDATcrc + 8 + bytesize
-	local crcpng = (blb[startpos] << 24) + (blb[startpos+1] << 16) + (blb[startpos+2] << 8) + blb[startpos+3]
-	return (("0"+format("%X",crcpng)).slice(-8))
 }
 
 /// SPLASH SCREEN ///
@@ -16779,6 +16785,8 @@ function tick(tick_time) {
 							)
 							&&
 							(item.rawin("SSurl"))
+							&&
+							(prf.ARCADESSMEDIA)
 						){
 						try {remove(item.ADBfile)} catch(err) {}
 						item.status = "start_download_SS"
