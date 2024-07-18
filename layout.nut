@@ -1357,16 +1357,16 @@ AF.prefs.l1.push([
 ])
 
 function reset_layout() {
-	try {remove(AF.folder + "pref_savedlanguage.txt")} catch(err) {}
-	try {remove(AF.folder + "pref_sortorder.txt")} catch(err) {}
-	try {remove(AF.folder + "pref_thumbtype.txt")} catch(err) {}
-	try {remove(AF.folder + "pref_layoutoptions.txt")} catch(err) {}
-	try {remove(AF.folder + "pref_update.txt")} catch(err) {}
-	try {remove(AF.folder + "pref_checkdate.txt")} catch(err) {}
-	try {remove(AF.folder + "scrapelog.txt")} catch(err) {}
-	try {remove(AF.folder + "latest_version.txt")} catch(err) {}
+	try {remove(AF.userfolder + "pref_savedlanguage.txt")} catch(err) {}
+	try {remove(AF.userfolder + "pref_sortorder.txt")} catch(err) {}
+	try {remove(AF.userfolder + "pref_thumbtype.txt")} catch(err) {}
+	try {remove(AF.userfolder + "pref_layoutoptions.txt")} catch(err) {}
+	try {remove(AF.userfolder + "pref_update.txt")} catch(err) {}
+	try {remove(AF.userfolder + "pref_checkdate.txt")} catch(err) {}
+	try {remove(AF.userfolder + "scrapelog.txt")} catch(err) {}
+	try {remove(AF.userfolder + "latest_version.txt")} catch(err) {}
 
-	local dir = DirectoryListing(AF.folder)
+	local dir = DirectoryListing(AF.userfolder)
 	foreach (item in dir.results) {
 		if (item.find("_mf_")) try {remove(item)} catch(err) {}
 		if (item.find("nut_user_")) try {remove(item)} catch(err) {}
@@ -1643,8 +1643,8 @@ function generateselectiontable() {
 function saveprefdata(prfsel, target) {
 	//local prfarray = generateprefarray()
 
-	local prfpath = AF.folder + "pref_layoutoptions.txt"
-	local ss_prfpath = AF.folder + "ss_login.txt"
+	local prfpath = AF.userfolder + "pref_layoutoptions.txt"
+	local ss_prfpath = AF.userfolder + "ss_login.txt"
 	if (target != null) prfpath = target
 	local prffile = WriteTextFile(prfpath)
 	local ss_prffile = WriteTextFile(ss_prfpath)
@@ -1672,8 +1672,8 @@ function saveprefdata(prfsel, target) {
 // readprefdata() reads values of a selection and puts them in the preferences structure.
 // To use this values in the layout preferences variable must be recreated using generateprefstable()
 function readprefdata(target) {
-	local prfpath = AF.folder + "pref_layoutoptions.txt"
-	local ss_prfpath = AF.folder + "ss_login.txt"
+	local prfpath = AF.userfolder + "pref_layoutoptions.txt"
+	local ss_prfpath = AF.userfolder + "ss_login.txt"
 	if (target != null) prfpath = target
 	local prffile = ReadTextFile (prfpath)
 	local ss_prffile = ReadTextFile (ss_prfpath)
@@ -1748,13 +1748,13 @@ function currentdate() {
 }
 function savedate() {
 	local currentdate = date().year * 1000 + date().yday
-	local datepath = AF.folder + "pref_checkdate.txt"
+	local datepath = AF.userfolder + "pref_checkdate.txt"
 	local datefile = WriteTextFile(datepath)
 	datefile.write_line (currentdate + "\n")
 	datefile.close_file()
 }
 function loaddate() {
-	local datepath = AF.folder + "pref_checkdate.txt"
+	local datepath = AF.userfolder + "pref_checkdate.txt"
 	if (!(file_exist(datepath))) return ("000000")
 	local datefile = ReadTextFile (datepath)
 	return (strip(datefile.read_line ()))
@@ -1851,7 +1851,7 @@ prf.MAXLINE <- false
 // up again until next launch, unless you "Dismiss" from the menu
 prf.UPDATECHECKED <- false
 prf.UPDATEDISMISSVER <- 0.0
-if (file_exist(AF.folder + "pref_update.txt")) prf.UPDATEDISMISSVER = ReadTextFile (AF.folder + "pref_update.txt").read_line()
+if (file_exist(AF.userfolder + "pref_update.txt")) prf.UPDATEDISMISSVER = ReadTextFile (AF.userfolder + "pref_update.txt").read_line()
 
 // Set and save debug mode
 DBGON = prf.DEBUGMODE
@@ -2015,7 +2015,6 @@ function readsystemdata() {
 	return sysdata
 }
 
-
 local mamefile = {
 	pos = 0
 	pos0 = 1
@@ -2027,28 +2026,28 @@ local mamefile = {
 			name = "COMMAND.DAT"
 			prefname = "COMMAND_DAT_PATH"
 			in_path = ""
-			out_path = fe.path_expand(AF.folder + "nut_user_command_dat.nut")
+			out_path = fe.path_expand(AF.userfolder + "nut_user_command_dat.nut")
 			processor = function(inparam){parsemame_commanddat(inparam)}
 		},
 		historydat = {
 			name = "HISTORY.DAT"
 			prefname = "HISTORY_DAT_PATH"
 			in_path = ""
-			out_path = fe.path_expand(AF.folder + "nut_user_history_dat.nut")
+			out_path = fe.path_expand(AF.userfolder + "nut_user_history_dat.nut")
 			processor = function(inparam){parsemame_historydat(inparam)}
 		},
 		historyxml = {
 			name = "HISTORY.XML"
 			prefname = "HISTORY_XML_PATH"
 			in_path = ""
-			out_path = fe.path_expand(AF.folder + "nut_user_history_xml.nut")
+			out_path = fe.path_expand(AF.userfolder + "nut_user_history_xml.nut")
 			processor = function(inparam){parsemame_historyxml(inparam)}
 		},
 		bestgamesini = {
 			name = "BESTGAMES.INI"
 			prefname = "BESTGAMES_INI_PATH"
 			in_path = ""
-			out_path = fe.path_expand(AF.folder + "nut_user_bestgames_ini.nut")
+			out_path = fe.path_expand(AF.userfolder + "nut_user_bestgames_ini.nut")
 			processor = function(inparam){parsemame_bestgamesini(inparam)}
 		}
 	}
@@ -4065,8 +4064,8 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	scraprt("ID" + scrapeid + "             createjsonA START\n")
 	local unicorrect = unicorrect()
 
-	try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
+	try {remove(AF.userfolder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
+	try {remove(AF.userfolder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
 
 	local execss = ""
 	if (OS == "Windows") {
@@ -4077,7 +4076,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	else {
 		execss = "curl -s \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
-		execss += "&use_parent=1\" -o \"" + AF.folder + "json/" + scrapeid + "jsonA.nut\"&& echo ok > \"" + AF.folder + "json/" + scrapeid + "jsonA.txt\" &"
+		execss += "&use_parent=1\" -o \"" + AF.userfolder + "json/" + scrapeid + "jsonA.nut\"&& echo ok > \"" + AF.userfolder + "json/" + scrapeid + "jsonA.txt\" &"
 	}
 
 	system (execss)
@@ -4087,7 +4086,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	scraprt("ID" + scrapeid + "             createjsonA resumed\n")
 
 	local jsarray = []
-	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "jsonA.nut")
+	local jsfilein = ReadTextFile(AF.userfolder + "json/" + scrapeid + "jsonA.nut")
 	local linein = null
 	while (!jsfilein.eos()) {
 		if (linein == "") continue
@@ -4095,7 +4094,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 		jsarray.push(linein)
 	}
 
-	if (!file_exist(AF.folder + "json/" + scrapeid + "jsonA.nut")) {
+	if (!file_exist(AF.userfolder + "json/" + scrapeid + "jsonA.nut")) {
 		dispatcher[scrapeid].jsonstatus = "ERROR"
 		return
 	}
@@ -4109,7 +4108,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	jsarray.push(")")
 	jsarray[0] = "return(" + jsarray[0]
 
-	local jsfileout = WriteTextFile(AF.folder + "json/" + scrapeid + "jsonA_out.nut")
+	local jsfileout = WriteTextFile(AF.userfolder + "json/" + scrapeid + "jsonA_out.nut")
 	local item_clean = null
 	foreach (i, item in jsarray) {
 		item_clean = item
@@ -4129,8 +4128,8 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	scraprt("ID" + scrapeid + "             createjson START\n")
 	local unicorrect = unicorrect()
 
-	try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
-	try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
+	try {remove(AF.userfolder + "json/" + scrapeid + "json.nut")} catch(err) {}
+	try {remove(AF.userfolder + "json/" + scrapeid + "json.txt")} catch(err) {}
 
 	local urlencoder1 = [" ", "[", "]", "{", ":", "/", "?", "#", "@", "!", "$", "&", "'", "(", ")", "*", "+", ", ", ";", "="]
 	local urlencoder2 = ["%20", "%5B", "%5D", "%7B", "%3A", "%2F", "%3F", "%23", "%40", "%21", "%24", "%26", "%27", "%28", "%29", "%2A", "%2B", "%2C", "%3B", "%3D"]
@@ -4163,7 +4162,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 		if (systemid != null) execss += "&systemeid=" + systemid
 		if (romtype != null) execss += "&romtype=" + romtype
 		if (romfilename != null) execss += "&romnom=" + romfilename
-		execss += "\" -o \"" + AF.folder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.folder + "json/" + scrapeid + "json.txt\" &"
+		execss += "\" -o \"" + AF.userfolder + "json/" + scrapeid + "json.nut\" && echo ok > \"" + AF.userfolder + "json/" + scrapeid + "json.txt\" &"
 	}
 
 	system (execss)
@@ -4173,13 +4172,13 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	suspend()
 	scraprt("ID" + scrapeid + "             createjson resumed\n")
 
-	if (!file_exist(AF.folder + "json/" + scrapeid + "json.nut")) {
+	if (!file_exist(AF.userfolder + "json/" + scrapeid + "json.nut")) {
 		dispatcher[scrapeid].jsonstatus = "ERROR"
 		return
 	}
 
 	local jsarray = []
-	local jsfilein = ReadTextFile(AF.folder + "json/" + scrapeid + "json.nut")
+	local jsfilein = ReadTextFile(AF.userfolder + "json/" + scrapeid + "json.nut")
 	local linein = null
 	while (!jsfilein.eos()) {
 		linein = jsfilein.read_line()
@@ -4207,7 +4206,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	jsarray.push(")")
 	jsarray[0] = "return(" + jsarray[0]
 
-	local jsfileout = WriteTextFile(AF.folder + "json/" + scrapeid + "json_out.nut")
+	local jsfileout = WriteTextFile(AF.userfolder + "json/" + scrapeid + "json_out.nut")
 	local item_clean = null
 	foreach (i, item in jsarray) {
 		item_clean = item
@@ -4265,9 +4264,9 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 		if (!(prf.ARCADESSHISTORY || prf.ARCADESSMEDIA)) dispatcher[scrapeid].done = true
 
 		// cleanup
-		try {remove(AF.folder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
-		try {remove(AF.folder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
-		try {remove(AF.folder + "json/" + scrapeid + "jsonA_out.nut")} catch(err) {}
+		try {remove(AF.userfolder + "json/" + scrapeid + "jsonA.txt")} catch(err) {}
+		try {remove(AF.userfolder + "json/" + scrapeid + "jsonA.nut")} catch(err) {}
+		try {remove(AF.userfolder + "json/" + scrapeid + "jsonA_out.nut")} catch(err) {}
 	}
 
 	if (!isarcade || (prf.ARCADESSHISTORY || prf.ARCADESSMEDIA)){
@@ -4360,9 +4359,9 @@ function getromdata(scrapeid, ss_username, ss_password, romname, systemid, syste
 
 		dispatcher[scrapeid].done = true
 
-		try {remove(AF.folder + "json/" + scrapeid + "json.txt")} catch(err) {}
-		try {remove(AF.folder + "json/" + scrapeid + "json.nut")} catch(err) {}
-		try {remove(AF.folder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
+		try {remove(AF.userfolder + "json/" + scrapeid + "json.txt")} catch(err) {}
+		try {remove(AF.userfolder + "json/" + scrapeid + "json.nut")} catch(err) {}
+		try {remove(AF.userfolder + "json/" + scrapeid + "json_out.nut")} catch(err) {}
 	}
 	scraprt("ID" + scrapeid + "         getromdata RETURN\n")
 	return //gamedata
@@ -4552,7 +4551,7 @@ function scrapegame(scrapeid, inputitem) {
 						ADBurl = tempdataA.url
 						ADBext = tempdataA.ext
 						ADBfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdataA.ext)
-						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
+						dldpath = fe.path_expand(AF.userfolder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_ADB"
 						time0 = 0
 					}
@@ -4576,7 +4575,7 @@ function scrapegame(scrapeid, inputitem) {
 						SSext = tempdata[0].extension
 						SSfile = fe.path_expand(emuartfolder + "/" + dispatcher[scrapeid].gamedata.name + "." + tempdata[0].extension)
 						name = dispatcher[scrapeid].gamedata.name
-						dldpath = fe.path_expand(AF.folder + "dlds/" + scrapeid + emuartcat)
+						dldpath = fe.path_expand(AF.userfolder + "dlds/" + scrapeid + emuartcat)
 						status = "start_download_SS"
 						time0 = 0
 					}
@@ -13675,7 +13674,7 @@ function checkforupdates(force) {
 		if (out == ghupdatemenu.len() - 1) {
 
 			// Dismiss auto updates
-			local updpath = AF.folder + "pref_update.txt"
+			local updpath = AF.userfolder + "pref_update.txt"
 			local updfile = WriteTextFile(updpath)
 			updfile.write_line(ver_in)
 			updfile.close_file()
@@ -16818,7 +16817,7 @@ function tick(tick_time) {
 				}
 			}
 			else if (item.status == "SS_downloading") {
-				if (!file_exist(AF.folder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
+				if (!file_exist(AF.userfolder + "dlds/" + item.id + item.cat + "dldsSS.txt")){
 					item.status = "download_complete"
 					download.num --
 					AF.scrape.threads_dld --
@@ -16867,7 +16866,7 @@ function tick(tick_time) {
 				}
 			}
 
-			local outreport = AF.folder + "scrapelog.txt"
+			local outreport = AF.userfolder + "scrapelog.txt"
 			local outfile = WriteTextFile(outreport)
 			outfile.write_line(endreport)
 			outfile.close_file()
@@ -16931,9 +16930,9 @@ function tick(tick_time) {
 		}
 		foreach (i, item in dispatcher) {
 			if (item.done) {
-				try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
-				try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
-				try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
+				try {remove(AF.userfolder + "json/" + i + "json.txt")} catch(err) {}
+				try {remove(AF.userfolder + "json/" + i + "json.nut")} catch(err) {}
+				try {remove(AF.userfolder + "json/" + i + "json_out.nut")} catch(err) {}
 				scraprt("ID" + i + (item.gamedata.scrapestatus == "RETRY" ? " RESPIN " : " COMPLETED ") + item.gamedata.filename + "\n")
 
 				if (item.gamedata.scrapestatus != "RETRY") AF.scrape.doneroms ++
@@ -16954,8 +16953,8 @@ function tick(tick_time) {
 				item.done = false
 			}
 			else {
-				if (item.pollstatus && file_exist(AF.folder + "json/" + i + "json.txt")) {
-					try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
+				if (item.pollstatus && file_exist(AF.userfolder + "json/" + i + "json.txt")) {
+					try {remove(AF.userfolder + "json/" + i + "json.txt")} catch(err) {}
 					item.pollstatus = false
 					scraprt("ID" + i + " main WAKEUP createjson\n")
 					item.createjson.wakeup()
@@ -16963,8 +16962,8 @@ function tick(tick_time) {
 					item.getromdata.wakeup()
 					scraprt("ID" + i + " main end first check\n")
 				}
-			 	else if (item.pollstatusA && file_exist(AF.folder + "json/" + i + "jsonA.txt")) {
-					try {remove(AF.folder + "json/" + i + "jsonA.txt")} catch(err) {}
+			 	else if (item.pollstatusA && file_exist(AF.userfolder + "json/" + i + "jsonA.txt")) {
+					try {remove(AF.userfolder + "json/" + i + "jsonA.txt")} catch(err) {}
 					item.pollstatusA = false
 					scraprt("ID" + i + " main WAKEUP createjsonA\n")
 					item.createjsonA.wakeup()
@@ -16976,12 +16975,12 @@ function tick(tick_time) {
 					AF.scrape.timeoutroms.push(item.rominputitem) //pushes the timeout item in the list
 					scraprt("ID" + i + " TIMEOUT\n")
 
-					try {remove(AF.folder + "json/" + i + "json.txt")} catch(err) {}
-					try {remove(AF.folder + "json/" + i + "json.nut")} catch(err) {}
-					try {remove(AF.folder + "json/" + i + "json_out.nut")} catch(err) {}
-					try {remove(AF.folder + "json/" + i + "jsonA.txt")} catch(err) {}
-					try {remove(AF.folder + "json/" + i + "jsonA.nut")} catch(err) {}
-					try {remove(AF.folder + "json/" + i + "jsonA_out.nut")} catch(err) {}
+					try {remove(AF.userfolder + "json/" + i + "json.txt")} catch(err) {}
+					try {remove(AF.userfolder + "json/" + i + "json.nut")} catch(err) {}
+					try {remove(AF.userfolder + "json/" + i + "json_out.nut")} catch(err) {}
+					try {remove(AF.userfolder + "json/" + i + "jsonA.txt")} catch(err) {}
+					try {remove(AF.userfolder + "json/" + i + "jsonA.nut")} catch(err) {}
+					try {remove(AF.userfolder + "json/" + i + "jsonA_out.nut")} catch(err) {}
 
 					item.pollstatusA = item.pollstatus = false
 					AF.scrape.threads_scr -- //TEST165 RIMUOVERE?
