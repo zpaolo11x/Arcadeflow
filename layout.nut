@@ -97,6 +97,8 @@ local AF = {
 	version = "17.3" // AF version in string form
 	vernum = 0 // AF version as a number
 
+	usr = false
+
 	LNG = ""
 	WARN = ""
 
@@ -273,6 +275,19 @@ function gly(number){
 }
 
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
+
+print ("\n\n")
+
+print("AFFOLDER "+AF.folder+"\n\n")
+print("AFSUBFOL "+AF.subfolder+"\n\n")
+print("CONFIGFL "+AF.amfolder+"\n\n")
+
+AF.usr = !(AF.folder.find(AF.amfolder) == 0)
+
+if (AF.usr){
+	print("GA SETUP\n")
+	AF.folder = AF.amfolder+".attract/"
+}
 
 local zmenu = null
 local frost = null
@@ -18164,7 +18179,7 @@ if (prf.RAENABLED) ra_init()
 
 function ra_updatecfg(emulator, core) {
 	local filearray = []
-	local emufile = ReadTextFile(AM.emulatorsfolder + emulator + ".cfg")
+	local emufile = ReadTextFile(AF.emulatorsfolder + emulator + ".cfg")
 	while (!emufile.eos()) {
 		filearray.push(emufile.read_line())
 	}
