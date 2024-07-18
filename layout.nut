@@ -110,6 +110,7 @@ local AF = {
 
 	// Paths variable to different AM and AF locations
 	folder = fe.path_expand(fe.script_dir)
+	userfolder = fe.path_expand(fe.script_dir)
 	subfolder = ""
 	romlistfolder = fe.path_expand(FeConfigDirectory + "romlists/")
 	emulatorsfolder = fe.path_expand(FeConfigDirectory + "emulators/")
@@ -283,10 +284,12 @@ print("AFSUBFOL "+AF.subfolder+"\n\n")
 print("CONFIGFL "+AF.amfolder+"\n\n")
 
 AF.usr = !(AF.folder.find(AF.amfolder) == 0)
-
+AF.usr = true
 if (AF.usr){
+	// If the layout is installed in the /usr space, userfolder is redirected to a custom folder, otherwise userfolder is the same as the layout
 	print("GA SETUP\n")
-	AF.folder = AF.amfolder+".attract/"
+	AF.userfolder = AF.amfolder+".arcadeflow/"
+	system ("mkdir \"" + AF.userfolder + "\"")
 }
 
 local zmenu = null
@@ -796,14 +799,14 @@ AF.config = parseconfig()
 
 // for debug purposes
 function loaddebug() {
-	local debugpath = AF.folder + "pref_debug.txt"
+	local debugpath = AF.userfolder + "pref_debug.txt"
 	local debugfile = ReadTextFile (debugpath)
 	local out = debugfile.read_line()
 	return (out == "true")
 }
 
 function savedebug(savecode) {
-	local debugpath = AF.folder + "pref_debug.txt"
+	local debugpath = AF.userfolder + "pref_debug.txt"
 	local debugfile = WriteTextFile(debugpath)
 	debugfile.write_line(savecode)
 	debugfile.close_file()
@@ -906,20 +909,22 @@ fe.do_nut("nut_scraper.nut")
 
 
 function savevar(variablein, outfile){
+	// Savevar saves only in the user space folder beacuse it's used to save user variables
 	local outarray = split(vartotext(variablein,0),"\n")
 	outarray.insert(0,"return(")
 	outarray.push(")")
 
-	local f_out = WriteTextFile(fe.path_expand(AF.folder + outfile))
+	local f_out = WriteTextFile(fe.path_expand(AF.userfolder + outfile))
 	foreach(i, item in outarray){
 		f_out.write_line (item+"\n")
 	}
 	f_out.close_file()
 }
 
-function loadvar(infile){
-	if (!(file_exist(fe.path_expand(AF.folder + infile)))) return null
-	try {return(dofile(fe.path_expand(AF.folder + infile)))} catch (err){return(null)}
+function loadvar(infile, userfolder = true){
+	// Loadvar can load from user space or from layout space, by default it loads from USER space
+	if (!(file_exist(fe.path_expand((userfolder ? AF.userfolder : AF.folder) + infile)))) return null
+	try {return(dofile(fe.path_expand((userfolder ? AF.userfolder : AF.folder) + infile)))} catch (err){return(null)}
 }
 
 
@@ -937,7 +942,7 @@ function printblanks(){
 }
 //printblanks()
 
-download.blanks = loadvar("data_blanks.txt")
+download.blanks = loadvar("data_blanks.txt", false) //data blanks is not in USER space
 
 function checkmsec(delay){
 	download.time1 = fe.layout.time
@@ -7054,12 +7059,12 @@ function mfz_load() {
 	debugpr("mfz_load\n")
 	local tempfilter = null
 	local tempresult = loadvar("pref_mf_" + aggregatedisplayfilter() + ".txt")
-	local defresult = loadvar("mf_" + aggregatedisplayfilter() + ".txt")
+	local defresult = loadvar("mf_" + aggregatedisplayfilter() + ".txt", false)
 
 	if (defresult != null) tempresult = defresult
 
 	if ((tempresult == null) || (!prf.SAVEMFZ)) {
-		multifilterz.filter = loadvar("pref_mf_0.txt")
+		multifilterz.filter = loadvar("pref_mf_0.txt", false)
 	}
 	else {
 		multifilterz.filter = tempresult
