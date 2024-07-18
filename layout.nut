@@ -284,7 +284,7 @@ print("AFSUBFOL "+AF.subfolder+"\n\n")
 print("CONFIGFL "+AF.amfolder+"\n\n")
 
 AF.usr = !(AF.folder.find(AF.amfolder) == 0)
-
+AF.usr = true
 if (AF.usr){
 	// If the layout is installed in the /usr space, userfolder is redirected to a custom folder, otherwise userfolder is the same as the layout
 	print("GA SETUP\n")
@@ -15564,7 +15564,7 @@ function buildutilitymenu() {
 		label = ltxt("Check for updates", AF.LNG)
 		glyph = 0xe91c
 		liner = false
-		visible = true
+		visible = AF.usr ? false : true//TEST174
 		id = 0
 		order = 0
 		sidenote = function() {
@@ -15580,7 +15580,7 @@ function buildutilitymenu() {
 		label = ltxt("Install from repository", AF.LNG)
 		glyph = 0xe9c2
 		liner = false
-		visible = true
+		visible = AF.usr ? false : true
 		id = 0
 		order = 0
 		sidenote = function() {
@@ -15646,7 +15646,7 @@ function buildutilitymenu() {
 	if (v0.len() == umtable.len()) {
 		for (local i = 0; i < v0.len(); i++) {
 			umtable[i].id = i
-			umtable[abs(v0[i].tointeger()) - 1].visible = v0[i].tointeger() > 0
+			umtable[abs(v0[i].tointeger()) - 1].visible = umtable[abs(v0[i].tointeger()) - 1].visible && (v0[i].tointeger() > 0)
 			umtable[abs(v0[i].tointeger()) - 1].order = i
 		}
 
@@ -17467,7 +17467,7 @@ function tick(tick_time) {
 		overmenu.x = globalposnew - overmenuwidth * 0.5
 	}
 
-	if (prf.UPDATECHECK) {
+	if ((prf.UPDATECHECK) && (!AF.usr)){
 		if ((tick_time >= 8000) && (endfade(flowT.blacker) == 1) && (!prf.UPDATECHECKED) && (!zmenu.showing) && (!frost.surf_rt.visible)) {
 			prf.UPDATECHECKED = true
 			checkforupdates(false)
