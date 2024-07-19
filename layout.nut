@@ -284,7 +284,7 @@ print("AFSUBFOL "+AF.subfolder+"\n\n")
 print("CONFIGFL "+AF.amfolder+"\n\n")
 
 AF.usr = !(AF.folder.find(AF.amfolder) == 0)
-AF.usr = true
+
 if (AF.usr){
 	// If the layout is installed in the /usr space, userfolder is redirected to a custom folder, otherwise userfolder is the same as the layout
 	print("GA SETUP\n")
