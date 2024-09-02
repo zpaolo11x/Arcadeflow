@@ -6182,7 +6182,21 @@ multifilterz.l0["Tags"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot2[index].z_tags // z_gettags(index, false)
-			return ( (v.len == 0) ? [{l1val = "None",l1name = "None"}] : [{l1val = v,l1name = v}])
+			testpr("V Variable is "+v+"\n")
+			testpr("V Length is "+v.len()+"\n")
+			if (v.len() == 0){
+				testpr("ZEROARRAY\n")
+				return [{l1val = "None",l1name = "None"}]
+			}
+			else{
+				local tempv = v.map(function(val){return({l1val = val,l1name = val})})
+				print_variable(tempv,"","")
+				return(tempv)
+			}
+			return ( (v.len() == 0) ? [{l1val = "None",l1name = "None"}] : v.map(function(val){
+																									 return({l1val = val,l1name = val})
+																									 })
+			)
 		}
 	}
 
@@ -6910,9 +6924,8 @@ function mfz_menu2(presel) {
 function mfz_menu1(presel) {
 	local valcurrent = null
 
-	if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex - fe.list.index)
+	if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex) //TEST174 fixed but maybe use cached?
 	// valcurrent is the array of entries for the current game and current mf.cat0
-
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu, 1, multifilterz.l0[mf.cat0].translate, multifilterz.l0[mf.cat0].sort)
 	local namearray = mfzdat.names
 	local indexarray = mfzdat.index
