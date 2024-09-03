@@ -277,17 +277,17 @@ function gly(number){
 
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
 
-print ("\n\n")
+debugpr ("\n\n")
 
-print("AFFOLDER "+AF.folder+"\n\n")
-print("AFSUBFOL "+AF.subfolder+"\n\n")
-print("CONFIGFL "+AF.amfolder+"\n\n")
+debugpr("AFFOLDER "+AF.folder+"\n\n")
+debugpr("AFSUBFOL "+AF.subfolder+"\n\n")
+debugpr("CONFIGFL "+AF.amfolder+"\n\n")
 
 AF.usr = !(AF.folder.find(AF.amfolder) == 0)
 
 if (AF.usr){
 	// If the layout is installed in the /usr space, userfolder is redirected to a custom folder, otherwise userfolder is the same as the layout
-	print("GA SETUP\n")
+	debugpr("GA SETUP\n")
 	AF.userfolder = AF.amfolder+".arcadeflow/"
 	system ("mkdir \"" + AF.userfolder + "\"")
 }
@@ -6182,20 +6182,7 @@ multifilterz.l0["Tags"] <- {
 		menu = {}
 		levcheck = function(index) {
 			local v = z_list.boot2[index].z_tags // z_gettags(index, false)
-			testpr("V Variable is "+v+"\n")
-			testpr("V Length is "+v.len()+"\n")
-			if (v.len() == 0){
-				testpr("ZEROARRAY\n")
-				return [{l1val = "None",l1name = "None"}]
-			}
-			else{
-				local tempv = v.map(function(val){return({l1val = val,l1name = val})})
-				print_variable(tempv,"","")
-				return(tempv)
-			}
-			return ( (v.len() == 0) ? [{l1val = "None",l1name = "None"}] : v.map(function(val){
-																									 return({l1val = val,l1name = val})
-																									 })
+			return ( (v.len() == 0) ? [{l1val = "None",l1name = "None"}] : v.map(function(val){return({l1val = val,l1name = val})})
 			)
 		}
 	}
