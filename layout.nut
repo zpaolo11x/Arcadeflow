@@ -276,18 +276,17 @@ function gly(number){
 }
 
 AF.subfolder = AF.folder.slice(AF.folder.find("layouts"))
+/*
+print ("\n\n")
 
-debugpr ("\n\n")
-
-debugpr("AFFOLDER "+AF.folder+"\n\n")
-debugpr("AFSUBFOL "+AF.subfolder+"\n\n")
-debugpr("CONFIGFL "+AF.amfolder+"\n\n")
-
+print("AFFOLDER "+AF.folder+"\n\n")
+print("AFSUBFOL "+AF.subfolder+"\n\n")
+print("CONFIGFL "+AF.amfolder+"\n\n")
+*/
 AF.usr = !(AF.folder.find(AF.amfolder) == 0)
 
 if (AF.usr){
 	// If the layout is installed in the /usr space, userfolder is redirected to a custom folder, otherwise userfolder is the same as the layout
-	debugpr("GA SETUP\n")
 	AF.userfolder = AF.amfolder+".arcadeflow/"
 	system ("mkdir \"" + AF.userfolder + "\"")
 }
@@ -6911,7 +6910,10 @@ function mfz_menu2(presel) {
 function mfz_menu1(presel) {
 	local valcurrent = null
 
-	if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex) //TEST174 fixed but maybe use cached?
+	//if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex) //TEST174 fixed but changed with cached values
+	locif (z_list.size > 0) valcurrent = z_list.levchecks[z_list.index][multifilterz.l0[mf.cat0]]
+	print_variable(valcurrent,"","")
+	print_variable(valcurrent2,"","")
 	// valcurrent is the array of entries for the current game and current mf.cat0
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu, 1, multifilterz.l0[mf.cat0].translate, multifilterz.l0[mf.cat0].sort)
 	local namearray = mfzdat.names
