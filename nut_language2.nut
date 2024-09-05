@@ -1,4 +1,10 @@
-local affolder = fe.script_dir
+local affolder = fe.path_expand(fe.script_dir)
+local afuserfolder =  fe.path_expand(fe.script_dir)
+local afamfolder = fe.path_expand(FeConfigDirectory)
+if (!(affolder.find(afamfolder) == 0)){
+	afuserfolder = afamfolder+".arcadeflow/"
+}
+
 local languagetable = dofile(fe.path_expand(affolder+"data_translations2.txt"))
 
 function languagearray() {
@@ -30,14 +36,14 @@ function languagetokenarray() {
 }
 
 function loadlanguage(){
-   local languagepath = fe.path_expand( affolder+"pref_savedlanguage.txt")
+   local languagepath = fe.path_expand( afuserfolder+"pref_savedlanguage.txt")
    local languagefile = ReadTextFile (languagepath)
    local out = languagefile.read_line()
    return (out)
 }
 
 function savelanguage(savecode){
-   local languagepath = fe.path_expand( affolder+"pref_savedlanguage.txt")
+   local languagepath = fe.path_expand( afuserfolder+"pref_savedlanguage.txt")
    local languagefile = WriteTextFile (languagepath)
    languagefile.write_line(savecode)
 }

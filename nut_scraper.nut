@@ -44,7 +44,12 @@ function unicorrect(){
 
 local actionfile = false
 
-local affolder = fe.script_dir
+local affolder = fe.path_expand(fe.script_dir)
+local afuserfolder =  fe.path_expand(fe.script_dir)
+local afamfolder = fe.path_expand(FeConfigDirectory)
+if (!(affolder.find(afamfolder) == 0)){
+	afuserfolder = afamfolder+".arcadeflow/"
+}
 
 function cleanWHDL(inputname){
    local outputname = ""
@@ -70,7 +75,7 @@ function matchrom(scrapeid, filename){
    // Returns two crc values: one is from the rom directly matched during the scraping
    // the other is from one of the roms in the list, matching the name of current rom
 
-   local jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")
+   local jstab = dofile (afuserfolder+"json/" + scrapeid+"json_out.nut")
 
    local crc_from_romlist = ""
    local crc_from_romid = ""
@@ -144,7 +149,7 @@ function filtertable(tablein,filters,force){
 
 function parsejsonA(scrapeid, gamedata){
    local jstab = null
-   try {jstab = dofile (affolder+"json/" + scrapeid+"jsonA_out.nut")} catch(err) {return({})}
+   try {jstab = dofile (afuserfolder+"json/" + scrapeid+"jsonA_out.nut")} catch(err) {return({})}
 
    if (jstab.result.len() == 0) {
       gamedata.isarcade = false
@@ -206,7 +211,7 @@ function parsejsonA(scrapeid, gamedata){
 
 function parsejson(scrapeid, gamedata){
    local jstab = null
-   try {jstab = dofile (affolder+"json/" + scrapeid+"json_out.nut")} catch(err) {return({})}
+   try {jstab = dofile (afuserfolder+"json/" + scrapeid+"json_out.nut")} catch(err) {return({})}
 
    local filenameregions = ""
    local filenameregionsarray = []
