@@ -1,4 +1,4 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.3 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.4 #
 
 Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
@@ -10,11 +10,10 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 17.3 #
+## What's new in v 17.4 #
 
-- Added TeknoParrot system
-- Added variations of Zemmix MSX console
-- Fixed bugs with arcade media scraping
+- Improved compatibility with Groovy Arcade
+- Fixed bug with miltifilter and tags
 
 ## Emulator system identifier #
 
@@ -435,6 +434,12 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v17.3 - 15 July 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.3*
+
+- Added TeknoParrot system
+- Added variations of Zemmix MSX console
+- Fixed bugs with arcade media scraping
 
 *v17.2 - 22 April 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.2*
 
