@@ -6911,7 +6911,7 @@ function mfz_menu1(presel) {
 	local valcurrent = null
 
 	//if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex) //TEST174 fixed but changed with cached values
-	locif (z_list.size > 0) valcurrent = z_list.levchecks[z_list.index][multifilterz.l0[mf.cat0]]
+	if (z_list.size > 0) valcurrent = z_list.levchecks[z_list.index][multifilterz.l0[mf.cat0]]
 	print_variable(valcurrent,"","")
 	print_variable(valcurrent2,"","")
 	// valcurrent is the array of entries for the current game and current mf.cat0
