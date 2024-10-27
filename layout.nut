@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.4
+// Arcadeflow - v 17.5
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "17.4" // AF version in string form
+	version = "17.5" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	usr = false
