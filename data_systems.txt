@@ -1282,7 +1282,7 @@ videoton tv-computer
 tvc
 tv-computer
 
-vircon 32,640,360,VC32,LCD,NONE,16,9,CONSOLE,Carra,2023,Vircon 32,272,rom,joystick (8-way),4
+vircon 32,640,360,VC32,LCD,NONE,16,9,CONSOLE,Carra,2023,Vircon32,272,rom,joystick (8-way),4
 vircon32
 
 visual pinball,0,0,VPIN,CRT,NONE,4,3,PINBALL,Various,null,Visual Pinball,198,fichier,null,null
