@@ -425,6 +425,10 @@ lcd handheld
 linux,0,0,LIN,LCD,NONE,0,0,COMPUTER,Various,null,Linux,145,rom,joystick (8-way),2
 linux games
 
+*
+lowres nx
+lowresnx
+
 magnavox odyssey 2,160,200,ODY2,CRT,NONE,4,3,CONSOLE,Magnavox,1972,Odyssey 2,null,null,joystick (8-way),1
 odyssey 2
 magnavox odyssey2
@@ -846,6 +850,12 @@ oric,240,220,ORC,CRT,NONE,4,3,COMPUTER,Tangerine,1984,Oric,131,rom,joystick (8-w
 
 othello multivision,256,192,OTHL,CRT,NONE,4,3,CONSOLE,Tsukuda Original,1983,Othello Multivision,109,rom,joystick (8-way),2
 multivision
+
+*
+p2000
+p2000t
+philips p2000
+philips p2000t
 
 panasonic 3do,0,0,3DO,CRT,NONE,4,3,CONSOLE,3DO Company,1993,3DO,29,iso,joystick (8-way),3
 3do
@@ -1273,6 +1283,10 @@ videoton tvc,0,0,TVC,CRT,NONE,4,3,COMPUTER,Videoton,1986,Videoton TVC,null,rom,j
 videoton tv-computer
 tvc
 tv-computer
+
+*
+vircon 32
+vircon32
 
 visual pinball,0,0,VPIN,CRT,NONE,4,3,PINBALL,Various,null,Visual Pinball,198,fichier,null,null
 visualpinball
