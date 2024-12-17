@@ -1,0 +1,4 @@
+17.5 - 17 December 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.5
+Improved German translation file (thanks ScherzKeks)
+Fixed bug in miltifilter code
+Added Vircon32, LowRes NX and Philips P2000 systems

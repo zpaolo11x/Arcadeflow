@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.4
+// Arcadeflow - v 17.5
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -94,7 +94,7 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 // General AF data table
 local AF = {
-	version = "17.4" // AF version in string form
+	version = "17.5" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	usr = false
@@ -6912,8 +6912,7 @@ function mfz_menu1(presel) {
 
 	//if (z_list.size > 0) valcurrent =  multifilterz.l0[mf.cat0].levcheck(z_list.gametable[z_list.index].z_felistindex) //TEST174 fixed but changed with cached values
 	if (z_list.size > 0) valcurrent = z_list.levchecks[z_list.index][multifilterz.l0[mf.cat0]]
-	print_variable(valcurrent,"","")
-	print_variable(valcurrent2,"","")
+
 	// valcurrent is the array of entries for the current game and current mf.cat0
 	local mfzdat = mfz_menudata(multifilterz.l0[mf.cat0].menu, 1, multifilterz.l0[mf.cat0].translate, multifilterz.l0[mf.cat0].sort)
 	local namearray = mfzdat.names

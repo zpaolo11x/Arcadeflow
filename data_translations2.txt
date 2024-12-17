@@ -52,18 +52,23 @@ DE = "Sprache des Layouts auswählen"
 }
      "Power and Exit menu":{
 IT = "Menu arresto e uscita"
+DE = "Power und Exit Menü"
 }
      "Customise exit menu with power options":{
 IT = "Personalizza il menu di uscita con opzioni di spegniemnto"
+DE = "Exit Menü mit Power Optionen anpassen"
 }
      "Exit and Power":{
 IT = "Uscita e Spegnimento"
+DE = "Exit und Power"
 }
      "Exit only":{
 IT = "Solo Uscita"
+DE = "Nur Verlassen"
 }
      "Power only":{
 IT = "Solo Spegnimento"
+DE = "Nur Ausschalten"
 }
      "GENERAL":{
 IT = "GENERALE"
@@ -251,9 +256,11 @@ DE = "Wähle wie die Bildlaufleiste aussehen soll"
 }
      "Scroll updates":{
 IT = "Aggiorna scorrimento"
+DE = "Scrolle Updates"
 }
      "Immediately updates the tiles while you scroll":{
 IT = "Aggiorna le miniature durante lo scorrimento"
+DE = "Aktualisiert die Kacheln während des scrollens"
 }
      "Strip article from sort":{
 IT = "Ordina ignorando gli articoli"
@@ -321,9 +328,11 @@ DE = "Optimierung des Themes für Bildschirme mit geringer Auflösung, 1-Zeilen 
 }
      "Small screen":{
 IT = "Schermo piccolo"
+DE = "Kleiner Bildschirm"
 }
      "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout":{
 IT = "Ottimizza il tema per schermi di piccole dimensioni, viene forzata la modalità a 1 riga, ingranditi i font, ripulito il layout"
+DE = "Optimierung des Designs für kleine Bildschirme, erzwungenes 1-zeiliges Layour, größere Schrift und übersichtlichere Gestaltung"
 }
      "Custom color":{
 IT = "Colore personalizzato"
@@ -525,24 +534,31 @@ DE = "Du kannst CRC Matching für ROMS aktivieren (langsamer) oder nur Namens Ma
 }
      "Arcade media scraper":{
 IT = "Scraper media arcade"
+DE = "Arcade Medien Scraper"
 }
      "Arcade games madia can be scraped from ScreenScraper when no ArcadeDataBase data is present":{
 IT = "I media per i giochi arcade posson essere ottenuti da ScreenScraper quando non sono su ArcadeDataBase"
+DE = "Arcade-Spiele können aus ScreenScraper entfernt werden, wenn keine ArcadeDataBase-Daten vorhanden sind."
 }
      "Arcade history scraper":{
 IT = "Scraper history arcade"
+DE = "Arcade History Scraper"
 }
      "Arcade games history data can be scraped using ArcadeDataBase or ScreenScraper":{
 IT = "La history dei giochi arcade può essere ottenuta daScreenScraper oppure da ArcadeDataBase"
+DE = "Daten zur Geschichte von Arcade-Spielen kï¿½nnen mit ArcadeDataBase oder ScreenScraper gesammelt werde"
 }
      "SS Only":{
 IT = "Solo SS"
+DE = "Nur SS"
 }
      "ADB Only":{
 IT = "Solo ADB"
+DE = "Nur ADB"
 }
      "ADB and SS":{
 IT = "ADB e SS"
+DE = "ADB und SS"
 }
      "Rom Scrape Options":{
 IT = "Opzioni scrape rom"
@@ -629,9 +645,11 @@ DE = "Sortierung und Auswahl der Region-Einträge zurücksetzen"
 }
      "Scrape Timeout":{
 IT = "Timout scraping"
+DE = "Scrape Timeout"
 }
      "Set the number of seconds to wait for each scrape operation to complete":{
 IT = "Imposta quanti secondi attendere per ogni operazione di scraping"
+DE = "Anzahl der Sekunden festlegen, die auf den Abschluss jedes Schabevorgangs gewartet werden soll."
 }
      "ScreenScraper":{
 IT = "ScreenScraper"
@@ -725,9 +743,11 @@ DE = "Aktualisiere die ROMLISTE mit hinzugefügten/gelöschten roms, resettet ni
 }
      "Erase romlist database":{
 IT = "Cancella database romlist"
+DE = "Lösche Romlist Datenbank"
 }
      "Doesn't rescan the romlist, bur erases all game database information":{
 IT = "Cancella il database della romlist senza rigenerarla"
+DE = "Die ROM-Liste wird nicht erneut gescannt, aber alle Spieldatenbankinformationen werden gelöscht."
 }
      "Reset current romlist":{
 IT = "Reset di questa romlist"
@@ -803,9 +823,11 @@ DE = "Gefahrenzone"
 }
      "Cleanup database":{
 IT = "Ripulisci database"
+DE = "Datenbank bereinigen"
 }
      "Rescans all the romlists adding/removing roms, then purges the database to remove unused entry":{
 IT = "Aggiorna la scansione di tutte le romlist, quindi rimuove voci inutilizzate dal database"
+DE = "Scannt alle ROM-Listen neu, fügt ROMs hinzu/entfernt sie und löscht dann die Datenbank, um nicht verwendete Einträge zu entfernen."
 }
      "Enable game hiding":{
 IT = "Abilita nascondi giochi"
@@ -1066,9 +1088,11 @@ DE = "Verhalten"
 }
      "Open on current category":{
 IT = "Apri alla categoria corrente"
+DE = "In aktueller Kategorie öffnen."
 }
      "With categorised displays menu, open in the current category instead of main menu":{
 IT = "Nel menu per categorie, inizia dalla cateoria corrente invece che dal menu principale"
+DE = "Mit kategorisiertem Menü, das in der aktuellen Kategorie anstelle des Hauptmenüs geöffnet wird."
 }
      "Open the Displays Menu at startup":{
 IT = "Apri il Menu Display all'avvio"
@@ -1241,9 +1265,11 @@ DE = "Fügt einen leuchtenden Schein um das ausgewählte Vorschaubild hinzu"
 }
      "Snap border":{
 IT = "Bordo miniature"
+DE = "Miniaturbild"
 }
      "Add a white border around the selected game thumbnail":{
 IT = "Aggiugne un bordo bianco intorno alla miniatura del gioco selezionato"
+DE = "Fügt einen weißen Rahmen um das ausgewählte Spielminiaturbild hinzu."
 }
      "Logo smooth shadow":{
 IT = "Ombre morbide nel logo"
@@ -1461,9 +1487,11 @@ DE = "Wenn keine Grafik für den Spieltitel vorhanden ist, kann dieser vom layou
 }
      "Vertical arcade videos":{
 IT = "Video Vertical Arcade"
+DE = "Vertikale Arcade Videos"
 }
      "Enable this option if you are using 9:16 videos from the Vertical Arcade project":{
 IT = "Ottimizza il layout per i video del progetto Vertical Arcade"
+DE = "Optionaktivieren, wenn 9:16-Videos aus dem Vertical Arcade-Projekt verwendet werden."
 }
      "New game indicator":{
 IT = "Indicatore di gioco nuovo"
@@ -1557,9 +1585,11 @@ DE = "Auswählen des Layout Hintergrunds der Hauptseite und der History, oder be
 }
      "Color theme":{
 IT = "Tema colore"
+DE = "Thema Farbe"
 }
      "Setup background color theme, Basic is slightly muted, Dark is darker, Light has a white overlay and dark text, Pop keeps the colors unaltered":{
 IT = "Seleziona il tema colore dello sfondo: Basic è leggermente ridotta, Dark ha un effetto più scuro, Light usa un fondo chiaro con testo scuro, Pop mantiene inalterati i colori dello sfondo"
+DE = "Hintergrundfarbschema einrichten, Basic ist leicht gedämpft, Dark ist dunkler, Light hat eine weiße Überlagerung und dunklen Text, Pop behält die Farben unverändert bei."
 }
      "Custom main BG image":{
 IT = "Sfondo principale personalizzato"
@@ -1868,9 +1898,11 @@ DE = "Gib ein benutzerdefiniertes Verzeichnis für RA Cores an, wenn nicht das S
 }
      "Custom Info folder":{
 IT = "Directory info custom"
+DE = "Ordner für benutzerdefinierte Information"
 }
      "Enter a custom folder for RA info files if not using standard locations":{
 IT = "Inserisci il percorso di una cartella info se non utilizzi la directory standard"
+DE = "Benutzerdefinierten Ordner für RA-Info-Dateien angeben, wenn nicht die Standardverzeichnisse verwendet werden."
 }
      "SEARCH & FILTERS":{
 IT = "RICERCA E FILTRI"
@@ -2031,6 +2063,7 @@ DE = "Groß"
 }
      "Full":{
 IT = "Completo"
+DE = "Vollständig"
 }
      "Max snap":{
 IT = "Massimo snapshot"
@@ -2067,9 +2100,11 @@ DE = "Aussehen des History Game Panels auswählen"
 }
      "Text scroll":{
 IT = "Scorrimento testo"
+DE = "Textlauf"
 }
      "Select if you want to manually scroll history text, or automatically scroll":{
 IT = "Imposta scorrimento manuale o automatico per il testo nella pagina history"
+DE = "Auswählen ob der History Text manuell oder automatisch gescrollt werden soll"
 }
      "Detailed game data":{
 IT = "Dettagli del gioco"
@@ -2782,18 +2817,23 @@ DE = "Arcadeflow aktualisiert auf"
 }
      "Install from repository":{
 IT = "Installa da repository"
+DE = "Installiere von Repository"
 }
      "Install branch":{
 IT = "Installa branch"
+DE = "Installiere Branch"
 }
      "Install release":{
 IT = "Installa release"
+DE = "Installiere Release"
 }
      "What's New":{
 IT = "Ultime novita'"
+DE = "Was ist neu"
 }
      "Open Readme":{
 IT = "Apri Readme"
+DE = "Readme öffnen"
 }
      "Quit":{
 IT = "Esci"
@@ -3347,6 +3387,7 @@ DE = "Knallig"
 }
      "Slate":{
 IT = "Lavagna"
+DE = "Schultafel"
 }
      "From start":{
 IT = "All'avvio"
