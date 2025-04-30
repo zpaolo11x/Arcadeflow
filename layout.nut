@@ -1218,6 +1218,7 @@ menucounter ++
 AF.prefs.l0.push({label = "PERFORMANCE & FX", glyph = 0xe9a6, description = "Turn on or off special effects that might impact on Arcadeflow performance"})
 AF.prefs.l1.push([
 {v = 14.2, varname = "ADAPTSPEED", glyph = 0xe994, title = "Adjust performance", help = "Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 17.6, varname = "HALFSPEED", glyph = 0xe994, title = "Half speed", help = "Fixes an issue with Apple Silicon M4", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "CUSTOMSIZE", glyph = 0xe994, title = "Resolution W x H", help = "Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution", options = ["Res"], values = "", selection = AF.req.keyboard},
 {v = 9.8, varname = "RPI", glyph = 0xe994, title = "Raspberry Pi fix", help = "This applies to systems that gives weird results when getting back from a game, reloading the layout as needed", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 0.0, varname = "", glyph = -1, title = "Overscan", selection = AF.req.liner},
@@ -17030,11 +17031,13 @@ function tick(tick_time) {
 				AF.fps = 1000.0 / (timescale.sum / timescale.values)
 				AF.tsc = 60.0 / AF.fps
 			}
+			else if (prf.HALFSPEED){
+				AF.tsc = 0.5
+			}
 			else {
 				AF.fps = ScreenRefreshRate
 				AF.tsc = 60.0 / ScreenRefreshRate
 			}
-
 			//Refresg taus on the base of new calculated frame rate
 			foreach (item, value in tauT){
 				spdT.rawset(item, tau_to_speed(value, AF.fps))
