@@ -17032,6 +17032,7 @@ function tick(tick_time) {
 				AF.tsc = 60.0 / AF.fps
 			}
 			else if (prf.HALFSPEED){
+				AF.fps = 2.0 * ScreenRefreshRate
 				AF.tsc = 0.5
 			}
 			else {
