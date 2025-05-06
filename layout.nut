@@ -16553,7 +16553,7 @@ local timescale = {
 	current = fe.layout.time
 	sum = 0
 	values = 0
-	limits = 15
+	limits = 60 //TEST176 was 15
 	delay = 15
 }
 
