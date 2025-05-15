@@ -92,6 +92,8 @@ foreach (i, item in IDX) {IDX[i] = format("%s%5u", "\x00", i)}
 
 /// Main layout structures setup ///
 
+local AFRefreshRate = ScreenRefreshRate
+
 // General AF data table
 local AF = {
 	version = "17.6" // AF version in string form
@@ -174,8 +176,8 @@ local AF = {
 		pulsecounter = 0
 	}
 
-	tsc = 60.0 / ScreenRefreshRate // Pre-scaling of timer for different parameters
-	fps = ScreenRefreshRate
+	tsc = 60.0 / AFRefreshRate // Pre-scaling of timer for different parameters
+	fps = AFRefreshRate
 
 	scrape = null
 
@@ -184,7 +186,7 @@ local AF = {
 		time1 = 0
 		progress = 0
 
-		waitframes = 5//0.25 * ScreenRefreshRate
+		waitframes = 5//0.25 * AFRefreshRate
 		syncsecs = 0.05
 
 		text = null
@@ -1915,6 +1917,9 @@ if (prf.LOWSPECMODE) {
 	prf.SNAPGLOW = false
 }
 
+AFRefreshRate = prf.HALFSPEED ? 2.0 * ScreenRefreshRate : ScreenRefreshRate
+
+
 /// HUECYCLE ///
 local huecycle = {
 	hue = 0
@@ -2988,7 +2993,7 @@ local tauT = {
 }
 // Preliminary tau to spd transformation
 foreach (item, value in tauT){
-	spdT.rawset(item, tau_to_speed(value, ScreenRefreshRate))
+	spdT.rawset(item, tau_to_speed(value, AFRefreshRate))
 }
 
 // Video delay parameters to skip fade-in
@@ -3987,7 +3992,7 @@ function msgbox_pulse_title(title_string, reset = false){
 		AF.msgbox.pulsecounter = -speed
 		msgbox_newtitle(title_string)
 	} else {
-		if (fe.layout.time - AF.msgbox.pulsetime0 >= 1000 / ScreenRefreshRate){
+		if (fe.layout.time - AF.msgbox.pulsetime0 >= 1000 / AFRefreshRate){
 			AF.msgbox.pulsecounter ++
 			if (AF.msgbox.pulsecounter >= speed) AF.msgbox.pulsecounter = -speed
 			msgbox_newtitle(title_string + "  " + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "\\", "|") + textrate(fabs(AF.msgbox.pulsecounter), speed, 15, "|", "\\") )
@@ -7285,7 +7290,7 @@ function getallgamesdb(logopic) {
 	local time0 = fe.layout.time
 
 	while (showalpha < AF.bootalpha){
-		if (fe.layout.time - time0 >= 1000 / ScreenRefreshRate) {
+		if (fe.layout.time - time0 >= 1000 / AFRefreshRate) {
 			showalpha = showalpha + 7
 			if (prf.SPLASHON)
 				AF.logo.alpha = showalpha
@@ -17030,14 +17035,9 @@ function tick(tick_time) {
 			if (prf.ADAPTSPEED) {
 				AF.fps = 1000.0 / (timescale.sum / timescale.values)
 				AF.tsc = 60.0 / AF.fps
-			}
-			else if (prf.HALFSPEED){
-				AF.fps = 2.0 * ScreenRefreshRate
-				AF.tsc = 0.5
-			}
-			else {
-				AF.fps = ScreenRefreshRate
-				AF.tsc = 60.0 / ScreenRefreshRate
+			} else {
+				AF.fps = AFRefreshRate
+				AF.tsc = 60.0 / AFRefreshRate
 			}
 			//Refresg taus on the base of new calculated frame rate
 			foreach (item, value in tauT){
