@@ -184,6 +184,11 @@ cps iii
 capcom cp system 3
 capcom cp system iii
 
+capcom power system changer,0,0,CRT,CPSC,NONE,-4,3,CONSOLE,Capcom,1994,CPS Changer,75,rom,null,null
+capcom cps changer
+cps changer
+power system changer
+
 capcom,0,0,CAPC,CRT,NONE,-4,3,ARCADE,Capcom,null,Capcom,151,rom,null,null
 capcom classics
 
