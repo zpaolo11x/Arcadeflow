@@ -1,0 +1,5 @@
+17.6 - 6 June 2025 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.6
+Added option to run at half speed for Apple Silicon
+Added Virtual Console U for Wii U
+Added Capcom CPS Changer system
+Minor bug fixes
