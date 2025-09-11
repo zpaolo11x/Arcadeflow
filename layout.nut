@@ -749,24 +749,35 @@ foreach(i, item in z_af_collections.arr) {
 // until AM re-reads the config file
 function buildconfig(allgames, tempprf) {
 	local cfgtable = AF.config
+	local AF_filters = {}
 
 	// First step purges special AF collections
 	local i = 0
 	while (i < cfgtable.displays.len()) {
-		if (cfgtable.displays[i].romlist.find("AF ") == 0)  cfgtable.displays.remove(i)
+		if (cfgtable.displays[i].romlist.find("AF ") == 0)  {
+			AF_filters[cfgtable.displays[i].romlist] <- cfgtable.displays[i].filters
+			cfgtable.displays.remove(i)
+		}
 		else i++
 	}
 
 	// then rebuilds the display list with all collections at the end of the list
 	if (allgames) {
 		foreach (item, val in z_af_collections.tab) {
+
+			if (!(item in AF_filters)){
+				AF_filters[item] <- ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
+			}
+	
 			cfgtable.displays.push({
 				display = item
 				layout = fe.displays[fe.list.display_index].layout
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
+				//filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : AF_filters[item]
+
 			})
 		}
 	}
