@@ -1,0 +1,2 @@
+17.6 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.7
+Global filters are working on AF all games collections
