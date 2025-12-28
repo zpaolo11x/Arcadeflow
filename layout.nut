@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.6
+// Arcadeflow - v 17.7
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -96,7 +96,7 @@ local AFRefreshRate = ScreenRefreshRate
 
 // General AF data table
 local AF = {
-	version = "17.6" // AF version in string form
+	version = "17.7" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	usr = false
@@ -507,9 +507,10 @@ function splash_progress(i, init, max) {
 	}
 }
 
-if (FeVersionNum < 306) {
-	print("Arcadeflow requires AM+ 3.0.6+\n")
-	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
+if (FeVersionNum < 320) {
+	print("Arcadeflow requires AM+ 3.2.0+\n")
+	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.2.0+",5)
+	fe.signal("exit_to_desktop")
 }
 
 /// Config management ///
@@ -571,8 +572,21 @@ function restartAM() {
 // This function parses the attract.cfg and returns a table with all useful
 // data obtained by the config scan
 
+function print_variable_x(variablein, level, name) {
+	if (level == "") print("* " + name + " *\n")
+	level = level + "   "
+	foreach (item, val in variablein) {
+		print(level + " " + (typeof val) + " " + item + " " + val + "\n")
+		if ((typeof val == "table") || (typeof val == "array")) print_variable_x(val, level, "")
+	}
+}
+
 function parseconfig() {
-	local cfgfile = ReadTextFile (AF.amfolder + "attract.cfg")
+		print("parseconfig\n")
+	local cfgfile_attract = ReadTextFile (AF.amfolder + "config/attract.cfg")
+	local cfgfile_displays = ReadTextFile (AF.amfolder + "config/displays.cfg")
+	
+
 	local displaytable = []
 	local inline = ""
 	local displayname = ""
@@ -582,22 +596,19 @@ function parseconfig() {
 	local af_collections = false
 	local exitcommand = null
 
-	inline = cfgfile.read_line_wtab()
+	// DISPLAY READ
+	inline = cfgfile_displays.read_line_wtab()
 	while (inline[0].tochar() == "#") {
 		if (inline.find("# Enable AF Collections") == 0) af_collections = true
-		else predisplays.push(inline)
-		inline = cfgfile.read_line_wtab()
+		inline = cfgfile_displays.read_line_wtab()
 	}
-	while (inline.find("display\t") != 0) {
-		predisplays.push(inline)
-		inline = cfgfile.read_line_wtab()
-	}
-	while (!cfgfile.eos()) {
+	while (!cfgfile_displays.eos()) {
 		//inline = cfgfile.read_line()
-		if (inline.find("display\t") == 0) {
-			displayname = split(inline, "\t")[1]
+		print(inline+"\n")
+		if (inline.find("display") == 0) {
+			displayname = strip(subst_replace(inline, "display", ""))
 			displaytable.push({"display": displayname})
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile_displays.read_line_wtab()
 			displaytable[id].rawset("filters", [])
 			while (inline != "") {
 				switch (split(inline, "\t ")[0]) {
@@ -616,19 +627,19 @@ function parseconfig() {
 						displaytable[id].filters.push(inline)
 						break
 				}
-				inline = cfgfile.read_line_wtab()
+				inline = cfgfile_displays.read_line_wtab()
 			}
 			id ++
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile_displays.read_line_wtab()
 		}
 		else {
-			postdisplays.push(inline)
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile_displays.read_line_wtab()
 		}
 	}
 	//Add last read line from stream, which for sure is not a "display"
-	postdisplays.push(inline)
+	//postdisplays.push(inline)
 
+/*
 	local warning = false
 	local tempval = null
 	local warnstatus = false
@@ -664,16 +675,17 @@ function parseconfig() {
 	}
 	if (warning) print("\n\nWARNING: some options in attract.cfg clash with Arcadeflow\n\n"+AF.WARN+"\n")
 
+*/
 	local out = {
-		header = predisplays
 		displays = displaytable
-		footer = postdisplays
 		collections = af_collections
-		exitcommand = exitcommand
 	}
 	//foreach(i, val in out.footer) print(i + " " + val + "\n")
+	print_variable_x(out,"","")
 	return (out)
 }
+
+
 
 // Define AF custom collections
 local z_af_collections = {
@@ -783,11 +795,13 @@ function buildconfig(allgames, tempprf) {
 	}
 
 	// Starts writing the text file
-	local cfgfile = WriteTextFile(AF.amfolder + "attract.cfg")
+	local cfgfile = WriteTextFile(AF.amfolder + "config/displays.cfg")
 
+/*
 	foreach (id, item in cfgtable.header) {
 		cfgfile.write_line(item + "\n")
 	}
+*/
 	if (allgames) cfgfile.write_line ("# Enable AF Collections\n")
 	foreach (item, value in cfgtable.displays) {
 		cfgfile.write_line ("display\t" + value.display + "\n")
@@ -800,10 +814,11 @@ function buildconfig(allgames, tempprf) {
 		}
 		cfgfile.write_line("\n")
 	}
-
+/*
 	foreach (id, item in cfgtable.footer) {
 		cfgfile.write_line(item + "\n")
 	}
+	*/
 	cfgfile.close_file()
 }
 
@@ -13515,7 +13530,7 @@ function afinstall(zipball, afname) {
 	// Update config file
 	local currentlayout = split (AF.folder, "\\/").top()
 
-	local cfgfile = file(AF.amfolder + "attract.cfg", "rb")
+	local cfgfile = file(AF.amfolder + "config/displays.cfg", "rb")
 	local outarray = []
 	local char = 0
 	local templine = ""
@@ -13535,7 +13550,7 @@ function afinstall(zipball, afname) {
 		outarray.push(templine)
 	}
 
-	local outfile = WriteTextFile(AF.amfolder + "attract.cfg")
+	local outfile = WriteTextFile(AF.amfolder + "config/displays.cfg")
 	for (local i = 0; i < outarray.len(); i++) {
 		splash_cycle_update(null)
 		outfile.write_line(outarray[i] + "\n")
@@ -18713,7 +18728,7 @@ function on_signal(sig) {
 		}
 
 		if (sig == "exit_to_desktop") {
-			if (AF.config.exitcommand != null) system (AF.config.exitcommand)
+			//if (AF.config.exitcommand != null) system (AF.config.exitcommand)
 			return false
 		}
 
