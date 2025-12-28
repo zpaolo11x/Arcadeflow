@@ -582,7 +582,6 @@ function print_variable_x(variablein, level, name) {
 }
 
 function parseconfig() {
-		print("parseconfig\n")
 	local cfgfile_attract = ReadTextFile (AF.amfolder + "config/attract.cfg")
 	local cfgfile_displays = ReadTextFile (AF.amfolder + "config/displays.cfg")
 	
@@ -604,7 +603,6 @@ function parseconfig() {
 	}
 	while (!cfgfile_displays.eos()) {
 		//inline = cfgfile.read_line()
-		print(inline+"\n")
 		if (inline.find("display") == 0) {
 			displayname = strip(subst_replace(inline, "display", ""))
 			displaytable.push({"display": displayname})
@@ -681,7 +679,6 @@ function parseconfig() {
 		collections = af_collections
 	}
 	//foreach(i, val in out.footer) print(i + " " + val + "\n")
-	print_variable_x(out,"","")
 	return (out)
 }
 
@@ -1377,7 +1374,7 @@ AF.prefs.l0.push({label = "DEBUG", glyph = 0xe998, description = "This section i
 AF.prefs.l1.push([
 {v = 7.2, varname = "FPSON", glyph = 0xe998, title = "FPS counter", help = "DBGON FPS COUNTER", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
+{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload_layout")}, selection = AF.req.executef},
 {v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
 {v = 17.0, varname = "GENERATEHTML", glyph = 0xe998, title = "Generate html file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savehtmlhistory()}, selection = AF.req.executef},
@@ -4692,7 +4689,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 					fe.signal("prev_display")
 					fe.signal("next_display")
 				}
-				else fe.signal("reload")
+				else fe.signal("reload_layout")
 			}
 		}
 	})
@@ -10277,10 +10274,11 @@ function optionsmenu_lev1() {
 
 				DBGON = prf.DEBUGMODE
 				savedebug(DBGON ? "true" : "false")
-
-				fe.signal("reload")
+				testpr("RELOADING\n")
+				fe.signal("reload_layout")
 			}
 			else {
+				testpr("NOT RELOADING")
 				prfmenu.outres0 = 0
 
 				frosthide()
@@ -10373,7 +10371,7 @@ function restoreoptions() {
 				local outprefs = generateselectiontable()
 				saveprefdata(outprefs, null)
 
-				fe.signal("reload")
+				fe.signal("reload_layout")
 
 			}
 		})
@@ -15533,7 +15531,7 @@ function buildutilitymenu() {
 			umvisible = false
 			DISPLAYTHUMBTYPE = {}
 			savevar (DISPLAYTHUMBTYPE, "pref_thumbtype.txt")
-			fe.signal("reload")
+			fe.signal("reload_layout")
 			if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 		}
 	})
@@ -16174,7 +16172,7 @@ if (prf.ALLGAMES != AF.config.collections) {
 	if (prf.ALLGAMES) {
 		update_allgames_collections(false, prf) //TEST162 could be set to true?
 	}
-	//fe.signal("reload")
+	//fe.signal("reload_layout")
 	restartAM()
 }
 
@@ -18620,7 +18618,7 @@ function on_signal(sig) {
 	// Signal response when the new menu system is showing
 	if ((zmenu.showing) && (sig != "displays_menu") && ((sig != "layout_options"))) {
 		if (sig == "screenshot") return false
-		if (sig == "reload") return false
+		if (sig == "reload_layout") return false
 
 		local menucheck = false
 		if (sig == "up") {
@@ -18836,11 +18834,11 @@ function on_signal(sig) {
 		if (fe.layout.toggle_rotation == RotateScreen.None)
 		{
 			fe.layout.toggle_rotation = RotateScreen.Right
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		else{
 			fe.layout.toggle_rotation = RotateScreen.None
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		return true
 	}
@@ -18849,11 +18847,11 @@ function on_signal(sig) {
 		if (fe.layout.toggle_rotation == RotateScreen.None)
 		{
 			fe.layout.toggle_rotation = RotateScreen.Left
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		else{
 			fe.layout.toggle_rotation = RotateScreen.None
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		return true
 	}
