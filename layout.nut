@@ -759,21 +759,16 @@ foreach(i, item in z_af_collections.arr) {
 function buildconfig(allgames, tempprf) {
 	local cfgtable = AF.config
 	local AF_filters = {}
-print_variable_x(cfgtable,"","")
+
 	// First step purges special AF collections
 	local i = 0
-	local stripped_val = ""
 	
 	while (i < cfgtable.displays.len()) {
-		testpr(i+"** **"+cfgtable.displays[i].romlist)
-		stripped_val = strip(cfgtable.displays[i].romlist)
 		if (cfgtable.displays[i].romlist.find("AF ") == 0)  {
 			AF_filters[cfgtable.displays[i].romlist] <- cfgtable.displays[i].filters
-			testpr("DELETED")
 			cfgtable.displays.remove(i)
 		}
 		else i++
-		testpr("\n")
 	}
 
 	// then rebuilds the display list with all collections at the end of the list
