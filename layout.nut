@@ -585,7 +585,6 @@ function parseconfig() {
 	local cfgfile_attract = ReadTextFile (AF.amfolder + "config/attract.cfg")
 	local cfgfile_displays = ReadTextFile (AF.amfolder + "config/displays.cfg")
 	
-
 	local displaytable = []
 	local inline = ""
 	local displayname = ""
@@ -637,7 +636,11 @@ function parseconfig() {
 	//Add last read line from stream, which for sure is not a "display"
 	//postdisplays.push(inline)
 
-/*
+	local general_config = fe.get_general_config()
+	print_variable_x(general_config,"","")
+	print(general_config["anisotropic"])
+
+
 	local warning = false
 	local tempval = null
 	local warnstatus = false
@@ -645,38 +648,35 @@ function parseconfig() {
 	local warningstrings = {
 		"image_cache_mbytes": {checktest = false, checkval = "0", comment = "Should be 0"}
 		"menu_layout": {checktest = true, checkval = "Arcadeflow", comment = "Don't use AF as menu layout"}
-		"startup_mode": {checktest = false, checkval = "default", comment = "Use Default startup mode"}
+		"startup_mode": {checktest = false, checkval = "show_last_selection", comment = "Use Show Last Selection startup mode"}
 		"power_saving": {checktest = false, checkval = "no", comment = "Power Saving can cause glitches"}
 		}
 
-	foreach(i, item in postdisplays) {
-		item = strip(item) //Remove leading tabs
+	foreach(item, val in general_config) {
 		warnstatus = false
 		foreach (checkstring, checktable in warningstrings){
-			if (item.find(checkstring) == 0){
-				tempval = split(item, " ")
-				if (tempval.len() > 1){
-					if (checktable.checktest)
-						warnstatus = (tempval[1].find(checktable.checkval) == 0)
-					else
-						warnstatus = (tempval[1] != checktable.checkval)
-					if (warnstatus) {
-						AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"
-						warning = true
-					}
+			if (item == checkstring){
+				if (checktable.checktest)
+					warnstatus = (val.find(checktable.checkval) == 0)
+				else
+					warnstatus = (val != checktable.checkval)
+				if (warnstatus) {
+					AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"
+					warning = true
 				}
 			}
 		}
-		if (item.find("exit_command") == 0) {
-			exitcommand = strip(item.slice(12, item.len()))
+		if (item == "exit_command") {
+			exitcommand = strip(val)
 		}
 	}
 	if (warning) print("\n\nWARNING: some options in attract.cfg clash with Arcadeflow\n\n"+AF.WARN+"\n")
 
-*/
+
 	local out = {
 		displays = displaytable
 		collections = af_collections
+		exitcommand = exitcommand
 	}
 	//foreach(i, val in out.footer) print(i + " " + val + "\n")
 	return (out)
@@ -18726,7 +18726,7 @@ function on_signal(sig) {
 		}
 
 		if (sig == "exit_to_desktop") {
-			//if (AF.config.exitcommand != null) system (AF.config.exitcommand)
+			if (AF.config.exitcommand != null) system (AF.config.exitcommand)
 			return false
 		}
 
