@@ -603,6 +603,7 @@ function parseconfig() {
 	while (!cfgfile_displays.eos()) {
 		//inline = cfgfile.read_line()
 		if (inline.find("display") == 0) {
+			print(inline+"\n")
 			displayname = strip(subst_replace(inline, "display", ""))
 			displaytable.push({"display": displayname})
 			inline = cfgfile_displays.read_line_wtab()
@@ -613,7 +614,7 @@ function parseconfig() {
 					case "romlist":
 					case "in_cycle":
 					case "in_menu":
-						displaytable[id].rawset(split(inline, "\t ")[0], strip(inline).slice(21))
+						displaytable[id].rawset(split(inline, "\t ")[0], strip(inline).slice(24))
 						break
 					case "filter":
 					case "sort_by":
@@ -631,15 +632,14 @@ function parseconfig() {
 		}
 		else {
 			inline = cfgfile_displays.read_line_wtab()
+						print(inline+"\n")
+
 		}
 	}
 	//Add last read line from stream, which for sure is not a "display"
 	//postdisplays.push(inline)
 
 	local general_config = fe.get_general_config()
-	print_variable_x(general_config,"","")
-	print(general_config["anisotropic"])
-
 
 	local warning = false
 	local tempval = null
@@ -759,23 +759,38 @@ foreach(i, item in z_af_collections.arr) {
 function buildconfig(allgames, tempprf) {
 	local cfgtable = AF.config
 	local AF_filters = {}
-
+	print("FIRST CFGTABLE\n")
+print_variable_x(cfgtable,"","")
 	// First step purges special AF collections
 	local i = 0
+	local stripped_val = ""
+	local out_displays = []
+
 	while (i < cfgtable.displays.len()) {
+		testpr(i+"** **"+cfgtable.displays[i].romlist)
+
 		if (cfgtable.displays[i].romlist.find("AF ") == 0)  {
 			AF_filters[cfgtable.displays[i].romlist] <- cfgtable.displays[i].filters
-			cfgtable.displays.remove(i)
+			testpr("DELETED")
+			i++
+			//cfgtable.displays.remove(i)
 		}
-		else i++
+		else {
+			out_displays.push(cfgtable.displays[i])
+			i++
+		}
+		testpr("\n")
 	}
+	print("OUT DISPLAYS\n")
 
+print_variable_x(out_displays,"","")
+cfgtable.displays = out_displays
 	// then rebuilds the display list with all collections at the end of the list
 	if (allgames) {
 		foreach (item, val in z_af_collections.tab) {
 
 			if (!(item in AF_filters)){
-				AF_filters[item] <- ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
+				AF_filters[item] <- ["    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"]
 			}
 	
 			cfgtable.displays.push({
@@ -784,8 +799,8 @@ function buildconfig(allgames, tempprf) {
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				//filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
-				filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : AF_filters[item]
+				//filters = tempprf.MASTERLIST ? ["    global_filter", "        rule                 FileIsAvailable equals 1", "    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"] : ["    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["    global_filter", "        rule                 FileIsAvailable equals 1", "    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"] : AF_filters[item]
 
 			})
 		}
@@ -801,13 +816,13 @@ function buildconfig(allgames, tempprf) {
 */
 	if (allgames) cfgfile.write_line ("# Enable AF Collections\n")
 	foreach (item, value in cfgtable.displays) {
-		cfgfile.write_line ("display\t" + value.display + "\n")
-		cfgfile.write_line ("\tlayout               " + value.layout + "\n")
-		cfgfile.write_line ("\tromlist              " + value.romlist + "\n")
-		cfgfile.write_line ("\tin_cycle             " + value.in_cycle + "\n")
-		cfgfile.write_line ("\tin_menu              " + value.in_menu + "\n")
+		cfgfile.write_line ("display " + value.display + "\n")
+		cfgfile.write_line ("    layout                  " + value.layout + "\n")
+		cfgfile.write_line ("    romlist                 " + value.romlist + "\n")
+		cfgfile.write_line ("    in_cycle                " + value.in_cycle + "\n")
+		cfgfile.write_line ("    in_menu                 " + value.in_menu + "\n")
 		foreach (item2, val2 in value.filters) {
-			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "\t" + val2 + "\n" : val2 + "\n")
+			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "    " + val2 + "\n" : val2 + "\n")
 		}
 		cfgfile.write_line("\n")
 	}
@@ -16168,6 +16183,7 @@ function checkrepeat(counter) {
 /// Check ALLGAMES status ///
 
 if (prf.ALLGAMES != AF.config.collections) {
+	testpr("\nINCONSISTENT AF COLLECTION\n")
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
 		update_allgames_collections(false, prf) //TEST162 could be set to true?
