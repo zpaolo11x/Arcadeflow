@@ -603,7 +603,7 @@ function parseconfig() {
 	while (!cfgfile_displays.eos()) {
 		//inline = cfgfile.read_line()
 		if (inline.find("display") == 0) {
-			print(inline+"\n")
+
 			displayname = strip(subst_replace(inline, "display", ""))
 			displaytable.push({"display": displayname})
 			inline = cfgfile_displays.read_line_wtab()
@@ -632,8 +632,6 @@ function parseconfig() {
 		}
 		else {
 			inline = cfgfile_displays.read_line_wtab()
-						print(inline+"\n")
-
 		}
 	}
 	//Add last read line from stream, which for sure is not a "display"
@@ -10275,11 +10273,9 @@ function optionsmenu_lev1() {
 
 				DBGON = prf.DEBUGMODE
 				savedebug(DBGON ? "true" : "false")
-				testpr("RELOADING\n")
 				fe.signal("reload_layout")
 			}
 			else {
-				testpr("NOT RELOADING")
 				prfmenu.outres0 = 0
 
 				frosthide()
@@ -16169,7 +16165,6 @@ function checkrepeat(counter) {
 /// Check ALLGAMES status ///
 
 if (prf.ALLGAMES != AF.config.collections) {
-	testpr("\nINCONSISTENT AF COLLECTION\n")
 	buildconfig(prf.ALLGAMES, prf)
 	if (prf.ALLGAMES) {
 		update_allgames_collections(false, prf) //TEST162 could be set to true?

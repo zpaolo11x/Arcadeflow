@@ -1,4 +1,4 @@
-17.7 - TBD - https://github.com/zpaolo11x/Arcadeflow/zipball/17.7
+17.7 - 30 December 2025 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.7
 THIS VERSION REQUIRES MANUAL INSTALL
 Fixed compatibility with AM+ 3.2.0
 Global filters are working on AF all games collections
