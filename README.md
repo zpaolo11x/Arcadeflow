@@ -1,6 +1,6 @@
-# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.6 #
+# Arcadeflow - Attract Mode theme by zpaolo11x - v 17.7 #
 
-Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and comptuer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
+Arcadeflow is an horizontal scrolling, grid based theme for MAME, console and computer games, it supports multiple systems and is based on snapshots and game titles or on cartridge boxes / flyers. If you have video snaps they will appear over the selected thumbnail without sound, and you can open larger video preview with sound and game data in a separate "info" page. Multiple Displays are supported with a custom Displays Menu page.
 
 Arcadeflow has some advanced features: you can sort game lists within Arcadeflow user interface, you can create filters on the fly, you can import history.dat and command.dat for richer info page, you can import RetroPie XML lists into AM romlists. It also features its own ScreenScraper backed scraping engine, metadata editor, and all games data are stored outside of the romlist so they are shared with all collection romlists.
 
@@ -10,12 +10,11 @@ For best results with thumbnails aspect ratio and cropping, Arcadeflow matches y
 
 Arcadeflow is heavily configurable, please take some time to go through the option and you'll see you can tailor it to most of your needs.
 
-## What's new in v 17.6 #
+## What's new in v 17.7 #
 
-- Added option to run at half speed for Apple Silicon
-- Added Virtual Console U for Wii U
-- Added Capcom CPS Changer system
-- Minor bug fixes
+- THIS VERSION REQUIRES MANUAL INSTALL
+- Fixed compatibility with AM+ 3.2.0
+- Global filters are working on AF all games collections
 
 ## Emulator system identifier #
 
@@ -299,11 +298,11 @@ Arcadeflow has its own attract mode screensaver that kicks in after some inactiv
 - 'Background music' : Path to a music file to play in background
 - 'Enable game sound' : Enable game sounds during attract mode
 
-#### ! PERFORMANCE & FX !
+#### PERFORMANCE & FX
 Turn on or off special effects that might impact on Arcadeflow performance
 
 - 'Adjust performance' : Tries to adapt speed to system performance. Enable for faster scroll, disable for smoother but slower scroll
-- '! Half speed !' : Fixes an issue with Apple Silicon M4
+- 'Half speed' : Fixes an issue with Apple Silicon M4
 - 'Resolution W x H' : Define a custom resolution for your layout independent of screen resolution. Format is WIDTHxHEIGHT, leave blank for default resolution
 - 'Raspberry Pi fix' : This applies to systems that gives weird results when getting back from a game, reloading the layout as needed
 
@@ -437,6 +436,13 @@ This section is for debug purposes only
 - 'Reset all options' : Restore default settings for all layout options, erase sorting options, language options and thumbnail options
 
 ## Previous versions history #
+
+*v17.6 - 6 June 2025 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.6*
+
+- Added option to run at half speed for Apple Silicon
+- Added Virtual Console U for Wii U
+- Added Capcom CPS Changer system
+- Minor bug fixes
 
 *v17.5 - 17 December 2024 - https://github.com/zpaolo11x/Arcadeflow/zipball/17.5*
 

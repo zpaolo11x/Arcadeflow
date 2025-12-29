@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.6
+// Arcadeflow - v 17.7
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -96,7 +96,7 @@ local AFRefreshRate = ScreenRefreshRate
 
 // General AF data table
 local AF = {
-	version = "17.6" // AF version in string form
+	version = "17.7" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	usr = false
@@ -507,9 +507,10 @@ function splash_progress(i, init, max) {
 	}
 }
 
-if (FeVersionNum < 306) {
-	print("Arcadeflow requires AM+ 3.0.6+\n")
-	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.0.6+",5)
+if (FeVersionNum < 320) {
+	print("Arcadeflow requires AM+ 3.2.0+\n")
+	splash_message(AF.splash.pulse,"Arcadeflow requires AM+ 3.2.0+",5)
+	fe.signal("exit_to_desktop")
 }
 
 /// Config management ///
@@ -571,8 +572,19 @@ function restartAM() {
 // This function parses the attract.cfg and returns a table with all useful
 // data obtained by the config scan
 
+function print_variable_x(variablein, level, name) {
+	if (level == "") print("* " + name + " *\n")
+	level = level + "   "
+	foreach (item, val in variablein) {
+		print(level + " " + (typeof val) + " " + item + " " + val + "\n")
+		if ((typeof val == "table") || (typeof val == "array")) print_variable_x(val, level, "")
+	}
+}
+
 function parseconfig() {
-	local cfgfile = ReadTextFile (AF.amfolder + "attract.cfg")
+	local cfgfile_attract = ReadTextFile (AF.amfolder + "config/attract.cfg")
+	local cfgfile_displays = ReadTextFile (AF.amfolder + "config/displays.cfg")
+	
 	local displaytable = []
 	local inline = ""
 	local displayname = ""
@@ -582,22 +594,19 @@ function parseconfig() {
 	local af_collections = false
 	local exitcommand = null
 
-	inline = cfgfile.read_line_wtab()
+	// DISPLAY READ
+	inline = cfgfile_displays.read_line_wtab()
 	while (inline[0].tochar() == "#") {
 		if (inline.find("# Enable AF Collections") == 0) af_collections = true
-		else predisplays.push(inline)
-		inline = cfgfile.read_line_wtab()
+		inline = cfgfile_displays.read_line_wtab()
 	}
-	while (inline.find("display\t") != 0) {
-		predisplays.push(inline)
-		inline = cfgfile.read_line_wtab()
-	}
-	while (!cfgfile.eos()) {
+	while (!cfgfile_displays.eos()) {
 		//inline = cfgfile.read_line()
-		if (inline.find("display\t") == 0) {
-			displayname = split(inline, "\t")[1]
+		if (inline.find("display") == 0) {
+
+			displayname = strip(subst_replace(inline, "display", ""))
 			displaytable.push({"display": displayname})
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile_displays.read_line_wtab()
 			displaytable[id].rawset("filters", [])
 			while (inline != "") {
 				switch (split(inline, "\t ")[0]) {
@@ -605,7 +614,7 @@ function parseconfig() {
 					case "romlist":
 					case "in_cycle":
 					case "in_menu":
-						displaytable[id].rawset(split(inline, "\t ")[0], strip(inline).slice(21))
+						displaytable[id].rawset(split(inline, "\t ")[0], strip(inline).slice(24))
 						break
 					case "filter":
 					case "sort_by":
@@ -616,18 +625,19 @@ function parseconfig() {
 						displaytable[id].filters.push(inline)
 						break
 				}
-				inline = cfgfile.read_line_wtab()
+				inline = cfgfile_displays.read_line_wtab()
 			}
 			id ++
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile_displays.read_line_wtab()
 		}
 		else {
-			postdisplays.push(inline)
-			inline = cfgfile.read_line_wtab()
+			inline = cfgfile_displays.read_line_wtab()
 		}
 	}
 	//Add last read line from stream, which for sure is not a "display"
-	postdisplays.push(inline)
+	//postdisplays.push(inline)
+
+	local general_config = fe.get_general_config()
 
 	local warning = false
 	local tempval = null
@@ -636,44 +646,41 @@ function parseconfig() {
 	local warningstrings = {
 		"image_cache_mbytes": {checktest = false, checkval = "0", comment = "Should be 0"}
 		"menu_layout": {checktest = true, checkval = "Arcadeflow", comment = "Don't use AF as menu layout"}
-		"startup_mode": {checktest = false, checkval = "default", comment = "Use Default startup mode"}
+		"startup_mode": {checktest = false, checkval = "show_last_selection", comment = "Use Show Last Selection startup mode"}
 		"power_saving": {checktest = false, checkval = "no", comment = "Power Saving can cause glitches"}
 		}
 
-	foreach(i, item in postdisplays) {
-		item = strip(item) //Remove leading tabs
+	foreach(item, val in general_config) {
 		warnstatus = false
 		foreach (checkstring, checktable in warningstrings){
-			if (item.find(checkstring) == 0){
-				tempval = split(item, " ")
-				if (tempval.len() > 1){
-					if (checktable.checktest)
-						warnstatus = (tempval[1].find(checktable.checkval) == 0)
-					else
-						warnstatus = (tempval[1] != checktable.checkval)
-					if (warnstatus) {
-						AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"
-						warning = true
-					}
+			if (item == checkstring){
+				if (checktable.checktest)
+					warnstatus = (val.find(checktable.checkval) == 0)
+				else
+					warnstatus = (val != checktable.checkval)
+				if (warnstatus) {
+					AF.WARN = AF.WARN + subst_replace(char_replace(item," ",""), checkstring, checkstring + ":") + "  (" + checktable.comment + ")\n"
+					warning = true
 				}
 			}
 		}
-		if (item.find("exit_command") == 0) {
-			exitcommand = strip(item.slice(12, item.len()))
+		if (item == "exit_command") {
+			exitcommand = strip(val)
 		}
 	}
 	if (warning) print("\n\nWARNING: some options in attract.cfg clash with Arcadeflow\n\n"+AF.WARN+"\n")
 
+
 	local out = {
-		header = predisplays
 		displays = displaytable
-		footer = postdisplays
 		collections = af_collections
 		exitcommand = exitcommand
 	}
 	//foreach(i, val in out.footer) print(i + " " + val + "\n")
 	return (out)
 }
+
+
 
 // Define AF custom collections
 local z_af_collections = {
@@ -749,50 +756,65 @@ foreach(i, item in z_af_collections.arr) {
 // until AM re-reads the config file
 function buildconfig(allgames, tempprf) {
 	local cfgtable = AF.config
+	local AF_filters = {}
 
 	// First step purges special AF collections
 	local i = 0
+	
 	while (i < cfgtable.displays.len()) {
-		if (cfgtable.displays[i].romlist.find("AF ") == 0)  cfgtable.displays.remove(i)
+		if (cfgtable.displays[i].romlist.find("AF ") == 0)  {
+			AF_filters[cfgtable.displays[i].romlist] <- cfgtable.displays[i].filters
+			cfgtable.displays.remove(i)
+		}
 		else i++
 	}
 
 	// then rebuilds the display list with all collections at the end of the list
 	if (allgames) {
 		foreach (item, val in z_af_collections.tab) {
+
+			if (!(item in AF_filters)){
+				AF_filters[item] <- ["    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"]
+			}
+	
 			cfgtable.displays.push({
 				display = item
 				layout = fe.displays[fe.list.display_index].layout
 				romlist = item
 				in_cycle = "yes"
 				in_menu = "no"
-				filters = tempprf.MASTERLIST ? ["\tglobal_filter", "\t\trule                 FileIsAvailable equals 1", "\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"] : ["\tfilter               All", "\tfilter               Favourites", "\t\trule                 Favourite equals 1"]
+				//filters = tempprf.MASTERLIST ? ["    global_filter", "        rule                 FileIsAvailable equals 1", "    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"] : ["    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"]
+				filters = tempprf.MASTERLIST ? ["    global_filter", "        rule                 FileIsAvailable equals 1", "    filter               All", "    filter               Favourites", "        rule                 Favourite equals 1"] : AF_filters[item]
+
 			})
 		}
 	}
 
 	// Starts writing the text file
-	local cfgfile = WriteTextFile(AF.amfolder + "attract.cfg")
+	local cfgfile = WriteTextFile(AF.amfolder + "config/displays.cfg")
 
+/*
 	foreach (id, item in cfgtable.header) {
 		cfgfile.write_line(item + "\n")
 	}
+*/
 	if (allgames) cfgfile.write_line ("# Enable AF Collections\n")
 	foreach (item, value in cfgtable.displays) {
-		cfgfile.write_line ("display\t" + value.display + "\n")
-		cfgfile.write_line ("\tlayout               " + value.layout + "\n")
-		cfgfile.write_line ("\tromlist              " + value.romlist + "\n")
-		cfgfile.write_line ("\tin_cycle             " + value.in_cycle + "\n")
-		cfgfile.write_line ("\tin_menu              " + value.in_menu + "\n")
+		cfgfile.write_line ("display " + value.display + "\n")
+		cfgfile.write_line ("    layout                  " + value.layout + "\n")
+		cfgfile.write_line ("    romlist                 " + value.romlist + "\n")
+		cfgfile.write_line ("    in_cycle                " + value.in_cycle + "\n")
+		cfgfile.write_line ("    in_menu                 " + value.in_menu + "\n")
 		foreach (item2, val2 in value.filters) {
-			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "\t" + val2 + "\n" : val2 + "\n")
+			cfgfile.write_line(((val2.slice(0, 6) == "filter") || (val2 == "global_filter")) ? "    " + val2 + "\n" : val2 + "\n")
 		}
 		cfgfile.write_line("\n")
 	}
-
+/*
 	foreach (id, item in cfgtable.footer) {
 		cfgfile.write_line(item + "\n")
 	}
+	*/
 	cfgfile.close_file()
 }
 
@@ -1351,7 +1373,7 @@ AF.prefs.l0.push({label = "DEBUG", glyph = 0xe998, description = "This section i
 AF.prefs.l1.push([
 {v = 7.2, varname = "FPSON", glyph = 0xe998, title = "FPS counter", help = "DBGON FPS COUNTER", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 7.2, varname = "DEBUGMODE", glyph = 0xe998, title = "DEBUG mode", help = "Enter DBGON mode, increased output logging", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload")}, selection = AF.req.executef},
+{v = 7.2, varname = "OLDOPTIONS", glyph = 0xe998, title = "AM options page", help = "Shows the default Attract-Mode options page", options = "", values = function() {prf.OLDOPTIONSPAGE = true; AF.prefs.getout = true; fe.signal("layout_options"); fe.signal("reload_layout")}, selection = AF.req.executef},
 {v = 16.2, varname = "CHECKMSGBOX", glyph = 0xe998, title = "Test message box", help = "For developer use only...", options = "", values = function() {msgbox_test()}, selection = AF.req.executef},
 {v = 9.5, varname = "GENERATEREADME", glyph = 0xe998, title = "Generate readme file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savereadme()}, selection = AF.req.executef},
 {v = 17.0, varname = "GENERATEHTML", glyph = 0xe998, title = "Generate html file", help = "For developer use only...", options = "", values = function() {AF.prefs.getout = true; savehtmlhistory()}, selection = AF.req.executef},
@@ -4666,7 +4688,7 @@ function scraperomlist2(inprf, forcemedia, onegame) {
 					fe.signal("prev_display")
 					fe.signal("next_display")
 				}
-				else fe.signal("reload")
+				else fe.signal("reload_layout")
 			}
 		}
 	})
@@ -10251,8 +10273,7 @@ function optionsmenu_lev1() {
 
 				DBGON = prf.DEBUGMODE
 				savedebug(DBGON ? "true" : "false")
-
-				fe.signal("reload")
+				fe.signal("reload_layout")
 			}
 			else {
 				prfmenu.outres0 = 0
@@ -10347,7 +10368,7 @@ function restoreoptions() {
 				local outprefs = generateselectiontable()
 				saveprefdata(outprefs, null)
 
-				fe.signal("reload")
+				fe.signal("reload_layout")
 
 			}
 		})
@@ -13504,7 +13525,7 @@ function afinstall(zipball, afname) {
 	// Update config file
 	local currentlayout = split (AF.folder, "\\/").top()
 
-	local cfgfile = file(AF.amfolder + "attract.cfg", "rb")
+	local cfgfile = file(AF.amfolder + "config/displays.cfg", "rb")
 	local outarray = []
 	local char = 0
 	local templine = ""
@@ -13524,7 +13545,7 @@ function afinstall(zipball, afname) {
 		outarray.push(templine)
 	}
 
-	local outfile = WriteTextFile(AF.amfolder + "attract.cfg")
+	local outfile = WriteTextFile(AF.amfolder + "config/displays.cfg")
 	for (local i = 0; i < outarray.len(); i++) {
 		splash_cycle_update(null)
 		outfile.write_line(outarray[i] + "\n")
@@ -15507,7 +15528,7 @@ function buildutilitymenu() {
 			umvisible = false
 			DISPLAYTHUMBTYPE = {}
 			savevar (DISPLAYTHUMBTYPE, "pref_thumbtype.txt")
-			fe.signal("reload")
+			fe.signal("reload_layout")
 			if (prf.THEMEAUDIO) snd.wooshsound.playing = true
 		}
 	})
@@ -16148,7 +16169,7 @@ if (prf.ALLGAMES != AF.config.collections) {
 	if (prf.ALLGAMES) {
 		update_allgames_collections(false, prf) //TEST162 could be set to true?
 	}
-	//fe.signal("reload")
+	//fe.signal("reload_layout")
 	restartAM()
 }
 
@@ -18594,7 +18615,7 @@ function on_signal(sig) {
 	// Signal response when the new menu system is showing
 	if ((zmenu.showing) && (sig != "displays_menu") && ((sig != "layout_options"))) {
 		if (sig == "screenshot") return false
-		if (sig == "reload") return false
+		if (sig == "reload_layout") return false
 
 		local menucheck = false
 		if (sig == "up") {
@@ -18810,11 +18831,11 @@ function on_signal(sig) {
 		if (fe.layout.toggle_rotation == RotateScreen.None)
 		{
 			fe.layout.toggle_rotation = RotateScreen.Right
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		else{
 			fe.layout.toggle_rotation = RotateScreen.None
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		return true
 	}
@@ -18823,11 +18844,11 @@ function on_signal(sig) {
 		if (fe.layout.toggle_rotation == RotateScreen.None)
 		{
 			fe.layout.toggle_rotation = RotateScreen.Left
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		else{
 			fe.layout.toggle_rotation = RotateScreen.None
-			fe.signal("reload")
+			fe.signal("reload_layout")
 		}
 		return true
 	}
