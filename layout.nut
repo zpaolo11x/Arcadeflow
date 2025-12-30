@@ -1265,8 +1265,8 @@ AF.prefs.l1.push([
 {v = 13.7, varname = "MULTIMON", glyph = 0xeaf8, title = "Enable multiple monitor", help = "Enable Arcadeflow multiple monitor suport", options = ["Yes", "No"], values =[true, false], selection = 1},
 {v = 13.7, varname = "MONITORNUMBER", glyph = 0xeaf9, title = "Monitor identifier", help = "Select the identification number for the external monitor", options = ["Monitor 1", "Monitor 2", "Monitor 3"], values = [1, 2, 3], selection = 0},
 {v = 13.7, varname = "MONITORASPECT", glyph = 0xea57, title = "Correct aspect ratio", help = "Select if the image on the second monitor should be stretched or not", options = ["Yes", "No"], values =[true, false], selection = 0}
-{v = 13.7, varname = "MONITORMEDIA1", glyph = 0xe915, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee", "logo"], values =["marquee", "wheel"], selection = 0}
-{v = 13.7, varname = "MONITORMEDIA2", glyph = 0xe915, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee", "logo"], values =["marquee", "wheel"], selection = 1}
+{v = 13.7, varname = "MONITORMEDIA1", glyph = 0xe915, title = "Main media source", help = "Select the artwork source to be used on secondary monitor", options = ["marquee", "logo"], values =["marquee", "logo"], selection = 0}
+{v = 13.7, varname = "MONITORMEDIA2", glyph = 0xe915, title = "Alternate media source", help = "Select the artwork source to be used on secondary monitor in case first one is not present", options = ["marquee", "wheel"], values =["marquee", "wheel"], selection = 1}
 ])
 
 menucounter++
