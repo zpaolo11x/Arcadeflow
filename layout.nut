@@ -11229,18 +11229,22 @@ hist.split_h = (fl.w - (fl.h * hist.panel_ar)) * 1.0 / fl.w
 
 local hist_titleT = {
 	x = fl.x + fl.w * hist.split_h + 15 * UI.scalerate,
-	y = fl.y + 15 * UI.scalerate,
+	y = UI.marquee.h + (10 * UI.scalerate),
 	w = fl.w * (1.0 - hist.split_h) - 30 * UI.scalerate,
-	h = fl.h * 0.25 - 30 * UI.scalerate
+	h = (fl.h * 0.23) - (30 * UI.scalerate)
 	transparency = 50
 }
 
 local hist_screenT = {
 	x = fl.x,
-	y = fl.y + (fl.h - fl.w * hist.split_h) * 0.5,
-	w = fl.w * hist.split_h,
-	h = fl.w * hist.split_h
+	y = UI.marquee.h + (fl.h - fl.w * hist.split_h) * 0.5,
+	w = fl.w * hist.split_h - UI.marquee.h, // w,h this must be square so screenshots get shown correctly
+	h = fl.w * hist.split_h - UI.marquee.h
 }
+
+// recalculate image position by calculating the offset to a centered image
+hist_screenT.x += (((fl.w * hist.split_h) - hist_screenT.w) / 2 )
+
 
 hist_screenT.y += hist_screenT.y % 2.0
 hist_screenT.w += hist_screenT.w % 2.0
@@ -11250,17 +11254,20 @@ if (hist_screenT.h > fl.h) {
 	hist_screenT.x = fl.x + (fl.w * hist.split_h - fl.h) * 0.5
 	hist_screenT.y = fl.y
 	hist_screenT.x += hist_screenT.x % 2.0
+	hist_screenT.x += UI.marquee.h
 	hist_screenT.w = fl.h
 	hist_screenT.w += hist_screenT.w % 2.0
+	hist_screenT.w -= UI.marquee.h
 	hist_screenT.h = fl.h
 	hist_screenT.h += hist_screenT.h % 2.0
+	hist_screenT.h -= UI.marquee.h
 }
 
 local hist_textT = {
 	x = fl.x + fl.w * hist.split_h,
-	y = fl.y + fl.h * 0.25,
+	y = (fl.y + fl.h * 0.21) + UI.marquee.h,
 	w = fl.w * (1.0 - hist.split_h),
-	h = fl.h * 0.75
+	h = (fl.h * 0.79) - UI.marquee.h
 
 	charsize = 0
 	linesize = 0
@@ -11284,20 +11291,29 @@ if (UI.vertical) {
 	hist_screenT.x = fl.x + (fl.w - fl.h * hist.split_h) * 0.5
 	hist_screenT.x += hist_screenT.x % 2.0
 	hist_screenT.y = fl.y
+	hist_screenT.y += UI.marquee.h
 	hist_screenT.w = fl.h * hist.split_h
 	hist_screenT.w += hist_screenT.w % 2.0
+	hist_screenT.w -= UI.marquee.h
 	hist_screenT.h = fl.h * hist.split_h
 	hist_screenT.h += hist_screenT.h % 2.0
+	hist_screenT.h -= UI.marquee.h
 
 	if (hist_screenT.w > fl.w) {
 		hist_screenT.x = fl.x
 		hist_screenT.y = fl.y + (fl.h * hist.split_h - fl.w) * 0.5
 		hist_screenT.y += hist_screenT.y % 2.0
+		hist_screenT.y += UI.marquee.h
 		hist_screenT.w = fl.w
 		hist_screenT.w += hist_screenT.w % 2.0
+		hist_screenT.w -= UI.marquee.h
 		hist_screenT.h = fl.w
 		hist_screenT.h += hist_screenT.h % 2.0
+		hist_screenT.h -= UI.marquee.h
 	}
+
+	// recalculate image position by calculating the offset to a centered image
+	hist_screenT.x += (fl.w - hist_screenT.w) / 2
 
 	hist_textT.x = fl.x
 	hist_textT.y = fl.y + fl.h * hist.split_h + fl.w * 0.2
@@ -11454,14 +11470,14 @@ local histgr = {
 }
 
 if (!UI.vertical) {
-	histgr.black = history_surface.add_image(AF.folder + "pics/black.png", 0, 0, fl.w * hist.split_h + 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x, fl.h_os)
-	histgr.g1 = history_surface.add_image(AF.folder + "pics/grads/wgradientT.png", 0, 0, fl.w * hist.split_h + 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x, fl.h_os * 0.5)
-	histgr.g2 = history_surface.add_image(AF.folder + "pics/grads/wgradientB.png", 0, fl.h_os * 0.5, fl.w * hist.split_h + 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x, fl.h_os * 0.5)
+	histgr.black = history_surface.add_image(AF.folder + "pics/black.png", 0, UI.marquee.h, fl.w * hist.split_h + 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x, fl.h_os - UI.marquee.h)
+	histgr.g1 = history_surface.add_image(AF.folder + "pics/grads/wgradientT.png", 0, UI.marquee.h, fl.w * hist.split_h + 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x, fl.h_os * 0.5 - UI.marquee.h)
+	histgr.g2 = history_surface.add_image(AF.folder + "pics/grads/wgradientB.png", 0, fl.h_os * 0.5, fl.w * hist.split_h + 0.5 * (fl.w_os - fl.w) + fl.w_os * fl.overscan_x, fl.h_os * 0.5 - UI.marquee.h)
 }
 else{
-	histgr.black = history_surface.add_image(AF.folder + "pics/black.png", 0, 0, fl.w_os, fl.h * hist.split_h + 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y)
-	histgr.g1 = history_surface.add_image(AF.folder + "pics/grads/wgradientL.png", 0, 0, fl.w_os * 0.5, fl.h * hist.split_h + 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y)
-	histgr.g2 = history_surface.add_image(AF.folder + "pics/grads/wgradientR.png", fl.w_os * 0.5, 0, fl.w_os * 0.5, fl.h * hist.split_h + 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y)
+	histgr.black = history_surface.add_image(AF.folder + "pics/black.png", 0, UI.marquee.h, fl.w_os, fl.h * hist.split_h + 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y - UI.marquee.h)
+	histgr.g1 = history_surface.add_image(AF.folder + "pics/grads/wgradientL.png", 0, UI.marquee.h, fl.w_os * 0.5, fl.h * hist.split_h + 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y - UI.marquee.h)
+	histgr.g2 = history_surface.add_image(AF.folder + "pics/grads/wgradientR.png", fl.w_os * 0.5, UI.marquee.h, fl.w_os * 0.5, fl.h * hist.split_h + 0.5 * (fl.h_os - fl.h) + fl.h_os * fl.overscan_y - UI.marquee.h)
 }
 
 histgr.black.set_rgb (0, 0, 0)
