@@ -1055,7 +1055,8 @@ AF.prefs.l1.push([
 {v = 16.0, varname = "HORIZONTALROWS", glyph = 0xea72, title = "Rows in horizontal", help = "Number of rows to use in 'horizontal' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 3},
 {v = 16.0, varname = "VERTICALROWS", glyph = 0xea71, title = "Rows in vertical", help = "Number of rows to use in 'vertical' mode", options = ["1-Max", "1-Small", "1", "2", "3"], values = [-2, -1, 1, 2, 3], selection = 4},
 {v = 7.2, varname = "CLEANLAYOUT", glyph = 0xe997, title = "Clean layout", help = "Reduce game data shown on screen", options = ["Yes", "No"], values = [true, false], selection = 1},
-{v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 16.0, varname = "SMALLSCREEN", glyph = 0xe997, title = "Small screen", help = "Optimize theme for small size screens, 1 row layout and marquee split OFF forced, increased font size and cleaner layout", options = ["Yes", "No"], values = [true, false], selection = 1},
+{v = 17.7, varname = "MARQUEESPLIT", glyph = 0xe997, title = "Marquee Split", help = "Add a section on top of the layout to show a marquee, rows are reduced by one. Incompatible with Smallscreen", options = ["Yes", "No"], values = [true, false], selection = 1},
 {v = 12.8, varname = "CUSTOMCOLOR", glyph = 0xe90c, title = "Custom color", help = "Define a custom color for UI elements using sliders", options = "", values = "", selection = AF.req.rgbvalue},
 {v = 0.0, varname = "", glyph = -1, title = "Game Data", selection = AF.req.liner},
 {v = 7.2, varname = "SHOWSUBNAME", glyph = 0xea6d, title = "Display Game Long Name", help = "Shows the part of the rom name with version and region data", options = ["Yes", "No"], values = [true, false], selection = 0},
@@ -2727,6 +2728,10 @@ local UI = {
 	zoomedpadding = 0
 	zoomedcorewidth = 0
 	zoomedcoreheight = 0
+	
+	marquee = {
+		h = 0 //content size
+	}
 
 	header = {
 		h = 0 //content size
@@ -2860,7 +2865,13 @@ if (UI.vertical) {
 if (UI.vertical) UI.rows = prf.VERTICALROWS
 
 UI.rows = (prf.SMALLSCREEN ? 1 : UI.rows)
-if (prf.SMALLSCREEN) prf.SLIMLINE = prf.MAXLINE = false
+if (prf.SMALLSCREEN) prf.SLIMLINE = prf.MAXLINE = prf.MARQUEESPLIT = false
+
+// Manage Marquee split changes
+if (prf.MARQUEESPLIT && !UI.vertical)
+{
+	UI.rows = (UI.rows > 1) ? (UI.rows - 1) : 1 // make sure there's always at least 1 row
+}
 
 fe.layout.width = fl.w_os
 fe.layout.height = fl.h_os
@@ -2872,13 +2883,35 @@ prf.PIXELACCURATE <- true
 
 UI.scalerate = (UI.vertical ? fl.w : fl.h) / 1200.0
 
+// UI.header.h affects the second line of the header text (system, year). higher means lower on screen. It also moves the Displays menu higher. which feels like a bug.
+// UI.header.h2 affects the grid rows. pushes the grids down while leaving the header on top. it's a spacer
+// UI.footer.h affects the bottom bar (with letters). higher means higher on screen. It seems to represent an height size for the footer as 500 seems to be around 250 pixels high (centered)
+// UI.footer.h2 affects the grid roms. pushes the grids up and scales them accordingly. represents a spacer size
+// h and h2 are layer info, so they both need to be edited accordingly. If h2 is not changed. grid images will be behind header / footer text
+// Does not affect the History page.
+// change UI.header.h = floor(prf.SMALLSCREEN ? 260 * UI.scalerate : 200 * UI.scalerate) // content 
+
 // Changed header spacer from 200 to 220 better centering
-UI.header.h = floor(prf.SMALLSCREEN ? 260 * UI.scalerate : 200 * UI.scalerate) // content
-UI.header.h2 = floor(prf.SMALLSCREEN ? 330 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE))? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)) //spacer
-// Changed header spacer from 100 to 90 better centering
-UI.footer.h = floor(prf.SMALLSCREEN ? 150 * UI.scalerate : 100 * UI.scalerate) // content
-UI.footer.h = UI.footer.h + UI.footer.h%2.0 // even footer
-UI.footer.h2 = floor(prf.SMALLSCREEN ? 150 * UI.scalerate : (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)) //spacer
+if (prf.SMALLSCREEN) {
+	UI.header.h  = 260 * UI.scalerate // content height
+	UI.header.h2 = 330 * UI.scalerate // spacer
+	UI.footer.h  = 150 * UI.scalerate // content area
+	UI.footer.h2 = 150 * UI.scalerate // spacer
+} else {
+	UI.header.h  = 200 * UI.scalerate
+	UI.header.h2 = (((UI.rows == 1) && (!prf.SLIMLINE)) ? 250 * UI.scalerate : (prf.PIXELACCURATE ? 220 : 220) * UI.scalerate)
+	UI.footer.h  = 100 * UI.scalerate
+	UI.footer.h2 = (((UI.rows == 1) && (!prf.SLIMLINE)) ? 150 * UI.scalerate : (prf.PIXELACCURATE ? 90 : 90) * UI.scalerate)
+}
+
+// post processing of headers and footers
+UI.footer.h += UI.footer.h % 2.0 // even footer
+
+// Move everything down if working with the marquee. This affects the spacer only as the position (not size) of the header will be pushed down else where
+UI.marquee.h  = (prf.MARQUEESPLIT ? floor (fl.h * 0.17) : 0) // give the marquee 17% of the screen height
+
+UI.header.h2 += UI.marquee.h
+
 
 // If slimline is enabled the label row is raised from the bottom
 // but footer.h3 is used to keep track of old value to size menus
@@ -8380,7 +8413,7 @@ overlay.rowheight = floor(UI.menufontsize * 130 * UI.scalerate)
 overlay.labelheight = floor(UI.menufontsize * 160 * UI.scalerate)
 
 // First calculation of menuheight (the space for menu entries) and fullwidth
-overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom
+overlay.fullheight = fl.h - UI.header.h - UI.footer.h3 + overlay.ex_top + overlay.ex_bottom - UI.marquee.h
 overlay.menuheight = overlay.fullheight - overlay.labelheight
 
 // Calculation of number of rows, always odd
@@ -8393,7 +8426,7 @@ overlay.fullwidth = min(overlay.fullwidth, fl.w - 2 * overlay.in_side)
 overlay.padding = floor(30 * UI.scalerate)
 
 overlay.x = fl.x + 0.5 * (fl.w - overlay.fullwidth)
-overlay.y = fl.y + UI.header.h - overlay.ex_top
+overlay.y = fl.y + UI.header.h - overlay.ex_top + UI.marquee.h
 overlay.w = overlay.fullwidth
 overlay.h = overlay.menuheight + overlay.labelheight
 
@@ -8491,6 +8524,11 @@ local mon2 = {
 	pic = null
 }
 
+local marquees = {
+	pic_array = []
+	pic = null
+}
+
 /// Background image creation ///
 
 local bglay = {
@@ -8553,6 +8591,8 @@ prf.MULTIMON <- false
 if ((fe.monitors.len() > 1) && (prf.MONITORNUMBER < fe.monitors.len())) prf.MULTIMON = true
 
 if (prf.MULTIMON) {
+	// Add a black background behind the multimonitor
+	fl.surf.add_image (AF.folder + "pics/black.png", 0,0, fe.monitors[prf.MONITORNUMBER].width, fe.monitors[prf.MONITORNUMBER].height)
 	for (local i = 0; i < bgs.stacksize; i++) {
 		mon2.pic = fe.monitors[prf.MONITORNUMBER].add_image(AF.folder + "pics/transparent.png", 0, 0, fe.monitors[prf.MONITORNUMBER].width, fe.monitors[prf.MONITORNUMBER].height)
 		mon2.pic.preserve_aspect_ratio = prf.MONITORASPECT
@@ -8560,6 +8600,19 @@ if (prf.MULTIMON) {
 		mon2.pic.smooth = true
 
 		mon2.pic_array.push(mon2.pic)
+	}
+}
+
+if (prf.MARQUEESPLIT) {
+	// Add a black background behind the marquee
+	fl.surf.add_image (AF.folder + "pics/black.png", 0,0, fl.w, UI.marquee.h)
+	for (local i = 0; i < bgs.stacksize; i++) {
+		marquees.pic = fl.surf.add_image (AF.folder + "pics/black.png", 0,0, fl.w, UI.marquee.h)
+		marquees.pic.preserve_aspect_ratio = prf.MONITORASPECT
+		marquees.pic.alpha = 255
+		marquees.pic.smooth = true
+		
+		marquees.pic_array.push(marquees.pic)
 	}
 }
 
@@ -9491,7 +9544,7 @@ local gamed = {
 // category image
 gamed.catpicT = {
 	x = floor(30 * UI.scalerate + 0.5),
-	y = floor(20 * UI.scalerate + 0.5),
+	y = floor(20 * UI.scalerate + 0.5) + UI.marquee.h,
 	w = blsize.catp,
 	h = blsize.catp
 }
@@ -9499,7 +9552,7 @@ gamed.catpicT = {
 // players image, controller image, button image
 gamed.metapicT = {
 	x = blsize.catp + 2.0 * gamed.catpicT.x,
-	y = blsize.posy,
+	y = blsize.posy + UI.marquee.h,
 	w = blsize.mini * 3.9,
 	h = blsize.mini
 }
@@ -9507,7 +9560,7 @@ gamed.metapicT = {
 // main game category
 gamed.maincatT = {
 	x = floor(20 * UI.scalerate + 0.5),
-	y = UI.header.h - floor(20 * UI.scalerate + 0.5)- blsize.subt,
+	y = UI.header.h - floor(20 * UI.scalerate + 0.5) - blsize.subt + UI.marquee.h,
 	w = gamed.metapicT.x - 2 * floor(20 * UI.scalerate + 0.5),
 	h = blsize.subt
 }
@@ -9515,13 +9568,13 @@ gamed.maincatT = {
 // right side: manufacturer and year
 gamed.manufacturerpicT = {
 	x = fl.w - 2 * blsize.manu - floor(30 * UI.scalerate + 0.5),
-	y = (prf.SMALLSCREEN ? floor(20 * UI.scalerate + 0.5) : floor(10 * UI.scalerate + 0.5)),
+	y = (prf.SMALLSCREEN ? floor(20 * UI.scalerate + 0.5) : floor(10 * UI.scalerate + 0.5) + UI.marquee.h),
 	w = 2 * blsize.manu,
 	h = blsize.manu
 }
 gamed.yearT = {
 	x = gamed.manufacturerpicT.x,
-	y = UI.header.h - floor(20 * UI.scalerate + 0.5) - blsize.dath,
+	y = UI.header.h - floor(20 * UI.scalerate + 0.5) - blsize.dath + UI.marquee.h,
 	w = gamed.manufacturerpicT.w,
 	h = blsize.dath
 }
@@ -14800,6 +14853,13 @@ function updatebgsnap(index) {
 		if (mon2.pic_array[bgs.stacksize - 1].texture_width == 0)
 			mon2.pic_array[bgs.stacksize - 1].file_name  = fe.get_art(prf.MONITORMEDIA2, tilez[index].offset, 0, Art.ImagesOnly)
 	}
+	
+	if (prf.MARQUEESPLIT) {
+		marquees.pic_array[bgs.stacksize - 1].file_name  = fe.get_art(prf.MONITORMEDIA1, tilez[index].offset, 0, Art.ImagesOnly)
+		if (marquees.pic_array[bgs.stacksize - 1].texture_width == 0) {
+			marquees.pic_array[bgs.stacksize - 1].file_name  = fe.get_art(prf.MONITORMEDIA2, tilez[index].offset, 0, Art.ImagesOnly) 
+		}
+	}
 
 	// Case 1: pure box art mode
 	if ((prf.BOXARTMODE) && (!prf.LAYERSNAP)) {
@@ -16512,6 +16572,7 @@ function on_transition(ttype, var0, ttime) {
 				bgs.bg_box[i] = bgs.bg_box[i + 1]
 				bgs.bg_index[i] = bgs.bg_index[i + 1]
 				if (prf.MULTIMON) mon2.pic_array[i].swap(mon2.pic_array[i + 1])
+				if (prf.MARQUEESPLIT) marquees.pic_array[i].swap(marquees.pic_array[i + 1])
 			}
 
 			if (prf.LOWSPECMODE){
@@ -17346,11 +17407,13 @@ function tick(tick_time) {
 				dat.alphapos[i] = dat.alphapos[i] * spdT.dataspeedout
 				dat.meta_array[i].alpha = dat.cat_array[i].alpha = dat.mainctg_array[i].alpha = dat.manufacturer_array[i].alpha = dat.gamename_array[i].alpha = dat.gamesubname_array[i].alpha = dat.manufacturername_array[i].alpha = dat.gameyear_array[i].alpha = 255 * (dat.alphapos[i]) * 1.0
 				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.meta_array[i].alpha
+				if (prf.MARQUEESPLIT) marquees.pic_array[i].alpha = dat.meta_array[i].alpha
 			}
 			else {
 				dat.alphapos[dat.stacksize - 1] = dat.alphapos[dat.stacksize - 1] * spdT.dataspeedin
 				dat.meta_array[i].alpha = dat.cat_array[dat.stacksize - 1].alpha = dat.mainctg_array[dat.stacksize - 1].alpha = dat.manufacturer_array[dat.stacksize - 1].alpha = dat.gamename_array[dat.stacksize - 1].alpha = dat.gamesubname_array[dat.stacksize - 1].alpha = dat.manufacturername_array[dat.stacksize - 1].alpha = dat.gameyear_array[dat.stacksize - 1].alpha = 255 * (1.0 - dat.alphapos[dat.stacksize - 1]) * 1.0
 				if (prf.MULTIMON) mon2.pic_array[i].alpha = dat.meta_array[i].alpha
+				if (prf.MARQUEESPLIT) marquees.pic_array[i].alpha = dat.meta_array[i].alpha
 			}
 		}
 		if (dat.alphapos[i] != 0) AF.dat_freeze = false
