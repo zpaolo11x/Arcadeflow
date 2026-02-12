@@ -1,4 +1,4 @@
-// Arcadeflow - v 17.7
+// Arcadeflow - v 17.8
 // Attract Mode Theme by zpaolo11x
 //
 // Based on carrier.nut scrolling module by Radek Dutkiewicz (oomek)
@@ -96,7 +96,7 @@ local AFRefreshRate = ScreenRefreshRate
 
 // General AF data table
 local AF = {
-	version = "17.7" // AF version in string form
+	version = "17.8" // AF version in string form
 	vernum = 0 // AF version as a number
 
 	usr = false
