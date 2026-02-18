@@ -9860,6 +9860,8 @@ function overlay_show(var0) {
 	if (prf.LAYERVIDEO) bgs.bgvid_top.video_playing = false
 
 	if (!prf.DMPENABLED) frostshow()
+	
+	frostshow()
 
 	overlay.listbox.visible = true
 	overlay.glyph.visible = false
