@@ -1,17 +1,17 @@
 system_bgs/ALLS.jpg 
-system_bgs/Namco System ES.jpg 
 system_bgs/RingWide.jpg 
+system_bgs/RingEdge.jpg 
+system_bgs/RingEdge 2.jpg 
 system_bgs/SEGA Nu.jpg 
+system_bgs/Namco System ES.jpg 
+system_bgs/Namco System N2.jpg 
 system_bgs/Namco System 369.jpg 
 system_bgs/Lindbergh.jpg 
 system_bgs/eX-Board.jpg 
-system_bgs/Taito Type X2.jpg 
-system_bgs/NESICAxlive2.jpg 
+	system_bgs/NESICAxlive2.jpg 
 system_bgs/ArcadePC.jpg 
 system_bgs/SEGA Europa-R.jpg 
-system_bgs/RingEdge.jpg 
-system_bgs/Namco System N2.jpg 
-system_bgs/RingEdge 2.jpg 
-system_bgs/Taito Type X3.jpg 
-system_bgs/Taito Type X4.jpg 
+	system_bgs/Taito Type X2.jpg 
+	system_bgs/Taito Type X3.jpg 
+	system_bgs/Taito Type X4.jpg 
 system_bgs/Bandai Namco BNA1.jpg

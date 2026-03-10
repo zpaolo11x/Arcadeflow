@@ -1214,12 +1214,36 @@ steam,0,0,STEAM,CRT,NONE,0,0,COMPUTER,Steam,null,Steam,null,null,null,null
 taito nesicaxlive,0,0,NSCA,LCD,NONE,16,9,ARCADE,Taito,2010,NESiCAxlive,75,rom,null,null
 nesicaxlive
 
+* taito nesicaxlive 2,0,0,NSCA2,LCD,NONE,16,9,ARCADE,Taito,2017,NESiCAxlive2,75,rom,null,null
+nesicaxlive 2
+
 taito type x,0,0,TYPX,CRT,NONE,-4,3,ARCADE,Taito,2004,Taito Type X,112,rom,null,null
 taito typex
 taito type-x
 type x
 typex
 type-x
+
+* taito type x2,0,0,TYPX2,CRT,NONE,16,9,ARCADE,Taito,2006,Taito Type X2,112,rom,null,null
+taito typex2
+taito type-x2
+type x2
+typex2
+type-x2
+
+* taito type x3,0,0,TYPX3,LCD,NONE,16,9,ARCADE,Taito,2012,Taito Type X3,112,rom,null,null
+taito typex3
+taito type-x3
+type x3
+typex3
+type-x3
+
+* taito type x4,0,0,TYPX4,LCD,NONE,16,9,ARCADE,Taito,2016,Taito Type X4,112,rom,null,null
+taito typex4
+taito type-x4
+type x4
+typex4
+type-x4
 
 taito,0,0,TAI,CRT,NONE,-4,3,ARCADE,Taito,null,Taito,157,rom,null,null
 taito classics
