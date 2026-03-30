@@ -69,7 +69,7 @@ coin op
 arcade64,0,0,AR64,CRT,NONE,-4,3,ARCADE,Various,null,Arcade64,75,rom,null,null
 arcade 64
 
-* arcadepc,0,0,ARPC,LCD,NONE,16,9,ARCADE,Various,null,ArcadePC,75,rom,null,null
+arcadepc,0,0,ARPC,LCD,NONE,16,9,ARCADE,Various,null,ArcadePC,75,rom,null,null
 arcade pc
 
 arduboy,128,64,ABOY,LCD,NONE,0,0,HANDHELD,Kevin Bates,2015,Arduboy,263,rom,joystick (8-way),2
@@ -140,7 +140,7 @@ sammy atomiswave
 bally astrocade,160,102,AST,CRT,NONE,4,3,CONSOLE,Bally,1978,Astrocade,44,rom,joystick (8-way),1
 astrocade
 
-* bandai namco bna1,0,0,BNA1,LCD,NONE,16,9,ARCADE,Bandai Namco,2013,Bandai Namco BNA1,75,rom,null,null
+bandai namco bna1,0,0,BNA1,LCD,NONE,16,9,ARCADE,Bandai Namco,2013,Bandai Namco BNA1,75,rom,null,null
 bna1
 namco bna1
 namco system bna1
@@ -337,7 +337,7 @@ cassette vision jr
 epoch super cassette vision,309,246,SCVIS,CRT,NONE,4,3,CONSOLE,Epoch,1984,Super Cassette Vision,67,rom,joystick (8-way),2
 super cassette vision
 
-* examu ex-board,0,0,EXBD,LCD,NONE,16,9,ARCADE,Examu,2008,eX-Board,75,rom,null,null
+examu ex-board,0,0,EXBD,LCD,NONE,16,9,ARCADE,Examu,2008,eX-Board,75,rom,null,null
 ex-board
 exboard
 examu exboard
@@ -549,10 +549,15 @@ system 256
 namco system 246
 namco system 256
 
-* namco system 369,0,0,N369,LCD,NONE,16,9,ARCADE,Namco,2011,Namco System 369,75,rom,null,null
+namco system 369,0,0,N369,LCD,NONE,16,9,ARCADE,Namco,2011,Namco System 369,75,rom,null,null
+namco system 359
+namco system 357
+system 357
+system 359
 system 369
 
-* namco system es,0,0,N-ES,LCD,NONE,16,9,ARCADE,Namco,2009,Namco System ES,75,rom,null,null
+
+namco system es,0,0,N-ES,LCD,NONE,16,9,ARCADE,Namco,2009,Namco System ES,75,rom,null,null
 system es
 
 * namco system n2,0,0,N-N2,LCD,NONE,16,9,ARCADE,Namco,2007,Namco System N2,75,rom,null,null
@@ -978,7 +983,10 @@ sega 32x,320,224,32X,CRT,NONE,4,3,CONSOLE,Sega,1994,Sega 32X,19,rom,joystick (8-
 32x
 sega32x
 
-* sega alls,0,0,ALLS,LCD,NONE,16,9,ARCADE,Sega,2018,Alls,75,rom,null,null
+sega all.net,0,0,ALLN,LCD,NONE,16,9,ARCADE,Sega,2004,ALL.Net,75,rom,null,null
+all.net
+
+sega alls,0,0,ALLS,LCD,NONE,16,9,ARCADE,Sega,2018,Alls,75,rom,null,null
 alls
 
 sega cd,320,224,SCD,CRT,NONE,4,3,CONSOLE,Sega,1992,Sega CD,20,iso,joystick (8-way),3
@@ -994,7 +1002,7 @@ dreamcast eu
 sega dreamcast jp,0,0,DCST,CRT,NONE,4,3,CONSOLE,Sega,1999,Dreamcast JP,23,iso,joystick (8-way),4
 dreamcast jp
 
-* sega europa-r,0,0,EU-R,LCD,NONE,16,9,ARCADE,Sega,2008,SEGA Europa-R,75,rom,null,null
+sega europa-r,0,0,EU-R,LCD,NONE,16,9,ARCADE,Sega,2008,SEGA Europa-R,75,rom,null,null
 sega europa r
 europa r
 europa-r
@@ -1025,7 +1033,7 @@ sega cdx
 sega hikaru,0,0,HIKARU,CRT,NONE,-4,3,ARCADE,Sega,1999,Hikaru,75,rom,null,null
 hikaru
 
-* sega lindbergh,0,0,LIND,LCD,NONE,16,9,ARCADE,Sega,2005,Lindbergh,75,rom,null,null
+sega lindbergh,0,0,LIND,LCD,NONE,16,9,ARCADE,Sega,2005,Lindbergh,75,rom,null,null
 lindbergh
 
 sega mark 3,256,192,MKIII,CRT,NONE,4,3,CONSOLE,Sega,1985,Sega MKIII,2,rom,joystick (8-way),2
@@ -1145,19 +1153,19 @@ sega nomad,320,224,NMD,LCD,NONE,4,3,HANDHELD,Sega,1995,Nomad,1,rom,joystick (8-w
 genesis nomad
 nomad
 
-* sega nu,0,0,S-NU,LCD,NONE,16,9,ARCADE,Sega,2013,SEGA Nu,75,rom,null,null
+sega nu,0,0,S-NU,LCD,NONE,16,9,ARCADE,Sega,2013,SEGA Nu,75,rom,null,null
 nu
 
 sega pico,0,0,PICO,LCD,NONE,0,0,HANDHELD,Sega,1993,Pico,null,rom,null,null
 pico
 
-* sega ringedge,0,0,REDG,LCD,NONE,16,9,ARCADE,Sega,2009,RingEdge,75,rom,null,null
+sega ringedge,0,0,REDG,LCD,NONE,16,9,ARCADE,Sega,2009,RingEdge,75,rom,null,null
 ringedge
 
-* sega ringedge 2,0,0,RDG2,LCD,NONE,16,9,ARCADE,Sega,2011,RingEdge 2,75,rom,null,null
+sega ringedge 2,0,0,RDG2,LCD,NONE,16,9,ARCADE,Sega,2011,RingEdge 2,75,rom,null,null
 ringedge 2
 
-* sega ringwide,0,0,RWID,LCD,NONE,16,9,ARCADE,Sega,2009,RingWide,75,rom,null,null
+sega ringwide,0,0,RWID,LCD,NONE,16,9,ARCADE,Sega,2009,RingWide,75,rom,null,null
 ringwide
 
 sega saturn japan,0,0,SATJP,CRT,NONE,4,3,CONSOLE,Sega,1994,Sega Saturn Japan,22,iso,joystick (8-way),6
@@ -1259,7 +1267,7 @@ steam,0,0,STEAM,CRT,NONE,0,0,COMPUTER,Steam,null,Steam,null,null,null,null
 taito nesicaxlive,0,0,NSCA,LCD,NONE,16,9,ARCADE,Taito,2010,NESiCAxlive,75,rom,null,null
 nesicaxlive
 
-* taito nesicaxlive 2,0,0,NSCA2,LCD,NONE,16,9,ARCADE,Taito,2017,NESiCAxlive2,75,rom,null,null
+taito nesicaxlive 2,0,0,NSCA2,LCD,NONE,16,9,ARCADE,Taito,2017,NESiCAxlive2,75,rom,null,null
 nesicaxlive 2
 
 taito type x,0,0,TYPX,CRT,NONE,-4,3,ARCADE,Taito,2004,Taito Type X,112,rom,null,null
@@ -1269,21 +1277,21 @@ type x
 typex
 type-x
 
-* taito type x2,0,0,TYPX2,CRT,NONE,16,9,ARCADE,Taito,2006,Taito Type X2,112,rom,null,null
+taito type x2,0,0,TYPX2,CRT,NONE,16,9,ARCADE,Taito,2006,Taito Type X2,112,rom,null,null
 taito typex2
 taito type-x2
 type x2
 typex2
 type-x2
 
-* taito type x3,0,0,TYPX3,LCD,NONE,16,9,ARCADE,Taito,2012,Taito Type X3,112,rom,null,null
+taito type x3,0,0,TYPX3,LCD,NONE,16,9,ARCADE,Taito,2012,Taito Type X3,112,rom,null,null
 taito typex3
 taito type-x3
 type x3
 typex3
 type-x3
 
-* taito type x4,0,0,TYPX4,LCD,NONE,16,9,ARCADE,Taito,2016,Taito Type X4,112,rom,null,null
+taito type x4,0,0,TYPX4,LCD,NONE,16,9,ARCADE,Taito,2016,Taito Type X4,112,rom,null,null
 taito typex4
 taito type-x4
 type x4
