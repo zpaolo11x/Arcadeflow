@@ -556,7 +556,6 @@ system 357
 system 359
 system 369
 
-
 namco system es,0,0,N-ES,LCD,NONE,16,9,ARCADE,Namco,2009,Namco System ES,75,rom,null,null
 system es
 
@@ -986,7 +985,7 @@ sega32x
 sega all.net,0,0,ALLN,LCD,NONE,16,9,ARCADE,Sega,2004,ALL.Net,75,rom,null,null
 all.net
 
-sega alls,0,0,ALLS,LCD,NONE,16,9,ARCADE,Sega,2018,Alls,75,rom,null,null
+sega alls,0,0,ALLS,LCD,NONE,16,9,ARCADE,Sega,2018,ALLS,75,rom,null,null
 alls
 
 sega cd,320,224,SCD,CRT,NONE,4,3,CONSOLE,Sega,1992,Sega CD,20,iso,joystick (8-way),3
@@ -1268,7 +1267,7 @@ taito nesicaxlive,0,0,NSCA,LCD,NONE,16,9,ARCADE,Taito,2010,NESiCAxlive,75,rom,nu
 nesicaxlive
 
 taito nesicaxlive 2,0,0,NSCA2,LCD,NONE,16,9,ARCADE,Taito,2017,NESiCAxlive2,75,rom,null,null
-nesicaxlive 2
+nesicaxlive2
 
 taito type x,0,0,TYPX,CRT,NONE,-4,3,ARCADE,Taito,2004,Taito Type X,112,rom,null,null
 taito typex
