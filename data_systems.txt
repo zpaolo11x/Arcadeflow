@@ -69,6 +69,9 @@ coin op
 arcade64,0,0,AR64,CRT,NONE,-4,3,ARCADE,Various,null,Arcade64,75,rom,null,null
 arcade 64
 
+* arcadepc,0,0,ARPC,LCD,NONE,16,9,ARCADE,Various,null,ArcadePC,75,rom,null,null
+arcade pc
+
 arduboy,128,64,ABOY,LCD,NONE,0,0,HANDHELD,Kevin Bates,2015,Arduboy,263,rom,joystick (8-way),2
 arduboy fx
 
@@ -136,6 +139,11 @@ sammy atomiswave
 
 bally astrocade,160,102,AST,CRT,NONE,4,3,CONSOLE,Bally,1978,Astrocade,44,rom,joystick (8-way),1
 astrocade
+
+* bandai namco bna1,0,0,BNA1,LCD,NONE,16,9,ARCADE,Bandai Namco,2013,Bandai Namco BNA1,75,rom,null,null
+bna1
+namco bna1
+namco system bna1
 
 bandai swan crystal,224,144,SWCR,LCD,NONE,-224,144,HANDHELD,Bandai,2002,SwanCrystal,46,rom,joystick (8-way),2
 bandai swancrystal
@@ -328,6 +336,11 @@ cassette vision jr
 
 epoch super cassette vision,309,246,SCVIS,CRT,NONE,4,3,CONSOLE,Epoch,1984,Super Cassette Vision,67,rom,joystick (8-way),2
 super cassette vision
+
+* examu ex-board,0,0,EXBD,LCD,NONE,16,9,ARCADE,Examu,2008,eX-Board,75,rom,null,null
+ex-board
+exboard
+examu exboard
 
 exelvision exl 100,320,250,EXL1,CRT,NONE,4,3,COMPUTER,Exelvision,1984,EXL 100,96,rom,joystick (8-way),1
 exl 100
@@ -535,6 +548,15 @@ system 246
 system 256
 namco system 246
 namco system 256
+
+* namco system 369,0,0,N369,LCD,NONE,16,9,ARCADE,Namco,2011,Namco System 369,75,rom,null,null
+system 369
+
+* namco system es,0,0,N-ES,LCD,NONE,16,9,ARCADE,Namco,2009,Namco System ES,75,rom,null,null
+system es
+
+* namco system n2,0,0,N-N2,LCD,NONE,16,9,ARCADE,Namco,2007,Namco System N2,75,rom,null,null
+system n2
 
 nec coregrafx ii,256,224,CGFX,CRT,NONE,4,3,CONSOLE,NEC,1991,CoreGrafx II,31,rom,joystick (8-way),2
 coregrafx ii
