@@ -560,7 +560,7 @@ system 369
 namco system es,0,0,N-ES,LCD,NONE,16,9,ARCADE,Namco,2009,Namco System ES,75,rom,null,null
 system es
 
-* namco system n2,0,0,N-N2,LCD,NONE,16,9,ARCADE,Namco,2007,Namco System N2,75,rom,null,null
+namco system n2,0,0,N-N2,LCD,NONE,16,9,ARCADE,Namco,2007,Namco System N2,75,rom,null,null
 system n2
 
 nec coregrafx ii,256,224,CGFX,CRT,NONE,4,3,CONSOLE,NEC,1991,CoreGrafx II,31,rom,joystick (8-way),2
