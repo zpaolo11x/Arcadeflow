@@ -4096,12 +4096,12 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 
 	local execss = ""
 	if (OS == "Windows") {
-		execss = AF.subfolder + "curlscrape.vbs \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = AF.subfolder + "curlscrape.vbs \"https://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
 		execss += "&use_parent=1\" \"" + AF.subfolder + "json\\" + scrapeid + "jsonA.nut\" \"" + AF.subfolder + "json\\" + scrapeid + "jsonA.txt\""
 	}
 	else {
-		execss = "curl -s \"http://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
+		execss = "curl -s \"https://adb.arcadeitalia.net/service_scraper.php?ajax=query_mame&game_name="
 		if (romfilename != null) execss += romfilename
 		execss += "&use_parent=1\" -o \"" + AF.userfolder + "json/" + scrapeid + "jsonA.nut\"&& echo ok > \"" + AF.userfolder + "json/" + scrapeid + "jsonA.txt\" &"
 	}
