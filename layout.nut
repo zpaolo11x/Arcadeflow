@@ -4087,6 +4087,29 @@ function msgbox_test(){
 dispatcher = []
 dispatchernum = 0
 
+function cleanscrapejsonline(inputline, unicorrect) {
+	local item_clean = inputline
+	local doubledescapes = [
+		{old = "\\\\u", new = "\\u"},
+		{old = "\\\\r", new = "\\r"},
+		{old = "\\\\n", new = "\\n"},
+		{old = "\\\\t", new = "\\t"},
+		{old = "\\\\/", new = "\\/"}
+	]
+
+	foreach (i, item in doubledescapes) {
+		item_clean = subst_replace(item_clean, item.old, item.new)
+	}
+
+	item_clean = uniclean(item_clean)
+	foreach (uid, uval in unicorrect) {
+		item_clean = subst_replace(item_clean, uval.old, uval.new)
+	}
+
+	return item_clean
+}
+
+
 function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, systemid, romtype) {
 	scraprt("ID" + scrapeid + "             createjsonA START\n")
 	local unicorrect = unicorrect()
@@ -4138,11 +4161,7 @@ function createjsonA(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, sys
 	local jsfileout = WriteTextFile(AF.userfolder + "json/" + scrapeid + "jsonA_out.nut")
 	local item_clean = null
 	foreach (i, item in jsarray) {
-		item_clean = item
-		item_clean = uniclean(item_clean)
-		foreach (uid, uval in unicorrect) {
-			item_clean = subst_replace(item_clean, uval.old, uval.new)
-		}
+		item_clean = cleanscrapejsonline(item, unicorrect)
 		jsfileout.write_line(item_clean + "\n")
 	}
 	jsfileout.close_file()
@@ -4236,11 +4255,7 @@ function createjson(scrapeid, ssuser, sspass, romfilename, romcrc, romsize, syst
 	local jsfileout = WriteTextFile(AF.userfolder + "json/" + scrapeid + "json_out.nut")
 	local item_clean = null
 	foreach (i, item in jsarray) {
-		item_clean = item
-		item_clean = uniclean(item_clean)
-		foreach (uid, uval in unicorrect) {
-			item_clean = subst_replace(item_clean, uval.old, uval.new)
-		}
+		item_clean = cleanscrapejsonline(item, unicorrect)
 		jsfileout.write_line(item_clean + "\n")
 	}
 	jsfileout.close_file()
